@@ -99,7 +99,13 @@ class LocationModal extends React.Component {
                       </div>
                     </div>
                     <div className="modal-footer">
-                      <a href="#!" className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
+                      <a
+                        href="#"
+                        onClick={onClose}
+                        className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+                      >
+                        Cancel
+                      </a>
                       <a href="#" className="btn">Add</a>
                     </div>
                   </div>

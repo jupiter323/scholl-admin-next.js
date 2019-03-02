@@ -19,132 +19,134 @@ class LocationModal extends React.Component {
           <div className="overlay">
             <ClickOffComponentWrapper onOuterClick={onClose}>
               <div id="modal_Instructor1" className="modal modal-custom modal-location">
-                <form action="#" className="custom-form">
-                  <fieldset>
-                    <div className="card-modal card">
-                      <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: '#00456b', color: '#fff' }}>
-                        <div className="card-panel-row row">
-                          <div className="col">
-                            <h3>Select Instructor(s)</h3>
-                          </div>
+                <div className="card-modal card">
+                  <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: '#00456b', color: '#fff' }}>
+                    <div className="card-panel-row row">
+                      <div className="col">
+                        <h3>Select Instructor(s)</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-content">
+                    <div className="card-body">
+                      <span className="hint">Click to select or deselect.</span>
+                      <div className="row-holder">
+                        <div className="search-field input-field">
+                          <input type="search" id="name_search" className="input-control  validate" placeholder="Smith" />
+                          <button type="submit" className="search-button"><i className="icon-search"></i></button>
+                          <label className="label" htmlFor="name_search">Search</label>
+                        </div>
+                        <div className="input-field">
+                          <select id="location_search">
+                            <option>Any</option>
+                            <option>option</option>
+                            <option>option</option>
+                          </select>
+                          <label className="label" htmlFor="location_search">Location</label>
                         </div>
                       </div>
-                      <div className="card-content">
-                        <div className="card-body">
-                          <span className="hint">Click to select or deselect.</span>
-                          <div className="row-holder">
-                            <div className="search-field input-field">
-                              <input type="search" id="name_search" className="input-control  validate" placeholder="Smith" />
-                              <button type="submit" className="search-button"><i className="icon-search"></i></button>
-                              <label className="label" htmlFor="name_search">Search</label>
-                            </div>
-                            <div className="input-field">
-                              <select id="location_search">
-                                <option>Any</option>
-                                <option>option</option>
-                                <option>option</option>
-                              </select>
-                              <label className="label" htmlFor="location_search">Location</label>
-                            </div>
+                      <div className="box-scrollable">
+                        <div className="height-40 jcf-scrollable">
+                          <div className="card-location-holder">
+                            <ul className="checkbox-list">
+                              <li>
+                                <input type="checkbox" />
+                                <div className="card-location card">
+                                  <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
+                                    <span className="check-link icon-check"></span>
+                                    <div className="åcard-panel-row row">
+                                      <div className="col s10">
+                                        <div className="user-block">
+                                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
+                                            <img src="images/img-owner01.jpg" alt="image description" />
+                                          </div>
+                                          <div className="user-text" style={{ color: '#fff' }}>
+                                            <h4 className="h3">Smith, John</h4>
+                                            <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="col s2 right-align">
+                                        <span className="block-icon">
+                                          <i className="icon-user"></i>
+                                          <span className="text-icon">Instructor</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <input type="checkbox" />
+                                <div className="card-location card">
+                                  <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
+                                    <span className="check-link icon-check"></span>
+                                    <div className="card-panel-row row">
+                                      <div className="col s10">
+                                        <div className="user-block">
+                                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
+                                            <img src="images/img-owner01.jpg" alt="image description" />
+                                          </div>
+                                          <div className="user-text" style={{ color: '#fff' }}>
+                                            <h4 className="h3">Smith, John</h4>
+                                            <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="col s2 right-align">
+                                        <span className="block-icon">
+                                          <i className="icon-user"></i>
+                                          <span className="text-icon">Instructor</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <input type="checkbox" />
+                                <div className="card-location card">
+                                  <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
+                                    <span className="check-link icon-check"></span>
+                                    <div className="card-panel-row row">
+                                      <div className="col s10">
+                                        <div className="user-block">
+                                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
+                                            <img src="images/img-owner01.jpg" alt="image description" />
+                                          </div>
+                                          <div className="user-text" style={{ color: '#fff' }}>
+                                            <h4 className="h3">Smith, John</h4>
+                                            <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="col s2 right-align">
+                                        <span className="block-icon">
+                                          <i className="icon-user"></i>
+                                          <span className="text-icon">Instructor</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
                           </div>
-                          <div className="box-scrollable">
-                            <div className="height-40 jcf-scrollable">
-                              <div className="card-location-holder">
-                                <ul className="checkbox-list">
-                                  <li>
-                                    <input type="checkbox" />
-                                    <div className="card-location card">
-                                      <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
-                                        <span className="check-link icon-check"></span>
-                                        <div className="åcard-panel-row row">
-                                          <div className="col s10">
-                                            <div className="user-block">
-                                              <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                                                <img src="images/img-owner01.jpg" alt="image description" />
-                                              </div>
-                                              <div className="user-text" style={{ color: '#fff' }}>
-                                                <h4 className="h3">Smith, John</h4>
-                                                <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="col s2 right-align">
-                                            <span className="block-icon">
-                                              <i className="icon-user"></i>
-                                              <span className="text-icon">Instructor</span>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <input type="checkbox" />
-                                    <div className="card-location card">
-                                      <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
-                                        <span className="check-link icon-check"></span>
-                                        <div className="card-panel-row row">
-                                          <div className="col s10">
-                                            <div className="user-block">
-                                              <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                                                <img src="images/img-owner01.jpg" alt="image description" />
-                                              </div>
-                                              <div className="user-text" style={{ color: '#fff' }}>
-                                                <h4 className="h3">Smith, John</h4>
-                                                <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="col s2 right-align">
-                                            <span className="block-icon">
-                                              <i className="icon-user"></i>
-                                              <span className="text-icon">Instructor</span>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <input type="checkbox" />
-                                    <div className="card-location card">
-                                      <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
-                                        <span className="check-link icon-check"></span>
-                                        <div className="card-panel-row row">
-                                          <div className="col s10">
-                                            <div className="user-block">
-                                              <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                                                <img src="images/img-owner01.jpg" alt="image description" />
-                                              </div>
-                                              <div className="user-text" style={{ color: '#fff' }}>
-                                                <h4 className="h3">Smith, John</h4>
-                                                <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="col s2 right-align">
-                                            <span className="block-icon">
-                                              <i className="icon-user"></i>
-                                              <span className="text-icon">Instructor</span>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="modal-footer">
-                          <a href="#!" className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
-                          <a href="#" className="btn">Add</a>
                         </div>
                       </div>
                     </div>
-                  </fieldset>
-                </form>
+                    <div className="modal-footer">
+                      <a
+                        href="#"
+                        onClick={onClose}
+                        className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+                      >
+                        Cancel
+                      </a>
+                      <a href="#" className="btn">Add</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ClickOffComponentWrapper>
           </div>
