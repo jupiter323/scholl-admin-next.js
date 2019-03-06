@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
+
+const DatePicker = dynamic(() => import('../../../../FormComponents/DatePicker'), {
+  ssr: false,
+});
 
 const startDateOptions = [
   {
@@ -61,11 +66,6 @@ const CourseContext = ({ state: { courseStartDateOption, courseStartDate, course
                 <div className="row mb-0">
                   <div className="col s12">
                     <div className="input-field focus-blue">
-                      {/* <select id="first_date">
-                        <option>First Assignment Date (default)</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select> */}
                       <Dropdown
                         value={getValueFromState(courseStartDateOption, startDateOptions)}
                         onChange={(event) => handleDetailsChange(event, 'courseStartDateOption', 'courseContext')}
@@ -74,7 +74,6 @@ const CourseContext = ({ state: { courseStartDateOption, courseStartDate, course
                         stateKey="courseStartDateOption"
                         dropdownKey="courseStartDateOption"
                       />
-                      {/* <label htmlFor="first_date">Course Start Date</label> */}
                     </div>
                   </div>
                 </div>
@@ -82,12 +81,10 @@ const CourseContext = ({ state: { courseStartDateOption, courseStartDate, course
                   <div className="col s4">
                     <div className="datepicker-field input-field">
                       <i className="icon-calendar-dark"></i>
-                      <input
-                        type="text"
+                      <DatePicker
+                        selected={courseStartDate}
                         id="course_start_date"
-                        name="courseStartDate"
-                        value={courseStartDate}
-                        className="datepicker"
+                        onChange={(event) => handleDetailsChange(event, 'courseStartDate', 'courseContext')}
                       />
                     </div>
                   </div>
@@ -95,12 +92,6 @@ const CourseContext = ({ state: { courseStartDateOption, courseStartDate, course
                 <div className="row mb-0">
                   <div className="col s12">
                     <div className="input-field focus-blue">
-                      {/* <select id="last_date">
-                        <option>Target Test Date (default)</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label htmlFor="last_date">Course End Date</label> */}
                       <Dropdown
                         value={getValueFromState(courseEndDateOption, endDateOptions)}
                         onChange={(event) => handleDetailsChange(event, 'courseEndDateOption', 'courseContext')}
@@ -116,12 +107,10 @@ const CourseContext = ({ state: { courseStartDateOption, courseStartDate, course
                   <div className="col s4">
                     <div className="datepicker-field input-field">
                       <i className="icon-calendar-dark"></i>
-                      <input
-                        type="text"
+                      <DatePicker
+                        selected={courseEndDate}
                         id="course_end_date"
-                        name="courseEndDate"
-                        value={courseEndDate}
-                        className="datepicker"
+                        onChange={(event) => handleDetailsChange(event, 'courseEndDate', 'courseContext')}
                       />
                     </div>
                   </div>
@@ -131,12 +120,6 @@ const CourseContext = ({ state: { courseStartDateOption, courseStartDate, course
                 <div className="row">
                   <div className="col s12 m6 l8">
                     <div className="input-field focus-blue">
-                      {/* <select id="date">
-                        <option>October 6, 2018</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label htmlFor="date">Target Test Date*</label> */}
                       <Dropdown
                         value={getValueFromState(targetTestDate, targetTestDateOptions)}
                         onChange={(event) => handleDetailsChange(event, 'targetTestDate', 'courseContext')}
