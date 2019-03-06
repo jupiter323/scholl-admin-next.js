@@ -53,7 +53,9 @@ class AccountPage extends React.Component {
           classes: [],
         },
         courseContext: {
+          courseStartDateOption: '',
           courseStartDate: '',
+          courseEndDateOption: '',
           courseEndDate: '',
           targetTestDate: '',
           targetScore: '',
@@ -88,7 +90,9 @@ class AccountPage extends React.Component {
           state: '',
           zipCode: '',
         },
-        emailAddress: '',
+        emailAddress: {
+          email: '',
+        },
         location: {
           locations: [],
         },
@@ -97,7 +101,9 @@ class AccountPage extends React.Component {
         },
         classes: [],
         courseContext: {
+          courseStartDateOption: '',
           courseStartDate: '',
+          courseEndDateOption: '',
           courseEndDate: '',
           targetTestDate: '',
           targetScore: '',
@@ -220,7 +226,10 @@ class AccountPage extends React.Component {
                   state={this.initialUserMount() ? contactInformation : updatedContactInformation}
                   handleDetailsChange={this.handleDetailsChange}
                 />
-                <EmailAddress />
+                <EmailAddress
+                  state={this.initialUserMount() ? emailAddress : updatedEmailAddress}
+                  handleDetailsChange={this.handleDetailsChange}
+                />
               </div>
               <div className="col s12 l5">
                 <Location onOpenLocationModal={this.onOpenLocationModal} />
@@ -232,7 +241,10 @@ class AccountPage extends React.Component {
               <AccountStatus />
               <AccountType />
             </div>
-            <CourseContext />
+            <CourseContext
+              state={this.initialUserMount() ? courseContext : updatedCourseContext}
+              handleDetailsChange={this.handleDetailsChange}
+            />
             <AccountSettings />
             <Actions />
             <DeleteAccount />

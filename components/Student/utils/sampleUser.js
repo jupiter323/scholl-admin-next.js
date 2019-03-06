@@ -13,7 +13,9 @@ const updatedUser = {
     state: 'TX',
     zipCode: '78757',
   },
-  emailAddress: 'test@email.com',
+  emailAddress: {
+    email: 'test@email.com',
+  },
   location: {
     locations: [],
   },
@@ -22,7 +24,9 @@ const updatedUser = {
   },
   classes: [],
   courseContext: {
+    courseStartDateOption: 'secondOption',
     courseStartDate: '02/02/2019',
+    courseEndDateOption: 'secondOption',
     courseEndDate: '07/10/2019',
     targetTestDate: '12/12/2019',
     targetScore: '1234',
