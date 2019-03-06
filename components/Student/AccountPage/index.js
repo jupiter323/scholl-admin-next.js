@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
+import PropTypes from 'prop-types';
+import update from 'immutability-helper';
 
 import StudentInformation from './components/StudentInformation';
 import ContactInformation from './components/ContactInformation';
@@ -23,7 +26,130 @@ class AccountPage extends React.Component {
     this.state = {
       locationModalOpen: false,
       instructorModalOpen: false,
+      originalUser: {
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: {
+          email: '',
+        },
+        location: {
+          locations: [],
+        },
+        instructor: {
+          instructors: [],
+        },
+        class: {
+          classes: [],
+        },
+        courseContext: {
+          courseStartDate: '',
+          courseEndDate: '',
+          targetTestDate: '',
+          targetScore: '',
+          highSchool: '',
+          graduationYear: '',
+        },
+        accountSettings: {
+          loginBeforeActivation: false,
+          unstructuredCourseMode: false,
+          videoSolutionsRequired: false,
+          preventLogin: false,
+          inactive: false,
+          excludeFromStatistics: false,
+        },
+        actions: {
+          ccAdmin: false,
+          password: '',
+          confirmPassword: '',
+        },
+      },
+      updatedUser: {
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: '',
+        location: {
+          locations: [],
+        },
+        instructor: {
+          instructors: [],
+        },
+        classes: [],
+        courseContext: {
+          courseStartDate: '',
+          courseEndDate: '',
+          targetTestDate: '',
+          targetScore: '',
+          highSchool: '',
+          graduationYear: '',
+        },
+        accountSettings: {
+          loginBeforeActivation: false,
+          unstructuredCourseMode: false,
+          videoSolutionsRequired: false,
+          preventLogin: false,
+          inactive: false,
+          excludeFromStatistics: false,
+        },
+        actions: {
+          ccAdmin: false,
+          password: '',
+          confirmPassword: '',
+        },
+      },
+      validation: {
+        studentInformation: {
+          firstName: true,
+          lastName: true,
+          gender: true,
+        },
+      },
     };
+  }
+
+  componentDidMount() {
+    const { user: { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = this.props;
+    const updatedUser = { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings };
+    const { originalUser: originalUserState } = this.state;
+    const originalUser = update(originalUserState, {
+      $merge: updatedUser,
+    });
+    this.setState({ originalUser, updatedUser }); // eslint-disable-line
+  }
+
+  // TODO: This seems to be working well - confirm that only one isntance of this edit modal is opening on the user edit page
+  // This resets the component state to reflect the details of the next user the user clicks on
+  componentWillReceiveProps = (nextProps) => {
+    if ((!this.state.originalUser || nextProps.user.id !== this.state.originalUser.id)) {
+      const { user: { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = nextProps;
+      const updatedUser = { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings };
+      const { originalUser: originalUserState } = this.state;
+      const originalUser = update(originalUserState, {
+        $merge: nextProps.user,
+      });
+      this.setState({ originalUser, updatedUser });
+    }
   }
 
   onOpenLocationModal = () => this.setState({ locationModalOpen: true });
@@ -36,8 +162,42 @@ class AccountPage extends React.Component {
     console.warn('stubbed out save changes');
   }
 
+  initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
+
+  // // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
+  // handleDetailsChange = (event, name, stateKey) => {
+  //   const { updatedUser: previousUserState } = this.state;
+  //   const value = event.target ? event.target.value : event;
+  //   const updatedUser = update(previousUserState, {
+  //     [stateKey]: {
+  //       $merge: { [name]: value },
+  //     },
+  //   });
+  //   this.setState({ updatedUser });
+  // }
+
+  // Checkbox is passed in as a boolean to avoid creating a mostly similar function just for the active checkbox
+  // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
+  handleDetailsChange = (event, name, section, checkBox = false) => {
+    const { updatedUser: previousUserState } = this.state;
+    let value;
+    if (checkBox) {
+      // const { [section]: { [name] } } = previousUserState;
+      // value = !active;
+    } else {
+      value = event.target ? event.target.value : event;
+    }
+    const updatedUser = update(previousUserState, {
+      [section]: { $merge: { [name]: value } },
+    });
+    this.setState({ updatedUser });
+  }
+
   render() {
-    const { locationModalOpen, instructorModalOpen } = this.state;
+    const { locationModalOpen, instructorModalOpen,
+      updatedUser: { studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
+        instructor: updatedInstructor, classes: updatedClasses, courseContext: updatedCourseContext, accountSettings: updatedAccountSettings } } = this.state;
+    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = this.props;
     return (
       <React.Fragment>
         <LocationModal
@@ -52,7 +212,10 @@ class AccountPage extends React.Component {
           <div className="content-section-holder">
             <div className="row mb-0 d-flex-content large">
               <div className="col s12 l5">
-                <StudentInformation />
+                <StudentInformation
+                  state={this.initialUserMount() ? studentInformation : updatedStudentInformation}
+                  handleDetailsChange={this.handleDetailsChange}
+                />
                 <ContactInformation />
                 <EmailAddress />
               </div>
@@ -83,5 +246,9 @@ class AccountPage extends React.Component {
     );
   }
 }
+
+AccountPage.propTypes = {
+  user: PropTypes.object,
+};
 
 export default AccountPage;
