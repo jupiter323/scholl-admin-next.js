@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import AccountPage from '../components/Student/AccountPage';
 import StudentNavBar from '../components/Student/components/StudentNavBar';
 
+import sampleUser from '../components/Student/utils/sampleUser';
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Students extends Component {
   constructor(props) {
@@ -85,7 +87,9 @@ class Students extends Component {
                   </div>
                 </div>
               </div>
-              <AccountPage />
+              <AccountPage
+                user={sampleUser}
+              />
             </div>
           </main>
         </div>
