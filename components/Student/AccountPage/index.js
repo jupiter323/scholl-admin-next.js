@@ -216,7 +216,10 @@ class AccountPage extends React.Component {
                   state={this.initialUserMount() ? studentInformation : updatedStudentInformation}
                   handleDetailsChange={this.handleDetailsChange}
                 />
-                <ContactInformation />
+                <ContactInformation
+                  state={this.initialUserMount() ? contactInformation : updatedContactInformation}
+                  handleDetailsChange={this.handleDetailsChange}
+                />
                 <EmailAddress />
               </div>
               <div className="col s12 l5">
