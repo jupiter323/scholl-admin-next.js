@@ -25,9 +25,9 @@ const updatedUser = {
   classes: [],
   courseContext: {
     courseStartDateOption: 'secondOption',
-    courseStartDate: '02/02/2019',
+    courseStartDate: '',
     courseEndDateOption: 'secondOption',
-    courseEndDate: '07/10/2019',
+    courseEndDate: '',
     targetTestDate: '12/12/2019',
     targetScore: '1234',
     highSchool: 'Everglades High',
