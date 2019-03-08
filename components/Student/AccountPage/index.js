@@ -168,6 +168,10 @@ class AccountPage extends React.Component {
     console.warn('stubbed out save changes');
   }
 
+  onDeleteAccount = () => {
+    console.warn('Stubbed out delete user');
+  }
+
   onSendWelcomeEmail = (event) => {
     event.preventDefault();
     console.warn('Stubbed out send email');
@@ -284,7 +288,10 @@ class AccountPage extends React.Component {
               onSendWelcomeEmail={this.onSendWelcomeEmail}
               onSendPasswordResetEmail={this.onSendPasswordResetEmail}
             />
-            <DeleteAccount />
+            <DeleteAccount
+              activeButton={accountStatus.status !== 'Activated'}
+              onDeleteAccount={this.onDeleteAccount}
+            />
             <a
               href="#"
               onClick={this.onSaveChanges}
