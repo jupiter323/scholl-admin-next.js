@@ -187,9 +187,10 @@ class AccountPage extends React.Component {
   handleDetailsChange = (event, name, section, checkBox = false) => {
     const { updatedUser: previousUserState } = this.state;
     let value;
+    // const { [section]: { name } } = previousUserState;
     if (checkBox) {
-      // const { [section]: { [name] } } = previousUserState;
-      // value = !active;
+      // const { [name] } = previousUserState[section];
+      value = !previousUserState[section][name];
     } else {
       value = event.target ? event.target.value : event;
     }
@@ -245,7 +246,10 @@ class AccountPage extends React.Component {
               state={this.initialUserMount() ? courseContext : updatedCourseContext}
               handleDetailsChange={this.handleDetailsChange}
             />
-            <AccountSettings />
+            <AccountSettings
+              state={this.initialUserMount() ? accountSettings : updatedAccountSettings}
+              handleDetailsChange={this.handleDetailsChange}
+            />
             <Actions />
             <DeleteAccount />
             <a

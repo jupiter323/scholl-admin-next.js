@@ -1,6 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const AccountSettings = () => (
+import Dropdown from '../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../utils/getValueFromState';
+
+const sessionDurationOptions = [
+  {
+    label: 'Use organization default',
+    value: 'organizationDefault',
+  },
+  {
+    label: 'Option 2',
+    value: 'Option 2',
+  },
+  {
+    label: 'Option 3',
+    value: 'Option 3',
+  },
+];
+
+const AccountSettings = ({ state: { loginBeforeActivation, unstructuredCourseMode, defaultSessionDuration, videoSolutionsRequired, preventLogin, inactive, excludeFromStatistics }, handleDetailsChange }) => (
   <div className="row mb-0 one-large-col d-flex-content">
     <div className="col s12">
       <div className="card-block">
@@ -12,7 +31,14 @@ const AccountSettings = () => (
                 <div className="checkbox-block">
                   <div className="checkbox-holder">
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input
+                        type="checkbox"
+                        className="filled-in"
+                        name="loginBeforeActivation"
+                        id=""
+                        value={loginBeforeActivation}
+                        onChange={() => handleDetailsChange({}, 'loginBeforeActivation', 'accountSettings', true)}
+                      />
                       <span className="large-label">Allow Student Login Prior to Activation</span>
                     </label>
                     <span className="note">To enter initial practice test answers</span>
@@ -22,7 +48,14 @@ const AccountSettings = () => (
                 <div className="checkbox-block">
                   <div className="checkbox-holder">
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input
+                        type="checkbox"
+                        className="filled-in"
+                        name="unstructuredCourseMode"
+                        id="unstructuredCourseMode"
+                        value={unstructuredCourseMode}
+                        onChange={() => handleDetailsChange({}, 'unstructuredCourseMode', 'accountSettings', true)}
+                      />
                       <span className="large-label">Unstructured Course Mode</span>
                     </label>
                     <span className="note">Oﬀ by default</span>
@@ -33,12 +66,20 @@ const AccountSettings = () => (
                   <div className="row mb-0">
                     <div className="col s12 l8">
                       <div className="input-field focus-blue">
-                        <select id="duration">
+                        <Dropdown
+                          value={getValueFromState(defaultSessionDuration, sessionDurationOptions)}
+                          onChange={(event) => handleDetailsChange(event, 'defaultSessionDuration', 'accountSettings')}
+                          options={sessionDurationOptions}
+                          label="Default Session Duration"
+                          stateKey="defaultSessionDuration"
+                          dropdownKey="defaultSessionDuration"
+                        />
+                        {/* <select id="duration">
                           <option>Use organization default</option>
                           <option>Option</option>
                           <option>Option</option>
                         </select>
-                        <label htmlFor="duration">Default Session Duration</label>
+                        <label htmlFor="duration">Default Session Duration</label> */}
                       </div>
                     </div>
                   </div>
@@ -48,7 +89,14 @@ const AccountSettings = () => (
                 <div className="checkbox-block">
                   <div className="checkbox-holder">
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input
+                        type="checkbox"
+                        className="filled-in"
+                        name="videoSolutionsRequired"
+                        id="videoSolutionsRequired"
+                        value={videoSolutionsRequired}
+                        onChange={() => handleDetailsChange({}, 'videoSolutionsRequired', 'accountSettings', true)}
+                      />
                       <span className="large-label">Require Students to Watch Video Solutions</span>
                     </label>
                     <span className="note">Not recommended</span>
@@ -58,7 +106,14 @@ const AccountSettings = () => (
                 <div className="checkbox-block">
                   <div className="checkbox-holder">
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input
+                        type="checkbox"
+                        className="filled-in"
+                        name="preventLogin"
+                        id="preventLogin"
+                        value={preventLogin}
+                        onChange={preventLogin}
+                      />
                       <span className="large-label">Prevent Login</span>
                     </label>
                   </div>
@@ -67,7 +122,14 @@ const AccountSettings = () => (
                 <div className="checkbox-block">
                   <div className="checkbox-holder">
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input
+                        type="checkbox"
+                        className="filled-in"
+                        name="inactive"
+                        id="inactive"
+                        value={inactive}
+                        onChange={() => handleDetailsChange({}, 'inactive', 'accountSettings', true)}
+                      />
                       <span className="large-label">Inactive</span>
                     </label>
                   </div>
@@ -76,7 +138,14 @@ const AccountSettings = () => (
                 <div className="checkbox-block">
                   <div className="checkbox-holder">
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input
+                        type="checkbox"
+                        className="filled-in"
+                        name="excludeFromStatistics"
+                        id="excludeFromStatistics"
+                        value={excludeFromStatistics}
+                        onChange={() => handleDetailsChange({}, 'excludeFromStatistics', 'accountSettings', true)}
+                      />
                       <span className="large-label">Exclude from Statistics</span>
                     </label>
                   </div>
@@ -90,5 +159,10 @@ const AccountSettings = () => (
     </div>
   </div>
 );
+
+AccountSettings.propTypes = {
+  state: PropTypes.object.isRequired,
+  handleDetailsChange: PropTypes.func.isRequired,
+};
 
 export default AccountSettings;

@@ -36,6 +36,7 @@ const updatedUser = {
   accountSettings: {
     loginBeforeActivation: false,
     unstructuredCourseMode: false,
+    defaultSessionDuration: '',
     videoSolutionsRequired: false,
     preventLogin: false,
     inactive: false,
