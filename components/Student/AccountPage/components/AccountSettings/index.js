@@ -74,12 +74,6 @@ const AccountSettings = ({ state: { loginBeforeActivation, unstructuredCourseMod
                           stateKey="defaultSessionDuration"
                           dropdownKey="defaultSessionDuration"
                         />
-                        {/* <select id="duration">
-                          <option>Use organization default</option>
-                          <option>Option</option>
-                          <option>Option</option>
-                        </select>
-                        <label htmlFor="duration">Default Session Duration</label> */}
                       </div>
                     </div>
                   </div>

@@ -3,7 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import { toast } from 'react-toastify';
 
+import Toast from '../../Toast';
 import StudentInformation from './components/StudentInformation';
 import ContactInformation from './components/ContactInformation';
 import EmailAddress from './components/EmailAddress';
@@ -65,15 +67,11 @@ class AccountPage extends React.Component {
         accountSettings: {
           loginBeforeActivation: false,
           unstructuredCourseMode: false,
+          defaultSessionDuration: '',
           videoSolutionsRequired: false,
           preventLogin: false,
           inactive: false,
           excludeFromStatistics: false,
-        },
-        actions: {
-          ccAdmin: false,
-          password: '',
-          confirmPassword: '',
         },
       },
       updatedUser: {
@@ -113,16 +111,18 @@ class AccountPage extends React.Component {
         accountSettings: {
           loginBeforeActivation: false,
           unstructuredCourseMode: false,
+          defaultSessionDuration: '',
           videoSolutionsRequired: false,
           preventLogin: false,
           inactive: false,
           excludeFromStatistics: false,
         },
-        actions: {
-          ccAdmin: false,
-          password: '',
-          confirmPassword: '',
-        },
+      },
+      actions: {
+        ccAdmin: false,
+        requireUserToChange: false,
+        password: '',
+        confirmPassword: '',
       },
       validation: {
         studentInformation: {
@@ -168,28 +168,52 @@ class AccountPage extends React.Component {
     console.warn('stubbed out save changes');
   }
 
+  onSendWelcomeEmail = (event) => {
+    event.preventDefault();
+    console.warn('Stubbed out send email');
+  }
+
+  onSendPasswordResetEmail = (event) => {
+    event.preventDefault();
+    console.warn('Stubbed out password reset email');
+  }
+
+  onResetPassword = (event) => {
+    event.preventDefault();
+    const { actions: { password, confirmPassword } } = this.state;
+    if (password !== confirmPassword) {
+      console.warn('Toast is broken, have a console log');
+      // return this.notify
+    }
+    if (!confirmPassword.length) {
+      console.warn('Toast is broken, have a console log');
+      // return this.notify()
+    }
+    return console.warn('stubbed out password reset');
+  }
+
   initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
 
-  // // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
-  // handleDetailsChange = (event, name, stateKey) => {
-  //   const { updatedUser: previousUserState } = this.state;
-  //   const value = event.target ? event.target.value : event;
-  //   const updatedUser = update(previousUserState, {
-  //     [stateKey]: {
-  //       $merge: { [name]: value },
-  //     },
-  //   });
-  //   this.setState({ updatedUser });
-  // }
+  handleActionsChange = (event, name, checkBox = false) => {
+    const { actions: previousActions } = this.state;
+    let value;
+    if (checkBox) {
+      value = !previousActions.ccAdmin;
+    } else {
+      value = event.target.value;
+    }
+    const updatedState = update(this.state, {
+      actions: { $merge: { [name]: value } },
+    });
+    this.setState(updatedState);
+  }
 
   // Checkbox is passed in as a boolean to avoid creating a mostly similar function just for the active checkbox
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section, checkBox = false) => {
     const { updatedUser: previousUserState } = this.state;
     let value;
-    // const { [section]: { name } } = previousUserState;
     if (checkBox) {
-      // const { [name] } = previousUserState[section];
       value = !previousUserState[section][name];
     } else {
       value = event.target ? event.target.value : event;
@@ -201,12 +225,13 @@ class AccountPage extends React.Component {
   }
 
   render() {
-    const { locationModalOpen, instructorModalOpen,
+    const { locationModalOpen, instructorModalOpen, actions,
       updatedUser: { studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
         instructor: updatedInstructor, classes: updatedClasses, courseContext: updatedCourseContext, accountSettings: updatedAccountSettings } } = this.state;
     const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = this.props;
     return (
       <React.Fragment>
+        <Toast />
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
@@ -250,7 +275,13 @@ class AccountPage extends React.Component {
               state={this.initialUserMount() ? accountSettings : updatedAccountSettings}
               handleDetailsChange={this.handleDetailsChange}
             />
-            <Actions />
+            <Actions
+              state={actions}
+              handleActionsChange={this.handleActionsChange}
+              onResetPassword={this.onResetPassword}
+              onSendWelcomeEmail={this.onSendWelcomeEmail}
+              onSendPasswordResetEmail={this.onSendPasswordResetEmail}
+            />
             <DeleteAccount />
             <a
               href="#"
