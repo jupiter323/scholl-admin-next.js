@@ -42,6 +42,12 @@ const updatedUser = {
     inactive: false,
     excludeFromStatistics: false,
   },
+  accountStatus: {
+    licenseCode: '792AF70E-DC1C-1448-FCCB5DA2C5890364',
+    status: 'Activated',
+    activationDate: '6/16/2017',
+    expirationDate: '6/16/2017',
+  },
 };
 
 export default updatedUser;

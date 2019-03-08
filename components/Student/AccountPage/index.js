@@ -228,7 +228,7 @@ class AccountPage extends React.Component {
     const { locationModalOpen, instructorModalOpen, actions,
       updatedUser: { studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
         instructor: updatedInstructor, classes: updatedClasses, courseContext: updatedCourseContext, accountSettings: updatedAccountSettings } } = this.state;
-    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = this.props;
+    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings, accountStatus } = {} } = this.props;
     return (
       <React.Fragment>
         <Toast />
@@ -264,7 +264,9 @@ class AccountPage extends React.Component {
               </div>
             </div>
             <div className="row mb-0 d-flex-content large sameheight">
-              <AccountStatus />
+              <AccountStatus
+                state={accountStatus}
+              />
               <AccountType />
             </div>
             <CourseContext
