@@ -12,7 +12,7 @@ const InstructorCard = ({ instructor: { firstName, lastName, email }, index, onR
     <div className="card-panel-row row">
       <div className="col s10">
         <div className="user-block">
-          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
+          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff', height: '45px' }}>
             <img src="#" alt="" />
           </div>
           <div className="user-text" style={{ color: '#fff' }}>

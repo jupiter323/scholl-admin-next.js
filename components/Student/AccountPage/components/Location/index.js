@@ -14,6 +14,9 @@ const Location = ({ state: { locations }, onOpenLocationModal, onRemoveLocation 
         <div className="box-scrollable">
           <div className="height-15 jcf-scrollable">
             <div className="card-location-holder" style={{ height: '100%', overflowY: 'scroll' }}>
+              {!locations.length && (
+                <div className="add-class-box"></div>
+              )}
               {locations.map((location, index) => (
                 <LocationCard location={location} index={index} onRemoveLocation={onRemoveLocation} />
               ))}

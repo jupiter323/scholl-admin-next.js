@@ -46,7 +46,9 @@ const updatedUser = {
       },
     ],
   },
-  classes: [],
+  course: {
+    classes: [],
+  },
   courseContext: {
     courseStartDateOption: 'secondOption',
     courseStartDate: '',

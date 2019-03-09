@@ -15,6 +15,9 @@ const Instructor = ({ state: { instructors }, onOpenInstructorModal, onRemoveIns
         <div className="box-scrollable">
           <div className="height-15 jcf-scrollable">
             <div className="card-location-holder" style={{ height: '100%', overflowY: 'scroll' }}>
+              {!instructors.length && (
+                <div className="add-class-box"></div>
+              )}
               {instructors.map((instructor, index) => (
                 <InstructorCard instructor={instructor} index={index} onRemoveInstructor={onRemoveInstructor} />
               ))}
