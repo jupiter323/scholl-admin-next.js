@@ -1,22 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+
 import Portal from '../../Portal';
 import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
+import LocationToggleCard from './components/LocationToggleCard';
+
+import sampleLocations from '../../utils/sampleLocations';
 
 class LocationModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      locations: sampleLocations,
+      selectedLocations: [],
     };
   }
+
+  onCloseModal = () => this.setState({ selectedLocations: [] }, this.props.onClose)
+
+  onToggleLocationSelect = (location) => {
+    const { selectedLocations } = this.state;
+    if (selectedLocations.indexOf(location) === -1) {
+      this.setState({ selectedLocations: [...selectedLocations, location] });
+    } else {
+      const updatedLocations = update(selectedLocations, {
+        $splice: [[selectedLocations.indexOf(location), 1]],
+      });
+      this.setState({ selectedLocations: updatedLocations });
+    }
+  }
+
+  onSaveLocationChanges = () => {
+    const { selectedLocations } = this.state;
+    const { handleLocationsChange, onClose } = this.props;
+    handleLocationsChange(selectedLocations);
+    onClose();
+  }
+
   render() {
-    const { open, onClose } = this.props;
+    const { open } = this.props;
+    const { locations } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={onClose}>
+            <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
               <div id="modal_Location1" className="modal modal-custom modal-location">
                 <div className="card-modal card">
                   <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: '#00456b', color: '#fff' }}>
@@ -31,68 +61,15 @@ class LocationModal extends React.Component {
                       <span className="hint">Click to select or deselect.</span>
                       <div className="box-scrollable">
                         <div className="height-40 jcf-scrollable">
-                          <div className="card-location-holder">
+                          <div className="card-location-holder" style={{ height: '100%', overflowY: 'scroll' }}>
                             <ul className="checkbox-list">
-                              <li>
-                                <input type="checkbox" />
-                                <div className="card-location card card-large">
-                                  <div className="card-panel card-panel-location" style={{ backgroundColor: '#62b771', color: '#fff' }}>
-                                    <span className="check-link icon-check"></span>
-                                    <div className="card-panel-row row">
-                                      <div className="col s10">
-                                        <h3 className="h4 truncate">Tutor Doctor - Manhattan Beach, CA</h3>
-                                        <h4 className="sub-title">Tutor Doctor</h4>
-                                      </div>
-                                      <div className="col s2 right-align">
-                                        <span className="block-icon">
-                                          <i className="icon-location"></i>
-                                          <span className="text-icon">Location</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <input type="checkbox" />
-                                <div className="card-location card card-large">
-                                  <div className="card-panel card-panel-location" style={{ backgroundColor: '#62b771', color: '#fff' }}>
-                                    <span className="check-link icon-check"></span>
-                                    <div className="card-panel-row row">
-                                      <div className="col s10">
-                                        <h3 className="h4 truncate">Tutor Doctor - Manhattan Beach, CA</h3>
-                                        <h4 className="sub-title">Tutor Doctor</h4>
-                                      </div>
-                                      <div className="col s2 right-align">
-                                        <span className="block-icon">
-                                          <i className="icon-location"></i>
-                                          <span className="text-icon">Location</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <input type="checkbox" />
-                                <div className="card-location card card-large">
-                                  <div className="card-panel card-panel-location" style={{ backgroundColor: '#62b771', color: '#fff' }}>
-                                    <span className="check-link icon-check"></span>
-                                    <div className="card-panel-row row">
-                                      <div className="col s10">
-                                        <h3 className="h4 truncate">Tutor Doctor - Location Two</h3>
-                                        <h4 className="sub-title">Tutor Doctor</h4>
-                                      </div>
-                                      <div className="col s2 right-align">
-                                        <span className="block-icon">
-                                          <i className="icon-location"></i>
-                                          <span className="text-icon">Location</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
+                              {locations.map(location => (
+                                <LocationToggleCard
+                                  key={location.locationName}
+                                  location={location}
+                                  onToggleLocationSelect={this.onToggleLocationSelect}
+                                />
+                              ))}
                             </ul>
                           </div>
                         </div>
@@ -101,12 +78,18 @@ class LocationModal extends React.Component {
                     <div className="modal-footer">
                       <a
                         href="#"
-                        onClick={onClose}
+                        onClick={this.onCloseModal}
                         className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
                       >
                         Cancel
                       </a>
-                      <a href="#" className="btn">Add</a>
+                      <a
+                        href="#"
+                        className="btn"
+                        onClick={this.onSaveLocationChanges}
+                      >
+                        Add
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -164,6 +147,7 @@ class LocationModal extends React.Component {
 LocationModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  handleLocationsChange: PropTypes.func.isRequired,
 };
 
 export default LocationModal;

@@ -196,6 +196,17 @@ class AccountPage extends React.Component {
     return console.warn('stubbed out password reset');
   }
 
+  onRemoveLocation = (cardIndex) => {
+    const updatedUser = update(this.state.updatedUser, {
+      location: {
+        locations: {
+          $splice: [[cardIndex, 1]],
+        },
+      },
+    });
+    this.setState({ updatedUser });
+  }
+
   initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
 
   handleActionsChange = (event, name, checkBox = false) => {
@@ -210,6 +221,17 @@ class AccountPage extends React.Component {
       actions: { $merge: { [name]: value } },
     });
     this.setState(updatedState);
+  }
+
+  handleLocationsChange = (selectedLocations) => {
+    const updatedUser = update(this.state.updatedUser, {
+      location: {
+        locations: {
+          $set: selectedLocations,
+        },
+      },
+    });
+    this.setState({ updatedUser });
   }
 
   // Checkbox is passed in as a boolean to avoid creating a mostly similar function just for the active checkbox
@@ -232,13 +254,14 @@ class AccountPage extends React.Component {
     const { locationModalOpen, instructorModalOpen, actions,
       updatedUser: { studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
         instructor: updatedInstructor, classes: updatedClasses, courseContext: updatedCourseContext, accountSettings: updatedAccountSettings } } = this.state;
-    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings, accountStatus } = {} } = this.props;
+    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings, accountStatus, accountType } = {} } = this.props;
     return (
       <React.Fragment>
         <Toast />
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
+          handleLocationsChange={this.handleLocationsChange}
         />
         <InstructorModal
           open={instructorModalOpen}
@@ -262,7 +285,11 @@ class AccountPage extends React.Component {
                 />
               </div>
               <div className="col s12 l5">
-                <Location onOpenLocationModal={this.onOpenLocationModal} />
+                <Location
+                  state={this.initialUserMount() ? location : updatedLocation}
+                  onOpenLocationModal={this.onOpenLocationModal}
+                  onRemoveLocation={this.onRemoveLocation}
+                />
                 <Instructor onOpenInstructorModal={this.onOpenInstructorModal} />
                 <Class />
               </div>
@@ -271,7 +298,9 @@ class AccountPage extends React.Component {
               <AccountStatus
                 state={accountStatus}
               />
-              <AccountType />
+              <AccountType
+                state={accountType}
+              />
             </div>
             <CourseContext
               state={this.initialUserMount() ? courseContext : updatedCourseContext}
