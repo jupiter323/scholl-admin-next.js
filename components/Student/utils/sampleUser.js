@@ -33,7 +33,18 @@ const updatedUser = {
     ],
   },
   instructor: {
-    instructors: [],
+    instructors: [
+      {
+        firstName: 'John',
+        lastName: 'Jackson',
+        email: 'john-jackson@email.com',
+      },
+      {
+        firstName: 'Jennifer',
+        lastName: 'Ownerson',
+        email: 'jennifern@ownerson.com',
+      },
+    ],
   },
   classes: [],
   courseContext: {

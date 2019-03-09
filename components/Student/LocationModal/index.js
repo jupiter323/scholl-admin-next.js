@@ -34,9 +34,9 @@ class LocationModal extends React.Component {
 
   onSaveLocationChanges = () => {
     const { selectedLocations } = this.state;
-    const { handleLocationsChange, onClose } = this.props;
+    const { handleLocationsChange } = this.props;
     handleLocationsChange(selectedLocations);
-    onClose();
+    this.onCloseModal();
   }
 
   render() {

@@ -35,7 +35,7 @@ const Location = ({ state: { locations }, onOpenLocationModal, onRemoveLocation 
 );
 
 Location.propTypes = {
-  state: PropTypes.array.isRequired,
+  state: PropTypes.object.isRequired,
   onRemoveLocation: PropTypes.func.isRequired,
   onOpenLocationModal: PropTypes.func.isRequired,
 };
