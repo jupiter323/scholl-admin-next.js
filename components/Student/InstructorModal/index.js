@@ -1,23 +1,101 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+
 import Portal from '../../Portal';
 import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
+import Dropdown from '../../FormComponents/Dropdown';
+import getValueFromState from '../../utils/getValueFromState';
 
-class LocationModal extends React.Component {
+import InstructorToggleCard from './components/InstructorToggleCard';
+import sampleInstructors from '../../utils/sampleInstructors';
+
+const locationOptions = [
+  {
+    label: 'Any',
+    value: 'all',
+  },
+  {
+    label: 'Location 2',
+    value: 'location2',
+  },
+  {
+    label: 'Location 3',
+    value: 'location3',
+  },
+];
+
+class InstructorModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      instructors: sampleInstructors,
+      location: 'all',
+      searchTerm: '',
+      selectedInstructors: [],
     };
   }
+
+  onCloseModal = () => this.setState({ selectedInstructors: [] }, this.props.onClose)
+
+  onToggleInstructorSelect = (instructor) => {
+    const { selectedInstructors } = this.state;
+    if (selectedInstructors.indexOf(instructor) === -1) {
+      this.setState({ selectedInstructors: [...selectedInstructors, instructor] });
+    } else {
+      const updatedInstructors = update(selectedInstructors, {
+        $splice: [[selectedInstructors.indexOf(instructor), 1]],
+      });
+      this.setState({ selectedInstructors: updatedInstructors });
+    }
+  }
+
+  onSetLocation = (location) => this.setState({ location })
+
+  onSaveInstructorChanges = () => {
+    const { selectedInstructors } = this.state;
+    const { handleInstructorsChange } = this.props;
+    handleInstructorsChange(selectedInstructors);
+    this.onCloseModal();
+  }
+
+  handleSearchChange = ({ target: { value: searchTerm } }) => this.setState({ searchTerm })
+
+  renderInstructors = () => {
+    const { location, instructors: allInstructors, searchTerm } = this.state;
+    let instructors;
+    if (searchTerm) {
+      instructors = allInstructors.reduce((finalArr, currentInstructor) => {
+        const instructorName = `${currentInstructor.firstName}${currentInstructor.lastName}`.toLowerCase();
+        if (instructorName.indexOf(searchTerm) !== -1) {
+          finalArr.push(currentInstructor);
+        }
+        return finalArr;
+      }, []);
+    } else if (location === 'all') {
+      instructors = allInstructors;
+    } else {
+      instructors = allInstructors.filter(instructor => instructor.location === location);
+    }
+    return instructors.map(instructor => (
+      <InstructorToggleCard
+        key={instructor.email}
+        instructor={instructor}
+        onToggleInstructorSelect={this.onToggleInstructorSelect}
+      />
+    ));
+  }
+
   render() {
-    const { open, onClose } = this.props;
+    const { open } = this.props;
+    const { location, searchTerm } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={onClose}>
+            <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
               <div id="modal_Instructor1" className="modal modal-custom modal-location">
                 <div className="card-modal card">
                   <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: '#00456b', color: '#fff' }}>
@@ -32,104 +110,33 @@ class LocationModal extends React.Component {
                       <span className="hint">Click to select or deselect.</span>
                       <div className="row-holder">
                         <div className="search-field input-field">
-                          <input type="search" id="name_search" className="input-control  validate" placeholder="Smith" />
+                          <input
+                            type="search"
+                            id="name_search"
+                            className="input-control validate"
+                            name="nameSearch"
+                            value={searchTerm}
+                            onChange={this.handleSearchChange}
+                          />
                           <button type="submit" className="search-button"><i className="icon-search"></i></button>
-                          <label className="label" htmlFor="name_search">Search</label>
+                          <label className={searchTerm.length ? 'label active' : 'label'} htmlFor="name_search">Search</label>
                         </div>
                         <div className="input-field">
-                          <select id="location_search">
-                            <option>Any</option>
-                            <option>option</option>
-                            <option>option</option>
-                          </select>
-                          <label className="label" htmlFor="location_search">Location</label>
+                          <Dropdown
+                            value={getValueFromState(location, locationOptions)}
+                            onChange={this.onSetLocation}
+                            options={locationOptions}
+                            label="State"
+                            stateKey="state"
+                            dropdownKey="state"
+                          />
                         </div>
                       </div>
                       <div className="box-scrollable">
                         <div className="height-40 jcf-scrollable">
-                          <div className="card-location-holder">
+                          <div className="card-location-holder" style={{ height: '100%', overflowY: 'scroll' }}>
                             <ul className="checkbox-list">
-                              <li>
-                                <input type="checkbox" />
-                                <div className="card-location card">
-                                  <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
-                                    <span className="check-link icon-check"></span>
-                                    <div className="åcard-panel-row row">
-                                      <div className="col s10">
-                                        <div className="user-block">
-                                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                                            <img src="images/img-owner01.jpg" alt="image description" />
-                                          </div>
-                                          <div className="user-text" style={{ color: '#fff' }}>
-                                            <h4 className="h3">Smith, John</h4>
-                                            <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="col s2 right-align">
-                                        <span className="block-icon">
-                                          <i className="icon-user"></i>
-                                          <span className="text-icon">Instructor</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <input type="checkbox" />
-                                <div className="card-location card">
-                                  <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
-                                    <span className="check-link icon-check"></span>
-                                    <div className="card-panel-row row">
-                                      <div className="col s10">
-                                        <div className="user-block">
-                                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                                            <img src="images/img-owner01.jpg" alt="image description" />
-                                          </div>
-                                          <div className="user-text" style={{ color: '#fff' }}>
-                                            <h4 className="h3">Smith, John</h4>
-                                            <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="col s2 right-align">
-                                        <span className="block-icon">
-                                          <i className="icon-user"></i>
-                                          <span className="text-icon">Instructor</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <input type="checkbox" />
-                                <div className="card-location card">
-                                  <div className="owner-box card-panel card-panel-location" style={{ backgroundColor: '#31837a', color: '#fff' }}>
-                                    <span className="check-link icon-check"></span>
-                                    <div className="card-panel-row row">
-                                      <div className="col s10">
-                                        <div className="user-block">
-                                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                                            <img src="images/img-owner01.jpg" alt="image description" />
-                                          </div>
-                                          <div className="user-text" style={{ color: '#fff' }}>
-                                            <h4 className="h3">Smith, John</h4>
-                                            <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="col s2 right-align">
-                                        <span className="block-icon">
-                                          <i className="icon-user"></i>
-                                          <span className="text-icon">Instructor</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
+                              {this.renderInstructors()}
                             </ul>
                           </div>
                         </div>
@@ -138,12 +145,18 @@ class LocationModal extends React.Component {
                     <div className="modal-footer">
                       <a
                         href="#"
-                        onClick={onClose}
+                        onClick={this.onCloseModal}
                         className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
                       >
                         Cancel
                       </a>
-                      <a href="#" className="btn">Add</a>
+                      <a
+                        href="#"
+                        className="btn"
+                        onClick={this.onSaveInstructorChanges}
+                      >
+                        Add
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -192,9 +205,10 @@ class LocationModal extends React.Component {
   }
 }
 
-LocationModal.propTypes = {
+InstructorModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  handleInstructorsChange: PropTypes.func.isRequired,
 };
 
-export default LocationModal;
+export default InstructorModal;
