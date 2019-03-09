@@ -19,6 +19,7 @@ import AccountSettings from './components/AccountSettings';
 import Actions from './components/Actions';
 import DeleteAccount from './components/DeleteAccount';
 
+import ClassModal from '../ClassModal';
 import LocationModal from '../LocationModal';
 import InstructorModal from '../InstructorModal';
 
@@ -28,6 +29,7 @@ class AccountPage extends React.Component {
     this.state = {
       locationModalOpen: false,
       instructorModalOpen: false,
+      classModalOpen: false,
       originalUser: {
         studentInformation: {
           firstName: '',
@@ -51,7 +53,7 @@ class AccountPage extends React.Component {
         instructor: {
           instructors: [],
         },
-        class: {
+        course: {
           classes: [],
         },
         courseContext: {
@@ -97,7 +99,9 @@ class AccountPage extends React.Component {
         instructor: {
           instructors: [],
         },
-        classes: [],
+        course: {
+          classes: [],
+        },
         courseContext: {
           courseStartDateOption: '',
           courseStartDate: '',
@@ -130,13 +134,16 @@ class AccountPage extends React.Component {
           lastName: true,
           gender: true,
         },
+        emailAddress: {
+          email: true,
+        },
       },
     };
   }
 
   componentDidMount() {
-    const { user: { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = this.props;
-    const updatedUser = { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings };
+    const { user: { id, studentInformation, contactInformation, emailAddress, location, instructor, course, courseContext, accountSettings } = {} } = this.props;
+    const updatedUser = { id, studentInformation, contactInformation, emailAddress, location, instructor, course, courseContext, accountSettings };
     const { originalUser: originalUserState } = this.state;
     const originalUser = update(originalUserState, {
       $merge: updatedUser,
@@ -148,8 +155,8 @@ class AccountPage extends React.Component {
   // This resets the component state to reflect the details of the next user the user clicks on
   componentWillReceiveProps = (nextProps) => {
     if ((!this.state.originalUser || nextProps.user.id !== this.state.originalUser.id)) {
-      const { user: { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings } = {} } = nextProps;
-      const updatedUser = { id, studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings };
+      const { user: { id, studentInformation, contactInformation, emailAddress, location, instructor, course, courseContext, accountSettings } = {} } = nextProps;
+      const updatedUser = { id, studentInformation, contactInformation, emailAddress, location, instructor, course, courseContext, accountSettings };
       const { originalUser: originalUserState } = this.state;
       const originalUser = update(originalUserState, {
         $merge: nextProps.user,
@@ -163,6 +170,9 @@ class AccountPage extends React.Component {
 
   onOpenInstructorModal = () => this.setState({ instructorModalOpen: true });
   onCloseInstructorModal = () => this.setState({ instructorModalOpen: false });
+
+  onOpenClassModal = () => this.setState({ classModalOpen: true });
+  onCloseClassModal = () => this.setState({ classModalOpen: false });
 
   onSaveChanges = () => {
     console.warn('stubbed out save changes');
@@ -251,13 +261,18 @@ class AccountPage extends React.Component {
   }
 
   render() {
-    const { locationModalOpen, instructorModalOpen, actions,
+    const { locationModalOpen, instructorModalOpen, classModalOpen, actions,
       updatedUser: { studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
-        instructor: updatedInstructor, classes: updatedClasses, courseContext: updatedCourseContext, accountSettings: updatedAccountSettings } } = this.state;
-    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, classes, courseContext, accountSettings, accountStatus, accountType } = {} } = this.props;
+        instructor: updatedInstructor, course: updatedClasses, courseContext: updatedCourseContext, accountSettings: updatedAccountSettings } } = this.state;
+    const { user: { studentInformation, contactInformation, emailAddress, location, instructor, course, courseContext, accountSettings, accountStatus, accountType } = {} } = this.props;
     return (
       <React.Fragment>
         <Toast />
+        <ClassModal
+          open={classModalOpen}
+          onClose={this.onCloseClassModal}
+          handleClassChange={this.handleOptionsChange}
+        />
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
@@ -296,7 +311,11 @@ class AccountPage extends React.Component {
                   onOpenInstructorModal={this.onOpenInstructorModal}
                   onRemoveInstructor={this.onRemoveOption}
                 />
-                <Class />
+                <Class
+                  state={this.initialUserMount() ? course : updatedClasses}
+                  onOpenClassModal={this.onOpenClassModal}
+                  onRemoveInstructor={this.onRemoveOption}
+                />
               </div>
             </div>
             <div className="row mb-0 d-flex-content large sameheight">
