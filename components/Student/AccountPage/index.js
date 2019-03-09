@@ -207,6 +207,17 @@ class AccountPage extends React.Component {
     this.setState({ updatedUser });
   }
 
+  onRemoveInstructor = (cardIndex) => {
+    const updatedUser = update(this.state.updatedUser, {
+      instructor: {
+        instructors: {
+          $splice: [[cardIndex, 1]],
+        },
+      },
+    });
+    this.setState({ updatedUser });
+  }
+
   initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
 
   handleActionsChange = (event, name, checkBox = false) => {
@@ -228,6 +239,18 @@ class AccountPage extends React.Component {
       location: {
         locations: {
           $set: selectedLocations,
+        },
+      },
+    });
+    this.setState({ updatedUser });
+  }
+
+  handleInstructorsChange = (selectedInstructors) => {
+    console.warn('selected', selectedInstructors);
+    const updatedUser = update(this.state.updatedUser, {
+      instructor: {
+        instructors: {
+          $set: selectedInstructors,
         },
       },
     });
@@ -266,6 +289,7 @@ class AccountPage extends React.Component {
         <InstructorModal
           open={instructorModalOpen}
           onClose={this.onCloseInstructorModal}
+          handleInstructorsChange={this.handleInstructorsChange}
         />
         <div className="content-section">
           <div className="content-section-holder">
@@ -290,7 +314,11 @@ class AccountPage extends React.Component {
                   onOpenLocationModal={this.onOpenLocationModal}
                   onRemoveLocation={this.onRemoveLocation}
                 />
-                <Instructor onOpenInstructorModal={this.onOpenInstructorModal} />
+                <Instructor
+                  state={this.initialUserMount() ? instructor : updatedInstructor}
+                  onOpenInstructorModal={this.onOpenInstructorModal}
+                  onRemoveInstructor={this.onRemoveInstructor}
+                />
                 <Class />
               </div>
             </div>
