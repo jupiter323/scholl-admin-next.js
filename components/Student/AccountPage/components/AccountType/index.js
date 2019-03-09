@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
+import PropTypes from 'prop-types';
+import licenseTypeOptions from '../../../../utils/licenseTypeOptions';
 
-const AccountType = () => (
+const AccountType = ({ state: { licenseType } }) => (
   <div className="col s12 l5">
     <div className="card-block">
       <h2>Account Type</h2>
@@ -10,13 +12,12 @@ const AccountType = () => (
           <div className="account-type-block">
             <div className="account-type-block_holder">
               <div className="head-box">
-                <h3><span>License Type</span> Class Member</h3>
+                <h3><span>License Type</span> {licenseTypeOptions[licenseType].name}</h3>
               </div>
               <div className="picture-holder">
                 <img src="images/img-01.png" alt="image description" />
               </div>
-              <p>This license type allows the student to participate in a course with 4 or more other students. The coursework may be customized for the class as a whole, but not for individual students within the class.</p>
-              <p>To conduct a course for an individual student in a one-on-one format (tutoring), you need a “one-on-one” license type.</p>
+              <p>{licenseTypeOptions[licenseType].description}</p>
             </div>
           </div>
         </div>
@@ -24,5 +25,9 @@ const AccountType = () => (
     </div>
   </div>
 );
+
+AccountType.propTypes = {
+  state: PropTypes.object.isRequired,
+};
 
 export default AccountType;

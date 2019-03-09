@@ -17,7 +17,20 @@ const updatedUser = {
     email: 'test@email.com',
   },
   location: {
-    locations: [],
+    locations: [
+      {
+        locationNickname: 'Disneyworld  Tutoring',
+        locationName: 'House Of Mouse',
+      },
+      {
+        locationNickname: 'TutorZone Austin',
+        locationName: 'We Teach Real Good',
+      },
+      {
+        locationNickname: 'TutorZone Miami',
+        locationName: 'We Teach Even Better',
+      },
+    ],
   },
   instructor: {
     instructors: [],
@@ -47,6 +60,9 @@ const updatedUser = {
     status: 'Activated',
     activationDate: '6/16/2017',
     expirationDate: '6/16/2017',
+  },
+  accountType: {
+    licenseType: 'classMember',
   },
 };
 
