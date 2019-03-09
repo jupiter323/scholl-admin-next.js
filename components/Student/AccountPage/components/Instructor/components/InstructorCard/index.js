@@ -6,7 +6,7 @@ const InstructorCard = ({ instructor: { firstName, lastName, email }, index, onR
     <a
       href="#"
       className="close-link icon-close-thin"
-      onClick={() => onRemoveInstructor(index)}
+      onClick={() => onRemoveInstructor(index, 'instructor', 'instructors')}
     >
     </a>
     <div className="card-panel-row row">

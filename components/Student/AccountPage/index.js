@@ -196,22 +196,11 @@ class AccountPage extends React.Component {
     return console.warn('stubbed out password reset');
   }
 
-  onRemoveLocation = (cardIndex) => {
+  onRemoveOption = (optionIndex, section, array) => {
     const updatedUser = update(this.state.updatedUser, {
-      location: {
-        locations: {
-          $splice: [[cardIndex, 1]],
-        },
-      },
-    });
-    this.setState({ updatedUser });
-  }
-
-  onRemoveInstructor = (cardIndex) => {
-    const updatedUser = update(this.state.updatedUser, {
-      instructor: {
-        instructors: {
-          $splice: [[cardIndex, 1]],
+      [section]: {
+        [array]: {
+          $splice: [[optionIndex, 1]],
         },
       },
     });
@@ -234,23 +223,11 @@ class AccountPage extends React.Component {
     this.setState(updatedState);
   }
 
-  handleLocationsChange = (selectedLocations) => {
+  handleOptionsChange = (selectedOptions, section, array) => {
     const updatedUser = update(this.state.updatedUser, {
-      location: {
-        locations: {
-          $set: selectedLocations,
-        },
-      },
-    });
-    this.setState({ updatedUser });
-  }
-
-  handleInstructorsChange = (selectedInstructors) => {
-    console.warn('selected', selectedInstructors);
-    const updatedUser = update(this.state.updatedUser, {
-      instructor: {
-        instructors: {
-          $set: selectedInstructors,
+      [section]: {
+        [array]: {
+          $set: selectedOptions,
         },
       },
     });
@@ -284,12 +261,12 @@ class AccountPage extends React.Component {
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
-          handleLocationsChange={this.handleLocationsChange}
+          handleLocationsChange={this.handleOptionsChange}
         />
         <InstructorModal
           open={instructorModalOpen}
           onClose={this.onCloseInstructorModal}
-          handleInstructorsChange={this.handleInstructorsChange}
+          handleInstructorsChange={this.handleOptionsChange}
         />
         <div className="content-section">
           <div className="content-section-holder">
@@ -312,12 +289,12 @@ class AccountPage extends React.Component {
                 <Location
                   state={this.initialUserMount() ? location : updatedLocation}
                   onOpenLocationModal={this.onOpenLocationModal}
-                  onRemoveLocation={this.onRemoveLocation}
+                  onRemoveLocation={this.onRemoveOption}
                 />
                 <Instructor
                   state={this.initialUserMount() ? instructor : updatedInstructor}
                   onOpenInstructorModal={this.onOpenInstructorModal}
-                  onRemoveInstructor={this.onRemoveInstructor}
+                  onRemoveInstructor={this.onRemoveOption}
                 />
                 <Class />
               </div>

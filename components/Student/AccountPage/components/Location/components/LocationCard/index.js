@@ -6,7 +6,7 @@ const LcoationCard = ({ location: { locationNickname, locationName }, index, onR
     <a
       href="#"
       className="close-link icon-close-thin"
-      onClick={() => onRemoveLocation(index)}
+      onClick={() => onRemoveLocation(index, 'location', 'locations')}
     ></a>
     <div className="card-panel-row row">
       <div className="col s10">
