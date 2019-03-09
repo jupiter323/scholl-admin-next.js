@@ -23,6 +23,8 @@ import ClassModal from '../ClassModal';
 import LocationModal from '../LocationModal';
 import InstructorModal from '../InstructorModal';
 
+import { nestedEditFieldValidation } from '../../utils/fieldValidation';
+
 class AccountPage extends React.Component {
   constructor(props) {
     super(props);
@@ -174,8 +176,22 @@ class AccountPage extends React.Component {
   onOpenClassModal = () => this.setState({ classModalOpen: true });
   onCloseClassModal = () => this.setState({ classModalOpen: false });
 
-  onSaveChanges = () => {
-    console.warn('stubbed out save changes');
+  // This function is passed into nestedCreateFieldValidation, it takes the result of the validation check and a callback function
+  // The updated component validation state is set and then the callback is dispatched - in this case, the callback handles the toast warning at the container level
+  onSetValidation = (validation, cb) => this.setState({ validation }, cb);
+
+  // TODO: Clean this up once the react toast bugs are fixed. Just logging the validation response for now
+  onSaveChanges = async () => {
+    event.preventDefault();
+    // const { onSavePassageChanges, onSaveChangesError, onSetPassageValidation } = this.props;
+    const { updatedPassage } = this.state;
+    const valid = await nestedEditFieldValidation(this.state, this.state.updatedUser, this.onSetValidation, (validation) => console.warn('validation', validation));
+    if (!valid) {
+      // return onSaveChangesError();
+      console.warn('not valid');
+    }
+    this.setState({ originalPassage: this.state.updatedUser });
+    // return onSavePassageChanges(updatedUser);
   }
 
   onDeleteAccount = () => {
