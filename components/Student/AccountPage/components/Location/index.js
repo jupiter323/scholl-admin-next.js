@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import LocationCard from './components/LocationCard';
+import LocationCard from '../../../../Location/components/LocationCard';
 
 const Location = ({ state: { locations }, onOpenLocationModal, onRemoveLocation }) => (
   <div className="card-block">
@@ -18,7 +18,7 @@ const Location = ({ state: { locations }, onOpenLocationModal, onRemoveLocation 
                 <div className="add-class-box"></div>
               )}
               {locations.map((location, index) => (
-                <LocationCard location={location} index={index} onRemoveLocation={onRemoveLocation} />
+                <LocationCard location={location} onRemoveLocation={() => onRemoveLocation(index, 'location', 'locations')} />
               ))}
             </div>
           </div>
