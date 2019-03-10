@@ -77,6 +77,17 @@ class DetailsManagementPage extends React.Component {
     this.setState({ updatedUser });
   }
 
+  handleOptionsChange = (selectedOptions, section, array) => {
+    const updatedUser = update(this.state.updatedUser, {
+      [section]: {
+        [array]: {
+          $set: selectedOptions,
+        },
+      },
+    });
+    this.setState({ updatedUser });
+  }
+
   initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
 
   render() {
@@ -87,12 +98,12 @@ class DetailsManagementPage extends React.Component {
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
-          handleLocationsChange={this.handleOptionsChange}
+          handleLocationsChange={(selectedLocations) => this.handleOptionsChange(selectedLocations, 'locationsToManage', 'locations')}
         />
         <InstructorModal
           open={instructorModalOpen}
           onClose={this.onCloseInstructorModal}
-          handleInstructorsChange={this.handleOptionsChange}
+          handleInstructorsChange={(selectedInstructors) => this.handleOptionsChange(selectedInstructors, 'instructorsToManage', 'instructors')}
         />
         <div className="content-section">
           <div className="content-section-holder">

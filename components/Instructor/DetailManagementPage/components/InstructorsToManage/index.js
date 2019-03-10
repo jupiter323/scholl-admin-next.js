@@ -5,10 +5,8 @@ import InstructorCard from '../../../../Instructor/components/InstructorCard';
 
 const InstructorsToManage = ({ state: { instructors }, onOpenInstructorModal, onRemoveInstructor }) => (
   <div className="col s12 l5">
-    {/* <!-- form-panel --> */}
     <div className="card-block">
       <h3>Instructors to Manage</h3>
-      {/* <!-- card --> */}
       <div className="card-main card card-instructor">
         <div className="card-content">
           <div className="text-block">

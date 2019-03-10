@@ -292,12 +292,12 @@ class AccountPage extends React.Component {
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
-          handleLocationsChange={this.handleOptionsChange}
+          handleLocationsChange={(selectedLocations) => this.handleOptionsChange(selectedLocations, 'location', 'locations')}
         />
         <InstructorModal
           open={instructorModalOpen}
           onClose={this.onCloseInstructorModal}
-          handleInstructorsChange={this.handleOptionsChange}
+          handleInstructorsChange={(selectedInstructors) => this.handleOptionsChange(selectedInstructors, 'instructor', 'instructors')}
         />
         <div className="content-section">
           <div className="content-section-holder">

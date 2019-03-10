@@ -57,7 +57,7 @@ class InstructorModal extends React.Component {
   onSaveInstructorChanges = () => {
     const { selectedInstructors } = this.state;
     const { handleInstructorsChange } = this.props;
-    handleInstructorsChange(selectedInstructors, 'instructor', 'instructors');
+    handleInstructorsChange(selectedInstructors);
     this.onCloseModal();
   }
 
