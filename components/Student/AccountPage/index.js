@@ -20,8 +20,8 @@ import Actions from './components/Actions';
 import DeleteAccount from './components/DeleteAccount';
 
 import ClassModal from '../ClassModal';
-import LocationModal from '../LocationModal';
-import InstructorModal from '../InstructorModal';
+import LocationModal from '../../Location/components/LocationModal';
+import InstructorModal from '../../Instructor/components/InstructorModal';
 
 import { nestedEditFieldValidation } from '../../utils/fieldValidation';
 
