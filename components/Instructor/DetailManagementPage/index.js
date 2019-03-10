@@ -9,7 +9,7 @@ import FullAccess from './components/FullAccess';
 import LocationModal from '../../Location/components/LocationModal';
 import InstructorModal from '../../Instructor/components/InstructorModal';
 
-class DetailsManagementPage extends React.Component {
+class DetailManagementPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -142,8 +142,8 @@ class DetailsManagementPage extends React.Component {
   }
 }
 
-DetailsManagementPage.propTypes = {
+DetailManagementPage.propTypes = {
   user: PropTypes.object,
 };
 
-export default DetailsManagementPage;
+export default DetailManagementPage;
