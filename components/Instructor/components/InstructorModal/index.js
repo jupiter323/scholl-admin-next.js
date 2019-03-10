@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
-import Portal from '../../Portal';
-import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
-import Dropdown from '../../FormComponents/Dropdown';
-import getValueFromState from '../../utils/getValueFromState';
+import Portal from '../../../Portal';
+import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
+import Dropdown from '../../../FormComponents/Dropdown';
+import getValueFromState from '../../../utils/getValueFromState';
 
 import InstructorToggleCard from './components/InstructorToggleCard';
-import sampleInstructors from '../../utils/sampleInstructors';
+import sampleInstructors from '../../../utils/sampleInstructors';
 
 const locationOptions = [
   {

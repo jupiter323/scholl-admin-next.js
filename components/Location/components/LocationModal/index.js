@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
-import Portal from '../../Portal';
-import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
+import Portal from '../../../Portal';
+import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
 import LocationToggleCard from './components/LocationToggleCard';
 
-import sampleLocations from '../../utils/sampleLocations';
+import sampleLocations from '../../../utils/sampleLocations';
 
 class LocationModal extends React.Component {
   constructor(props) {
