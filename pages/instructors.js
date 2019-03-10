@@ -14,6 +14,8 @@ class Instructors extends Component {
     };
   }
 
+  onSetActivePage = (active) => this.setState({ active })
+
   renderCurrentPage = () => {
     const { active } = this.state;
     if (active === 'summary') {
@@ -54,7 +56,10 @@ class Instructors extends Component {
           </aside>
           <main id="main" role="main">
             <div className="main-holder grey lighten-3">
-              <InstructorNavBar active={active} />
+              <InstructorNavBar
+                active={active}
+                onSetActivePage={this.onSetActivePage}
+              />
               {this.renderCurrentPage()}
               {/* <DetailManagementPage user={sampleUser} />
               <DetailAccountPage user={sampleUser} /> */}
