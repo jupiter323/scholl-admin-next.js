@@ -181,7 +181,7 @@ class AccountPage extends React.Component {
   onSetValidation = (validation, cb) => this.setState({ validation }, cb);
 
   // TODO: Clean this up once the react toast bugs are fixed. Just logging the validation response for now
-  onSaveChanges = async () => {
+  onSaveChanges = async (event) => {
     event.preventDefault();
     // const { onSavePassageChanges, onSaveChangesError, onSetPassageValidation } = this.props;
     const { updatedPassage } = this.state;

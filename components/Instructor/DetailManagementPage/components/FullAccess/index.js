@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line no-unused-vars
-const FullAccess = ({ state }) => (
+const FullAccess = ({ fullAccess, toggleFullAccess }) => (
   <div className="col s12 l5">
-    {/* <!-- form-panel --> */}
     <div className="card-block">
       <h3>Full Access (be careful!)</h3>
       <div className="card-main card card-instructor">
@@ -14,7 +12,12 @@ const FullAccess = ({ state }) => (
               <div className="large">
                 <p>{`To give this instructor full access to all students and instructors, select “Full Access." Caution: this option will give this user access to your whole organization.`}</p>
                 <label>
-                  <input type="checkbox" className="filled-in" />
+                  <input
+                    type="checkbox"
+                    className="filled-in"
+                    value={fullAccess}
+                    onChange={toggleFullAccess}
+                  />
                   <span className="large-label">Full Access</span>
                 </label>
               </div>
@@ -27,7 +30,8 @@ const FullAccess = ({ state }) => (
 );
 
 FullAccess.propTypes = {
-  state: PropTypes.object,
+  fullAccess: PropTypes.bool.isRequired,
+  toggleFullAccess: PropTypes.func.isRequired,
 };
 
 export default FullAccess;

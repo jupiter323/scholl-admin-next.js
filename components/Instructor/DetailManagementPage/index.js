@@ -66,6 +66,13 @@ class DetailsManagementPage extends React.Component {
   onOpenInstructorModal = () => this.setState({ instructorModalOpen: true });
   onCloseInstructorModal = () => this.setState({ instructorModalOpen: false });
 
+  onSaveChanges = (event) => {
+    event.preventDefault();
+    const { updatedUser } = this.state;
+    this.setState({ originalUser: updatedUser });
+    console.warn('stubbed out success toast');
+  }
+
   onRemoveOption = (optionIndex, section, array) => {
     const updatedUser = update(this.state.updatedUser, {
       [section]: {
@@ -76,6 +83,8 @@ class DetailsManagementPage extends React.Component {
     });
     this.setState({ updatedUser });
   }
+
+  toggleFullAccess = () => this.setState(({ fullAccess }) => ({ fullAccess: !fullAccess }))
 
   handleOptionsChange = (selectedOptions, section, array) => {
     const updatedUser = update(this.state.updatedUser, {
@@ -118,10 +127,13 @@ class DetailsManagementPage extends React.Component {
                 onOpenInstructorModal={this.onOpenInstructorModal}
                 onRemoveInstructor={this.onRemoveOption}
               />
-              <FullAccess />
+              <FullAccess
+                fullAccess={this.initialUserMount() ? instructorsToManage : updatedInstructors}
+                toggleFullAccess={this.toggleFullAccess}
+              />
             </div>
             <div className="btn-holder align-right-sm">
-              <a href="#" className="btn">Save</a>
+              <a href="#" className="btn" onClick={this.onSaveChanges}>Save</a>
             </div>
           </div>
         </div>
