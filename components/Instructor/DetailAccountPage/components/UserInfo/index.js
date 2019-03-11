@@ -31,7 +31,7 @@ const UserInfo = ({ state: { firstName, lastName, email, gender }, handleDetails
               value={lastName}
               onChange={(event) => handleDetailsChange(event, 'lastName', 'userInfo')}
             />
-            <label className={firstName.length ? 'label active' : 'label'} htmlFor="last-name">Last Name*</label>
+            <label className={lastName.length ? 'label active' : 'label'} htmlFor="last-name">Last Name*</label>
           </div>
         </div>
         <div className="row mb-0">
@@ -43,7 +43,7 @@ const UserInfo = ({ state: { firstName, lastName, email, gender }, handleDetails
               value={email}
               onChange={(event) => handleDetailsChange(event, 'email', 'userInfo')}
             />
-            <label className={firstName.length ? 'label active' : 'label'} htmlFor="email">Email Address*</label>
+            <label className={email.length ? 'label active' : 'label'} htmlFor="email">Email Address*</label>
           </div>
         </div>
         <div className="row mb-0">

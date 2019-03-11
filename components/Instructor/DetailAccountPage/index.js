@@ -6,8 +6,10 @@ import update from 'immutability-helper';
 import UserInfo from './components/UserInfo';
 import ContactInfo from './components/ContactInfo';
 import UserLocation from './components/UserLocation';
+import LocationModal from '../../Location/components/LocationModal';
 
-// eslint-disable-next-line react/prefer-stateless-function
+import { nestedEditFieldValidation } from '../../utils/fieldValidation';
+
 class DetailAccountPage extends React.Component {
   constructor(props) {
     super(props);
@@ -49,6 +51,14 @@ class DetailAccountPage extends React.Component {
           locations: [],
         },
       },
+      validation: {
+        userInfo: {
+          firstName: true,
+          lastName: true,
+          email: true,
+          gender: true,
+        },
+      },
     };
   }
 
@@ -79,6 +89,35 @@ class DetailAccountPage extends React.Component {
   onOpenLocationModal = () => this.setState({ locationModalOpen: true });
   onCloseLocationModal = () => this.setState({ locationModalOpen: false });
 
+  // This function is passed into nestedCreateFieldValidation, it takes the result of the validation check and a callback function
+  // The updated component validation state is set and then the callback is dispatched - in this case, the callback handles the toast warning at the container level
+  onSetValidation = (validation, cb) => this.setState({ validation }, cb);
+
+  // TODO: Clean this up once the react toast bugs are fixed. Just logging the validation response for now
+  onSaveChanges = async (event) => {
+    event.preventDefault();
+    // const { onSavePassageChanges, onSaveChangesError, onSetPassageValidation } = this.props;
+    const { updatedUser } = this.state;
+    const valid = await nestedEditFieldValidation(this.state, this.state.updatedUser, this.onSetValidation, (validation) => console.warn('validation', validation));
+    if (!valid) {
+      // return onSaveChangesError();
+      console.warn('not valid');
+    }
+    this.setState({ originalUser: this.state.updatedUser });
+    // return onSavePassageChanges(updatedUser);
+  }
+
+  onRemoveOption = (optionIndex, section, array) => {
+    const updatedUser = update(this.state.updatedUser, {
+      [section]: {
+        [array]: {
+          $splice: [[optionIndex, 1]],
+        },
+      },
+    });
+    this.setState({ updatedUser });
+  }
+
   initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
 
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
@@ -91,11 +130,27 @@ class DetailAccountPage extends React.Component {
     this.setState({ updatedUser });
   }
 
+  handleOptionsChange = (selectedOptions, section, array) => {
+    const updatedUser = update(this.state.updatedUser, {
+      [section]: {
+        [array]: {
+          $set: selectedOptions,
+        },
+      },
+    });
+    this.setState({ updatedUser });
+  }
+
   render() {
     const { locationModalOpen, updatedUser: { userInfo: updatedUserInfo, contactInfo: updatedContactInfo, userLocation: updatedUserLocation } } = this.state;
     const { user: { userInfo, contactInfo, userLocation } } = this.props;
     return (
       <React.Fragment>
+        <LocationModal
+          open={locationModalOpen}
+          onClose={this.onCloseLocationModal}
+          handleLocationsChange={(selectedLocations) => this.handleOptionsChange(selectedLocations, 'userLocation', 'locations')}
+        />
         <div className="content-section">
           <div className="content-section-holder">
             <div className="row mb-0 d-flex-content large">
@@ -109,10 +164,20 @@ class DetailAccountPage extends React.Component {
                   handleDetailsChange={this.handleDetailsChange}
                 />
               </div>
-              <UserLocation />
+              <UserLocation
+                state={this.initialUserMount() ? userLocation : updatedUserLocation}
+                onOpenLocationModal={this.onOpenLocationModal}
+                onRemoveLocation={this.onRemoveOption}
+              />
             </div>
             <div className="btn-holder align-right-sm">
-              <a href="#" className="btn">Save</a>
+              <a
+                href="#"
+                className="btn"
+                onClick={this.onSaveChanges}
+              >
+                Save
+              </a>
             </div>
           </div>
         </div>

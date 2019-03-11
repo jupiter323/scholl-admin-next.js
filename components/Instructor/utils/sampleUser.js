@@ -29,6 +29,22 @@ const updatedUser = {
       },
     ],
   },
+  userLocation: {
+    locations: [
+      {
+        locationNickname: 'Disneyworld  Tutoring',
+        locationName: 'House Of Mouse',
+      },
+      {
+        locationNickname: 'TutorZone Austin',
+        locationName: 'We Teach Real Good',
+      },
+      {
+        locationNickname: 'TutorZone Miami',
+        locationName: 'We Teach Even Better',
+      },
+    ],
+  },
   instructorsToManage: {
     instructors: [
       {

@@ -184,13 +184,13 @@ class AccountPage extends React.Component {
   onSaveChanges = async (event) => {
     event.preventDefault();
     // const { onSavePassageChanges, onSaveChangesError, onSetPassageValidation } = this.props;
-    const { updatedPassage } = this.state;
+    const { updatedUser } = this.state;
     const valid = await nestedEditFieldValidation(this.state, this.state.updatedUser, this.onSetValidation, (validation) => console.warn('validation', validation));
     if (!valid) {
       // return onSaveChangesError();
       console.warn('not valid');
     }
-    this.setState({ originalPassage: this.state.updatedUser });
+    this.setState({ originalUser: this.state.updatedUser });
     // return onSavePassageChanges(updatedUser);
   }
 
