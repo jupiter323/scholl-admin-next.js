@@ -53,9 +53,9 @@ const UserInfo = ({ state: { firstName, lastName, email, gender }, handleDetails
                 value={getValueFromState(gender, genderOptions)}
                 onChange={(event) => handleDetailsChange(event, 'gender', 'userInfo')}
                 options={genderOptions}
-                label="State"
-                stateKey="state"
-                dropdownKey="state"
+                label="Gender*"
+                stateKey="gender"
+                dropdownKey="gender"
               />
             </div>
           </div>

@@ -6,6 +6,13 @@ const updatedUser = {
     email: 'christian-chavarro@email.com',
     gender: 'Male',
   },
+  contactInfo: {
+    phone: '123-456-7890',
+    streetAddress: '1234 Test Lane',
+    city: 'Austin',
+    state: 'TX',
+    zip: '78751',
+  },
   locationsToManage: {
     locations: [
       {

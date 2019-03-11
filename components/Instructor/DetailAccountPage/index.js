@@ -104,7 +104,10 @@ class DetailAccountPage extends React.Component {
                   state={this.initialUserMount() ? userInfo : updatedUserInfo}
                   handleDetailsChange={this.handleDetailsChange}
                 />
-                <ContactInfo />
+                <ContactInfo
+                  state={this.initialUserMount() ? contactInfo : updatedContactInfo}
+                  handleDetailsChange={this.handleDetailsChange}
+                />
               </div>
               <UserLocation />
             </div>
