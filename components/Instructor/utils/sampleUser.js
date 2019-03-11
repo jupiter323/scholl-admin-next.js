@@ -1,8 +1,9 @@
 const updatedUser = {
   id: '1232',
-  studentInformation: {
+  userInfo: {
     firstName: 'Christian',
     lastName: 'Chavarro',
+    email: 'christian-chavarro@email.com',
     gender: 'Male',
   },
   locationsToManage: {
