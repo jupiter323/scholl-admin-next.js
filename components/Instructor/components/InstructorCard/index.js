@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const InstructorCard = ({ instructor: { firstName, lastName, email }, index, onRemoveInstructor }) => (
+const InstructorCard = ({ instructor: { firstName, lastName, email }, onRemoveInstructor }) => (
   <div className="owner-box card-panel card-panel-panel card-panel-large" style={{ backgroundColor: '#31837a', color: '#fff' }}>
     <a
       href="#"
       className="close-link icon-close-thin"
-      onClick={() => onRemoveInstructor(index, 'instructor', 'instructors')}
+      onClick={onRemoveInstructor}
     >
     </a>
     <div className="card-panel-row row">
@@ -33,7 +33,6 @@ const InstructorCard = ({ instructor: { firstName, lastName, email }, index, onR
 
 InstructorCard.propTypes = {
   instructor: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
   onRemoveInstructor: PropTypes.func.isRequired,
 };
 

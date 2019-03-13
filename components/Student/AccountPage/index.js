@@ -20,8 +20,8 @@ import Actions from './components/Actions';
 import DeleteAccount from './components/DeleteAccount';
 
 import ClassModal from '../ClassModal';
-import LocationModal from '../LocationModal';
-import InstructorModal from '../InstructorModal';
+import LocationModal from '../../Location/components/LocationModal';
+import InstructorModal from '../../Instructor/components/InstructorModal';
 
 import { nestedEditFieldValidation } from '../../utils/fieldValidation';
 
@@ -181,7 +181,7 @@ class AccountPage extends React.Component {
   onSetValidation = (validation, cb) => this.setState({ validation }, cb);
 
   // TODO: Clean this up once the react toast bugs are fixed. Just logging the validation response for now
-  onSaveChanges = async () => {
+  onSaveChanges = async (event) => {
     event.preventDefault();
     // const { onSavePassageChanges, onSaveChangesError, onSetPassageValidation } = this.props;
     const { updatedPassage } = this.state;
@@ -292,12 +292,12 @@ class AccountPage extends React.Component {
         <LocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
-          handleLocationsChange={this.handleOptionsChange}
+          handleLocationsChange={(selectedLocations) => this.handleOptionsChange(selectedLocations, 'location', 'locations')}
         />
         <InstructorModal
           open={instructorModalOpen}
           onClose={this.onCloseInstructorModal}
-          handleInstructorsChange={this.handleOptionsChange}
+          handleInstructorsChange={(selectedInstructors) => this.handleOptionsChange(selectedInstructors, 'instructor', 'instructors')}
         />
         <div className="content-section">
           <div className="content-section-holder">

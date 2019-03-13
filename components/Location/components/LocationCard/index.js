@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LcoationCard = ({ location: { locationNickname, locationName }, index, onRemoveLocation }) => (
+const LcoationCard = ({ location: { locationNickname, locationName }, onRemoveLocation }) => (
   <div className="card-panel card-panel-panel card-panel-large" style={{ backgroundColor: '#62b771', color: '#fff' }}>
     <a
       href="#"
       className="close-link icon-close-thin"
-      onClick={() => onRemoveLocation(index, 'location', 'locations')}
+      onClick={onRemoveLocation}
     ></a>
     <div className="card-panel-row row">
       <div className="col s10">
@@ -25,7 +25,6 @@ const LcoationCard = ({ location: { locationNickname, locationName }, index, onR
 
 LcoationCard.propTypes = {
   location: PropTypes.object,
-  index: PropTypes.number.isRequired,
   onRemoveLocation: PropTypes.func.isRequired,
 };
 

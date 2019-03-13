@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class Locations extends Component {
+class Instructors extends Component {
   render() {
-    return (<h1>Locations</h1>);
+    return (<h1>Instructors</h1>);
   }
 }
 
-export default Locations;
+export default Instructors;

@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InstructorCard from './components/InstructorCard';
+import InstructorCard from '../../../../Instructor/components/InstructorCard';
 
 const Instructor = ({ state: { instructors }, onOpenInstructorModal, onRemoveInstructor }) => (
   <div className="card-block">
@@ -19,7 +19,7 @@ const Instructor = ({ state: { instructors }, onOpenInstructorModal, onRemoveIns
                 <div className="add-class-box"></div>
               )}
               {instructors.map((instructor, index) => (
-                <InstructorCard instructor={instructor} index={index} onRemoveInstructor={onRemoveInstructor} />
+                <InstructorCard instructor={instructor} onRemoveInstructor={() => onRemoveInstructor(index, 'instructor', 'instructors')} />
               ))}
             </div>
           </div>
