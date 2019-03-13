@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import InstructorNavBar from '../components/Instructor/components/InstructorNavBar';
 import DetailManagementPage from '../components/Instructor/DetailManagementPage';
+import DetailAccountPage from '../components/Instructor/DetailAccountPage';
 
 import sampleUser from '../components/Instructor/utils/sampleUser';
 
@@ -9,8 +10,24 @@ class Instructors extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'summary',
+      active: 'account',
     };
+  }
+
+  onSetActivePage = (active) => this.setState({ active })
+
+  renderCurrentPage = () => {
+    const { active } = this.state;
+    if (active === 'summary') {
+      return null;
+    }
+    if (active === 'account') {
+      return <DetailAccountPage user={sampleUser} />;
+    }
+    if (active === 'managementSettings') {
+      return <DetailManagementPage user={sampleUser} />;
+    }
+    return null;
   }
 
   render() {
@@ -39,8 +56,13 @@ class Instructors extends Component {
           </aside>
           <main id="main" role="main">
             <div className="main-holder grey lighten-3">
-              <InstructorNavBar active={active} />
-              <DetailManagementPage user={sampleUser} />
+              <InstructorNavBar
+                active={active}
+                onSetActivePage={this.onSetActivePage}
+              />
+              {this.renderCurrentPage()}
+              {/* <DetailManagementPage user={sampleUser} />
+              <DetailAccountPage user={sampleUser} /> */}
             </div>
           </main>
         </div>
