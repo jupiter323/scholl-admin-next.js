@@ -7,6 +7,7 @@ import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 import OwnerContactInfo from './components/OwnerContactInfo';
+import LocationContactInfo from './components/LocationContactInfo';
 
 class NewLocationModal extends React.Component {
   constructor(props) {
@@ -128,76 +129,10 @@ class NewLocationModal extends React.Component {
                           state={ownerContactInfo}
                           handleDetailsChange={this.handleDetailsChange}
                         />
-                        <div className="col s12 l6">
-                          {/* <!-- form-panel --> */}
-                          <div className="card-block">
-                            <h3>Location Contact Info</h3>
-                            <div className="card-main card">
-                              <div className="card-content">
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="location_name_create" value="Tutor Doctor" />
-                                    <label className="label" htmlFor="location_name_create">Location Name*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="location_nickname_create" value="Tutor Doctor - Newport Beach, CA" />
-                                    <label className="label" htmlFor="location_nickname_create">Location Nickname*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="location_email_create" value="info@clearchoiceprep.com" />
-                                    <label className="label" htmlFor="location_email_create">Location Email*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="tel" id="location_phone_create" />
-                                    <label className="label" htmlFor="location_phone_create">Location Phone Number (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="url" id="location_website_create" />
-                                    <label className="label" htmlFor="location_website_create">Website (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="location_address_create" />
-                                    <label className="label" htmlFor="location_address_create">Street Address (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="location_city_create" />
-                                    <label className="label" htmlFor="location_city_create">City (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="col s12 m6 l5">
-                                    <div className="input-field">
-                                      <select id="location_state_create">
-                                        <option>State (optional)</option>
-                                        <option>State</option>
-                                        <option>State</option>
-                                      </select>
-                                      <label className="label" htmlFor="location_state_create">Test</label>
-                                    </div>
-                                  </div>
-                                  <div className="col s12 m6 l7">
-                                    <div className="input-field">
-                                      <input type="tel" id="location_zip_create" />
-                                      <label className="label" htmlFor="location_zip_create">Zip (optional)</label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <LocationContactInfo
+                          state={locationContactInfo}
+                          handleDetailsChange={this.handleDetailsChange}
+                        />
                       </div>
                       <div className="row mb-0">
                         <div className="col s12 l6">
