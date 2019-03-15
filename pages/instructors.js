@@ -62,8 +62,6 @@ class Instructors extends Component {
                 onSetActivePage={this.onSetActivePage}
               />
               {this.renderCurrentPage()}
-              {/* <DetailManagementPage user={sampleUser} />
-              <DetailAccountPage user={sampleUser} /> */}
             </div>
           </main>
         </div>

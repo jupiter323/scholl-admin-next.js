@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Owner = () => (
+const Owner = ({ state: { firstName, lastName, email } }) => (
   <div className="card-block">
     <h3>Owner</h3>
     <div className="owner-box card-panel" style={{ backgroundColor: '#31837a', color: '#fff' }}>
@@ -11,8 +12,8 @@ const Owner = () => (
               <img src="images/img-owner01.jpg" alt="" />
             </div>
             <div className="user-text" style={{ color: '#fff' }}>
-              <h4 className="h3">Ownerly, Jennifer</h4>
-              <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+              <h4 className="h3">{lastName}, {firstName}</h4>
+              <a href={`mailto:${email}`}>{email}</a>
             </div>
           </div>
         </div>
@@ -26,5 +27,9 @@ const Owner = () => (
     </div>
   </div>
 );
+
+Owner.propTypes = {
+  state: PropTypes.object.isRequired,
+};
 
 export default Owner;

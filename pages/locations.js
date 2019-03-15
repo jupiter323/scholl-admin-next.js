@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import LocationNavBar from '../components/Location/components/LocationNavBar';
 import DetailAccountPage from '../components/Location/DetailAccountPage';
 
+import sampleLocation from '../components/Location/utils/sampleLocation';
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Instructors extends Component {
   constructor(props) {
@@ -20,7 +22,7 @@ class Instructors extends Component {
       return null;
     }
     if (active === 'account') {
-      return <DetailAccountPage location={{}} />;
+      return <DetailAccountPage location={sampleLocation} />;
     }
     return null;
   }
