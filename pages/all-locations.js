@@ -36,7 +36,6 @@ class LocationList extends React.Component {
             <div className="main-holder grey lighten-5">
               <LocationListPage />
             </div>
-            <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Location</a>
           </main>
         </div>
       </body>

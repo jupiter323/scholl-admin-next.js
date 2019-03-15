@@ -1,23 +1,107 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
 
 import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
+
+import OwnerContactInfo from './components/OwnerContactInfo';
 
 class NewLocationModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      ownerContactInfo: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        gender: '',
+        phone: '',
+        streetAddress: '',
+        city: '',
+        state: '',
+        zip: '',
+      },
+      locationEmailSettings: {
+        automatedEmailOriginAddress: '',
+        automatedEmailSalutation: '',
+      },
+      locationContactInfo: {
+        locationName: '',
+        locationNickname: '',
+        locationEmail: '',
+        locationPhone: '',
+        website: '',
+        streetAddress: '',
+        city: '',
+        state: '',
+        zip: '',
+      },
+      locationBranding: {
+        locationUrl: '',
+        headerColor1: '',
+        headerColor2: '',
+        headerLogoBackgroundColor: '',
+        headerLogoBackgroundAlpha: '',
+        horizontalLogoVariation: '',
+        squareLogoVariation: '',
+        backgroundImage: '',
+        backgroundBlur: '',
+        backgroundOverlayAlpha: '',
+        studentWelcomeVideo: '',
+        instructorWelcomeVideo: '',
+      },
+      validation: {
+        ownerContactInfo: {
+          firstName: true,
+          lastName: true,
+          email: true,
+          gender: true,
+        },
+        locationEmailSettings: {
+          automatedEmailOriginAddress: true,
+          automatedEmailSalutation: true,
+        },
+        locationContactInfo: {
+          locationName: true,
+          locationNickname: true,
+          locationEmail: true,
+        },
+        locationBranding: {
+          locationUrl: true,
+          headerColor1: true,
+          headerColor2: true,
+          headerLogoBackgroundColor: true,
+          headerLogoBackgroundAlpha: true,
+          horizontalLogoVariation: true,
+          squareLogoVariation: true,
+          backgroundImage: true,
+          backgroundBlur: true,
+          backgroundOverlayAlpha: true,
+        },
+      },
     };
   }
+
+  // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
+  handleDetailsChange = (event, name, section) => {
+    // const { updatedLocation: previousLocationState } = this.state;
+    const value = event.target ? event.target.value : event;
+    const updatedState = update(this.state, {
+      [section]: { $merge: { [name]: value } },
+    });
+    this.setState(updatedState);
+  }
+
   render() {
-    const { open } = this.props;
+    const { open, onClose } = this.props;
+    const { ownerContactInfo, locationEmailSettings, locationContactInfo, locationBranding } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
+            <ClickOffComponentWrapper onOuterClick={onClose}>
               <div id="modal_user_create" className="modal modal-custom modal-custom-large modal-gray">
                 <div className="card-modal card-main card grey lighten-3">
                   <div className="card-panel card-panel-title" style={{ backgroundColor: '#31837a', color: '#fff' }}>
@@ -40,80 +124,10 @@ class NewLocationModal extends React.Component {
                   <div className="card-content">
                     <div className="card-body">
                       <div className="row mb-0">
-                        <div className="col s12 l6">
-                          {/* <!-- form-panel --> */}
-                          <div className="card-block">
-                            <h3>Owner Contact Info</h3>
-                            <div className="card-main card">
-                              <div className="card-content">
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="first_name_create" />
-                                    <label className="label" htmlFor="first_name_create">First Name*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="last_name_create" />
-                                    <label className="label" htmlFor="last_name_create">Last Name*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="contact_email_create" />
-                                    <label className="label" htmlFor="contact_email_create">Email Address*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12 l7">
-                                    <select id="state_edit">
-                                      <option>Other</option>
-                                      <option>Other</option>
-                                      <option>Other</option>
-                                    </select>
-                                    <label className="label" htmlFor="state_edit">Gender*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="tel" id="contact_phone_create" />
-                                    <label className="label" htmlFor="contact_phone_create">Phone (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="contact_address_create" />
-                                    <label className="label" htmlFor="contact_address_create">Street Address (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="contact_city_create" />
-                                    <label className="label" htmlFor="contact_city_create">City (optional)</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="col s12 m6 l5">
-                                    <div className="input-field">
-                                      <select id="contact_state_create">
-                                        <option>State (optional)</option>
-                                        <option>State</option>
-                                        <option>State</option>
-                                      </select>
-                                      <label className="label" htmlFor="contact_state_create">Test</label>
-                                    </div>
-                                  </div>
-                                  <div className="col s12 m6 l7">
-                                    <div className="input-field">
-                                      <input type="tel" id="zip_create" />
-                                      <label className="label" htmlFor="zip_create">Zip (optional)</label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <OwnerContactInfo
+                          state={ownerContactInfo}
+                          handleDetailsChange={this.handleDetailsChange}
+                        />
                         <div className="col s12 l6">
                           {/* <!-- form-panel --> */}
                           <div className="card-block">
@@ -378,6 +392,7 @@ class NewLocationModal extends React.Component {
 
 NewLocationModal.propTypes = {
   open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default NewLocationModal;

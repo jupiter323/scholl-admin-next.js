@@ -1,6 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import LocationCard from './components/LocationCard';
+import NewLocationModal from './components/NewLocationModal';
 
 import sampleLocationList from '../utils/sampleLocationList';
 
@@ -8,17 +9,25 @@ class LocationListPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true,
+      locationModalOpen: false,
       locations: sampleLocationList,
     };
   }
+
+  onOpenLocationModal = () => this.setState({ locationModalOpen: true });
+  onCloseLocationModal = () => this.setState({ locationModalOpen: false });
 
   mapLocations = () => this.state.locations.map((location) => (
     <LocationCard location={location} />
   ))
   render() {
+    const { locationModalOpen } = this.state;
     return (
       <React.Fragment>
+        <NewLocationModal
+          open={locationModalOpen}
+          onClose={this.onCloseLocationModal}
+        />
         <div className="main-holder grey lighten-5">
           <div className="title-row card-panel">
             <div className="mobile-header">
@@ -37,7 +46,14 @@ class LocationListPage extends React.Component {
             </div>
           </div>
         </div>
-        <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Location</a>
+        <a
+          href="#"
+          onClick={this.onOpenLocationModal}
+          className="waves-effect waves-teal btn add-btn"
+        >
+          <i className="material-icons">add</i>
+          New Location
+        </a>
       </React.Fragment>
     );
   }
