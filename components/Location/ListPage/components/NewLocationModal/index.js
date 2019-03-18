@@ -8,6 +8,7 @@ import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 import OwnerContactInfo from './components/OwnerContactInfo';
 import LocationContactInfo from './components/LocationContactInfo';
+import LocationEmailSettings from './components/LocationEmailSettings';
 
 class NewLocationModal extends React.Component {
   constructor(props) {
@@ -135,28 +136,10 @@ class NewLocationModal extends React.Component {
                         />
                       </div>
                       <div className="row mb-0">
-                        <div className="col s12 l6">
-                          {/* <!-- form-panel --> */}
-                          <div className="card-block">
-                            <h3>Location Email Settings</h3>
-                            <div className="card-main card">
-                              <div className="card-content">
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="auto_email_create" value="Clear Choice Prep <messages@clearchoiceprep.com>" />
-                                    <label className="label" htmlFor="auto_email_create">Automated Emails Come From (email)*</label>
-                                  </div>
-                                </div>
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <textarea id="email_salutation_create" className="materialize-textarea">All the best,The Clear Choice Team</textarea>
-                                    <label className="label" htmlFor="email_salutation_create">Automated Email Salutation*</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <LocationEmailSettings
+                          state={locationEmailSettings}
+                          handleDetailsChange={this.handleDetailsChange}
+                        />
                         <div className="col s12 l6">
                           {/* <!-- form-panel --> */}
                           <div className="card-block">
