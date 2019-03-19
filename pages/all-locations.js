@@ -2,13 +2,8 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import LocationListPage from '../components/Location/ListPage';
 
+// eslint-disable-next-line react/prefer-stateless-function
 class LocationList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: true,
-    };
-  }
   render() {
     return (
       <body className="instructor-page">

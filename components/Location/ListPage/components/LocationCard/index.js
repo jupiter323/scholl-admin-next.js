@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const LocationCard = ({ location: {
-  locationBasicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore },
-  locationContactInfo: { locationName, locationNickname },
-} }) => (
+  locationBasicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore } = {},
+  locationContactInfo: { locationName, locationNickname } = {},
+} = {} }) => (
   <div className="card-main-col col s12 m8 l7 xl5">
     <div className="card-main card-location card card-large">
       <div className="card-panel" style={{ backgroundColor: '#62b771', color: '#fff' }}>

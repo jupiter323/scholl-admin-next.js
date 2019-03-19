@@ -17,6 +17,8 @@ class LocationListPage extends React.Component {
   onOpenLocationModal = () => this.setState({ locationModalOpen: true });
   onCloseLocationModal = () => this.setState({ locationModalOpen: false });
 
+  onAddNewLocation = (newLocation) => this.setState(({ locations }) => ({ locations: [...locations, newLocation] }))
+
   mapLocations = () => this.state.locations.map((location) => (
     <LocationCard location={location} />
   ))
@@ -27,6 +29,7 @@ class LocationListPage extends React.Component {
         <NewLocationModal
           open={locationModalOpen}
           onClose={this.onCloseLocationModal}
+          onAddNewLocation={this.onAddNewLocation}
         />
         <div className="main-holder grey lighten-5">
           <div className="title-row card-panel">

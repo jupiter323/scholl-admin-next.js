@@ -11,6 +11,9 @@ import LocationContactInfo from './components/LocationContactInfo';
 import LocationEmailSettings from './components/LocationEmailSettings';
 import LocationBranding from './components/LocationBranding';
 
+import { nestedCreateFieldValidation } from '../../../../utils/fieldValidation';
+import initialState from '../../../utils/initialState';
+
 class NewLocationModal extends React.Component {
   constructor(props) {
     super(props);
@@ -87,6 +90,38 @@ class NewLocationModal extends React.Component {
     };
   }
 
+  // This function is passed into nestedCreateFieldValidation, it takes the result of the validation check and a callback function
+  // The updated component validation state is set and then the callback is dispatched - in this case, the callback handles the toast warning at the container level
+  onSetValidation = (validation, cb) => this.setState({ validation }, cb);
+
+  // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
+  onSubmit = async (event) => {
+    event.preventDefault();
+    const { owner, locationContactInfo, locationEmailSettings, locationBranding } = this.state;
+    const { onSaveNewLocation, onSaveLocationError, onAddNewLocation } = this.props;
+    // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
+    // const valid = true;
+    const valid = await nestedCreateFieldValidation(this.state, this.onSetValidation, (validation) => console.warn('validation', validation));
+    if (!valid) {
+      // return onSaveLocationError();
+      console.warn('not valid');
+    }
+    const postBody = { locationContactInfo, locationEmailSettings, locationBranding, owner };
+    onAddNewLocation(postBody);
+    console.warn('stubbed out save function');
+    this.onCloseModal();
+    // onSaveNewLocation(postBody);
+    // return this.onResetLocation();
+  }
+
+  onResetLocation = () => this.setState(initialState);
+
+  onCloseModal = () => {
+    const { onClose } = this.props;
+    onClose();
+    this.onResetLocation();
+  }
+
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section) => {
     let value;
@@ -108,7 +143,7 @@ class NewLocationModal extends React.Component {
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={onClose}>
+            <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
               <div id="modal_user_create" className="modal modal-custom modal-custom-large modal-gray">
                 <div className="card-modal card-main card grey lighten-3">
                   <div className="card-panel card-panel-title" style={{ backgroundColor: '#31837a', color: '#fff' }}>
@@ -152,8 +187,20 @@ class NewLocationModal extends React.Component {
                       </div>
                     </div>
                     <div className="modal-footer">
-                      <a href="#!" className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
-                      <a href="#" className="btn">Save</a>
+                      <a
+                        href="#!"
+                        onClick={this.onCloseModal}
+                        className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+                      >
+                        Cancel
+                      </a>
+                      <a
+                        href="#"
+                        className="btn"
+                        onClick={this.onSubmit}
+                      >
+                        Save
+                      </a>
                     </div>
                   </div>
                 </div>
