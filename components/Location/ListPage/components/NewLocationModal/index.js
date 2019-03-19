@@ -9,6 +9,7 @@ import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 import OwnerContactInfo from './components/OwnerContactInfo';
 import LocationContactInfo from './components/LocationContactInfo';
 import LocationEmailSettings from './components/LocationEmailSettings';
+import LocationBranding from './components/LocationBranding';
 
 class NewLocationModal extends React.Component {
   constructor(props) {
@@ -88,8 +89,12 @@ class NewLocationModal extends React.Component {
 
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section) => {
-    // const { updatedLocation: previousLocationState } = this.state;
-    const value = event.target ? event.target.value : event;
+    let value;
+    if (event.hex) {
+      value = event.hex;
+    } else {
+      value = event.target ? event.target.value : event;
+    }
     const updatedState = update(this.state, {
       [section]: { $merge: { [name]: value } },
     });
@@ -108,7 +113,7 @@ class NewLocationModal extends React.Component {
                 <div className="card-modal card-main card grey lighten-3">
                   <div className="card-panel card-panel-title" style={{ backgroundColor: '#31837a', color: '#fff' }}>
                     <div className="card-panel-row row">
-                      <div className="col">
+                      <div className="col" style={{ display: 'block' }}>
                         <h3 className="h2">
                           <span className="heading-holder">
                             <span className="heading-block">Create New Owner</span>
@@ -140,124 +145,10 @@ class NewLocationModal extends React.Component {
                           state={locationEmailSettings}
                           handleDetailsChange={this.handleDetailsChange}
                         />
-                        <div className="col s12 l6">
-                          {/* <!-- form-panel --> */}
-                          <div className="card-block">
-                            <h3>Location Branding</h3>
-                            <div className="card-main card">
-                              <div className="card-content">
-                                <div className="row mb-0">
-                                  <div className="input-field col s12">
-                                    <input type="text" id="location_url_create" value="newport-beach.tutordoctor.mysatcourse.com" />
-                                    <label className="label" htmlFor="location_url_create">Location Url*</label>
-                                  </div>
-                                </div>
-                                {/* <!-- colorpicker row --> */}
-                                <div className="row mb-0">
-                                  <div className="input-field js-spectrum custom-colorpicker col s12 m6">
-                                    <input type="text" className="js-spectrum-input" value="#123456" id="header_color_1_create" readOnly />
-                                    <label className="label" htmlFor="header_color_1_create">Header Color 1*</label>
-                                  </div>
-                                  <div className="input-field js-spectrum custom-colorpicker col s12 m6">
-                                    <input type="text" className="js-spectrum-input" value="#123456" id="header_color_2_create" readOnly />
-                                    <label className="label" htmlFor="header_color_2_create">Header Color 2*</label>
-                                  </div>
-                                </div>
-                                {/* <!-- colorpicker row --> */}
-                                <div className="row mb-0">
-                                  <div className="input-field js-spectrum custom-colorpicker col s12 m6">
-                                    <input type="text" className="js-spectrum-input" value="#123456" id="header_logo_bgcolor_create" readOnly />
-                                    <label className="label" htmlFor="header_logo_bgcolor_create">Header Logo Background Color*</label>
-                                  </div>
-                                  <div className="input-field col s12 m6">
-                                    <input type="text" value="100%" id="header_logo_bg_alpha_create" />
-                                    <label className="label" htmlFor="header_logo_bg_alpha_create">Header Logo Background Alpha*</label>
-                                  </div>
-                                </div>
-                                {/* <!-- upload file row --> */}
-                                <div className="row mb-0">
-                                  <div className="file-input-custom file-field input-field col s12">
-                                    <div className="file-path-wrapper">
-                                      <input className="file-path" type="text" value="horiz_logo.png" id="horizontal_logo_create" />
-                                      <label className="label" htmlFor="horizontal_logo_create">Horizontal Logo Variation*</label>
-                                    </div>
-                                    <span className="btn-upload">
-                                      <span className="holder-icon"><i className="icon-upload-file"></i></span>
-                                      <input type="file" />
-                                    </span>
-                                  </div>
-                                </div>
-                                {/* <!-- upload file row --> */}
-                                <div className="row mb-0">
-                                  <div className="file-input-custom file-field input-field col s12">
-                                    <div className="file-path-wrapper">
-                                      <input className="file-path" type="text" value="square_logo.jpg" id="square_logo_create" />
-                                      <label className="label" htmlFor="square_logo_create">Square Logo Variation*</label>
-                                    </div>
-                                    <span className="btn-upload">
-                                      <span className="holder-icon"><i className="icon-upload-file"></i></span>
-                                      <input type="file" />
-                                    </span>
-                                  </div>
-                                </div>
-                                {/* <!-- upload file row --> */}
-                                <div className="row mb-0">
-                                  <div className="file-input-custom file-field input-field col s12">
-                                    <div className="file-path-wrapper">
-                                      <input className="file-path" type="text" value="background.jpg" id="background_image_create" />
-                                      <label className="label" htmlFor="background_image_create">Background Image*</label>
-                                    </div>
-                                    <span className="btn-upload">
-                                      <span className="holder-icon"><i className="icon-upload-file"></i></span>
-                                      <input type="file" />
-                                    </span>
-                                  </div>
-                                </div>
-                                {/* <!-- twocolumns row background here --> */}
-                                <div className="row mb-0">
-                                  <div className="col s12 m6">
-                                    <div className="input-field">
-                                      <input type="text" value="24" id="background_blur_create" />
-                                      <label className="label" htmlFor="background_blur_create">Background Blur*</label>
-                                    </div>
-                                  </div>
-                                  <div className="col s12 m6">
-                                    <div className="input-field">
-                                      <input type="text" value="70%" id="background_overlay_alpha_create" />
-                                      <label className="label" htmlFor="background_blur_create">Background Overlay Alpha*</label>
-                                    </div>
-                                  </div>
-                                </div>
-                                {/* <!-- upload file row --> */}
-                                <div className="row mb-0">
-                                  <div className="file-input-custom file-field input-field col s12">
-                                    <div className="file-path-wrapper">
-                                      <input className="file-path" type="text" value="student_welcome_video.mp4" id="student_video_create" />
-                                      <label className="label" htmlFor="student_video_create">Student Welcome Video (optional)</label>
-                                    </div>
-                                    <span className="btn-upload">
-                                      <span className="holder-icon"><i className="icon-upload-file"></i></span>
-                                      <input type="file" />
-                                    </span>
-                                  </div>
-                                </div>
-                                {/* <!-- upload file row --> */}
-                                <div className="row mb-0">
-                                  <div className="file-input-custom file-field input-field col s12">
-                                    <div className="file-path-wrapper">
-                                      <input className="file-path" type="text" id="instructor_video_create" />
-                                      <label className="label" htmlFor="instructor_video_create">Instructor Welcome Video (optional)</label>
-                                    </div>
-                                    <span className="btn-upload">
-                                      <span className="holder-icon"><i className="icon-upload-file"></i></span>
-                                      <input type="file" />
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <LocationBranding
+                          state={locationBranding}
+                          handleDetailsChange={this.handleDetailsChange}
+                        />
                       </div>
                     </div>
                     <div className="modal-footer">
