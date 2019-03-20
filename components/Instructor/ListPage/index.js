@@ -11,17 +11,30 @@ class InstructorListPage extends React.Component {
     this.state = {
       instructorModalOpen: false,
       instructors: sampleInstructorList,
+      dropdownIndex: null,
+      dropdownIsOpen: false,
     };
   }
+
+  onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onOpenInstructorModal = () => this.setState({ instructorModalOpen: true });
   onCloseInstructorModal = () => this.setState({ instructorModalOpen: false });
 
   onAddNewInstructor = (newInstructor) => this.setState(({ instructors }) => ({ instructors: [...instructors, newInstructor] }))
 
-  mapInstructors = () => this.state.instructors.map((instructor) => (
-    <InstructorCard instructor={instructor} />
+  mapInstructors = () => this.state.instructors.map((instructor, index) => (
+    <InstructorCard
+      index={index}
+      instructor={instructor}
+      dropdownIsOpen={this.state.dropdownIsOpen}
+      onSetDropdown={this.onSetDropdown}
+      onCloseDropdown={this.onCloseDropdown}
+      dropdownIndex={this.state.dropdownIndex}
+    />
   ))
+
   render() {
     // eslint-disable-next-line no-unused-vars
     const { instructorModalOpen } = this.state;
