@@ -1,5 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+
 import InstructorCard from './components/InstructorCard';
 // import NewInstructorModal from './components/NewInstructorModal';
 
@@ -24,6 +26,13 @@ class InstructorListPage extends React.Component {
 
   onAddNewInstructor = (newInstructor) => this.setState(({ instructors }) => ({ instructors: [...instructors, newInstructor] }))
 
+  onDeleteInstructor = (deletedInstructor) => {
+    const updatedState = update(this.state, {
+      instructors: unfilteredInstructors => unfilteredInstructors.filter(instructor => instructor.id !== deletedInstructor.id),
+    });
+    this.setState({ instructors: updatedState.instructors });
+  }
+
   mapInstructors = () => this.state.instructors.map((instructor, index) => (
     <InstructorCard
       index={index}
@@ -32,6 +41,7 @@ class InstructorListPage extends React.Component {
       onSetDropdown={this.onSetDropdown}
       onCloseDropdown={this.onCloseDropdown}
       dropdownIndex={this.state.dropdownIndex}
+      onDeleteInstructor={this.onDeleteInstructor}
     />
   ))
 
