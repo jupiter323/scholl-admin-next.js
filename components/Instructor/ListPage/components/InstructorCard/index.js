@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import InstructorDetailsModal from '../InstructorDetailsModal';
+
 import Modal from '../../../../Modal';
 
 class InstructorCard extends React.Component {
@@ -11,6 +13,15 @@ class InstructorCard extends React.Component {
       deleteModalOpen: false,
     };
   }
+
+  onOpenInstructorDetailsModal = () => {
+    this.props.onCloseDropdown();
+    this.setState({ instructorDetailsModalOpen: true });
+  };
+
+  onCloseInstructorDetailsModal = () => this.setState({ instructorDetailsModalOpen: false });
+
+  onCloneInstructor = () => this.props.onCloneInstructor(this.props.instructor)
 
   onOpenDeleteModal = () => this.setState({ deleteModalOpen: true });
   onCloseDeleteModal = () => this.setState({ deleteModalOpen: false });
@@ -32,15 +43,23 @@ class InstructorCard extends React.Component {
   }
 
   render() {
-    const { deleteModalOpen } = this.state;
+    const { deleteModalOpen, instructorDetailsModalOpen } = this.state;
     const {
-      dropdownIsOpen, dropdownIndex, index,
-      instructor: {
-        accountInfo: { lastName, firstName, email },
-        instructorBasicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore },
-      } } = this.props;
+      dropdownIsOpen, dropdownIndex, index, instructor, onSaveInstructorChanges } = this.props;
+    const {
+      accountInfo: { lastName, firstName, email } = {},
+      basicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore } = {},
+    } = instructor;
     return (
       <React.Fragment>
+        <InstructorDetailsModal
+          instructor={instructor}
+          open={instructorDetailsModalOpen}
+          onClose={this.onCloseInstructorDetailsModal}
+          onSaveInstructorChanges={onSaveInstructorChanges}
+          onOpenDeleteModal={this.onOpenDeleteModal}
+          deleteModalOpen={deleteModalOpen}
+        />
         <Modal
           open={deleteModalOpen}
           onConfirm={this.onConfirmDeleteInstructor}
@@ -87,10 +106,22 @@ class InstructorCard extends React.Component {
                           style={{ display: 'block', width: '103.991px', left: '116.974px', top: '7.99716px', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
                         >
                           <li>
-                            {/* <!-- Modal Trigger --> */}
-                            <a href="#modal_user_edit" className="modal-trigger link-block">Edit</a>
+                            <a
+                              href="#"
+                              onClick={this.onOpenInstructorDetailsModal}
+                              className="modal-trigger link-block"
+                            >
+                              Edit
+                            </a>
                           </li>
-                          <li><a href="#!">Clone</a></li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={this.onCloneInstructor}
+                            >
+                              Clone
+                            </a>
+                          </li>
                           <li><a href="#!">Impersonate</a></li>
                           <li>
                             <a
@@ -168,7 +199,9 @@ class InstructorCard extends React.Component {
 
 InstructorCard.propTypes = {
   instructor: PropTypes.object.isRequired,
+  onSaveInstructorChanges: PropTypes.func.isRequired,
   onDeleteInstructor: PropTypes.func.isRequired,
+  onCloneInstructor: PropTypes.func.isRequired,
   onSetDropdown: PropTypes.func.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,

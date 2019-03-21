@@ -5,16 +5,16 @@ export default [
       lastName: 'Bezos',
       firstName: 'Jeff',
       email: 'jeff-bezos@gmail.com',
-      gender: 'male',
+      gender: 'Male',
     },
-    ownerContactInfo: {
+    contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
       zip: '78751',
     },
-    instructorBasicInfo: {
+    basicInfo: {
       activeStudents: 15,
       pastStudents: 24,
       unactivatedStudents: 29,
@@ -30,16 +30,16 @@ export default [
       lastName: 'Chavarro',
       firstName: 'Christian',
       email: 'christian-chavarro@gmail.com',
-      gender: 'male',
+      gender: 'Male',
     },
-    ownerContactInfo: {
+    contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
       zip: '78751',
     },
-    instructorBasicInfo: {
+    basicInfo: {
       activeStudents: 12,
       pastStudents: 73,
       unactivatedStudents: 12,
@@ -55,16 +55,16 @@ export default [
       lastName: 'Chavis',
       firstName: 'Cellena',
       email: 'cellena-chavis@gmail.com',
-      gender: 'male',
+      gender: 'Male',
     },
-    ownerContactInfo: {
+    contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
       zip: '78751',
     },
-    instructorBasicInfo: {
+    basicInfo: {
       activeStudents: 44,
       pastStudents: 32,
       unactivatedStudents: 5,
@@ -80,16 +80,16 @@ export default [
       lastName: 'Smith',
       firstName: 'Will',
       email: 'will-smithgmail.com',
-      gender: 'male',
+      gender: 'Male',
     },
-    ownerContactInfo: {
+    contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
       zip: '78751',
     },
-    instructorBasicInfo: {
+    basicInfo: {
       activeStudents: 22,
       pastStudents: 10,
       unactivatedStudents: 12,
@@ -105,16 +105,16 @@ export default [
       lastName: 'Lumberjack',
       firstName: 'Arnold',
       email: 'arnold-lumberjack@gmail.com',
-      gender: 'male',
+      gender: 'Male',
     },
-    ownerContactInfo: {
+    contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
       zip: '78751',
     },
-    instructorBasicInfo: {
+    basicInfo: {
       activeStudents: 11,
       pastStudents: 24,
       unactivatedStudents: 62,
@@ -130,16 +130,16 @@ export default [
       lastName: 'Duck',
       firstName: 'Donald',
       email: 'donald-duck@gmail.com',
-      gender: 'male',
+      gender: 'Male',
     },
-    ownerContactInfo: {
+    contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
       zip: '78751',
     },
-    instructorBasicInfo: {
+    basicInfo: {
       activeStudents: 45,
       pastStudents: 14,
       unactivatedStudents: 31,

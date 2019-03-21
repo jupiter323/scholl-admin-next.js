@@ -6,6 +6,7 @@ import InstructorCard from './components/InstructorCard';
 // import NewInstructorModal from './components/NewInstructorModal';
 
 import sampleInstructorList from '../utils/sampleInstructorList';
+// import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
 
 class InstructorListPage extends React.Component {
   constructor(props) {
@@ -33,6 +34,25 @@ class InstructorListPage extends React.Component {
     this.setState({ instructors: updatedState.instructors });
   }
 
+  onCloneInstructor = (instructor) => {
+    const cloneIndex = this.state.instructors.indexOf(instructor);
+    const instructors = update(this.state.instructors, {
+      $splice: [[cloneIndex, 0, instructor]],
+    });
+    this.setState({ instructors }, this.onCloseDropdown);
+  }
+
+  onSaveInstructorChanges = (updatedInstructor) => {
+    const { instructors: originalInstructors } = this.state;
+    const instructorToUpdate = originalInstructors.filter(instructor => instructor.id === updatedInstructor.id)[0];
+    const updatedInstructorIndex = originalInstructors.indexOf(instructorToUpdate);
+    const instructors = update(originalInstructors, {
+      $splice: [[updatedInstructorIndex, 1, updatedInstructor]],
+    });
+    // saveChangesSuccess();
+    this.setState({ instructors });
+  }
+
   mapInstructors = () => this.state.instructors.map((instructor, index) => (
     <InstructorCard
       index={index}
@@ -42,6 +62,8 @@ class InstructorListPage extends React.Component {
       onCloseDropdown={this.onCloseDropdown}
       dropdownIndex={this.state.dropdownIndex}
       onDeleteInstructor={this.onDeleteInstructor}
+      onCloneInstructor={this.onCloneInstructor}
+      onSaveInstructorChanges={this.onSaveInstructorChanges}
     />
   ))
 
