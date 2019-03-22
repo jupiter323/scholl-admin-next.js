@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import InstructorNavBar from '../components/Instructor/components/InstructorNavBar';
 import DetailManagementPage from '../components/Instructor/DetailManagementPage';
 import DetailAccountPage from '../components/Instructor/DetailAccountPage';
+import DetailSummaryPage from '../components/Instructor/DetailSummaryPage';
 
 import sampleUser from '../components/Instructor/utils/sampleUser';
 
@@ -19,7 +20,7 @@ class Instructors extends Component {
   renderCurrentPage = () => {
     const { active } = this.state;
     if (active === 'summary') {
-      return null;
+      return <DetailSummaryPage user={sampleUser} />;
     }
     if (active === 'account') {
       return <DetailAccountPage user={sampleUser} />;
@@ -61,8 +62,6 @@ class Instructors extends Component {
                 onSetActivePage={this.onSetActivePage}
               />
               {this.renderCurrentPage()}
-              {/* <DetailManagementPage user={sampleUser} />
-              <DetailAccountPage user={sampleUser} /> */}
             </div>
           </main>
         </div>
