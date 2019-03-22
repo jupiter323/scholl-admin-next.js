@@ -1,38 +1,14 @@
-import React, { Component } from 'react';
-
-import LocationNavBar from '../components/Location/components/LocationNavBar';
-import DetailAccountPage from '../components/Location/DetailAccountPage';
-
-import sampleLocation from '../components/Location/utils/sampleLocation';
+import React from 'react';
+// import PropTypes from 'prop-types';
+import LocationListPage from '../components/Location/ListPage';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class Instructors extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: 'account',
-    };
-  }
-
-  onSetActivePage = (active) => this.setState({ active })
-
-  renderCurrentPage = () => {
-    const { active } = this.state;
-    if (active === 'summary') {
-      return null;
-    }
-    if (active === 'account') {
-      return <DetailAccountPage location={sampleLocation} />;
-    }
-    return null;
-  }
-
+class LocationList extends React.Component {
   render() {
-    const { active } = this.state;
     return (
       <body className="instructor-page">
         <div className="wrapper">
-          {<aside id="slide-out" className="sidenav">
+          <aside id="slide-out" className="sidenav">
             <div className="sidenav-holder">
               <h1 className="white-text"><img src="images/instructor-logo.png" alt="" /></h1>
               <ul>
@@ -50,11 +26,10 @@ class Instructors extends Component {
                 <div className="img-block"><img src="images/img-user.jpg" className="circle" alt="" /></div>
               </a>
             </div>
-          </aside>}
+          </aside>
           <main id="main" role="main">
             <div className="main-holder grey lighten-5">
-              <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} />
-              {this.renderCurrentPage()}
+              <LocationListPage />
             </div>
           </main>
         </div>
@@ -63,4 +38,4 @@ class Instructors extends Component {
   }
 }
 
-export default Instructors;
+export default LocationList;
