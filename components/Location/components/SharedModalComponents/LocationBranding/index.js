@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ChromePicker } from 'react-color';
 
-import ClickOffComponentWrapper from '../../../../../../ClickOffComponentWrapper';
+import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 class LocationBranding extends React.Component {
   constructor(props) {

@@ -5,7 +5,7 @@ import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import stateOptions from '../../../../utils/stateOptions';
 
-const LocationContactInfo = ({ state: { locationName, locationNickname, locationEmail, locationPhone, website, streetAddress, city, state, zip }, handleDetailsChange }) => (
+const LocationContactInfo = ({ state: { locationName, locationNickname, locationEmail, locationPhone, website, streetAddress, city, state, zip } = {}, handleDetailsChange }) => (
   <div className="col s12 l5">
     <div className="card-block">
       <h3>Location Contact Info</h3>

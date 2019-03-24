@@ -3,16 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
-import Portal from '../../../../Portal';
-import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
+import Portal from '../../../Portal';
+import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
 
 import OwnerContactInfo from './components/OwnerContactInfo';
-import LocationContactInfo from './components/LocationContactInfo';
-import LocationEmailSettings from './components/LocationEmailSettings';
-import LocationBranding from './components/LocationBranding';
+import LocationContactInfo from '../SharedModalComponents/LocationContactInfo';
+import LocationEmailSettings from '../SharedModalComponents/LocationEmailSettings';
+import LocationBranding from '../SharedModalComponents/LocationBranding';
 
-import { nestedCreateFieldValidation } from '../../../../utils/fieldValidation';
-import initialState from '../../../utils/initialState';
+import { nestedCreateFieldValidation } from '../../../utils/fieldValidation';
+import initialState from '../../utils/initialState';
 
 class NewLocationModal extends React.Component {
   constructor(props) {
@@ -37,12 +37,12 @@ class NewLocationModal extends React.Component {
         locationName: '',
         locationNickname: '',
         locationEmail: '',
-        locationPhone: '',
+        locationPhoneNumber: '',
         website: '',
-        streetAddress: '',
-        city: '',
-        state: '',
-        zip: '',
+        locationStreetAddress: '',
+        locationCity: '',
+        locationState: '',
+        locationZip: '',
       },
       locationBranding: {
         locationUrl: '',
@@ -98,7 +98,7 @@ class NewLocationModal extends React.Component {
   onSubmit = async (event) => {
     event.preventDefault();
     const { owner, locationContactInfo, locationEmailSettings, locationBranding } = this.state;
-    const { onSaveNewLocation, onSaveLocationError, onAddNewLocation } = this.props;
+    const { onSaveNewLocation, onSaveLocationError, onAddNewLocation, fromInstructorPage = false } = this.props;
     // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
     // const valid = true;
     const valid = await nestedCreateFieldValidation(this.state, this.onSetValidation, (validation) => console.warn('validation', validation));
@@ -107,11 +107,13 @@ class NewLocationModal extends React.Component {
       console.warn('not valid');
     }
     const postBody = { locationContactInfo, locationEmailSettings, locationBranding, owner };
-    onAddNewLocation(postBody);
+    if (fromInstructorPage) {
+      onSaveNewLocation(postBody);
+    } else {
+      onAddNewLocation(postBody);
+    }
     console.warn('stubbed out save function');
     this.onCloseModal();
-    // onSaveNewLocation(postBody);
-    // return this.onResetLocation();
   }
 
   onResetLocation = () => this.setState(initialState);
@@ -137,7 +139,7 @@ class NewLocationModal extends React.Component {
   }
 
   render() {
-    const { open, onClose } = this.props;
+    const { open } = this.props;
     const { ownerContactInfo, locationEmailSettings, locationContactInfo, locationBranding } = this.state;
     return (
       <Portal selector="#modal">

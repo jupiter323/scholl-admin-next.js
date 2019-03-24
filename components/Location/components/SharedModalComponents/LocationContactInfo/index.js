@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dropdown from '../../../../../../FormComponents/Dropdown';
-import getValueFromState from '../../../../../../utils/getValueFromState';
-import stateOptions from '../../../../../../utils/stateOptions';
+import Dropdown from '../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../utils/getValueFromState';
+import stateOptions from '../../../../utils/stateOptions';
 
-const LocationContactInfo = ({ state: { locationName, locationNickname, locationEmail, locationPhone, website, streetAddress, city, state, zip }, handleDetailsChange }) => (
+const LocationContactInfo = ({ state: { locationName, locationNickname, locationEmail, locationPhoneNumber, website, locationStreetAddress, locationCity, locationState, locationZip }, handleDetailsChange }) => (
   <div className="col s12 l6">
     <div className="card-block">
       <h3>Location Contact Info</h3>
@@ -20,7 +20,7 @@ const LocationContactInfo = ({ state: { locationName, locationNickname, location
                 value={locationName}
                 onChange={(event) => handleDetailsChange(event, 'locationName', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="location-name">Location Name*</label>
+              <label className={locationName.length ? 'label active' : 'label'} htmlFor="location-name">Location Name*</label>
             </div>
           </div>
           <div className="row mb-0">
@@ -32,7 +32,7 @@ const LocationContactInfo = ({ state: { locationName, locationNickname, location
                 value={locationNickname}
                 onChange={(event) => handleDetailsChange(event, 'locationNickname', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="location-nickname">Location Nickname*</label>
+              <label className={locationNickname.length ? 'label active' : 'label'} htmlFor="location-nickname">Location Nickname*</label>
             </div>
           </div>
           <div className="row mb-0">
@@ -44,19 +44,19 @@ const LocationContactInfo = ({ state: { locationName, locationNickname, location
                 value={locationEmail}
                 onChange={(event) => handleDetailsChange(event, 'locationEmail', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="location-email">Location Email*</label>
+              <label className={locationEmail.length ? 'label active' : 'label'} htmlFor="location-email">Location Email*</label>
             </div>
           </div>
           <div className="row mb-0">
             <div className="input-field col s12">
               <input
                 type="tel"
-                id="location-phone"
-                name="locationPhone"
-                value={locationPhone}
-                onChange={(event) => handleDetailsChange(event, 'locationPhone', 'locationContactInfo')}
+                id="location-phone-number"
+                name="locationPhoneNumber"
+                value={locationPhoneNumber}
+                onChange={(event) => handleDetailsChange(event, 'locationPhoneNumber', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="location-phone">Location Phone Number (optional)</label>
+              <label className={locationPhoneNumber.length ? 'label active' : 'label'} htmlFor="location-phone-number">Location Phone Number (optional)</label>
             </div>
           </div>
           <div className="row mb-0">
@@ -68,43 +68,43 @@ const LocationContactInfo = ({ state: { locationName, locationNickname, location
                 value={website}
                 onChange={(event) => handleDetailsChange(event, 'website', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="website">Website (optional)</label>
+              <label className={website.length ? 'label active' : 'label'} htmlFor="website">Website (optional)</label>
             </div>
           </div>
           <div className="row mb-0">
             <div className="input-field col s12">
               <input
                 type="text"
-                id="street-address"
-                name="streetAddress"
-                value={streetAddress}
-                onChange={(event) => handleDetailsChange(event, 'streetAddress', 'locationContactInfo')}
+                id="location-street-address"
+                name="locationStreetAddress"
+                value={locationStreetAddress}
+                onChange={(event) => handleDetailsChange(event, 'locationStreetAddress', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="street-address">Street Address (optional)</label>
+              <label className={locationStreetAddress.length ? 'label active' : 'label'} htmlFor="location-street-address">Street Address (optional)</label>
             </div>
           </div>
           <div className="row mb-0">
             <div className="input-field col s12">
               <input
                 type="text"
-                id="city"
-                name="city"
-                value={city}
-                onChange={(event) => handleDetailsChange(event, 'city', 'locationContactInfo')}
+                id="location-city"
+                name="locationCity"
+                value={locationCity}
+                onChange={(event) => handleDetailsChange(event, 'locationCity', 'locationContactInfo')}
               />
-              <label className="label" htmlFor="city">City (optional)</label>
+              <label className={locationCity.length ? 'label active' : 'label'} htmlFor="city">City (optional)</label>
             </div>
           </div>
           <div className="row mb-0">
             <div className="col s12 m6 l5">
               <div className="input-field">
                 <Dropdown
-                  value={getValueFromState(state, stateOptions)}
-                  onChange={(event) => handleDetailsChange(event, 'state', 'locationContactInfo')}
+                  value={getValueFromState(locationState, stateOptions)}
+                  onChange={(event) => handleDetailsChange(event, 'locationState', 'locationContactInfo')}
                   options={stateOptions}
                   label="State (optional)"
-                  stateKey="state"
-                  dropdownKey="state"
+                  stateKey="locationState"
+                  dropdownKey="locationState"
                 />
               </div>
             </div>
@@ -112,12 +112,12 @@ const LocationContactInfo = ({ state: { locationName, locationNickname, location
               <div className="input-field">
                 <input
                   type="tel"
-                  id="zip"
-                  name="zip"
-                  value={zip}
-                  onChange={(event) => handleDetailsChange(event, 'zip', 'locationContactInfo')}
+                  id="location-zip"
+                  name="locationZip"
+                  value={locationZip}
+                  onChange={(event) => handleDetailsChange(event, 'locationZip', 'locationContactInfo')}
                 />
-                <label className="label" htmlFor="zip">Zip (optional)</label>
+                <label className={locationZip.length ? 'label active' : 'label'} htmlFor="location-zip">Zip (optional)</label>
               </div>
             </div>
           </div>

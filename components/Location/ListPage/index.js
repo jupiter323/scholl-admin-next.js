@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import LocationCard from './components/LocationCard';
-import NewLocationModal from './components/NewLocationModal';
+import NewLocationModal from '../components/NewLocationModal';
 
 import sampleLocationList from '../utils/sampleLocationList';
 
