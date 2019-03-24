@@ -16,6 +16,13 @@ class InstructorDetailsModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      deleteLocationModalOpen: false,
+      newLocationModalOpen: false,
+      editLocationModalOpen: false,
+      pendingLocationDelete: {},
+      activeLocation: {},
+      dropdownIsOpen: false,
+      dropdownIndex: null,
       originalInstructor: {
         accountInfo: {
           firstName: '',
@@ -82,6 +89,18 @@ class InstructorDetailsModal extends React.Component {
     }
   }
 
+  onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
+
+  onOpenDeleteLocationModal = (pendingLocationDelete) => this.setState({ deleteLocationModalOpen: true, pendingLocationDelete });
+  onCloseDeleteLocationModal = () => this.setState({ deleteLocationModalOpen: false, pendingLocationDelete: {} });
+
+  onOpenNewLocationModal = () => this.setState({ newLocationModalOpen: true });
+  onCloseNewLocationModal = () => this.setState({ newLocationModalOpen: false });
+
+  onOpenEditLocationModal = (activeLocation) => this.setState({ editLocationModalOpen: true, activeLocation });
+  onCloseEditLocationModal = () => this.setState({ editLocationModalOpen: false, dropdownIsOpen: false, activeLocation: {} });
+
   onCancelChanges = () => {
     const { onClose } = this.props;
     const { updatedInstructor, originalInstructor } = this.state;
@@ -147,12 +166,16 @@ class InstructorDetailsModal extends React.Component {
 
   render() {
     const { open, instructor: { accountInfo, contactInfo, locations }, onOpenDeleteModal, deleteModalOpen } = this.props;
-    const { updatedInstructor: { accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations } } = this.state;
+    const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
+      updatedInstructor: {
+        accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,
+      },
+    } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={this.onCancelChanges} nestedModals={deleteModalOpen}>
+            <ClickOffComponentWrapper onOuterClick={this.onCancelChanges} nestedModals={deleteModalOpen || deleteLocationModalOpen || editLocationModalOpen || newLocationModalOpen}>
               <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
                 <div className="card-modal card-main card grey lighten-3">
                   <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: '#31837a', color: '#fff' }}>
@@ -188,10 +211,28 @@ class InstructorDetailsModal extends React.Component {
                             handleDetailsChange={this.handleDetailsChange}
                           />
                         </div>
-                        <Locations
-                          state={this.initialInstructorMount() ? locations : updatedLocations}
-                          handleDetailsChange={this.handleDetailsChange}
-                        />
+                        <div className="col s12 l6">
+                          <Locations
+                            state={this.initialInstructorMount() ? locations : updatedLocations}
+                            handleDetailsChange={this.handleDetailsChange}
+
+                            dropdownIsOpen={dropdownIsOpen}
+                            dropdownIndex={dropdownIndex}
+                            activeLocation={activeLocation}
+                            deleteLocationModalOpen={deleteLocationModalOpen}
+                            pendingLocationDelete={pendingLocationDelete}
+                            newLocationModalOpen={newLocationModalOpen}
+                            editLocationModalOpen={editLocationModalOpen}
+                            onSetDropdown={this.onSetDropdown}
+                            onCloseDropdown={this.onCloseDropdown}
+                            onOpenNewLocationModal={this.onOpenNewLocationModal}
+                            onOpenEditLocationModal={this.onOpenEditLocationModal}
+                            onCloseNewLocationModal={this.onCloseNewLocationModal}
+                            onCloseEditLocationModal={this.onCloseEditLocationModal}
+                            onOpenDeleteLocationModal={this.onOpenDeleteLocationModal}
+                            onCloseDeleteLocationModal={this.onCloseDeleteLocationModal}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="modal-footer">

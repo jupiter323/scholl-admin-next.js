@@ -26,7 +26,7 @@ const LocationsToManage = ({ state: { locations }, onOpenLocationModal, onRemove
           </div>
           <div className="card-footer right-align">
             <a
-              href="#modal_Location1"
+              href="#"
               onClick={onOpenLocationModal}
               className="modal-trigger link-block"
             >
