@@ -3,6 +3,7 @@ import React from 'react';
 import update from 'immutability-helper';
 
 import InstructorCard from './components/InstructorCard';
+import FilterSection from './components/FilterSection';
 // import NewInstructorModal from './components/NewInstructorModal';
 
 import sampleInstructorList from '../utils/sampleInstructorList';
@@ -16,6 +17,8 @@ class InstructorListPage extends React.Component {
       instructors: sampleInstructorList,
       dropdownIndex: null,
       dropdownIsOpen: false,
+      instructorsAreFiltered: false,
+      filterName: '',
     };
   }
 
@@ -53,19 +56,43 @@ class InstructorListPage extends React.Component {
     this.setState({ instructors });
   }
 
-  mapInstructors = () => this.state.instructors.map((instructor, index) => (
-    <InstructorCard
-      index={index}
-      instructor={instructor}
-      dropdownIsOpen={this.state.dropdownIsOpen}
-      onSetDropdown={this.onSetDropdown}
-      onCloseDropdown={this.onCloseDropdown}
-      dropdownIndex={this.state.dropdownIndex}
-      onDeleteInstructor={this.onDeleteInstructor}
-      onCloneInstructor={this.onCloneInstructor}
-      onSaveInstructorChanges={this.onSaveInstructorChanges}
-    />
-  ))
+  onSetFilteredState = (filterName) => this.setState({ instructorsAreFiltered: true, filterName })
+  onUnsetFilteredState = () => this.setState({ instructorsAreFiltered: false, filterName: '' })
+
+  onFilterByName = () => {
+    const { instructors, filterName } = this.state;
+    return instructors.reduce((finalArr, currentInstructor) => {
+      const { accountInfo: { lastName, firstName } } = currentInstructor;
+      const instructorString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+      if (instructorString.indexOf(filterName) !== -1 && finalArr.indexOf(currentInstructor) === -1) {
+        finalArr.push(currentInstructor);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  mapInstructors = () => {
+    const { instructors: allInstructors, instructorsAreFiltered } = this.state;
+    let instructors;
+    if (instructorsAreFiltered) {
+      instructors = this.onFilterByName();
+    } else {
+      instructors = allInstructors;
+    }
+    return instructors.map((instructor, index) => (
+      <InstructorCard
+        index={index}
+        instructor={instructor}
+        dropdownIsOpen={this.state.dropdownIsOpen}
+        onSetDropdown={this.onSetDropdown}
+        onCloseDropdown={this.onCloseDropdown}
+        dropdownIndex={this.state.dropdownIndex}
+        onDeleteInstructor={this.onDeleteInstructor}
+        onCloneInstructor={this.onCloneInstructor}
+        onSaveInstructorChanges={this.onSaveInstructorChanges}
+      />
+    ));
+  }
 
   render() {
     // eslint-disable-next-line no-unused-vars
@@ -89,37 +116,10 @@ class InstructorListPage extends React.Component {
               </span>
             </h2>
           </div>
-          <div className="filter-inputs-holder">
-            <div className="row mb-0">
-              <div className="col s12 m4 l3">
-                <div className="search-field input-field">
-                  <input type="search" id="name_search" className="input-control  validate" placeholder="Edwar" />
-                  <button type="submit" className="search-button"><i className="icon-search"></i></button>
-                  <label className="label" htmlFor="name_search">Search</label>
-                </div>
-              </div>
-              <div className="col s12 m4 l3">
-                <div className="input-field">
-                  <select id="location_search">
-                    <option>Any</option>
-                    <option>Option</option>
-                    <option>Option</option>
-                  </select>
-                  <label className="label" htmlFor="location_search">Location</label>
-                </div>
-              </div>
-              <div className="col s12 m4 l3">
-                <div className="input-field">
-                  <select id="sort_search">
-                    <option>Last Name (ascending)</option>
-                    <option>Option</option>
-                    <option>Option</option>
-                  </select>
-                  <label className="label" htmlFor="sort_search">Sort</label>
-                </div>
-              </div>
-            </div>
-          </div>
+          <FilterSection
+            onSetFilteredState={this.onSetFilteredState}
+            onUnsetFilteredState={this.onUnsetFilteredState}
+          />
           <div className="content-section">
             <div className="row d-flex-content">
               {this.mapInstructors()}
