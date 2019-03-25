@@ -49,6 +49,12 @@ export default {
 };
 
 export const DropdownStyles = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "999",
+  }),
   option: (styles, { isFocused }) => ({
     ...styles,
     backgroundColor: isFocused ? '#dad8d8' : 'white',

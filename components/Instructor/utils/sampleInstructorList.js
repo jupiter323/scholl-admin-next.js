@@ -35,7 +35,7 @@ export default [
     contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
-      city: 'Austin',
+      city: 'Miami',
       state: 'TX',
       zip: '78751',
     },
@@ -60,7 +60,7 @@ export default [
     contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
-      city: 'Austin',
+      city: 'Miami',
       state: 'TX',
       zip: '78751',
     },
