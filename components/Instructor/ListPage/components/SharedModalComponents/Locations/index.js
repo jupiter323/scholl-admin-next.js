@@ -4,14 +4,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
-import Modal from '../../../../../../Modal';
+import Modal from '../../../../../Modal';
 
-import NewLocationModal from '../../../../../../Location/components/NewLocationModal';
-import LocationDetailsModal from '../../../../../../Location/components/LocationDetailsModal';
+import NewLocationModal from '../../../../../Location/components/NewLocationModal';
+import LocationDetailsModal from '../../../../../Location/components/LocationDetailsModal';
 import LocationRow from './components/LocationRow';
 
-import { saveNewSuccess as saveLocationSuccess, saveChangesSuccess, saveNewError as saveLocationError } from '../../../../../../utils/fieldValidation';
-import sampleLocations from '../../../../../../Location/utils/sampleLocationList';
+import { saveNewSuccess as saveLocationSuccess, saveChangesSuccess, saveNewError as saveLocationError } from '../../../../../utils/fieldValidation';
+import sampleLocations from '../../../../../Location/utils/sampleLocationList';
 
 const idGenerator = () => Math.floor((Math.random() * 100) + 1);
 

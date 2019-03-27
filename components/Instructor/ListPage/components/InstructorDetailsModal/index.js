@@ -6,9 +6,9 @@ import update from 'immutability-helper';
 import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
-import AccountInfo from './components/AccountInfo';
-import ContactInfo from './components/ContactInfo';
-import Locations from './components/Locations';
+import AccountInfo from '../SharedModalComponents/AccountInfo';
+import ContactInfo from '../SharedModalComponents/ContactInfo';
+import Locations from '../SharedModalComponents/Locations';
 
 import { nestedEditFieldValidation } from '../../../../utils/fieldValidation';
 

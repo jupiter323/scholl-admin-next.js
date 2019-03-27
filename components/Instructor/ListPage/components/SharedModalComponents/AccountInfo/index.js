@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dropdown from '../../../../../../FormComponents/Dropdown';
-import getValueFromState from '../../../../../../utils/getValueFromState';
-import genderOptions from '../../../../../../utils/genderOptions';
+import Dropdown from '../../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../../utils/getValueFromState';
+import genderOptions from '../../../../../utils/genderOptions';
 
 const AccountInfo = ({ state: { firstName, lastName, email, gender }, handleDetailsChange }) => (
   <div className="card-block">

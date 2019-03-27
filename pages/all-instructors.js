@@ -30,7 +30,6 @@ class InstructorList extends React.Component {
             <div className="main-holder grey lighten-3">
               <InstructorListPage />
             </div>
-            <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Instructor</a>
           </main>
         </div>
       </div>
@@ -40,7 +39,7 @@ class InstructorList extends React.Component {
 
 export default InstructorList;
 
-
+// TODO: Figure out what we're going to do with this code
 // {/* <!-- Modal structure CREATE --> */}
 // <div id="modal_user_create" class="modal modal-custom modal-custom-large modal-gray">
 // <div class="card-modal card-main card grey lighten-3">

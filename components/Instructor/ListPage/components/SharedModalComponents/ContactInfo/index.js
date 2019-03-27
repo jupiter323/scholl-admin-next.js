@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dropdown from '../../../../../../FormComponents/Dropdown';
-import getValueFromState from '../../../../../../utils/getValueFromState';
-import stateOptions from '../../../../../../utils/stateOptions';
+import Dropdown from '../../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../../utils/getValueFromState';
+import stateOptions from '../../../../../utils/stateOptions';
 
 
 const ContactInfo = ({ state: { phone, streetAddress, city, state, zip }, handleDetailsChange }) => (
