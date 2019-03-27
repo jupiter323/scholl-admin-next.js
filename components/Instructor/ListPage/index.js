@@ -8,6 +8,7 @@ import FilterSection from './components/FilterSection';
 
 import sampleInstructorList from '../utils/sampleInstructorList';
 // import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
+import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 
 class InstructorListPage extends React.Component {
   constructor(props) {
@@ -19,6 +20,8 @@ class InstructorListPage extends React.Component {
       dropdownIsOpen: false,
       instructorsAreFiltered: false,
       filterName: '',
+      filterLocation: '',
+      sort: '',
     };
   }
 
@@ -59,6 +62,11 @@ class InstructorListPage extends React.Component {
   onSetFilteredState = (filterName) => this.setState({ instructorsAreFiltered: true, filterName })
   onUnsetFilteredState = () => this.setState({ instructorsAreFiltered: false, filterName: '' })
 
+  onSetFilteredLocationState = (filterLocation) => this.setState({ instructorsAreFiltered: true, filterLocation })
+  onUnsetFilteredLocationState = () => this.setState({ filterLocation: '' }, this.checkForFilteredState)
+
+  onSetSort = (sort) => this.setState({ sort })
+
   onFilterByName = () => {
     const { instructors, filterName } = this.state;
     return instructors.reduce((finalArr, currentInstructor) => {
@@ -71,17 +79,72 @@ class InstructorListPage extends React.Component {
     }, []);
   }
 
-  mapInstructors = () => {
-    const { instructors: allInstructors, instructorsAreFiltered } = this.state;
+  onFilterByLocation = (preFilteredInstructors = []) => {
+    const { instructors: allInstructors, filterLocation } = this.state;
     let instructors;
-    if (instructorsAreFiltered) {
-      instructors = this.onFilterByName();
+    if (preFilteredInstructors.length) {
+      instructors = preFilteredInstructors;
     } else {
       instructors = allInstructors;
     }
+    return instructors.reduce((finalArr, currentInstructor) => {
+      const { contactInfo: { city } } = currentInstructor;
+      if (city === filterLocation && finalArr.indexOf(currentInstructor) === -1) {
+        finalArr.push(currentInstructor);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  // eslint-disable-next-line consistent-return
+  onSortInstructors = (instructors) => {
+    const { sort } = this.state;
+    switch (sort) {
+      case 'firstNameAscending':
+        return instructors.sort(firstNameAscending);
+      case 'firstNameDescending':
+        return instructors.sort(firstNameDescending);
+      case 'lastNameAscending':
+        return instructors.sort(lastNameAscending);
+      case 'lastNameDescending':
+        return instructors.sort(lastNameDescending);
+      default:
+        break;
+    }
+  }
+
+  getMappableInstructors = () => {
+    const { filterName, filterLocation, instructors: allInstructors, sort } = this.state;
+    let instructors;
+    if (filterName.length && !filterLocation.length) {
+      instructors = this.onFilterByName();
+    } else if (!filterName.length && filterLocation.length) {
+      instructors = this.onFilterByLocation();
+    } else if (filterName.length && filterLocation.length) {
+      const filteredByName = this.onFilterByName();
+      instructors = this.onFilterByLocation(filteredByName);
+    } else {
+      instructors = allInstructors;
+    }
+    if (sort) {
+      return this.onSortInstructors(instructors);
+    }
+    return instructors;
+  }
+
+  checkForFilteredState = () => {
+    const { filterName, filterLocation } = this.state;
+    if (!filterName.length && !filterLocation.length) {
+      this.setState({ instructorsAreFiltered: false });
+    }
+  }
+
+  mapInstructors = () => {
+    const instructors = this.getMappableInstructors();
     return instructors.map((instructor, index) => (
       <InstructorCard
         index={index}
+        key={instructor.id}
         instructor={instructor}
         dropdownIsOpen={this.state.dropdownIsOpen}
         onSetDropdown={this.onSetDropdown}
@@ -117,8 +180,11 @@ class InstructorListPage extends React.Component {
             </h2>
           </div>
           <FilterSection
+            onSetSort={this.onSetSort}
             onSetFilteredState={this.onSetFilteredState}
             onUnsetFilteredState={this.onUnsetFilteredState}
+            onSetFilteredLocationState={this.onSetFilteredLocationState}
+            onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
           />
           <div className="content-section">
             <div className="row d-flex-content">

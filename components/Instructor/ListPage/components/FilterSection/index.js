@@ -5,30 +5,39 @@ import update from 'immutability-helper';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import locationOptions from '../../../../utils/locationOptions';
+import sortOptions from '../../../../utils/sortOptions';
 
 class FilterSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      location: '',
-      sort: '',
+      location: {},
+      sort: {},
     };
   }
 
+  // This function does two things - first, it changes the filter state regardless of the field it's coming from
+  // If either location or sort filters are changed, we dispatch the appropriate action in ListPage to ensure the rendered instructors are filtered/sorted appropriately
+  // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
-    let value;
-    if (event.target) {
-      value = event.target.value;
-    } else {
-      value = event;
-    }
+    const { onSetFilteredLocationState, onUnsetFilteredLocationState, onSetSort } = this.props;
+    const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
       $merge: { [name]: value },
     });
     this.setState(updatedState);
+    if (name === 'location') {
+      if (event === '') {
+        return onUnsetFilteredLocationState();
+      }
+      return onSetFilteredLocationState(event);
+    } else if (name === 'sort') {
+      return onSetSort(event);
+    }
   }
 
+  // Strips the entered name of any spaces and capitalizing and fires off the ListPage event that filters the instructors
   submitNameFilter = () => {
     const { onSetFilteredState, onUnsetFilteredState } = this.props;
     const { name } = this.state;
@@ -75,22 +84,18 @@ class FilterSection extends React.Component {
                 stateKey="location"
                 dropdownKey="location"
               />
-              {/* <select id="location_search">
-                <option>Any</option>
-                <option>Option</option>
-                <option>Option</option>
-              </select>
-              <label className="label" htmlFor="location_search">Location</label> */}
             </div>
           </div>
           <div className="col s12 m4 l3">
             <div className="input-field">
-              <select id="sort_search">
-                <option>Last Name (ascending)</option>
-                <option>Option</option>
-                <option>Option</option>
-              </select>
-              <label className="label" htmlFor="sort_search">Sort</label>
+              <Dropdown
+                value={getValueFromState(sort, sortOptions)}
+                onChange={(event) => this.handleFilterChange(event, 'sort')}
+                options={sortOptions}
+                label="Sort"
+                stateKey="sort"
+                dropdownKey="sort"
+              />
             </div>
           </div>
         </div>
@@ -100,8 +105,11 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTypes = {
+  onSetSort: PropTypes.func.isRequired,
   onSetFilteredState: PropTypes.func.isRequired,
   onUnsetFilteredState: PropTypes.func.isRequired,
+  onSetFilteredLocationState: PropTypes.func.isRequired,
+  onUnsetFilteredLocationState: PropTypes.func.isRequired,
 };
 
 export default FilterSection;
