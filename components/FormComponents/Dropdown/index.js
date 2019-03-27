@@ -19,6 +19,7 @@ const Dropdown = ({ value, label, dropdownKey, stateKey = null, onChange, option
       isClearable={false}
       isSearchable={false}
       value={value}
+      instanceId="dropdown-select"
     />
   </DropdownWrapper>
 );

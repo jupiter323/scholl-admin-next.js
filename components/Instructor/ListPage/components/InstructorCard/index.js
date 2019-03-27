@@ -206,7 +206,7 @@ InstructorCard.propTypes = {
   onCloseDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   index: PropTypes.number.isRequired,
-  dropdownIndex: PropTypes.number.isRequired,
+  dropdownIndex: PropTypes.number,
 };
 
 export default InstructorCard;

@@ -5,7 +5,7 @@ import InstructorListPage from '../components/Instructor/ListPage';
 class InstructorList extends React.Component {
   render() {
     return (
-      <body className="instructor-page">
+      <div className="instructor-page">
         <div className="wrapper">
           <aside id="slide-out" className="sidenav">
             <div className="sidenav-holder">
@@ -33,7 +33,7 @@ class InstructorList extends React.Component {
             <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Instructor</a>
           </main>
         </div>
-      </body>
+      </div>
     );
   }
 }

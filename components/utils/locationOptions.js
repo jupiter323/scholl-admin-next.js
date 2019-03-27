@@ -1,6 +1,6 @@
 export default [
   {
-    value: 'any',
+    value: '',
     label: 'Any',
   },
   {
