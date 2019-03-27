@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 
 import InstructorCard from './components/InstructorCard';
 import FilterSection from './components/FilterSection';
-// import NewInstructorModal from './components/NewInstructorModal';
+import NewInstructorModal from './components/NewInstructorModal';
 
 import sampleInstructorList from '../utils/sampleInstructorList';
 // import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
@@ -158,15 +158,14 @@ class InstructorListPage extends React.Component {
   }
 
   render() {
-    // eslint-disable-next-line no-unused-vars
     const { instructorModalOpen } = this.state;
     return (
       <React.Fragment>
-        {/* <NewInstructorModal
+        <NewInstructorModal
           open={instructorModalOpen}
           onClose={this.onCloseInstructorModal}
           onAddNewInstructor={this.onAddNewInstructor}
-        /> */}
+        />
         <div className="main-holder grey lighten-5">
           <div className="title-row card-panel">
             <div className="mobile-header">
