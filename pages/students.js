@@ -11,7 +11,7 @@ class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'account',
+      active: 'summary',
     };
   }
 
