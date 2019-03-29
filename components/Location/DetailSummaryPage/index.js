@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AverageImprovement from './components/AverageImprovement';
-import Pipeline from './components/Pipeline';
-import StudentImprovement from './components/StudentImprovement';
-import TargetScores from './components/TargetScores';
-import AveragePerCourse from './components/AveragePerCourse';
+import AverageImprovement from '../../SharedSummaryPageComponents/AverageImprovement';
+import Pipeline from '../../SharedSummaryPageComponents/Pipeline';
+import StudentImprovement from '../../SharedSummaryPageComponents/StudentImprovement';
+import TargetScores from '../../SharedSummaryPageComponents/TargetScores';
+import AveragePerCourse from '../../SharedSummaryPageComponents/AveragePerCourse';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LocationDetailSummaryPage extends React.Component {

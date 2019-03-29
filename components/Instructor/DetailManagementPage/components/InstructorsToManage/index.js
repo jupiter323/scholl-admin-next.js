@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -19,7 +20,7 @@ const InstructorsToManage = ({ state: { instructors }, onOpenInstructorModal, on
                   <div className="add-class-box"></div>
                 )}
                 {instructors.map((instructor, index) => (
-                  <InstructorCard instructor={instructor} onRemoveInstructor={() => onRemoveInstructor(index, 'instructorsToManage', 'instructors')} />
+                  <InstructorCard key={index} instructor={instructor} onRemoveInstructor={() => onRemoveInstructor(index, 'instructorsToManage', 'instructors')} />
                 ))}
               </div>
             </div>

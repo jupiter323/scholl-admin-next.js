@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -20,7 +21,7 @@ const UserLocation = ({ state: { locations }, onOpenLocationModal, onRemoveLocat
                   <div className="add-class-box"></div>
                 )}
                 {locations.map((location, index) => (
-                  <LocationCard location={location} onRemoveLocation={() => onRemoveLocation(index, 'userLocation', 'locations')} />
+                  <LocationCard key={index} location={location} onRemoveLocation={() => onRemoveLocation(index, 'userLocation', 'locations')} />
                 ))}
               </div>
             </div>

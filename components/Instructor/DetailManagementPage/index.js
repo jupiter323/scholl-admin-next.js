@@ -100,8 +100,8 @@ class DetailManagementPage extends React.Component {
   initialUserMount = () => this.state.originalUser.id !== this.props.user.id;
 
   render() {
-    const { locationModalOpen, instructorModalOpen, updatedUser: { locationsToManage: updatedLocations, instructorsToManage: updatedInstructors } } = this.state;
-    const { user: { instructorsToManage, locationsToManage } } = this.props;
+    const { locationModalOpen, instructorModalOpen, updatedUser: { locationsToManage: updatedLocations, instructorsToManage: updatedInstructors, fullAccess: updatedFullAccess } } = this.state;
+    const { user: { instructorsToManage, locationsToManage, fullAccess } } = this.props;
     return (
       <React.Fragment>
         <LocationModal
@@ -128,7 +128,7 @@ class DetailManagementPage extends React.Component {
                 onRemoveInstructor={this.onRemoveOption}
               />
               <FullAccess
-                fullAccess={this.initialUserMount() ? instructorsToManage : updatedInstructors}
+                fullAccess={this.initialUserMount() ? fullAccess : updatedFullAccess}
                 toggleFullAccess={this.toggleFullAccess}
               />
             </div>
