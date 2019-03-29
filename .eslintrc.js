@@ -3,7 +3,8 @@ module.exports = {
   "extends": [
     "airbnb",
     "plugin:jsx-control-statements/recommended",
-    
+    "prettier",
+    "prettier/react"
   ],
   "plugins": [
     "react",
