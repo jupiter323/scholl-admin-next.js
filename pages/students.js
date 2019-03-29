@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react';
 import AccountPage from '../components/Student/AccountPage';
+import DetailSummaryPage from '../components/Student/DetailSummaryPage';
 import StudentNavBar from '../components/Student/components/StudentNavBar';
 
 import sampleUser from '../components/Student/utils/sampleUser';
@@ -13,6 +14,23 @@ class Students extends Component {
       active: 'account',
     };
   }
+
+  onSetActivePage = (active) => this.setState({ active })
+
+  renderCurrentPage = () => {
+    const { active } = this.state;
+    if (active === 'summary') {
+      return <DetailSummaryPage user={sampleUser} />;
+    }
+    if (active === 'account') {
+      return <AccountPage user={sampleUser} />;
+    }
+    if (active === 'managementSettings') {
+      return null;
+    }
+    return null;
+  }
+
   render() {
     const { active } = this.state;
     return (
@@ -54,7 +72,10 @@ class Students extends Component {
                     <span className="heading-block">Arnold Studently</span>
                   </span>
                 </h2>
-                <StudentNavBar active={active} />
+                <StudentNavBar
+                  active={active}
+                  onSetActivePage={this.onSetActivePage}
+                />
                 <div className="activate-block">
                   <a href="#" className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"><b className="btn-text visible-lg">Account Activated</b> <i className="icon-unlock"></i></a>
                   <a href="#" className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger" data-target="dropdown_activate"><b className="btn-text visible-lg">Activate Account</b> <i className="icon-key"></i></a>
@@ -84,9 +105,7 @@ class Students extends Component {
                     </div> */}
                 </div>
               </div>
-              <AccountPage
-                user={sampleUser}
-              />
+              {this.renderCurrentPage()}
             </div>
           </main>
         </div>
