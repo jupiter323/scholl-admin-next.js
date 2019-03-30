@@ -91,7 +91,7 @@ const updatedUser = {
     lessons: '12',
     worksheets: '3',
     quizzes: '1',
-    quizzesTests: '5',
+    practiceTests: '5',
   },
   summary: {
     questionsAnswered: '791',
