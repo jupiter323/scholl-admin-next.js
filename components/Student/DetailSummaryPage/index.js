@@ -10,21 +10,21 @@ import StrengthsAndWeaknesses from './components/StrengthsAndWeaknesses';
 // eslint-disable-next-line react/prefer-stateless-function
 class DetailSummaryPage extends React.Component {
   render() {
-    const { user: { courseProgress, overdueWork, summary, testScores, strengthsAndWeaknesses } } = this.props;
+    const { user: { active, courseProgress, overdueWork, summary, testScores, strengthsAndWeaknesses } } = this.props;
     return (
       <div className="content-section">
         <div className="container">
           <div className="cards-section">
             <div className="row d-flex justify-content-center mb-0">
-              <CourseProgress state={courseProgress} />
-              <OverdueWork state={overdueWork} />
+              <CourseProgress active={active} state={courseProgress} />
+              <OverdueWork active={active} state={overdueWork} />
             </div>
             <div className="row d-flex justify-content-center mb-0">
-              <SummaryCards state={summary} />
-              <TestScores state={testScores} />
+              <SummaryCards active={active} state={summary} />
+              <TestScores active={active} state={testScores} />
             </div>
           </div>
-          <StrengthsAndWeaknesses state={strengthsAndWeaknesses} />
+          <StrengthsAndWeaknesses active={active} state={strengthsAndWeaknesses} />
         </div>
       </div>
     );
