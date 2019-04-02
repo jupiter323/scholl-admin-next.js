@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import AccountPage from '../components/Student/AccountPage';
 import DetailSummaryPage from '../components/Student/DetailSummaryPage';
+import DetailLessonList from '../components/Student/DetailLessonList';
 import StudentNavBar from '../components/Student/components/StudentNavBar';
 
 import sampleUser from '../components/Student/utils/sampleUser';
@@ -11,7 +12,7 @@ class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'summary',
+      active: 'lessons',
     };
   }
 
@@ -25,8 +26,8 @@ class Students extends Component {
     if (active === 'account') {
       return <AccountPage user={sampleUser} />;
     }
-    if (active === 'managementSettings') {
-      return null;
+    if (active === 'lessons') {
+      return <DetailLessonList user={sampleUser} />;
     }
     return null;
   }
