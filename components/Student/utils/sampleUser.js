@@ -1,5 +1,6 @@
 const updatedUser = {
   id: '1232',
+  active: false,
   studentInformation: {
     firstName: 'Christian',
     lastName: 'Chavarro',
@@ -80,6 +81,7 @@ const updatedUser = {
   courseProgress: {
     startDate: '6/03/18',
     testDate: '10/14/18',
+    progress: '77',
     improvement: '82',
     lessons: '73',
     instruction: '68',
@@ -89,7 +91,7 @@ const updatedUser = {
     lessons: '12',
     worksheets: '3',
     quizzes: '1',
-    quizzesTests: '5',
+    practiceTests: '5',
   },
   summary: {
     questionsAnswered: '791',
