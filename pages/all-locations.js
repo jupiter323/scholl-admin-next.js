@@ -1,12 +1,11 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import LocationListPage from '../components/Location/ListPage';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LocationList extends React.Component {
   render() {
     return (
-      <body className="instructor-page">
+      <div className="instructor-page">
         <div className="wrapper">
           <aside id="slide-out" className="sidenav">
             <div className="sidenav-holder">
@@ -33,7 +32,7 @@ class LocationList extends React.Component {
             </div>
           </main>
         </div>
-      </body>
+      </div>
     );
   }
 }

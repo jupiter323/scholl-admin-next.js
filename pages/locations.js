@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-indent */
 import React, { Component } from 'react';
 
 import LocationNavBar from '../components/Location/components/LocationNavBar';
 import DetailAccountPage from '../components/Location/DetailAccountPage';
+import DetailSummaryPage from '../components/Location/DetailSummaryPage';
 
 import sampleLocation from '../components/Location/utils/sampleLocation';
 
@@ -10,7 +12,7 @@ class Instructors extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'account',
+      active: 'summary',
     };
   }
 
@@ -19,7 +21,7 @@ class Instructors extends Component {
   renderCurrentPage = () => {
     const { active } = this.state;
     if (active === 'summary') {
-      return null;
+      return <DetailSummaryPage location={sampleLocation} />;
     }
     if (active === 'account') {
       return <DetailAccountPage location={sampleLocation} />;
@@ -30,7 +32,7 @@ class Instructors extends Component {
   render() {
     const { active } = this.state;
     return (
-      <body className="instructor-page">
+      <div className="instructor-page">
         <div className="wrapper">
           {<aside id="slide-out" className="sidenav">
             <div className="sidenav-holder">
@@ -58,7 +60,7 @@ class Instructors extends Component {
             </div>
           </main>
         </div>
-      </body>
+      </div>
     );
   }
 }

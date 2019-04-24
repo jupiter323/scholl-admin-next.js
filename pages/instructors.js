@@ -34,7 +34,7 @@ class Instructors extends Component {
   render() {
     const { active } = this.state;
     return (
-      <body className="instructor-page">
+      <div className="instructor-page">
         <div className="wrapper">
           <aside id="slide-out" className="sidenav">
             <div className="sidenav-holder">
@@ -65,7 +65,7 @@ class Instructors extends Component {
             </div>
           </main>
         </div>
-      </body>
+      </div>
     );
   }
 }
