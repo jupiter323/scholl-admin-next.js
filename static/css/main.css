@@ -21791,9 +21791,9 @@ nav.breadcrumb-holder {
 	display: none !important;
 }
 
-.activate-block .btn-account_inactive {
+/* .activate-block .btn-account_inactive {
 	display: none !important;
-}
+} */
 
 .inactive .activate-block .btn-account_inactive {
 	display: -webkit-box !important;
