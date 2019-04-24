@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dropdown from '../../../../../../FormComponents/Dropdown';
-import getValueFromState from '../../../../../../utils/getValueFromState';
-import stateOptions from '../../../../../../utils/stateOptions';
-import genderOptions from '../../../../../../utils/genderOptions';
+import Dropdown from '../../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../../utils/getValueFromState';
+import stateOptions from '../../../../../utils/stateOptions';
+import genderOptions from '../../../../../utils/genderOptions';
 
 const OwnerContactInfo = ({ state: { firstName, lastName, email, gender, phone, streetAddress, city, state, zip }, handleDetailsChange }) => (
   <div className="col s12 l6">
