@@ -77,6 +77,57 @@ const updatedUser = {
   accountType: {
     licenseType: 'classMember',
   },
+  courseProgress: {
+    startDate: '6/03/18',
+    testDate: '10/14/18',
+    improvement: '82',
+    lessons: '73',
+    instruction: '68',
+    practiceTests: '47',
+  },
+  overdueWork: {
+    lessons: '12',
+    worksheets: '3',
+    quizzes: '1',
+    quizzesTests: '5',
+  },
+  summary: {
+    questionsAnswered: '791',
+    videoWatched: '416',
+    notesTaken: '52',
+    totalTimeLoggedIn: '220',
+    lastLogIn: '3:12',
+    loginTimeCode: 'pm',
+    onTimePercentage: '77',
+  },
+  testScores: {
+    compositeScore: {
+      reading: '83',
+      writing: '31',
+      math: '105',
+      composite: '218',
+    },
+    subjectScores: {
+      reading: '58',
+      writing: '44',
+      math: '91',
+      composite: '195',
+    },
+  },
+  strengthsAndWeaknesses: {
+    reading: {
+      correctAnswers: '32',
+      totalAnswers: '52',
+    },
+    writing: {
+      correctAnswers: '35',
+      totalAnswers: '52',
+    },
+    math: {
+      correctAnswers: '37',
+      totalAnswers: '52',
+    },
+  },
 };
 
 export default updatedUser;

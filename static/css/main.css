@@ -1,4 +1,4 @@
-.chartjs-render-monitor {
+.chart-container.chartjs-render-monitor {
 	height: 125px!important;
 	width: 250px!important;
 }
@@ -25816,7 +25816,7 @@ a.cal-event-week {
 	}
 
 	.chart-line-container {
-		padding-top: 40px;
+		padding-top: 18px;
 		padding-bottom: 18px;
 	}
 
