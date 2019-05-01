@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import TableHeader from './components/TableHeader';
+
 const statusColorMap = {
   Assigned: 'grey darken-4',
   Accomplished: 'purple darken-3',
@@ -32,13 +34,27 @@ class ListView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: true,
+      dropdownIsOpen: false,
+      dropdownIndex: null,
     };
+  }
+
+  onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
+
+  handleDropdownClick = (event, index) => {
+    const { dropdownIsOpen } = this.state;
+    event.preventDefault();
+    if (dropdownIsOpen) {
+      return this.onCloseDropdown();
+    }
+    return this.onSetDropdown(index);
   }
 
   mapWorksheetRows = () => {
     const { worksheets } = this.props;
-    return worksheets.map(worksheet => (
+    const { dropdownIndex, dropdownIsOpen } = this.state;
+    return worksheets.map((worksheet, index) => (
       <div className={worksheet.disabled ? 'card card-disabled list-table-row' : 'card list-table-row'}>
         <div className="list-table-cell icon-cell">
           <span className="block-icon">
@@ -70,18 +86,25 @@ class ListView extends React.Component {
         </div>
         <div className="list-table-cell drop-cell">
           <div className="dropdown-block">
-            {/* <!-- Dropdown Trigger --> */}
-            <a className='dropdown-trigger btn' href='#' data-target='dropdown01'><i className="material-icons dots-icon">more_vert</i></a>
-            {/* <!-- Dropdown Structure --> */}
-            <ul id='dropdown01' className='dropdown-content dropdown-wide'>
-              <li>
-                {/* <!-- Modal Trigger --> */}
-                <a href="#modal_user_edit" className="modal-trigger link-block">View Details</a>
-              </li>
-              <li><a href="#!">Dismiss Flags</a></li>
-              <li><a href="#!">Reset</a></li>
-              <li><a href="#!" className="link-delete">Delete</a></li>
-            </ul>
+            <a
+              href='#'
+              data-target='dropdown01'
+              className='dropdown-trigger btn'
+              onClick={(event) => this.handleDropdownClick(event, index)}
+            >
+              <i className="material-icons dots-icon">more_vert</i>
+            </a>
+            <If condition={dropdownIsOpen && dropdownIndex === index}>
+              <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
+                <li>
+                  {/* <!-- Modal Trigger --> */}
+                  <a href="#modal_user_edit" className="modal-trigger link-block">View Details</a>
+                </li>
+                <li><a href="#!">Dismiss Flags</a></li>
+                <li><a href="#!">Reset</a></li>
+                <li><a href="#!" className="link-delete">Delete</a></li>
+              </ul>
+            </If>
           </div>
         </div>
       </div>
@@ -99,21 +122,7 @@ class ListView extends React.Component {
             </div>
             <div className="list-view-section">
               <div className="list-table">
-                <div className="list-table-header">
-                  <div className="list-table-row">
-                    <div className="list-table-cell icon-cell">&nbsp;</div>
-                    <div className="list-table-cell name-cell"><b>Worksheet</b></div>
-                    <div className="list-table-cell graph-cell"><b>Score</b></div>
-                    <div className="list-table-cell description-cell"><b>Problems</b></div>
-                    <div className="list-table-cell time-cell"><b>Time Est</b></div>
-                    <div className="list-table-cell date-cell"><b>Assign</b></div>
-                    <div className="list-table-cell date-cell"><b>Due</b></div>
-                    <div className="list-table-cell completed-cell"><b>Completed</b></div>
-                    <div className="list-table-cell flags-cell"><b>Flags</b></div>
-                    <div className="list-table-cell status-cell"><b>Status</b></div>
-                    <div className="list-table-cell drop-cell">&nbsp;</div>
-                  </div>
-                </div>
+                <TableHeader />
                 <div className="list-table-body">
                   {this.mapWorksheetRows()}
                 </div>
