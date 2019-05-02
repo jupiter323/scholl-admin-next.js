@@ -4,14 +4,7 @@ import PropTypes from 'prop-types';
 import TableHeader from './components/TableHeader';
 
 import formatTimeEstimate from '../../utils/formatTimeEstimate';
-
-const statusColorMap = {
-  Assigned: 'grey darken-4',
-  Accomplished: 'purple darken-3',
-  Beginning: 'red darken-3',
-  Exemplary: 'blue accent-4',
-  Developing: 'purple',
-}
+import statusColorMap from '../../utils/statusColorMap';
 
 class ListView extends React.Component {
   constructor(props) {
