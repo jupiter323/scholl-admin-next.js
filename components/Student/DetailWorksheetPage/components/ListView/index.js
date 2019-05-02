@@ -3,31 +3,14 @@ import PropTypes from 'prop-types';
 
 import TableHeader from './components/TableHeader';
 
+import formatTimeEstimate from '../../utils/formatTimeEstimate';
+
 const statusColorMap = {
   Assigned: 'grey darken-4',
   Accomplished: 'purple darken-3',
   Beginning: 'red darken-3',
   Exemplary: 'blue accent-4',
   Developing: 'purple',
-}
-
-const formatTimeEstimate = (totalMinutes) => {
-  const hours = Math.floor(totalMinutes / 60) === 0 ? 0 : Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60 === 0 ? 0 : totalMinutes % 60;
-  return (
-    <React.Fragment>
-      { hours !== 0 && (
-        <React.Fragment>
-          {hours} hrs
-        </React.Fragment>
-      )}
-      { minutes !== 0 && (
-        <React.Fragment>
-          {minutes} min
-        </React.Fragment>
-      )}
-    </React.Fragment>
-  );
 }
 
 class ListView extends React.Component {
