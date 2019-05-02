@@ -54,61 +54,69 @@ class ListView extends React.Component {
   mapWorksheetRows = () => {
     const { worksheets } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
-    return worksheets.map((worksheet, index) => (
-      <div className={worksheet.disabled ? 'card card-disabled list-table-row' : 'card list-table-row'}>
-        <div className="list-table-cell icon-cell">
-          <span className="block-icon">
-            <i className="icon-sheets-w"></i>
-          </span>
-        </div>
-        <div className="list-table-cell name-cell">
-          <div className="card-panel-text truncate">
-            <div className="text-large truncate">{worksheet.worksheetName}</div>
+    return worksheets.map((worksheet, index) => {
+      const { disabled, worksheetName, score, status, problems, timeEstimate, assignDate, dueDate, completed, flags } = worksheet;
+      return (
+        <div className={disabled ? 'card card-disabled list-table-row' : 'card list-table-row'} key={worksheetName}>
+          <div className="list-table-cell icon-cell">
+            <span className="block-icon">
+              <i className="icon-sheets-w"></i>
+            </span>
+          </div>
+          <div className="list-table-cell name-cell">
+            <div className="card-panel-text truncate">
+              <div className="text-large truncate">{worksheetName}</div>
+            </div>
+          </div>
+          <div className="list-table-cell graph-cell">
+            {score && (
+              <span className={`chart-bar ${statusColorMap[status]} white-text`}>{score}%</span>
+            )}
+          </div>
+          <div className="list-table-cell description-cell">{problems}</div>
+          <div className="list-table-cell time-cell">{formatTimeEstimate(timeEstimate)}</div>
+          <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{assignDate}</time></div>
+          <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{dueDate}</time></div>
+          <div className="list-table-cell completed-cell">
+            {completed && (
+              <React.Fragment>
+                {completed} of {problems}
+              </React.Fragment>
+            )}
+          </div>
+          <div className="list-table-cell flags-cell">
+            {flags.length > 0 && (
+              <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
+            )}
+          </div>
+          <div className="list-table-cell status-cell">
+            <span className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}>{status}</span>
+          </div>
+          <div className="list-table-cell drop-cell">
+            <div className="dropdown-block">
+              <a
+                href='#'
+                data-target='dropdown01'
+                className='dropdown-trigger btn'
+                onClick={(event) => this.handleDropdownClick(event, index)}
+              >
+                <i className="material-icons dots-icon">more_vert</i>
+              </a>
+              <If condition={dropdownIsOpen && dropdownIndex === index}>
+                <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
+                  <li>
+                    <a href="#modal_user_edit" className="modal-trigger link-block">View Details</a>
+                  </li>
+                  <li><a href="#!">Dismiss Flags</a></li>
+                  <li><a href="#!">Reset</a></li>
+                  <li><a href="#!" className="link-delete">Delete</a></li>
+                </ul>
+              </If>
+            </div>
           </div>
         </div>
-        <div className="list-table-cell graph-cell">
-          {worksheet.score && (
-            <span className={`chart-bar ${statusColorMap[worksheet.status]} white-text`}>{worksheet.score}%</span>
-          )}
-        </div>
-        <div className="list-table-cell description-cell">{worksheet.problems}</div>
-        <div className="list-table-cell time-cell">{formatTimeEstimate(worksheet.timeEstimate)}</div>
-        <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{worksheet.assignDate}</time></div>
-        <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{worksheet.dueDate}</time></div>
-        <div className="list-table-cell completed-cell">{worksheet.completed}</div>
-        <div className="list-table-cell flags-cell">
-          {worksheet.flags.length > 0 && (
-            <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{worksheet.flags.length}</b> <i className="icon-flag"></i></span>
-          )}
-        </div>
-        <div className="list-table-cell status-cell">
-          <span className={`badge badge-rounded-md ${statusColorMap[worksheet.status]} white-text`}>{worksheet.status}</span>
-        </div>
-        <div className="list-table-cell drop-cell">
-          <div className="dropdown-block">
-            <a
-              href='#'
-              data-target='dropdown01'
-              className='dropdown-trigger btn'
-              onClick={(event) => this.handleDropdownClick(event, index)}
-            >
-              <i className="material-icons dots-icon">more_vert</i>
-            </a>
-            <If condition={dropdownIsOpen && dropdownIndex === index}>
-              <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
-                <li>
-                  {/* <!-- Modal Trigger --> */}
-                  <a href="#modal_user_edit" className="modal-trigger link-block">View Details</a>
-                </li>
-                <li><a href="#!">Dismiss Flags</a></li>
-                <li><a href="#!">Reset</a></li>
-                <li><a href="#!" className="link-delete">Delete</a></li>
-              </ul>
-            </If>
-          </div>
-        </div>
-      </div>
-    ))
+      )
+    })
   }
 
   render() {
