@@ -1,5 +1,6 @@
 import React from 'react';
 
+import FullView from './components/FullView';
 import ListView from './components/ListView';
 import FilterSection from './components/FilterSection';
 
@@ -10,7 +11,7 @@ class DetailWorksheetPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentView: 'list',
+      currentView: 'full',
       sort: '',
       filterName: '',
       filterTopic: '',
@@ -105,6 +106,19 @@ class DetailWorksheetPage extends React.Component {
     }
   }
 
+  // eslint-disable-next-line consistent-return
+  renderWorksheetView = () => {
+    const { currentView } = this.state;
+    switch (currentView) {
+      case 'list':
+        return <ListView worksheets={this.getMappableWorksheets()} />
+      case 'full':
+        return <FullView worksheets={this.getMappableWorksheets()} />
+      default:
+        break;
+    }
+  }
+
   render() {
     const { currentView } = this.state;
     return (
@@ -119,9 +133,7 @@ class DetailWorksheetPage extends React.Component {
             onSetFilteredTopicState={this.onSetFilteredTopicState}
             onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
           />
-          <ListView
-            worksheets={this.getMappableWorksheets()}
-          />
+          {this.renderWorksheetView()}
         </div>
         <div className="add-btn-block">
           <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected'><i className="material-icons">add</i> Assign Worksheet</a>

@@ -6,4 +6,12 @@ const statusColorMap = {
   Developing: 'purple',
 };
 
+export const chartColorMap = {
+  Assigned: '#333',
+  Accomplished: '#7327cc',
+  Beginning: '#ed1c24',
+  Exemplary: 'rgb(0, 100, 244)',
+  Developing: '#c10078',
+}
+
 export default statusColorMap;
