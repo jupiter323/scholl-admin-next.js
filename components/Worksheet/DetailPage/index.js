@@ -1,19 +1,25 @@
 import React from 'react';
+
 import WorksheetDetails from './components/WorksheetDetails';
 import WorksheetProblems from './components/WorksheetProblems';
+import ProblemBank from './components/ProblemBank';
 
 class DetailPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: true,
+      problemBankOpen: true,
     }
   }
   render() {
+    const { problemBankOpen } = this.state;
     return (
       <div className="main-container">
         <div className="container">
           <div className="main-row row">
+            <ProblemBank
+              open={problemBankOpen}
+            />
             <WorksheetProblems />
             <WorksheetDetails
               worksheet={{}}

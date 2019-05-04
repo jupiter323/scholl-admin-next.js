@@ -18,8 +18,8 @@ class WorksheetDetails extends React.Component {
       originalWorksheet: {
         worksheetName: '',
         subject: {},
-        type: {},
-        difficulty: {},
+        type: '',
+        difficulty: '',
         estimatedTime: '',
         categories: [],
         description: '',
@@ -27,8 +27,8 @@ class WorksheetDetails extends React.Component {
       updatedWorksheet: {
         worksheetName: '',
         subject: {},
-        type: {},
-        difficulty: {},
+        type: '',
+        difficulty: '',
         estimatedTime: '',
         categories: [],
         description: '',
