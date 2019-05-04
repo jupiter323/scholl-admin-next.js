@@ -15,7 +15,9 @@ class DetailPage extends React.Component {
         <div className="container">
           <div className="main-row row">
             <WorksheetProblems />
-            <WorksheetDetails />
+            <WorksheetDetails
+              worksheet={{}}
+            />
           </div>
           <div className="row">
             <div className="col s12">

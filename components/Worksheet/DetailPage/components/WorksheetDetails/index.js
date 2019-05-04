@@ -1,15 +1,110 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import Select from 'react-select';
+import update from 'immutability-helper';
+
+import categoryStyles from '../../../../FormComponents/Dropdown/styles/dropdownStyles';
+import ControlComponent from '../../../../FormComponents/Dropdown/styles/ControlComponent';
+import MultiValueLabel from '../../../../FormComponents/Dropdown/styles/MultiValueLabel';
+import { subjectOptions, difficultyOptions, typeOptions } from '../../../utils/worksheetDetailsOptions';
+
+import Dropdown from '../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../utils/getValueFromState';
 
 class WorksheetDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      true: true,
+      originalWorksheet: {
+        worksheetName: '',
+        subject: {},
+        type: {},
+        difficulty: {},
+        estimatedTime: '',
+        categories: [],
+        description: '',
+      },
+      updatedWorksheet: {
+        worksheetName: '',
+        subject: {},
+        type: {},
+        difficulty: {},
+        estimatedTime: '',
+        categories: [],
+        description: '',
+      },
+      validation: {
+        worksheetName: true,
+        subject: true,
+        type: true,
+        difficulty: true,
+        estimatedTime: true,
+        categories: true,
+      },
+      categoryOptions: [
+        {
+          label: 'Math',
+          options: [
+            { value: 'special-right-triangles', label: 'Special Right Triangles' },
+            { value: 'volumes', label: 'Volumes' },
+            { value: 'trig-functions', label: 'Trig Functions' },
+          ],
+        },
+        {
+          label: 'Science',
+          options: [
+            { value: 'astrology', label: 'Astrology' },
+            { value: 'algebra', label: 'Algebra' },
+          ],
+        },
+        {
+          label: 'English',
+          options: [
+            { value: 'geometry', label: 'Geometry' },
+            { value: 'pythagorean-theorem', label: 'Pythagorean Theorem' },
+          ],
+        },
+      ],
     };
   }
 
+  getSectionDropdownOptions = () => {
+    const { categoryOptions } = this.state;
+    const { worksheet: { subject } = {} } = this.props;
+    if (!subject) {
+      return categoryOptions;
+    }
+    const categoryLabels = categoryOptions.map(categoryOption => categoryOption.label);
+    const subjectIndex = categoryLabels.indexOf(subject.charAt(0).toUpperCase() + subject.slice(1));
+    return [categoryOptions[subjectIndex]];
+  }
+
+  updateCategoryState = (categories) => {
+    const updatedWorksheet = update(this.state.updatedWorksheet, {
+      $merge: { categories },
+    });
+    this.setState({ updatedWorksheet });
+  }
+
+  handleCategoryChange = (categories) => {
+    const updatedCategories = categories.reduce((finalArr, category) => {
+      finalArr.push(category.value);
+      return finalArr;
+    }, []);
+    this.updateCategoryState(updatedCategories);
+  };
+
+  handleDetailsChange = (event, name) => {
+    const { updatedWorksheet: previousWorksheetState } = this.state;
+    const value = event.target ? event.target.value : event;
+    const updatedWorksheet = update(previousWorksheetState, {
+      $merge: { [name]: value },
+    });
+    this.setState({ updatedWorksheet });
+  }
+
   render() {
+    const { validation: { categories: categoriesValid }, updatedWorksheet: { worksheetName, estimatedTime, subject, type, difficulty, description, categories } } = this.state;
     return (
       <div className="col s12 l6">
         <div className="card-block">
@@ -20,69 +115,97 @@ class WorksheetDetails extends React.Component {
                 <div className="row mb-0">
                   <div className="col s12">
                     <div className="input-field">
-                      <input type="text" id="details_name" value="Some SAT Problems about Triangles" />
-                      <label className="label" htmlFor="details_name">Name</label>
+                      <input
+                        type="text"
+                        id="details_name"
+                        value={worksheetName}
+                        onChange={(event) => this.handleDetailsChange(event, 'worksheetName')}
+                      />
+                      <label className={worksheetName.length ? 'label active' : 'label'} htmlFor="details_name">Name</label>
                     </div>
                   </div>
                 </div>
                 <div className="row mb-0">
                   <div className="col s6">
                     <div className="input-field">
-                      <select id="detail_subject">
-                        <option>Mixed</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label className="label" htmlFor="detail_subject">Subject</label>
+                      <Dropdown
+                        value={getValueFromState(subject, subjectOptions)}
+                        onChange={(event) => this.handleDetailsChange(event, 'subject')}
+                        options={subjectOptions}
+                        label="Subject"
+                        stateKey="subject"
+                        dropdownKey="subject"
+                      />
                     </div>
                   </div>
                   <div className="col s6">
                     <div className="input-field">
-                      <select id="detail_type">
-                        <option>Mixed</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label className="label" htmlFor="detail_type">Type</label>
+                      <Dropdown
+                        value={getValueFromState(type, typeOptions)}
+                        onChange={(event) => this.handleDetailsChange(event, 'type')}
+                        options={typeOptions}
+                        label="Type"
+                        stateKey="type"
+                        dropdownKey="type"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="row mb-0">
                   <div className="col s6">
                     <div className="input-field">
-                      <select id="detail_diﬃculty">
-                        <option>Mixed</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label className="label" htmlFor="detail_diﬃculty">Diﬃculty</label>
+                      <Dropdown
+                        value={getValueFromState(difficulty, difficultyOptions)}
+                        onChange={(event) => this.handleDetailsChange(event, 'difficulty')}
+                        options={difficultyOptions}
+                        label="Difficulty"
+                        stateKey="difficulty"
+                        dropdownKey="difficulty"
+                      />
                     </div>
                   </div>
                   <div className="col s6">
                     <div className="datepicker-field input-field">
                       <i className="icon-clock2"></i>
-                      <input type="text" className="timepicker" id="detail_estimated_time" />
+                      <input
+                        type="text"
+                        className="timepicker"
+                        id="detail_estimated_time"
+                        value={estimatedTime}
+                        onChange={(event) => this.handleDetailsChange(event, 'estimatedTime')}
+                      />
                       <label className="label" htmlFor="detail_estimated_time">Estimated Time</label>
                     </div>
                   </div>
                 </div>
                 <div className="row mb-0">
                   <div className="col s12">
-                    <div className="input-field input-tags">
-                      <select multiple id="detail_category_tag">
-                        <option value="" disabled selected>Choose Category</option>
-                        <option value="1">Right Trianges</option>
-                        <option value="2">Circles</option>
-                        <option value="3">Option</option>
-                      </select>
-                      <label className="label" htmlFor="detail_category_tag">Category (Tag)</label>
-                    </div>
+                    <Select
+                      options={this.getSectionDropdownOptions()}
+                      isMulti
+                      instanceId="categories-select"
+                      onChange={this.handleCategoryChange}
+                      components={{ Control: ControlComponent, MultiValueLabel }}
+                      name="categoryOptions"
+                      className={(categoriesValid) || (!categoriesValid && categories.length) ? '' : 'invalid'}
+                      classNamePrefix="multi-select"
+                      placeholder={'Select one or more categories'}
+                      styles={categoryStyles}
+                      isClearable={false}
+                      label="Categories"
+                    />
                   </div>
                 </div>
                 <div className="row mb-0">
                   <div className="col s12">
                     <div className="input-field">
-                      <textarea id="detail_description" className="materialize-textarea" style={{ height: '70px' }}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie </textarea>
+                      <textarea
+                        id="detail_description"
+                        className="materialize-textarea"
+                        style={{ height: '70px' }}
+                        value={description}
+                        onChange={(event) => this.handleDetailsChange(event, 'description')}
+                      />
                       <label className="label" htmlFor="detail_description">Description (optional)</label>
                     </div>
                   </div>
@@ -95,5 +218,9 @@ class WorksheetDetails extends React.Component {
     );
   }
 }
+
+WorksheetDetails.propTypes = {
+  worksheet: PropTypes.object,
+};
 
 export default WorksheetDetails;
