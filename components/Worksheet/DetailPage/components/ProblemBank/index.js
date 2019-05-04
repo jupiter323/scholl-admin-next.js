@@ -9,10 +9,14 @@ class ProblemBank extends React.Component {
     super(props);
     this.state = {
       openSection: 'problems',
+      filterTopic: '',
     }
   }
 
   onChangeOpenSection = (openSection) => this.setState({ openSection })
+
+  onSetFilteredTopicState = (filterTopic) => this.setState({ worksheetsAreFiltered: true, filterTopic })
+  onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState)
 
   render() {
     const { open, onClose } = this.props;
@@ -83,7 +87,10 @@ class ProblemBank extends React.Component {
                   </div>
                 </div>
                 <div className="tabs-content">
-                  <FilterSection />
+                  <FilterSection
+                    onSetFilteredTopicState={this.onSetFilteredTopicState}
+                    onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
+                  />
                   <Choose>
                     <When condition={openSection === 'problems'}>
                       {/* <!-- tab problems --> */}
