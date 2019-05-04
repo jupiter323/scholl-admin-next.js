@@ -8,9 +8,12 @@ class DetailPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      problemBankOpen: true,
+      problemBankOpen: false,
     }
   }
+
+  onToggleProblemBankModal = () => this.setState(({ problemBankOpen }) => ({ problemBankOpen: !problemBankOpen }))
+
   render() {
     const { problemBankOpen } = this.state;
     return (
@@ -19,8 +22,11 @@ class DetailPage extends React.Component {
           <div className="main-row row">
             <ProblemBank
               open={problemBankOpen}
+              onClose={this.onToggleProblemBankModal}
             />
-            <WorksheetProblems />
+            <WorksheetProblems
+              onOpenProblemBankModal={this.onToggleProblemBankModal}
+            />
             <WorksheetDetails
               worksheet={{}}
             />

@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class WorksheetProblems extends React.Component {
   constructor(props) {
@@ -10,6 +10,7 @@ class WorksheetProblems extends React.Component {
   }
 
   render() {
+    const { onOpenProblemBankModal } = this.props;
     return (
       <div className="col s12 l6">
         <div className="card-block card-block-problems">
@@ -209,13 +210,23 @@ class WorksheetProblems extends React.Component {
             </div>
             <div className="card-footer right-align">
               <a href="#!" className=" waves-effect waves-teal btn-flat pink-text text-darken-1">Remove All</a>
-              <a href="#modal_add_problem" className="modal-trigger link-btn waves-effect waves-teal btn-flat">Add Problems</a>
+              <a
+                href="#"
+                className="modal-trigger link-btn waves-effect waves-teal btn-flat"
+                onClick={onOpenProblemBankModal}
+              >
+                Add Problems
+              </a>
             </div>
           </div>
         </div>
       </div>
     );
   }
+}
+
+WorksheetProblems.propTypes = {
+  onOpenProblemBankModal: PropTypes.func.isRequired,
 }
 
 export default WorksheetProblems;
