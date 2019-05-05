@@ -57,35 +57,28 @@ class ProblemBank extends React.Component {
   }
 
   handleProblemOrPassageClick = (type, value) => {
+    const { selectedProblems: currentSelectedProblems, selectedPassages: currentSelectedPassages } = this.state;
+    let clickedTypeCurrentState;
+    let clickedTypeName;
     if (type === 'problem') {
-      const { selectedProblems: currentSelectedProblems } = this.state;
-      let selectedProblems;
-      if (currentSelectedProblems.map(selectedProblem => selectedProblem.id).indexOf(value.id) === -1) {
-        selectedProblems = update(currentSelectedProblems, {
-          $push: [value],
-        });
-      } else {
-        const problemIndex = currentSelectedProblems.map(selectedProblem => selectedProblem.id).indexOf(value.id);
-        selectedProblems = update(currentSelectedProblems, {
-          $splice: [[ problemIndex, 1 ]],
-        });
-      }
-      this.setState({ selectedProblems });
+      clickedTypeCurrentState = currentSelectedProblems;
+      clickedTypeName = 'selectedProblems';
     } else {
-      const { selectedPassages: currentSelectedPassages } = this.state;
-      let selectedPassages;
-      if (currentSelectedPassages.map(selectedPassage => selectedPassage.id).indexOf(value.id) === -1) {
-        selectedPassages = update(currentSelectedPassages, {
-          $push: [value],
-        });
-      } else {
-        const passageIndex = currentSelectedPassages.map(selectedPassage => selectedPassage.id).indexOf(value.id);
-        selectedPassages = update(currentSelectedPassages, {
-          $splice: [[ passageIndex, 1 ]],
-        });
-      }
-      this.setState({ selectedPassages });
+      clickedTypeCurrentState = currentSelectedPassages;
+      clickedTypeName = 'selectedPassages';
     }
+    let clickedTypeUpdatedState;
+    if (clickedTypeCurrentState.map(selectedElement => selectedElement.id).indexOf(value.id) === -1) {
+      clickedTypeUpdatedState = update(clickedTypeCurrentState, {
+        $push: [value],
+      });
+    } else {
+      const selectedIndex = clickedTypeCurrentState.map(selectedElement => selectedElement.id).indexOf(value.id);
+      clickedTypeUpdatedState = update(clickedTypeCurrentState, {
+        $splice: [[ selectedIndex, 1 ]],
+      });
+    }
+    this.setState({ [clickedTypeName]: clickedTypeUpdatedState });
   }
 
   mapProblems = () => this.getMappableProblems().map(problem => {
