@@ -57,69 +57,77 @@ class ProblemBank extends React.Component {
   }
 
   handleProblemOrPassageClick = (type, value) => {
-    if (type === 'problems') {
+    if (type === 'problem') {
       const { selectedProblems: currentSelectedProblems } = this.state;
       let selectedProblems;
-      if (currentSelectedProblems.indexOf(value) === -1) {
+      if (currentSelectedProblems.map(selectedProblem => selectedProblem.id).indexOf(value.id) === -1) {
         selectedProblems = update(currentSelectedProblems, {
           $push: [value],
         });
       } else {
-        const valueIndex = currentSelectedProblems.indexOf(value);
+        const problemIndex = currentSelectedProblems.map(selectedProblem => selectedProblem.id).indexOf(value.id);
         selectedProblems = update(currentSelectedProblems, {
-          $splice: [[ valueIndex, 1 ]],
+          $splice: [[ problemIndex, 1 ]],
         });
       }
       this.setState({ selectedProblems });
     } else {
       const { selectedPassages: currentSelectedPassages } = this.state;
       let selectedPassages;
-      if (currentSelectedPassages.indexOf(value) === -1) {
+      if (currentSelectedPassages.map(selectedPassage => selectedPassage.id).indexOf(value.id) === -1) {
         selectedPassages = update(currentSelectedPassages, {
           $push: [value],
         });
       } else {
-        const valueIndex = currentSelectedPassages.indexOf(value);
+        const passageIndex = currentSelectedPassages.map(selectedPassage => selectedPassage.id).indexOf(value.id);
         selectedPassages = update(currentSelectedPassages, {
-          $splice: [[ valueIndex, 1 ]],
+          $splice: [[ passageIndex, 1 ]],
         });
       }
       this.setState({ selectedPassages });
     }
   }
 
-  // TODO: change conditional styling to grey row out when problem is currently selected
-  mapProblems = () => this.getMappableProblems().map(problem => (
-    <div className={problem.disabled ? "card list-table-row list-row-added" : "card list-table-row"}>
-      <div className="list-table-cell checkbox-cell">
-        <label>
-          <input type="checkbox" className="filled-in" name="check_01" />
-          <span>&nbsp;</span>
-        </label>
+  mapProblems = () => this.getMappableProblems().map(problem => {
+    const { selectedProblems } = this.state;
+    const selected = selectedProblems.map(selectedProblem => selectedProblem.id).indexOf(problem.id) !== -1;
+    return (
+      <div className={selected ? "card list-table-row list-row-added" : "card list-table-row"}>
+        <div className="list-table-cell checkbox-cell">
+          <label>
+            <input
+              type="checkbox"
+              className="filled-in"
+              name="check_01"
+              onClick={() => this.handleProblemOrPassageClick('problem', problem)}
+            />
+            <span>&nbsp;</span>
+          </label>
+        </div>
+        <div className="list-table-cell subject-cell">
+          <span>{problem.subject}</span>
+        </div>
+        <div className="list-table-cell info-cell">
+          <span>{problem.difficulty}</span>
+        </div>
+        <div className="list-table-cell type-cell">
+          <span>{problem.type}</span>
+        </div>
+        <div className="list-table-cell in-cell">{problem.inWorkbook}</div>
+        <div className="list-table-cell topic-cell">
+          {problem.topics.map(topic => <span className="chip">{topic}</span>)}
+          {/* <span className="chip">Right Trianges</span>
+          <span className="chip">Trigonometry</span> */}
+        </div>
+        <div className="list-table-cell view-cell">
+          <a href="#"><i className="icon-eye"></i></a>
+        </div>
+        <div className="list-table-cell drop-cell">
+          <a href="#"><i className="icon-plus-circle"></i></a>
+        </div>
       </div>
-      <div className="list-table-cell subject-cell">
-        <span>{problem.subject}</span>
-      </div>
-      <div className="list-table-cell info-cell">
-        <span>{problem.difficulty}</span>
-      </div>
-      <div className="list-table-cell type-cell">
-        <span>{problem.type}</span>
-      </div>
-      <div className="list-table-cell in-cell">{problem.inWorkbook}</div>
-      <div className="list-table-cell topic-cell">
-        {problem.topics.map(topic => <span className="chip">{topic}</span>)}
-        {/* <span className="chip">Right Trianges</span>
-        <span className="chip">Trigonometry</span> */}
-      </div>
-      <div className="list-table-cell view-cell">
-        <a href="#"><i className="icon-eye"></i></a>
-      </div>
-      <div className="list-table-cell drop-cell">
-        <a href="#"><i className="icon-plus-circle"></i></a>
-      </div>
-    </div>
-  ))
+    )
+  })
 
   render() {
     const { open, onClose } = this.props;
