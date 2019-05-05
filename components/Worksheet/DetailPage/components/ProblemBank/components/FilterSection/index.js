@@ -123,46 +123,46 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="sat_practice"
-                      checked={activeFilters.indexOf('sat_practice') !== -1}
-                      onChange={() => this.handleFilterClick('sat_practice')}
+                      id="satPractice"
+                      checked={activeFilters.indexOf('satPractice') !== -1}
+                      onChange={() => this.handleFilterClick('satPractice')}
                     />
-                    <label htmlFor="sat_practice">SAT Practice</label>
+                    <label htmlFor="satPractice">SAT Practice</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="skill_builder"
-                      checked={activeFilters.indexOf('skill_builder') !== -1}
-                      onChange={() => this.handleFilterClick('skill_builder')}
+                      id="skillBuilder"
+                      checked={activeFilters.indexOf('skillBuilder') !== -1}
+                      onChange={() => this.handleFilterClick('skillBuilder')}
                     />
-                    <label htmlFor="skill_builder">Skill Builder</label>
+                    <label htmlFor="skillBuilder">Skill Builder</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="in_workbook"
-                      checked={activeFilters.indexOf('in_workbook') !== -1}
-                      onChange={() => this.handleFilterClick('in_workbook')}
+                      id="inWorkbook"
+                      checked={activeFilters.indexOf('inWorkbook') !== -1}
+                      onChange={() => this.handleFilterClick('inWorkbook')}
                     />
-                    <label htmlFor="in_workbook">In Workbook</label>
+                    <label htmlFor="inWorkbook">In Workbook</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="not_workbook"
-                      checked={activeFilters.indexOf('not_workbook') !== -1}
-                      onChange={() => this.handleFilterClick('not_workbook')}
+                      id="notWorkbook"
+                      checked={activeFilters.indexOf('notWorkbook') !== -1}
+                      onChange={() => this.handleFilterClick('notWorkbook')}
                     />
-                    <label htmlFor="not_workbook">Not in Workbook</label>
+                    <label htmlFor="notWorkbook">Not in Workbook</label>
                   </li>
                 </ul>
               </div>
               <div className="d-flex row mb-0 justify-center">
                 <div className="col s12 m3">
-                  <div className="input-field">
+                  <div className="input-field" style={{ marginBottom: '0', marginTop: '0' }}>
                     <Dropdown
                       value={getValueFromState(topic, sampleTopics)}
                       onChange={(event) => this.handleFilterChange(event, 'topic')}

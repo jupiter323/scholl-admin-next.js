@@ -52,3 +52,8 @@ export const timeEstimate = ({ timeEstimate: timeEstimateA }, { timeEstimate: ti
   if (timeEstimateA > timeEstimateB) { return -1; }
   return 0;
 }
+
+export const subject = ({ subject: subjectA }, { subject: subjectB }) => {
+  if (subjectA > subjectB) { return -1; }
+  return 0;
+}

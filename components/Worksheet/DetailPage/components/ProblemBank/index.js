@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
 
 import Portal from '../../../../Portal';
 import FilterSection from './components/FilterSection';
+import sampleProblems from '../../../utils/sampleProblems';
+import { subject } from '../../../../utils/sortFunctions';
 
 class ProblemBank extends React.Component {
   constructor(props) {
@@ -10,6 +13,9 @@ class ProblemBank extends React.Component {
     this.state = {
       openSection: 'problems',
       filterTopic: '',
+      selectedProblems: [],
+      selectedPassages: [],
+      problems: sampleProblems,
     }
   }
 
@@ -17,6 +23,103 @@ class ProblemBank extends React.Component {
 
   onSetFilteredTopicState = (filterTopic) => this.setState({ worksheetsAreFiltered: true, filterTopic })
   onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState)
+
+  // TODO: change this function to handle array of topics instead of just one
+  onFilterByTopic = (preFilteredProblems = []) => {
+    const { problems: allProblems, filterTopic } = this.state;
+    let problems;
+    if (preFilteredProblems.length) {
+      problems = preFilteredProblems;
+    } else {
+      problems = allProblems;
+    }
+    return problems.reduce((finalArr, currentWorksheet) => {
+      const { topic } = currentWorksheet;
+      if (topic === filterTopic && finalArr.indexOf(currentWorksheet) === -1) {
+        finalArr.push(currentWorksheet);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  getMappableProblems = () => {
+    const { filterTopic, problems: allProblems, sort } = this.state;
+    let problems;
+    if (filterTopic.length) {
+      problems = this.onFilterByTopic();
+    } else {
+      problems = allProblems;
+    }
+    if (sort) {
+      return problems.sort(subject);
+    }
+    return problems;
+  }
+
+  handleProblemOrPassageClick = (type, value) => {
+    if (type === 'problems') {
+      const { selectedProblems: currentSelectedProblems } = this.state;
+      let selectedProblems;
+      if (currentSelectedProblems.indexOf(value) === -1) {
+        selectedProblems = update(currentSelectedProblems, {
+          $push: [value],
+        });
+      } else {
+        const valueIndex = currentSelectedProblems.indexOf(value);
+        selectedProblems = update(currentSelectedProblems, {
+          $splice: [[ valueIndex, 1 ]],
+        });
+      }
+      this.setState({ selectedProblems });
+    } else {
+      const { selectedPassages: currentSelectedPassages } = this.state;
+      let selectedPassages;
+      if (currentSelectedPassages.indexOf(value) === -1) {
+        selectedPassages = update(currentSelectedPassages, {
+          $push: [value],
+        });
+      } else {
+        const valueIndex = currentSelectedPassages.indexOf(value);
+        selectedPassages = update(currentSelectedPassages, {
+          $splice: [[ valueIndex, 1 ]],
+        });
+      }
+      this.setState({ selectedPassages });
+    }
+  }
+
+  // TODO: change conditional styling to grey row out when problem is currently selected
+  mapProblems = () => this.getMappableProblems().map(problem => (
+    <div className={problem.disabled ? "card list-table-row list-row-added" : "card list-table-row"}>
+      <div className="list-table-cell checkbox-cell">
+        <label>
+          <input type="checkbox" className="filled-in" name="check_01" />
+          <span>&nbsp;</span>
+        </label>
+      </div>
+      <div className="list-table-cell subject-cell">
+        <span>{problem.subject}</span>
+      </div>
+      <div className="list-table-cell info-cell">
+        <span>{problem.difficulty}</span>
+      </div>
+      <div className="list-table-cell type-cell">
+        <span>{problem.type}</span>
+      </div>
+      <div className="list-table-cell in-cell">{problem.inWorkbook}</div>
+      <div className="list-table-cell topic-cell">
+        {problem.topics.map(topic => <span className="chip">{topic}</span>)}
+        {/* <span className="chip">Right Trianges</span>
+        <span className="chip">Trigonometry</span> */}
+      </div>
+      <div className="list-table-cell view-cell">
+        <a href="#"><i className="icon-eye"></i></a>
+      </div>
+      <div className="list-table-cell drop-cell">
+        <a href="#"><i className="icon-plus-circle"></i></a>
+      </div>
+    </div>
+  ))
 
   render() {
     const { open, onClose } = this.props;
@@ -122,69 +225,12 @@ class ProblemBank extends React.Component {
                                   </div>
                                 </div>
                                 <div className="list-table-body">
-                                  {/* <!-- card row --> */}
-                                  <div className="card list-table-row">
-                                    <div className="list-table-cell checkbox-cell">
-                                      <label>
-                                        <input type="checkbox" className="filled-in" name="check_01" />
-                                        <span>&nbsp;</span>
-                                      </label>
-                                    </div>
-                                    <div className="list-table-cell subject-cell">
-                                      <span>Math</span>
-                                    </div>
-                                    <div className="list-table-cell info-cell">
-                                      <span>Easy</span>
-                                    </div>
-                                    <div className="list-table-cell type-cell">
-                                      <span>Skill Builder</span>
-                                    </div>
-                                    <div className="list-table-cell in-cell">No</div>
-                                    <div className="list-table-cell topic-cell">
-                                      <span className="chip">Right Trianges</span>
-                                      <span className="chip">Trigonometry</span>
-                                    </div>
-                                    <div className="list-table-cell view-cell">
-                                      <a href="#"><i className="icon-eye"></i></a>
-                                    </div>
-                                    <div className="list-table-cell drop-cell">
-                                      <a href="#"><i className="icon-plus-circle"></i></a>
-                                    </div>
-                                  </div>
+                                  {this.mapProblems()}
                                   {/* <!-- card row --> */}
                                   <div className="card list-table-row">
                                     <div className="list-table-cell checkbox-cell">
                                       <label>
                                         <input type="checkbox" className="filled-in" name="check_02" />
-                                        <span>&nbsp;</span>
-                                      </label>
-                                    </div>
-                                    <div className="list-table-cell subject-cell">
-                                      <span>Math</span>
-                                    </div>
-                                    <div className="list-table-cell info-cell">
-                                      <span>Easy</span>
-                                    </div>
-                                    <div className="list-table-cell type-cell">
-                                      <span>Skill Builder</span>
-                                    </div>
-                                    <div className="list-table-cell in-cell">No</div>
-                                    <div className="list-table-cell topic-cell">
-                                      <span className="chip">Right Trianges</span>
-                                      <span className="chip">Trigonometry</span>
-                                    </div>
-                                    <div className="list-table-cell view-cell">
-                                      <a href="#"><i className="icon-eye"></i></a>
-                                    </div>
-                                    <div className="list-table-cell drop-cell">
-                                      <a href="#"><i className="icon-plus-circle"></i></a>
-                                    </div>
-                                  </div>
-                                  {/* <!-- card row --> */}
-                                  <div className="card list-table-row">
-                                    <div className="list-table-cell checkbox-cell">
-                                      <label>
-                                        <input type="checkbox" className="filled-in" name="check_03" />
                                         <span>&nbsp;</span>
                                       </label>
                                     </div>
@@ -238,6 +284,7 @@ class ProblemBank extends React.Component {
                                       <a href="#"><i className="icon-plus-circle"></i></a>
                                     </div>
                                   </div>
+
                                 </div>
                               </div>
                             </div>
