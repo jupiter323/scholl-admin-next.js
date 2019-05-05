@@ -54,7 +54,7 @@ class FilterSection extends React.Component {
 
   render() {
     const { activeFilters, open, topic } = this.state;
-    const { sortBySubject } = this.props;
+    const { sortBySubject, toggleSelectAllProblemsOrPassages } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable" style={{ minHeight: '0' }}>
@@ -204,8 +204,8 @@ class FilterSection extends React.Component {
                       <input
                         type="checkbox"
                         className="filled-in" data-check-pattern="[name^='check_']"
-                        checked={activeFilters.indexOf('filled') !== -1}
-                        onChange={() => this.handleFilterClick('filled')}
+                        // checked={activeFilters.indexOf('filled') !== -1}
+                        onChange={() =>toggleSelectAllProblemsOrPassages('problem')}
                       />
                       <span>&nbsp;</span>
                     </label>
@@ -233,6 +233,7 @@ FilterSection.propTypes = {
   sortBySubject: PropTypes.func.isRequired,
   onSetFilteredTopicState: PropTypes.func.isRequired,
   onUnsetFilteredTopicState: PropTypes.func.isRequired,
+  toggleSelectAllProblemsOrPassages: PropTypes.func.isRequired,
 }
 
 export default FilterSection;

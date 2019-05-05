@@ -6,8 +6,8 @@ export default [
     type: 'Skill Builder',
     inWorkbook: false,
     topics: [
-      'Right Triangles',
-      'Trigonometry',
+      'rightTriangles',
+      'trigonometry',
     ],
   },
   {
@@ -17,8 +17,8 @@ export default [
     type: 'SAT Practice',
     inWorkbook: false,
     topics: [
-      'Right Triangles',
-      'Trigonometry',
+      'rightTriangles',
+      'trigonometry',
     ],
   },
   {
@@ -29,8 +29,8 @@ export default [
     inWorkbook: false,
     disabled: true,
     topics: [
-      'Right Triangles',
-      'Trigonometry',
+      'rightTriangles',
+      'trigonometry',
     ],
   },
   {
@@ -40,7 +40,7 @@ export default [
     type: 'Skill Builder',
     inWorkbook: false,
     topics: [
-      'Trigonometry',
+      'trigonometry',
     ],
   },
   {
@@ -51,7 +51,7 @@ export default [
     inWorkbook: false,
     disabled: true,
     topics: [
-      'Right Triangles',
+      'rightTriangles',
     ],
   },
   {
@@ -61,8 +61,8 @@ export default [
     type: 'SAT Practice',
     inWorkbook: false,
     topics: [
-      'Right Triangles',
-      'Trigonometry',
+      'rightTriangles',
+      'trigonometry',
     ],
   },
 ];

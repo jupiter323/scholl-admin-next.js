@@ -24,6 +24,7 @@ class ProblemBank extends React.Component {
       selectedProblems: [],
       selectedPassages: [],
       problems: sampleProblems,
+      passages: [],
     }
   }
 
@@ -43,7 +44,6 @@ class ProblemBank extends React.Component {
     return problems.sort(subjectDescending);
   }
 
-  // TODO: change this function to handle array of topics instead of just one
   onFilterByTopic = (preFilteredProblems = []) => {
     const { problems: allProblems, filterTopic } = this.state;
     let problems;
@@ -75,6 +75,27 @@ class ProblemBank extends React.Component {
       return this.onSetAscendingSort();
     }
     return this.onSetDescendingSort();
+  }
+
+  toggleSelectAllProblemsOrPassages = (type) => {
+    const { problems, passages, selectedProblems: currentSelectedProblems, selectedPassages: currentSelectedPassages } = this.state;
+    let clickedTypeCurrentState;
+    let clickedTypeName;
+    let clickedAllOfType;
+    if (type === 'problem') {
+      clickedTypeCurrentState = currentSelectedProblems;
+      clickedTypeName = 'selectedProblems';
+      clickedAllOfType = problems;
+    } else {
+      clickedTypeCurrentState = currentSelectedPassages;
+      clickedTypeName = 'selectedPassages';
+      clickedAllOfType = passages;
+    }
+    if (clickedTypeCurrentState.length === 0) {
+      this.setState({ [clickedTypeName]: clickedAllOfType });
+    } else {
+      this.setState({ [clickedTypeName]: [] });
+    }
   }
 
   // Conditionally updates the selected problem or passages array depending on the incoming type name
@@ -114,6 +135,7 @@ class ProblemBank extends React.Component {
               type="checkbox"
               className="filled-in"
               name="check_01"
+              checked={selectedProblems.map(selectedProblem => selectedProblem.id).indexOf(problem.id) !== -1}
               onClick={() => this.handleProblemOrPassageClick('problem', problem)}
             />
             <span>&nbsp;</span>
@@ -215,6 +237,7 @@ class ProblemBank extends React.Component {
                     onSetFilteredTopicState={this.onSetFilteredTopicState}
                     onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
                     sortBySubject={this.determineSort}
+                    toggleSelectAllProblemsOrPassages={this.toggleSelectAllProblemsOrPassages}
                   />
                   <Choose>
                     <When condition={openSection === 'problems'}>
