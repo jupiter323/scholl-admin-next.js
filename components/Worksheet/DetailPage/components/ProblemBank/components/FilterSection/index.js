@@ -18,43 +18,23 @@ class FilterSection extends React.Component {
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
-  onClearFilters = () => this.setState({ activeFilters: [], topic: '' }, this.props.onUnsetFilteredTopicState)
+  onClearFilters = () => this.setState({ activeFilters: [], topic: '' }, this.props.onClearFilters)
 
-  handleFilterClick = (filter) => {
-    const { activeFilters: currentActiveFilters } = this.state;
-    let activeFilters;
-    if (currentActiveFilters.indexOf(filter) === -1) {
-      activeFilters = update(currentActiveFilters, {
-        $push: [filter],
-      });
-    } else {
-      const filterIndex = currentActiveFilters.indexOf(filter);
-      activeFilters = update(currentActiveFilters, {
-        $splice: [[ filterIndex, 1 ]],
-      });
-    }
-    this.setState({ activeFilters });
-  }
-
+  // Sets component-level state so the UI reflects the updated dropdown option, then calls onSetFilteredTopicState to actually implement the filtering
   // eslint-disable-next-line consistent-return
-  handleFilterChange = (event, name) => {
-    const { onSetFilteredTopicState, onUnsetFilteredTopicState } = this.props;
+  handleTopicFilterChange = (event) => {
+    const { onSetFilteredTopicState } = this.props;
     const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
-      $merge: { [name]: value },
+      $merge: { topic: value },
     });
     this.setState(updatedState);
-    if (name === 'topic') {
-      if (event === '') {
-        return onUnsetFilteredTopicState();
-      }
-      return onSetFilteredTopicState(event);
-    }
+    return onSetFilteredTopicState(event);
   }
 
   render() {
-    const { activeFilters, open, topic } = this.state;
-    const { sortBySubject, toggleSelectAllProblemsOrPassages } = this.props;
+    const { open, topic } = this.state;
+    const { sortBySubject, toggleSelectAllProblemsOrPassages, handleFilterClick, subjectFilters, difficultyFilters, typeFilters, workbookFilters } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable" style={{ minHeight: '0' }}>
@@ -66,8 +46,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="reading_problems"
-                      checked={activeFilters.indexOf('reading') !== -1}
-                      onChange={() => this.handleFilterClick('reading')}
+                      checked={subjectFilters.indexOf('reading') !== -1}
+                      onChange={() => handleFilterClick('subject', 'reading')}
                     />
                     <label htmlFor="reading_problems">Reading</label>
                   </li>
@@ -75,8 +55,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="writing"
-                      checked={activeFilters.indexOf('writing') !== -1}
-                      onChange={() => this.handleFilterClick('writing')}
+                      checked={subjectFilters.indexOf('writing') !== -1}
+                      onChange={() => handleFilterClick('subject', 'writing')}
                     />
                     <label htmlFor="writing">Writing</label>
                   </li>
@@ -84,8 +64,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="math"
-                      checked={activeFilters.indexOf('math') !== -1}
-                      onChange={() => this.handleFilterClick('math')}
+                      checked={subjectFilters.indexOf('math') !== -1}
+                      onChange={() => handleFilterClick('subject', 'math')}
                     />
                     <label htmlFor="math">Math</label>
                   </li>
@@ -95,8 +75,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="easy"
-                      checked={activeFilters.indexOf('easy') !== -1}
-                      onChange={() => this.handleFilterClick('easy')}
+                      checked={difficultyFilters.indexOf('easy') !== -1}
+                      onChange={() => handleFilterClick('difficulty', 'easy')}
                     />
                     <label htmlFor="easy">Easy</label>
                   </li>
@@ -104,8 +84,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="medium"
-                      checked={activeFilters.indexOf('medium') !== -1}
-                      onChange={() => this.handleFilterClick('medium')}
+                      checked={difficultyFilters.indexOf('medium') !== -1}
+                      onChange={() => handleFilterClick('difficulty', 'medium')}
                     />
                     <label htmlFor="medium">Medium</label>
                   </li>
@@ -113,8 +93,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="hard"
-                      checked={activeFilters.indexOf('hard') !== -1}
-                      onChange={() => this.handleFilterClick('hard')}
+                      checked={difficultyFilters.indexOf('hard') !== -1}
+                      onChange={() => handleFilterClick('difficulty', 'hard')}
                     />
                     <label htmlFor="hard">Hard</label>
                   </li>
@@ -124,8 +104,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="satPractice"
-                      checked={activeFilters.indexOf('satPractice') !== -1}
-                      onChange={() => this.handleFilterClick('satPractice')}
+                      checked={typeFilters.indexOf('satPractice') !== -1}
+                      onChange={() => handleFilterClick('type', 'satPractice')}
                     />
                     <label htmlFor="satPractice">SAT Practice</label>
                   </li>
@@ -133,8 +113,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="skillBuilder"
-                      checked={activeFilters.indexOf('skillBuilder') !== -1}
-                      onChange={() => this.handleFilterClick('skillBuilder')}
+                      checked={typeFilters.indexOf('skillBuilder') !== -1}
+                      onChange={() => handleFilterClick('type', 'skillBuilder')}
                     />
                     <label htmlFor="skillBuilder">Skill Builder</label>
                   </li>
@@ -144,8 +124,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="inWorkbook"
-                      checked={activeFilters.indexOf('inWorkbook') !== -1}
-                      onChange={() => this.handleFilterClick('inWorkbook')}
+                      checked={workbookFilters.indexOf('inWorkbook') !== -1}
+                      onChange={() => handleFilterClick('workbook', 'inWorkbook')}
                     />
                     <label htmlFor="inWorkbook">In Workbook</label>
                   </li>
@@ -153,8 +133,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="notWorkbook"
-                      checked={activeFilters.indexOf('notWorkbook') !== -1}
-                      onChange={() => this.handleFilterClick('notWorkbook')}
+                      checked={workbookFilters.indexOf('notWorkbook') !== -1}
+                      onChange={() => handleFilterClick('workbook', 'notWorkbook')}
                     />
                     <label htmlFor="notWorkbook">Not in Workbook</label>
                   </li>
@@ -165,7 +145,7 @@ class FilterSection extends React.Component {
                   <div className="input-field" style={{ marginBottom: '0', marginTop: '0' }}>
                     <Dropdown
                       value={getValueFromState(topic, sampleTopics)}
-                      onChange={(event) => this.handleFilterChange(event, 'topic')}
+                      onChange={this.handleTopicFilterChange}
                       options={sampleTopics}
                       label="Topic"
                       stateKey="topic"
@@ -230,9 +210,14 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTypes = {
+  subjectFilters: PropTypes.array.isRequired,
+  difficultyFilters: PropTypes.array.isRequired,
+  typeFilters: PropTypes.array.isRequired,
+  workbookFilters: PropTypes.array.isRequired,
   sortBySubject: PropTypes.func.isRequired,
+  handleFilterClick: PropTypes.func.isRequired,
   onSetFilteredTopicState: PropTypes.func.isRequired,
-  onUnsetFilteredTopicState: PropTypes.func.isRequired,
+  onClearFilters: PropTypes.func.isRequired,
   toggleSelectAllProblemsOrPassages: PropTypes.func.isRequired,
 }
 

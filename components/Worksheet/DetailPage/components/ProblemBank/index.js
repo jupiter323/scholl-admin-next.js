@@ -19,7 +19,11 @@ class ProblemBank extends React.Component {
     super(props);
     this.state = {
       openSection: 'problems',
-      filterTopic: '',
+      topicFilter: '',
+      subjectFilters: [],
+      difficultyFilters: [],
+      typeFilters: [],
+      workbookFilters: [],
       sort: '',
       selectedProblems: [],
       selectedPassages: [],
@@ -29,9 +33,8 @@ class ProblemBank extends React.Component {
   }
 
   onChangeOpenSection = (openSection) => this.setState({ openSection })
-
-  onSetFilteredTopicState = (filterTopic) => this.setState({ worksheetsAreFiltered: true, filterTopic })
-  onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState)
+  onSetFilteredTopicState = (topicFilter) => this.setState({ topicFilter })
+  onClearFilters = () => this.setState({ subjectFilters: [], difficultyFilters: [], typeFilters: [], workbookFilters: [], topicFilter: '' })
 
   onSetAscendingSort = () => this.setState({ sort: 'ascending' });
   onSetDescendingSort = () => this.setState({ sort: 'descending' });
@@ -45,20 +48,20 @@ class ProblemBank extends React.Component {
   }
 
   onFilterByTopic = (preFilteredProblems = []) => {
-    const { problems: allProblems, filterTopic } = this.state;
+    const { problems: allProblems, topicFilter } = this.state;
     let problems;
     if (preFilteredProblems.length) {
       problems = preFilteredProblems;
     } else {
       problems = allProblems;
     }
-    return problems.filter(problem => problem.topics.indexOf(filterTopic) !== -1);
+    return problems.filter(problem => problem.topics.indexOf(topicFilter) !== -1);
   }
 
   getMappableProblems = () => {
-    const { filterTopic, problems: allProblems, sort } = this.state;
+    const { topicFilter, problems: allProblems, sort } = this.state;
     let problems;
-    if (filterTopic.length) {
+    if (topicFilter.length) {
       problems = this.onFilterByTopic();
     } else {
       problems = allProblems;
@@ -75,6 +78,45 @@ class ProblemBank extends React.Component {
       return this.onSetAscendingSort();
     }
     return this.onSetDescendingSort();
+  }
+
+  handleFilterClick = (filterType, filter) => {
+    const { subjectFilters: currentSubjectFilters, difficultyFilters: currentDifficultyFilters,
+      typeFilters: currentTypeFilters, workbookFilters: currentWorkbookFilters } = this.state;
+    let modifiedFilterCurrentState;
+    let modifiedFilterName;
+    let modifiedFilterUpdatedState;
+    switch (filterType) {
+      case 'subject':
+        modifiedFilterCurrentState = currentSubjectFilters;
+        modifiedFilterName = 'subjectFilters';
+        break;
+      case 'difficulty':
+        modifiedFilterCurrentState = currentDifficultyFilters;
+        modifiedFilterName = 'difficultyFilters';
+        break;
+      case 'type':
+        modifiedFilterCurrentState = currentTypeFilters;
+        modifiedFilterName = 'typeFilters';
+        break;
+      case 'workbook':
+        modifiedFilterCurrentState = currentWorkbookFilters;
+        modifiedFilterName = 'workbookFilters';
+        break;
+      default:
+        break;
+    }
+    if (modifiedFilterCurrentState.indexOf(filter) === -1) {
+      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+        $push: [filter],
+      });
+    } else {
+      const filterIndex = modifiedFilterCurrentState.indexOf(filter);
+      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+        $splice: [[ filterIndex, 1 ]],
+      });
+    }
+    this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   }
 
   toggleSelectAllProblemsOrPassages = (type) => {
@@ -166,7 +208,7 @@ class ProblemBank extends React.Component {
 
   render() {
     const { open, onClose } = this.props;
-    const { openSection } = this.state;
+    const { openSection, subjectFilters, difficultyFilters, typeFilters, workbookFilters } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
@@ -235,9 +277,14 @@ class ProblemBank extends React.Component {
                 <div className="tabs-content">
                   <FilterSection
                     onSetFilteredTopicState={this.onSetFilteredTopicState}
-                    onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
+                    onClearFilters={this.onClearFilters}
                     sortBySubject={this.determineSort}
                     toggleSelectAllProblemsOrPassages={this.toggleSelectAllProblemsOrPassages}
+                    handleFilterClick={this.handleFilterClick}
+                    subjectFilters={subjectFilters}
+                    difficultyFilters={difficultyFilters}
+                    typeFilters={typeFilters}
+                    workbookFilters={workbookFilters}
                   />
                   <Choose>
                     <When condition={openSection === 'problems'}>
