@@ -4,8 +4,15 @@ import update from 'immutability-helper';
 
 import Portal from '../../../../Portal';
 import FilterSection from './components/FilterSection';
+import TableHeader from './components/TableHeader';
+
 import sampleProblems from '../../../utils/sampleProblems';
-import { subject } from '../../../../utils/sortFunctions';
+import { subjectAscending, subjectDescending } from '../../../../utils/sortFunctions';
+
+const topicMap = {
+  rightTriangles: 'Right Triangles',
+  trigonometry: 'Trigonometry',
+};
 
 class ProblemBank extends React.Component {
   constructor(props) {
@@ -13,6 +20,7 @@ class ProblemBank extends React.Component {
     this.state = {
       openSection: 'problems',
       filterTopic: '',
+      sort: '',
       selectedProblems: [],
       selectedPassages: [],
       problems: sampleProblems,
@@ -24,6 +32,17 @@ class ProblemBank extends React.Component {
   onSetFilteredTopicState = (filterTopic) => this.setState({ worksheetsAreFiltered: true, filterTopic })
   onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState)
 
+  onSetAscendingSort = () => this.setState({ sort: 'ascending' });
+  onSetDescendingSort = () => this.setState({ sort: 'descending' });
+
+  onSortBySubject = (problems) => {
+    const { sort } = this.state;
+    if (sort === 'ascending') {
+      return problems.sort(subjectAscending);
+    }
+    return problems.sort(subjectDescending);
+  }
+
   // TODO: change this function to handle array of topics instead of just one
   onFilterByTopic = (preFilteredProblems = []) => {
     const { problems: allProblems, filterTopic } = this.state;
@@ -33,13 +52,7 @@ class ProblemBank extends React.Component {
     } else {
       problems = allProblems;
     }
-    return problems.reduce((finalArr, currentWorksheet) => {
-      const { topic } = currentWorksheet;
-      if (topic === filterTopic && finalArr.indexOf(currentWorksheet) === -1) {
-        finalArr.push(currentWorksheet);
-      }
-      return finalArr;
-    }, []);
+    return problems.filter(problem => problem.topics.indexOf(filterTopic) !== -1);
   }
 
   getMappableProblems = () => {
@@ -51,11 +64,20 @@ class ProblemBank extends React.Component {
       problems = allProblems;
     }
     if (sort) {
-      return problems.sort(subject);
+      return this.onSortBySubject(problems);
     }
     return problems;
   }
 
+  determineSort = () => {
+    const { sort } = this.state;
+    if (sort === '' || sort === 'descending') {
+      return this.onSetAscendingSort();
+    }
+    return this.onSetDescendingSort();
+  }
+
+  // Conditionally updates the selected problem or passages array depending on the incoming type name
   handleProblemOrPassageClick = (type, value) => {
     const { selectedProblems: currentSelectedProblems, selectedPassages: currentSelectedPassages } = this.state;
     let clickedTypeCurrentState;
@@ -106,11 +128,9 @@ class ProblemBank extends React.Component {
         <div className="list-table-cell type-cell">
           <span>{problem.type}</span>
         </div>
-        <div className="list-table-cell in-cell">{problem.inWorkbook}</div>
+        <div className="list-table-cell in-cell">{problem.inWorkbook ? 'Yes' : 'No'}</div>
         <div className="list-table-cell topic-cell">
-          {problem.topics.map(topic => <span className="chip">{topic}</span>)}
-          {/* <span className="chip">Right Trianges</span>
-          <span className="chip">Trigonometry</span> */}
+          {problem.topics.map(topic => <span className="chip">{topicMap[topic]}</span>)}
         </div>
         <div className="list-table-cell view-cell">
           <a href="#"><i className="icon-eye"></i></a>
@@ -194,6 +214,7 @@ class ProblemBank extends React.Component {
                   <FilterSection
                     onSetFilteredTopicState={this.onSetFilteredTopicState}
                     onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
+                    sortBySubject={this.determineSort}
                   />
                   <Choose>
                     <When condition={openSection === 'problems'}>
@@ -202,90 +223,13 @@ class ProblemBank extends React.Component {
                         <div className="content-section content-section-80">
                           <div className="container-lg">
                             <div className="result-row center-align">
-                              <b className="result">- 16 matches -</b>
+                              <b className="result">- {this.getMappableProblems().length} matches -</b>
                             </div>
                             <div className="list-view-section">
                               <div className="list-table detail-table">
-                                <div className="list-table-header show-on-medium-and-down hide-on-large-only">
-                                  <div className="list-table-row">
-                                    <div className="list-table-cell checkbox-cell">
-                                      <label>
-                                        <input type="checkbox" className="filled-in" data-check-pattern="[name^='check_']" />
-                                        <span>&nbsp;</span>
-                                      </label>
-                                    </div>
-                                    <div className="list-table-cell subject-cell">
-                                      <a href="#"><span className="sort-holder">Subject <i className="sort-icon custom-icon-traingle-down"></i></span></a>
-                                    </div>
-                                    <div className="list-table-cell info-cell"><b>Diﬃculty</b></div>
-                                    <div className="list-table-cell type-cell"><b>Type</b></div>
-                                    <div className="list-table-cell in-cell"><b>In Workbook</b></div>
-                                    <div className="list-table-cell topic-cell"><b>Topic(s)</b></div>
-                                    <div className="list-table-cell view-cell"><b>&nbsp;</b></div>
-                                    <div className="list-table-cell drop-cell">&nbsp;</div>
-                                  </div>
-                                </div>
+                                <TableHeader sortBySubject={this.determineSort} />
                                 <div className="list-table-body">
                                   {this.mapProblems()}
-                                  {/* <!-- card row --> */}
-                                  <div className="card list-table-row">
-                                    <div className="list-table-cell checkbox-cell">
-                                      <label>
-                                        <input type="checkbox" className="filled-in" name="check_02" />
-                                        <span>&nbsp;</span>
-                                      </label>
-                                    </div>
-                                    <div className="list-table-cell subject-cell">
-                                      <span>Math</span>
-                                    </div>
-                                    <div className="list-table-cell info-cell">
-                                      <span>Easy</span>
-                                    </div>
-                                    <div className="list-table-cell type-cell">
-                                      <span>Skill Builder</span>
-                                    </div>
-                                    <div className="list-table-cell in-cell">No</div>
-                                    <div className="list-table-cell topic-cell">
-                                      <span className="chip">Right Trianges</span>
-                                      <span className="chip">Trigonometry</span>
-                                    </div>
-                                    <div className="list-table-cell view-cell">
-                                      <a href="#"><i className="icon-eye"></i></a>
-                                    </div>
-                                    <div className="list-table-cell drop-cell">
-                                      <a href="#"><i className="icon-plus-circle"></i></a>
-                                    </div>
-                                  </div>
-                                  {/* <!-- card row disabled --> */}
-                                  <div className="card list-table-row list-row-added">
-                                    <div className="list-table-cell checkbox-cell">
-                                      <label>
-                                        <input type="checkbox" className="filled-in" name="check_04" disabled />
-                                        <span>&nbsp;</span>
-                                      </label>
-                                    </div>
-                                    <div className="list-table-cell subject-cell">
-                                      <span>Math</span>
-                                    </div>
-                                    <div className="list-table-cell info-cell">
-                                      <span>Easy</span>
-                                    </div>
-                                    <div className="list-table-cell type-cell">
-                                      <span>Skill Builder</span>
-                                    </div>
-                                    <div className="list-table-cell in-cell">No</div>
-                                    <div className="list-table-cell topic-cell">
-                                      <span className="chip">Right Trianges</span>
-                                      <span className="chip">Trigonometry</span>
-                                    </div>
-                                    <div className="list-table-cell view-cell">
-                                      <a href="#"><i className="icon-eye"></i></a>
-                                    </div>
-                                    <div className="list-table-cell drop-cell">
-                                      <a href="#"><i className="icon-plus-circle"></i></a>
-                                    </div>
-                                  </div>
-
                                 </div>
                               </div>
                             </div>
@@ -313,22 +257,7 @@ class ProblemBank extends React.Component {
                             {/* <!-- card --> */}
                             <div className="list-view-section">
                               <div className="list-table detail-table">
-                                <div className="list-table-header show-on-medium-and-down hide-on-large-only">
-                                  <div className="list-table-row">
-                                    <div className="list-table-cell checkbox-cell">
-                                      <span>&nbsp;</span>
-                                    </div>
-                                    <div className="list-table-cell subject-cell">
-                                      <a href="#"><span className="sort-holder">Subject <i className="sort-icon custom-icon-traingle-down"></i></span></a>
-                                    </div>
-                                    <div className="list-table-cell info-cell"><b>Diﬃculty</b></div>
-                                    <div className="list-table-cell type-cell"><b>Type</b></div>
-                                    <div className="list-table-cell in-cell"><b>In Workbook</b></div>
-                                    <div className="list-table-cell topic-cell"><b>Topic(s)</b></div>
-                                    <div className="list-table-cell view-cell"><b>&nbsp;</b></div>
-                                    <div className="list-table-cell drop-cell">&nbsp;</div>
-                                  </div>
-                                </div>
+                                <TableHeader sortBySubject={this.determineSort} />
                                 <div className="list-table-body">
                                   <div className="combined-holder">
                                     <div className="combined-header">

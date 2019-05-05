@@ -53,7 +53,12 @@ export const timeEstimate = ({ timeEstimate: timeEstimateA }, { timeEstimate: ti
   return 0;
 }
 
-export const subject = ({ subject: subjectA }, { subject: subjectB }) => {
+export const subjectAscending = ({ subject: subjectA }, { subject: subjectB }) => {
+  if (subjectA < subjectB) { return -1; }
+  return 0;
+}
+
+export const subjectDescending = ({ subject: subjectA }, { subject: subjectB }) => {
   if (subjectA > subjectB) { return -1; }
   return 0;
 }

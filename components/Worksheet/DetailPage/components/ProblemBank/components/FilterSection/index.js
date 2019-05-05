@@ -14,12 +14,11 @@ class FilterSection extends React.Component {
       open: true,
       topic: '',
       activeFilters: [],
-      filterTopic: '',
     };
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
-  onClearFilters = () => this.setState({ activeFilters: [] })
+  onClearFilters = () => this.setState({ activeFilters: [], topic: '' }, this.props.onUnsetFilteredTopicState)
 
   handleFilterClick = (filter) => {
     const { activeFilters: currentActiveFilters } = this.state;
@@ -55,6 +54,7 @@ class FilterSection extends React.Component {
 
   render() {
     const { activeFilters, open, topic } = this.state;
+    const { sortBySubject } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable" style={{ minHeight: '0' }}>
@@ -205,13 +205,13 @@ class FilterSection extends React.Component {
                         type="checkbox"
                         className="filled-in" data-check-pattern="[name^='check_']"
                         checked={activeFilters.indexOf('filled') !== -1}
-                        onChange={() => this.handleFilterClfilledick('')}
+                        onChange={() => this.handleFilterClick('filled')}
                       />
                       <span>&nbsp;</span>
                     </label>
                   </div>
                   <div className="list-table-cell subject-cell">
-                    <a href="#"><span className="sort-holder">Subject <i className="sort-icon custom-icon-traingle-down"></i></span></a>
+                    <a href="#" onClick={sortBySubject}><span className="sort-holder">Subject <i className="sort-icon custom-icon-traingle-down"></i></span></a>
                   </div>
                   <div className="list-table-cell info-cell"><b>Diﬃculty</b></div>
                   <div className="list-table-cell type-cell"><b>Type</b></div>
@@ -230,6 +230,7 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTypes = {
+  sortBySubject: PropTypes.func.isRequired,
   onSetFilteredTopicState: PropTypes.func.isRequired,
   onUnsetFilteredTopicState: PropTypes.func.isRequired,
 }
