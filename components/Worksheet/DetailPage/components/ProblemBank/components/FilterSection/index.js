@@ -132,11 +132,11 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="notWorkbook"
-                      checked={workbookFilters.indexOf('notWorkbook') !== -1}
-                      onChange={() => handleFilterClick('workbook', 'notWorkbook')}
+                      id="notInWorkbook"
+                      checked={workbookFilters.indexOf('notInWorkbook') !== -1}
+                      onChange={() => handleFilterClick('workbook', 'notInWorkbook')}
                     />
-                    <label htmlFor="notWorkbook">Not in Workbook</label>
+                    <label htmlFor="notInWorkbook">Not in Workbook</label>
                   </li>
                 </ul>
               </div>
@@ -184,7 +184,6 @@ class FilterSection extends React.Component {
                       <input
                         type="checkbox"
                         className="filled-in" data-check-pattern="[name^='check_']"
-                        // checked={activeFilters.indexOf('filled') !== -1}
                         onChange={() =>toggleSelectAllProblemsOrPassages('problem')}
                       />
                       <span>&nbsp;</span>

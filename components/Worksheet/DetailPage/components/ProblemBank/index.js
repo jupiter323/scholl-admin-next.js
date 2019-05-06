@@ -7,34 +7,8 @@ import FilterSection from './components/FilterSection';
 import TableHeader from './components/TableHeader';
 
 import sampleProblems from '../../../utils/sampleProblems';
+import { topicMap, workbookMap, subjectMap, difficultyMap, typeMap } from '../../../utils/worksheetFilterMap';
 import { subjectAscending, subjectDescending } from '../../../../utils/sortFunctions';
-
-const topicMap = {
-  rightTriangles: 'Right Triangles',
-  trigonometry: 'Trigonometry',
-};
-
-const workbookMap = {
-  false: 'notInWorkbook',
-  true: 'inWorkbook',
-};
-
-const subjectMap = {
-  reading: 'Reading',
-  writing: 'Writing',
-  math: 'Math',
-};
-
-const difficultyMap = {
-  easy: 'Easy',
-  medium: 'Medium',
-  hard: 'Hard',
-};
-
-const typeMap = {
-  satPractice: 'SAT Practice',
-  skillBuilder: 'Skill Builder',
-};
 
 class ProblemBank extends React.Component {
   constructor(props) {
@@ -72,16 +46,16 @@ class ProblemBank extends React.Component {
   onFilterProblemsOrPassages = () => {
     const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, problems: allProblems } = this.state;
     let problems = allProblems;
-    if (subjectFilters.length > 0) {
+    if (subjectFilters.length) {
       problems = problems.filter(problem => subjectFilters.indexOf(problem.subject) !== -1);
     }
-    if (difficultyFilters.length > 0) {
+    if (difficultyFilters.length) {
       problems = problems.filter(problem => difficultyFilters.indexOf(problem.difficulty) !== -1);
     }
-    if (typeFilters.length > 0) {
+    if (typeFilters.length) {
       problems = problems.filter(problem => typeFilters.indexOf(problem.type) !== -1);
     }
-    if (workbookFilters.length > 0) {
+    if (workbookFilters.length) {
       problems = problems.filter(problem => workbookFilters.indexOf(workbookMap[problem.inWorkbook]) !== -1);
     }
     if (topicFilter.length) {
