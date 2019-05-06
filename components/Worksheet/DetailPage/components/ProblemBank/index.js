@@ -189,12 +189,12 @@ class ProblemBank extends React.Component {
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   }
 
-  toggleSelectAllProblemsOrPassages = (type) => {
-    const { problems, passages, selectedProblems: currentSelectedProblems, selectedPassages: currentSelectedPassages } = this.state;
+  toggleSelectAllProblemsOrPassages = () => {
+    const { openSection: type, problems, passages, selectedProblems: currentSelectedProblems, selectedPassages: currentSelectedPassages } = this.state;
     let clickedTypeCurrentState;
     let clickedTypeName;
     let clickedAllOfType;
-    if (type === 'problem') {
+    if (type === 'problems') {
       clickedTypeCurrentState = currentSelectedProblems;
       clickedTypeName = 'selectedProblems';
       clickedAllOfType = problems;
@@ -460,7 +460,6 @@ class ProblemBank extends React.Component {
                       </div>
                     </When>
                     <Otherwise>
-                      {/* <!-- tab passages --> */}
                       <div id="tab_passages" className="tab-content active">
                         <div className="content-section content-section-80">
                           <div className="container-lg">
@@ -470,9 +469,6 @@ class ProblemBank extends React.Component {
                             {this.mapPassages()}
                           </div>
                         </div>
-
-
-
                         <div className="add-btn-block">
                           <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected_passeges'><i className="material-icons">add</i> Add Selected Problems</a>
                           <ul id='dropdown_assign_selected_passeges' className='dropdown-content'>

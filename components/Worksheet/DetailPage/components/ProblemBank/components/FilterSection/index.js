@@ -184,7 +184,7 @@ class FilterSection extends React.Component {
                       <input
                         type="checkbox"
                         className="filled-in" data-check-pattern="[name^='check_']"
-                        onChange={() =>toggleSelectAllProblemsOrPassages('problem')}
+                        onChange={toggleSelectAllProblemsOrPassages}
                       />
                       <span>&nbsp;</span>
                     </label>
