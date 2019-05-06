@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
@@ -7,6 +9,7 @@ import FilterSection from './components/FilterSection';
 import TableHeader from './components/TableHeader';
 
 import sampleProblems from '../../../utils/sampleProblems';
+import samplePassages from '../../../utils/samplePassages';
 import { topicMap, workbookMap, subjectMap, difficultyMap, typeMap } from '../../../utils/worksheetFilterMap';
 import { subjectAscending, subjectDescending } from '../../../../utils/sortFunctions';
 
@@ -14,7 +17,7 @@ class ProblemBank extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openSection: 'problems',
+      openSection: 'passages',
       topicFilter: '',
       subjectFilters: [],
       difficultyFilters: [],
@@ -24,7 +27,7 @@ class ProblemBank extends React.Component {
       selectedProblems: [],
       selectedPassages: [],
       problems: sampleProblems,
-      passages: [],
+      passages: samplePassages,
     }
   }
 
@@ -35,47 +38,108 @@ class ProblemBank extends React.Component {
   onSetAscendingSort = () => this.setState({ sort: 'ascending' });
   onSetDescendingSort = () => this.setState({ sort: 'descending' });
 
-  onSortBySubject = (problems) => {
+  onSortBySubject = (problemsOrPassages) => {
     const { sort } = this.state;
     if (sort === 'ascending') {
-      return problems.sort(subjectAscending);
+      return problemsOrPassages.sort(subjectAscending);
     }
-    return problems.sort(subjectDescending);
+    return problemsOrPassages.sort(subjectDescending);
   }
 
-  onFilterProblemsOrPassages = () => {
-    const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, problems: allProblems } = this.state;
-    let problems = allProblems;
+  // Difficulty and type filters are similar enough to reuse the same reduce function, topic and workbook are unique enough to get repetitive for the sake of readability
+  onFilterPassages = (passages, filterType, filter) => {
+    switch (filterType) {
+      case 'difficulty':
+      case 'type':
+        return passages.reduce((finalArr, passage) => {
+          passage.problems.map(problem => {
+            if (filter.indexOf(problem[filterType]) !== -1 && finalArr.indexOf(passage) === -1) {
+              finalArr.push(passage);
+            }
+          });
+          return finalArr;
+        }, []);
+      case 'topic':
+        return passages.reduce((finalArr, passage) => {
+          passage.problems.map(problem => {
+            if (problem.topics.indexOf(filter) !== -1 && finalArr.indexOf(passage) === -1) {
+              finalArr.push(passage);
+            }
+          });
+          return finalArr;
+        }, []);
+      case 'workbook':
+        return passages.reduce((finalArr, passage) => {
+          passage.problems.map(problem => {
+            if (filter.indexOf(workbookMap[problem.inWorkbook]) !== -1 && finalArr.indexOf(passage) === -1) {
+              finalArr.push(passage);
+            }
+          });
+          return finalArr;
+        }, []);
+      default:
+        break;
+    }
+  }
+
+  // Problems get filtered with basic filter functions, passages get passed into onFilterPassages since a few of the filters are based on the problems nested in each passage
+  onFilterProblemsOrPassages = (type) => {
+    const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, problems: allProblems, passages: allPassages } = this.state;
+    let problemsOrPassages;
+    if (type === 'problems') {
+      problemsOrPassages = allProblems;
+    } else {
+      problemsOrPassages = allPassages;
+    }
     if (subjectFilters.length) {
-      problems = problems.filter(problem => subjectFilters.indexOf(problem.subject) !== -1);
+      problemsOrPassages = problemsOrPassages.filter(problemOrPassage => subjectFilters.indexOf(problemOrPassage.subject) !== -1);
     }
     if (difficultyFilters.length) {
-      problems = problems.filter(problem => difficultyFilters.indexOf(problem.difficulty) !== -1);
+      if (type === 'problems') {
+        problemsOrPassages = problemsOrPassages.filter(problem => difficultyFilters.indexOf(problem.difficulty) !== -1);
+      } else {
+        problemsOrPassages = this.onFilterPassages(problemsOrPassages, 'difficulty', difficultyFilters);
+      }
     }
     if (typeFilters.length) {
-      problems = problems.filter(problem => typeFilters.indexOf(problem.type) !== -1);
+      if (type === 'problems') {
+        problemsOrPassages = problemsOrPassages.filter(problem => typeFilters.indexOf(problem.type) !== -1);
+      } else {
+        problemsOrPassages = this.onFilterPassages(problemsOrPassages, 'type', typeFilters);
+      }
     }
     if (workbookFilters.length) {
-      problems = problems.filter(problem => workbookFilters.indexOf(workbookMap[problem.inWorkbook]) !== -1);
+      if (type === 'problems') {
+        problemsOrPassages = problemsOrPassages.filter(problem => workbookFilters.indexOf(workbookMap[problem.inWorkbook]) !== -1);
+      } else {
+        problemsOrPassages = this.onFilterPassages(problemsOrPassages, 'workbook', workbookFilters);
+      }
     }
     if (topicFilter.length) {
-      problems = problems.filter(problem => problem.topics.indexOf(topicFilter) !== -1);
+      if (type === 'problems') {
+        problemsOrPassages = problemsOrPassages.filter(problem => problem.topics.indexOf(topicFilter) !== -1);
+      } else {
+        problemsOrPassages = this.onFilterPassages(problemsOrPassages, 'topic', topicFilter);
+      }
     }
-    return problems;
+    return problemsOrPassages;
   }
 
-  getMappableProblems = () => {
-    const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, problems: allProblems, sort } = this.state;
-    let problems;
-    if (topicFilter.length || subjectFilters.length || difficultyFilters.length || typeFilters.length || workbookFilters.length) {
-      problems = this.onFilterProblemsOrPassages();
+  getMappableProblemsOrPassages = (type) => {
+    const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, sort, problems: allProblems, passages: allPassages } = this.state;
+    let problemsOrPassages;
+    if (type === 'problems') {
+      problemsOrPassages = allProblems;
     } else {
-      problems = allProblems;
+      problemsOrPassages = allPassages;
+    }
+    if (topicFilter.length || subjectFilters.length || difficultyFilters.length || typeFilters.length || workbookFilters.length) {
+      problemsOrPassages = this.onFilterProblemsOrPassages(type);
     }
     if (sort) {
-      return this.onSortBySubject(problems);
+      return this.onSortBySubject(problemsOrPassages);
     }
-    return problems;
+    return problemsOrPassages;
   }
 
   determineSort = () => {
@@ -172,7 +236,7 @@ class ProblemBank extends React.Component {
     this.setState({ [clickedTypeName]: clickedTypeUpdatedState });
   }
 
-  mapProblems = () => this.getMappableProblems().map(problem => {
+  mapProblems = () => this.getMappableProblemsOrPassages('problems').map(problem => {
     const { selectedProblems } = this.state;
     const selected = selectedProblems.map(selectedProblem => selectedProblem.id).indexOf(problem.id) !== -1;
     return (
@@ -184,7 +248,7 @@ class ProblemBank extends React.Component {
               className="filled-in"
               name="check_01"
               checked={selectedProblems.map(selectedProblem => selectedProblem.id).indexOf(problem.id) !== -1}
-              onClick={() => this.handleProblemOrPassageClick('problem', problem)}
+              onChange={() => this.handleProblemOrPassageClick('problem', problem)}
             />
             <span>&nbsp;</span>
           </label>
@@ -207,6 +271,79 @@ class ProblemBank extends React.Component {
         </div>
         <div className="list-table-cell drop-cell">
           <a href="#"><i className="icon-plus-circle"></i></a>
+        </div>
+      </div>
+    )
+  })
+
+  mapPassages = () => this.getMappableProblemsOrPassages('passages').map(passage => {
+    const { selectedPassages } = this.state;
+    const selected = selectedPassages.map(selectedPassage => selectedPassage.id).indexOf(passage.id) !== -1;
+    return (
+      <div className="list-view-section">
+        <div className={selected ? "list-table detail-table list-table-added" : "list-table detail-table"}>
+          <TableHeader sortBySubject={this.determineSort} />
+          <div className="list-table-body">
+            <div className="combined-holder">
+              <div className="combined-header">
+                <div className="list-table-row">
+                  <div className="list-table-cell checkbox-cell">
+                    <div className="checkbox-block">
+                      <label>
+                        <input
+                          type="checkbox"
+                          className="filled-in"
+                          checked={selectedPassages.map(selectedPassage => selectedPassage.id).indexOf(passage.id) !== -1}
+                          onChange={() => this.handleProblemOrPassageClick('passage', passage)}
+                        />
+                        <span>&nbsp;</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="list-table-cell subject-cell">
+                    <div className="filter-name">{subjectMap[passage.subject]}</div>
+                  </div>
+                  <div className="list-table-cell combined-title-cell">
+                    <div className="combined-title">{passage.title}</div>
+                  </div>
+                  <div className="list-table-cell view-cell">
+                    <a href="#"><i className="custom-icon-triangle-right"></i></a>
+                  </div>
+                  <div className="list-table-cell drop-cell">
+                    <a href="#"><i className="icon-plus-circle"></i></a>
+                  </div>
+                </div>
+              </div>
+              <div className="collection">
+                {passage.problems.map(problem => (
+                  <div className="collection-item list-table-row">
+                    <div className="list-table-cell checkbox-cell">
+                      <span>&nbsp;</span>
+                    </div>
+                    <div className="list-table-cell subject-cell">
+                      <span>{subjectMap[problem.subject]}</span>
+                    </div>
+                    <div className="list-table-cell info-cell">
+                      <span>{difficultyMap[problem.difficulty]}</span>
+                    </div>
+                    <div className="list-table-cell type-cell">
+                      <span>{typeMap[problem.type]}</span>
+                    </div>
+                    <div className="list-table-cell in-cell">{problem.inWorkbook ? 'Yes' : 'No'}</div>
+                    <div className="list-table-cell topic-cell">
+                      {problem.topics.map(topic => <span className="chip">{topicMap[topic]}</span>)}
+                    </div>
+                    <div className="list-table-cell view-cell">
+                      <a href="#"><i className="icon-eye"></i></a>
+                    </div>
+                    <div className="list-table-cell drop-cell">
+                      <span>&nbsp;</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -299,7 +436,7 @@ class ProblemBank extends React.Component {
                         <div className="content-section content-section-80">
                           <div className="container-lg">
                             <div className="result-row center-align">
-                              <b className="result">- {this.getMappableProblems().length} matches -</b>
+                              <b className="result">- {this.getMappableProblemsOrPassages('problems').length} matches -</b>
                             </div>
                             <div className="list-view-section">
                               <div className="list-table detail-table">
@@ -328,215 +465,14 @@ class ProblemBank extends React.Component {
                         <div className="content-section content-section-80">
                           <div className="container-lg">
                             <div className="result-row center-align">
-                              <b className="result">- 8 matches -</b>
+                              <b className="result">- {this.getMappableProblemsOrPassages('passages').length} matches -</b>
                             </div>
-                            {/* <!-- card --> */}
-                            <div className="list-view-section">
-                              <div className="list-table detail-table">
-                                <TableHeader sortBySubject={this.determineSort} />
-                                <div className="list-table-body">
-                                  <div className="combined-holder">
-                                    <div className="combined-header">
-                                      <div className="list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <div className="checkbox-block">
-                                            <label>
-                                              <input type="checkbox" className="filled-in" />
-                                              <span>&nbsp;</span>
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <div className="filter-name">Reading</div>
-                                        </div>
-                                        <div className="list-table-cell combined-title-cell">
-                                          <div className="combined-title">This is Where the Title of the Passage Goes</div>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="custom-icon-triangle-right"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <a href="#"><i className="icon-plus-circle"></i></a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="collection">
-                                      {/* <!-- card row --> */}
-                                      <div className="collection-item list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <span>Reading</span>
-                                        </div>
-                                        <div className="list-table-cell info-cell">
-                                          <span>Easy</span>
-                                        </div>
-                                        <div className="list-table-cell type-cell">
-                                          <span>SAT Practice</span>
-                                        </div>
-                                        <div className="list-table-cell in-cell">No</div>
-                                        <div className="list-table-cell topic-cell">
-                                          <span className="chip">US &amp; World Literature</span>
-                                          <span className="chip">This is about the Length of Longest Tag Name</span>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="icon-eye"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
-                                      {/* <!-- card row --> */}
-                                      <div className="collection-item list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <span>Reading</span>
-                                        </div>
-                                        <div className="list-table-cell info-cell">
-                                          <span>Medium</span>
-                                        </div>
-                                        <div className="list-table-cell type-cell">
-                                          <span>SAT Practice</span>
-                                        </div>
-                                        <div className="list-table-cell in-cell">No</div>
-                                        <div className="list-table-cell topic-cell">
-                                          <span className="chip">US &amp; World Literature</span>
-                                          <span className="chip">Cite Text as Evidence</span>
-                                          <span className="chip">Purpose of a Sentence</span>
-                                          <span className="chip">Some Have Up to 4 Tags</span>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="icon-eye"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
-                                      {/* <!-- card row --> */}
-                                      <div className="collection-item list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <span>Reading</span>
-                                        </div>
-                                        <div className="list-table-cell info-cell">
-                                          <span>Hard</span>
-                                        </div>
-                                        <div className="list-table-cell type-cell">
-                                          <span>SAT Practice</span>
-                                        </div>
-                                        <div className="list-table-cell in-cell">No</div>
-                                        <div className="list-table-cell topic-cell">
-                                          <span className="chip">US &amp; World Literature</span>
-                                          <span className="chip">Cite Text as Evidence</span>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="icon-eye"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            {/* <!-- card added --> */}
-                            <div className="list-view-section">
-                              <div className="list-table detail-table list-table-added">
-                                <div className="list-table-body">
-                                  <div className="combined-holder">
-                                    <div className="combined-header">
-                                      <div className="list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <div className="checkbox-block">
-                                            <label>
-                                              <input type="checkbox" className="filled-in" disabled />
-                                              <span>&nbsp;</span>
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <div className="filter-name">Reading</div>
-                                        </div>
-                                        <div className="list-table-cell combined-title-cell">
-                                          <div className="combined-title">This is Where the Title of the Passage Goes</div>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="custom-icon-triangle-right"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <a href="#"><i className="icon-plus-circle"></i></a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="collection">
-                                      {/* <!-- card row --> */}
-                                      <div className="collection-item list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <span>Reading</span>
-                                        </div>
-                                        <div className="list-table-cell info-cell">
-                                          <span>Easy</span>
-                                        </div>
-                                        <div className="list-table-cell type-cell">
-                                          <span>SAT Practice</span>
-                                        </div>
-                                        <div className="list-table-cell in-cell">No</div>
-                                        <div className="list-table-cell topic-cell">
-                                          <span className="chip">US &amp; World Literature</span>
-                                          <span className="chip">This is about the Length of Longest Tag Name</span>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="icon-eye"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
-                                      {/* <!-- card row --> */}
-                                      <div className="collection-item list-table-row">
-                                        <div className="list-table-cell checkbox-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                        <div className="list-table-cell subject-cell">
-                                          <span>Reading</span>
-                                        </div>
-                                        <div className="list-table-cell info-cell">
-                                          <span>Medium</span>
-                                        </div>
-                                        <div className="list-table-cell type-cell">
-                                          <span>SAT Practice</span>
-                                        </div>
-                                        <div className="list-table-cell in-cell">No</div>
-                                        <div className="list-table-cell topic-cell">
-                                          <span className="chip">US &amp; World Literature</span>
-                                          <span className="chip">Cite Text as Evidence</span>
-                                          <span className="chip">Purpose of a Sentence</span>
-                                          <span className="chip">Some Have Up to 4 Tags</span>
-                                        </div>
-                                        <div className="list-table-cell view-cell">
-                                          <a href="#"><i className="icon-eye"></i></a>
-                                        </div>
-                                        <div className="list-table-cell drop-cell">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                            {this.mapPassages()}
                           </div>
                         </div>
+
+
+
                         <div className="add-btn-block">
                           <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected_passeges'><i className="material-icons">add</i> Add Selected Problems</a>
                           <ul id='dropdown_assign_selected_passeges' className='dropdown-content'>
