@@ -397,6 +397,7 @@ class ProblemBank extends React.Component {
                     <ul className="tabs">
                       <li
                         className="tab col s3"
+                        style={{ borderBottom: openSection === 'problems' ? '2px solid white' : '' }}
                       >
                         <a className={openSection === 'problems' ? 'active' : ''} href="#" onClick={() => this.onChangeOpenSection('problems')}>
                           <b>Problems</b>
@@ -404,15 +405,11 @@ class ProblemBank extends React.Component {
                       </li>
                       <li
                         className="tab col s3"
+                        style={{ borderBottom: openSection === 'passages' ? '2px solid white' : '' }}
                       >
                         <a className={openSection === 'passages' ? 'active' : ''} href="#" onClick={() => this.onChangeOpenSection('passages')}>
                           <b>Passages</b>
                         </a>
-                      </li>
-                      <li
-                        className="indicator"
-                        style={{ width: '67px', left: openSection === 'problems' ? '455px' : '565px'  }}
-                      >
                       </li>
                     </ul>
                   </div>
