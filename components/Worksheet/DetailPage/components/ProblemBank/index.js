@@ -14,6 +14,28 @@ const topicMap = {
   trigonometry: 'Trigonometry',
 };
 
+const workbookMap = {
+  false: 'notInWorkbook',
+  true: 'inWorkbook',
+};
+
+const subjectMap = {
+  reading: 'Reading',
+  writing: 'Writing',
+  math: 'Math',
+};
+
+const difficultyMap = {
+  easy: 'Easy',
+  medium: 'Medium',
+  hard: 'Hard',
+};
+
+const typeMap = {
+  satPractice: 'SAT Practice',
+  skillBuilder: 'Skill Builder',
+};
+
 class ProblemBank extends React.Component {
   constructor(props) {
     super(props);
@@ -47,22 +69,32 @@ class ProblemBank extends React.Component {
     return problems.sort(subjectDescending);
   }
 
-  onFilterByTopic = (preFilteredProblems = []) => {
-    const { problems: allProblems, topicFilter } = this.state;
-    let problems;
-    if (preFilteredProblems.length) {
-      problems = preFilteredProblems;
-    } else {
-      problems = allProblems;
+  onFilterProblemsOrPassages = () => {
+    const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, problems: allProblems } = this.state;
+    let problems = allProblems;
+    if (subjectFilters.length > 0) {
+      problems = problems.filter(problem => subjectFilters.indexOf(problem.subject) !== -1);
     }
-    return problems.filter(problem => problem.topics.indexOf(topicFilter) !== -1);
+    if (difficultyFilters.length > 0) {
+      problems = problems.filter(problem => difficultyFilters.indexOf(problem.difficulty) !== -1);
+    }
+    if (typeFilters.length > 0) {
+      problems = problems.filter(problem => typeFilters.indexOf(problem.type) !== -1);
+    }
+    if (workbookFilters.length > 0) {
+      problems = problems.filter(problem => workbookFilters.indexOf(workbookMap[problem.inWorkbook]) !== -1);
+    }
+    if (topicFilter.length) {
+      problems = problems.filter(problem => problem.topics.indexOf(topicFilter) !== -1);
+    }
+    return problems;
   }
 
   getMappableProblems = () => {
-    const { topicFilter, problems: allProblems, sort } = this.state;
+    const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, problems: allProblems, sort } = this.state;
     let problems;
-    if (topicFilter.length) {
-      problems = this.onFilterByTopic();
+    if (topicFilter.length || subjectFilters.length || difficultyFilters.length || typeFilters.length || workbookFilters.length) {
+      problems = this.onFilterProblemsOrPassages();
     } else {
       problems = allProblems;
     }
@@ -184,13 +216,13 @@ class ProblemBank extends React.Component {
           </label>
         </div>
         <div className="list-table-cell subject-cell">
-          <span>{problem.subject}</span>
+          <span>{subjectMap[problem.subject]}</span>
         </div>
         <div className="list-table-cell info-cell">
-          <span>{problem.difficulty}</span>
+          <span>{difficultyMap[problem.difficulty]}</span>
         </div>
         <div className="list-table-cell type-cell">
-          <span>{problem.type}</span>
+          <span>{typeMap[problem.type]}</span>
         </div>
         <div className="list-table-cell in-cell">{problem.inWorkbook ? 'Yes' : 'No'}</div>
         <div className="list-table-cell topic-cell">

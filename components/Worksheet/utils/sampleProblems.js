@@ -1,9 +1,9 @@
 export default [
   {
     id: 1,
-    subject: 'Math',
-    difficulty: 'Easy',
-    type: 'Skill Builder',
+    subject: 'math',
+    difficulty: 'easy',
+    type: 'skillBuilder',
     inWorkbook: false,
     topics: [
       'rightTriangles',
@@ -12,9 +12,9 @@ export default [
   },
   {
     id: 2,
-    subject: 'Reading',
-    difficulty: 'Easy',
-    type: 'SAT Practice',
+    subject: 'reading',
+    difficulty: 'easy',
+    type: 'satPractice',
     inWorkbook: false,
     topics: [
       'rightTriangles',
@@ -23,9 +23,9 @@ export default [
   },
   {
     id: 3,
-    subject: 'Reading',
-    difficulty: 'Hard',
-    type: 'SAT Practice',
+    subject: 'reading',
+    difficulty: 'hard',
+    type: 'satPractice',
     inWorkbook: false,
     disabled: true,
     topics: [
@@ -35,9 +35,9 @@ export default [
   },
   {
     id: 4,
-    subject: 'Science',
-    difficulty: 'Medium',
-    type: 'Skill Builder',
+    subject: 'writing',
+    difficulty: 'medium',
+    type: 'skillBuilder',
     inWorkbook: false,
     topics: [
       'trigonometry',
@@ -45,9 +45,9 @@ export default [
   },
   {
     id: 5,
-    subject: 'Science',
-    difficulty: 'Hard',
-    type: 'Skill Builder',
+    subject: 'writing',
+    difficulty: 'hard',
+    type: 'skillBuilder',
     inWorkbook: false,
     disabled: true,
     topics: [
@@ -56,9 +56,9 @@ export default [
   },
   {
     id: 6,
-    subject: 'Math',
-    difficulty: 'Medium',
-    type: 'SAT Practice',
+    subject: 'math',
+    difficulty: 'medium',
+    type: 'satPractice',
     inWorkbook: false,
     topics: [
       'rightTriangles',
