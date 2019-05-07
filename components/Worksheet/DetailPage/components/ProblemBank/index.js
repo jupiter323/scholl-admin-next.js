@@ -17,7 +17,8 @@ class ProblemBank extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openSection: 'passages',
+      addProblemsDropdownOpen: false,
+      openSection: 'problems',
       topicFilter: '',
       subjectFilters: [],
       difficultyFilters: [],
@@ -30,6 +31,8 @@ class ProblemBank extends React.Component {
       passages: samplePassages,
     }
   }
+
+  onToggleAddProblemDropdown = () => this.setState(({ addProblemsDropdownOpen }) => ({ addProblemsDropdownOpen: !addProblemsDropdownOpen }))
 
   onChangeOpenSection = (openSection) => this.setState({ openSection })
   onSetFilteredTopicState = (topicFilter) => this.setState({ topicFilter })
@@ -45,7 +48,6 @@ class ProblemBank extends React.Component {
     }
     return problemsOrPassages.sort(subjectDescending);
   }
-
   // Difficulty and type filters are similar enough to reuse the same reduce function, topic and workbook are unique enough to get repetitive for the sake of readability
   onFilterPassages = (passages, filterType, filter) => {
     switch (filterType) {
@@ -124,6 +126,12 @@ class ProblemBank extends React.Component {
     }
     return problemsOrPassages;
   }
+
+  onAddSelectedProblems = (addTime) => {
+    const { selectedProblems, selectedPassages } = this.state;
+    const { addSelectedProblems } = this.props;
+    addSelectedProblems(selectedProblems, selectedPassages, addTime);
+   }
 
   getMappableProblemsOrPassages = (type) => {
     const { subjectFilters, difficultyFilters, typeFilters, workbookFilters, topicFilter, sort, problems: allProblems, passages: allPassages } = this.state;
@@ -351,7 +359,7 @@ class ProblemBank extends React.Component {
 
   render() {
     const { open, onClose } = this.props;
-    const { openSection, subjectFilters, difficultyFilters, typeFilters, workbookFilters } = this.state;
+    const { openSection, subjectFilters, difficultyFilters, typeFilters, workbookFilters, addProblemsDropdownOpen } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
@@ -428,7 +436,6 @@ class ProblemBank extends React.Component {
                   />
                   <Choose>
                     <When condition={openSection === 'problems'}>
-                      {/* <!-- tab problems --> */}
                       <div id="tab_problems" className="tab-content active">
                         <div className="content-section content-section-80">
                           <div className="container-lg">
@@ -445,15 +452,6 @@ class ProblemBank extends React.Component {
                             </div>
                           </div>
                         </div>
-                        <div className="add-btn-block">
-                          <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected_problems'><i className="material-icons">add</i> Add Selected Problems</a>
-                          <ul id='dropdown_assign_selected_problems' className='dropdown-content'>
-                            <li><a href="#">For Today</a></li>
-                            <li><a href="#">For Tomorrow</a></li>
-                            <li><a href="#">For Next Session</a></li>
-                            <li><a href="#">For Date...</a></li>
-                          </ul>
-                        </div>
                       </div>
                     </When>
                     <Otherwise>
@@ -466,18 +464,30 @@ class ProblemBank extends React.Component {
                             {this.mapPassages()}
                           </div>
                         </div>
-                        <div className="add-btn-block">
-                          <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected_passeges'><i className="material-icons">add</i> Add Selected Problems</a>
-                          <ul id='dropdown_assign_selected_passeges' className='dropdown-content'>
-                            <li><a href="#">For Today</a></li>
-                            <li><a href="#">For Tomorrow</a></li>
-                            <li><a href="#">For Next Session</a></li>
-                            <li><a href="#">For Date...</a></li>
-                          </ul>
-                        </div>
                       </div>
                     </Otherwise>
                   </Choose>
+                  <div className="add-btn-block">
+                    <a
+                      href="#"
+                      className="dropdown-trigger waves-effect waves-teal btn add-btn"
+                      data-target='dropdown_assign_selected_passeges'
+                      onClick={this.onToggleAddProblemDropdown}
+                    >
+                      <i className="material-icons">add</i>
+                      Add Selected Problems
+                    </a>
+                    <ul
+                      id='dropdown_assign_selected_passeges'
+                      className='dropdown-content'
+                      style={{ display: addProblemsDropdownOpen ? 'block' : '0', opacity: addProblemsDropdownOpen ? '1' : '0' }}
+                    >
+                      <li><a href="#" onClick={() => this.onAddSelectedProblems('today')}>For Today</a></li>
+                      <li><a href="#" onClick={() => this.onAddSelectedProblems('tomorrow')}>For Tomorrow</a></li>
+                      <li><a href="#" onClick={() => this.onAddSelectedProblems('nextSession')}>For Next Session</a></li>
+                      <li><a href="#" onClick={() => this.onAddSelectedProblems('date')}>For Date...</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -509,6 +519,7 @@ class ProblemBank extends React.Component {
 ProblemBank.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  addSelectedProblems: PropTypes.func.isRequired,
 }
 
 export default ProblemBank;
