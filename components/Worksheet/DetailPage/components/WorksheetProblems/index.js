@@ -17,7 +17,7 @@ class WorksheetProblems extends React.Component {
     return mappableArray.map(problemOrPassage => {
       if (problemOrPassage.difficulty) {
         return (
-          <li className="collection-item">
+          <li className="collection-item" key={problemOrPassage.id}>
             <div className="list-row">
               <div className="cell handle cell_01">
                 <i className="custom-icon-burger"></i>
@@ -48,7 +48,7 @@ class WorksheetProblems extends React.Component {
         );
       }
       return (
-        <li className="collection-item combined-rows">
+        <li className="collection-item combined-rows" key={problemOrPassage.id}>
           <div className="combined-holder">
             <div className="combined-header">
               <div className="burger-block handle">
@@ -59,7 +59,7 @@ class WorksheetProblems extends React.Component {
             </div>
             <ol className="problems-list-number problems-list collection">
               {problemOrPassage.problems.map(problem => (
-                <li className="collection-item">
+                <li className="collection-item" key={problem.id}>
                   <div className="list-row">
                     <div className="cell handle cell_01">&nbsp;</div>
                     <div className="cell cell_02">

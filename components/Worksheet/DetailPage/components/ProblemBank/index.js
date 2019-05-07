@@ -273,7 +273,7 @@ class ProblemBank extends React.Component {
         </div>
         <div className="list-table-cell in-cell">{problem.inWorkbook ? 'Yes' : 'No'}</div>
         <div className="list-table-cell topic-cell">
-          {problem.topics.map(topic => <span className="chip">{topicMap[topic]}</span>)}
+          {problem.topics.map(topic => <span className="chip" id={topic}>{topicMap[topic]}</span>)}
         </div>
         <div className="list-table-cell view-cell">
           <a href="#"><i className="icon-eye"></i></a>
@@ -325,7 +325,7 @@ class ProblemBank extends React.Component {
               </div>
               <div className="collection">
                 {passage.problems.map(problem => (
-                  <div className="collection-item list-table-row">
+                  <div className="collection-item list-table-row" id={problem.id}>
                     <div className="list-table-cell checkbox-cell">
                       <span>&nbsp;</span>
                     </div>
@@ -340,7 +340,7 @@ class ProblemBank extends React.Component {
                     </div>
                     <div className="list-table-cell in-cell">{problem.inWorkbook ? 'Yes' : 'No'}</div>
                     <div className="list-table-cell topic-cell">
-                      {problem.topics.map(topic => <span className="chip">{topicMap[topic]}</span>)}
+                      {problem.topics.map(topic => <span className="chip" id={topic}>{topicMap[topic]}</span>)}
                     </div>
                     <div className="list-table-cell view-cell">
                       <a href="#"><i className="icon-eye"></i></a>

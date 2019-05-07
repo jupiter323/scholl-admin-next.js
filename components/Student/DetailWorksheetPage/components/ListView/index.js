@@ -33,7 +33,7 @@ class ListView extends React.Component {
     return worksheets.map((worksheet, index) => {
       const { disabled, worksheetName, score, status, problems, timeEstimate, assignDate, dueDate, completed, flags } = worksheet;
       return (
-        <div className={disabled ? 'card card-disabled list-table-row' : 'card list-table-row'} key={worksheetName}>
+        <div className={disabled ? 'card card-disabled list-table-row' : 'card list-table-row'} key={worksheet.id}>
           <div className="list-table-cell icon-cell">
             <span className="block-icon">
               <i className="icon-sheets-w"></i>
