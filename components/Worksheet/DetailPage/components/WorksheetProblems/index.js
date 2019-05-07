@@ -113,75 +113,7 @@ class WorksheetProblems extends React.Component {
                     <div className="cell cell_07">&nbsp;</div>
                   </div>
                 </li>
-
                 {this.mapProblemsAndPassages()}
-
-                <li className="collection-item combined-rows">
-                  <div className="combined-holder">
-                    <div className="combined-header">
-                      <div className="burger-block handle">
-                        <i className="custom-icon-burger"></i>
-                      </div>
-                      <div className="combined-title">The Name of Some Passage</div>
-                      <a href="#" className="close"><i className="icon-close"></i></a>
-                    </div>
-                    <ol className="problems-list-number problems-list collection">
-                      <li className="collection-item">
-                        <div className="list-row">
-                          <div className="cell handle cell_01">&nbsp;</div>
-                          <div className="cell cell_02">
-                            <span className="list-num"></span>
-                          </div>
-                          <div className="cell cell_03">
-                            <span>Math</span>
-                          </div>
-                          <div className="cell cell_04">
-                            <span>Skill Builder</span>
-                          </div>
-                          <div className="cell cell_05">
-                            <span>No</span>
-                          </div>
-                          <div className="cell cell_06">
-                            <span>E</span>
-                          </div>
-                          <div className="cell right-align cell_07">
-                            <span className="icon-frame">
-                              <a href="#"><i className="icon-eye"></i></a>
-                            </span>
-                            <a href="#" className="close invisible"><i className="icon-close"></i></a>
-                          </div>
-                        </div>
-                      </li>
-                      <li className="collection-item">
-                        <div className="list-row">
-                          <div className="cell handle cell_01">&nbsp;</div>
-                          <div className="cell cell_02">
-                            <span className="list-num"></span>
-                          </div>
-                          <div className="cell cell_03">
-                            <span>Math</span>
-                          </div>
-                          <div className="cell cell_04">
-                            <span>Skill Builder</span>
-                          </div>
-                          <div className="cell cell_05">
-                            <span>No</span>
-                          </div>
-                          <div className="cell cell_06">
-                            <span>E</span>
-                          </div>
-                          <div className="cell right-align cell_07">
-                            <span className="icon-frame">
-                              <a href="#"><i className="icon-eye"></i></a>
-                            </span>
-                            <a href="#" className="close invisible"><i className="icon-close"></i></a>
-                          </div>
-                        </div>
-                      </li>
-                    </ol>
-                  </div>
-                </li>
-
               </ol>
             </div>
             <div className="card-footer right-align">

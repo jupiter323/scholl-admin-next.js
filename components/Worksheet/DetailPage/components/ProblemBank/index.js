@@ -131,6 +131,7 @@ class ProblemBank extends React.Component {
     const { selectedProblems, selectedPassages } = this.state;
     const { addSelectedProblems } = this.props;
     addSelectedProblems(selectedProblems, selectedPassages, addTime);
+    this.setState({ selectedPassages: [], selectedProblems: [], addProblemsDropdownOpen: false });
    }
 
   getMappableProblemsOrPassages = (type) => {
@@ -390,6 +391,7 @@ class ProblemBank extends React.Component {
                     <div className="card-panel-description col s8 m3 l2">
                       <div className="card-panel-text">
                         <div className="col-row">
+                        {/* TODO: Figure out what this number is supposed to reflect */}
                           <span className="value">24</span>
                           <span className="value-text">worksheet <br />problems</span>
                         </div>
