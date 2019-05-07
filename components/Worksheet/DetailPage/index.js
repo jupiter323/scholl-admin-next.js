@@ -1,4 +1,5 @@
 import React from 'react';
+import update from 'immutability-helper';
 
 import WorksheetDetails from './components/WorksheetDetails';
 import WorksheetProblems from './components/WorksheetProblems';
@@ -18,9 +19,15 @@ class DetailPage extends React.Component {
 
   onToggleProblemBankModal = () => this.setState(({ problemBankOpen }) => ({ problemBankOpen: !problemBankOpen }))
 
-  addSelectedProblems = (problems, passages, addTime) => {
-    console.warn('stubbed out add problems', problems, passages, addTime);
-    this.onToggleProblemBankModal();
+  addSelectedProblems = (incomingProblems, incomingPassages, addTime) => {
+    const problems = update(this.state.problems, {
+      $push: [...incomingProblems],
+    });
+    const passages = update(this.state.passages, {
+      $push: [...incomingPassages],
+    });
+    console.warn('What are we doing with addTime?', addTime);
+    this.setState({ problems, passages }, this.onToggleProblemBankModal);
   }
 
   render() {
