@@ -94,7 +94,7 @@ class WorksheetProblems extends React.Component {
   }
 
   render() {
-    const { onOpenProblemBankModal } = this.props;
+    const { onOpenProblemBankModal, onRemoveAllProblems } = this.props;
     return (
       <div className="col s12 l6">
         <div className="card-block card-block-problems">
@@ -117,7 +117,13 @@ class WorksheetProblems extends React.Component {
               </ol>
             </div>
             <div className="card-footer right-align">
-              <a href="#!" className=" waves-effect waves-teal btn-flat pink-text text-darken-1">Remove All</a>
+              <a
+                href="#"
+                className="waves-effect waves-teal btn-flat pink-text text-darken-1"
+                onClick={onRemoveAllProblems}
+              >
+                Remove All
+              </a>
               <a
                 href="#"
                 className="modal-trigger link-btn waves-effect waves-teal btn-flat"
@@ -136,6 +142,7 @@ class WorksheetProblems extends React.Component {
 WorksheetProblems.propTypes = {
   problems: PropTypes.array.isRequired,
   passages: PropTypes.array.isRequired,
+  onRemoveAllProblems: PropTypes.func.isRequired,
   onOpenProblemBankModal: PropTypes.func.isRequired,
 }
 

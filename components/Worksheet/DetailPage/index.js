@@ -18,6 +18,7 @@ class DetailPage extends React.Component {
   }
 
   onToggleProblemBankModal = () => this.setState(({ problemBankOpen }) => ({ problemBankOpen: !problemBankOpen }))
+  onRemoveAllProblems = () => this.setState({ problems: [], passages: [] })
 
   addSelectedProblems = (incomingProblems, incomingPassages, addTime) => {
     const problems = update(this.state.problems, {
@@ -43,6 +44,7 @@ class DetailPage extends React.Component {
             />
             <WorksheetProblems
               onOpenProblemBankModal={this.onToggleProblemBankModal}
+              onRemoveAllProblems={this.onRemoveAllProblems}
               problems={problems}
               passages={passages}
             />
