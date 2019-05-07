@@ -3,24 +3,28 @@ import React from 'react';
 import WorksheetDetails from './components/WorksheetDetails';
 import WorksheetProblems from './components/WorksheetProblems';
 import ProblemBank from './components/ProblemBank';
+import sampleProblems from '../utils/sampleProblems';
+import samplePassages from '../utils/samplePassages';
 
 class DetailPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      problemBankOpen: true,
+      problemBankOpen: false,
+      problems: sampleProblems,
+      passages: samplePassages,
     }
   }
 
   onToggleProblemBankModal = () => this.setState(({ problemBankOpen }) => ({ problemBankOpen: !problemBankOpen }))
 
-  addSelectedProblems = (problems, passages) => {
-    console.warn('problems', problems, passages);
+  addSelectedProblems = (problems, passages, addTime) => {
+    console.warn('stubbed out add problems', problems, passages, addTime);
     this.onToggleProblemBankModal();
   }
 
   render() {
-    const { problemBankOpen } = this.state;
+    const { problemBankOpen, problems, passages } = this.state;
     return (
       <div className="main-container">
         <div className="container">
@@ -32,6 +36,8 @@ class DetailPage extends React.Component {
             />
             <WorksheetProblems
               onOpenProblemBankModal={this.onToggleProblemBankModal}
+              problems={problems}
+              passages={passages}
             />
             <WorksheetDetails
               worksheet={{}}
