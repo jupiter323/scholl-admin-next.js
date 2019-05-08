@@ -1,12 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import updatedUser from '../../utils/sampleUser';
 
-const StudentCard = ({ student: { firstName, lastName, email }}) => (
-    <div className="owner-box card-panel card-panel-panel card-panel-large" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
+class StudentCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: false,
+            studentEditModalOpen: false,
+            cloneModalOpen: false,
+            showOwnerModalOpen: false,
+            deleteModalOpen: false,
+            activateAccountModalOpen: false,
+            assignInstructorModalOpen: false,
+            addStudentModalOpen: false,
+            newStudentInfo: {},
+        }
+    }
+
+
+render() {
+    // const { studentEditModalOpen, cloneModalOpen, showOwnerModalOpen, deleteModalOpen, addStudentModalOpen, newStudentInfo } = this.state;
+    const { active, studentInformation: { firstName, lastName },
+        emailAddress: { email },
+    } = updatedUser;
+return (
+    <div className="card-main-col col s12 m8 l7 xl5">
+
+    <div className="owner-box card-panel card-panel-panel card-panel-large" style={{ backgroundColor: active ? '#0085ce' : '#9b9b9b', color: '#fff' }}>
       <div className="card-panel-row row">
       <div className="col s9">
         <div className="user-block">
-          <div className="user-circle" style={{ backgroundColor: '#14b14b', color: '#fff', height: '45px' }}>
+          <div className="user-circle" style={{ backgroundColor: active ? '#14b14b' : '#808080', color: '#fff', height: '45px' }}>
              <img src="#" alt="" />
           </div>
           <div className="user-text" style={{ color: '#fff' }}>
@@ -21,9 +46,16 @@ const StudentCard = ({ student: { firstName, lastName, email }}) => (
           <span className="text-icon">Student</span>
         </span>
       </div>
+      {/* <div className="dropdown-block col">
+        <a className="dropdown-trigger-btn" href="#" data-target="dropdown01"><i className="material-icons dots-icon"></i></a>
+        <ul id='dropdown01' className="dropdown-content dropdown-wide">
+        <li></li>
+        </ul>
+      </div> */}
     </div>
   </div>
-);
+  </div>
+    )}};
 
   StudentCard.propTypes = {
     student: PropTypes.object.isRequired,
