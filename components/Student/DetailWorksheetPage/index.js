@@ -11,13 +11,19 @@ class DetailWorksheetPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentView: 'full',
       sort: '',
       filterName: '',
       filterTopic: '',
+      currentView: 'full',
+      assignWorksheetDropdownOpen: false,
       worksheets: sampleWorksheets,
     };
   }
+
+  onToggleAssignWorksheetDropdown = (event) => {
+    event.preventDefault();
+    this.setState(({ assignWorksheetDropdownOpen }) => ({ assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen }))
+}
 
   onSetSort = (sort) => this.setState({ sort })
   onChangeView = (view) => this.setState({ currentView: view });
@@ -27,6 +33,10 @@ class DetailWorksheetPage extends React.Component {
 
   onSetFilteredTopicState = (filterTopic) => this.setState({ worksheetsAreFiltered: true, filterTopic })
   onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState)
+
+  onAssignWorksheet = (assignType) => {
+    console.warn('Stubbed out assign worksheet click', assignType);
+  }
 
   onFilterByName = () => {
     const { worksheets, filterName } = this.state;
@@ -120,7 +130,7 @@ class DetailWorksheetPage extends React.Component {
   }
 
   render() {
-    const { currentView } = this.state;
+    const { currentView, assignWorksheetDropdownOpen } = this.state;
     return (
       <React.Fragment>
         <div className="main-holder grey lighten-5 switcher-section">
@@ -136,10 +146,21 @@ class DetailWorksheetPage extends React.Component {
           {this.renderWorksheetView()}
         </div>
         <div className="add-btn-block">
-          <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected'><i className="material-icons">add</i> Assign Worksheet</a>
-          <ul id='dropdown_assign_selected' className='dropdown-content dropdown-small'>
-            <li><a href="#">From Saved</a></li>
-            <li><a href="#">Create New</a></li>
+          <a
+            href="#"
+            data-target='dropdown_assign_selected'
+            onClick={this.onToggleAssignWorksheetDropdown}
+            className="dropdown-trigger waves-effect waves-teal btn add-btn"
+          >
+            <i className="material-icons">add</i> Assign Worksheet
+          </a>
+          <ul
+            id='dropdown_assign_selected'
+            className='dropdown-content dropdown-small'
+            style={{ display: assignWorksheetDropdownOpen ? 'block' : '0', opacity: assignWorksheetDropdownOpen ? '1' : '0' }}
+          >
+            <li><a href="#" onClick={() => this.onAssignWorksheet('fromSaved')}>From Saved</a></li>
+            <li><a href="#" onClick={() => this.onAssignWorksheet('createNew')}>Create New</a></li>
           </ul>
         </div>
       </React.Fragment>

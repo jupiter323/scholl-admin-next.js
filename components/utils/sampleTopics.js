@@ -1,11 +1,11 @@
 export default [
   {
-    label: 'Special Right Triangles',
-    value: 'specialRightTriangles',
+    label: 'Right Triangles',
+    value: 'rightTriangles',
   },
   {
-    label: 'Topic 2',
-    value: 'topic2',
+    label: 'Trigonometry',
+    value: 'trigonometry',
   },
   {
     label: 'Topic 3',

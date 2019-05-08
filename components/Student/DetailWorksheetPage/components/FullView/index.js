@@ -42,7 +42,7 @@ class FullView extends React.Component {
     return worksheets.map((worksheet, index) => {
       const { disabled, worksheetName, worksheetSource, subject, problemType, difficulty, score, status, problems, timeEstimate, availableDate, dueDate, classifications, flags, late } = worksheet;
       return (
-        <div className="card-main-col col s12 m8 l7 xl5">
+        <div className="card-main-col col s12 m8 l7 xl5" key={worksheet.id}>
           <div className={disabled ? 'card-main work-card card-disabled card' : 'card-main work-card card'}>
             <div className="card-panel panel-border">
               <div className="card-panel-row row">
@@ -171,7 +171,7 @@ class FullView extends React.Component {
                 <div className="row-holder">
                   <ul className="classification-list">
                     {classifications.map(classification => (
-                      <li className="class-box">
+                      <li className="class-box" key={classification}>
                         {classification}
                       </li>
                     ))}
