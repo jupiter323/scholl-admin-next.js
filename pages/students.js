@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AccountPage from '../components/Student/AccountPage';
 import DetailSummaryPage from '../components/Student/DetailSummaryPage';
+import DetailWorksheetPage from '../components/Student/DetailWorksheetPage';
 import DetailLessonList from '../components/Student/DetailLessonList';
 import StudentNavBar from '../components/Student/components/StudentNavBar';
 
@@ -10,7 +11,7 @@ class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'lessons',
+      active: 'worksheets',
       accountActivated: false,
       activationDropdownOpen: false,
       licenseCode: '',
@@ -33,6 +34,9 @@ class Students extends Component {
     }
     if (active === 'lessons') {
       return <DetailLessonList user={sampleUser} />;
+    }
+    if (active === 'worksheets') {
+      return <DetailWorksheetPage user={sampleUser} />;
     }
     return null;
   }
