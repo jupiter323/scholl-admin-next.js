@@ -12,8 +12,17 @@ class TemplateList extends React.Component {
       dropdownIsOpen: false,
       dropdownIndex: null,
       editModalOpen: false,
+      subjectFilters: [],
+      sourceFilters: [],
+      titleFilter: '',
+      sort: '',
     };
   }
+
+  onClearFilters = () => this.setState({ subjectFilters: [], sourceFilters: [], titleFilter: '', sort: '' })
+
+  onSetFilteredState = (titleFilter) => this.setState({ templatesAreFiltered: true, titleFilter })
+  onUnsetFilteredState = () => this.setState({ templatesAreFiltered: false, titleFilter: '' })
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
@@ -76,7 +85,11 @@ class TemplateList extends React.Component {
                 </span>
               </h2>
             </div>
-            <FilterSection />
+            <FilterSection
+              onClearFilters={this.onClearFilters}
+              onSetFilteredState={this.onSetFilteredState}
+              onUnsetFilteredState={this.onUnsetFilteredState}
+            />
             <div className="content-section">
               <div className="container-middle">
                 <div className="result-row center-align">
