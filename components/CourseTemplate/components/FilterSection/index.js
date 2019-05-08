@@ -20,6 +20,15 @@ class FilterSection extends React.Component {
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
   onClearFilters = () => this.setState({ title: '', sort: '' }, this.props.onClearFilters)
 
+  // This function does two things - first, it changes the filter state regardless of the field it's coming from
+  // If either location or sort filters are changed, we dispatch the appropriate action in ListPage to ensure the rendered instructors are filtered/sorted appropriately
+  // eslint-disable-next-line consistent-return
+  handleSortChange = (sort) => {
+    const { onSetSort } = this.props;
+    this.setState({ sort });
+    return onSetSort(sort);
+  }
+
   // Strips the entered name of any spaces and capitalizing and fires off the TemplateList event that filters the instructors
   submitNameFilter = () => {
     const { onSetFilteredState, onUnsetFilteredState } = this.props;
@@ -86,7 +95,7 @@ class FilterSection extends React.Component {
                     <div className="input-field" style={{ marginBottom: '0', marginTop: '0' }}>
                       <Dropdown
                         value={getValueFromState(sort, sortOptions)}
-                        onChange={(event) => this.handleFilterChange(event, 'sort')}
+                        onChange={this.handleSortChange}
                         options={sortOptions}
                         label="Sort By"
                         stateKey="topic"
@@ -116,6 +125,7 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTypes = {
+  onSetSort: PropTypes.func.isRequired,
   onClearFilters: PropTypes.func.isRequired,
   onSetFilteredState: PropTypes.func.isRequired,
   onUnsetFilteredState: PropTypes.func.isRequired,

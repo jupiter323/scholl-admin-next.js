@@ -2,7 +2,9 @@ import React from 'react';
 
 import FilterSection from '../components/CourseTemplate/components/FilterSection';
 import TemplateCard from '../components/CourseTemplate/components/TemplateCard';
+
 import sampleTemplates from '../components/CourseTemplate/utils/sampleTemplate';
+import { sessionSort, lessonSort, estimatedTotalCourseWorkSort } from '../components/CourseTemplate/utils/sortOptions';
 
 class TemplateList extends React.Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class TemplateList extends React.Component {
 
   onClearFilters = () => this.setState({ subjectFilters: [], sourceFilters: [], titleFilter: '', sort: '' })
 
+  onSetSort = (sort) => this.setState({ sort })
   onSetFilteredState = (titleFilter) => this.setState({ templatesAreFiltered: true, titleFilter })
   onUnsetFilteredState = () => this.setState({ templatesAreFiltered: false, titleFilter: '' })
 
@@ -29,11 +32,38 @@ class TemplateList extends React.Component {
 
   onToggleEditModal = () => this.setState(({ editModalOpen }) => ({ editModalOpen: !editModalOpen }))
 
+  // eslint-disable-next-line consistent-return
+  onSortTemplates = (templates) => {
+    const { sort } = this.state;
+    switch (sort) {
+      case 'sessions':
+        return templates.sort(sessionSort);
+      case 'estimatedTotalCourseWork':
+        return templates.sort(estimatedTotalCourseWorkSort);
+      case 'lessons':
+        return templates.sort(lessonSort);
+      default:
+        break;
+    }
+  }
+
+  getMappableTemplates = () => {
+    const { subjectFilters, sourceFilters, titleFilter, sort, templates } = this.state;
+    let mappableTemplates = templates;
+    if (subjectFilters.length || sourceFilters.length || titleFilter.length) {
+      mappableTemplates = this.onFilterTemplates();
+    }
+    if (sort) {
+      return this.onSortTemplates(mappableTemplates);
+    }
+    return mappableTemplates;
+  }
+
   importTemplateFromFile = () => {
     console.warn('stubbed out import function');
   }
 
-  mapTemplateCards = () => this.state.templates.map((template, index) => (
+  mapTemplateCards = () => this.getMappableTemplates().map((template, index) => (
     <TemplateCard
       template={template}
       index={index}
@@ -46,7 +76,6 @@ class TemplateList extends React.Component {
   ))
 
   render() {
-    const { templates } = this.state;
     return (
       <body className="instructor-page">
       <div className="wrapper">
@@ -86,6 +115,7 @@ class TemplateList extends React.Component {
               </h2>
             </div>
             <FilterSection
+              onSetSort={this.onSetSort}
               onClearFilters={this.onClearFilters}
               onSetFilteredState={this.onSetFilteredState}
               onUnsetFilteredState={this.onUnsetFilteredState}
@@ -93,7 +123,7 @@ class TemplateList extends React.Component {
             <div className="content-section">
               <div className="container-middle">
                 <div className="result-row center-align">
-                  <b className="result">- {templates.length} matches -</b>
+                  <b className="result">- {this.getMappableTemplates().length} matches -</b>
                 </div>
                 <div className="d-flex-content row card-width-470">
                   {this.mapTemplateCards()}
