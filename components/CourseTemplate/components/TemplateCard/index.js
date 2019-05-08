@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -5,7 +6,7 @@ class TemplateCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: true,
+      expanded: false,
     };
   }
 
@@ -24,9 +25,12 @@ class TemplateCard extends React.Component {
     onToggleEditModal();
   }
 
+  toggleExpandedState = () => this.setState(({ expanded }) => ({ expanded: !expanded }))
+
   render() {
     const { template, dropdownIndex, dropdownIsOpen, index } = this.props;
     const { title, source, sessions, estimatedTotalCourseWork, lessons, description, instructions } = template;
+    const { expanded } = this.state;
     return (
       <div className="card-main-col col s12 l6">
         <div className="card-template card">
@@ -76,7 +80,10 @@ class TemplateCard extends React.Component {
                         </If>
                       </div>
                       <div className="col right-align">
-                        <span className="collapsible-header collapsible-opener">
+                        <span
+                          onClick={this.toggleExpandedState}
+                          className="collapsible-header collapsible-opener"
+                        >
                           <i className="custom-icon-triangle-right color-black"></i>
                         </span>
                       </div>
@@ -107,7 +114,10 @@ class TemplateCard extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="card-content collapsible-body">
+              <div
+                className="card-content collapsible-body"
+                style={{ display: expanded ? 'block' : 'none' }}
+              >
                 <dl>
                   <dt><strong className="dl-title">Description:</strong></dt>
                   <dd>
