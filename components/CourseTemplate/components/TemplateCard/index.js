@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const formatEstimatedTotalCourseWork = (minutes) => Math.floor(minutes / 60);
+
 class TemplateCard extends React.Component {
   constructor(props) {
     super(props);
@@ -98,7 +100,7 @@ class TemplateCard extends React.Component {
                         <span className="point-text">Sessions</span>
                       </li>
                       <li className="style-pink">
-                        <span className="badge-circle">{estimatedTotalCourseWork} <span className="badge-text">hrs</span></span>
+                        <span className="badge-circle">{formatEstimatedTotalCourseWork(estimatedTotalCourseWork)} <span className="badge-text">hrs</span></span>
                         <span className="point-text">Estimated Total Course Work</span>
                       </li>
                     </ul>
