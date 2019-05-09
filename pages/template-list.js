@@ -1,4 +1,5 @@
 import React from 'react';
+import update from 'immutability-helper';
 
 import FilterSection from '../components/CourseTemplate/components/FilterSection';
 import TemplateCard from '../components/CourseTemplate/components/TemplateCard';
@@ -47,10 +48,38 @@ class TemplateList extends React.Component {
     }
   }
 
+  onFilterByTitle = () => {
+    const { templates, titleFilter } = this.state;
+    return templates.reduce((finalArr, currentTemplate) => {
+      const { title } = currentTemplate;
+      const templateString = title.replace(/\s/g, "").toLowerCase();
+      if (templateString.indexOf(titleFilter) !== -1 && finalArr.indexOf(currentTemplate) === -1) {
+        finalArr.push(currentTemplate);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  onFilterTemplates = () => {
+    const { subjectFilters, sourceFilters, templates: allTemplates } = this.state;
+    let templates = allTemplates
+    if (subjectFilters.length) {
+      templates = templates.filter(template => subjectFilters.indexOf(template.subject) !== -1);
+    }
+    if (sourceFilters.length) {
+      templates = templates.filter(template => sourceFilters.indexOf(template.source) !== -1);
+    }
+    return templates;
+  }
+
   getMappableTemplates = () => {
     const { subjectFilters, sourceFilters, titleFilter, sort, templates } = this.state;
     let mappableTemplates = templates;
-    if (subjectFilters.length || sourceFilters.length || titleFilter.length) {
+    if (titleFilter.length) {
+      mappableTemplates = this.onFilterByTitle();
+      console.warn('mappable', mappableTemplates)
+    }
+    if (subjectFilters.length || sourceFilters.length) {
       mappableTemplates = this.onFilterTemplates();
     }
     if (sort) {
@@ -61,6 +90,36 @@ class TemplateList extends React.Component {
 
   importTemplateFromFile = () => {
     console.warn('stubbed out import function');
+  }
+
+  handleFilterClick = (filterType, filter) => {
+    const { subjectFilters: currentSubjectFilters, sourceFilters: currentSourceFilters } = this.state;
+    let modifiedFilterCurrentState;
+    let modifiedFilterName;
+    let modifiedFilterUpdatedState;
+    switch (filterType) {
+      case 'subject':
+        modifiedFilterCurrentState = currentSubjectFilters;
+        modifiedFilterName = 'subjectFilters';
+        break;
+      case 'difficulty':
+        modifiedFilterCurrentState = currentSourceFilters;
+        modifiedFilterName = 'sourceFilters';
+        break;
+      default:
+        break;
+    }
+    if (modifiedFilterCurrentState.indexOf(filter) === -1) {
+      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+        $push: [filter],
+      });
+    } else {
+      const filterIndex = modifiedFilterCurrentState.indexOf(filter);
+      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+        $splice: [[ filterIndex, 1 ]],
+      });
+    }
+    this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   }
 
   mapTemplateCards = () => this.getMappableTemplates().map((template, index) => (
@@ -76,6 +135,7 @@ class TemplateList extends React.Component {
   ))
 
   render() {
+    const { subjectFilters, sourceFilters } = this.state;
     return (
       <body className="instructor-page">
       <div className="wrapper">
@@ -115,8 +175,11 @@ class TemplateList extends React.Component {
               </h2>
             </div>
             <FilterSection
+              subjectFilters={subjectFilters}
+              sourceFilters={sourceFilters}
               onSetSort={this.onSetSort}
               onClearFilters={this.onClearFilters}
+              handleFilterClick={this.handleFilterClick}
               onSetFilteredState={this.onSetFilteredState}
               onUnsetFilteredState={this.onUnsetFilteredState}
             />

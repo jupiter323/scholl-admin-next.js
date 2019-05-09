@@ -10,7 +10,7 @@ export default [
   },
   {
     title: 'Template name 2',
-    source: 'Admin Created',
+    source: 'Built-In',
     sessions: 19,
     estimatedTotalCourseWork: 2198,
     lessons: 102,
@@ -28,7 +28,7 @@ export default [
   },
   {
     title: 'Template name 4',
-    source: 'Admin Created',
+    source: 'Built-In',
     sessions: 22,
     estimatedTotalCourseWork: 4000,
     lessons: 131,
@@ -46,7 +46,7 @@ export default [
   },
   {
     title: 'Template name 6',
-    source: 'Admin Created',
+    source: 'Built-In',
     sessions: 35,
     estimatedTotalCourseWork: 1249,
     lessons: 88,
