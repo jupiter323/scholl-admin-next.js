@@ -63,7 +63,7 @@ class TemplateList extends React.Component {
   onFilterTemplates = () => {
     const { subjectFilters, sourceFilters, templates: allTemplates } = this.state;
     let templates = allTemplates
-    if (subjectFilters.length) {
+    if (subjectFilters.length && subjectFilters.indexOf('all') === -1) {
       templates = templates.filter(template => subjectFilters.indexOf(template.subject) !== -1);
     }
     if (sourceFilters.length) {
@@ -77,7 +77,6 @@ class TemplateList extends React.Component {
     let mappableTemplates = templates;
     if (titleFilter.length) {
       mappableTemplates = this.onFilterByTitle();
-      console.warn('mappable', mappableTemplates)
     }
     if (subjectFilters.length || sourceFilters.length) {
       mappableTemplates = this.onFilterTemplates();
@@ -102,13 +101,14 @@ class TemplateList extends React.Component {
         modifiedFilterCurrentState = currentSubjectFilters;
         modifiedFilterName = 'subjectFilters';
         break;
-      case 'difficulty':
+      case 'source':
         modifiedFilterCurrentState = currentSourceFilters;
         modifiedFilterName = 'sourceFilters';
         break;
       default:
         break;
     }
+    // Decide whether we're adding or removing the selected filter
     if (modifiedFilterCurrentState.indexOf(filter) === -1) {
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
         $push: [filter],

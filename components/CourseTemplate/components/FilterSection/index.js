@@ -92,20 +92,20 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="built_in"
-                      checked={sourceFilters.indexOf('built_in') !== -1}
-                      onChange={() => handleFilterClick('source', 'built_in')}
+                      id="builtIn"
+                      checked={sourceFilters.indexOf('builtIn') !== -1}
+                      onChange={() => handleFilterClick('source', 'builtIn')}
                     />
-                    <label htmlFor="built_in">Built-In</label>
+                    <label htmlFor="builtIn">Built-In</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="user_created"
-                      checked={sourceFilters.indexOf('user_created') !== -1}
-                      onChange={() => handleFilterClick('source', 'user_created')}
+                      id="userCreated"
+                      checked={sourceFilters.indexOf('userCreated') !== -1}
+                      onChange={() => handleFilterClick('source', 'userCreated')}
                     />
-                    <label htmlFor="user_created">User Created</label>
+                    <label htmlFor="userCreated">User Created</label>
                   </li>
                 </ul>
               </div>

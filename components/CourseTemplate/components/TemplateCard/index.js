@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 
 const formatEstimatedTotalCourseWork = (minutes) => Math.floor(minutes / 60);
 
+const sourceMap = {
+  builtIn: 'Built-In',
+  userCreated: 'User Created',
+};
+
 class TemplateCard extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +52,7 @@ class TemplateCard extends React.Component {
                       <div className="meta-info">
                         <dl className="dl-horizontal">
                           <dt>Source:</dt>
-                          <dd>{source}</dd>
+                          <dd>{sourceMap[source]}</dd>
                         </dl>
                       </div>
                     </div>
