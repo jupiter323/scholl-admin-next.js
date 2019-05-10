@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import updatedUser from '../../utils/sampleUser';
+// import updatedUser from '../../utils/sampleUser';
 
 class StudentCard extends React.Component {
     constructor(props) {
@@ -24,7 +24,7 @@ render() {
     const { active, studentInformation: { firstName, lastName },
         emailAddress: { email },
 
-    } = updatedUser;
+    } = this.props.student;
 return (
     <div className="card-main-col col s12 m8 l7 xl5">
       <div className="card-main card-location card card-large">
