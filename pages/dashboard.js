@@ -13,16 +13,25 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeDate: null,
+      addDropdownOpen: false,
+      deleteDropdownOpen: false,
       assignDropdownIsOpen: false,
       onToggleHandleFilteredItemsDropdown: false,
     };
   }
 
+  // onSetActiveDate = (incomingDate) => this.setState(({ activeDate }) => ({ activeDate: activeDate === null ? incomingDate : null }))
+  onSetActiveDate = (incomingDate) => this.setState({ activeDate: incomingDate })
+
+  onToggleAddDropdown = () => this.setState(({ addDropdownOpen }) => ({ addDropdownOpen: !addDropdownOpen, deleteDropdownOpen: false }))
+  onToggleDeleteDropdown = () => this.setState(({ deleteDropdownOpen }) => ({ deleteDropdownOpen: !deleteDropdownOpen, addDropdownOpen: false }))
+
   onToggleAssignDropdown = () => this.setState(({ assignDropdownIsOpen }) => ({ assignDropdownIsOpen: !assignDropdownIsOpen }))
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown } = this.state;
+    const { activeDate, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown } = this.state;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-3">
@@ -106,12 +115,54 @@ class Dashboard extends Component {
                       </tr>
                     </thead>
                     <tbody>
-                      <FirstRow />
-                      <SecondRow />
-                      <ThirdRow />
-                      <FourthRow />
-                      <FifthRow />
-                      <SixthRow />
+                      <FirstRow
+                        activeDate={activeDate}
+                        addDropdownOpen={addDropdownOpen}
+                        deleteDropdownOpen={deleteDropdownOpen}
+                        onSetActiveDate={this.onSetActiveDate}
+                        onToggleAddDropdown={this.onToggleAddDropdown}
+                        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                      />
+                      <SecondRow
+                        activeDate={activeDate}
+                        addDropdownOpen={addDropdownOpen}
+                        deleteDropdownOpen={deleteDropdownOpen}
+                        onSetActiveDate={this.onSetActiveDate}
+                        onToggleAddDropdown={this.onToggleAddDropdown}
+                        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                      />
+                      <ThirdRow
+                        activeDate={activeDate}
+                        addDropdownOpen={addDropdownOpen}
+                        deleteDropdownOpen={deleteDropdownOpen}
+                        onSetActiveDate={this.onSetActiveDate}
+                        onToggleAddDropdown={this.onToggleAddDropdown}
+                        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                      />
+                      <FourthRow
+                        activeDate={activeDate}
+                        addDropdownOpen={addDropdownOpen}
+                        deleteDropdownOpen={deleteDropdownOpen}
+                        onSetActiveDate={this.onSetActiveDate}
+                        onToggleAddDropdown={this.onToggleAddDropdown}
+                        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                      />
+                      <FifthRow
+                        activeDate={activeDate}
+                        addDropdownOpen={addDropdownOpen}
+                        deleteDropdownOpen={deleteDropdownOpen}
+                        onSetActiveDate={this.onSetActiveDate}
+                        onToggleAddDropdown={this.onToggleAddDropdown}
+                        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                      />
+                      <SixthRow
+                        activeDate={activeDate}
+                        addDropdownOpen={addDropdownOpen}
+                        deleteDropdownOpen={deleteDropdownOpen}
+                        onSetActiveDate={this.onSetActiveDate}
+                        onToggleAddDropdown={this.onToggleAddDropdown}
+                        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                      />
                     </tbody>
                   </table>
                 </div>
