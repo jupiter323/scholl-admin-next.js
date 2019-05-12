@@ -6,7 +6,7 @@ class FilterSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true,
+      open: false,
     };
   }
 
@@ -17,7 +17,7 @@ class FilterSection extends React.Component {
     const { onClearFilters } = this.props;
     return (
       <div className="calendar-filter filter-form-holder">
-        <ul className="collapsible expandable">
+        <ul className="collapsible expandable" style={{ minHeight: '0' }}>
           <li>
             <div className="collapsible-body" style={open ? { display: 'block' } : { display: 'none' }}>
               <div className="filter-form_checkbox-list-holder justify-center">
