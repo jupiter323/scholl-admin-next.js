@@ -13,12 +13,11 @@ class FilterSection extends React.Component {
     this.state = {
       open: true,
       topic: '',
-      activeFilters: [],
     };
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
-  onClearFilters = () => this.setState({ activeFilters: [], topic: '' }, this.props.onClearFilters)
+  onClearFilters = () => this.setState({ topic: '' }, this.props.onClearFilters)
 
   // Sets component-level state so the UI reflects the updated dropdown option, then calls onSetFilteredTopicState to actually implement the filtering
   // eslint-disable-next-line consistent-return
