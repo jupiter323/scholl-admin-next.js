@@ -1,140 +1,151 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
+import PropTypes from 'prop-types';
+
+const sampleConfig = [
+  {
+    dayDate: 'Mon, Jan 3rd',
+    calDate: '3',
+    activeDateKey: 'row-2-column-1',
+    inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Tue, Jan 4th',
+    calDate: '4',
+    activeDateKey: 'row-2-column-2',
+    inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Wed, Jan 5th',
+    calDate: '5',
+    activeDateKey: 'row-2-column-3',
+    inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Thu, Jan 6th',
+    calDate: '6',
+    activeDateKey: 'row-2-column-4',
+    inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Fri, Jan 7th',
+    calDate: '7',
+    activeDateKey: 'row-2-column-5',
+    inMonth: true,
+    sessions: [{}, {}],
+    lessons: [{}, {}, {}, {}, {}],
+    worksheets: [{}, {}, {}],
+    testSections: [{}, {}],
+    events: [{}],
+  },
+  {
+    dayDate: 'Sat, Jan 8th',
+    calDate: '8',
+    activeDateKey: 'row-2-column-6',
+    inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Sun, Jan 9th',
+    calDate: '9',
+    activeDateKey: 'row-2-column-7',
+    inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
 
 class SecondRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       test: true,
+      rowDates: sampleConfig,
     };
   }
 
-  render() {
+  mapRowDates = () => this.state.rowDates.map(rowDate => {
+    const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown } = this.props;
+    const { dayDate, calDate, activeDateKey, inMonth, events, sessions, lessons, worksheets, testSections } = rowDate;
+    if (!inMonth) {
+      return (
+        <td className="cal-cell1 cal-cell cal-day-outmonth">
+          <div className="cal-month-day">
+            <span className="day-date">{dayDate}</span>
+            <span className="cal-date">{calDate}</span>
+          </div>
+        </td>
+      )
+    }
     return (
-      <tr className="cal-row-fluid">
-        <td className="cal-cell1 cal-cell day-no-events">
-          <div className="cal-month-day cal-day-inmonth cal-day-weekend">
-            <span className="day-date">Mon, Jan 3rd</span>
-            <span className="cal-date">3</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
-
-                </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
-
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_030119_add'>Add</a>
-                        <ul id='dropdown_day_030119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_030119_delete'>Delete</a>
-                        <ul id='dropdown_day_030119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td className="cal-cell1 cal-cell day-no-events">
-          <div className="cal-month-day cal-day-inmonth">
-            <span className="day-date">Mon, Jan 4th</span>
-            <span className="cal-date">4</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
-
-                </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
-
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_040119_add'>Add</a>
-                        <ul id='dropdown_day_040119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_040119_delete'>Delete</a>
-                        <ul id='dropdown_day_040119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td className="cal-cell1 cal-cell day-has-events">
-          <div className="cal-month-day cal-day-inmonth">
-            <span className="day-date">Mon, Jan 5th</span>
-            <span className="cal-date">5</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
+      <td key={activeDateKey} className={events.length ? 'cal-cell1 cal-cell day-has-events' : 'cal-cell1 cal-cell day-no-events'} onClick={() => onSetActiveDate(activeDateKey)}>
+        <div className={activeDateKey.includes('column-7') || activeDateKey.includes('column-1') ? 'cal-month-day cal-day-inmonth cal-day-weekend' : 'cal-month-day cal-day-inmonth'}>
+          <span className="day-date">{dayDate}</span>
+          <span className="cal-date">{calDate}</span>
+          {/* <!-- day open collapsible --> */}
+          <ul className="day-collapsible collapsible">
+            <li className={activeDate === activeDateKey ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
+              <div className="collapsible-header">
+                <span className="fake-close"><span className="icon-close-thin"></span></span>
+                <If condition={sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0}>
                   <ul className="events-list events-list-short">
-                    <li className="event-frame event-title">
-                      <span className="event-title-box">Session 2</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-lesson-box"> 6 <span className="event-text">lessons</span></span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-worksheet-box">2 <span className="event-text">Worksheets</span></span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-test-box">1 <span className="event-text">Test Section</span></span>
-                    </li>
+                    <If condition={sessions.length}>
+                      <li className="event-frame event-title">
+                        <span className="event-title-box">Session {worksheets.length}</span>
+                      </li>
+                    </If>
+                    <If condition={lessons.length}>
+                      <li className="event-frame">
+                        <span className="event event-lesson-box"> {lessons.length} <span className="event-text">Lesson{lessons.length > 1 && 's'}</span></span>
+                      </li>
+                    </If>
+                    <If condition={worksheets.length}>
+                      <li className="event-frame">
+                        <span className="event event-worksheet-box">{worksheets.length} <span className="event-text">Worksheet{worksheets.length > 1 && 's'}</span></span>
+                      </li>
+                    </If>
+                    <If condition={testSections.length}>
+                      <li className="event-frame">
+                        <span className="event event-test-box">{testSections.length} <span className="event-text">Test Section{testSections.length > 1 && 's'}</span></span>
+                      </li>
+                    </If>
                   </ul>
-                </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
+                </If>
+              </div>
+              <div className="collapsible-body">
+                {/* <!-- events list full --> */}
+                {events.length && (
                   <ul className="events-list">
                     <li className="event-frame">
                       <span className="event-title-box">Session 2</span>
                     </li>
-                    {/* <!-- lessons list --> */}
                     <li className="event-frame">
                       <span className="event-check lesson-check"><i className="icon-check02"></i></span>
                       <span className="event event-lesson-box">Reading Introduction</span>
@@ -161,7 +172,6 @@ class SecondRow extends React.Component {
                     <li className="event-frame">
                       <span className="event event-lesson-box">Adjectives vs. Adverbsa</span>
                     </li>
-                    {/* <!-- worksheets list --> */}
                     <li className="event-frame">
                       <span className="event event-worksheet-box"> Worksheet: Triangles #1</span>
                     </li>
@@ -169,247 +179,84 @@ class SecondRow extends React.Component {
                       <span className="event-check worksheet-check"><i className="icon-check02"></i></span>
                       <span className="event event-worksheet-box">Worksheet: Triangles #2</span>
                     </li>
-                    {/* <!-- test list --> */}
                     <li className="event-frame">
                       <span className="event event-test-box">Test Section: Math (no calc) version 53-pre</span>
                     </li>
                   </ul>
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_050119_add'>Add</a>
-                        <ul id='dropdown_day_050119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_050119_delete'>Delete</a>
-                        <ul id='dropdown_day_050119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td className="cal-cell1 cal-cell day-no-events">
-          <div className="cal-month-day cal-day-inmonth">
-            <span className="day-date">Mon, Jan 6th</span>
-            <span className="cal-date">6</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
-
-                </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
-
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_060119_add'>Add</a>
-                        <ul id='dropdown_day_060119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_060119_delete'>Delete</a>
-                        <ul id='dropdown_day_060119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td className="cal-cell1 cal-cell day-has-events">
-          <div className="cal-month-day cal-day-inmonth">
-            <span className="day-date">Mon, Jan 7th</span>
-            <span className="cal-date">7</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
-                  <ul className="events-list events-list-short">
-                    <li className="event-frame event-title">
-                      <span className="event-title-box">Session 2</span>
+                )}
+                <div className="day-footer">
+                  <ul className="links-list">
+                    <li>
+                      <a
+                        href="#"
+                        data-target='dropdown_day_240119_add'
+                        onClick={onToggleAddDropdown}
+                        className="link-add dropdown-trigger waves-effect waves-teal"
+                      >
+                        Add
+                      </a>
+                      <ul
+                        id='dropdown_day_240119_add'
+                        className='dropdown-content'
+                        style={{ display: addDropdownOpen ? 'block' : 'none', opacity: addDropdownOpen ? '100' : '0' }}
+                      >
+                        <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
+                        <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
+                        <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
+                        <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
+                        <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
+                      </ul>
                     </li>
-                    <li className="event-frame">
-                      <span className="event event-lesson-box">2 <span className="event-text">lessons</span></span>
+                    <li>
+                      <a
+                        href="#"
+                        data-target='dropdown_day_240119_delete'
+                        onClick={onToggleDeleteDropdown}
+                        className="link-delete dropdown-trigger waves-effect waves-teal"
+                      >
+                        Delete
+                      </a>
+                      <ul
+                        id='dropdown_day_240119_delete'
+                        className='dropdown-content'
+                        style={{ display: deleteDropdownOpen ? 'block' : 'none', opacity: deleteDropdownOpen ? '100' : '0' }}
+                      >
+                        <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
+                        <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
+                        <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
+                        <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
+                        <li><a href="#!" className="disabled">Simulated SAT</a></li>
+                        <li><a href="#!" className="disabled">Target Test</a></li>
+                        <li><a href="#!">All</a></li>
+                      </ul>
                     </li>
                   </ul>
                 </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
-                  <ul className="events-list">
-                    <li className="event-frame">
-                      <span className="event-title-box">Session 2</span>
-                    </li>
-                    {/* <!-- lessons list --> */}
-                    <li className="event-frame">
-                      <span className="event event-lesson-box">Reading Introduction</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-lesson-box">Active Reading</span>
-                    </li>
-                  </ul>
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_070119_add'>Add</a>
-                        <ul id='dropdown_day_070119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_070119_delete'>Delete</a>
-                        <ul id='dropdown_day_070119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td className="cal-cell1 cal-cell day-no-events">
-          <div className="cal-month-day cal-day-inmonth cal-day-today">
-            <span className="day-date">Mon, Jan 8th</span>
-            <span className="cal-date">8</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </td>
+    )
+  })
 
-                </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
-
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_080119_add'>Add</a>
-                        <ul id='dropdown_day_080119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_080119_delete'>Delete</a>
-                        <ul id='dropdown_day_080119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td className="cal-cell1 cal-cell day-no-events">
-          <div className="cal-month-day cal-day-inmonth cal-day-weekend">
-            <span className="day-date">Mon, Jan 9th</span>
-            <span className="cal-date">9</span>
-            {/* <!-- day open collapsible --> */}
-            <ul className="day-collapsible collapsible">
-              <li className="collapsible-holder">
-                <div className="collapsible-header">
-                  <span className="fake-close"><span className="icon-close-thin"></span></span>
-                  {/* <!-- events list short --> */}
-
-                </div>
-                <div className="collapsible-body">
-                  {/* <!-- events list full --> */}
-
-                  <div className="day-footer">
-                    <ul className="links-list">
-                      <li>
-                        <a href="#" className="link-add dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_090119_add'>Add</a>
-                        <ul id='dropdown_day_090119_add' className='dropdown-content'>
-                          <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#" className="link-delete dropdown-trigger waves-effect waves-teal" data-target='dropdown_day_090119_delete'>Delete</a>
-                        <ul id='dropdown_day_090119_delete' className='dropdown-content'>
-                          <li><a href="#modal_edit_delete_section" className="modal-trigger">Session</a></li>
-                          <li><a href="#modal_edit_delete_lesson" className="modal-trigger">Lesson</a></li>
-                          <li><a href="#modal_edit_delete_worksheet" className="modal-trigger">Worksheet</a></li>
-                          <li><a href="#modal_edit_delete_test_section" className="modal-trigger">Test Section</a></li>
-                          <li><a href="#!" className="disabled">Simulated SAT</a></li>
-                          <li><a href="#!" className="disabled">Target Test</a></li>
-                          <li><a href="#!">All</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </td>
+  render() {
+    return (
+      <tr className="cal-row-fluid">
+        {this.mapRowDates()}
       </tr>
     )
   }
 }
 
+SecondRow.propTypes = {
+  activeDate: PropTypes.string,
+  onSetActiveDate: PropTypes.func.isRequired,
+  addDropdownOpen: PropTypes.bool.isRequired,
+  deleteDropdownOpen: PropTypes.bool.isRequired,
+  onToggleAddDropdown: PropTypes.func.isRequired,
+  onToggleDeleteDropdown: PropTypes.func.isRequired,
+}
+
 export default SecondRow;
+

@@ -14,6 +14,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       activeDate: null,
+      expandedColumn: 3,
       addDropdownOpen: false,
       deleteDropdownOpen: false,
       assignDropdownIsOpen: false,
@@ -31,7 +32,7 @@ class Dashboard extends Component {
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { activeDate, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown } = this.state;
+    const { activeDate, expandedColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown } = this.state;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-3">
@@ -117,6 +118,7 @@ class Dashboard extends Component {
                     <tbody>
                       <FirstRow
                         activeDate={activeDate}
+                        expandedColumn={expandedColumn}
                         addDropdownOpen={addDropdownOpen}
                         deleteDropdownOpen={deleteDropdownOpen}
                         onSetActiveDate={this.onSetActiveDate}
@@ -125,6 +127,7 @@ class Dashboard extends Component {
                       />
                       <SecondRow
                         activeDate={activeDate}
+                        expandedColumn={expandedColumn}
                         addDropdownOpen={addDropdownOpen}
                         deleteDropdownOpen={deleteDropdownOpen}
                         onSetActiveDate={this.onSetActiveDate}
@@ -133,6 +136,7 @@ class Dashboard extends Component {
                       />
                       <ThirdRow
                         activeDate={activeDate}
+                        expandedColumn={expandedColumn}
                         addDropdownOpen={addDropdownOpen}
                         deleteDropdownOpen={deleteDropdownOpen}
                         onSetActiveDate={this.onSetActiveDate}
@@ -141,6 +145,7 @@ class Dashboard extends Component {
                       />
                       <FourthRow
                         activeDate={activeDate}
+                        expandedColumn={expandedColumn}
                         addDropdownOpen={addDropdownOpen}
                         deleteDropdownOpen={deleteDropdownOpen}
                         onSetActiveDate={this.onSetActiveDate}
@@ -149,6 +154,7 @@ class Dashboard extends Component {
                       />
                       <FifthRow
                         activeDate={activeDate}
+                        expandedColumn={expandedColumn}
                         addDropdownOpen={addDropdownOpen}
                         deleteDropdownOpen={deleteDropdownOpen}
                         onSetActiveDate={this.onSetActiveDate}
@@ -157,6 +163,7 @@ class Dashboard extends Component {
                       />
                       <SixthRow
                         activeDate={activeDate}
+                        expandedColumn={expandedColumn}
                         addDropdownOpen={addDropdownOpen}
                         deleteDropdownOpen={deleteDropdownOpen}
                         onSetActiveDate={this.onSetActiveDate}
