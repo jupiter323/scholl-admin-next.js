@@ -8,42 +8,77 @@ const sampleConfig = [
     calDate: '31',
     activeDateKey: 'row-6-column-1',
     inMonth: true,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Tue, Feb 1st',
     calDate: '1',
     activeDateKey: 'row-6-column-2',
     inMonth: false,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Wed, Feb 2nd',
     calDate: '2',
     activeDateKey: 'row-6-column-3',
     inMonth: false,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Thu, Feb 3rd',
     calDate: '3',
     activeDateKey: 'row-6-column-4',
     inMonth: false,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Fri, Feb 4th',
     calDate: '4',
     activeDateKey: 'row-6-column-5',
     inMonth: false,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Sat, Feb 5th',
     calDate: '5',
     activeDateKey: 'row-6-column-6',
     inMonth: false,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Sun, Feb 6th',
     calDate: '6',
     activeDateKey: 'row-6-column-7',
     inMonth: false,
+    events: [],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
 ];
 
@@ -51,14 +86,14 @@ class SixthRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      state: true,
       rowDates: sampleConfig,
     };
   }
 
   mapRowDates = () => this.state.rowDates.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown } = this.props;
-    const { dayDate, calDate, activeDateKey, inMonth } = rowDate;
+    const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
+    const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
     if (!inMonth) {
       return (
         <td className="cal-cell1 cal-cell cal-day-outmonth">
@@ -70,19 +105,83 @@ class SixthRow extends React.Component {
       )
     }
     return (
-      <td key={activeDateKey} className="cal-cell1 cal-cell day-no-events" onClick={() => onSetActiveDate(activeDateKey)}>
-        <div className="cal-month-day cal-day-inmonth cal-day-weekend">
+      <td key={activeDateKey} className={hasEvents ? 'cal-cell1 cal-cell day-has-events' : 'cal-cell1 cal-cell day-no-events'} onClick={() => onSetActiveDate(activeDateKey)}>
+        <div className={activeDateKey.includes('column-7') || activeDateKey.includes('column-1') ? 'cal-month-day cal-day-inmonth cal-day-weekend' : 'cal-month-day cal-day-inmonth'}>
           <span className="day-date">{dayDate}</span>
           <span className="cal-date">{calDate}</span>
-          {/* <!-- day open collapsible --> */}
           <ul className="day-collapsible collapsible">
             <li className={activeDate === activeDateKey ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
               <div className="collapsible-header">
                 <span className="fake-close"><span className="icon-close-thin"></span></span>
-                {/* <!-- events list short --> */}
+                <If condition={hasEvents}>
+                  <ul className="events-list events-list-short">
+                    <If condition={sessions.length}>
+                      <li className="event-frame event-title">
+                        <span className="event-title-box">Session {worksheets.length}</span>
+                      </li>
+                    </If>
+                    <If condition={lessons.length}>
+                      <li className="event-frame">
+                        <span className="event event-lesson-box"> {lessons.length} <span className="event-text">Lesson{lessons.length > 1 && 's'}</span></span>
+                      </li>
+                    </If>
+                    <If condition={worksheets.length}>
+                      <li className="event-frame">
+                        <span className="event event-worksheet-box">{worksheets.length} <span className="event-text">Worksheet{worksheets.length > 1 && 's'}</span></span>
+                      </li>
+                    </If>
+                    <If condition={testSections.length}>
+                      <li className="event-frame">
+                        <span className="event event-test-box">{testSections.length} <span className="event-text">Test Section{testSections.length > 1 && 's'}</span></span>
+                      </li>
+                    </If>
+                  </ul>
+                </If>
               </div>
               <div className="collapsible-body">
-                {/* <!-- events list full --> */}
+                <If condition={hasEvents}>
+                  <ul className="events-list">
+                    <li className="event-frame">
+                      <span className="event-title-box">Session 2</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
+                      <span className="event event-lesson-box">Reading Introduction</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event event-lesson-box">Active Reading</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
+                      <span className="event event-lesson-box">General Strategy (Reading)</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
+                      <span className="event event-lesson-box">Applying Active Reading</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
+                      <span className="event event-lesson-box">Strategy Review (Reading)</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
+                      <span className="event event-lesson-box">Reading Vocabulary: Word Roots</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event event-lesson-box">Adjectives vs. Adverbsa</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event event-worksheet-box"> Worksheet: Triangles #1</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event-check worksheet-check"><i className="icon-check02"></i></span>
+                      <span className="event event-worksheet-box">Worksheet: Triangles #2</span>
+                    </li>
+                    <li className="event-frame">
+                      <span className="event event-test-box">Test Section: Math (no calc) version 53-pre</span>
+                    </li>
+                  </ul>
+                </If>
                 <div className="day-footer">
                   <ul className="links-list">
                     <li>

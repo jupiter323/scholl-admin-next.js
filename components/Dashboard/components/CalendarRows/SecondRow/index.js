@@ -86,14 +86,14 @@ class SecondRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: true,
       rowDates: sampleConfig,
     };
   }
 
   mapRowDates = () => this.state.rowDates.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown } = this.props;
-    const { dayDate, calDate, activeDateKey, inMonth, events, sessions, lessons, worksheets, testSections } = rowDate;
+    const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
+    const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
     if (!inMonth) {
       return (
         <td className="cal-cell1 cal-cell cal-day-outmonth">
@@ -105,16 +105,15 @@ class SecondRow extends React.Component {
       )
     }
     return (
-      <td key={activeDateKey} className={events.length ? 'cal-cell1 cal-cell day-has-events' : 'cal-cell1 cal-cell day-no-events'} onClick={() => onSetActiveDate(activeDateKey)}>
+      <td key={activeDateKey} className={hasEvents ? 'cal-cell1 cal-cell day-has-events' : 'cal-cell1 cal-cell day-no-events'} onClick={() => onSetActiveDate(activeDateKey)}>
         <div className={activeDateKey.includes('column-7') || activeDateKey.includes('column-1') ? 'cal-month-day cal-day-inmonth cal-day-weekend' : 'cal-month-day cal-day-inmonth'}>
           <span className="day-date">{dayDate}</span>
           <span className="cal-date">{calDate}</span>
-          {/* <!-- day open collapsible --> */}
           <ul className="day-collapsible collapsible">
             <li className={activeDate === activeDateKey ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
               <div className="collapsible-header">
                 <span className="fake-close"><span className="icon-close-thin"></span></span>
-                <If condition={sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0}>
+                <If condition={hasEvents}>
                   <ul className="events-list events-list-short">
                     <If condition={sessions.length}>
                       <li className="event-frame event-title">
@@ -140,8 +139,7 @@ class SecondRow extends React.Component {
                 </If>
               </div>
               <div className="collapsible-body">
-                {/* <!-- events list full --> */}
-                {events.length && (
+                <If condition={hasEvents}>
                   <ul className="events-list">
                     <li className="event-frame">
                       <span className="event-title-box">Session 2</span>
@@ -183,7 +181,7 @@ class SecondRow extends React.Component {
                       <span className="event event-test-box">Test Section: Math (no calc) version 53-pre</span>
                     </li>
                   </ul>
-                )}
+                </If>
                 <div className="day-footer">
                   <ul className="links-list">
                     <li>
