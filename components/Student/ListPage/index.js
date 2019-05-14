@@ -13,6 +13,9 @@ class StudentListPage extends React.Component {
         this.state = {
             students: sampleStudentList,
             studentModalOpen: false,
+            sort: "",
+            filterName: "",
+            filterTopic: "",
             newStudent: {
                 active: false,
                 studentInformation: {},
@@ -25,6 +28,14 @@ class StudentListPage extends React.Component {
    onOpenStudentModal = () => this.setState({ studentModalOpen: true });
    onCloseStudentModal = () => this.setState({ studentModalOpen: false });
 
+   onSetSort = (sort) => this.setState({ sort });
+   onSetFilteredState = (filterName) => this.setState({ filterName });
+   onUnsetFilteredState = () => this.setState({ filterName: '' });
+
+   onSetFilteredTopicState = (filterTopic) => this.setState({ filterTopic });
+   onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState);
+
+
    handleNewStudent = (studentInformation, contactInformation, location) => {
         const newStudent = update(this.state.newStudent, {
             studentInformation: {$set: [studentInformation]},
@@ -34,11 +45,16 @@ class StudentListPage extends React.Component {
         this.setState({ newStudent })
    }
    render() {
-        const { students, studentModalOpen, newStudent: { studentInformation, contactInformation, location } } = this.state;
+        const { students, studentModalOpen, newStsudent: { studentInformation, contactInformation, location } } = this.state;
         return(
             <React.Fragment>
                 <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal} handleNewStudent={(newStudent) => this.handleNewStudent(newStudent, studentInformation, contactInformation, location)} />
-                <FilterSection />
+                <FilterSection
+                    onSetSort={this.onSetSort}
+                    onSetFilteredState={this.onSetFilteredState}
+                    onUnsetFilteredState={this.onUnsetFilteredState}
+                    onSetFilteredTopicState={this.onSetFilteredTopicState}
+                    onUnsetFilteredTopicState={this.onUnsetFilteredTopicState} />
                 <div className="content-section">
                 <div className="row d-flex-content">
                 {students.map((student) => (
