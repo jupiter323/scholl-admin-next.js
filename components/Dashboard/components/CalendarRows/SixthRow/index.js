@@ -10,25 +10,10 @@ const sampleConfig = [
     calDate: '31',
     activeDateKey: 'row-6-column-1',
     inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-    ],
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
   },
   {
     dayDate: 'Mon, Feb 1st',
