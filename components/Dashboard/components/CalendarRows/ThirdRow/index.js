@@ -97,6 +97,7 @@ class ThirdRow extends React.Component {
     const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
     const inActiveColumn = activeDateKey[13] === activeColumn;
+    const isActiveDate = activeDate === activeDateKey;
     if (!inMonth) {
       return (
         <td className="cal-cell1 cal-cell cal-day-outmonth">
@@ -113,8 +114,8 @@ class ThirdRow extends React.Component {
           <span className="day-date">{dayDate}</span>
           <span className="cal-date">{calDate}</span>
           <ul className="day-collapsible collapsible">
-            <li className={activeDate === activeDateKey ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
-              <div className="collapsible-header">
+            <li className={isActiveDate ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
+              <div className="collapsible-header" style={{ display: inActiveColumn && isActiveDate ? 'none' : 'block'}}>
                 <span className="fake-close"><span className="icon-close-thin"></span></span>
                 <If condition={hasEvents}>
                   <ul className="events-list events-list-short">
@@ -141,48 +142,31 @@ class ThirdRow extends React.Component {
                   </ul>
                 </If>
               </div>
-              <div className="collapsible-body">
+              <div className="collapsible-body" style={{ opacity: inActiveColumn && isActiveDate ? '1' : '0', visibility: inActiveColumn ? 'visible' : 'hidden' }}>
                 <If condition={hasEvents}>
                   <ul className="events-list">
-                    <li className="event-frame">
-                      <span className="event-title-box">Session 2</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
-                      <span className="event event-lesson-box">Reading Introduction</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-lesson-box">Active Reading</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
-                      <span className="event event-lesson-box">General Strategy (Reading)</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
-                      <span className="event event-lesson-box">Applying Active Reading</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
-                      <span className="event event-lesson-box">Strategy Review (Reading)</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event-check lesson-check"><i className="icon-check02"></i></span>
-                      <span className="event event-lesson-box">Reading Vocabulary: Word Roots</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-lesson-box">Adjectives vs. Adverbsa</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-worksheet-box"> Worksheet: Triangles #1</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event-check worksheet-check"><i className="icon-check02"></i></span>
-                      <span className="event event-worksheet-box">Worksheet: Triangles #2</span>
-                    </li>
-                    <li className="event-frame">
-                      <span className="event event-test-box">Test Section: Math (no calc) version 53-pre</span>
-                    </li>
+                    {sessions.map(session => (
+                      <li className="event-frame" key={session.title}>
+                        <span className="event-title-box">{session.title}</span>
+                      </li>
+                    ))}
+                    {lessons.map(lesson => (
+                      <li className="event-frame" key={lesson.title}>
+                        {lesson.completed && <span className="event-check lesson-check"><i className="icon-check02"></i></span>}
+                        <span className="event event-lesson-box">{lesson.title}</span>
+                      </li>
+                    ))}
+                    {worksheets.map(worksheet => (
+                      <li className="event-frame" key={worksheet.title}>
+                        {worksheet.completed && <span className="event-check worksheet-check"><i className="icon-check02"></i></span>}
+                        <span className="event event-worksheet-box">{worksheet.title}</span>
+                      </li>
+                    ))}
+                    {testSections.map(testSection => (
+                      <li className="event-frame" key={testSection.title}>
+                        <span className="event event-test-box">{testSection.title}</span>
+                      </li>
+                    ))}
                   </ul>
                 </If>
                 <div className="day-footer">
