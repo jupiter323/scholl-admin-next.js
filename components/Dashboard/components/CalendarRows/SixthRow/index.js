@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
+
 const sampleConfig = [
   {
     dayDate: 'Mon, Jan 31st',
@@ -91,12 +93,13 @@ class SixthRow extends React.Component {
   }
 
   mapRowDates = () => this.state.rowDates.map(rowDate => {
-    const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown } = this.props;
+    const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
+    const inActiveColumn = activeDateKey[13] === activeColumn;
     if (!inMonth) {
       return (
-        <td className="cal-cell1 cal-cell cal-day-outmonth">
+        <td className="cal-cell1 cal-cell cal-day-outmonth" key={activeDateKey}>
           <div className="cal-month-day">
             <span className="day-date">{dayDate}</span>
             <span className="cal-date">{calDate}</span>
@@ -105,7 +108,7 @@ class SixthRow extends React.Component {
       )
     }
     return (
-      <td key={activeDateKey} className={hasEvents ? 'cal-cell1 cal-cell day-has-events' : 'cal-cell1 cal-cell day-no-events'} onClick={() => onSetActiveDate(activeDateKey)}>
+      <td key={activeDateKey} className={getCalendarCellClassName(hasEvents, inActiveColumn)} onClick={() => onSetActiveDate(activeDateKey)}>
         <div className={activeDateKey.includes('column-7') || activeDateKey.includes('column-1') ? 'cal-month-day cal-day-inmonth cal-day-weekend' : 'cal-month-day cal-day-inmonth'}>
           <span className="day-date">{dayDate}</span>
           <span className="cal-date">{calDate}</span>
@@ -249,6 +252,7 @@ class SixthRow extends React.Component {
 
 SixthRow.propTypes = {
   activeDate: PropTypes.string,
+  activeColumn: PropTypes.string,
   onSetActiveDate: PropTypes.func.isRequired,
   addDropdownOpen: PropTypes.bool.isRequired,
   deleteDropdownOpen: PropTypes.bool.isRequired,

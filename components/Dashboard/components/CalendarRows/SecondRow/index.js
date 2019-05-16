@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
+
 const sampleConfig = [
   {
     dayDate: 'Mon, Jan 3rd',
@@ -91,9 +93,10 @@ class SecondRow extends React.Component {
   }
 
   mapRowDates = () => this.state.rowDates.map(rowDate => {
-    const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown } = this.props;
+    const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
+    const inActiveColumn = activeDateKey[13] === activeColumn;
     if (!inMonth) {
       return (
         <td className="cal-cell1 cal-cell cal-day-outmonth">
@@ -105,13 +108,13 @@ class SecondRow extends React.Component {
       )
     }
     return (
-      <td key={activeDateKey} className={hasEvents ? 'cal-cell1 cal-cell day-has-events' : 'cal-cell1 cal-cell day-no-events'} onClick={() => onSetActiveDate(activeDateKey)}>
+      <td key={activeDateKey} className={getCalendarCellClassName(hasEvents, inActiveColumn)} onClick={() => onSetActiveDate(activeDateKey)}>
         <div className={activeDateKey.includes('column-7') || activeDateKey.includes('column-1') ? 'cal-month-day cal-day-inmonth cal-day-weekend' : 'cal-month-day cal-day-inmonth'}>
           <span className="day-date">{dayDate}</span>
           <span className="cal-date">{calDate}</span>
           <ul className="day-collapsible collapsible">
             <li className={activeDate === activeDateKey ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
-              <div className="collapsible-header">
+              <div className="collapsible-header" style={{ display: inActiveColumn ? 'none' : 'block'}}>
                 <span className="fake-close"><span className="icon-close-thin"></span></span>
                 <If condition={hasEvents}>
                   <ul className="events-list events-list-short">
@@ -138,7 +141,7 @@ class SecondRow extends React.Component {
                   </ul>
                 </If>
               </div>
-              <div className="collapsible-body">
+              <div className="collapsible-body" style={{ opacity: inActiveColumn ? '1' : '0', visibility: inActiveColumn ? 'visible' : 'hidden' }}>
                 <If condition={hasEvents}>
                   <ul className="events-list">
                     <li className="event-frame">
@@ -249,6 +252,7 @@ class SecondRow extends React.Component {
 
 SecondRow.propTypes = {
   activeDate: PropTypes.string,
+  activeColumn: PropTypes.string,
   onSetActiveDate: PropTypes.func.isRequired,
   addDropdownOpen: PropTypes.bool.isRequired,
   deleteDropdownOpen: PropTypes.bool.isRequired,
