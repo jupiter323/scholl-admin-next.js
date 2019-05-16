@@ -6,77 +6,86 @@ import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
 const sampleConfig = [
   {
-    dayDate: 'Mon, Dec 24th',
+    dayDate: 'Sun, Dec 24th',
     calDate: '24',
     activeDateKey: 'row-1-column-1',
     inMonth: false,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Tue, Dec 25th',
+    dayDate: 'Mon, Dec 25th',
     calDate: '25',
     activeDateKey: 'row-1-column-2',
     inMonth: false,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Wed, Dec 26th',
+    dayDate: 'Tue, Dec 26th',
     calDate: '26',
     activeDateKey: 'row-1-column-3',
     inMonth: false,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Thu, Dec 27th',
+    dayDate: 'Wed, Dec 27th',
     calDate: '27',
     activeDateKey: 'row-1-column-4',
     inMonth: false,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Fri, Dec 28th',
+    dayDate: 'Thu, Dec 28th',
     calDate: '28',
     activeDateKey: 'row-1-column-5',
     inMonth: false,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Sat, Jan 1st',
+    dayDate: 'Fri, Jan 1st',
     calDate: '1',
     activeDateKey: 'row-1-column-6',
     inMonth: true,
-    events: [],
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'General Strategy (Reading)', completed: true },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #2', completed: false },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
   },
   {
-    dayDate: 'Sun, Jan 2nd',
+    dayDate: 'Sat, Jan 2nd',
     calDate: '2',
     activeDateKey: 'row-1-column-7',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
@@ -121,7 +130,7 @@ class FirstRow extends React.Component {
                   <ul className="events-list events-list-short">
                     <If condition={sessions.length}>
                       <li className="event-frame event-title">
-                        <span className="event-title-box">Session {worksheets.length}</span>
+                        <span className="event-title-box">Session {sessions.length}</span>
                       </li>
                     </If>
                     <If condition={lessons.length}>

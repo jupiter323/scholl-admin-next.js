@@ -6,51 +6,47 @@ import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
 const sampleConfig = [
   {
-    dayDate: 'Mon, Jan 3rd',
+    dayDate: 'Sun, Jan 3rd',
     calDate: '3',
     activeDateKey: 'row-2-column-1',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Tue, Jan 4th',
+    dayDate: 'Mon, Jan 4th',
     calDate: '4',
     activeDateKey: 'row-2-column-2',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Wed, Jan 5th',
+    dayDate: 'Tue, Jan 5th',
     calDate: '5',
     activeDateKey: 'row-2-column-3',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Thu, Jan 6th',
+    dayDate: 'Wed, Jan 6th',
     calDate: '6',
     activeDateKey: 'row-2-column-4',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Fri, Jan 7th',
+    dayDate: 'Thu, Jan 7th',
     calDate: '7',
     activeDateKey: 'row-2-column-5',
     inMonth: true,
@@ -75,25 +71,22 @@ const sampleConfig = [
       { title: 'Test Section: Math (no calc) version 53-pre' },
       { title: 'Test Section: Math (calc) version 21-pre' },
     ],
-    events: [{}],
   },
   {
-    dayDate: 'Sat, Jan 8th',
+    dayDate: 'Fri, Jan 8th',
     calDate: '8',
     activeDateKey: 'row-2-column-6',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Sun, Jan 9th',
+    dayDate: 'Sat, Jan 9th',
     calDate: '9',
     activeDateKey: 'row-2-column-7',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
@@ -138,7 +131,7 @@ class SecondRow extends React.Component {
                   <ul className="events-list events-list-short">
                     <If condition={sessions.length}>
                       <li className="event-frame event-title">
-                        <span className="event-title-box">Session {worksheets.length}</span>
+                        <span className="event-title-box">Session {sessions.length}</span>
                       </li>
                     </If>
                     <If condition={lessons.length}>

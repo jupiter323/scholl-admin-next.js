@@ -6,77 +6,86 @@ import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
 const sampleConfig = [
   {
-    dayDate: 'Mon, Jan 10th',
+    dayDate: 'Sun, Jan 10th',
     calDate: '10',
     activeDateKey: 'row-3-column-1',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Tue, Jan 11th',
+    dayDate: 'Mon, Jan 11th',
     calDate: '11',
     activeDateKey: 'row-3-column-2',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Wed, Jan 12th',
+    dayDate: 'Tue, Jan 12th',
     calDate: '12',
     activeDateKey: 'row-3-column-3',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Thu, Jan 14th',
+    dayDate: 'Wed, Jan 14th',
     calDate: '14',
     activeDateKey: 'row-3-column-4',
     inMonth: true,
-    events: [],
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'General Strategy (Reading)', completed: true },
+      { title: 'Applying Active Reading', completed: false },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
   },
   {
-    dayDate: 'Fri, Jan 15th',
+    dayDate: 'Thu, Jan 15th',
     calDate: '15',
     activeDateKey: 'row-3-column-5',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Sat, Jan 16th',
+    dayDate: 'Fri, Jan 16th',
     calDate: '16',
     activeDateKey: 'row-3-column-6',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
     testSections: [],
   },
   {
-    dayDate: 'Sun, Feb 6th',
+    dayDate: 'Sat, Feb 6th',
     calDate: '6',
     activeDateKey: 'row-3-column-7',
     inMonth: true,
-    events: [],
     sessions: [],
     lessons: [],
     worksheets: [],
@@ -121,7 +130,7 @@ class ThirdRow extends React.Component {
                   <ul className="events-list events-list-short">
                     <If condition={sessions.length}>
                       <li className="event-frame event-title">
-                        <span className="event-title-box">Session {worksheets.length}</span>
+                        <span className="event-title-box">Session {sessions.length}</span>
                       </li>
                     </If>
                     <If condition={lessons.length}>
