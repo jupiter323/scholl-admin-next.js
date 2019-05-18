@@ -1,5 +1,5 @@
 import React from 'react';
-import Proptypes from 'prop-types';
+// import Proptypes from 'prop-types';
 import update from 'immutability-helper';
 
 import StudentCard from '../components/StudentCard';
@@ -17,7 +17,6 @@ class StudentListPage extends React.Component {
             studentModalOpen: false,
             sort: "",
             filterName: "",
-            filterTopic: "",
             newStudent: {
                 active: false,
                 studentInformation: {},
@@ -34,10 +33,10 @@ class StudentListPage extends React.Component {
    onSetFilteredState = (filterName) => this.setState({ filterName });
    onUnsetFilteredState = () => this.setState({ filterName: '' });
 
-//    onSetFilteredTopicState = (filterTopic) => this.setState({ filterTopic });
-//    onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState);
+   onSetFilteredLocationState = (location) => this.setState({ location });
+   onUnsetFilteredLocationState = () => this.setState({location: ''});
 
-    onFilterByName = () => {
+   onFilterByName = () => {
         const { students, filterName } = this.state;
         return students.reduce((finalArr, currentStudent) => {
             const { accountInfo: {lastName, firstName } } = currentStudent;
@@ -61,17 +60,17 @@ class StudentListPage extends React.Component {
         const { students, studentModalOpen } = this.state;
         return(
             <React.Fragment>
-                <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal} handleNewStudent={(newStudent) => this.handleNewStudent(newStudent, studentInformation, contactInformation, location)} />
+                <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal}  />
                 <FilterSection
                     onSetSort={this.onSetSort}
                     onSetFilteredState={this.onSetFilteredState}
                     onUnsetFilteredState={this.onUnsetFilteredState}
-                    onSetFilteredTopicState={this.onSetFilteredTopicState}
-                    onUnsetFilteredTopicState={this.onUnsetFilteredTopicState} />
+                    onSetFilteredLocationState={this.onSetFilteredLocationState}
+                    onUnsetFilteredLocationState={this.onUnsetFilteredLocationState} />
                 <div className="content-section">
                 <div className="row d-flex-content">
                 {students.map((student) => (
-                    <StudentCard student={student} />
+                    <StudentCard student={student} key={student.id} />
                     ))}
                     </div>
                     </div>
@@ -81,8 +80,6 @@ class StudentListPage extends React.Component {
       }
     }
 
-    StudentListPage.propTypes = {
-        state: Proptypes.object.isRequired,
-    }
+
 
 export default StudentListPage;
