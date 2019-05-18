@@ -12,6 +12,13 @@ class SecondRow extends React.Component {
     onToggleAddDropdown();
   }
 
+  toggleNewTestSectionModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleNewTestSectionModal, onToggleAddDropdown } = this.props;
+    onToggleNewTestSectionModal(event, date);
+    onToggleAddDropdown();
+  }
+
   mapRowDates = () => this.props.rows.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { date, dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
@@ -83,8 +90,8 @@ class SecondRow extends React.Component {
                       </li>
                     ))}
                     {testSections.map(testSection => (
-                      <li className="event-frame" key={testSection.title}>
-                        <span className="event event-test-box">{testSection.title}</span>
+                      <li className="event-frame" key={testSection.version}>
+                        <span className="event event-test-box">Test Section: {testSection.version}</span>
                       </li>
                     ))}
                   </ul>
@@ -108,7 +115,7 @@ class SecondRow extends React.Component {
                         <li><a href="#" onClick={(event) => this.toggleNewSessionModal(event, date)} className="modal-trigger">Session</a></li>
                         <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
                         <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                        <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleNewTestSectionModal(event, date)} className="modal-trigger">Test Section</a></li>
                         <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
                       </ul>
                     </li>
@@ -164,6 +171,7 @@ SecondRow.propTypes = {
   onToggleAddDropdown: PropTypes.func.isRequired,
   onToggleDeleteDropdown: PropTypes.func.isRequired,
   onToggleNewSessionModal: PropTypes.func.isRequired,
+  onToggleNewTestSectionModal: PropTypes.func.isRequired,
 }
 
 export default SecondRow;

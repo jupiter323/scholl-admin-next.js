@@ -3,7 +3,9 @@ import update from 'immutability-helper';
 
 import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
+
 import AssignSessionModal from '../components/Dashboard/components/Modals/AssignSessionModal';
+import AssignTestSectionModal from '../components/Dashboard/components/Modals/AssignTestSectionModal';
 
 import FirstRow from '../components/Dashboard/components/CalendarRows/FirstRow';
 import SecondRow from '../components/Dashboard/components/CalendarRows/SecondRow';
@@ -547,6 +549,7 @@ class Dashboard extends Component {
       assignDropdownIsOpen: false,
       onToggleHandleFilteredItemsDropdown: false,
       assignSessionModalOpen: false,
+      assignTestSectionModalOpen: false,
       modalDate: null,
     };
   }
@@ -556,12 +559,12 @@ class Dashboard extends Component {
     this.setState({ activeDate: incomingDate, activeColumn: incomingDate[13] })
   }
 
-  // TODO: Attach this event to the calendar date
+  // TODO: Handle attaching assignments to non-sample rows
   onSaveNewSession = (session) => {
     const { rows } = this.state;
     const updatedDate = rows.filter(row => row.date === session.date)[0];
-    updatedDate.sessions.push(session);
     const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.sessions.push(session);
     const updatedRows = update(rows, {
       $splice: [[ updatedDateIndex, 1, updatedDate ]],
     })
@@ -569,12 +572,31 @@ class Dashboard extends Component {
     this.onToggleNewSessionModal();
   }
 
+  onSaveNewTestSection = (testSection) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === testSection.assignDate)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.testSections.push(testSection);
+    const updatedRows = update(rows, {
+      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleNewTestSectionModal();
+  }
+
   onToggleNewSessionModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
     }
     this.setState(({ assignSessionModalOpen }) => ({ assignSessionModalOpen: !assignSessionModalOpen, modalDate, assignDropdownIsOpen: false }))
-}
+  }
+
+  onToggleNewTestSectionModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignTestSectionModalOpen }) => ({ assignTestSectionModalOpen: !assignTestSectionModalOpen, modalDate, assignDropdownIsOpen: false }))
+  }
 
   onToggleAddDropdown = () => this.setState(({ addDropdownOpen }) => ({ addDropdownOpen: !addDropdownOpen, deleteDropdownOpen: false }))
   onToggleDeleteDropdown = () => this.setState(({ deleteDropdownOpen }) => ({ deleteDropdownOpen: !deleteDropdownOpen, addDropdownOpen: false }))
@@ -583,7 +605,7 @@ class Dashboard extends Component {
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { assignSessionModalOpen, modalDate, rows,
+    const { assignSessionModalOpen, assignTestSectionModalOpen, modalDate, rows,
       activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown,
     } = this.state;
     return (
@@ -593,6 +615,12 @@ class Dashboard extends Component {
           open={assignSessionModalOpen}
           onClose={this.onToggleNewSessionModal}
           onSaveNewSession={this.onSaveNewSession}
+        />
+        <AssignTestSectionModal
+          modalDate={modalDate}
+          open={assignTestSectionModalOpen}
+          onClose={this.onToggleNewTestSectionModal}
+          onSaveNewTestSection={this.onSaveNewTestSection}
         />
         <main id="main" role="main">
           <div className="main-holder grey lighten-3">
@@ -686,6 +714,7 @@ class Dashboard extends Component {
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
+                          onToggleNewTestSectionModal={this.onToggleNewTestSectionModal}
                         />
                         <SecondRow
                           rows={rows.slice(7, 14)}
@@ -697,6 +726,7 @@ class Dashboard extends Component {
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
+                          onToggleNewTestSectionModal={this.onToggleNewTestSectionModal}
                         />
                         <ThirdRow
                           rows={rows.slice(14, 21)}
@@ -708,6 +738,7 @@ class Dashboard extends Component {
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
+                          onToggleNewTestSectionModal={this.onToggleNewTestSectionModal}
                         />
                         <FourthRow
                           rows={rows.slice(21, 28)}
@@ -719,6 +750,7 @@ class Dashboard extends Component {
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
+                          onToggleNewTestSectionModal={this.onToggleNewTestSectionModal}
                         />
                         <FifthRow
                           rows={rows.slice(28, 35)}
@@ -730,6 +762,7 @@ class Dashboard extends Component {
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
+                          onToggleNewTestSectionModal={this.onToggleNewTestSectionModal}
                         />
                         <SixthRow
                           rows={rows.slice(35, 42)}
@@ -741,6 +774,7 @@ class Dashboard extends Component {
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
+                          onToggleNewTestSectionModal={this.onToggleNewTestSectionModal}
                         />
                       </tbody>
                     </table>
@@ -761,7 +795,7 @@ class Dashboard extends Component {
                   </a>
                   <ul id='dropdown_assign' className='dropdown-content' style={{ display: assignDropdownIsOpen ? 'block' : 'none', opacity: assignDropdownIsOpen ? '100' : '0' }}>
                     <li><a href="#" onClick={this.onToggleNewSessionModal} className="modal-trigger">Session</a></li>
-                    <li><a href="#" className="modal-trigger">Lesson</a></li>
+                    <li><a href="#" onClick={this.onToggleNewTestSectionModal} className="modal-trigger">Lesson</a></li>
                     <li><a href="#" className="modal-trigger">Worksheet</a></li>
                     <li><a href="#" className="modal-trigger">Test Section</a></li>
                     <li><a href="#" className="modal-trigger">Simulated SAT</a></li>
