@@ -12,6 +12,94 @@ import FourthRow from '../components/Dashboard/components/CalendarRows/FourthRow
 import FifthRow from '../components/Dashboard/components/CalendarRows/FifthRow';
 import SixthRow from '../components/Dashboard/components/CalendarRows/SixthRow';
 
+const row1 = [
+  {
+    dayDate: 'Sun, Dec 24th',
+    calDate: '24',
+    activeDateKey: 'row-1-column-1',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Mon, Dec 25th',
+    calDate: '25',
+    activeDateKey: 'row-1-column-2',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Tue, Dec 26th',
+    calDate: '26',
+    activeDateKey: 'row-1-column-3',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Wed, Dec 27th',
+    calDate: '27',
+    activeDateKey: 'row-1-column-4',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Thu, Dec 28th',
+    calDate: '28',
+    activeDateKey: 'row-1-column-5',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Fri, Jan 1st',
+    calDate: '1',
+    activeDateKey: 'row-1-column-6',
+    inMonth: true,
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'General Strategy (Reading)', completed: true },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #2', completed: false },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
+  },
+  {
+    dayDate: 'Sat, Jan 2nd',
+    calDate: '2',
+    activeDateKey: 'row-1-column-7',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
 // TODO: bring all the rows into this component, spread them into container-level rows state, take index-based approach to split them into row-based arrays
 const row2 = [
   {
@@ -109,12 +197,348 @@ const row2 = [
     testSections: [],
   },
 ];
+const row3 = [
+  {
+    dayDate: 'Sun, Jan 10th',
+    calDate: '10',
+    activeDateKey: 'row-3-column-1',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Mon, Jan 11th',
+    calDate: '11',
+    activeDateKey: 'row-3-column-2',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Tue, Jan 12th',
+    calDate: '12',
+    activeDateKey: 'row-3-column-3',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Wed, Jan 14th',
+    calDate: '14',
+    activeDateKey: 'row-3-column-4',
+    inMonth: true,
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'General Strategy (Reading)', completed: true },
+      { title: 'Applying Active Reading', completed: false },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
+  },
+  {
+    dayDate: 'Thu, Jan 15th',
+    calDate: '15',
+    activeDateKey: 'row-3-column-5',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Fri, Jan 16th',
+    calDate: '16',
+    activeDateKey: 'row-3-column-6',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Sat, Feb 6th',
+    calDate: '6',
+    activeDateKey: 'row-3-column-7',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
+const row4 = [
+  {
+    dayDate: 'Sun, Jan 17',
+    calDate: '17',
+    activeDateKey: 'row-4-column-1',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Mon, Jan 18',
+    calDate: '18',
+    activeDateKey: 'row-4-column-2',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Tue, Jan 19',
+    calDate: '19',
+    activeDateKey: 'row-4-column-3',
+    inMonth: true,
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'General Strategy (Reading)', completed: true },
+      { title: 'Applying Active Reading', completed: false },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #2', completed: false },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
+  },
+  {
+    dayDate: 'Wed, Jan 20',
+    calDate: '20',
+    activeDateKey: 'row-4-column-4',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Thu, Jan 21',
+    calDate: '21',
+    activeDateKey: 'row-4-column-5',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Fri, Jan 22',
+    calDate: '22',
+    activeDateKey: 'row-4-column-6',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Sat, Jan 23',
+    calDate: '23',
+    activeDateKey: 'row-4-column-7',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
+const row5 = [
+  {
+    dayDate: 'Sun, Jan 24th',
+    calDate: '24',
+    activeDateKey: 'row-5-column-1',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Mon, Jan 25th',
+    calDate: '25',
+    activeDateKey: 'row-5-column-2',
+    inMonth: true,
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #2', completed: false },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
+  },
+  {
+    dayDate: 'Tue, Jan 26th',
+    calDate: '26',
+    activeDateKey: 'row-5-column-3',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Wed, Jan 27th',
+    calDate: '27',
+    activeDateKey: 'row-5-column-4',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Thu, Jan 28th',
+    calDate: '28',
+    activeDateKey: 'row-5-column-5',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Fri, Jan 29th',
+    calDate: '29',
+    activeDateKey: 'row-5-column-6',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Sat, Jan 30th',
+    calDate: '30',
+    activeDateKey: 'row-5-column-7',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
+const row6 = [
+  {
+    dayDate: 'Sun, Jan 31st',
+    calDate: '31',
+    activeDateKey: 'row-6-column-1',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Mon, Feb 1st',
+    calDate: '1',
+    activeDateKey: 'row-6-column-2',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Tue, Feb 2nd',
+    calDate: '2',
+    activeDateKey: 'row-6-column-3',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Wed, Feb 3rd',
+    calDate: '3',
+    activeDateKey: 'row-6-column-4',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Thu, Feb 4th',
+    calDate: '4',
+    activeDateKey: 'row-6-column-5',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Fri, Feb 5th',
+    calDate: '5',
+    activeDateKey: 'row-6-column-6',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    dayDate: 'Sat, Feb 6th',
+    calDate: '6',
+    activeDateKey: 'row-6-column-7',
+    inMonth: false,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [...row2],
+      rows: [...row1, ...row2, ...row3, ...row4, ...row5, ...row6],
       activeDate: null,
       activeColumn: null,
       expandedColumn: 3,
@@ -159,7 +583,7 @@ class Dashboard extends Component {
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { assignSessionModalOpen, modalDate,
+    const { assignSessionModalOpen, modalDate, rows,
       activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown,
     } = this.state;
     return (
@@ -253,6 +677,7 @@ class Dashboard extends Component {
                       </thead>
                       <tbody>
                         <FirstRow
+                          rows={rows.slice(0, 7)}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}
@@ -263,7 +688,7 @@ class Dashboard extends Component {
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <SecondRow
-                          rows={row2}
+                          rows={rows.slice(7, 14)}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}
@@ -274,6 +699,7 @@ class Dashboard extends Component {
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <ThirdRow
+                          rows={rows.slice(14, 21)}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}
@@ -284,6 +710,7 @@ class Dashboard extends Component {
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <FourthRow
+                          rows={rows.slice(21, 28)}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}
@@ -294,6 +721,7 @@ class Dashboard extends Component {
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <FifthRow
+                          rows={rows.slice(28, 35)}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}
@@ -304,6 +732,7 @@ class Dashboard extends Component {
                           onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <SixthRow
+                          rows={rows.slice(35, 42)}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}

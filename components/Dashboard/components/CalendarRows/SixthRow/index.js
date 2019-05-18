@@ -4,88 +4,8 @@ import PropTypes from 'prop-types';
 
 import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
-const sampleConfig = [
-  {
-    dayDate: 'Sun, Jan 31st',
-    calDate: '31',
-    activeDateKey: 'row-6-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Mon, Feb 1st',
-    calDate: '1',
-    activeDateKey: 'row-6-column-2',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Tue, Feb 2nd',
-    calDate: '2',
-    activeDateKey: 'row-6-column-3',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Wed, Feb 3rd',
-    calDate: '3',
-    activeDateKey: 'row-6-column-4',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Thu, Feb 4th',
-    calDate: '4',
-    activeDateKey: 'row-6-column-5',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Fri, Feb 5th',
-    calDate: '5',
-    activeDateKey: 'row-6-column-6',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Sat, Feb 6th',
-    calDate: '6',
-    activeDateKey: 'row-6-column-7',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-];
-
 class SixthRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowDates: sampleConfig,
-    };
-  }
-
-  mapRowDates = () => this.state.rowDates.map(rowDate => {
+  mapRowDates = () => this.props.rows.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
@@ -228,6 +148,7 @@ class SixthRow extends React.Component {
 }
 
 SixthRow.propTypes = {
+  rows: PropTypes.array.isRequired,
   activeDate: PropTypes.string,
   activeColumn: PropTypes.string,
   onSetActiveDate: PropTypes.func.isRequired,

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
 class SecondRow extends React.Component {
-
   toggleNewSessionModal = (event, date) => {
     event.preventDefault();
     const { onToggleNewSessionModal, onToggleAddDropdown } = this.props;

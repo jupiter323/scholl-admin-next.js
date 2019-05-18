@@ -4,104 +4,8 @@ import PropTypes from 'prop-types';
 
 import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
-const sampleConfig = [
-  {
-    dayDate: 'Sun, Jan 10th',
-    calDate: '10',
-    activeDateKey: 'row-3-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Mon, Jan 11th',
-    calDate: '11',
-    activeDateKey: 'row-3-column-2',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Tue, Jan 12th',
-    calDate: '12',
-    activeDateKey: 'row-3-column-3',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Wed, Jan 14th',
-    calDate: '14',
-    activeDateKey: 'row-3-column-4',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-  },
-  {
-    dayDate: 'Thu, Jan 15th',
-    calDate: '15',
-    activeDateKey: 'row-3-column-5',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Fri, Jan 16th',
-    calDate: '16',
-    activeDateKey: 'row-3-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Sat, Feb 6th',
-    calDate: '6',
-    activeDateKey: 'row-3-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-];
-
 class ThirdRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowDates: sampleConfig,
-    };
-  }
-
-  mapRowDates = () => this.state.rowDates.map(rowDate => {
+  mapRowDates = () => this.props.rows.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
@@ -244,6 +148,7 @@ class ThirdRow extends React.Component {
 }
 
 ThirdRow.propTypes = {
+  rows: PropTypes.array.isRequired,
   activeDate: PropTypes.string,
   activeColumn: PropTypes.string,
   onSetActiveDate: PropTypes.func.isRequired,

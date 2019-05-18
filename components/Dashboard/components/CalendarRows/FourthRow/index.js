@@ -4,105 +4,8 @@ import PropTypes from 'prop-types';
 
 import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
-const sampleConfig = [
-  {
-    dayDate: 'Sun, Jan 17',
-    calDate: '17',
-    activeDateKey: 'row-4-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Mon, Jan 18',
-    calDate: '18',
-    activeDateKey: 'row-4-column-2',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Tue, Jan 19',
-    calDate: '19',
-    activeDateKey: 'row-4-column-3',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-  },
-  {
-    dayDate: 'Wed, Jan 20',
-    calDate: '20',
-    activeDateKey: 'row-4-column-4',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Thu, Jan 21',
-    calDate: '21',
-    activeDateKey: 'row-4-column-5',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Fri, Jan 22',
-    calDate: '22',
-    activeDateKey: 'row-4-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Sat, Jan 23',
-    calDate: '23',
-    activeDateKey: 'row-4-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-];
-
 class FourthRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowDates: sampleConfig,
-    };
-  }
-
-  mapRowDates = () => this.state.rowDates.map(rowDate => {
+  mapRowDates = () => this.props.rows.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
@@ -246,6 +149,7 @@ class FourthRow extends React.Component {
 }
 
 FourthRow.propTypes = {
+  rows: PropTypes.array.isRequired,
   activeDate: PropTypes.string,
   activeColumn: PropTypes.string,
   onSetActiveDate: PropTypes.func.isRequired,
