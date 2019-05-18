@@ -4,107 +4,18 @@ import PropTypes from 'prop-types';
 
 import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
 
-const sampleConfig = [
-  {
-    dayDate: 'Sun, Jan 3rd',
-    calDate: '3',
-    activeDateKey: 'row-2-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Mon, Jan 4th',
-    calDate: '4',
-    activeDateKey: 'row-2-column-2',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Tue, Jan 5th',
-    calDate: '5',
-    activeDateKey: 'row-2-column-3',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Wed, Jan 6th',
-    calDate: '6',
-    activeDateKey: 'row-2-column-4',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Thu, Jan 7th',
-    calDate: '7',
-    activeDateKey: 'row-2-column-5',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-  },
-  {
-    dayDate: 'Fri, Jan 8th',
-    calDate: '8',
-    activeDateKey: 'row-2-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-  {
-    dayDate: 'Sat, Jan 9th',
-    calDate: '9',
-    activeDateKey: 'row-2-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-  },
-];
-
 class SecondRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowDates: sampleConfig,
-    };
+
+  toggleNewSessionModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleNewSessionModal, onToggleAddDropdown } = this.props;
+    onToggleNewSessionModal(event, date);
+    onToggleAddDropdown();
   }
 
-  mapRowDates = () => this.state.rowDates.map(rowDate => {
+  mapRowDates = () => this.props.rows.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
-    const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
+    const { date, dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
     const inActiveColumn = activeDateKey[13] === activeColumn;
     const isActiveDate = activeDate === activeDateKey;
@@ -195,7 +106,7 @@ class SecondRow extends React.Component {
                         className='dropdown-content'
                         style={{ display: addDropdownOpen ? 'block' : 'none', opacity: addDropdownOpen ? '100' : '0' }}
                       >
-                        <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleNewSessionModal(event, date)} className="modal-trigger">Session</a></li>
                         <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
                         <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
                         <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
@@ -245,6 +156,7 @@ class SecondRow extends React.Component {
 }
 
 SecondRow.propTypes = {
+  rows: PropTypes.array.isRequired,
   activeDate: PropTypes.string,
   activeColumn: PropTypes.string,
   onSetActiveDate: PropTypes.func.isRequired,
@@ -252,6 +164,7 @@ SecondRow.propTypes = {
   deleteDropdownOpen: PropTypes.bool.isRequired,
   onToggleAddDropdown: PropTypes.func.isRequired,
   onToggleDeleteDropdown: PropTypes.func.isRequired,
+  onToggleNewSessionModal: PropTypes.func.isRequired,
 }
 
 export default SecondRow;

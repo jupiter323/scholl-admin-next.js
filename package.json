@@ -35,6 +35,7 @@
     "jquery": "^3.3.1",
     "jsx-control-statements": "^3.2.8",
     "materialize-css": "^1.0.0",
+    "moment": "^2.24.0",
     "next": "^8.0.3",
     "nprogress": "^0.2.0",
     "proptypes": "^1.1.0",

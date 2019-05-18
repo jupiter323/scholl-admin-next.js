@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import update from 'immutability-helper';
 
 import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
@@ -11,10 +12,109 @@ import FourthRow from '../components/Dashboard/components/CalendarRows/FourthRow
 import FifthRow from '../components/Dashboard/components/CalendarRows/FifthRow';
 import SixthRow from '../components/Dashboard/components/CalendarRows/SixthRow';
 
+// TODO: bring all the rows into this component, spread them into container-level rows state, take index-based approach to split them into row-based arrays
+const row2 = [
+  {
+    date: '01/03/19',
+    dayDate: 'Sun, Jan 3rd',
+    calDate: '3',
+    activeDateKey: 'row-2-column-1',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    date: '01/04/19',
+    dayDate: 'Mon, Jan 4th',
+    calDate: '4',
+    activeDateKey: 'row-2-column-2',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    date: '01/05/19',
+    dayDate: 'Tue, Jan 5th',
+    calDate: '5',
+    activeDateKey: 'row-2-column-3',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    date: '01/06/19',
+    dayDate: 'Wed, Jan 6th',
+    calDate: '6',
+    activeDateKey: 'row-2-column-4',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    date: '01/07/19',
+    dayDate: 'Thu, Jan 7th',
+    calDate: '7',
+    activeDateKey: 'row-2-column-5',
+    inMonth: true,
+    sessions: [
+      { title: 'Session 2' },
+      { title: 'Session 3' },
+    ],
+    lessons: [
+      { title: 'Reading Introduction', completed: true },
+      { title: 'Active Reading', completed: false },
+      { title: 'General Strategy (Reading)', completed: true },
+      { title: 'Applying Active Reading', completed: false },
+      { title: 'Strategy Review (Reading)', completed: true },
+      { title: 'Reading Vocabulary: Word Roots', completed: true },
+    ],
+    worksheets: [
+      { title: 'Worksheet Triangles #1', completed: true },
+      { title: 'Worksheet Triangles #2', completed: false },
+      { title: 'Worksheet Triangles #3', completed: true },
+    ],
+    testSections: [
+      { title: 'Test Section: Math (no calc) version 53-pre' },
+      { title: 'Test Section: Math (calc) version 21-pre' },
+    ],
+  },
+  {
+    date: '01/08/19',
+    dayDate: 'Fri, Jan 8th',
+    calDate: '8',
+    activeDateKey: 'row-2-column-6',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+  {
+    date: '01/09/19',
+    dayDate: 'Sat, Jan 9th',
+    calDate: '9',
+    activeDateKey: 'row-2-column-7',
+    inMonth: true,
+    sessions: [],
+    lessons: [],
+    worksheets: [],
+    testSections: [],
+  },
+];
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      rows: [...row2],
       activeDate: null,
       activeColumn: null,
       expandedColumn: 3,
@@ -34,11 +134,23 @@ class Dashboard extends Component {
 
   // TODO: Attach this event to the calendar date
   onSaveNewSession = (session) => {
-    console.warn('stubbed out session save!', session);
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === session.date)[0];
+    updatedDate.sessions.push(session);
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    const updatedRows = update(rows, {
+      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+    })
+    this.setState({ rows: updatedRows });
     this.onToggleNewSessionModal();
   }
 
-  onToggleNewSessionModal = (modalDate = null) => this.setState(({ assignSessionModalOpen }) => ({ assignSessionModalOpen: !assignSessionModalOpen, modalDate }))
+  onToggleNewSessionModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignSessionModalOpen }) => ({ assignSessionModalOpen: !assignSessionModalOpen, modalDate, assignDropdownIsOpen: false }))
+}
 
   onToggleAddDropdown = () => this.setState(({ addDropdownOpen }) => ({ addDropdownOpen: !addDropdownOpen, deleteDropdownOpen: false }))
   onToggleDeleteDropdown = () => this.setState(({ deleteDropdownOpen }) => ({ deleteDropdownOpen: !deleteDropdownOpen, addDropdownOpen: false }))
@@ -47,12 +159,13 @@ class Dashboard extends Component {
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { assignSessionModalOpen,
+    const { assignSessionModalOpen, modalDate,
       activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown,
     } = this.state;
     return (
       <React.Fragment>
         <AssignSessionModal
+          modalDate={modalDate}
           open={assignSessionModalOpen}
           onClose={this.onToggleNewSessionModal}
           onSaveNewSession={this.onSaveNewSession}
@@ -147,8 +260,10 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <SecondRow
+                          rows={row2}
                           activeDate={activeDate}
                           activeColumn={activeColumn}
                           addDropdownOpen={addDropdownOpen}
@@ -156,6 +271,7 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <ThirdRow
                           activeDate={activeDate}
@@ -165,6 +281,7 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <FourthRow
                           activeDate={activeDate}
@@ -174,6 +291,7 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <FifthRow
                           activeDate={activeDate}
@@ -183,6 +301,7 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                         <SixthRow
                           activeDate={activeDate}
@@ -192,6 +311,7 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleNewSessionModal={this.onToggleNewSessionModal}
                         />
                       </tbody>
                     </table>

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
@@ -18,6 +20,14 @@ class AssignSessionModal extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { modalDate } = this.props;
+    if (prevState.date === '' && modalDate) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ date: new Date(modalDate) });
+    }
+  }
+
   onResetModal = () => this.setState({ date: '', startTime: '', endTime: '', notes: '' })
 
   onCloseModal = () => {
@@ -28,8 +38,11 @@ class AssignSessionModal extends React.Component {
 
   saveNewSession = () => {
     const { onSaveNewSession } = this.props;
-    const { date, startTime, endTime, notes } = this.state;
-    onSaveNewSession({date, startTime, endTime, notes});
+    const { date: unformattedDate, startTime: unformattedStartTime, endTime: unformattedEndTime, notes } = this.state;
+    const date = moment(unformattedDate).format('MM/DD/YY');
+    const startTime = moment(unformattedStartTime).format('hh:mm');
+    const endTime = moment(unformattedEndTime).format('hh:mm');
+    onSaveNewSession({ date, startTime, endTime, notes, title: 'Session' });
   }
 
   handleDetailsChange = ({ target }) => this.setState({ [target.name]: target.value })
@@ -70,6 +83,7 @@ class AssignSessionModal extends React.Component {
                             <DatePicker
                               selected={date}
                               className="full-width"
+                              dateFormat="MM/dd/yy"
                               id="date"
                               name="date"
                               onChange={(event) => this.handleDatePickerChange('date', event)}
@@ -176,6 +190,7 @@ class AssignSessionModal extends React.Component {
 }
 
 AssignSessionModal.propTypes = {
+  modalDate: PropTypes.string,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSaveNewSession: PropTypes.func.isRequired,

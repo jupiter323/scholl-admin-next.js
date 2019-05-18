@@ -11,7 +11,7 @@ class CalendarHeader extends React.Component {
 
   render() {
     return (
-      <div className="calendar-header">
+      <div className="calendar-header" style={{ zIndex: '9' }}>
         <div className="calendar-view-switcher">
           <ul className="switcher">
             <li className="active col" data-view="view-month"><a href="#">Month View</a></li>
