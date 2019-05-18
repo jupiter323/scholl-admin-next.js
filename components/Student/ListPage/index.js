@@ -6,11 +6,13 @@ import StudentCard from '../components/StudentCard';
 import sampleStudentList from '../utils/sampleStudentList';
 import FilterSection from './Components/FilterSection';
 import StudentModal from "../components/StudentModal";
+import sampleLocationList from '../../Location/utils/sampleLocationList';
 
 class StudentListPage extends React.Component {
     constructor (props){
         super(props);
         this.state = {
+            locations: sampleLocationList,
             students: sampleStudentList,
             studentModalOpen: false,
             sort: "",
@@ -32,9 +34,20 @@ class StudentListPage extends React.Component {
    onSetFilteredState = (filterName) => this.setState({ filterName });
    onUnsetFilteredState = () => this.setState({ filterName: '' });
 
-   onSetFilteredTopicState = (filterTopic) => this.setState({ filterTopic });
-   onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState);
+//    onSetFilteredTopicState = (filterTopic) => this.setState({ filterTopic });
+//    onUnsetFilteredTopicState = () => this.setState({ filterTopic: '' }, this.checkForFilteredState);
 
+    onFilterByName = () => {
+        const { students, filterName } = this.state;
+        return students.reduce((finalArr, currentStudent) => {
+            const { accountInfo: {lastName, firstName } } = currentStudent;
+            const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+            if (studentString.indexOf(filterName) !== -1 && finalArr.indexOf(currentStudent) === -1) {
+                finalArr.push(currentStudent);
+            }
+            return finalArr;
+        }, []);
+    }
 
    handleNewStudent = (studentInformation, contactInformation, location) => {
         const newStudent = update(this.state.newStudent, {
@@ -45,7 +58,7 @@ class StudentListPage extends React.Component {
         this.setState({ newStudent })
    }
    render() {
-        const { students, studentModalOpen, newStsudent: { studentInformation, contactInformation, location } } = this.state;
+        const { students, studentModalOpen } = this.state;
         return(
             <React.Fragment>
                 <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal} handleNewStudent={(newStudent) => this.handleNewStudent(newStudent, studentInformation, contactInformation, location)} />

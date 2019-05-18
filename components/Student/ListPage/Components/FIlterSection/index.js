@@ -12,6 +12,7 @@ class FilterSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: true,
       name: '',
       location: {},
       sort: {},
