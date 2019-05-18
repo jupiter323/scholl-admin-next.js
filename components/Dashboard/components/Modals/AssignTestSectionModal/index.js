@@ -35,8 +35,12 @@ const sampleSections = [
     value: 'Reading',
   },
   {
-    label: 'Science',
-    value: 'Science',
+    label: 'Writing',
+    value: 'Writing',
+  },
+  {
+    label: 'Math (calculator)',
+    value: 'Math (calculator)',
   },
 ];
 
