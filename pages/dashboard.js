@@ -5,6 +5,7 @@ import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
 
 import AssignSessionModal from '../components/Dashboard/components/Modals/AssignSessionModal';
+import AssignLessonModal from '../components/Dashboard/components/Modals/AssignLessonModal';
 import AssignTestSectionModal from '../components/Dashboard/components/Modals/AssignTestSectionModal';
 import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
 
@@ -110,7 +111,7 @@ const row1 = [
     simulatedSat: [],
   },
 ];
-// TODO: bring all the rows into this component, spread them into container-level rows state, take index-based approach to split them into row-based arrays
+// TODO: Make sure all rows match data structure of row2
 const row2 = [
   {
     date: '01/03/19',
@@ -592,6 +593,7 @@ class Dashboard extends Component {
       assignDropdownIsOpen: false,
       onToggleHandleFilteredItemsDropdown: false,
       assignSessionModalOpen: false,
+      assignLessonsModalOpen: false,
       assignTestSectionModalOpen: false,
       assignSimulatedSatModalOpen: false,
       modalDate: null,
@@ -611,9 +613,21 @@ class Dashboard extends Component {
     updatedDate.sessions.push(session);
     const updatedRows = update(rows, {
       $splice: [[ updatedDateIndex, 1, updatedDate ]],
-    })
+    });
     this.setState({ rows: updatedRows });
     this.onToggleAssignSessionModal();
+  }
+
+  onAssignLessons = (lessons, date) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === date)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.lessons.push(...lessons);
+    const updatedRows = update(rows, {
+      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleAssignLessonsModal();
   }
 
   onSaveNewTestSection = (testSection) => {
@@ -647,6 +661,13 @@ class Dashboard extends Component {
     this.setState(({ assignSessionModalOpen }) => ({ assignSessionModalOpen: !assignSessionModalOpen, modalDate, assignDropdownIsOpen: false }))
   }
 
+  onToggleAssignLessonsModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignLessonsModalOpen }) => ({ assignLessonsModalOpen: !assignLessonsModalOpen, modalDate, assignDropdownIsOpen: false }))
+  }
+
   onToggleAssignTestSectionModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
@@ -668,7 +689,7 @@ class Dashboard extends Component {
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { assignSessionModalOpen, assignTestSectionModalOpen, assignSimulatedSatModalOpen, modalDate, rows,
+    const { assignSessionModalOpen, assignLessonsModalOpen, assignTestSectionModalOpen, assignSimulatedSatModalOpen, modalDate, rows,
       activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown,
     } = this.state;
     return (
@@ -678,6 +699,12 @@ class Dashboard extends Component {
           open={assignSessionModalOpen}
           onClose={this.onToggleAssignSessionModal}
           onSaveNewSession={this.onSaveNewSession}
+        />
+        <AssignLessonModal
+          modalDate={modalDate}
+          open={assignLessonsModalOpen}
+          onClose={this.onToggleAssignLessonsModal}
+          onAssignLessons={this.onAssignLessons}
         />
         <AssignTestSectionModal
           modalDate={modalDate}
@@ -795,6 +822,7 @@ class Dashboard extends Component {
                           onSetActiveDate={this.onSetActiveDate}
                           onToggleAddDropdown={this.onToggleAddDropdown}
                           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+                          onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
                           onToggleAssignSessionModal={this.onToggleAssignSessionModal}
                           onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
                           onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}

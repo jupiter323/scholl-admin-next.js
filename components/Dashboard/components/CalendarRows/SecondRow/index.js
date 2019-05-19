@@ -12,6 +12,13 @@ class SecondRow extends React.Component {
     onToggleAddDropdown();
   }
 
+  toggleAssignLessonsModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleAssignLessonsModal, onToggleAddDropdown } = this.props;
+    onToggleAssignLessonsModal(event, date);
+    onToggleAddDropdown();
+  }
+
   toggleAssignTestSectionModal = (event, date) => {
     event.preventDefault();
     const { onToggleAssignTestSectionModal, onToggleAddDropdown } = this.props;
@@ -130,7 +137,7 @@ class SecondRow extends React.Component {
                         style={{ display: addDropdownOpen ? 'block' : 'none', opacity: addDropdownOpen ? '100' : '0' }}
                       >
                         <li><a href="#" onClick={(event) => this.toggleAssignSessionModal(event, date)} className="modal-trigger">Session</a></li>
-                        <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleAssignLessonsModal(event, date)} className="modal-trigger">Lesson</a></li>
                         <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
                         <li><a href="#" onClick={(event) => this.toggleAssignTestSectionModal(event, date)} className="modal-trigger">Test Section</a></li>
                         <li><a href="#" onClick={(event) => this.toggleAssignSimulatedSatModal(event, date)} className="modal-trigger">Simulated SAT</a></li>
@@ -188,6 +195,7 @@ SecondRow.propTypes = {
   onToggleAddDropdown: PropTypes.func.isRequired,
   onToggleDeleteDropdown: PropTypes.func.isRequired,
   onToggleAssignSessionModal: PropTypes.func.isRequired,
+  onToggleAssignLessonsModal: PropTypes.func.isRequired,
   onToggleAssignTestSectionModal: PropTypes.func.isRequired,
   onToggleAssignSimulatedSatModal: PropTypes.func.isRequired,
 }
