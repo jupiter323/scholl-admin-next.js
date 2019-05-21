@@ -1,6 +1,5 @@
 import React from 'react';
 // import Proptypes from 'prop-types';
-import update from 'immutability-helper';
 
 import StudentCard from '../components/StudentCard';
 import sampleStudentList from '../utils/sampleStudentList';
@@ -19,8 +18,15 @@ class StudentListPage extends React.Component {
             filterName: "",
             newStudent: {
                 active: false,
-                studentInformation: {},
-                contactInformation: {},
+                firstName: {},
+                lastName: {},
+                gender: {},
+                phone: {},
+                address: {},
+                city: {},
+                state: {},
+                zipCode: {},
+                email: {},
                 location: {},
             },
         }
@@ -39,7 +45,7 @@ class StudentListPage extends React.Component {
    onFilterByName = () => {
         const { students, filterName } = this.state;
         return students.reduce((finalArr, currentStudent) => {
-            const { studentInformation:  lastName, firstName } = currentStudent;
+            const { lastName, firstName } = currentStudent;
             const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
             if (studentString.indexOf(filterName) !== -1 && finalArr.indexOf(currentStudent) === -1) {
                 finalArr.push(currentStudent);
@@ -48,19 +54,26 @@ class StudentListPage extends React.Component {
         }, []);
     }
 
-   handleNewStudent = (studentInformation, contactInformation, location) => {
-        const newStudent = update(this.state.newStudent, {
-            studentInformation: {$set: [studentInformation]},
-            contactInformation: {$set: [contactInformation]},
-            location: {$set: [location]},
-        });
-        this.setState({ newStudent })
-   }
+//    handleNewStudent = (firstName, lastName, gender, phone, address, city, state, zipCode, email, location) => {
+//         const newStudent = update(this.state.newStudent, {
+//             firstName: {$set: [firstName]},
+//             lastName: {$set: [lastName]},
+//             gender: {$set: [gender]},
+//             phone: {$set: [phone]},
+//             address: {$set: [address]},
+//             city: {$set: [city]},
+//             state: {$set: [state]},
+//             zipCode: {$set: [zipCode]},
+//             email: {$set: [email]},
+//             location: {$set: [location]},
+//         });
+//         this.setState({ newStudent })
+
    render() {
         const { students, studentModalOpen } = this.state;
         return(
             <React.Fragment>
-                <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal}  />
+                <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal} />
                 <FilterSection
                     onSetSort={this.onSetSort}
                     onSetFilteredState={this.onSetFilteredState}
@@ -80,7 +93,7 @@ class StudentListPage extends React.Component {
             </React.Fragment>
         )
       }
-    }
+}
 
 
 

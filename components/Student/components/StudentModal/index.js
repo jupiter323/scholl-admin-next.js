@@ -1,28 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import update from 'immutability-helper';
+import update from 'immutability-helper';
 import Portal from '../../../Portal';
 import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
-// import Dropdown from '../../../FormComponents/Dropdown';
+import Dropdown from '../../../FormComponents/Dropdown';
+import genderOptions from '../../../utils/genderOptions';
+import getValueFromState from '../../../utils/getValueFromState';
+import stateOptions from '../../../utils/stateOptions';
+
 
 class StudentModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
-            newStudent: [],
-        };
+            newStudent: {
+              firstName: "",
+              lastName: "",
+              gender: "",
+              phone: "",
+              address: "",
+              city: "",
+              state: "",
+              zipCode: "",
+              email: "",
+              location: "",
+             },
+        }
     }
 
     onCloseModal = () => this.setState({ newStudent: [] }, this.props.onClose )
-    onSaveStudent = () => {
-      const { handleNewStudent } = this.props;
-      const { newStudent } = this.state;
-      handleNewStudent(newStudent);
-      this.onCloseModal();
+    // onSaveStudent = () => {
+    //   const { handleNewStudent } = this.props;
+    //   const { firstName, lastName, gender, phone, address, city, state, zipCode, email, location} = this.state.newStudent;
+    //   handleNewStudent(firstName, lastName, gender, phone, address, city, state, zipCode, email, location);
+    //   this.onCloseModal();
+    // }
+
+    onSetGender = (gender) => this.setState({newStudent: { gender }});
+    onSetState = (state) => this.setState({newStudent: {state}});
+
+    handleNewStudent = (firstName, lastName, gender, phone, address, city, state, zipCode, email, location) => {
+        const newStudent = update(this.state.newStudent, {
+            firstName: {$set: [firstName]},
+            lastName: {$set: [lastName]},
+            gender: {$set: [gender]},
+            phone: {$set: [phone]},
+            address: {$set: [address]},
+            city: {$set: [city]},
+            state: {$set: [state]},
+            zipCode: {$set: [zipCode]},
+            email: {$set: [email]},
+            location: {$set: [location]},
+        });
+        this.setState({ newStudent })
+    }
+
+    handleChange = (event) => {
+      this.setState({
+        newStudent: {
+         [event.target.id]: event.target.value,
+        },
+      });
     }
     render() {
         const { open } = this.props;
+        const { firstName, lastName, gender, phone, address, city, state, zipCode, email } = this.state.newStudent;
         // const { newStudent } = this.state;
         return(
             <Portal selector="#modal">
@@ -67,76 +109,80 @@ class StudentModal extends React.Component {
                       <div className="card-content">
                         <div className="row mb-0">
                           <div className="input-field col s12">
-                            <input type="text" id="first_name_edit" value=""/>
-                            <label className="label" htmlFor="first_name_edit">First Name*</label>
+                            <input type="text" id="firstName" value={firstName} onChange={this.handleChange}/>
+                            <label className="label" htmlFor="firstName">First Name*</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
-                            <input type="text" id="last_name_edit" value=""/>
-                            <label className="label" htmlFor="last_name_edit">Last Name*</label>
+                            <input type="text" id="lastName" value={lastName} onChange={this.handleChange}/>
+                            <label className="label" htmlFor="lastName">Last Name*</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
-                            <input type="text" id="account_email_edit" value=""/>
-                            <label className="label" htmlFor="account_email_edit">Email Address*</label>
+                            <input type="text" id="email" value={email} onChange={this.handleChange}/>
+                            <label className="label" htmlFor="email">Email Address*</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="">
                             <div className="input-field col s12 l7">
-                              <select id="gender_edit">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                              </select>
-                              <label className="label" htmlFor="gender_edit">Gender*</label>
+                              <Dropdown
+                                value={getValueFromState(gender, genderOptions)}
+                                onChange={this.onSetGender}
+                                options={genderOptions}
+                                label="Gender"
+                                stateKey="state"
+                                dropdownKey="state"
+                                id="gender"
+                                />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                            {/* form panel */}
-
+            {/* form panel */}
                   <div className="card-block">
                     <h3>Contact Info</h3>
                     <div className="card-main card">
                       <div className="card-content">
                         <div className="row mb-0">
                           <div className="input-field col s12">
-                            <input type="tel" id="contact_phone_edit"/>
-                            <label className="label" htmlFor="contact_phone_edit">Phone (optional)</label>
+                            <input type="tel" id="phone" value={phone} onChange={this.handleChange}/>
+                            <label className="label" htmlFor="phone">Phone (optional)</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
-                            <input type="text" id="contact_address_edit"/>
-                            <label className="label" htmlFor="contact_address_edit">Street Address (optional)</label>
+                            <input type="text" id="address" value={address} onChange={this.handleChange}/>
+                            <label className="label" htmlFor="address">Street Address (optional)</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
-                            <input type="text" id="contact_city_edit"/>
-                            <label className="label" htmlFor="contact_city_edit">City (optional)</label>
+                            <input type="text" id="city" value={city} onChange={this.handleChange}/>
+                            <label className="label" htmlFor="city">City (optional)</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="col s12 m6 l5">
                             <div className="input-field">
-                              <select id="contact_state_edit">
-                                <option>State</option>
-                                <option>State</option>
-                                <option>State</option>
-                              </select>
-                              <label className="label" htmlFor="contact_state_edit">State (optional)</label>
+                            <Dropdown
+                              value={getValueFromState(state, stateOptions)}
+                              onChange={this.onSetState}
+                              options={stateOptions}
+                              label="State"
+                              stateKey="state"
+                              dropdownKey="state"
+                              />
                             </div>
                           </div>
                           <div className="col s12 m6 l7">
                             <div className="input-field">
-                              <input type="tel" id="contact_zip_edit"/>
-                              <label className="label" htmlFor="contact_zip_edit">Zip (optional)</label>
+                              <input type="tel" id="zipCode" value={zipCode} onChange={this.handleChange}/>
+                              <label className="label" htmlFor="zipCode">Zip (optional)</label>
                             </div>
                           </div>
                         </div>
@@ -151,7 +197,7 @@ class StudentModal extends React.Component {
                     <h3>Location(s)</h3>
               {/* card */}
               <div className="card-main card-location card card-large">
-                      <div className="card-panel card-panel-location" style={{backgroundColor: "#62b771;", color: "#fff"}}>
+                      <div className="card-panel card-panel-location" style={{backgroundColor: "#62b771", color: "#fff"}}>
                         <div className="card-panel-row row">
                           <div className="col s9">
                             <h3 className="h4 truncate">Tutor Doctor</h3>
@@ -231,7 +277,7 @@ class StudentModal extends React.Component {
             <div className="modal-footer">
               <a href="#!" className="waves-effect waves-teal btn-flat pink-text text-darken-1">Delete</a>
               <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={this.onCloseModal}>Cancel</a>
-              <a href="#" className="btn" onClick={this.onSaveStudent}>Save</a>
+              <a href="#" className="btn" onClick={this.handleNewStudent}>Save</a>
             </div>
           </div>
 
@@ -287,7 +333,6 @@ class StudentModal extends React.Component {
 StudentModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    handleNewStudent: PropTypes.func.isRequired,
 };
 
 export default StudentModal;
