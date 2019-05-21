@@ -39,7 +39,7 @@ class StudentListPage extends React.Component {
    onFilterByName = () => {
         const { students, filterName } = this.state;
         return students.reduce((finalArr, currentStudent) => {
-            const { accountInfo: {lastName, firstName } } = currentStudent;
+            const { studentInformation:  lastName, firstName } = currentStudent;
             const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
             if (studentString.indexOf(filterName) !== -1 && finalArr.indexOf(currentStudent) === -1) {
                 finalArr.push(currentStudent);
@@ -66,7 +66,9 @@ class StudentListPage extends React.Component {
                     onSetFilteredState={this.onSetFilteredState}
                     onUnsetFilteredState={this.onUnsetFilteredState}
                     onSetFilteredLocationState={this.onSetFilteredLocationState}
-                    onUnsetFilteredLocationState={this.onUnsetFilteredLocationState} />
+                    onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
+                    handleFilterClick={this.handleFilterClick}
+                    onFilterByName={this.onFilterByName} />
                 <div className="content-section">
                 <div className="row d-flex-content">
                 {students.map((student) => (

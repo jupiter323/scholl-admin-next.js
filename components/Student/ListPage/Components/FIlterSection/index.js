@@ -309,7 +309,7 @@ class FilterSection extends React.Component {
               <button
                 type="submit"
                 className="search-button"
-                onClick={this.submitNameFilter}
+                onClick={this.onFilterByName}
               >
                 <i className="icon-search"></i>
               </button>
