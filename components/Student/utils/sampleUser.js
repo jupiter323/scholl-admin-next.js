@@ -115,6 +115,26 @@ const updatedUser = {
       math: '91',
       composite: '195',
     },
+    totalScore: '1480',
+    sectionScores: {
+      readingAndWriting: '710',
+      math: '650',
+    },
+    essayScores: {
+      reading: '7',
+      analysis: '8',
+      wriing: '7',
+    },
+    crossTestScores: '24',
+    subScores: {
+      commandOfEvidence: '5',
+      wordsInContext: '12',
+      expressionOfIdeas: '12',
+      standardEnglishConventions: '14',
+      heartOfAlgebra: '10',
+      problemSolvingAndDataAnalysis: '10',
+      passportToAdvancedMath: '13',
+    },
   },
   strengthsAndWeaknesses: {
     reading: {

@@ -13,8 +13,8 @@ const CrossTestScoresCard = () => (
                   <span className="text">Analysis of History/Social Studies</span>
                 </div>
               </div>
-              <div className="progress progress-rounded-md">
-                <div className="determinate" style={{width: "55%", backgroundColor: "#f5883f"}}>
+              <div className="progress progress-rounded-md" style={{borderRadius: '13px'}}>
+                <div className="determinate" style={{width: "55%", backgroundColor: "#f5883f", borderRadius: '13px'}}>
                   <span className="progress-label">24</span>
                 </div>
               </div>
@@ -25,8 +25,8 @@ const CrossTestScoresCard = () => (
                   <span className="text">Analysis of History/Social Studies</span>
                 </div>
               </div>
-              <div className="progress progress-rounded-md">
-                <div className="determinate" style={{width: "50%", backgroundColor: "#f5883f"}}>
+              <div className="progress progress-rounded-md" style={{borderRadius: '13px'}}>
+                <div className="determinate" style={{width: "50%", backgroundColor: "#f5883f", borderRadius: '13px'}}>
                   <span className="progress-label">17</span>
                 </div>
               </div>
