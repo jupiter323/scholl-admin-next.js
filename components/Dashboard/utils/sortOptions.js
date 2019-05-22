@@ -1,3 +1,8 @@
+export const difficultySort = ({ difficulty: difficultyA }, { difficulty: difficultyB }) => {
+  if (difficultyA > difficultyB) { return -1; }
+  return 0;
+}
+
 export const pageNumberSort = ({ pageNumber: pageNumberA }, { pageNumber: pageNumberB }) => {
   if (pageNumberA > pageNumberB) { return -1; }
   return 0;

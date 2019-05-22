@@ -6,6 +6,7 @@ import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
 
 import AssignSessionModal from '../components/Dashboard/components/Modals/AssignSessionModal';
 import AssignLessonModal from '../components/Dashboard/components/Modals/AssignLessonModal';
+import AssignWorksheetModal from '../components/Dashboard/components/Modals/AssignWorksheetModal';
 import AssignTestSectionModal from '../components/Dashboard/components/Modals/AssignTestSectionModal';
 import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
 
@@ -594,6 +595,7 @@ class Dashboard extends Component {
       onToggleHandleFilteredItemsDropdown: false,
       assignSessionModalOpen: false,
       assignLessonsModalOpen: false,
+      assignWorksheetsModalOpen: false,
       assignTestSectionModalOpen: false,
       assignSimulatedSatModalOpen: false,
       modalDate: null,
@@ -628,6 +630,19 @@ class Dashboard extends Component {
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignLessonsModal();
+  }
+
+  onAssignWorksheets = (worksheets, date) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === date)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.worksheets.push(...worksheets);
+    const updatedRows = update(rows, {
+      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleAssignWorksheetsModal();
+    console.warn('stubbed out assign worksheets func', worksheets, date);
   }
 
   onSaveNewTestSection = (testSection) => {
@@ -668,6 +683,13 @@ class Dashboard extends Component {
     this.setState(({ assignLessonsModalOpen }) => ({ assignLessonsModalOpen: !assignLessonsModalOpen, modalDate, assignDropdownIsOpen: false }))
   }
 
+  onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignWorksheetsModalOpen }) => ({ assignWorksheetsModalOpen: !assignWorksheetsModalOpen, modalDate, assignDropdownIsOpen: false }))
+  }
+
   onToggleAssignTestSectionModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
@@ -689,7 +711,7 @@ class Dashboard extends Component {
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
   render() {
-    const { assignSessionModalOpen, assignLessonsModalOpen, assignTestSectionModalOpen, assignSimulatedSatModalOpen, modalDate, rows,
+    const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen, assignTestSectionModalOpen, assignSimulatedSatModalOpen, modalDate, rows,
       activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown,
     } = this.state;
     return (
@@ -705,6 +727,12 @@ class Dashboard extends Component {
           open={assignLessonsModalOpen}
           onClose={this.onToggleAssignLessonsModal}
           onAssignLessons={this.onAssignLessons}
+        />
+        <AssignWorksheetModal
+          modalDate={modalDate}
+          open={assignWorksheetsModalOpen}
+          onClose={this.onToggleAssignWorksheetsModal}
+          onAssignWorksheets={this.onAssignWorksheets}
         />
         <AssignTestSectionModal
           modalDate={modalDate}
@@ -898,9 +926,9 @@ class Dashboard extends Component {
                   </a>
                   <ul id='dropdown_assign' className='dropdown-content' style={{ display: assignDropdownIsOpen ? 'block' : 'none', opacity: assignDropdownIsOpen ? '100' : '0' }}>
                     <li><a href="#" onClick={this.onToggleAssignSessionModal} className="modal-trigger">Session</a></li>
-                    <li><a href="#" onClick={this.onToggleAssignTestSectionModal} className="modal-trigger">Lesson</a></li>
-                    <li><a href="#" className="modal-trigger">Worksheet</a></li>
-                    <li><a href="#" className="modal-trigger">Test Section</a></li>
+                    <li><a href="#" onClick={this.onToggleAssignLessonsModal} className="modal-trigger">Lesson</a></li>
+                    <li><a href="#" onClick={this.onToggleAssignWorksheetsModal} className="modal-trigger">Worksheet</a></li>
+                    <li><a href="#" onClick={this.onToggleAssignTestSectionModal} className="modal-trigger">Test Section</a></li>
                     <li><a href="#" onClick={this.onToggleAssignSimulatedSatModal} className="modal-trigger">Simulated SAT</a></li>
                     <li><a href="#" className="modal-trigger">Target Test</a></li>
                     <li className="divider" tabIndex="-1"></li>
