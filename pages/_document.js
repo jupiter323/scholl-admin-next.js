@@ -14,7 +14,7 @@ export default class MyDocument extends Document {
     return (
       <html lang="en">
         <Head>{this.props.stleTags}</Head>
-        <body>
+        <body className="instructor-page">
           <Main />
           <div id="modal" />
           <NextScript />

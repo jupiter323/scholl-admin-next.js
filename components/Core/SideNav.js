@@ -22,6 +22,17 @@ const menuItems = [
   'help',
 ];
 
+const menuIconMap = {
+  'dashboard': 'icon-speed',
+  'students': 'icon-student',
+  'instructors': 'icon-instructors',
+  'classes': 'icon-members',
+  'locations': 'icon-location',
+  'worksheets': 'icon-sheets-w',
+  'course templates': 'icon-module',
+  'help': 'icon-help',
+};
+
 class SideNav extends Component {
   constructor(props) {
     super(props);
@@ -51,10 +62,11 @@ class SideNav extends Component {
                 onClick={() => this.handleClick(menuItem)}
                 key={menuItem}
               >
-                <Link href={`/${menuItem}`} >
+                <Link href={`/${menuItem === 'course templates' ? 'courseTemplates' : menuItem}`} >
                   <a>
+                    <i className={menuIconMap[menuItem]}></i>
                     {
-                      menuItem
+                      menuItem.charAt(0).toUpperCase() + menuItem.slice(1)
                     }
                   </a>
                 </Link>
