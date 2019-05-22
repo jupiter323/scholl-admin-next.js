@@ -1,0 +1,38 @@
+import React from 'react';
+
+const SectionScoreCard = () => (
+  <div className="col s12 l6 card-width-546">
+    <div className="card-block">
+      <h2>Section Scores <span className="separator">|</span> <span className="quantity">200 to 800</span></h2>
+      <div className="card-main-full card">
+        <div className="card-content">
+          <div className="several-charts-row row mb-0">
+            <div className="col s6 center-align">
+              <div className="chart-block chart-block-218">
+                <div className="js-donut-chart" data-stroke-width="24" data-source='./inc/score-data-reading-test.json'></div>
+                <div className="chart-text">
+                  <span className="title">Reading &amp; Writing</span>
+                  <span className="value">710</span>
+                  <span className="description">(+80)</span>
+                </div>
+              </div>
+            </div>
+            <div className="col s6 center-align">
+              <div className="chart-block chart-block-218">
+                <div className="js-donut-chart" data-stroke-width="24" data-source='./inc/score-data-math-test.json'></div>
+                <div className="chart-text">
+                  <span className="title">Math</span>
+                  <span className="value">650</span>
+                  <span className="description">(+80)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
+export default SectionScoreCard;
