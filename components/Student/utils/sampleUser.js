@@ -123,7 +123,7 @@ const updatedUser = {
     essayScores: {
       reading: '7',
       analysis: '8',
-      wriing: '7',
+      writing: '7',
     },
     crossTestScores: '24',
     subScores: {

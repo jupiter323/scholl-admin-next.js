@@ -1,12 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// const iconGeneration = (studentName) => {
+//   const splitName = studentName.split('');
+//   const beginningLetter = [splitName].indexOf[0];
+//   const convertedClassName = `icon-letter-${beginningLetter}`;
+//   return (
+//     <i className={convertedClassName} />
+//   )
+// }
+
 // eslint-disable-next-line react/prop-types
-const TestScoreHeading = ({user: {studentInformation: {firstName, lastName}}}) => (
+const TestScoreHeading = ({studentInformation: {firstName, lastName} }) => (
   <div className="header-row card-panel light-blue lighten-1 white-text">
     <div className="card-panel-row row">
       <div className="icon-col col s1">
-        <i className="icon-letter-a"></i>
+       <i className="icon-letter-a"></i>
       </div>
       <div className="col s9">
         <div className="card-panel-text center-align">
@@ -28,7 +37,7 @@ const TestScoreHeading = ({user: {studentInformation: {firstName, lastName}}}) =
 )
 
 TestScoreHeading.PropTypes = {
- user: PropTypes.object.isRequired,
+ studentInformation: PropTypes.object.isRequired,
 };
 
 

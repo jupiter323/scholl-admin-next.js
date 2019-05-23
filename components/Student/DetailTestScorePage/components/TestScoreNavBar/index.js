@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const TestScoreNavBar = ({ active, onSetActivePage }) => (
   <div className="nav-header white">
-          <div className="nav-additional">
+          <div className="nav-additional" style={{display: 'table', margin: "0 auto"}}>
             <ul className="menu-additional">
-              <li className="col s3">
+              <li className="col s3" style={{display: 'inline'}}>
                 <a
                   className={active === 'scores' ? 'active' : ''}
                   onClick={() => onSetActivePage('scores')}
@@ -13,7 +13,7 @@ const TestScoreNavBar = ({ active, onSetActivePage }) => (
                   Scores
                 </a>
               </li>
-              <li className="col s3">
+              <li className="col s3"  style={{display: 'inline'}}>
                 <a
                   className={active === 'answerSheet' ? 'active' : ''}
                   onClick={() => onSetActivePage('answerSheet')}
@@ -21,7 +21,7 @@ const TestScoreNavBar = ({ active, onSetActivePage }) => (
                   Answer Sheet
                 </a>
               </li>
-              <li className="col s3">
+              <li className="col s3 "  style={{display: 'inline'}}>
                 <a
                   className={active === 'StrengthsAndWeaknesses' ? 'active' : ''}
                   onClick={() => onSetActivePage('StrengthsAndWeaknesses')}
@@ -29,7 +29,7 @@ const TestScoreNavBar = ({ active, onSetActivePage }) => (
                   Strengths &amp; Weaknesses
                 </a>
               </li>
-              <li className="col s3">
+              <li className="col s3"  style={{display: 'inline'}}>
                 <a
                 className={active === 'testVersion' ? 'active' : ''}
                 onClick={() => onSetActivePage('testVersion')}
