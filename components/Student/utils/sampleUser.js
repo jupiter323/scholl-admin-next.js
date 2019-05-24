@@ -136,6 +136,29 @@ const updatedUser = {
       passportToAdvancedMath: '13',
     },
   },
+  testScoreDetails: {
+    reading: {
+      totalCorrect: '39',
+      passageType: {
+        science: '11',
+        informationalGraphicPassage: '12',
+        historySocialScience: '13',
+        USWorldLiterature: '14',
+        pairedPassages: '12',
+      },
+      questionType: {
+        citingTextualEvidence: {
+          citeTextAsEvidence: '12',
+          authorsIntentionAndMethod: '12',
+          supportOrRefute: '12',
+        },
+        readingClosely: {
+          detailQuestion: '12',
+          supportRefuteAClaim: '13',
+        },
+      },
+    },
+  },
   strengthsAndWeaknesses: {
     reading: {
       correctAnswers: '32',

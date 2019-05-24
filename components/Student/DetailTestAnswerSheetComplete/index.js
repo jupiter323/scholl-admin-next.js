@@ -15,8 +15,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { active } = this.state;
+    const { user: { testScoreDetails: { reading } } } = this.props;
     if (active === 'reading') {
-      return <ReadingPage  />;
+      return <ReadingPage reading={reading} />;
     }
     // if (active === 'writing') {
     //   return <WritingPage />;

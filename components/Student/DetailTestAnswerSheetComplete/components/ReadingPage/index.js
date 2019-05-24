@@ -1,57 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ReadingPage = () => (
+const ReadingPage = ({ reading: { totalCorrect, passageType: { science, informationalGraphicPassage, historySocialScience, USWorldLiterature, pairedPassages },
+                        questionType: {citingTextualEvidence: { citeTextAsEvidence, authorsIntentionAndMethod, supportOrRefute }, readingClosely: { detailQuestion, supportRefuteAClaim } }}} ) => (
   <div className="slide">
     <div className="container-sm">
-      <div className="row mb-0">
+      <div className="row mb-0" style={{marginTop: '20px'}}>
         <div className="col s12 l5 xl4 chart-column">
           <div className="chart-block chart-block-large">
             <div className="js-donut-chart js-donut-large" data-stroke-width="32" data-source='./inc/score-data-reading.json'></div>
             <div className="chart-text">
-              <span classNam="title">Reading</span>
-              <span classNam="value">39</span>
-              <span classNam="description">out of <b>52</b></span>
+              <span className="title">Reading</span>
+              <span className="value">{totalCorrect}</span>
+              <span className="description">  out of  <b>52</b></span>
             </div>
           </div>
         </div>
         <div className="col s12 l7 xl8">
-          <ul classNam="collapsible expandable collapsible-explain">
+          <ul className="collapsible expandable collapsible-explain">
             <li>
               <div className="collapsible-header"><b>Explain This Graph</b></div>
               <div className="collapsible-body">
                 <div className="row mb-0">
                   <div className="col l6">
-                    <ul classNam="legend-list">
+                    <ul className="legend-list">
                       <li>
                         <div className="legend-frame">
-                          <span classNam="box red darken-2"></span>
-                          <strong classNam="text h3">Focus Here!</strong>
+                          <span className="box red darken-2"></span>
+                          <strong className="text h3">Focus Here!</strong>
                         </div>
                         <p>Most people with your score would get these correct, but you got them wrong. Work on these and you can pick up some easy points!</p>
                       </li>
                       <li>
                         <div className="legend-frame">
-                          <span classNam="box red lighten-5"></span>
-                          <strong classNam="text h3">Tough Gains</strong>
+                          <span className="box red lighten-5"></span>
+                          <strong className="text h3">Tough Gains</strong>
                         </div>
                         <p>You missed these, but so did most others with a similar score. You’ll likely ﬁnd easier gains elsewhere.</p>
                       </li>
                     </ul>
                   </div>
                   <div className="col l6">
-                    <ul classNam="legend-list">
+                    <ul className="legend-list">
                       <li>
                         <div className="legend-frame">
-                          <span classNam="box light-green darken-2"></span>
-                          <strong classNam="text h3">Well Done!</strong>
+                          <span className="box light-green darken-2"></span>
+                          <strong className="text h3">Well Done!</strong>
                         </div>
                         <p>You’re overachiving in this category compared to other with your score. Keep up the good work!</p>
+                        <p> </p>
                       </li>
                       <li>
                         <div className="legend-frame">
-                          <span classNam="box  light-green lighten-4"></span>
-                          <strong classNam="text h3">Piece o’ Cake</strong>
+                          <span className="box  light-green lighten-4"></span>
+                          <strong className="text h3">Piece o’ Cake</strong>
                         </div>
                         <p>You answered these correctly like others with a similar score.</p>
                       </li>
@@ -67,7 +69,7 @@ const ReadingPage = () => (
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">
-              <h3 classNam="graph-title">Passage Type</h3>
+              <h3 className="graph-title">Passage Type</h3>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -84,14 +86,14 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">12</span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">18</span>
             </div>
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong classNam="graph-subtitle">Science</strong>
+              <strong className="graph-subtitle">Science</strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -108,14 +110,14 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">{science}</span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">18</span>
             </div>
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong classNam="graph-subtitle">Informational Graphic Passage</strong>
+              <strong className="graph-subtitle">Informational Graphic Passage</strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -132,14 +134,14 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">{informationalGraphicPassage}</span>
+              <span className="text-small">  out of  </span>
+              <span className="text-large">18</span>
             </div>
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong classNam="graph-subtitle">History/Social Science</strong>
+              <strong className="graph-subtitle">History/Social Science</strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -156,14 +158,14 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">{historySocialScience}</span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">18</span>
             </div>
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong classNam="graph-subtitle">US &amp; World Literature</strong>
+              <strong className="graph-subtitle">US &amp; World Literature</strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -180,14 +182,14 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">{USWorldLiterature}</span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">18</span>
             </div>
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong classNam="graph-subtitle">Paired Passages</strong>
+              <strong className="graph-subtitle">Paired Passages</strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -204,16 +206,16 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">{pairedPassages}</span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">18</span>
             </div>
           </div>
         </div>
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">
-              <h3 classNam="graph-title">Question Type</h3>
+              <h3 className="graph-title">Question Type</h3>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -230,16 +232,16 @@ const ReadingPage = () => (
               </div>
             </div>
             <div className="graph-col graph-info">
-              <span classNam="text-large">12</span>
-              <span classNam="text-small">out of</span>
-              <span classNam="text-large">18</span>
+              <span className="text-large">12</span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">18</span>
             </div>
           </div>
 {/* block with inners rows */}
           <div className="graph-row-block">
             <div className="graph-row graph-row-subtitle">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Citing Textual Evidence</strong>
+                <strong className="graph-subtitle">Citing Textual Evidence</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -256,14 +258,14 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">12</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Cite Text as Evidence</strong>
+                <strong className="graph-subtitle">Cite Text as Evidence</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -280,14 +282,14 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">{citeTextAsEvidence}</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Author’s Intention and Method</strong>
+                <strong className="graph-subtitle">Author’s Intention and Method</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -304,14 +306,14 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">{authorsIntentionAndMethod}</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Support / Refute a Claim</strong>
+                <strong className="graph-subtitle">Support / Refute a Claim</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -328,16 +330,16 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">{supportOrRefute}</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
           </div>
           <div className="graph-row-block">
             <div className="graph-row graph-row-subtitle">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Reading Closely</strong>
+                <strong className="graph-subtitle">Reading Closely</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -354,14 +356,14 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">12</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Detail Question</strong>
+                <strong className="graph-subtitle">Detail Question</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -378,14 +380,14 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">{detailQuestion}</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-                <strong classNam="graph-subtitle">Support / Refute a Claim</strong>
+                <strong className="graph-subtitle">Support / Refute a Claim</strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -402,9 +404,9 @@ const ReadingPage = () => (
                 </div>
               </div>
               <div className="graph-col graph-info">
-                <span classNam="text-large">12</span>
-                <span classNam="text-small">out of</span>
-                <span classNam="text-large">18</span>
+                <span className="text-large">{supportRefuteAClaim}</span>
+                <span className="text-small"> out of </span>
+                <span className="text-large">18</span>
               </div>
             </div>
           </div>
@@ -415,7 +417,7 @@ const ReadingPage = () => (
 );
 
 ReadingPage.propTypes = {
-  user: PropTypes.object.isRequired,
+  reading: PropTypes.object.isRequired,
 };
 
 export default ReadingPage;
