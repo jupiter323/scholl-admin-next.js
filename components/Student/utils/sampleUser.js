@@ -139,6 +139,7 @@ const updatedUser = {
   testScoreDetails: {
     reading: {
       totalCorrect: '39',
+      totalPossible: '59',
       passageType: {
         science: '11',
         informationalGraphicPassage: '12',

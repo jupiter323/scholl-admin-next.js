@@ -1,18 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 
-const ReadingPage = ({ reading: { totalCorrect, passageType: { science, informationalGraphicPassage, historySocialScience, USWorldLiterature, pairedPassages },
+const data = (totalScore, totalPossible) => ({
+  datasets: [{
+    data: [totalPossible, totalPossible-totalScore],
+    backgroundColor: [
+      '#ce237a',
+      'rgb(234, 234, 234)',
+    ],
+  }],
+});
+
+
+const ReadingPage = ({ reading: { totalCorrect, totalPossible, passageType: { science, informationalGraphicPassage, historySocialScience, USWorldLiterature, pairedPassages },
                         questionType: {citingTextualEvidence: { citeTextAsEvidence, authorsIntentionAndMethod, supportOrRefute }, readingClosely: { detailQuestion, supportRefuteAClaim } }}} ) => (
   <div className="slide">
     <div className="container-sm">
       <div className="row mb-0" style={{marginTop: '20px'}}>
         <div className="col s12 l5 xl4 chart-column">
           <div className="chart-block chart-block-large">
-            <div className="js-donut-chart js-donut-large" data-stroke-width="32" data-source='./inc/score-data-reading.json'></div>
+            <Doughnut
+            data={() => data(totalCorrect, totalPossible )}
+            width= "250px"
+            height= '250px'
+            options={{
+              cutoutPercentage: 80,
+            }} />
             <div className="chart-text">
               <span className="title">Reading</span>
               <span className="value">{totalCorrect}</span>
-              <span className="description">  out of  <b>52</b></span>
+              <span className="description">  out of  <b>{totalPossible}</b></span>
             </div>
           </div>
         </div>
