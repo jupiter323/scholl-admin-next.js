@@ -617,6 +617,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       filters: [],
+      eventFilters: [],
       rows: [...row1, ...row2, ...row3, ...row4, ...row5, ...row6],
       activeDate: null,
       activeColumn: null,
@@ -754,8 +755,37 @@ class Dashboard extends Component {
   onToggleAssignDropdown = () => this.setState(({ assignDropdownIsOpen }) => ({ assignDropdownIsOpen: !assignDropdownIsOpen }))
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
+  onClearFilters = () => this.setState({ filters: [], eventFilters: [] })
+
+  handleFilterClick = (filter, eventFilter = false) => {
+    // TODO: Only the following filters are active: sessions, lessons, worksheets, test sections, simulated sats, target tests
+    // The other filters dont seem to have corresponding data in this page
+    const { filters: allFilters, eventFilters } = this.state;
+    let filters;
+    let filterName;
+    if (eventFilter) {
+      filters = eventFilters;
+      filterName = 'eventFilters';
+    } else {
+      filters = allFilters;
+      filterName = 'filters';
+    }
+    let updatedFilters;
+    if (filters.indexOf(filter) === -1) {
+      updatedFilters = update(filters, {
+        $push: [filter],
+      });
+    } else {
+      const filterIndex = filters.indexOf(filter);
+      updatedFilters = update(filters, {
+        $splice: [[ filterIndex, 1 ]],
+      });
+    }
+    this.setState({ [filterName]: updatedFilters });
+  }
+
   mapRows = () => {
-    const { rows, activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen } = this.state;
+    const { rows, filters, eventFilters, activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen } = this.state;
     let startIndex = -7;
     let endIndex = 0;
     const rowArray = [];
@@ -765,6 +795,8 @@ class Dashboard extends Component {
       rowArray.push(
         <CalendarRow
           rows={rows.slice(startIndex, endIndex)}
+          filters={filters}
+          eventFilters={eventFilters}
           activeDate={activeDate}
           activeColumn={activeColumn}
           addDropdownOpen={addDropdownOpen}
@@ -785,7 +817,7 @@ class Dashboard extends Component {
   render() {
     const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen,
       assignTestSectionModalOpen, assignSimulatedSatModalOpen, assignTargetTestDateModalOpen,
-      modalDate, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown, filters,
+      modalDate, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown, filters, eventFilters,
     } = this.state;
     return (
       <React.Fragment>
@@ -883,7 +915,12 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <FilterSection filters={filters} />
+            <FilterSection
+              filters={filters}
+              eventFilters={eventFilters}
+              onClearFilters={this.onClearFilters}
+              handleFilterClick={this.handleFilterClick}
+            />
             <div className="calendar-section view-month">
               <div className="calendar-slider">
                 <CalendarHeader />
@@ -932,7 +969,7 @@ class Dashboard extends Component {
                     <li><a href="#" onClick={this.onToggleAssignSimulatedSatModal} className="modal-trigger">Simulated SAT</a></li>
                     <li><a href="#" onClick={this.onToggleAssignTargetTestModal} className="modal-trigger">Target Test</a></li>
                     <li className="divider" tabIndex="-1"></li>
-                    <li className="dropdown-footer"><a href="#modal_apply_course_template" className="modal-trigger">Apply Course Template</a></li>
+                    <li className="dropdown-footer"><a href="#" className="modal-trigger">Apply Course Template</a></li>
                   </ul>
                 </div>
                 <div className="add-btn-block btn-block-right">
@@ -950,9 +987,9 @@ class Dashboard extends Component {
                       <b className="small">(items currently visible on calendar)</b>
                     </li>
                     <li className="divider"></li>
-                    <li><a href="#modal_save_course_template" className="modal-trigger">Save Course as Template</a></li>
-                    <li><a href="#!">Reset All</a></li>
-                    <li><a href="#!">Delete All</a></li>
+                    <li><a href="#" className="modal-trigger">Save Course as Template</a></li>
+                    <li><a href="#">Reset All</a></li>
+                    <li><a href="#">Delete All</a></li>
                   </ul>
                 </div>
               </div>

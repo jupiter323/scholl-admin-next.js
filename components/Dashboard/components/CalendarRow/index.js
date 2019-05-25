@@ -36,11 +36,18 @@ class CalendarRow extends React.Component {
   }
 
   mapRowDates = () => this.props.rows.map(rowDate => {
-    const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
+    const { eventFilters, activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { date, dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections, simulatedSat } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0 || simulatedSat.length > 0;
     const inActiveColumn = activeDateKey[13] === activeColumn;
     const isActiveDate = activeDate === activeDateKey;
+    const hasEventFilters = eventFilters.length > 0;
+
+    const shouldMapSessions = (!hasEventFilters && sessions.length) || (hasEventFilters && eventFilters.indexOf('sessions') !== -1);
+    const shouldMapLessons = (!hasEventFilters && lessons.length) || (lessons.length && hasEventFilters && eventFilters.indexOf('lessons') !== -1);
+    const shouldMapWorksheets = (!hasEventFilters && worksheets.length) || (worksheets.length && hasEventFilters && eventFilters.indexOf('worksheets') !== -1);
+    const shouldMapTestSections = (!hasEventFilters && testSections.length) || (testSections.length && hasEventFilters && eventFilters.indexOf('testSections') !== -1);
+    const shouldMapSimulatedSats = (!hasEventFilters && simulatedSat.length) || (simulatedSat.length && hasEventFilters && eventFilters.indexOf('simulatedSats') !== -1);
     if (!inMonth) {
       return (
         <td className="cal-cell1 cal-cell cal-day-outmonth" key={dayDate}>
@@ -62,27 +69,27 @@ class CalendarRow extends React.Component {
                 <span className="fake-close"><span className="icon-close-thin"></span></span>
                 <If condition={hasEvents}>
                   <ul className="events-list events-list-short">
-                    <If condition={sessions.length}>
+                    <If condition={shouldMapSessions}>
                       <li className="event-frame event-title">
                         <span className="event-title-box">Session {sessions.length}</span>
                       </li>
                     </If>
-                    <If condition={lessons.length}>
+                    <If condition={shouldMapLessons}>
                       <li className="event-frame">
                         <span className="event event-lesson-box"> {lessons.length} <span className="event-text">Lesson{lessons.length > 1 && 's'}</span></span>
                       </li>
                     </If>
-                    <If condition={worksheets.length}>
+                    <If condition={shouldMapWorksheets}>
                       <li className="event-frame">
                         <span className="event event-worksheet-box">{worksheets.length} <span className="event-text">Worksheet{worksheets.length > 1 && 's'}</span></span>
                       </li>
                     </If>
-                    <If condition={testSections.length}>
+                    <If condition={shouldMapTestSections}>
                       <li className="event-frame">
                         <span className="event event-test-box">{testSections.length} <span className="event-text">Test Section{testSections.length > 1 && 's'}</span></span>
                       </li>
                     </If>
-                    <If condition={simulatedSat.length}>
+                    <If condition={shouldMapSimulatedSats}>
                       <li className="event-frame">
                         <span className="event event-sat-box">{simulatedSat.length} <span className="event-text">Simulated SAT</span></span>
                       </li>
@@ -93,29 +100,29 @@ class CalendarRow extends React.Component {
               <div className="collapsible-body" style={{ opacity: inActiveColumn && isActiveDate ? '1' : '0', visibility: inActiveColumn ? 'visible' : 'hidden' }}>
                 <If condition={hasEvents}>
                   <ul className="events-list">
-                    {sessions.map((session, index) => (
+                    {shouldMapSessions && sessions.map((session, index) => (
                       <li className="event-frame" key={index}>
                         <span className="event-title-box">{session.title}</span>
                       </li>
                     ))}
-                    {lessons.map((lesson, index) => (
+                    {shouldMapLessons && lessons.map((lesson, index) => (
                       <li className="event-frame" key={index}>
                         {lesson.completed && <span className="event-check lesson-check"><i className="icon-check02"></i></span>}
                         <span className="event event-lesson-box">{lesson.title}</span>
                       </li>
                     ))}
-                    {worksheets.map((worksheet, index) => (
+                    {shouldMapWorksheets && worksheets.map((worksheet, index) => (
                       <li className="event-frame" key={index}>
                         {worksheet.completed && <span className="event-check worksheet-check"><i className="icon-check02"></i></span>}
                         <span className="event event-worksheet-box">{worksheet.title}</span>
                       </li>
                     ))}
-                    {testSections.map((testSection, index) => (
+                    {shouldMapTestSections && testSections.map((testSection, index) => (
                       <li className="event-frame" key={index}>
                         <span className="event event-test-box">Test Section: {testSection.version}</span>
                       </li>
                     ))}
-                    {simulatedSat.map((sat, index) => (
+                    {shouldMapSimulatedSats && simulatedSat.map((sat, index) => (
                       <li className="event-frame" key={index}>
                         <span className="event event-sat-box">{sat.version}</span>
                       </li>
@@ -188,9 +195,10 @@ class CalendarRow extends React.Component {
 }
 
 CalendarRow.propTypes = {
-  rows: PropTypes.array.isRequired,
   activeDate: PropTypes.string,
   activeColumn: PropTypes.string,
+  rows: PropTypes.array.isRequired,
+  eventFilters: PropTypes.array.isRequired,
   onSetActiveDate: PropTypes.func.isRequired,
   addDropdownOpen: PropTypes.bool.isRequired,
   deleteDropdownOpen: PropTypes.bool.isRequired,
