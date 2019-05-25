@@ -58,14 +58,14 @@ class AssignSimulatedSatModal extends React.Component {
     this.onResetModal();
   }
 
-  saveNewSimulatedSat = () => {
-    const { onSaveNewSimulatedSat } = this.props;
+  assignSimulatedSat = () => {
+    const { onAssignSimulatedSat } = this.props;
     const { version, assignDate: unformattedAssignDate, assignTime: unformattedAssignTime, dueDate: unformattedDueDate, dueTime: unformattedDueTime, sections, allowStudentToEnterAnswers, includeScoreInImprovementMetrics, timed } = this.state;
     const assignDate = moment(unformattedAssignDate).format('MM/DD/YY');
     const assignTime = moment(unformattedAssignTime).format('hh:mm');
     const dueDate = moment(unformattedDueDate).format('MM/DD/YY');
     const dueTime = moment(unformattedDueTime).format('hh:mm');
-    onSaveNewSimulatedSat({ version, assignDate, assignTime, dueDate, dueTime, sections, allowStudentToEnterAnswers, includeScoreInImprovementMetrics, timed });
+    onAssignSimulatedSat({ version, assignDate, assignTime, dueDate, dueTime, sections, allowStudentToEnterAnswers, includeScoreInImprovementMetrics, timed });
     this.onResetModal();
   }
 
@@ -312,7 +312,7 @@ class AssignSimulatedSatModal extends React.Component {
                     </div>
                     <div className="modal-footer modal-footer-width">
                       <a href="#" onClick={this.onCloseModal} className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
-                      <a href="#" onClick={this.saveNewSimulatedSat} className="link-btn waves-effect waves-teal btn-flat">Save</a>
+                      <a href="#" onClick={this.assignSimulatedSat} className="link-btn waves-effect waves-teal btn-flat">Save</a>
                     </div>
                   </div>
                 </div>
@@ -359,7 +359,7 @@ AssignSimulatedSatModal.propTypes = {
   modalDate: PropTypes.string,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSaveNewSimulatedSat: PropTypes.func.isRequired,
+  onAssignSimulatedSat: PropTypes.func.isRequired,
 };
 
 export default AssignSimulatedSatModal;

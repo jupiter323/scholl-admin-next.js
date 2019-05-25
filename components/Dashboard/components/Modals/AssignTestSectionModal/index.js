@@ -74,14 +74,14 @@ class AssignTestSectionModal extends React.Component {
     this.onResetModal();
   }
 
-  saveNewTestSection = () => {
-    const { onSaveNewTestSection } = this.props;
+  assignTestSection = () => {
+    const { onAssignTestSection } = this.props;
     const { version, section, assignDate: unformattedAssignDate, assignTime: unformattedAssignTime, dueDate: unformattedDueDate, dueTime: unformattedDueTime, timed } = this.state;
     const assignDate = moment(unformattedAssignDate).format('MM/DD/YY');
     const assignTime = moment(unformattedAssignTime).format('hh:mm');
     const dueDate = moment(unformattedDueDate).format('MM/DD/YY');
     const dueTime = moment(unformattedDueTime).format('hh:mm');
-    onSaveNewTestSection({ version, section, assignDate, assignTime, dueDate, dueTime, timed });
+    onAssignTestSection({ version, section, assignDate, assignTime, dueDate, dueTime, timed });
     this.onResetModal();
   }
 
@@ -234,7 +234,7 @@ class AssignTestSectionModal extends React.Component {
                     </div>
                     <div className="modal-footer modal-footer-width">
                       <a href="#" onClick={this.onCloseModal} className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
-                      <a href="#" onClick={this.saveNewTestSection} className="link-btn waves-effect waves-teal btn-flat">Save</a>
+                      <a href="#" onClick={this.assignTestSection} className="link-btn waves-effect waves-teal btn-flat">Save</a>
                     </div>
                   </div>
                 </div>
@@ -281,7 +281,7 @@ AssignTestSectionModal.propTypes = {
   modalDate: PropTypes.string,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSaveNewTestSection: PropTypes.func.isRequired,
+  onAssignTestSection: PropTypes.func.isRequired,
 };
 
 export default AssignTestSectionModal;

@@ -36,13 +36,13 @@ class AssignSessionModal extends React.Component {
     this.onResetModal();
   }
 
-  saveNewSession = () => {
-    const { onSaveNewSession } = this.props;
+  assignSession = () => {
+    const { onAssignSession } = this.props;
     const { date: unformattedDate, startTime: unformattedStartTime, endTime: unformattedEndTime, notes } = this.state;
     const date = moment(unformattedDate).format('MM/DD/YY');
     const startTime = moment(unformattedStartTime).format('hh:mm');
     const endTime = moment(unformattedEndTime).format('hh:mm');
-    onSaveNewSession({ date, startTime, endTime, notes, title: 'Session' });
+    onAssignSession({ date, startTime, endTime, notes, title: 'Session' });
     this.onResetModal();
   }
 
@@ -147,7 +147,7 @@ class AssignSessionModal extends React.Component {
                     </div>
                     <div className="modal-footer modal-footer-width">
                       <a href="#" onClick={this.onCloseModal} className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
-                      <a href="#" onClick={this.saveNewSession} className="link-btn waves-effect waves-teal btn-flat">Add Session</a>
+                      <a href="#" onClick={this.assignSession} className="link-btn waves-effect waves-teal btn-flat">Add Session</a>
                     </div>
                   </div>
                 </div>
@@ -194,7 +194,7 @@ AssignSessionModal.propTypes = {
   modalDate: PropTypes.string,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSaveNewSession: PropTypes.func.isRequired,
+  onAssignSession: PropTypes.func.isRequired,
 };
 
 export default AssignSessionModal;

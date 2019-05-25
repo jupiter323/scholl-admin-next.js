@@ -9,16 +9,13 @@ import AssignLessonModal from '../components/Dashboard/components/Modals/AssignL
 import AssignWorksheetModal from '../components/Dashboard/components/Modals/AssignWorksheetModal';
 import AssignTestSectionModal from '../components/Dashboard/components/Modals/AssignTestSectionModal';
 import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
+import AssignTargetTestModal from '../components/Dashboard/components/Modals/AssignTargetTestModal';
 
 import FirstRow from '../components/Dashboard/components/CalendarRows/FirstRow';
-import SecondRow from '../components/Dashboard/components/CalendarRows/SecondRow';
-import ThirdRow from '../components/Dashboard/components/CalendarRows/ThirdRow';
-import FourthRow from '../components/Dashboard/components/CalendarRows/FourthRow';
-import FifthRow from '../components/Dashboard/components/CalendarRows/FifthRow';
-import SixthRow from '../components/Dashboard/components/CalendarRows/SixthRow';
 
 const row1 = [
   {
+    date: '12/24/18',
     dayDate: 'Sun, Dec 24th',
     calDate: '24',
     activeDateKey: 'row-1-column-1',
@@ -30,6 +27,7 @@ const row1 = [
     simulatedSat: [],
   },
   {
+    date: '12/25/18',
     dayDate: 'Mon, Dec 25th',
     calDate: '25',
     activeDateKey: 'row-1-column-2',
@@ -41,6 +39,7 @@ const row1 = [
     simulatedSat: [],
   },
   {
+    date: '12/26/18',
     dayDate: 'Tue, Dec 26th',
     calDate: '26',
     activeDateKey: 'row-1-column-3',
@@ -52,6 +51,7 @@ const row1 = [
     simulatedSat: [],
   },
   {
+    date: '12/27/18',
     dayDate: 'Wed, Dec 27th',
     calDate: '27',
     activeDateKey: 'row-1-column-4',
@@ -63,6 +63,7 @@ const row1 = [
     simulatedSat: [],
   },
   {
+    date: '12/28/18',
     dayDate: 'Thu, Dec 28th',
     calDate: '28',
     activeDateKey: 'row-1-column-5',
@@ -74,6 +75,7 @@ const row1 = [
     simulatedSat: [],
   },
   {
+    date: '01/01/19',
     dayDate: 'Fri, Jan 1st',
     calDate: '1',
     activeDateKey: 'row-1-column-6',
@@ -101,6 +103,7 @@ const row1 = [
     simulatedSat: [],
   },
   {
+    date: '01/02/19',
     dayDate: 'Sat, Jan 2nd',
     calDate: '2',
     activeDateKey: 'row-1-column-7',
@@ -218,6 +221,7 @@ const row2 = [
 ];
 const row3 = [
   {
+    date: '01/10/19',
     dayDate: 'Sun, Jan 10th',
     calDate: '10',
     activeDateKey: 'row-3-column-1',
@@ -229,6 +233,7 @@ const row3 = [
     simulatedSat: [],
   },
   {
+    date: '01/11/19',
     dayDate: 'Mon, Jan 11th',
     calDate: '11',
     activeDateKey: 'row-3-column-2',
@@ -240,6 +245,7 @@ const row3 = [
     simulatedSat: [],
   },
   {
+    date: '01/12/19',
     dayDate: 'Tue, Jan 12th',
     calDate: '12',
     activeDateKey: 'row-3-column-3',
@@ -251,8 +257,9 @@ const row3 = [
     simulatedSat: [],
   },
   {
-    dayDate: 'Wed, Jan 14th',
-    calDate: '14',
+    date: '01/13/19',
+    dayDate: 'Wed, Jan 13th',
+    calDate: '13',
     activeDateKey: 'row-3-column-4',
     inMonth: true,
     sessions: [
@@ -278,8 +285,9 @@ const row3 = [
     simulatedSat: [],
   },
   {
-    dayDate: 'Thu, Jan 15th',
-    calDate: '15',
+    date: '01/14/19',
+    dayDate: 'Thu, Jan 14th',
+    calDate: '14',
     activeDateKey: 'row-3-column-5',
     inMonth: true,
     sessions: [],
@@ -289,8 +297,9 @@ const row3 = [
     simulatedSat: [],
   },
   {
-    dayDate: 'Fri, Jan 16th',
-    calDate: '16',
+    date: '01/15/19',
+    dayDate: 'Fri, Jan 15th',
+    calDate: '15',
     activeDateKey: 'row-3-column-6',
     inMonth: true,
     sessions: [],
@@ -300,8 +309,9 @@ const row3 = [
     simulatedSat: [],
   },
   {
-    dayDate: 'Sat, Feb 6th',
-    calDate: '6',
+    date: '01/16/19',
+    dayDate: 'Sat, Jan 16th',
+    calDate: '16',
     activeDateKey: 'row-3-column-7',
     inMonth: true,
     sessions: [],
@@ -313,6 +323,7 @@ const row3 = [
 ];
 const row4 = [
   {
+    date: '01/17/19',
     dayDate: 'Sun, Jan 17',
     calDate: '17',
     activeDateKey: 'row-4-column-1',
@@ -324,6 +335,7 @@ const row4 = [
     simulatedSat: [],
   },
   {
+    date: '01/18/19',
     dayDate: 'Mon, Jan 18',
     calDate: '18',
     activeDateKey: 'row-4-column-2',
@@ -335,6 +347,7 @@ const row4 = [
     simulatedSat: [],
   },
   {
+    date: '01/19/19',
     dayDate: 'Tue, Jan 19',
     calDate: '19',
     activeDateKey: 'row-4-column-3',
@@ -363,6 +376,7 @@ const row4 = [
     simulatedSat: [],
   },
   {
+    date: '01/20/19',
     dayDate: 'Wed, Jan 20',
     calDate: '20',
     activeDateKey: 'row-4-column-4',
@@ -374,6 +388,7 @@ const row4 = [
     simulatedSat: [],
   },
   {
+    date: '01/21/19',
     dayDate: 'Thu, Jan 21',
     calDate: '21',
     activeDateKey: 'row-4-column-5',
@@ -385,6 +400,7 @@ const row4 = [
     simulatedSat: [],
   },
   {
+    date: '01/22/19',
     dayDate: 'Fri, Jan 22',
     calDate: '22',
     activeDateKey: 'row-4-column-6',
@@ -396,6 +412,7 @@ const row4 = [
     simulatedSat: [],
   },
   {
+    date: '01/23/19',
     dayDate: 'Sat, Jan 23',
     calDate: '23',
     activeDateKey: 'row-4-column-7',
@@ -409,6 +426,7 @@ const row4 = [
 ];
 const row5 = [
   {
+    date: '01/24/19',
     dayDate: 'Sun, Jan 24th',
     calDate: '24',
     activeDateKey: 'row-5-column-1',
@@ -420,6 +438,7 @@ const row5 = [
     simulatedSat: [],
   },
   {
+    date: '01/25/19',
     dayDate: 'Mon, Jan 25th',
     calDate: '25',
     activeDateKey: 'row-5-column-2',
@@ -446,6 +465,7 @@ const row5 = [
     simulatedSat: [],
   },
   {
+    date: '01/26/19',
     dayDate: 'Tue, Jan 26th',
     calDate: '26',
     activeDateKey: 'row-5-column-3',
@@ -457,6 +477,7 @@ const row5 = [
     simulatedSat: [],
   },
   {
+    date: '01/27/19',
     dayDate: 'Wed, Jan 27th',
     calDate: '27',
     activeDateKey: 'row-5-column-4',
@@ -468,6 +489,7 @@ const row5 = [
     simulatedSat: [],
   },
   {
+    date: '01/28/19',
     dayDate: 'Thu, Jan 28th',
     calDate: '28',
     activeDateKey: 'row-5-column-5',
@@ -479,6 +501,7 @@ const row5 = [
     simulatedSat: [],
   },
   {
+    date: '01/29/19',
     dayDate: 'Fri, Jan 29th',
     calDate: '29',
     activeDateKey: 'row-5-column-6',
@@ -490,6 +513,7 @@ const row5 = [
     simulatedSat: [],
   },
   {
+    date: '01/30/19',
     dayDate: 'Sat, Jan 30th',
     calDate: '30',
     activeDateKey: 'row-5-column-7',
@@ -503,6 +527,7 @@ const row5 = [
 ];
 const row6 = [
   {
+    date: '01/31/19',
     dayDate: 'Sun, Jan 31st',
     calDate: '31',
     activeDateKey: 'row-6-column-1',
@@ -514,6 +539,7 @@ const row6 = [
     simulatedSat: [],
   },
   {
+    date: '02/01/19',
     dayDate: 'Mon, Feb 1st',
     calDate: '1',
     activeDateKey: 'row-6-column-2',
@@ -525,6 +551,7 @@ const row6 = [
     simulatedSat: [],
   },
   {
+    date: '02/02/19',
     dayDate: 'Tue, Feb 2nd',
     calDate: '2',
     activeDateKey: 'row-6-column-3',
@@ -536,6 +563,7 @@ const row6 = [
     simulatedSat: [],
   },
   {
+    date: '02/03/19',
     dayDate: 'Wed, Feb 3rd',
     calDate: '3',
     activeDateKey: 'row-6-column-4',
@@ -547,6 +575,7 @@ const row6 = [
     simulatedSat: [],
   },
   {
+    date: '02/04/19',
     dayDate: 'Thu, Feb 4th',
     calDate: '4',
     activeDateKey: 'row-6-column-5',
@@ -558,6 +587,7 @@ const row6 = [
     simulatedSat: [],
   },
   {
+    date: '02/05/19',
     dayDate: 'Fri, Feb 5th',
     calDate: '5',
     activeDateKey: 'row-6-column-6',
@@ -569,6 +599,7 @@ const row6 = [
     simulatedSat: [],
   },
   {
+    date: '02/06/19',
     dayDate: 'Sat, Feb 6th',
     calDate: '6',
     activeDateKey: 'row-6-column-7',
@@ -585,6 +616,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      filters: [],
       rows: [...row1, ...row2, ...row3, ...row4, ...row5, ...row6],
       activeDate: null,
       activeColumn: null,
@@ -598,6 +630,7 @@ class Dashboard extends Component {
       assignWorksheetsModalOpen: false,
       assignTestSectionModalOpen: false,
       assignSimulatedSatModalOpen: false,
+      assignTargetTestDateModalOpen: false,
       modalDate: null,
     };
   }
@@ -608,7 +641,7 @@ class Dashboard extends Component {
   }
 
   // TODO: Handle attaching assignments to non-sample rows
-  onSaveNewSession = (session) => {
+  onAssignSession = (session) => {
     const { rows } = this.state;
     const updatedDate = rows.filter(row => row.date === session.date)[0];
     const updatedDateIndex = rows.indexOf(updatedDate);
@@ -645,7 +678,7 @@ class Dashboard extends Component {
     console.warn('stubbed out assign worksheets func', worksheets, date);
   }
 
-  onSaveNewTestSection = (testSection) => {
+  onAssignTestSection = (testSection) => {
     const { rows } = this.state;
     const updatedDate = rows.filter(row => row.date === testSection.assignDate)[0];
     const updatedDateIndex = rows.indexOf(updatedDate);
@@ -657,7 +690,7 @@ class Dashboard extends Component {
     this.onToggleAssignTestSectionModal();
   }
 
-  onSaveNewSimulatedSat = (simulatedSat) => {
+  onAssignSimulatedSat = (simulatedSat) => {
     const { rows } = this.state;
     const updatedDate = rows.filter(row => row.date === simulatedSat.assignDate)[0];
     const updatedDateIndex = rows.indexOf(updatedDate);
@@ -667,6 +700,10 @@ class Dashboard extends Component {
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignSimulatedSatModal();
+  }
+
+  onAssignTargetTest = (targetTestDate) => {
+    console.warn('pending decision of what test date assign ui looks like', targetTestDate);
   }
 
   onToggleAssignSessionModal = (event = null, modalDate = null) => {
@@ -704,15 +741,51 @@ class Dashboard extends Component {
     this.setState(({ assignSimulatedSatModalOpen }) => ({ assignSimulatedSatModalOpen: !assignSimulatedSatModalOpen, modalDate, assignDropdownIsOpen: false }))
   }
 
+  onToggleAssignTargetTestModal = (event = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignTargetTestDateModalOpen }) => ({ assignTargetTestDateModalOpen: !assignTargetTestDateModalOpen, assignDropdownIsOpen: false }))
+  }
+
   onToggleAddDropdown = () => this.setState(({ addDropdownOpen }) => ({ addDropdownOpen: !addDropdownOpen, deleteDropdownOpen: false }))
   onToggleDeleteDropdown = () => this.setState(({ deleteDropdownOpen }) => ({ deleteDropdownOpen: !deleteDropdownOpen, addDropdownOpen: false }))
 
   onToggleAssignDropdown = () => this.setState(({ assignDropdownIsOpen }) => ({ assignDropdownIsOpen: !assignDropdownIsOpen }))
   onToggleHandleFilteredItemsDropdown = () => this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({ onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown }))
 
+  mapRows = () => {
+    const { rows, activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen } = this.state;
+    let startIndex = -7;
+    let endIndex = 0;
+    const rowArray = [];
+    for (let i = 0; i < 6; i++) {
+      startIndex += 7;
+      endIndex += 7;
+      rowArray.push(
+        <FirstRow
+          rows={rows.slice(startIndex, endIndex)}
+          activeDate={activeDate}
+          activeColumn={activeColumn}
+          addDropdownOpen={addDropdownOpen}
+          deleteDropdownOpen={deleteDropdownOpen}
+          onSetActiveDate={this.onSetActiveDate}
+          onToggleAddDropdown={this.onToggleAddDropdown}
+          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+          onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
+          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
+          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
+          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
+        />
+      )
+    }
+    return rowArray;
+  }
+
   render() {
-    const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen, assignTestSectionModalOpen, assignSimulatedSatModalOpen, modalDate, rows,
-      activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown,
+    const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen,
+      assignTestSectionModalOpen, assignSimulatedSatModalOpen, assignTargetTestDateModalOpen,
+      modalDate, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown, filters,
     } = this.state;
     return (
       <React.Fragment>
@@ -720,7 +793,7 @@ class Dashboard extends Component {
           modalDate={modalDate}
           open={assignSessionModalOpen}
           onClose={this.onToggleAssignSessionModal}
-          onSaveNewSession={this.onSaveNewSession}
+          onAssignSession={this.onAssignSession}
         />
         <AssignLessonModal
           modalDate={modalDate}
@@ -738,13 +811,18 @@ class Dashboard extends Component {
           modalDate={modalDate}
           open={assignTestSectionModalOpen}
           onClose={this.onToggleAssignTestSectionModal}
-          onSaveNewTestSection={this.onSaveNewTestSection}
+          onAssignTestSection={this.onAssignTestSection}
         />
         <AssignSimulatedSatModal
           modalDate={modalDate}
           open={assignSimulatedSatModalOpen}
           onClose={this.onToggleAssignSimulatedSatModal}
-          onSaveNewSimulatedSat={this.onSaveNewSimulatedSat}
+          onAssignSimulatedSat={this.onAssignSimulatedSat}
+        />
+        <AssignTargetTestModal
+          open={assignTargetTestDateModalOpen}
+          onClose={this.onToggleAssignTargetTestModal}
+          onAssignTargetTest={this.onAssignTargetTest}
         />
         <main id="main" role="main">
           <div className="main-holder grey lighten-3">
@@ -754,7 +832,7 @@ class Dashboard extends Component {
               </div>
               <nav className="breadcrumb-holder">
                 <div className="nav-wrapper ">
-                  <a href="#!" className="breadcrumb">&lt; Classes</a>
+                  <a href="#" className="breadcrumb">&lt; Classes</a>
                 </div>
               </nav>
               <h2 className="h1 white-text">
@@ -805,7 +883,7 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <FilterSection />
+            <FilterSection filters={filters} />
             <div className="calendar-section view-month">
               <div className="calendar-slider">
                 <CalendarHeader />
@@ -828,85 +906,7 @@ class Dashboard extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        <FirstRow
-                          rows={rows.slice(0, 7)}
-                          activeDate={activeDate}
-                          activeColumn={activeColumn}
-                          addDropdownOpen={addDropdownOpen}
-                          deleteDropdownOpen={deleteDropdownOpen}
-                          onSetActiveDate={this.onSetActiveDate}
-                          onToggleAddDropdown={this.onToggleAddDropdown}
-                          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-                          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-                          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-                          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
-                        />
-                        <SecondRow
-                          rows={rows.slice(7, 14)}
-                          activeDate={activeDate}
-                          activeColumn={activeColumn}
-                          addDropdownOpen={addDropdownOpen}
-                          deleteDropdownOpen={deleteDropdownOpen}
-                          onSetActiveDate={this.onSetActiveDate}
-                          onToggleAddDropdown={this.onToggleAddDropdown}
-                          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-                          onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
-                          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-                          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-                          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
-                        />
-                        <ThirdRow
-                          rows={rows.slice(14, 21)}
-                          activeDate={activeDate}
-                          activeColumn={activeColumn}
-                          addDropdownOpen={addDropdownOpen}
-                          deleteDropdownOpen={deleteDropdownOpen}
-                          onSetActiveDate={this.onSetActiveDate}
-                          onToggleAddDropdown={this.onToggleAddDropdown}
-                          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-                          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-                          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-                          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
-                        />
-                        <FourthRow
-                          rows={rows.slice(21, 28)}
-                          activeDate={activeDate}
-                          activeColumn={activeColumn}
-                          addDropdownOpen={addDropdownOpen}
-                          deleteDropdownOpen={deleteDropdownOpen}
-                          onSetActiveDate={this.onSetActiveDate}
-                          onToggleAddDropdown={this.onToggleAddDropdown}
-                          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-                          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-                          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-                          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
-                        />
-                        <FifthRow
-                          rows={rows.slice(28, 35)}
-                          activeDate={activeDate}
-                          activeColumn={activeColumn}
-                          addDropdownOpen={addDropdownOpen}
-                          deleteDropdownOpen={deleteDropdownOpen}
-                          onSetActiveDate={this.onSetActiveDate}
-                          onToggleAddDropdown={this.onToggleAddDropdown}
-                          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-                          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-                          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-                          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
-                        />
-                        <SixthRow
-                          rows={rows.slice(35, 42)}
-                          activeDate={activeDate}
-                          activeColumn={activeColumn}
-                          addDropdownOpen={addDropdownOpen}
-                          deleteDropdownOpen={deleteDropdownOpen}
-                          onSetActiveDate={this.onSetActiveDate}
-                          onToggleAddDropdown={this.onToggleAddDropdown}
-                          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-                          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-                          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-                          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
-                        />
+                        {this.mapRows()}
                       </tbody>
                     </table>
                   </div>
@@ -930,7 +930,7 @@ class Dashboard extends Component {
                     <li><a href="#" onClick={this.onToggleAssignWorksheetsModal} className="modal-trigger">Worksheet</a></li>
                     <li><a href="#" onClick={this.onToggleAssignTestSectionModal} className="modal-trigger">Test Section</a></li>
                     <li><a href="#" onClick={this.onToggleAssignSimulatedSatModal} className="modal-trigger">Simulated SAT</a></li>
-                    <li><a href="#" className="modal-trigger">Target Test</a></li>
+                    <li><a href="#" onClick={this.onToggleAssignTargetTestModal} className="modal-trigger">Target Test</a></li>
                     <li className="divider" tabIndex="-1"></li>
                     <li className="dropdown-footer"><a href="#modal_apply_course_template" className="modal-trigger">Apply Course Template</a></li>
                   </ul>
