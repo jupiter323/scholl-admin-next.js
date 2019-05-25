@@ -11,7 +11,7 @@ import AssignTestSectionModal from '../components/Dashboard/components/Modals/As
 import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
 import AssignTargetTestModal from '../components/Dashboard/components/Modals/AssignTargetTestModal';
 
-import FirstRow from '../components/Dashboard/components/CalendarRows/FirstRow';
+import CalendarRow from '../components/Dashboard/components/CalendarRow';
 
 const row1 = [
   {
@@ -763,7 +763,7 @@ class Dashboard extends Component {
       startIndex += 7;
       endIndex += 7;
       rowArray.push(
-        <FirstRow
+        <CalendarRow
           rows={rows.slice(startIndex, endIndex)}
           activeDate={activeDate}
           activeColumn={activeColumn}

@@ -1,20 +1,50 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import getCalendarCellClassName from '../../../utils/getCalendarCellClassName';
+import getCalendarCellClassName from '../../utils/getCalendarCellClassName';
+import getCalendarDayClassName from '../../utils/getCalendarDayClassName';
 
-class SixthRow extends React.Component {
+class CalendarRow extends React.Component {
+  toggleAssignSessionModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleAssignSessionModal, onToggleAddDropdown } = this.props;
+    onToggleAssignSessionModal(event, date);
+    onToggleAddDropdown();
+  }
+
+  toggleAssignLessonsModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleAssignLessonsModal, onToggleAddDropdown } = this.props;
+    onToggleAssignLessonsModal(event, date);
+    onToggleAddDropdown();
+  }
+
+  toggleAssignTestSectionModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleAssignTestSectionModal, onToggleAddDropdown } = this.props;
+    onToggleAssignTestSectionModal(event, date);
+    onToggleAddDropdown();
+  }
+
+  toggleAssignSimulatedSatModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleAssignSimulatedSatModal, onToggleAddDropdown } = this.props;
+    onToggleAssignSimulatedSatModal(event, date);
+    onToggleAddDropdown();
+  }
+
   mapRowDates = () => this.props.rows.map(rowDate => {
     const { activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
-    const { dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections } = rowDate;
-    const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0;
+    const { date, dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections, simulatedSat } = rowDate;
+    const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0 || simulatedSat.length > 0;
     const inActiveColumn = activeDateKey[13] === activeColumn;
     const isActiveDate = activeDate === activeDateKey;
     if (!inMonth) {
       return (
-        <td className="cal-cell1 cal-cell cal-day-outmonth" key={activeDateKey}>
-          <div className="cal-month-day">
+        <td className="cal-cell1 cal-cell cal-day-outmonth" key={dayDate}>
+          <div className={getCalendarDayClassName(date, inMonth, activeDateKey)}>
             <span className="day-date">{dayDate}</span>
             <span className="cal-date">{calDate}</span>
           </div>
@@ -23,11 +53,11 @@ class SixthRow extends React.Component {
     }
     return (
       <td key={activeDateKey} className={getCalendarCellClassName(hasEvents, inActiveColumn)} onClick={() => onSetActiveDate(activeDateKey)}>
-        <div className={activeDateKey.includes('column-7') || activeDateKey.includes('column-1') ? 'cal-month-day cal-day-inmonth cal-day-weekend' : 'cal-month-day cal-day-inmonth'}>
+        <div className={getCalendarDayClassName(date, inMonth, activeDateKey)}>
           <span className="day-date">{dayDate}</span>
           <span className="cal-date">{calDate}</span>
           <ul className="day-collapsible collapsible">
-          <li className={isActiveDate ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
+            <li className={isActiveDate ? 'collapsible-holder active' : 'collapsible-holder'} style={{ transform: 'none' }}>
               <div className="collapsible-header" style={{ display: inActiveColumn && isActiveDate ? 'none' : 'block'}}>
                 <span className="fake-close"><span className="icon-close-thin"></span></span>
                 <If condition={hasEvents}>
@@ -52,32 +82,42 @@ class SixthRow extends React.Component {
                         <span className="event event-test-box">{testSections.length} <span className="event-text">Test Section{testSections.length > 1 && 's'}</span></span>
                       </li>
                     </If>
+                    <If condition={simulatedSat.length}>
+                      <li className="event-frame">
+                        <span className="event event-sat-box">{simulatedSat.length} <span className="event-text">Simulated SAT</span></span>
+                      </li>
+                    </If>
                   </ul>
                 </If>
               </div>
               <div className="collapsible-body" style={{ opacity: inActiveColumn && isActiveDate ? '1' : '0', visibility: inActiveColumn ? 'visible' : 'hidden' }}>
                 <If condition={hasEvents}>
                   <ul className="events-list">
-                    {sessions.map(session => (
-                      <li className="event-frame" key={session.title}>
+                    {sessions.map((session, index) => (
+                      <li className="event-frame" key={index}>
                         <span className="event-title-box">{session.title}</span>
                       </li>
                     ))}
-                    {lessons.map(lesson => (
-                      <li className="event-frame" key={lesson.title}>
+                    {lessons.map((lesson, index) => (
+                      <li className="event-frame" key={index}>
                         {lesson.completed && <span className="event-check lesson-check"><i className="icon-check02"></i></span>}
                         <span className="event event-lesson-box">{lesson.title}</span>
                       </li>
                     ))}
-                    {worksheets.map(worksheet => (
-                      <li className="event-frame" key={worksheet.title}>
+                    {worksheets.map((worksheet, index) => (
+                      <li className="event-frame" key={index}>
                         {worksheet.completed && <span className="event-check worksheet-check"><i className="icon-check02"></i></span>}
                         <span className="event event-worksheet-box">{worksheet.title}</span>
                       </li>
                     ))}
-                    {testSections.map(testSection => (
-                      <li className="event-frame" key={testSection.title}>
-                        <span className="event event-test-box">{testSection.title}</span>
+                    {testSections.map((testSection, index) => (
+                      <li className="event-frame" key={index}>
+                        <span className="event event-test-box">Test Section: {testSection.version}</span>
+                      </li>
+                    ))}
+                    {simulatedSat.map((sat, index) => (
+                      <li className="event-frame" key={index}>
+                        <span className="event event-sat-box">{sat.version}</span>
                       </li>
                     ))}
                   </ul>
@@ -98,11 +138,11 @@ class SixthRow extends React.Component {
                         className='dropdown-content'
                         style={{ display: addDropdownOpen ? 'block' : 'none', opacity: addDropdownOpen ? '100' : '0' }}
                       >
-                        <li><a href="#modal_add_section" className="modal-trigger">Session</a></li>
-                        <li><a href="#modal_add_lesson" className="modal-trigger">Lesson</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleAssignSessionModal(event, date)} className="modal-trigger">Session</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleAssignLessonsModal(event, date)} className="modal-trigger">Lesson</a></li>
                         <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
-                        <li><a href="#modal_add_test_section" className="modal-trigger">Test Section</a></li>
-                        <li><a href="#modal_add_simulated_sat" className="modal-trigger">Simulated SAT</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleAssignTestSectionModal(event, date)} className="modal-trigger">Test Section</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleAssignSimulatedSatModal(event, date)} className="modal-trigger">Simulated SAT</a></li>
                       </ul>
                     </li>
                     <li>
@@ -143,11 +183,11 @@ class SixthRow extends React.Component {
       <tr className="cal-row-fluid">
         {this.mapRowDates()}
       </tr>
-    );
+    )
   }
 }
 
-SixthRow.propTypes = {
+CalendarRow.propTypes = {
   rows: PropTypes.array.isRequired,
   activeDate: PropTypes.string,
   activeColumn: PropTypes.string,
@@ -156,6 +196,10 @@ SixthRow.propTypes = {
   deleteDropdownOpen: PropTypes.bool.isRequired,
   onToggleAddDropdown: PropTypes.func.isRequired,
   onToggleDeleteDropdown: PropTypes.func.isRequired,
+  onToggleAssignSessionModal: PropTypes.func.isRequired,
+  onToggleAssignLessonsModal: PropTypes.func.isRequired,
+  onToggleAssignTestSectionModal: PropTypes.func.isRequired,
+  onToggleAssignSimulatedSatModal: PropTypes.func.isRequired,
 }
 
-export default SixthRow;
+export default CalendarRow;
