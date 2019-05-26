@@ -7,13 +7,12 @@ class WritingPage extends React.Component {
     super(props)
     this.state = {
       sampleAnswers,
-      writingPageModalOpen: false,
     }
   };
 
   mapSampleAnswers = () =>
     sampleAnswers.map((question, index) =>
-      <AnswerRow question={question} index={index} /> )
+      <AnswerRow key={question.id} question={question} index={index} /> )
 
       render() {
     return(

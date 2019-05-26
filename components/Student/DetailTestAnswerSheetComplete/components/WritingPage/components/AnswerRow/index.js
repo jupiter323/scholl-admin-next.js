@@ -2,44 +2,47 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import sampleAnswers from '../../../../utils/sampleWritingTestResults';
 // need to import modal
+import QuestionModal from '../QuestionModal';
 
 class AnswerRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen: false,
-      bubbleStyles,
+      open: false,
       reviewed: false,
      }
   };
+  onOpenQuestionModal = () => this.setState({open: true})
+  onCloseQuestionModal = () => this.setState({open: false});
+
   mapLetterBubbles = ({index}) => {
     const letters = ["A", "B", "C", "D"]
-    const { studentChoice, answer, id } = sampleAnswers[index];
+    const { studentChoice, answer } = sampleAnswers[index];
     return letters.map(letter => {
       if (letter === answer && letter === studentChoice){
         return (
-          <li>
-          <span className="badge-circle badge-circle-bordered" key={id} style={{color: '#fff', borderColor: '#32955c', backgroundColor: '#3eb777'}}>{letter}</span>
+          <li key={letter[index]}>
+          <span className="badge-circle badge-circle-bordered"  style={{color: '#fff', borderColor: '#32955c', backgroundColor: '#3eb777'}}>{letter}</span>
         </li>
         )
       }
       if (letter === answer && letter !== studentChoice){
         return (
-          <li>
-            <span className="badge-circle badge-circle-bordered" key={id} style={{color: '#32955c', borderColor: '#32955c', backgrounColor: '#fff'}}>{letter}</span>
+          <li key={letter[index]}>
+            <span className="badge-circle badge-circle-bordered" style={{color: '#32955c', borderColor: '#32955c', backgrounColor: '#fff'}}>{letter}</span>
           </li>
         )
       }
       if (letter !== answer && letter === studentChoice){
         return (
-          <li>
-            <span className="badge-circle badge-circle-bordered" key={id} style={{color: '#fff', borderColor: '#ad1e3e', backgroundColor: '#db1d41'}}>{letter}</span>
+          <li key={letter[index]}>
+            <span className="badge-circle badge-circle-bordered" style={{color: '#fff', borderColor: '#ad1e3e', backgroundColor: '#db1d41'}}>{letter}</span>
           </li>
         )
       }
       return (
-          <li>
-            <span className="badge-circle badge-circle-bordered" key={id}>{letter}</span>
+          <li key={letter[index]}>
+            <span className="badge-circle badge-circle-bordered">{letter}</span>
           </li>
         )
       }
@@ -50,17 +53,17 @@ class AnswerRow extends React.Component {
     const { answer, studentChoice }= sampleAnswers[index];
           if ( answer === studentChoice) {
         return (
-          <li>
+          <li key={index}>
             <span className="badge badge-rounded badge-rounded-bordered" style={{color: '#fff', borderColor: '#32955c', backgroundColor: '#3eb777'}}>{answer}</span>
           </li>
         )
       }
       return (
           <React.Fragment>
-            <li>
-              <span className="badge badge-rounded badge-rounded-bordered" style={{color: '#fff', borderColor: '#ad1e3e', backgroundColor: '#db1d41'}}>{studentChoice}</span>
+            <li key={index}>
+              <span className="badge badge-rounded badge-rounded-bordered"  style={{color: '#fff', borderColor: '#ad1e3e', backgroundColor: '#db1d41'}}>{studentChoice}</span>
             </li>
-            <li>
+            <li key={answer} >
               <span className="badge badge-rounded badge-rounded-bordered" style={{color: '#32955c', borderColor: '#32955c', backgroundColor: '#fff'}}>{answer}</span>
             </li>
           </React.Fragment>
@@ -69,8 +72,10 @@ class AnswerRow extends React.Component {
 
   render() {
     const { index, question } = this.props;
+    const { open } = this.state;
     return (
-      <li className="answers-list-holder">
+      <React.Fragment>
+        <li className="answers-list-holder">
           <div className="answer-row row mb-0">
             <div className="col col-120">
               <ul className="answer-list" key={question.id} >
@@ -104,8 +109,9 @@ class AnswerRow extends React.Component {
               </If>
             </div>
             <div className="dropdown-block col col-35">
-              {/* modal trigger */}
-              <a className='modal-trigger' href="#modal_video001"><i className="material-icons dots-icon">more_vert</i></a>
+            <QuestionModal open={open} onCloseQuestionModal={this.onCloseQuestionModal}/>
+
+              <a className='modal-trigger' href="#" onClick={this.onOpenQuestionModal}><i className="material-icons dots-icon">more_vert</i></a>
             </div>
           </div>
           <If condition={question.studentNotes}>
@@ -114,6 +120,8 @@ class AnswerRow extends React.Component {
             </div>
           </If>
         </li>
+      </React.Fragment>
+
     )
   }
 }
