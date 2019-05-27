@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import AnswerSheetNavBar from './components/AnswerSheetNavBar';
 import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
-
+import MathNoCalcPage from './components/MathNoCalcPage';
+import MathCalculatorPage from './components/MathCalculatorPage';
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props){
     super(props)
@@ -23,12 +24,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (active === 'writing') {
       return <WritingPage sampleAnswers={sampleAnswers}/>;
     }
-    // if (active === 'math (no calc') {
-    //   return <MathNoCalcPage />;
-    // }
-    // if (active === 'math (calculator') {
-    //   return <MatchCalculatorPage />;
-    // }
+    if (active === 'math (no calc)') {
+      return <MathNoCalcPage />;
+    }
+    if (active === 'math (calculator)') {
+      return <MathCalculatorPage />;
+    }
     // if (active === 'essay) {
     //   return <EssayPage />;
     // }

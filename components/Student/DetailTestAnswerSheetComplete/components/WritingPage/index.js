@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import AnswerRow from './components/AnswerRow';
 
 class WritingPage extends React.Component {
+
    mapSampleAnswers = ({sampleAnswers}) =>
    sampleAnswers.map((question, index) =>
    <AnswerRow sampleAnswers={sampleAnswers} key={question.id} question={question} index={index} />)
-   render() {
+  render() {
     const { sampleAnswers } = this.props;
     return(
       <div className="slide">
