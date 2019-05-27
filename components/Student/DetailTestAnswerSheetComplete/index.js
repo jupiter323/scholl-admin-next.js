@@ -5,6 +5,8 @@ import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
 import MathNoCalcPage from './components/MathNoCalcPage';
 import MathCalculatorPage from './components/MathCalculatorPage';
+import EssayPage from './components/EssayPage';
+
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props){
     super(props)
@@ -30,9 +32,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (active === 'math (calculator)') {
       return <MathCalculatorPage />;
     }
-    // if (active === 'essay) {
-    //   return <EssayPage />;
-    // }
+    if (active === 'essay') {
+      return <EssayPage />;
+    }
     return null;
   }
 
