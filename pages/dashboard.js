@@ -3,6 +3,7 @@ import update from 'immutability-helper';
 
 import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
+import CalendarRow from '../components/Dashboard/components/CalendarRow';
 
 import AssignSessionModal from '../components/Dashboard/components/Modals/AssignSessionModal';
 import AssignLessonModal from '../components/Dashboard/components/Modals/AssignLessonModal';
@@ -11,614 +12,529 @@ import AssignTestSectionModal from '../components/Dashboard/components/Modals/As
 import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
 import AssignTargetTestModal from '../components/Dashboard/components/Modals/AssignTargetTestModal';
 
-import CalendarRow from '../components/Dashboard/components/CalendarRow';
+import { currentYear, getFirstDay, getDaysInActiveMonth, getDaysInPreviousMonth, getDayDate } from '../components/Dashboard/utils/dateAndCalendarUtils';
 
-const row1 = [
-  {
-    date: '12/24/18',
-    dayDate: 'Sun, Dec 24th',
-    calDate: '24',
-    activeDateKey: 'row-1-column-1',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '12/25/18',
-    dayDate: 'Mon, Dec 25th',
-    calDate: '25',
-    activeDateKey: 'row-1-column-2',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '12/26/18',
-    dayDate: 'Tue, Dec 26th',
-    calDate: '26',
-    activeDateKey: 'row-1-column-3',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '12/27/18',
-    dayDate: 'Wed, Dec 27th',
-    calDate: '27',
-    activeDateKey: 'row-1-column-4',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '12/28/18',
-    dayDate: 'Thu, Dec 28th',
-    calDate: '28',
-    activeDateKey: 'row-1-column-5',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/01/19',
-    dayDate: 'Fri, Jan 1st',
-    calDate: '1',
-    activeDateKey: 'row-1-column-6',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-    simulatedSat: [],
-  },
-  {
-    date: '01/02/19',
-    dayDate: 'Sat, Jan 2nd',
-    calDate: '2',
-    activeDateKey: 'row-1-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-];
-// TODO: Make sure all rows match data structure of row2
-const row2 = [
-  {
-    date: '01/03/19',
-    dayDate: 'Sun, Jan 3rd',
-    calDate: '3',
-    activeDateKey: 'row-2-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/04/19',
-    dayDate: 'Mon, Jan 4th',
-    calDate: '4',
-    activeDateKey: 'row-2-column-2',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/05/19',
-    dayDate: 'Tue, Jan 5th',
-    calDate: '5',
-    activeDateKey: 'row-2-column-3',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/06/19',
-    dayDate: 'Wed, Jan 6th',
-    calDate: '6',
-    activeDateKey: 'row-2-column-4',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/07/19',
-    dayDate: 'Thu, Jan 7th',
-    calDate: '7',
-    activeDateKey: 'row-2-column-5',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-    simulatedSat: [],
-  },
-  {
-    date: '01/08/19',
-    dayDate: 'Fri, Jan 8th',
-    calDate: '8',
-    activeDateKey: 'row-2-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/09/19',
-    dayDate: 'Sat, Jan 9th',
-    calDate: '9',
-    activeDateKey: 'row-2-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-];
-const row3 = [
-  {
-    date: '01/10/19',
-    dayDate: 'Sun, Jan 10th',
-    calDate: '10',
-    activeDateKey: 'row-3-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/11/19',
-    dayDate: 'Mon, Jan 11th',
-    calDate: '11',
-    activeDateKey: 'row-3-column-2',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/12/19',
-    dayDate: 'Tue, Jan 12th',
-    calDate: '12',
-    activeDateKey: 'row-3-column-3',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/13/19',
-    dayDate: 'Wed, Jan 13th',
-    calDate: '13',
-    activeDateKey: 'row-3-column-4',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-    simulatedSat: [],
-  },
-  {
-    date: '01/14/19',
-    dayDate: 'Thu, Jan 14th',
-    calDate: '14',
-    activeDateKey: 'row-3-column-5',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/15/19',
-    dayDate: 'Fri, Jan 15th',
-    calDate: '15',
-    activeDateKey: 'row-3-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/16/19',
-    dayDate: 'Sat, Jan 16th',
-    calDate: '16',
-    activeDateKey: 'row-3-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-];
-const row4 = [
-  {
-    date: '01/17/19',
-    dayDate: 'Sun, Jan 17',
-    calDate: '17',
-    activeDateKey: 'row-4-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/18/19',
-    dayDate: 'Mon, Jan 18',
-    calDate: '18',
-    activeDateKey: 'row-4-column-2',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/19/19',
-    dayDate: 'Tue, Jan 19',
-    calDate: '19',
-    activeDateKey: 'row-4-column-3',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'General Strategy (Reading)', completed: true },
-      { title: 'Applying Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-    simulatedSat: [],
-  },
-  {
-    date: '01/20/19',
-    dayDate: 'Wed, Jan 20',
-    calDate: '20',
-    activeDateKey: 'row-4-column-4',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/21/19',
-    dayDate: 'Thu, Jan 21',
-    calDate: '21',
-    activeDateKey: 'row-4-column-5',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/22/19',
-    dayDate: 'Fri, Jan 22',
-    calDate: '22',
-    activeDateKey: 'row-4-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/23/19',
-    dayDate: 'Sat, Jan 23',
-    calDate: '23',
-    activeDateKey: 'row-4-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-];
-const row5 = [
-  {
-    date: '01/24/19',
-    dayDate: 'Sun, Jan 24th',
-    calDate: '24',
-    activeDateKey: 'row-5-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/25/19',
-    dayDate: 'Mon, Jan 25th',
-    calDate: '25',
-    activeDateKey: 'row-5-column-2',
-    inMonth: true,
-    sessions: [
-      { title: 'Session 2' },
-      { title: 'Session 3' },
-    ],
-    lessons: [
-      { title: 'Reading Introduction', completed: true },
-      { title: 'Active Reading', completed: false },
-      { title: 'Strategy Review (Reading)', completed: true },
-      { title: 'Reading Vocabulary: Word Roots', completed: true },
-    ],
-    worksheets: [
-      { title: 'Worksheet Triangles #1', completed: true },
-      { title: 'Worksheet Triangles #2', completed: false },
-      { title: 'Worksheet Triangles #3', completed: true },
-    ],
-    testSections: [
-      { title: 'Test Section: Math (no calc) version 53-pre' },
-      { title: 'Test Section: Math (calc) version 21-pre' },
-    ],
-    simulatedSat: [],
-  },
-  {
-    date: '01/26/19',
-    dayDate: 'Tue, Jan 26th',
-    calDate: '26',
-    activeDateKey: 'row-5-column-3',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/27/19',
-    dayDate: 'Wed, Jan 27th',
-    calDate: '27',
-    activeDateKey: 'row-5-column-4',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/28/19',
-    dayDate: 'Thu, Jan 28th',
-    calDate: '28',
-    activeDateKey: 'row-5-column-5',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/29/19',
-    dayDate: 'Fri, Jan 29th',
-    calDate: '29',
-    activeDateKey: 'row-5-column-6',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '01/30/19',
-    dayDate: 'Sat, Jan 30th',
-    calDate: '30',
-    activeDateKey: 'row-5-column-7',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-];
-const row6 = [
-  {
-    date: '01/31/19',
-    dayDate: 'Sun, Jan 31st',
-    calDate: '31',
-    activeDateKey: 'row-6-column-1',
-    inMonth: true,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '02/01/19',
-    dayDate: 'Mon, Feb 1st',
-    calDate: '1',
-    activeDateKey: 'row-6-column-2',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '02/02/19',
-    dayDate: 'Tue, Feb 2nd',
-    calDate: '2',
-    activeDateKey: 'row-6-column-3',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '02/03/19',
-    dayDate: 'Wed, Feb 3rd',
-    calDate: '3',
-    activeDateKey: 'row-6-column-4',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '02/04/19',
-    dayDate: 'Thu, Feb 4th',
-    calDate: '4',
-    activeDateKey: 'row-6-column-5',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '02/05/19',
-    dayDate: 'Fri, Feb 5th',
-    calDate: '5',
-    activeDateKey: 'row-6-column-6',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-  {
-    date: '02/06/19',
-    dayDate: 'Sat, Feb 6th',
-    calDate: '6',
-    activeDateKey: 'row-6-column-7',
-    inMonth: false,
-    sessions: [],
-    lessons: [],
-    worksheets: [],
-    testSections: [],
-    simulatedSat: [],
-  },
-];
+// const row1 = [
+//   {
+//     date: '12/24/18',
+//     dayDate: 'Sun, Dec 24th',
+//     calDate: '24',
+//     activeDateKey: 'row-1-column-1',
+//     inMonth: false,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '12/25/18',
+//     dayDate: 'Mon, Dec 25th',
+//     calDate: '25',
+//     activeDateKey: 'row-1-column-2',
+//     inMonth: false,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '12/26/18',
+//     dayDate: 'Tue, Dec 26th',
+//     calDate: '26',
+//     activeDateKey: 'row-1-column-3',
+//     inMonth: false,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '12/27/18',
+//     dayDate: 'Wed, Dec 27th',
+//     calDate: '27',
+//     activeDateKey: 'row-1-column-4',
+//     inMonth: false,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '12/28/18',
+//     dayDate: 'Thu, Dec 28th',
+//     calDate: '28',
+//     activeDateKey: 'row-1-column-5',
+//     inMonth: false,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/01/19',
+//     dayDate: 'Fri, Jan 1st',
+//     calDate: '1',
+//     activeDateKey: 'row-1-column-6',
+//     inMonth: true,
+//     sessions: [
+//       { title: 'Session 2' },
+//       { title: 'Session 3' },
+//     ],
+//     lessons: [
+//       { title: 'Reading Introduction', completed: true },
+//       { title: 'Active Reading', completed: false },
+//       { title: 'General Strategy (Reading)', completed: true },
+//       { title: 'Strategy Review (Reading)', completed: true },
+//       { title: 'Reading Vocabulary: Word Roots', completed: true },
+//     ],
+//     worksheets: [
+//       { title: 'Worksheet Triangles #1', completed: true },
+//       { title: 'Worksheet Triangles #2', completed: false },
+//       { title: 'Worksheet Triangles #3', completed: true },
+//     ],
+//     testSections: [
+//       { title: 'Test Section: Math (no calc) version 53-pre' },
+//       { title: 'Test Section: Math (calc) version 21-pre' },
+//     ],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/02/19',
+//     dayDate: 'Sat, Jan 2nd',
+//     calDate: '2',
+//     activeDateKey: 'row-1-column-7',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+// ];
+// const row2 = [
+//   {
+//     date: '01/03/19',
+//     dayDate: 'Sun, Jan 3rd',
+//     calDate: '3',
+//     activeDateKey: 'row-2-column-1',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/04/19',
+//     dayDate: 'Mon, Jan 4th',
+//     calDate: '4',
+//     activeDateKey: 'row-2-column-2',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/05/19',
+//     dayDate: 'Tue, Jan 5th',
+//     calDate: '5',
+//     activeDateKey: 'row-2-column-3',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/06/19',
+//     dayDate: 'Wed, Jan 6th',
+//     calDate: '6',
+//     activeDateKey: 'row-2-column-4',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/07/19',
+//     dayDate: 'Thu, Jan 7th',
+//     calDate: '7',
+//     activeDateKey: 'row-2-column-5',
+//     inMonth: true,
+//     sessions: [
+//       { title: 'Session 2' },
+//       { title: 'Session 3' },
+//     ],
+//     lessons: [
+//       { title: 'Reading Introduction', completed: true },
+//       { title: 'Active Reading', completed: false },
+//       { title: 'General Strategy (Reading)', completed: true },
+//       { title: 'Applying Active Reading', completed: false },
+//       { title: 'Strategy Review (Reading)', completed: true },
+//       { title: 'Reading Vocabulary: Word Roots', completed: true },
+//     ],
+//     worksheets: [
+//       { title: 'Worksheet Triangles #1', completed: true },
+//       { title: 'Worksheet Triangles #2', completed: false },
+//       { title: 'Worksheet Triangles #3', completed: true },
+//     ],
+//     testSections: [
+//       { title: 'Test Section: Math (no calc) version 53-pre' },
+//       { title: 'Test Section: Math (calc) version 21-pre' },
+//     ],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/08/19',
+//     dayDate: 'Fri, Jan 8th',
+//     calDate: '8',
+//     activeDateKey: 'row-2-column-6',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/09/19',
+//     dayDate: 'Sat, Jan 9th',
+//     calDate: '9',
+//     activeDateKey: 'row-2-column-7',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+// ];
+// const row3 = [
+//   {
+//     date: '01/10/19',
+//     dayDate: 'Sun, Jan 10th',
+//     calDate: '10',
+//     activeDateKey: 'row-3-column-1',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/11/19',
+//     dayDate: 'Mon, Jan 11th',
+//     calDate: '11',
+//     activeDateKey: 'row-3-column-2',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/12/19',
+//     dayDate: 'Tue, Jan 12th',
+//     calDate: '12',
+//     activeDateKey: 'row-3-column-3',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/13/19',
+//     dayDate: 'Wed, Jan 13th',
+//     calDate: '13',
+//     activeDateKey: 'row-3-column-4',
+//     inMonth: true,
+//     sessions: [
+//       { title: 'Session 2' },
+//       { title: 'Session 3' },
+//     ],
+//     lessons: [
+//       { title: 'Reading Introduction', completed: true },
+//       { title: 'Active Reading', completed: false },
+//       { title: 'General Strategy (Reading)', completed: true },
+//       { title: 'Applying Active Reading', completed: false },
+//       { title: 'Strategy Review (Reading)', completed: true },
+//       { title: 'Reading Vocabulary: Word Roots', completed: true },
+//     ],
+//     worksheets: [
+//       { title: 'Worksheet Triangles #1', completed: true },
+//       { title: 'Worksheet Triangles #3', completed: true },
+//     ],
+//     testSections: [
+//       { title: 'Test Section: Math (no calc) version 53-pre' },
+//       { title: 'Test Section: Math (calc) version 21-pre' },
+//     ],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/14/19',
+//     dayDate: 'Thu, Jan 14th',
+//     calDate: '14',
+//     activeDateKey: 'row-3-column-5',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/15/19',
+//     dayDate: 'Fri, Jan 15th',
+//     calDate: '15',
+//     activeDateKey: 'row-3-column-6',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/16/19',
+//     dayDate: 'Sat, Jan 16th',
+//     calDate: '16',
+//     activeDateKey: 'row-3-column-7',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+// ];
+// const row4 = [
+//   {
+//     date: '01/17/19',
+//     dayDate: 'Sun, Jan 17',
+//     calDate: '17',
+//     activeDateKey: 'row-4-column-1',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/18/19',
+//     dayDate: 'Mon, Jan 18',
+//     calDate: '18',
+//     activeDateKey: 'row-4-column-2',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/19/19',
+//     dayDate: 'Tue, Jan 19',
+//     calDate: '19',
+//     activeDateKey: 'row-4-column-3',
+//     inMonth: true,
+//     sessions: [
+//       { title: 'Session 2' },
+//       { title: 'Session 3' },
+//     ],
+//     lessons: [
+//       { title: 'Reading Introduction', completed: true },
+//       { title: 'Active Reading', completed: false },
+//       { title: 'General Strategy (Reading)', completed: true },
+//       { title: 'Applying Active Reading', completed: false },
+//       { title: 'Strategy Review (Reading)', completed: true },
+//       { title: 'Reading Vocabulary: Word Roots', completed: true },
+//     ],
+//     worksheets: [
+//       { title: 'Worksheet Triangles #1', completed: true },
+//       { title: 'Worksheet Triangles #2', completed: false },
+//       { title: 'Worksheet Triangles #3', completed: true },
+//     ],
+//     testSections: [
+//       { title: 'Test Section: Math (no calc) version 53-pre' },
+//       { title: 'Test Section: Math (calc) version 21-pre' },
+//     ],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/20/19',
+//     dayDate: 'Wed, Jan 20',
+//     calDate: '20',
+//     activeDateKey: 'row-4-column-4',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/21/19',
+//     dayDate: 'Thu, Jan 21',
+//     calDate: '21',
+//     activeDateKey: 'row-4-column-5',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/22/19',
+//     dayDate: 'Fri, Jan 22',
+//     calDate: '22',
+//     activeDateKey: 'row-4-column-6',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/23/19',
+//     dayDate: 'Sat, Jan 23',
+//     calDate: '23',
+//     activeDateKey: 'row-4-column-7',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+// ];
+// const row5 = [
+//   {
+//     date: '01/24/19',
+//     dayDate: 'Sun, Jan 24th',
+//     calDate: '24',
+//     activeDateKey: 'row-5-column-1',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/25/19',
+//     dayDate: 'Mon, Jan 25th',
+//     calDate: '25',
+//     activeDateKey: 'row-5-column-2',
+//     inMonth: true,
+//     sessions: [
+//       { title: 'Session 2' },
+//       { title: 'Session 3' },
+//     ],
+//     lessons: [
+//       { title: 'Reading Introduction', completed: true },
+//       { title: 'Active Reading', completed: false },
+//       { title: 'Strategy Review (Reading)', completed: true },
+//       { title: 'Reading Vocabulary: Word Roots', completed: true },
+//     ],
+//     worksheets: [
+//       { title: 'Worksheet Triangles #1', completed: true },
+//       { title: 'Worksheet Triangles #2', completed: false },
+//       { title: 'Worksheet Triangles #3', completed: true },
+//     ],
+//     testSections: [
+//       { title: 'Test Section: Math (no calc) version 53-pre' },
+//       { title: 'Test Section: Math (calc) version 21-pre' },
+//     ],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/26/19',
+//     dayDate: 'Tue, Jan 26th',
+//     calDate: '26',
+//     activeDateKey: 'row-5-column-3',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/27/19',
+//     dayDate: 'Wed, Jan 27th',
+//     calDate: '27',
+//     activeDateKey: 'row-5-column-4',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/28/19',
+//     dayDate: 'Thu, Jan 28th',
+//     calDate: '28',
+//     activeDateKey: 'row-5-column-5',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/29/19',
+//     dayDate: 'Fri, Jan 29th',
+//     calDate: '29',
+//     activeDateKey: 'row-5-column-6',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+//   {
+//     date: '01/30/19',
+//     dayDate: 'Sat, Jan 30th',
+//     calDate: '30',
+//     activeDateKey: 'row-5-column-7',
+//     inMonth: true,
+//     sessions: [],
+//     lessons: [],
+//     worksheets: [],
+//     testSections: [],
+//     simulatedSat: [],
+//   },
+// ];
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeMonth: '',
       filters: [],
       eventFilters: [],
-      rows: [...row1, ...row2, ...row3, ...row4, ...row5, ...row6],
+      // rows: [...row1, ...row2, ...row3, ...row4, ...row5, ...row6],
+      rows: [],
       activeDate: null,
       activeColumn: null,
       expandedColumn: 3,
@@ -636,7 +552,93 @@ class Dashboard extends Component {
     };
   }
 
-  // onSetActiveDate = (incomingDate) => this.setState(({ activeDate }) => ({ activeDate: activeDate === null ? incomingDate : null }))
+  // This is called onMount in CalendarHeader component to set the current month calendar rows, and every time the month changes afterward
+  // IMPORTANT: activeMonthIndex is zero-based, meaning January is 0, February is 1, etc.
+  onSetActiveMonth = (activeMonthIndex) => {
+    // daysInPreviousMonth is used to handle cases where the calendar for the month starts with dates from the preceding month
+    // firstDay indicates the day the first day of the month falls on in a zero-based index manner, meaning Sunday is 0, Monday is 1, etc
+    const daysInPreviousMonth = getDaysInPreviousMonth(activeMonthIndex);
+    const daysInActiveMonth = getDaysInActiveMonth(activeMonthIndex);
+    const firstDay = getFirstDay(activeMonthIndex);
+    const rows = [];
+
+    // We increment calDate and change inMonth in the case where dates from the next month appear in row 1 or row 6
+    // Since activeMonthIndex is zero-based, currentMonth adds 1 so the cells are accurate as actual calendar dates
+    let inMonth = true;
+    let calDate = 1;
+    let currentMonth = activeMonthIndex + 1;
+
+    if (firstDay !== 0) {
+      currentMonth -= 1;
+      calDate = daysInPreviousMonth - firstDay + 1;
+      inMonth = false;
+    }
+
+    // First for loop handles the 6 calendar rows, second for loop handles the 7 days of the week
+    for (let i = 0; i < 6; i++) {
+      const rowArr = [];
+      for (let j = 0; j < 7; j++) {
+        const date = `${currentMonth}/${calDate}/${currentYear}`;
+        const dayDate = getDayDate(date);
+        const activeDateKey = `row-${i + 1}-column-${j + 1}`;
+        // This if statement handles the easiest calendar month scenario, where the 1st of the month falls on a Sunday
+        if (firstDay === 0) {
+          const dateCell = {
+            date,
+            dayDate,
+            calDate,
+            activeDateKey,
+            inMonth,
+            sessions: [],
+            lessons: [],
+            worksheets: [],
+            testSections: [],
+            simulatedSat: [],
+          };
+          // This if statement handles the case where the date spills over into the next month
+          if (calDate === daysInActiveMonth) {
+            calDate = 1;
+            currentMonth = activeMonthIndex + 2;
+            inMonth = false;
+          } else {
+            calDate += 1;
+          }
+          rowArr.push(dateCell);
+        }
+        // This else statement handles the more likely scenario, where the first row contains several days from the preceding month
+        else {
+          const dateCell = {
+            date,
+            dayDate,
+            calDate,
+            activeDateKey,
+            inMonth,
+            sessions: [],
+            lessons: [],
+            worksheets: [],
+            testSections: [],
+            simulatedSat: [],
+          };
+          // This if statement handles the case where the date spills over into the next month
+          if (inMonth === false && calDate === daysInPreviousMonth) {
+            calDate = 1;
+            currentMonth = activeMonthIndex + 1;
+            inMonth = true;
+          } else if (inMonth === true && calDate === daysInActiveMonth) {
+            calDate = 1;
+            inMonth = false;
+          }
+          else {
+            calDate += 1;
+          }
+          rowArr.push(dateCell);
+        }
+      };
+      rows.push(rowArr);
+    };
+    this.setState({ activeMonth: activeMonthIndex, rows })
+  }
+
   onSetActiveDate = (incomingDate) => {
     this.setState({ activeDate: incomingDate, activeColumn: incomingDate[13] })
   }
@@ -786,15 +788,11 @@ class Dashboard extends Component {
 
   mapRows = () => {
     const { rows, filters, eventFilters, activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen } = this.state;
-    let startIndex = -7;
-    let endIndex = 0;
     const rowArray = [];
     for (let i = 0; i < 6; i++) {
-      startIndex += 7;
-      endIndex += 7;
       rowArray.push(
         <CalendarRow
-          rows={rows.slice(startIndex, endIndex)}
+          rows={rows[i]}
           filters={filters}
           eventFilters={eventFilters}
           activeDate={activeDate}
@@ -815,7 +813,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen,
+    const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen, activeMonth,
       assignTestSectionModalOpen, assignSimulatedSatModalOpen, assignTargetTestDateModalOpen,
       modalDate, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown, filters, eventFilters,
     } = this.state;
@@ -923,7 +921,10 @@ class Dashboard extends Component {
             />
             <div className="calendar-section view-month">
               <div className="calendar-slider">
-                <CalendarHeader />
+                <CalendarHeader
+                  activeMonth={Number(activeMonth)}
+                  onSetActiveMonth={this.onSetActiveMonth}
+                />
                 <div id="calendar" className="main-slick-calendar cal-context" style={{ width: '100%' }}>
                   {/* <!-- calendar month slide January--> */}
                   <div className="slide">
@@ -1002,7 +1003,6 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
-
 
 
 /* <!-- Modal structure view Lesson --> */
