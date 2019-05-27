@@ -20,6 +20,13 @@ class CalendarRow extends React.Component {
     onToggleAddDropdown();
   }
 
+  toggleAssignWorksheetsModal = (event, date) => {
+    event.preventDefault();
+    const { onToggleAssignWorksheetsModal, onToggleAddDropdown } = this.props;
+    onToggleAssignWorksheetsModal(event, date);
+    onToggleAddDropdown();
+  }
+
   toggleAssignTestSectionModal = (event, date) => {
     event.preventDefault();
     const { onToggleAssignTestSectionModal, onToggleAddDropdown } = this.props;
@@ -150,10 +157,10 @@ class CalendarRow extends React.Component {
                         <span className="event-title-box">{session.title}</span>
                       </li>
                     ))}
-                    {this.mapDateLessons()}
-                    {this.mapDateWorksheets()}
-                    {this.mapTestSections()}
-                    {this.mapSimulatedSats()}
+                    {this.mapDateLessons(shouldMapLessons, lessons)}
+                    {this.mapDateWorksheets(shouldMapWorksheets, worksheets)}
+                    {this.mapTestSections(shouldMapTestSections, testSections)}
+                    {this.mapSimulatedSats(shouldMapSimulatedSats, simulatedSat)}
                   </ul>
                 </If>
                 <div className="day-footer">
@@ -174,7 +181,7 @@ class CalendarRow extends React.Component {
                       >
                         <li><a href="#" onClick={(event) => this.toggleAssignSessionModal(event, date)} className="modal-trigger">Session</a></li>
                         <li><a href="#" onClick={(event) => this.toggleAssignLessonsModal(event, date)} className="modal-trigger">Lesson</a></li>
-                        <li><a href="#modal_add_worksheet" className="modal-trigger">Worksheet</a></li>
+                        <li><a href="#" onClick={(event) => this.toggleAssignWorksheetsModal(event, date)} className="modal-trigger">Worksheet</a></li>
                         <li><a href="#" onClick={(event) => this.toggleAssignTestSectionModal(event, date)} className="modal-trigger">Test Section</a></li>
                         <li><a href="#" onClick={(event) => this.toggleAssignSimulatedSatModal(event, date)} className="modal-trigger">Simulated SAT</a></li>
                       </ul>
@@ -234,6 +241,7 @@ CalendarRow.propTypes = {
   onToggleDeleteDropdown: PropTypes.func.isRequired,
   onToggleAssignSessionModal: PropTypes.func.isRequired,
   onToggleAssignLessonsModal: PropTypes.func.isRequired,
+  onToggleAssignWorksheetsModal: PropTypes.func.isRequired,
   onToggleAssignTestSectionModal: PropTypes.func.isRequired,
   onToggleAssignSimulatedSatModal: PropTypes.func.isRequired,
 }

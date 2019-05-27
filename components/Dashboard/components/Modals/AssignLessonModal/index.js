@@ -187,6 +187,7 @@ class AssignLessonModal extends React.Component {
         break;
     }
     this.onToggleAssignSelectedDropdown();
+    this.onResetModal();
     onAssignLessons(selectedLessons, assignDate);
   }
 

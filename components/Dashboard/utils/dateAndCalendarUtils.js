@@ -53,3 +53,4 @@ export const getDayDate = (date) => moment(date).format('ddd, MMM Do');
 export const getFirstDay = (activeMonthIndex) => new Date(2019, activeMonthIndex).getDay();
 export const getDaysInActiveMonth = (activeMonthIndex) => 32 - new Date(2019, activeMonthIndex, 32).getDate();
 export const getDaysInPreviousMonth = (activeMonthIndex) => 32 - new Date(2019, activeMonthIndex - 1, 32).getDate();
+export const getNextMonthAsCurrentMonth = (activeMonthIndex) => activeMonthIndex > 9 ? activeMonthIndex + 1 : `0${activeMonthIndex + 1}`;

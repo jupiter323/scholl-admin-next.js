@@ -12,7 +12,7 @@ import AssignTestSectionModal from '../components/Dashboard/components/Modals/As
 import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
 import AssignTargetTestModal from '../components/Dashboard/components/Modals/AssignTargetTestModal';
 
-import { currentYear, getFirstDay, getDaysInActiveMonth, getDaysInPreviousMonth, getDayDate } from '../components/Dashboard/utils/dateAndCalendarUtils';
+import { currentYear, getFirstDay, getDaysInActiveMonth, getDaysInPreviousMonth, getDayDate, getNextMonthAsCurrentMonth } from '../components/Dashboard/utils/dateAndCalendarUtils';
 
 // const row1 = [
 //   {
@@ -537,7 +537,6 @@ class Dashboard extends Component {
       rows: [],
       activeDate: null,
       activeColumn: null,
-      expandedColumn: 3,
       addDropdownOpen: false,
       deleteDropdownOpen: false,
       assignDropdownIsOpen: false,
@@ -564,16 +563,15 @@ class Dashboard extends Component {
 
     // We increment calDate and change inMonth in the case where dates from the next month appear in row 1 or row 6
     // Since activeMonthIndex is zero-based, currentMonth adds 1 so the cells are accurate as actual calendar dates
+    // getNextMonthAsCurrentMonth is used to derive the current month to ensure it matches the format of incoming dates - 01/15/19 vs 1/15/19, otherwise new events wouldn't find the date to be assigned to
     let inMonth = true;
     let calDate = 1;
-    let currentMonth = activeMonthIndex + 1;
-
+    let currentMonth = getNextMonthAsCurrentMonth(activeMonthIndex);
     if (firstDay !== 0) {
-      currentMonth -= 1;
+      currentMonth = currentMonth > 9 ? currentMonth -= 1 : `0${currentMonth - 1}`;
       calDate = daysInPreviousMonth - firstDay + 1;
       inMonth = false;
     }
-
     // First for loop handles the 6 calendar rows, second for loop handles the 7 days of the week
     for (let i = 0; i < 6; i++) {
       const rowArr = [];
@@ -598,7 +596,7 @@ class Dashboard extends Component {
           // This if statement handles the case where the date spills over into the next month
           if (calDate === daysInActiveMonth) {
             calDate = 1;
-            currentMonth = activeMonthIndex + 2;
+            currentMonth = activeMonthIndex > 9 ? activeMonthIndex + 2 : `0${activeMonthIndex + 2}`;
             inMonth = false;
           } else {
             calDate += 1;
@@ -622,7 +620,7 @@ class Dashboard extends Component {
           // This if statement handles the case where the date spills over into the next month
           if (inMonth === false && calDate === daysInPreviousMonth) {
             calDate = 1;
-            currentMonth = activeMonthIndex + 1;
+            currentMonth = getNextMonthAsCurrentMonth(activeMonthIndex);
             inMonth = true;
           } else if (inMonth === true && calDate === daysInActiveMonth) {
             calDate = 1;
@@ -634,7 +632,7 @@ class Dashboard extends Component {
           rowArr.push(dateCell);
         }
       };
-      rows.push(rowArr);
+      rows.push(...rowArr);
     };
     this.setState({ activeMonth: activeMonthIndex, rows })
   }
@@ -643,7 +641,6 @@ class Dashboard extends Component {
     this.setState({ activeDate: incomingDate, activeColumn: incomingDate[13] })
   }
 
-  // TODO: Handle attaching assignments to non-sample rows
   onAssignSession = (session) => {
     const { rows } = this.state;
     const updatedDate = rows.filter(row => row.date === session.date)[0];
@@ -678,7 +675,6 @@ class Dashboard extends Component {
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignWorksheetsModal();
-    console.warn('stubbed out assign worksheets func', worksheets, date);
   }
 
   onAssignTestSection = (testSection) => {
@@ -788,11 +784,15 @@ class Dashboard extends Component {
 
   mapRows = () => {
     const { rows, filters, eventFilters, activeDate, activeColumn, addDropdownOpen, deleteDropdownOpen } = this.state;
+    let startIndex = -7;
+    let endIndex = 0;
     const rowArray = [];
     for (let i = 0; i < 6; i++) {
+      startIndex += 7;
+      endIndex += 7;
       rowArray.push(
         <CalendarRow
-          rows={rows[i]}
+          rows={rows.slice(startIndex, endIndex)}
           filters={filters}
           eventFilters={eventFilters}
           activeDate={activeDate}
@@ -804,6 +804,7 @@ class Dashboard extends Component {
           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
           onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
           onToggleAssignSessionModal={this.onToggleAssignSessionModal}
+          onToggleAssignWorksheetsModal={this.onToggleAssignWorksheetsModal}
           onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
           onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
         />
