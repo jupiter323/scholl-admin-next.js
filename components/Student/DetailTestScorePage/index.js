@@ -13,7 +13,7 @@ import SubScoresCard from './components/SubScoresCard';
 class DetailTestScorePage extends React.Component {
   render() {
         // eslint-disable-next-line react/prop-types
-        const { user: { active, studentInformation, testScores: { subjectScores, totalScore, sectionScores, essayScores, crossTestScores, subScores } } } = this.props;
+        const { user: { active, studentInformation, testScores: { subjectScores, totalScore, totalPossible, sectionScores, essayScores, crossTestScores, subScores } } } = this.props;
         return (
           <main id="main" role="main">
             <div className="main-holder grey lighten-5">
@@ -24,11 +24,11 @@ class DetailTestScorePage extends React.Component {
                   <div className="container">
                     <div className="cards-section">
                       <div className="d-flex-content same-height justify-center row mb-0">
-                        <TotalScoreCard totalScore={totalScore}/>
+                        <TotalScoreCard totalScore={totalScore} totalPossible={totalPossible}/>
                         <SectionScoreCard sectionScores={sectionScores} />
                       </div>
                       <div className="d-flex-content same-height justify-center row mb-0">
-                        <TestScoreCard subjectScores= {subjectScores}/>
+                        <TestScoreCard subjectScores={subjectScores}/>
                         <EssayScoresCard essayScores={essayScores} />
                       </div>
                       <div className="d-flex-content justify-center row mb-0">

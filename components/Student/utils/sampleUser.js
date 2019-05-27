@@ -110,20 +110,24 @@ const updatedUser = {
       composite: '218',
     },
     subjectScores: {
-      reading: '58',
-      writing: '44',
-      math: '91',
+      reading: '28',
+      writing: '34',
+      math: '29',
       composite: '195',
+      totalPossible: '40',
     },
     totalScore: '1480',
+    totalPossible: '1600',
     sectionScores: {
       readingAndWriting: '710',
       math: '650',
+      totalPossible: '800',
     },
     essayScores: {
       reading: '7',
-      analysis: '8',
+      analysis: '6',
       writing: '7',
+      totalPossible: '8',
     },
     crossTestScores: '24',
     subScores: {
@@ -134,6 +138,7 @@ const updatedUser = {
       heartOfAlgebra: '10',
       problemSolvingAndDataAnalysis: '10',
       passportToAdvancedMath: '13',
+      totalPossible: '15',
     },
   },
   testScoreDetails: {
