@@ -3,8 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import getCalendarCellClassName from '../../utils/getCalendarCellClassName';
-import getCalendarDayClassName from '../../utils/getCalendarDayClassName';
+import { getCalendarCellClassName, getCalendarDayClassName } from '../../utils/dateAndCalendarUtils';
 
 class CalendarRow extends React.Component {
   toggleAssignSessionModal = (event, date) => {
@@ -35,11 +34,11 @@ class CalendarRow extends React.Component {
     onToggleAddDropdown();
   }
 
-  mapRowDates = () => this.props.rows.map(rowDate => {
+  mapRowDates = () => this.props.rows && this.props.rows.map(rowDate => {
     const { eventFilters, activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
-    const { date, dayDate, calDate, activeDateKey, inMonth, sessions, lessons, worksheets, testSections, simulatedSat } = rowDate;
+    const { date, dayDate, calDate, activeDateKey, inMonth, sessions = [], lessons = [], worksheets = [], testSections = [], simulatedSat = [] } = rowDate;
     const hasEvents = sessions.length > 0 || lessons.length > 0 || worksheets.length > 0 || testSections.length > 0 || simulatedSat.length > 0;
-    const inActiveColumn = activeDateKey[13] === activeColumn;
+    const inActiveColumn = activeDateKey && activeDateKey[13] === activeColumn;
     const isActiveDate = activeDate === activeDateKey;
     const hasEventFilters = eventFilters.length > 0;
 
@@ -183,7 +182,8 @@ class CalendarRow extends React.Component {
         </div>
       </td>
     )
-  })
+  }
+)
 
   render() {
     return (
