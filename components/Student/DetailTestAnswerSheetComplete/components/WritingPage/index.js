@@ -1,36 +1,29 @@
 import React from 'react';
-import sampleAnswers from '../../utils/sampleWritingTestResults';
+import PropTypes from 'prop-types';
 import AnswerRow from './components/AnswerRow';
 
 class WritingPage extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      sampleAnswers,
-    }
-  };
-
-  mapSampleAnswers = () =>
-    sampleAnswers.map((question, index) =>
-      <AnswerRow key={question.id} question={question} index={index} /> )
-
-      render() {
+   mapSampleAnswers = ({sampleAnswers}) =>
+   sampleAnswers.map((question, index) =>
+   <AnswerRow sampleAnswers={sampleAnswers} key={question.id} question={question} index={index} />)
+   render() {
+    const { sampleAnswers } = this.props;
     return(
       <div className="slide">
       <div className="row">
         <div className="col s12 l4">
           <ol className="answers-list">
-              {this.mapSampleAnswers()}
+              {this.mapSampleAnswers({sampleAnswers})}
           </ol>
         </div>
         <div className="col s12 l4">
           <ol className="answers-list">
-              {this.mapSampleAnswers()}
+              {this.mapSampleAnswers({sampleAnswers})}
           </ol>
         </div>
         <div className="col s12 l4">
           <ol className="answers-list">
-              {this.mapSampleAnswers()}
+              {this.mapSampleAnswers({sampleAnswers})}
           </ol>
         </div>
       </div>
@@ -38,5 +31,9 @@ class WritingPage extends React.Component {
     )
   }
 }
+
+WritingPage.propTypes = {
+  sampleAnswers: PropTypes.object.isRequired,
+};
 
 export default WritingPage;

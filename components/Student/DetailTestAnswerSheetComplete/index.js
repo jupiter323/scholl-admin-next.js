@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AnswerSheetNavBar from './components/AnswerSheetNavBar';
 import ReadingPage from './components/ReadingPage';
+import WritingPage from './components/WritingPage';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props){
@@ -15,13 +16,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { active } = this.state;
-    const { user: { testScoreDetails: { reading } } } = this.props;
+    const { user: { testScoreDetails: { reading, writing: { sampleAnswers}}}} = this.props;
     if (active === 'reading') {
       return <ReadingPage reading={reading} />;
     }
-    // if (active === 'writing') {
-    //   return <WritingPage />;
-    // }
+    if (active === 'writing') {
+      return <WritingPage sampleAnswers={sampleAnswers}/>;
+    }
     // if (active === 'math (no calc') {
     //   return <MathNoCalcPage />;
     // }

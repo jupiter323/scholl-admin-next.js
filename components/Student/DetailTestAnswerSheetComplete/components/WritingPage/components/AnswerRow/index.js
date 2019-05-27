@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sampleAnswers from '../../../../utils/sampleWritingTestResults';
-// need to import modal
 import QuestionModal from '../QuestionModal';
 
 class AnswerRow extends React.Component {
@@ -16,7 +14,8 @@ class AnswerRow extends React.Component {
   onCloseQuestionModal = () => this.setState({open: false});
 
   mapLetterBubbles = ({index}) => {
-    const letters = ["A", "B", "C", "D"]
+    const letters = ["A", "B", "C", "D"];
+    const { sampleAnswers } = this.props;
     const { studentChoice, answer } = sampleAnswers[index];
     return letters.map(letter => {
       if (letter === answer && letter === studentChoice){
@@ -50,6 +49,7 @@ class AnswerRow extends React.Component {
   };
 
   mapNumberBubbles = ({ index} ) => {
+    const { sampleAnswers } = this.props;
     const { answer, studentChoice }= sampleAnswers[index];
           if ( answer === studentChoice) {
         return (
@@ -129,6 +129,7 @@ class AnswerRow extends React.Component {
 AnswerRow.propTypes = {
   question: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  sampleAnswers: PropTypes.object.isRequired,
 }
 
 export default AnswerRow;
