@@ -34,6 +34,52 @@ class CalendarRow extends React.Component {
     onToggleAddDropdown();
   }
 
+  mapDateLessons = (shouldMapLessons, lessons) => {
+    if (shouldMapLessons) {
+      return lessons.map((lesson, index) => (
+        <li className="event-frame" key={index}>
+          {lesson.completed && <span className="event-check lesson-check"><i className="icon-check02"></i></span>}
+          <span className="event event-lesson-box">{lesson.title}</span>
+        </li>
+      ));
+    }
+    return null;
+  }
+
+  mapDateWorksheets = (shouldMapWorksheets, worksheets) => {
+    if (shouldMapWorksheets) {
+      return worksheets.map((worksheet, index) => (
+        <li className="event-frame" key={index}>
+          {worksheet.completed && <span className="event-check worksheet-check"><i className="icon-check02"></i></span>}
+          <span className="event event-worksheet-box">{worksheet.title}</span>
+        </li>
+      ));
+    }
+    return null;
+  }
+
+  mapTestSections = (shouldMapTestSections, testSections) => {
+    if (shouldMapTestSections) {
+      return testSections.map((testSection, index) => (
+        <li className="event-frame" key={index}>
+          <span className="event event-test-box">Test Section: {testSection.version}</span>
+        </li>
+      ));
+    }
+    return null;
+  }
+
+  mapSimulatedSats = (shouldMapSimulatedSats, simulatedSat) => {
+    if (shouldMapSimulatedSats) {
+      return simulatedSat.map((sat, index) => (
+        <li className="event-frame" key={index}>
+          <span className="event event-sat-box">{sat.version}</span>
+        </li>
+      ));
+    }
+    return null;
+  }
+
   mapRowDates = () => this.props.rows && this.props.rows.map(rowDate => {
     const { eventFilters, activeDate, addDropdownOpen, deleteDropdownOpen, onSetActiveDate, onToggleAddDropdown, onToggleDeleteDropdown, activeColumn } = this.props;
     const { date, dayDate, calDate, activeDateKey, inMonth, sessions = [], lessons = [], worksheets = [], testSections = [], simulatedSat = [] } = rowDate;
@@ -104,28 +150,10 @@ class CalendarRow extends React.Component {
                         <span className="event-title-box">{session.title}</span>
                       </li>
                     ))}
-                    {shouldMapLessons && lessons.map((lesson, index) => (
-                      <li className="event-frame" key={index}>
-                        {lesson.completed && <span className="event-check lesson-check"><i className="icon-check02"></i></span>}
-                        <span className="event event-lesson-box">{lesson.title}</span>
-                      </li>
-                    ))}
-                    {shouldMapWorksheets && worksheets.map((worksheet, index) => (
-                      <li className="event-frame" key={index}>
-                        {worksheet.completed && <span className="event-check worksheet-check"><i className="icon-check02"></i></span>}
-                        <span className="event event-worksheet-box">{worksheet.title}</span>
-                      </li>
-                    ))}
-                    {shouldMapTestSections && testSections.map((testSection, index) => (
-                      <li className="event-frame" key={index}>
-                        <span className="event event-test-box">Test Section: {testSection.version}</span>
-                      </li>
-                    ))}
-                    {shouldMapSimulatedSats && simulatedSat.map((sat, index) => (
-                      <li className="event-frame" key={index}>
-                        <span className="event event-sat-box">{sat.version}</span>
-                      </li>
-                    ))}
+                    {this.mapDateLessons()}
+                    {this.mapDateWorksheets()}
+                    {this.mapTestSections()}
+                    {this.mapSimulatedSats()}
                   </ul>
                 </If>
                 <div className="day-footer">
