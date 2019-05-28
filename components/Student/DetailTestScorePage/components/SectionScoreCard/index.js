@@ -24,8 +24,8 @@ const SectionScoreCard = ({sectionScores: {readingAndWriting, math, totalPossibl
               <div className="chart-block chart-block-218">
               <Doughnut
                 data={() => data(readingAndWriting, totalPossible)}
-                width="215px"
-                height="215px"
+                width={215}
+                height={215}
                 options={{
                   cutoutPercentage: 80,
                 }} />
@@ -40,8 +40,8 @@ const SectionScoreCard = ({sectionScores: {readingAndWriting, math, totalPossibl
               <div className="chart-block chart-block-218">
               <Doughnut
                 data={() => data(math, totalPossible )}
-                width="215px"
-                height="215px"
+                width={215}
+                height={215}
                 options={{
                   cutoutPercentage: 80,
                 }} />

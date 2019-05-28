@@ -36,7 +36,7 @@ const TestScoreHeading = ({studentInformation: {firstName, lastName} }) => (
   </div>
 )
 
-TestScoreHeading.PropTypes = {
+TestScoreHeading.propTypes = {
  studentInformation: PropTypes.object.isRequired,
 };
 

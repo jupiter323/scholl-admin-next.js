@@ -25,8 +25,8 @@ const TestScoreCard = ( { subjectScores: { reading, math, writing, totalPossible
               <div className="chart-block chart-block-182">
               <Doughnut
               data={() => data(reading, totalPossible)}
-              width="182px"
-              height="182px"
+              width={182}
+              height={182}
               options={{
                 cutoutPercentage: 80,
               }}
@@ -42,8 +42,8 @@ const TestScoreCard = ( { subjectScores: { reading, math, writing, totalPossible
               <div className="chart-block chart-block-182">
               <Doughnut
               data={() => data(writing, totalPossible)}
-              width="182px"
-              height="182px"
+              width={182}
+              height={182}
               options={{
                 cutoutPercentage: 80,
               }}
@@ -59,8 +59,8 @@ const TestScoreCard = ( { subjectScores: { reading, math, writing, totalPossible
               <div className="chart-block chart-block-182">
               <Doughnut
               data={() => data(math, totalPossible)}
-              width="182px"
-              height="182px"
+              width={182}
+              height={182}
               options={{
                 cutoutPercentage: 80,
               }}

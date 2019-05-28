@@ -21,8 +21,8 @@ const TotalScoreCard = ( {totalScore, totalPossible} ) => (
           <div className="chart-block chart-block-total">
           <Doughnut
             data={() => data(totalScore, totalPossible)}
-            width="320px"
-            height="320px"
+            width={320}
+            height={320}
             options={{
               cutoutPercentage: 80,
             }}
@@ -40,8 +40,8 @@ const TotalScoreCard = ( {totalScore, totalPossible} ) => (
 )
 
 TotalScoreCard.propTypes = {
-  totalScore: PropTypes.object.isRequired,
-  totalPossible: PropTypes.object.isRequired,
+  totalScore: PropTypes.string.isRequired,
+  totalPossible: PropTypes.string.isRequired,
 };
 
 export default TotalScoreCard;

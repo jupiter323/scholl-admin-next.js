@@ -47,7 +47,7 @@ const TestScoreNavBar = ({ active, onSetActivePage }) => (
 );
 
 TestScoreNavBar.propTypes = {
-  active: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
 };
 
