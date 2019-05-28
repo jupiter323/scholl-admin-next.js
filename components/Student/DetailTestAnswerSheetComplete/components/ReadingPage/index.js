@@ -22,8 +22,8 @@ const ReadingPage = ({ reading: { totalCorrect, totalPossible, passageType: { sc
           <div className="chart-block chart-block-large">
             <Doughnut
             data={() => data(totalCorrect, totalPossible )}
-            width="250px"
-            height="250px"
+            width={250}
+            height={250}
             options={{
               cutoutPercentage: 80,
             }} />

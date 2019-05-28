@@ -3,28 +3,30 @@ import PropTypes from 'prop-types';
 import AnswerRow from './components/AnswerRow';
 
 class WritingPage extends React.Component {
-
-   mapSampleAnswers = ({sampleAnswers}) =>
-   sampleAnswers.map((question, index) =>
-   <AnswerRow sampleAnswers={sampleAnswers} key={question.id} question={question} index={index} />)
+// need to change to unique key
+   mapSampleAnswers = () => {
+     const { sampleAnswers } = this.props;
+     return sampleAnswers.map((question, index) => (
+       <AnswerRow sampleAnswers={sampleAnswers} key={question.id} question={question} index={index} />
+     ))
+   }
   render() {
-    const { sampleAnswers } = this.props;
     return(
       <div className="slide">
       <div className="row">
         <div className="col s12 l4">
           <ol className="answers-list">
-              {this.mapSampleAnswers({sampleAnswers})}
+              {this.mapSampleAnswers()}
           </ol>
         </div>
         <div className="col s12 l4">
           <ol className="answers-list">
-              {this.mapSampleAnswers({sampleAnswers})}
+              {this.mapSampleAnswers()}
           </ol>
         </div>
         <div className="col s12 l4">
           <ol className="answers-list">
-              {this.mapSampleAnswers({sampleAnswers})}
+              {this.mapSampleAnswers()}
           </ol>
         </div>
       </div>
@@ -34,7 +36,7 @@ class WritingPage extends React.Component {
 }
 
 WritingPage.propTypes = {
-  sampleAnswers: PropTypes.object.isRequired,
+  sampleAnswers: PropTypes.array.isRequired,
 };
 
 export default WritingPage;

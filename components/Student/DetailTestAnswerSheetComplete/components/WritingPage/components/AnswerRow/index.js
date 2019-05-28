@@ -7,11 +7,11 @@ class AnswerRow extends React.Component {
     super(props);
     this.state = {
       open: false,
-      reviewed: false,
      }
   };
   onOpenQuestionModal = () => this.setState({open: true})
   onCloseQuestionModal = () => this.setState({open: false});
+
 
   mapLetterBubbles = ({index}) => {
     const letters = ["A", "B", "C", "D"];
@@ -75,10 +75,10 @@ class AnswerRow extends React.Component {
     const { open } = this.state;
     return (
       <React.Fragment>
-        <li className="answers-list-holder">
+        <li className="answers-list-holder" key={question.problem}>
           <div className="answer-row row mb-0">
             <div className="col col-120">
-              <ul className="answer-list" key={question.id} >
+              <ul className="answer-list"  >
                 <Choose>
                   <When condition={!question.numeric}>
                   {this.mapLetterBubbles({index})}
@@ -108,8 +108,8 @@ class AnswerRow extends React.Component {
                   </span>
               </If>
             </div>
+            <QuestionModal open={open} onOpenQuestionModal={this.onOpenQuestionModal} onCloseQuestionModal={this.onCloseQuestionModal} question={question}/>
             <div className="dropdown-block col col-35">
-            <QuestionModal open={open} onCloseQuestionModal={this.onCloseQuestionModal}/>
 
               <a className='modal-trigger' href="#" onClick={this.onOpenQuestionModal}><i className="material-icons dots-icon">more_vert</i></a>
             </div>
@@ -129,7 +129,7 @@ class AnswerRow extends React.Component {
 AnswerRow.propTypes = {
   question: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  sampleAnswers: PropTypes.object.isRequired,
+  sampleAnswers: PropTypes.array.isRequired,
 }
 
 export default AnswerRow;
