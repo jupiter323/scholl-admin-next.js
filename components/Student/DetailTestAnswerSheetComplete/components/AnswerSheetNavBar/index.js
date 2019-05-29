@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
+const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide}) => (
   // eslint-disable-next-line no-unused-expressions
   <div className="card-panel light-blue accent-2 white-text" style={{display: 'block'}}>
     <div className="container">
@@ -10,7 +10,7 @@ const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
 
         <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
-           className={active === 'reading' ? 'active' : ''}
+           className={activeSlide === 'reading' ? 'active' : ''}
            onClick={() => onSetActiveSlide('reading')}
            href="#"
           >
@@ -19,7 +19,7 @@ const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
         </div>
         <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
-           className={active === 'writing' ? 'active' : ''}
+           className={activeSlide === 'writing' ? 'active' : ''}
            onClick={() => onSetActiveSlide('writing')}
            href="#"
           >
@@ -28,7 +28,7 @@ const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
         </div>
         <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
-            className={active === 'math (no calc)' ? 'active' : ''}
+            className={activeSlide === 'math (no calc)' ? 'active' : ''}
             onClick={() => onSetActiveSlide('math (no calc)')}
             href="#"
           >
@@ -37,7 +37,7 @@ const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
         </div>
         <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
-            className={active === 'math (calculator)' ? 'active' : ''}
+            className={activeSlide === 'math (calculator)' ? 'active' : ''}
             onClick={() => onSetActiveSlide('math (calculator)')}
             href="#"
           >
@@ -46,7 +46,7 @@ const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
         </div>
         <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
-           className={active === 'essay' ? 'active' : ''}
+           className={activeSlide === 'essay' ? 'active' : ''}
            onClick={() => onSetActiveSlide('essay')}
            href="#"
           >
@@ -60,7 +60,7 @@ const AnswerSheetNavBar = ({active, onSetActiveSlide}) => (
 );
 
 AnswerSheetNavBar.propTypes = {
-  active: PropTypes.string.isRequired,
+  activeSlide: PropTypes.string.isRequired,
   onSetActiveSlide: PropTypes.func.isRequired,
 }
 export default AnswerSheetNavBar;

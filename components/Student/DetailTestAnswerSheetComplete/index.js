@@ -11,47 +11,43 @@ class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props){
     super(props)
     this.state= {
-      active: 'reading',
+      activeSlide: 'reading',
     };
   }
 
-  onSetActiveSlide = (active) => this.setState({ active })
+  onSetActiveSlide = (activeSlide) => this.setState({ activeSlide })
 
   renderCurrentSlide = () => {
-    const { active } = this.state;
+    const { activeSlide } = this.state;
     const { user: { testScoreDetails: { reading, writing: { sampleAnswers}}}} = this.props;
-    if (active === 'reading') {
+    if (activeSlide === 'reading') {
       return <ReadingPage reading={reading} />;
     }
-    if (active === 'writing') {
+    if (activeSlide === 'writing') {
       return <WritingPage sampleAnswers={sampleAnswers}/>;
     }
-    if (active === 'math (no calc)') {
+    if (activeSlide === 'math (no calc)') {
       return <MathNoCalcPage />;
     }
-    if (active === 'math (calculator)') {
+    if (activeSlide === 'math (calculator)') {
       return <MathCalculatorPage />;
     }
-    if (active === 'essay') {
+    if (activeSlide === 'essay') {
       return <EssayPage />;
     }
     return null;
   }
 
   render() {
-    const { active } = this.state;
+    const { activeSlide } = this.state;
     return(
-      <div className="content-section">
-        <div className="content-section-holder">
-          <div className="card-main-full card">
-            <div className="slick-tabs-gallery">
-              <AnswerSheetNavBar active={active} onSetActiveSlide={this.onSetActiveSlide} />
-            </div>
-            <div className="card-content">
-              <div className="main-slick">
-                {this.renderCurrentSlide()}
-              </div>
-            </div>
+      <div className="card-main-full card">
+        <div className="slick-tabs-gallery">
+          <AnswerSheetNavBar activeSlide={activeSlide} onSetActiveSlide={this.onSetActiveSlide} />
+        </div>
+        <div className="card-content">
+          <div className="main-slick">
+            {this.renderCurrentSlide()}
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import DetailSummaryPage from '../components/Student/DetailSummaryPage';
 import DetailWorksheetPage from '../components/Student/DetailWorksheetPage';
 import DetailLessonList from '../components/Student/DetailLessonList';
 import StudentNavBar from '../components/Student/components/StudentNavBar';
-import DetailTestAnswerSheetComplete from '../components/Student/DetailTestAnswerSheetComplete';
+import TestSections from '../components/Student/TestSections';
 import sampleUser from '../components/Student/utils/sampleUser';
 
 class Students extends Component {
@@ -39,7 +39,7 @@ class Students extends Component {
       return <DetailWorksheetPage user={sampleUser} />;
     }
     if (active === 'test') {
-      return <DetailTestAnswerSheetComplete user={sampleUser}  />;
+      return <TestSections user={sampleUser}  />;
     }
     return null;
   }
