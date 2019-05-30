@@ -38,7 +38,7 @@ class TestSectionCard extends React.Component {
 
   render() {
     const { testSection, dropdownIsOpen, dropdownIndex, index } = this.props;
-    const { subject, version, availableDate, dueDate, problems, disabled, status, percentageComplete } = testSection;
+    const { subject, timeEstimate, version, availableDate, dueDate, problems, disabled, status, percentageComplete } = testSection;
     return (
       <div className="card-main-col col s12 m8 l7 xl5">
         <div className={disabled ? 'card-main test-card card-disabled card' : 'card-main test-card card'}>
@@ -110,7 +110,7 @@ class TestSectionCard extends React.Component {
                   <div className="chart-description">
                     <dl className="dl-horizontal">
                       <dt>Time Est:</dt>
-                      <dd>20 min</dd>
+                      <dd>{timeEstimate} min</dd>
                     </dl>
                     <dl className="dl-horizontal">
                       <dt>Problems:</dt>
