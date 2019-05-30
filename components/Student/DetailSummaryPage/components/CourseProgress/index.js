@@ -26,7 +26,7 @@ const CourseProgress = ({ state: { startDate, testDate, progress, improvement, l
             </Choose>
           </div>
           <div className="progress">
-            <div className="determinate" style={{ width: `${active ? progress : '0'}%` }}>
+            <div className="determinate" >
               {active && <span className="progress-label">{progress}%</span>}
             </div>
           </div>
