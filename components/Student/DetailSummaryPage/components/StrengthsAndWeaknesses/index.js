@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 
 const getIndicatorStatus = (activeSection) => {
   switch (activeSection) {
@@ -22,6 +23,16 @@ const getIndicatorStatus = (activeSection) => {
       return null;
   }
 }
+const data = (totalScore, totalPossible) => ({
+  datasets: [{
+    data: [totalPossible, totalPossible-totalScore],
+    backgroundColor: [
+      '#ce237a',
+      'rgb(234, 234, 234)',
+    ],
+  }],
+});
+
 
 // TODO: Figure out how the client wants this data visualized and what these bar graphs actually mean
 class StrengthsAndWeaknesses extends React.Component {
@@ -85,7 +96,13 @@ class StrengthsAndWeaknesses extends React.Component {
                   <div className="row mb-0">
                     <div className="col s12 l5 xl4 chart-column">
                       <div className="chart-block chart-block-large">
-                        <div className="js-donut-chart js-donut-large" data-stroke-width="32" data-source='./inc/score-data-reading.json'></div>
+                      <Doughnut
+                        data={() => data(reading.correctAnswers, reading.totalAnswers )}
+                        width={250}
+                        height={250}
+                        options={{
+                          cutoutPercentage: 80,
+                        }} />
                         <div className="chart-text">
                           <span className="title">Reading</span>
                           <span className="value">{reading.correctAnswers}</span>

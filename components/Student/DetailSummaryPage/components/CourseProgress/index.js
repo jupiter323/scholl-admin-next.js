@@ -54,14 +54,21 @@ const data = (percentage, color) => ({
           <div className="row mb-0">
             <div className="col">
               <div className="chart-block">
-              <Doughnut
-                data={() => data(improvement, 'maroon')}
-                width={156}
-                height={156}
-                options={{
-                  cutoutPercentage: 75,
-                }}
-              />
+              <Choose>
+                <When condition={active}>
+                <Doughnut
+                  data={() => data(improvement, 'maroon')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
                 <div className="chart-text">
                   <span className="title">Improvement</span>
                   <Choose>
@@ -79,6 +86,8 @@ const data = (percentage, color) => ({
             </div>
             <div className="col">
               <div className="chart-block">
+              <Choose>
+                <When condition={active}>
                 <Doughnut
                   data={() => data(lessons, 'purple')}
                   width={156}
@@ -87,6 +96,11 @@ const data = (percentage, color) => ({
                     cutoutPercentage: 75,
                   }}
                 />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
                  <div className="chart-text">
                   <span className="title">Lessons</span>
                   <Choose>
@@ -103,14 +117,21 @@ const data = (percentage, color) => ({
             </div>
             <div className="col">
               <div className="chart-block">
+              <Choose>
+                <When condition={active}>
                 <Doughnut
-                    data={() => data(instruction, 'orange')}
-                    width={156}
-                    height={156}
-                    options={{
-                      cutoutPercentage: 75,
-                    }}
-                  />
+                  data={() => data(instruction, 'orange')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
                 <div className="chart-text">
                   <span className="title">Instruction</span>
                   <Choose>
@@ -127,14 +148,21 @@ const data = (percentage, color) => ({
             </div>
             <div className="col">
               <div className="chart-block">
+              <Choose>
+                <When condition={active}>
                 <Doughnut
-                    data={() => data(practiceTests, 'blue')}
-                    width={156}
-                    height={156}
-                    options={{
-                      cutoutPercentage: 75,
-                    }}
-                  />
+                  data={() => data(practiceTests, 'blue')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
                  <div className="chart-text">
                   <span className="title">Practice Tests</span>
                   <Choose>
