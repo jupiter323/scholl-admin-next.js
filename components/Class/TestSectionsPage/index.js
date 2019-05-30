@@ -1,84 +1,13 @@
 import React from 'react';
 import update from 'immutability-helper';
+import moment from 'moment';
 
 import FilterSection from './components/FilterSection';
 import TestSectionCard from './components/TestSectionCard';
 
 import { availableDateSort, dueDateSort, statusSort, flagsSort, problemSort, timeEstimateSort, subjectSort, percentageCompleteSort } from '../utils/sortOptions';
-
-const sampleTestSections = [
-  {
-    id: 1,
-    subject: 'Math',
-    version: 'SAT Practice #2',
-    availableDate: '12/15/18',
-    dueDate: '12/17/18',
-    status: 'Exemplary',
-    problems: 15,
-    timeEstimate: '23',
-    percentageComplete: '92',
-    flags: [{}, {}, {}],
-    disabled: false,
-  },
-  {
-    id: 2,
-    subject: 'Writing',
-    version: 'SAT Practice #4',
-    availableDate: '03/21/18',
-    dueDate: '05/01/18',
-    status: 'Developing',
-    problems: 21,
-    timeEstimate: '41',
-    percentageComplete: '86',
-    flags: [],
-    disabled: false,
-  },
-  {
-    id: 3,
-    subject: 'Reading',
-    version: 'SAT Practice #1',
-    availableDate: '04/01/18',
-    dueDate: '06/12/18',
-    status: 'Assigned',
-    problems: 42,
-    timeEstimate: '57',
-    percentageComplete: '0',
-    flags: [],
-    disabled: true,
-  },
-  {
-    id: 4,
-    subject: 'Writing',
-    version: 'SAT Practice #6',
-    availableDate: '07/11/18',
-    dueDate: '07/13/18',
-    status: 'Developing',
-    problems: 17,
-    timeEstimate: '21',
-    percentageComplete: '72',
-    flags: [{}],
-    disabled: false,
-  },
-  {
-    id: 5,
-    subject: 'Math',
-    version: 'SAT Practice #5',
-    availableDate: '08/02/18',
-    dueDate: '08/16/18',
-    status: 'Exemplary',
-    problems: 16,
-    timeEstimate: '41',
-    percentageComplete: '47',
-    flags: [],
-    disabled: false,
-  },
-];
-
-const testSectionSubjectMap = {
-  'Reading': 'reading',
-  'Writing': 'writing',
-  'Math': 'math',
-}
+import { testSectionSubjectMap } from '../utils/testSectionCardUtils';
+import sampleTestSections from '../utils/sampleTestSections';
 
 class TestSectionsPage extends React.Component {
   constructor(props) {
@@ -97,6 +26,8 @@ class TestSectionsPage extends React.Component {
   }
 
   onSetSort = (sort) => this.setState({ sort })
+
+  onClearFilters = () => this.setState({ sort: '', testVersionFilter: '', subjectFilters: [], flagFilter: false, availableDateFilters: [], dueDateFilters: [] })
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
@@ -141,19 +72,56 @@ class TestSectionsPage extends React.Component {
     }, []);
   }
 
+  onFilterByDate = (incomingSections, dateType) => {
+    const { dueDateFilters, availableDateFilters } = this.state;
+    let dateFilters;
+    let testSections = incomingSections;
+
+    const currentDate = moment().format('MM/DD/YY');
+    const currentDateIndex = new Date().getDay();
+    const endOfWeekIndex = 6 - currentDateIndex;
+    const endOfWeekDate = moment().add(endOfWeekIndex, 'days').format('MM/DD/YY')
+    if (dateType === 'dueDate') {
+      dateFilters = dueDateFilters;
+      if (dateFilters.indexOf('dueToday') !== -1) {
+        testSections = testSections.filter(testSection => testSection.dueDate === currentDate);
+      }
+      if (dateFilters.indexOf('dueNextSession') !== -1) {
+        console.warn('Pending decision on how next session date is calculated');
+      }
+      if (dateFilters.indexOf('overdue') !== -1) {
+        testSections = testSections.filter(testSection => testSection.dueDate < currentDate);
+      }
+      if (dateFilters.indexOf('dueThisWeek') !== -1) {
+        testSections = testSections.filter(testSection => testSection.dueDate >= currentDate && testSection.dueDate <= endOfWeekDate);
+      }
+    } else {
+      dateFilters = availableDateFilters;
+      if (dateFilters.indexOf('future') !== -1) {
+        testSections = testSections.filter(testSection => testSection.availableDate > currentDate);
+      }
+      if (dateFilters.indexOf('available') !== -1) {
+        testSections = testSections.filter(testSection => testSection.availableDate <= currentDate);
+      }
+      if (dateFilters.indexOf('complete') !== -1) {
+        testSections = testSections.filter(testSection => testSection.percentageComplete === '100');
+      }
+    }
+    return testSections;
+  }
+
   onFilterTestSections = () => {
-    // eslint-disable-next-line no-unused-vars
     const { subjectFilters, dueDateFilters, availableDateFilters, flagFilter, testSections: allTestSections } = this.state;
     let testSections = allTestSections;
     if (subjectFilters.length) {
       testSections = testSections.filter(testSection => subjectFilters.indexOf(testSectionSubjectMap[testSection.subject]) !== -1);
     }
-    // if (dueDateFilters.length) {
-    //   testSections = testSections.filter(testSection => dueDateFilters.indexOf(worksheetTypeMap[worksheet.type]) !== -1);
-    // }
-    // if (availableDateFilters.length) {
-    //   testSections = testSections.filter(testSection => availableDateFilters.indexOf(worksheetSourceMap[worksheet.source]) !== -1);
-    // }
+    if (dueDateFilters.length) {
+      testSections = this.onFilterByDate(testSections, 'dueDate');
+    }
+    if (availableDateFilters.length) {
+      testSections = this.onFilterByDate(testSections, 'availableDate');
+    }
     if (flagFilter) {
       testSections = testSections.filter(testSection => testSection.flags.length);
     }
@@ -233,6 +201,7 @@ class TestSectionsPage extends React.Component {
           sort={this.state.sort}
           onSetSort={this.onSetSort}
           flagFilter={this.state.flagFilter}
+          onClearFilters={this.onClearFilters}
           handleFilterClick={this.handleFilterClick}
           subjectFilters={this.state.subjectFilters}
           dueDateFilters={this.state.dueDateFilters}
