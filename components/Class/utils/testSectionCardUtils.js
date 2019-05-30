@@ -25,3 +25,9 @@ export const graphColorMap = {
   'Assigned': '#c10078',
   'Exemplary': '#0064f4',
 }
+
+export const testSectionSubjectMap = {
+  'Reading': 'reading',
+  'Writing': 'writing',
+  'Math': 'math',
+}

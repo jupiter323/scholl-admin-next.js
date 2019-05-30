@@ -16,6 +16,9 @@ class FilterSection extends React.Component {
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
+
+  onClearFilters = () => this.setState({ testVersionFilter: '' }, this.props.onClearFilters)
+
   handleSearchChange = ({ target }) => this.setState({ testVersionFilter: target.value })
 
   submitSearchFilter = () => {
@@ -215,6 +218,7 @@ FilterSection.propTypes = {
   sort: PropTypes.string.isRequired,
   onSetSort: PropTypes.func.isRequired,
   flagFilter: PropTypes.bool.isRequired,
+  onClearFilters: PropTypes.func.isRequired,
   dueDateFilters: PropTypes.array.isRequired,
   subjectFilters: PropTypes.array.isRequired,
   handleFilterClick: PropTypes.func.isRequired,
