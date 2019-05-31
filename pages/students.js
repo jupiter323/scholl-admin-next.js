@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import StudentNavBar from '../components/Student/components/StudentNavBar';
 import AccountPage from '../components/Student/AccountPage';
 import DetailSummaryPage from '../components/Student/DetailSummaryPage';
 import DetailWorksheetPage from '../components/Student/DetailWorksheetPage';
 import DetailLessonList from '../components/Student/DetailLessonList';
-import StudentNavBar from '../components/Student/components/StudentNavBar';
+import LessonDetailAnswerSheet from '../components/Student/LessonDetailAnswerSheet';
 
 import sampleUser from '../components/Student/utils/sampleUser';
 
@@ -11,7 +12,7 @@ class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'worksheets',
+      active: 'answer-sheet',
       accountActivated: false,
       activationDropdownOpen: false,
       licenseCode: '',
@@ -37,6 +38,9 @@ class Students extends Component {
     }
     if (active === 'worksheets') {
       return <DetailWorksheetPage user={sampleUser} />;
+    }
+    if (active === 'answer-sheet') {
+      return <LessonDetailAnswerSheet />;
     }
     return null;
   }

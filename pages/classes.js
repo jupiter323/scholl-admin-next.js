@@ -44,7 +44,7 @@ class Classes extends Component {
               </h2>
               <ClassNavBar />
             </div>
-            <TestSectionsPage />
+            {this.renderCurrentPage()}
           </div>
           <div className="add-btn-block dropdown-small">
             <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected'><i className="material-icons">add</i> Assign Test Section</a>
