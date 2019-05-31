@@ -57,7 +57,7 @@ const sampleStudentList = [
           courseEndDateOption: 'secondOption',
           courseEndDate: '',
           targetTestDate: '12/12/2019',
-          targetScore: '1234',
+          targetScore: '1500',
           highSchool: 'Everglades High',
           graduationYear: '2018',
         },
@@ -104,6 +104,8 @@ const sampleStudentList = [
           onTimePercentage: '77',
         },
         testScores: {
+          initialScore: '1040',
+          currentScore: '1270',
           compositeScore: {
             reading: '83',
             writing: '31',
@@ -344,7 +346,7 @@ const sampleStudentList = [
     courseEndDateOption: 'secondOption',
     courseEndDate: '',
     targetTestDate: '12/12/2019',
-    targetScore: '1250',
+    targetScore: '1300',
     highSchool: 'Everglades High',
     graduationYear: '2019',
   },
@@ -391,6 +393,8 @@ const sampleStudentList = [
     onTimePercentage: '77',
   },
   testScores: {
+    initialScore: '900',
+    currentScore: '1070',
     compositeScore: {
       reading: '83',
       writing: '31',
@@ -678,6 +682,8 @@ const sampleStudentList = [
     onTimePercentage: '77',
   },
   testScores: {
+    initialScore: '1040',
+    currentScore: '1270',
     compositeScore: {
       reading: '83',
       writing: '31',
@@ -918,7 +924,7 @@ const sampleStudentList = [
     courseEndDateOption: 'secondOption',
     courseEndDate: '',
     targetTestDate: '12/12/2019',
-    targetScore: '1234',
+    targetScore: '1500',
     highSchool: 'Everglades High',
     graduationYear: '2018',
   },
@@ -965,6 +971,8 @@ const sampleStudentList = [
     onTimePercentage: '77',
   },
   testScores: {
+    initialScore: '1040',
+    currentScore: '1400',
     compositeScore: {
       reading: '83',
       writing: '31',

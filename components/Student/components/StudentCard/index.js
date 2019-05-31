@@ -1,12 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
+// import IndividualStudentPage from '../../IndividualStudentPage';
+// import Dropdown from '../../../FormComponents/Dropdown';
 // import updatedUser from '../../utils/sampleUser';
-
+const data = (current, target, initial) => ({
+  datasets: [{
+    data: [current-initial, (target-initial) - (current-initial) ],
+    backgroundColor: [
+      '#0085ce',
+      '#eaeaea',
+    ],
+  }],
+})
 class StudentCard extends React.Component {
     constructor(props) {
         super(props);
+        this.studentCard = React.createRef();
         this.state = {
-            active: false,
+            // active: false,
+            selected: false,
+            studentInfo: {},
             studentEditModalOpen: false,
             cloneModalOpen: false,
             showOwnerModalOpen: false,
@@ -18,16 +32,27 @@ class StudentCard extends React.Component {
         }
     }
 
+// onSelectStudent = (event) => {
+//   console.log("clicked")
+//   this.setState({studentInfo: event.target.value})
+//   console.log(this.state.studentInfo)
+// }
+// renderIndividualPage = () => {
+//   // eslint-disable-next-line no-console
+// const { student } = this.props;
+// return <IndividualStudentPage student={student} />
+// }
 
 render() {
     // const { studentEditModalOpen, cloneModalOpen, showOwnerModalOpen, deleteModalOpen, addStudentModalOpen, newStudentInfo } = this.state;
-    const { active, studentInformation: { firstName, lastName },
-        emailAddress: { email },
-
-    } = this.props.student;
+    const { student, student: {id, active, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
+        emailAddress: { email }} }= this.props;
 return (
-    <div className="card-main-col col s12 m8 l7 xl5">
-      <div className="card-main card-location card card-large">
+  // <div className="cardholder" role="button" id={id} tabIndex={index}>
+
+  <div className="card-main-col col s12 m8 l7 xl5" id={id}>
+      <div className={ active? "card-main card-location card card-large" : "card-main card-location card-disabled card-large card"}>
+
     <div className="owner-box card-panel card-panel-panel card-panel-large" style={{ backgroundColor: active ? '#0085ce' : '#9b9b9b', color: '#fff' }}>
       <div className="card-panel-row row">
       <div className="col s9">
@@ -36,7 +61,7 @@ return (
              <img src="#" alt="" />
           </div>
           <div className="user-text" style={{ color: '#fff' }}>
-            <h4 className="h3">{lastName}, {firstName}</h4>
+            <h4 className="h3"><a href="#" value={student} onClick={(event) => this.onSelectStudent(event)}>{lastName}, {firstName}</a></h4>
             <a href={`mailto:${email}`}>{email}</a>
           </div>
         </div>
@@ -49,6 +74,12 @@ return (
       </div>
       <div className="col s1 right-align">
         <div className="row icons-row">
+          {/* <Dropdown
+          options={"Edit","Clone", "Show Owner", "Delete"}
+          stateKey="state"
+          dropdownKey="state"
+          id={`${id}-dropdown`}
+          /> */}
           <div className="dropdown-block col">
             {/* <!-- Dropdown Trigger --> */}
             <a className='dropdown-trigger btn' href='#' data-target='dropdown01'><i className="material-icons dots-icon">more_vert</i></a>
@@ -69,27 +100,35 @@ return (
   </div>
 
   {/* card content */}
-  <div className="card-content">
+  <div className="card-content" ref={this.studentCard}>
       <div className="row d-flex align-items-center mb-0">
         <div className="col s12 m6">
           <div className="chart-container chart-container-large">
             <div className="chart-holder">
-              <span className="svg-curved-bar" data-values='{"from": 1040, "to": 1510, "current": 1270}' data-duration="1">
-                <svg  width="146px" height="146px" viewBox="0 0 146 146">
-                  <path fill="none" style={{ strokeWidth: "30", stroke: "#eaeaea", d:"M 19.154659885067794 94.556422428299 A 58 58 0 1 1 126.84534011493221 94.556422428299"}}></path>
-                  <path data-dinamic fill="none" style={{strokeWidth: "30", stroke: "#0085ce", d:"M 19.154659885067794 94.556422428299 A 58 58 0 0 1 19.154659885067794 94.556422428299"}}></path></svg>
-                <span className="js-diff-holder"><span className="js-diff"><span className="txt"></span></span></span>
-              </span>
-              <span className="chart-value" style={{backgroundColor: "#0085ce"}}><span data-count-up data-start-val="1040" data-end-val="1270" data-duration="1">1040</span></span>
+              <If condition={active}>
+              <Doughnut
+              data={() => data(currentScore, targetScore, initialScore)}
+              height={210}
+              options={{
+
+                circumference: 1.45 * Math.PI,
+                rotation: -3.85,
+                cutoutPercentage: 60,
+                // tooltips: false,
+              }}
+              />
+              </If>
+              <span className="chart-value" style={{backgroundColor: "#0085ce", bottom: "7px"}}><span data-count-up data-start-val={initialScore} data-end-val={currentScore} data-duration="1">{currentScore}</span></span>
+              <span className="txt" style={{top: "-56px", left: "-16px", color: 'green'}}>{(currentScore-initialScore)}</span>
             </div>
             <div className="chart-row">
               <div className="chart-col chart-start">
-                <span className="amount">1040</span>
-                <span className="amount-text">initial</span>
+                <span className="amount" style={{color: '#0085ce'}}>{initialScore}</span>
+                <span className="amount-text">&nbsp; initial</span>
               </div>
               <div className="chart-col chart-end">
-                <span className="amount">1510</span>
-                <span className="amount-text">target</span>
+                <span className="amount">{targetScore}</span>
+                <span className="amount-text">&nbsp; target</span>
               </div>
             </div>
           </div>
@@ -128,10 +167,13 @@ return (
     </div>
   </div>
   </div>
+  // </div>
     )}};
 
   StudentCard.propTypes = {
     student: PropTypes.object.isRequired,
+    // index: PropTypes.number.isRequired,
+    // onHandleStudentCard: PropTypes.func.isRequired,
   };
 
 export default StudentCard;
