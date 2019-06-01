@@ -1,7 +1,7 @@
 const sampleStudentList = [
     {
         id: '1232',
-        active: false,
+        active: true,
         studentInformation: {
           firstName: 'Christian',
           lastName: 'Chavarro',
@@ -12,7 +12,7 @@ const sampleStudentList = [
           addressLine1: '1234 Test Lane',
           addressLine2: '',
           city: 'Austin',
-          state: 'TX',
+          state: 'Texas',
           zipCode: '78757',
         },
         emailAddress: {
@@ -48,6 +48,7 @@ const sampleStudentList = [
             },
           ],
         },
+        tutor: "Joe Schmoe",
         course: {
           classes: [],
         },
@@ -337,6 +338,7 @@ const sampleStudentList = [
       },
     ],
   },
+  tutor: "Ethan Hunt",
   course: {
     classes: [],
   },
@@ -626,6 +628,7 @@ const sampleStudentList = [
       },
     ],
   },
+  tutor: "Jason Bourne",
   course: {
     classes: [],
   },
@@ -915,6 +918,7 @@ const sampleStudentList = [
       },
     ],
   },
+  tutor: "Donald Duck",
   course: {
     classes: [],
   },

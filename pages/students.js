@@ -1,48 +1,76 @@
 import React, { Component } from 'react';
-import AccountPage from '../components/Student/AccountPage';
-import DetailSummaryPage from '../components/Student/DetailSummaryPage';
-import DetailWorksheetPage from '../components/Student/DetailWorksheetPage';
-import DetailLessonList from '../components/Student/DetailLessonList';
-import StudentNavBar from '../components/Student/components/StudentNavBar';
-
-import sampleUser from '../components/Student/utils/sampleUser';
-
+import StudentCard from '../components/Student/components/StudentCard';
+import sampleStudentList from '../components/Student/utils/sampleStudentList';
+import FilterSection from '../components/Student/ListPage/Components/FilterSection';
+import StudentModal from '../components/Student/components/StudentModal';
+import sampleLocationList from '../components/Location/utils/sampleLocationList';
+import IndividualStudentPage from '../components/Student/IndividualStudentPage';
+import sampleUser from '../components/Student/utils/sampleUser'
 class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'worksheets',
-      accountActivated: false,
-      activationDropdownOpen: false,
-      licenseCode: '',
-    };
+      selectedStudent: {},
+      locations: sampleLocationList,
+      students: sampleStudentList,
+      studentModalOpen: false,
+      sort: "",
+      filterName: "",
+      newStudent: {
+          active: false,
+          firstName: {},
+          lastName: {},
+          gender: {},
+          phone: {},
+          address: {},
+          city: {},
+          state: {},
+          zipCode: {},
+          email: {},
+          location: {},
+      },
   }
-
-  onToggleActivationDropdown = () => this.setState(({ activationDropdownOpen }) => ({ activationDropdownOpen: !activationDropdownOpen }))
-
-  onSetActivePage = (active) => this.setState({ active })
-
-  onHandleDetailsChange = (name, event) => this.setState({ [name]: event.target.value })
-
-  renderCurrentPage = () => {
-    const { active } = this.state;
-    if (active === 'summary') {
-      return <DetailSummaryPage user={sampleUser} />;
-    }
-    if (active === 'account') {
-      return <AccountPage user={sampleUser} />;
-    }
-    if (active === 'lessons') {
-      return <DetailLessonList user={sampleUser} />;
-    }
-    if (active === 'worksheets') {
-      return <DetailWorksheetPage user={sampleUser} />;
-    }
-    return null;
   }
+  onOpenStudentModal = () => this.setState({ studentModalOpen: true });
+   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
 
-  render() {
-    const { active, accountActivated, activationDropdownOpen, licenseCode } = this.state;
+   onSetSort = (sort) => this.setState({ sort });
+   onSetFilteredState = (filterName) => this.setState({ filterName });
+   onUnsetFilteredState = () => this.setState({ filterName: '' });
+
+   onSetFilteredLocationState = (location) => this.setState({ location });
+   onUnsetFilteredLocationState = () => this.setState({location: ''});
+
+   onFilterByName = () => {
+        const { students, filterName } = this.state;
+        return students.reduce((finalArr, currentStudent) => {
+            const { lastName, firstName } = currentStudent;
+            const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+            if (studentString.indexOf(filterName) !== -1 && finalArr.indexOf(currentStudent) === -1) {
+                finalArr.push(currentStudent);
+            }
+            return finalArr;
+        }, []);
+    }
+
+
+// needs to be a function to set state for selected student
+// that can be cleared/reset when exiting out of individual page
+  // onHandleStudentCard = (event) => {
+  //   event.preventDefault();
+  //   console.log('clicked')
+  //   this.setState({selectedStudent: event.target.value});
+  //   console.log(this.state.selectedStudent)
+  // }
+  // onHandleStudentCard = (event) => {
+  //   console.log("clicked")
+  //   this.setState({selectedStudent: event.target.student})
+  // }
+// that set state function should also have this call back....
+
+
+   render() {
+    const { studentModalOpen, students } = this.state;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5">
@@ -50,72 +78,32 @@ class Students extends Component {
             <div className="mobile-header">
               <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             </div>
-            <nav className="breadcrumb-holder">
-              <div className="nav-wrapper ">
-                <a href="#!" className="breadcrumb">&lt;  Students</a>
-              </div>
-            </nav>
             <h2 className="h1 white-text">
-              <span className="heading-holder">
-                <i className="icon-student"></i>
-                <span className="heading-block">Arnold Studently</span>
-              </span>
-            </h2>
-            <StudentNavBar
-              active={active}
-              onSetActivePage={this.onSetActivePage}
-            />
-            <div className="activate-block">
-              <Choose>
-                <When condition={accountActivated}>
-                  <a
-                    href="#"
-                    className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"
-                  >
-                    <b className="btn-text visible-lg">Account Activated</b> <i className="icon-unlock"></i>
-                  </a>
-                </When>
-                <Otherwise>
-                  <a
-                    href="#"
-                    onClick={this.onToggleActivationDropdown}
-                    className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger"
-                    data-target="dropdown_activate"
-                  >
-                    <b className="btn-text visible-lg">Activate Account</b> <i className="icon-key"></i>
-                  </a>
-                </Otherwise>
-              </Choose>
-              <div id="dropdown_activate" className="dropdown-content" style={activationDropdownOpen ? { display: 'block', opacity: '1' } : {}}>
-                <div className="card-panel">
-                  <div className="title-block">
-                    <div className="h3">Ready to begin your course?</div>
-                    <div className="subtitle">Please enter a valid license code below.</div>
-                  </div>
-                  <div className="input-field">
-                    <input
-                      type="text"
-                      value={licenseCode}
-                      id="license-code"
-                      onChange={(event) => this.onHandleDetailsChange('licenseCode', event)}
-                    />
-                    <label className="label" htmlFor="license_code">License Code</label>
-                  </div>
-                  <div className="btn-holder center-align">
-                    <button className="btn btn-blue" type="submit">Activate</button>
-                  </div>
-                  <div className="text-block center-align">
-                    <p>If you need license codes, you can get them here: <a href="#" className="waves-effect waves-light btn-small btn-blue">Purchase Licenses</a></p>
-                  </div>
-                  <div className="text-block">
-                    <p>*Note: </p>
-                    <p>We oﬀer discounted account licenses for students enrolled in courses with 5 or more students in a class or group format (as opposed to individual instruction). These licenses provide the features necessary to conduct a customized course for the class as a whole, rather than for individual students.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <span className="heading-holder">
+              <i className="icon-student"></i>
+              <span className="heading-block">Students</span>
+            </span>
+          </h2>
           </div>
-          {this.renderCurrentPage()}
+          <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal} />
+                <FilterSection
+                    onSetSort={this.onSetSort}
+                    onSetFilteredState={this.onSetFilteredState}
+                    onUnsetFilteredState={this.onUnsetFilteredState}
+                    onSetFilteredLocationState={this.onSetFilteredLocationState}
+                    onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
+                    handleFilterClick={this.handleFilterClick}
+                    onFilterByName={this.onFilterByName} />
+                <div className="content-section">
+                  <IndividualStudentPage student={sampleUser}/>
+                <div className="row d-flex-content">
+                {students.map((student, index) => (
+                    <StudentCard student={student} index={index} id={student.id} key={student.id} onHandleStudentCard={this.onHandleStudentCard}/>
+                    ))}
+                    </div>
+                    </div>
+                    <a href="#" className="waves-effect waves-teal btn add-btn modal-trigger" onClick={this.onOpenStudentModal}><i className="material-icons">add</i>New Student</a>
+
         </div>
       </main>
     );
