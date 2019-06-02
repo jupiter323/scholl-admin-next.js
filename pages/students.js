@@ -4,8 +4,6 @@ import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import sampleLocationList from '../components/Location/utils/sampleLocationList';
-import IndividualStudentPage from '../components/Student/IndividualStudentPage';
-import sampleUser from '../components/Student/utils/sampleUser'
 class Students extends Component {
   constructor(props) {
     super(props);
@@ -56,18 +54,17 @@ class Students extends Component {
 
 // needs to be a function to set state for selected student
 // that can be cleared/reset when exiting out of individual page
-  // onHandleStudentCard = (event) => {
-  //   event.preventDefault();
-  //   console.log('clicked')
-  //   this.setState({selectedStudent: event.target.value});
-  //   console.log(this.state.selectedStudent)
-  // }
-  // onHandleStudentCard = (event) => {
-  //   console.log("clicked")
-  //   this.setState({selectedStudent: event.target.student})
-  // }
-// that set state function should also have this call back....
 
+// set state not working:
+  onHandleStudentCard = ( index) => {
+    const { students } = this.state;
+    // event.preventDefault();
+    console.log('clicked')
+    console.log(index)
+    this.setState({selectedStudent: students[index]}, () => {console.log("selected student", this.state.selectedStudent) });
+  }
+
+// that set state function should also have call back to render Individualstudentpage....
 
    render() {
     const { studentModalOpen, students } = this.state;
@@ -95,7 +92,6 @@ class Students extends Component {
                     handleFilterClick={this.handleFilterClick}
                     onFilterByName={this.onFilterByName} />
                 <div className="content-section">
-                  <IndividualStudentPage student={sampleUser}/>
                 <div className="row d-flex-content">
                 {students.map((student, index) => (
                     <StudentCard student={student} index={index} id={student.id} key={student.id} onHandleStudentCard={this.onHandleStudentCard}/>

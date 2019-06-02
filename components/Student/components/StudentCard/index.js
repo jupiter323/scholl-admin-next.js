@@ -16,8 +16,6 @@ class StudentCard extends React.Component {
         super(props);
         this.state = {
             dropdownIsOpen: false,
-            selected: false,
-            studentInfo: {},
             editModalOpen: false,
             cloneModalOpen: false,
             showOwnerModalOpen: false,
@@ -26,17 +24,6 @@ class StudentCard extends React.Component {
             assignInstructorModalOpen: false,
         }
     }
-
-// onSelectStudent = (event) => {
-//   console.log("clicked")
-//   this.setState({studentInfo: event.target.value})
-//   console.log(this.state.studentInfo)
-// }
-// renderIndividualPage = () => {
-//   // eslint-disable-next-line no-console
-// const { student } = this.props;
-// return <IndividualStudentPage student={student} />
-// }
 
     onSetDropdown = (event, dropdownIsOpen) => {
       event.preventDefault();
@@ -47,8 +34,7 @@ class StudentCard extends React.Component {
     onCloseEditModal = () => this.setState({editModalOpen: false})
 
     render() {
-    // const { studentEditModalOpen, cloneModalOpen, showOwnerModalOpen, deleteModalOpen, addStudentModalOpen, newStudentInfo } = this.state;
-    const { student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
+    const { onHandleStudentCard, index, student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
         emailAddress: { email }} }= this.props;
     const { dropdownIsOpen, editModalOpen } = this.state;
     return (
@@ -67,7 +53,7 @@ class StudentCard extends React.Component {
                 <img src="#" alt="" />
               </div>
               <div className="user-text" style={{ color: '#fff' }}>
-                <h4 className="h3"><a href="#" value={student} onClick={(event) => this.onSelectStudent(event)}>{lastName}, {firstName}</a></h4>
+                <h4 className="h3"><a href="#" value={student} onClick={() => onHandleStudentCard({index})}>{lastName}, {firstName}</a></h4>
                 <a href={`mailto:${email}`}>{email}</a>
               </div>
             </div>
@@ -124,7 +110,6 @@ class StudentCard extends React.Component {
                   />
                   </If>
                   <span className="chart-value" style={{backgroundColor: "#0085ce", bottom: "7px"}}><span data-count-up data-start-val={initialScore} data-end-val={currentScore} data-duration="1">{currentScore}</span></span>
-                  <span className="txt" style={{top: "-56px", left: "-16px", color: 'green'}}>{(currentScore-initialScore)}</span>
                 </div>
                 <div className="chart-row">
                   <div className="chart-col chart-start">
@@ -178,8 +163,8 @@ class StudentCard extends React.Component {
 
   StudentCard.propTypes = {
     student: PropTypes.object.isRequired,
-    // index: PropTypes.number.isRequired,
-    // onHandleStudentCard: PropTypes.func.isRequired,
+    onHandleStudentCard: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
   };
 
 export default StudentCard;
