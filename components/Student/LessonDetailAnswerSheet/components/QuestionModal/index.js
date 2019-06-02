@@ -5,46 +5,7 @@ import PropTypes from 'prop-types';
 import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
-const getAnswerChoiceColors = (answerLetter, correctAnswer, studentAnswer) => {
-  if (correctAnswer) {
-    return (
-      { backgroundColor: '#32955e' }
-    );
-  } else if (answerLetter === studentAnswer && studentAnswer !== correctAnswer) {
-    return (
-      { backgroundColor: '#db1d41' }
-    )
-  }
-  return null;
-}
-
-const getAnswerPercentageBreakdownColors = (colorType, answerLetter, answerPercentage, correctAnswer, studentAnswer) => {
-  if (correctAnswer) {
-    if (colorType === 'full') {
-      return { backgroundColor: '#32955c', color: '#fff' }
-    }
-    return (
-      { width: `${answerPercentage}%`, backgroundColor: '#d3efde' }
-    )
-  } else if (answerLetter === studentAnswer && studentAnswer !== correctAnswer) {
-    if (colorType === 'full') {
-      return (
-        { backgroundColor: '#db1d41', color: '#fff' }
-      )
-    }
-    return (
-      { width: `${answerPercentage}%`, backgroundColor: '#db1d41' }
-    )
-  }
-  if (colorType === 'full') {
-    return (
-      { backgroundColor: '#e5e5e5' }
-    );
-  }
-  return (
-    { width: `${answerPercentage}%`, backgroundColor: '#e5e5e5' }
-  );
-}
+import { getAnswerChoiceColors, getAnswerPercentageBreakdownColors } from '../../utils';
 
 class QuestionModal extends React.Component {
   constructor(props) {
@@ -100,8 +61,9 @@ class QuestionModal extends React.Component {
   }
 
   render() {
-    const { open, onCloseModal, question } = this.props;
+    const { open, onCloseModal, question = {} } = this.props;
     const { reviewedWithStudent } = this.state;
+    const { topic, questionType, question: questionText, hasVideo, flagged, questionNumber, videoSource, studentNotes, passage, videoThumbnail } = question;
     return (
       <Portal selector="#modal">
         {open && (
@@ -110,8 +72,8 @@ class QuestionModal extends React.Component {
               <div id="modal_video001" className="modal modal-answer">
                 <div className="modal-header row mb-0">
                   <div className="col s10">
-                    <span className="subtitle">{question.topic}</span>
-                    <span className="title">Challenge Problem #{question.questionNumber}</span>
+                    <span className="subtitle">{topic}</span>
+                    <span className="title">{questionType} Problem #{questionNumber}</span>
                   </div>
                   <div className="col s2 right-align">
                     <a href="#" className="close modal-close"><i className="icon-close-thin"></i></a>
@@ -120,12 +82,12 @@ class QuestionModal extends React.Component {
                 <div className="modal-content">
                   <div className="d-flex row mb-0">
                     <div className="col s12 l6 order-lg-2">
-                      {question.hasVideo && (
+                      {hasVideo && (
                         <div className="card-panel">
                           <div className="video-frame">
                             <div className="embed-responsive embed-responsive-16by9">
-                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={question.videoThumbnail} preload="metadata" controls playsinline>
-                              <source type="video/mp4" src={question.videoSource} />
+                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={videoThumbnail} preload="metadata" controls playsinline>
+                              <source type="video/mp4" src={videoSource} />
                               </video>
                             </div>
                           </div>
@@ -134,7 +96,7 @@ class QuestionModal extends React.Component {
                       <div className="card-panel">
                         <div className="panel-block">
                           <div className="d-flex align-items-center row mb-0">
-                            {question.flagged && (
+                            {flagged && (
                               <div className="col">
                                 <span className="status-answer" style={{ color: '#c0272d' }}>
                                   <i className="icon-flag"></i><b className="status-text">Flagged</b>
@@ -164,7 +126,7 @@ class QuestionModal extends React.Component {
                           <div className="text-content custom-form">
                             <div className="jcf-scrollable height-22">
                               <div className="text-holder">
-                                {question.studentNotes}
+                                {studentNotes}
                               </div>
                             </div>
                           </div>
@@ -176,13 +138,13 @@ class QuestionModal extends React.Component {
                         <div className="text-content custom-form">
                           <div className="jcf-scrollable height-45">
                             <div className="text-holder">
-                              {question.passage}
+                              {passage}
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="card-panel">
-                        <strong className="h3 subtitle">{question.question}</strong>
+                        <strong className="h3 subtitle">{questionText}</strong>
                         <ul className="answer-full-list">
                           {this.mapAnswerChoices()}
                         </ul>

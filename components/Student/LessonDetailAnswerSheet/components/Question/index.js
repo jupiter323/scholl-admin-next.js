@@ -29,7 +29,7 @@ class Question extends React.Component {
       return (
         <ul className="answer-list">
           {answerChoices.map(answer => (
-            <li>
+            <li key={answer.answerLetter}>
               <span className="badge-circle badge-circle-bordered" style={getAnswerColor(answer)}>{answer.answerLetter}</span>
             </li>
           ))}
@@ -39,7 +39,7 @@ class Question extends React.Component {
     return (
       <ul className="answer-list">
         {answerChoices.map(answer => (
-          <li>
+          <li key={answer.answerValue}>
             <span className="badge badge-rounded badge-rounded-bordered" style={getAnswerColor(answer)}>{answer.answerValue}</span>
           </li>
         ))}

@@ -6,19 +6,22 @@ import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
 import QuestionModal from './components/QuestionModal';
 
+import sampleQuestions from './utils/sampleQuestions';
+
 class LessonDetailAnswerSheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       questionModalOpen: false,
-      selectedQuestion: null,
+      selectedQuestion: {},
+      questions: sampleQuestions,
     };
   }
 
   onToggleQuestionModal = (selectedQuestion = null) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, selectedQuestion }))
 
   render() {
-    const { questionModalOpen, selectedQuestion } = this.state;
+    const { questionModalOpen, selectedQuestion, questions } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
@@ -66,9 +69,11 @@ class LessonDetailAnswerSheet extends React.Component {
                 <div className="main-row row">
                   <ChallengeQuestions
                     onOpenQuestionModal={this.onToggleQuestionModal}
+                    questions={questions.filter(question => question.questionType === 'Challenge')}
                   />
                   <PracticeQuestions
                     onOpenQuestionModal={this.onToggleQuestionModal}
+                    questions={questions.filter(question => question.questionType === 'Practice')}
                   />
                 </div>
               </div>
