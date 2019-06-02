@@ -7,14 +7,20 @@ class QuestionModal extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      checked: false,
+      isChecked: false,
     }
   }
   // eslint-disable-next-line no-console
-  onToggleChecked = () => this.setState(({ checked }) => ({ checked: !checked }));
+  // onToggleChecked = ({checked}) => this.setState({ checked: !checked }, console.log(this.state.checked));
+
+ // not working.... check key issue with AnswerRow
+  handleCheckboxChange = event => {
+    this.setState({[event.target.name]: event.target.checked})
+  };
+
   render(){
     const { open, onCloseQuestionModal, question } = this.props;
-    const { checked } = this.state;
+    const { isChecked } = this.state;
   return (
     <Portal selector='#modal'>
     {open && (<div className="overlay">
@@ -42,9 +48,9 @@ class QuestionModal extends React.Component {
                   <label htmlFor="filled-in">
                       <input
                       type="checkbox"
-                      checked={checked}
-                      value={checked}
-                      onChange={this.onToggleChecked}
+                      checked={isChecked}
+                      name="isChecked"
+                      onChange={this.handleCheckboxChange}
                       className="filled-in" />
                       <span><b>Reviewed with Student</b></span>
                     </label>

@@ -68,13 +68,14 @@ class AnswerRow extends React.Component {
             </li>
           </React.Fragment>
         )
-  };
+      };
 
-  render() {
-    const { index, question } = this.props;
-    const { open } = this.state;
-    return (
-      <React.Fragment>
+      render() {
+        const { index, question } = this.props;
+        const { open } = this.state;
+        return (
+          <React.Fragment>
+          <QuestionModal open={open} onOpenQuestionModal={this.onOpenQuestionModal} onCloseQuestionModal={this.onCloseQuestionModal} question={question}/>
         <li className="answers-list-holder" key={question.problem}>
           <div className="answer-row row mb-0">
             <div className="col col-120">
@@ -108,7 +109,6 @@ class AnswerRow extends React.Component {
                   </span>
               </If>
             </div>
-            <QuestionModal open={open} onOpenQuestionModal={this.onOpenQuestionModal} onCloseQuestionModal={this.onCloseQuestionModal} question={question}/>
             <div className="dropdown-block col col-35">
 
               <a className='modal-trigger' href="#" onClick={this.onOpenQuestionModal}><i className="material-icons dots-icon">more_vert</i></a>
