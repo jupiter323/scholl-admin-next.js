@@ -12,8 +12,9 @@ class LessonDetailAnswerSheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionModalOpen: false,
       selectedQuestion: {},
+      questionModalOpen: false,
+      answerSheetComplete: true,
       questions: sampleQuestions,
     };
   }
@@ -21,7 +22,7 @@ class LessonDetailAnswerSheet extends React.Component {
   onToggleQuestionModal = (selectedQuestion = null) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, selectedQuestion }))
 
   render() {
-    const { questionModalOpen, selectedQuestion, questions } = this.state;
+    const { questionModalOpen, selectedQuestion, questions, answerSheetComplete } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
@@ -68,10 +69,12 @@ class LessonDetailAnswerSheet extends React.Component {
               <div className="container-sm">
                 <div className="main-row row">
                   <ChallengeQuestions
+                    answerSheetComplete={answerSheetComplete}
                     onOpenQuestionModal={this.onToggleQuestionModal}
                     questions={questions.filter(question => question.questionType === 'Challenge')}
                   />
                   <PracticeQuestions
+                    answerSheetComplete={answerSheetComplete}
                     onOpenQuestionModal={this.onToggleQuestionModal}
                     questions={questions.filter(question => question.questionType === 'Practice')}
                   />

@@ -21,7 +21,7 @@ class QuestionModal extends React.Component {
     const { question: { answerChoices, studentAnswer } } = this.props;
     if (answerChoices[0].answerLetter) {
       return answerChoices.map(answer => (
-        <li className="answer-block">
+        <li className="answer-block" key={answer.answerLetter}>
           <div className="answer-box" style={getAnswerChoiceColors(answer.answerLetter, answer.correctAnswer, studentAnswer)}>
             <b className="answer-circle">{answer.answerLetter}.</b>
             <span className="answer-text">{answer.answerText}</span>
@@ -30,7 +30,7 @@ class QuestionModal extends React.Component {
       ))
     }
     return answerChoices.map(answer => (
-      <li className="answer-block">
+      <li className="answer-block" key={answer.answerValue}>
         <div className="answer-box" style={getAnswerChoiceColors(answer.answerValue, answer.correctAnswer, studentAnswer)}>
           <span className="answer-text" style={{ marginLeft: '30px' }}>{answer.answerValue}</span>
         </div>
@@ -42,7 +42,7 @@ class QuestionModal extends React.Component {
     const { question: { answerChoices, studentAnswer } } = this.props;
     if (answerChoices[0].answerLetter) {
       return answerChoices.map(answer => (
-        <li className="informer-block">
+        <li className="informer-block" key={answer.answerLetter}>
           <div className="informer-box" style={getAnswerPercentageBreakdownColors('half', answer.answerLetter, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>
             <b className="informer-circle" style={getAnswerPercentageBreakdownColors('full', answer.answerLetter, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>{answer.answerLetter}</b>
           </div>
@@ -51,7 +51,7 @@ class QuestionModal extends React.Component {
       ))
     }
     return answerChoices.map(answer => (
-      <li className="informer-block">
+      <li className="informer-block" key={answer.answerValue}>
         <div className="informer-box" style={getAnswerPercentageBreakdownColors('half', answer.answerValue, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>
           <b className="informer-circle" style={getAnswerPercentageBreakdownColors('full', answer.answerValue, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>{answer.answerValue}</b>
         </div>
@@ -76,7 +76,7 @@ class QuestionModal extends React.Component {
                     <span className="title">{questionType} Problem #{questionNumber}</span>
                   </div>
                   <div className="col s2 right-align">
-                    <a href="#" className="close modal-close"><i className="icon-close-thin"></i></a>
+                    <a href="#" className="close modal-close" onClick={onCloseModal}><i className="icon-close-thin"></i></a>
                   </div>
                 </div>
                 <div className="modal-content">

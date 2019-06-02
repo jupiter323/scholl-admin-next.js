@@ -7,6 +7,7 @@ class ChallengeQuestions extends React.Component {
     <Question
       key={question.id}
       question={question}
+      answerSheetComplete={this.props.answerSheetComplete}
       onOpenQuestionModal={this.props.onOpenQuestionModal}
     />
   ))
@@ -31,6 +32,7 @@ class ChallengeQuestions extends React.Component {
 
 ChallengeQuestions.propTypes = {
   questions: PropTypes.array.isRequired,
+  answerSheetComplete: PropTypes.bool.isRequired,
   onOpenQuestionModal: PropTypes.func.isRequired,
 };
 
