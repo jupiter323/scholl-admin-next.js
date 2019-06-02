@@ -5,7 +5,7 @@ import SectionScoreCard from './components/SectionScoreCard';
 import TestScoreCard from './components/TestScoreCard';
 import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
-import SubScoresCard from './components/SubScoresCard';
+import SubScoresCard from './components/SubscoresCard';
 
 // onSetActivePage needs to be defined
 const DetailTestScorePage = ({testScores: { subjectScores, totalScore, totalPossible, sectionScores, essayScores, crossTestScores, subScores }}) => (
