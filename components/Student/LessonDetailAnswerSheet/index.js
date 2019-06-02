@@ -11,17 +11,19 @@ class LessonDetailAnswerSheet extends React.Component {
     super(props);
     this.state = {
       questionModalOpen: false,
+      selectedQuestion: null,
     };
   }
 
-  onToggleQuestionModal = (questionIndex = null) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, questionIndex }))
+  onToggleQuestionModal = (selectedQuestion = null) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, selectedQuestion }))
 
   render() {
-    const { questionModalOpen } = this.state;
+    const { questionModalOpen, selectedQuestion } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
           open={questionModalOpen}
+          question={selectedQuestion}
           onCloseModal={this.onToggleQuestionModal}
         />
         <Portal selector="#modal">

@@ -75,7 +75,7 @@ class Question extends React.Component {
             </span>
           </div>
           <div className="dropdown-block col col-35">
-            <a className='modal-trigger' onClick={onOpenQuestionModal} href="#"><i className="material-icons dots-icon">more_vert</i></a>
+            <a className='modal-trigger' onClick={() => onOpenQuestionModal(question)} href="#"><i className="material-icons dots-icon">more_vert</i></a>
           </div>
         </div>
       </li>
