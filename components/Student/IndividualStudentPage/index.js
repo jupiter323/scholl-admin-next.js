@@ -40,20 +40,16 @@ class IndividualStudentPage extends React.Component {
     return null;
   }
   render() {
+    const { student: {studentInformation: {firstName, lastName}}} = this.props
     const { activePage, accountActivated, activationDropdownOpen, licenseCode } = this.state;
     return (
-      <main id="main" role="main">
-        <div className="main-holder grey lighten-5">
+      <React.Fragment>
+
           <div className="title-row card-panel">
             <div className="mobile-header">
               <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             </div>
-            <h2 className="h1 white-text">
-            <span className="heading-holder">
-              <i className="icon-student"></i>
-              <span className="heading-block">Students</span>
-            </span>
-          </h2>
+
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">
               <a href="#!" className="breadcrumb">&lt;  Students</a>
@@ -62,7 +58,7 @@ class IndividualStudentPage extends React.Component {
           <h2 className="h1 white-text">
             <span className="heading-holder">
               <i className="icon-student"></i>
-              <span className="heading-block">Arnold Studently</span>
+              <span className="heading-block">{firstName} {lastName}</span>
             </span>
           </h2>
             <StudentNavBar
@@ -120,8 +116,8 @@ class IndividualStudentPage extends React.Component {
             </div>
           </div>
              {this.renderCurrentPage()}
-        </div>
-      </main>
+             </React.Fragment>
+
     );
   }
 
