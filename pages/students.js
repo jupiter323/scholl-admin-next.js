@@ -59,6 +59,11 @@ class Students extends Component {
     this.setState({ selectedStudent: students[index] });
   }
 
+  onRedirectToStudentPage = (event) => {
+    event.preventDefault();
+    this.setState({selectedStudent: null})
+  }
+
 
   render() {
     const { studentModalOpen, students, selectedStudent } = this.state;
@@ -99,7 +104,7 @@ class Students extends Component {
             </React.Fragment>
           )}
           {selectedStudent && (
-            <IndividualStudentPage student={selectedStudent} />
+            <IndividualStudentPage student={selectedStudent} onRedirectToStudentPage={this.onRedirectToStudentPage} />
           )}
         </div>
       </main>

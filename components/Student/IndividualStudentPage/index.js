@@ -40,7 +40,7 @@ class IndividualStudentPage extends React.Component {
     return null;
   }
   render() {
-    const { student: {studentInformation: {firstName, lastName}}} = this.props
+    const { onRedirectToStudentPage, student: {studentInformation: {firstName, lastName}}} = this.props
     const { activePage, accountActivated, activationDropdownOpen, licenseCode } = this.state;
     return (
       <React.Fragment>
@@ -52,7 +52,13 @@ class IndividualStudentPage extends React.Component {
 
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">
-              <a href="#!" className="breadcrumb">&lt;  Students</a>
+              <a
+               href="#!"
+               className="breadcrumb"
+               onClick={onRedirectToStudentPage}
+               >
+              &lt;  Students
+              </a>
             </div>
           </nav>
           <h2 className="h1 white-text">
@@ -125,5 +131,6 @@ class IndividualStudentPage extends React.Component {
 
 IndividualStudentPage.propTypes = {
   student: PropTypes.object.isRequired,
+  onRedirectToStudentPage: PropTypes.func.isRequired,
 }
 export default IndividualStudentPage;
