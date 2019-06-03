@@ -10,17 +10,8 @@ class QuestionModal extends React.Component {
       isChecked: false,
     }
   }
-  // eslint-disable-next-line no-console
 
- // not working.... check key issue with AnswerRow
-  handleCheckboxChange = event => {
-    const target = event.target;
-    const value = target.checked;
-    const name = target.name;
-    console.log('clicked');
-    this.setState({[name]: value})
-  };
-
+  onToggleChecked = () => this.setState({isChecked: !this.state.isChecked})
 
   render(){
     const { open, onCloseQuestionModal, question } = this.props;
@@ -49,12 +40,13 @@ class QuestionModal extends React.Component {
                     </span>
                     </div>
                   <div className="col">
-                  <label htmlFor="filled-in">
+                  <label htmlFor="reviewedCheckbox">
                       <input
+                      id="reviewedCheckbox"
                       type="checkbox"
-                      checked={isChecked}
+                      defaultChecked={isChecked}
                       name="isChecked"
-                      onChange={this.onHandleCheckboxChange}
+                      onChange={this.onToggleChecked}
                       className="filled-in" />
                       <span><b>Reviewed with Student</b></span>
                     </label>
