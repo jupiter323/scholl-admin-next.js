@@ -42,8 +42,8 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
       </li>
       <li>
         <a
-          className={active === 'test' ? 'active' : ''}
-          onClick={() => onSetActivePage('test')}
+          className={active === 'tests' ? 'active' : ''}
+          onClick={() => onSetActivePage('tests')}
           href="#"
         >
           Test Sections

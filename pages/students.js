@@ -7,12 +7,13 @@ import DetailLessonList from '../components/Student/DetailLessonList';
 import LessonDetailAnswerSheet from '../components/Student/LessonDetailAnswerSheet';
 
 import sampleUser from '../components/Student/utils/sampleUser';
+import DetailTestList from '../components/Student/DetailTestList';
 
 class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'answer-sheet',
+      active: 'tests',
       accountActivated: false,
       activationDropdownOpen: false,
       licenseCode: '',
@@ -41,6 +42,9 @@ class Students extends Component {
     }
     if (active === 'answer-sheet') {
       return <LessonDetailAnswerSheet />;
+    }
+    if (active === 'tests') {
+      return <DetailTestList />;
     }
     return null;
   }
