@@ -6,18 +6,21 @@ const getIndicatorStatus = (activeSection) => {
   switch (activeSection) {
     case 'reading':
       return {
-        left: '0',
-        right: '66%',
+        left: '1.5%',
+        right: '92%',
+        height: '2px',
       }
     case 'writing':
       return {
-        left: '33%',
-        right: '33%',
+        left: '11%',
+        right: '83%',
+        height: '2px',
       }
     case 'math':
       return {
-        left: '66%',
-        right: '0',
+        left: '20%',
+        right: '75%',
+        height: '2px',
       }
     default:
       return null;
@@ -60,28 +63,31 @@ class StrengthsAndWeaknesses extends React.Component {
         <Choose>
           <When condition={active}>
             <div className="card-panel light-blue accent-2 white-text">
-              <ul className="tabs row">
-                <li className="tab col s4 l4" style={{ margin: '0' }}>
+              <ul className="tabs" >
+                <li className="tab col s4 l3" style={{ margin: '0', paddingRight: '20px', paddingLeft: '20px', height: '24px'}}>
                   <a
                     href="#"
+                    style={{fontSize: '17px'}}
                     className={openSection === 'reading' ? 'active' : ''}
                     onClick={(event) => this.onSetOpenSection(event, 'reading')}
                   >
                     Reading
                   </a>
                 </li>
-                <li className="tab col s4 l4" style={{ margin: '0' }}>
+                <li className="tab col s4 l3" style={{ margin: '0', paddingRight: '20px', paddingLeft: '20px', height: '24px'}}>
                   <a
                     href="#"
+                    style={{fontSize: '17px'}}
                     className={openSection === 'writing' ? 'active' : ''}
                     onClick={(event) => this.onSetOpenSection(event, 'writing')}
                   >
                     Writing
                   </a>
                 </li>
-                <li className="tab col s4 l4" style={{ margin: '0' }}>
+                <li className="tab col s4 l3" style={{ margin: '0', paddingRight: '20px', paddingLeft: '20px', height: '24px'}}>
                   <a
                     href="#"
+                    style={{fontSize: '17px'}}
                     className={openSection === 'math' ? 'active' : ''}
                     onClick={(event) => this.onSetOpenSection(event, 'math')}
                   >
