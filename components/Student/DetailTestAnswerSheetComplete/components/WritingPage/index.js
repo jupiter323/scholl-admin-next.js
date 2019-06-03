@@ -19,7 +19,7 @@ class WritingPage extends React.Component {
               {this.mapSampleAnswers()}
           </ol>
         </div>
-        {/* <div className="col s12 l4">
+        <div className="col s12 l4">
           <ol className="answers-list">
               {this.mapSampleAnswers()}
           </ol>
@@ -28,7 +28,7 @@ class WritingPage extends React.Component {
           <ol className="answers-list">
               {this.mapSampleAnswers()}
           </ol>
-        </div> */}
+        </div>
       </div>
       </div>
     )

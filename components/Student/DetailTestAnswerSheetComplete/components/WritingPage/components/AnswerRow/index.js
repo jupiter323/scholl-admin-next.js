@@ -20,27 +20,27 @@ class AnswerRow extends React.Component {
     return letters.map(letter => {
       if (letter === answer && letter === studentChoice){
         return (
-          <li key={letter[index]}>
+          <li key={letter}>
           <span className="badge-circle badge-circle-bordered"  style={{color: '#fff', borderColor: '#32955c', backgroundColor: '#3eb777'}}>{letter}</span>
         </li>
         )
       }
       if (letter === answer && letter !== studentChoice){
         return (
-          <li key={letter[index]}>
+          <li key={letter}>
             <span className="badge-circle badge-circle-bordered" style={{color: '#32955c', borderColor: '#32955c', backgrounColor: '#fff'}}>{letter}</span>
           </li>
         )
       }
       if (letter !== answer && letter === studentChoice){
         return (
-          <li key={letter[index]}>
+          <li key={letter}>
             <span className="badge-circle badge-circle-bordered" style={{color: '#fff', borderColor: '#ad1e3e', backgroundColor: '#db1d41'}}>{letter}</span>
           </li>
         )
       }
       return (
-          <li key={letter[index]}>
+          <li key={letter}>
             <span className="badge-circle badge-circle-bordered">{letter}</span>
           </li>
         )
