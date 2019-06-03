@@ -53,14 +53,14 @@ class AnswerRow extends React.Component {
     const { answer, studentChoice }= sampleAnswers[index];
           if ( answer === studentChoice) {
         return (
-          <li key={index}>
+          <li key={answer}>
             <span className="badge badge-rounded badge-rounded-bordered" style={{color: '#fff', borderColor: '#32955c', backgroundColor: '#3eb777'}}>{answer}</span>
           </li>
         )
       }
       return (
           <React.Fragment>
-            <li key={index}>
+            <li key={studentChoice}>
               <span className="badge badge-rounded badge-rounded-bordered"  style={{color: '#fff', borderColor: '#ad1e3e', backgroundColor: '#db1d41'}}>{studentChoice}</span>
             </li>
             <li key={answer} >
@@ -79,7 +79,7 @@ class AnswerRow extends React.Component {
         <li className="answers-list-holder" key={question.problem}>
           <div className="answer-row row mb-0">
             <div className="col col-120">
-              <ul className="answer-list"  >
+              <ul className="answer-list" >
                 <Choose>
                   <When condition={!question.numeric}>
                   {this.mapLetterBubbles({index})}
