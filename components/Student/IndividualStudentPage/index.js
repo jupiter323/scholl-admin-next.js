@@ -102,7 +102,7 @@ class IndividualStudentPage extends React.Component {
                     <input
                       type="text"
                       value={licenseCode}
-                      id="license-code"
+                      id="licenseCode"
                       onChange={(event) => this.onHandleDetailsChange('licenseCode', event)}
                     />
                     <label className="label" htmlFor="license_code">License Code</label>
