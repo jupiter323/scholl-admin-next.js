@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import EditModal from './components/EditModal';
+import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
 const data = (current, target, initial) => ({
   datasets: [{
     data: [current-initial, (target-initial) - (current-initial) ],
@@ -25,10 +26,7 @@ class StudentCard extends React.Component {
         }
     }
 
-    onSetDropdown = (event, dropdownIsOpen) => {
-      event.preventDefault();
-      this.setState({dropdownIsOpen: !dropdownIsOpen});
-    };
+    onSetDropdown = (dropdownIsOpen) => this.setState({dropdownIsOpen: !dropdownIsOpen})
 
     onOpenEditModal = () => this.setState({editModalOpen: true})
     onCloseEditModal = () => this.setState({editModalOpen: false})
@@ -41,7 +39,6 @@ class StudentCard extends React.Component {
       <React.Fragment>
       <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student}/>
 
-      {/* <div className="cardholder" role="button" id={id} tabIndex={index}> */}
       <div className="card-main-col col s12 m8 l7 xl5" id={id}>
           <div className={ active? "card-main card-location card card-large" : "card-main card-location card-disabled card-large card"}>
 
@@ -71,18 +68,20 @@ class StudentCard extends React.Component {
                 href='#'
                 className='dropdown-trigger btn'
                 data-target='dropdown01'
-                onClick={(event) => this.onSetDropdown(event, dropdownIsOpen)}>
+                onClick={() => this.onSetDropdown(dropdownIsOpen)}>
                 <i className="material-icons dots-icon">more_vert</i>
                 </a>
                 <If condition={dropdownIsOpen}>
-                <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
-                  <li>
-                    <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
-                  </li>
-                  <li><a href="#!">Clone</a></li>
-                  <li><a href="#!">Show Owner</a></li>
-                  <li><a href="#!">Delete</a></li>
-                </ul>
+                  <ClickOffComponentWrapper onOuterClick={() => this.onSetDropdown(dropdownIsOpen)}>
+                    <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
+                      <li>
+                        <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
+                      </li>
+                      <li><a href="#!">Clone</a></li>
+                      <li><a href="#!">Show Owner</a></li>
+                      <li><a href="#!">Delete</a></li>
+                    </ul>
+                  </ClickOffComponentWrapper>
                 </If>
               </div>
             </div>

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
+import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 const data = (current, target) => ({
   datasets: [{
-    data: [current, target ],
+    data: [current, target-current ],
     backgroundColor: [
       getProblemCompletionStatusColor(current, target),
       '#eaeaea',
@@ -42,10 +43,7 @@ class LessonCard extends React.Component {
     };
   }
 
-  onSetDropdown = (event, dropdownIsOpen) => {
-    event.preventDefault();
-    this.setState({dropdownIsOpen: !dropdownIsOpen});
-  };
+  onSetDropdown = (dropdownIsOpen) => this.setState({dropdownIsOpen: !dropdownIsOpen});
 
   // eslint-disable-next-line consistent-return
   renderLessonIcon = (subject) => {
@@ -161,22 +159,23 @@ class LessonCard extends React.Component {
              <div className="col s1 right-align">
                <div className="row icons-row">
                  <div className="dropdown-block col">
-                   {/* <!-- Dropdown Trigger --> */}
                    <a
                    className='dropdown-trigger btn'
                    href='#'
                    data-target='dropdown01'
-                   onClick={(event) => this.onSetDropdown(event, dropdownIsOpen)}
+                   onClick={() => this.onSetDropdown(dropdownIsOpen)}
                    ><i className="material-icons dots-icon">more_vert</i></a>
                    <If condition={dropdownIsOpen}>
-                <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
-                  <li>
-                    <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
-                  </li>
-                  <li><a href="#!">Clone</a></li>
-                  <li><a href="#!">Show Owner</a></li>
-                  <li><a href="#!">Delete</a></li>
-                </ul>
+                     <ClickOffComponentWrapper onOuterClick={() => this.onSetDropdown(dropdownIsOpen)}>
+                     <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
+                      <li>
+                        <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
+                      </li>
+                      <li><a href="#!">Clone</a></li>
+                      <li><a href="#!">Show Owner</a></li>
+                      <li><a href="#!">Delete</a></li>
+                    </ul>
+                     </ClickOffComponentWrapper>
                 </If>
                  </div>
                </div>
@@ -205,12 +204,6 @@ class LessonCard extends React.Component {
                  tooltips: false,
                }}
                />
-               {/* <span className="svg-curved-bar" data-values='{"from": 0, "to": 0, "current": 0}' data-duration="1">
-                 <svg  width="207px" height="207px" viewBox="0 0 207 207" preserveAspectRatio="xMidYMid meet">
-                   <path fill="none" style={{ strokeWidth: '42', stroke: '#eaeaea' }} d="M 26.909645526174018 134.16215259197702 A 82.5 82.5 0 1 1 180.09035447382598 134.16215259197702"></path>
-                   <path data-dinamic fill="none" style={{ strokeWidth: '42', stroke: '#62b771' }} d="M 26.909645526174018 134.16215259197702 A 82.5 82.5 0 0 1 26.909645526174018 134.16215259197702"></path>
-                 </svg>
-               </span> */}
                {this.renderProblemCount(assigned, totalProblems, solvedProblems)}
              </div>
            </div>
