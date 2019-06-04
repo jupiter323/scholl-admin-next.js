@@ -13,14 +13,14 @@ export default [
   },
   {
     locationNickname: 'Disneyworld  Tutoring2',
-    locationName: 'House Of Mouse',
+    locationName: 'House Of Goofy',
   },
   {
     locationNickname: 'TutorZone Austin2',
-    locationName: 'We Teach Real Good',
+    locationName: 'We Teach Good',
   },
   {
     locationNickname: 'TutorZone Miami2',
-    locationName: 'We Teach Even Better',
+    locationName: 'We Teach The Best',
   },
 ];
