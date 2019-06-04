@@ -13,9 +13,9 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  mapLessons = () => this.props.user.lessons.map((lesson, index) => (
+  mapLessons = () => this.props.user.lessons.map((lesson) => (
     <LessonCard
-      key={index}
+      key={lesson.name}
       lesson={lesson}
     />
   ))

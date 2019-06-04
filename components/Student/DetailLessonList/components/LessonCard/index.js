@@ -1,13 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
+
+const data = (current, target) => ({
+  datasets: [{
+    data: [current, target ],
+    backgroundColor: [
+      getProblemCompletionStatusColor(current, target),
+      '#eaeaea',
+    ],
+  }],
+})
 
 const getProblemCompletionStatusColor = (solvedProblems, totalProblems) => {
   if (solvedProblems / totalProblems <= .25) {
-    return { backgroundColor: '#ed1c25' };
+    return   '#ed1c25';
   } else if (solvedProblems / totalProblems <= .5) {
-    return { backgroundColor: '#a005a5' };
+    return  '#a005a5' ;
   }
-  return { backgroundColor: '#0200fd' };
+  return '#0200fd';
 }
 
 // assigned ? 'card-main card-lesson-detail card-assigned card' : 'card-main card-lesson-detail card'}
@@ -47,14 +58,14 @@ class LessonCard extends React.Component {
   renderProblemCount = (assigned, totalProblems, solvedProblems) => {
     if (assigned) {
       return (
-        <span className="chart-value chart-value-column" style={getProblemCompletionStatusColor(solvedProblems, totalProblems)}>
+        <span className="chart-value chart-value-column" style={{bottom: '8px', backgroundColor: getProblemCompletionStatusColor(solvedProblems, totalProblems)}}>
           <span className="chart-count" data-count-up data-start-val="0" data-end-val="4" data-duration="1"><span className="text-large">{solvedProblems}</span></span>
           <span className="text-small">out of</span> <span className="text-large">{totalProblems}</span>
         </span>
       )
     }
     return (
-      <span className="chart-value chart-value-column" style={{ backgroundColor: '#666' }}>
+      <span className="chart-value chart-value-column" style={{ bottom: '8px', backgroundColor: '#666' }}>
         <span data-count-up data-start-val="0" data-end-val="0" data-duration="1">
           <span className="text-large">{totalProblems}</span>
           <span className="text-small">problems</span>
@@ -172,12 +183,22 @@ class LessonCard extends React.Component {
            </div>
            <div className="chart-container chart-container-xlarge">
              <div className="chart-holder">
-               <span className="svg-curved-bar" data-values='{"from": 0, "to": 0, "current": 0}' data-duration="1">
+               <Doughnut
+               data={() => data(solvedProblems, totalProblems)}
+               height={210}
+               options={{
+                 circumference: 1.45 * Math.PI,
+                 rotation: -3.85,
+                 cutoutPercentage: 60,
+                 tooltips: false,
+               }}
+               />
+               {/* <span className="svg-curved-bar" data-values='{"from": 0, "to": 0, "current": 0}' data-duration="1">
                  <svg  width="207px" height="207px" viewBox="0 0 207 207" preserveAspectRatio="xMidYMid meet">
                    <path fill="none" style={{ strokeWidth: '42', stroke: '#eaeaea' }} d="M 26.909645526174018 134.16215259197702 A 82.5 82.5 0 1 1 180.09035447382598 134.16215259197702"></path>
                    <path data-dinamic fill="none" style={{ strokeWidth: '42', stroke: '#62b771' }} d="M 26.909645526174018 134.16215259197702 A 82.5 82.5 0 0 1 26.909645526174018 134.16215259197702"></path>
                  </svg>
-               </span>
+               </span> */}
                {this.renderProblemCount(assigned, totalProblems, solvedProblems)}
              </div>
            </div>
