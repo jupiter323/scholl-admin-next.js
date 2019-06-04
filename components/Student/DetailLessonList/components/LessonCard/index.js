@@ -38,8 +38,14 @@ class LessonCard extends React.Component {
     super(props);
     this.state = {
       test: true,
+      dropdownIsOpen: false,
     };
   }
+
+  onSetDropdown = (event, dropdownIsOpen) => {
+    event.preventDefault();
+    this.setState({dropdownIsOpen: !dropdownIsOpen});
+  };
 
   // eslint-disable-next-line consistent-return
   renderLessonIcon = (subject) => {
@@ -134,6 +140,7 @@ class LessonCard extends React.Component {
   }
 
   render() {
+    const { dropdownIsOpen } = this.state;
     const { lesson: { subject, unitNumber, lessonName, assigned, alerts,
       lessonType, totalProblems, solvedProblems = '', passage, dueDate, dueTime,
       completed, availableDate, completionDate, completionTime, completedLate, overdue } } = this.props;
@@ -155,17 +162,22 @@ class LessonCard extends React.Component {
                <div className="row icons-row">
                  <div className="dropdown-block col">
                    {/* <!-- Dropdown Trigger --> */}
-                   <a className='dropdown-trigger btn' href='#' data-target='dropdown01'><i className="material-icons dots-icon">more_vert</i></a>
-                   {/* <!-- Dropdown Structure --> */}
-                   <ul id='dropdown01' className='dropdown-content dropdown-wide'>
-                     <li>
-                       {/* <!-- Modal Trigger --> */}
-                       <a href="#modal_user_edit" className="modal-trigger link-block">Edit</a>
-                     </li>
-                     <li><a href="#!">Clone</a></li>
-                     <li><a href="#!">Show Owner</a></li>
-                     <li><a href="#!">Delete</a></li>
-                   </ul>
+                   <a
+                   className='dropdown-trigger btn'
+                   href='#'
+                   data-target='dropdown01'
+                   onClick={(event) => this.onSetDropdown(event, dropdownIsOpen)}
+                   ><i className="material-icons dots-icon">more_vert</i></a>
+                   <If condition={dropdownIsOpen}>
+                <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
+                  <li>
+                    <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
+                  </li>
+                  <li><a href="#!">Clone</a></li>
+                  <li><a href="#!">Show Owner</a></li>
+                  <li><a href="#!">Delete</a></li>
+                </ul>
+                </If>
                  </div>
                </div>
              </div>
