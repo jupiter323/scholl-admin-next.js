@@ -139,7 +139,7 @@ class LessonCard extends React.Component {
 
   render() {
     const { dropdownIsOpen } = this.state;
-    const { lesson: { subject, unitNumber, lessonName, assigned, alerts,
+    const { onRemoveOption, lesson: { subject, unitNumber, lessonName, assigned, alerts,
       lessonType, totalProblems, solvedProblems = '', passage, dueDate, dueTime,
       completed, availableDate, completionDate, completionTime, completedLate, overdue } } = this.props;
     return (
@@ -173,7 +173,7 @@ class LessonCard extends React.Component {
                       </li>
                       <li><a href="#!">Clone</a></li>
                       <li><a href="#!">Show Owner</a></li>
-                      <li><a href="#!">Delete</a></li>
+                      <li><a href="#!" onClick={onRemoveOption}>Delete</a></li>
                     </ul>
                      </ClickOffComponentWrapper>
                 </If>
@@ -221,6 +221,7 @@ class LessonCard extends React.Component {
 
 LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
+  onRemoveOption: PropTypes.func.isRequired,
 };
 
 export default LessonCard;

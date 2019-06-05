@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import update from 'immutability-helper';
 import LessonCard from './components/LessonCard';
 import FilterSection from './components/FilterSection';
 
@@ -10,15 +10,30 @@ class DetailLessonList extends React.Component {
     super(props);
     this.state = {
       test: true,
+      lessons: this.props.user.lessons,
     }
   };
 
-  mapLessons = () => this.props.user.lessons.map((lesson, index) => (
+  onRemoveOption = (optionIndex) => {
+    const lessons = update(this.state, {
+        lessons: {
+          $splice: [[optionIndex, 1]],
+      },
+    });
+    this.setState({ lessons });
+  }
+
+  mapLessons = () => {
+    const { lessons } = this.state;
+    return lessons.map((lesson, index) => (
     <LessonCard
       key={index}
       lesson={lesson}
+      onRemoveOption={() => this.onRemoveOption({index})}
     />
-  ))
+  )
+    )}
+
 
   render() {
     return (
