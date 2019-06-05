@@ -16,6 +16,16 @@ class DetailTestList extends React.Component {
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
 
+  onCreateTest = (event) => {
+    event.preventDefault();
+    console.warn('Pending implementation of create test UI and functionality');
+  }
+
+  onEnterAnswers = () => console.warn('Pending implementation of enter answers UI and functionality')
+  onEditTest = () => console.warn('Pending implementation edit test UI and functionality')
+  onDownloadReport = () => console.warn('Pending implementation of download report ui and functionality')
+  onDeleteTest = () => console.warn('Pending implementation of delete test UI and functionality')
+
   mapCompletedTests = () => {
     const { tests } = this.state;
     return tests.filter(test => test.status === 'complete').map((test, index) => (
@@ -23,8 +33,12 @@ class DetailTestList extends React.Component {
         test={test}
         key={test.id}
         index={index}
+        onEditTest={this.onEditTest}
+        onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
+        onEnterAnswers={this.onEnterAnswers}
         onCloseDropdown={this.onCloseDropdown}
+        onDownloadReport={this.onDownloadReport}
         dropdownIndex={this.state.dropdownIndex}
         dropdownIsOpen={this.state.dropdownIsOpen}
       />
@@ -38,11 +52,15 @@ class DetailTestList extends React.Component {
         futureTest
         test={test}
         key={test.id}
-        index={tests.filter(filterTest => filterTest.status === 'complete').length + index}
+        onEditTest={this.onEditTest}
+        onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
+        onEnterAnswers={this.onEnterAnswers}
         onCloseDropdown={this.onCloseDropdown}
+        onDownloadReport={this.onDownloadReport}
         dropdownIndex={this.state.dropdownIndex}
         dropdownIsOpen={this.state.dropdownIsOpen}
+        index={tests.filter(filterTest => filterTest.status === 'complete').length + index}
       />
     ))
   }
@@ -64,6 +82,7 @@ class DetailTestList extends React.Component {
             </div>
           </div>
         </div>
+        <a href="#" onClick={this.onCreateTest} className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Test</a>
       </div>
     );
   }

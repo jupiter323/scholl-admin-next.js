@@ -48,8 +48,8 @@ class TestCard extends React.Component {
   }
 
   render() {
-    const { test, futureTest = false, dropdownIndex, index, dropdownIsOpen } = this.props;
-    const { title, version = '', testDate, weekNumber, initialScore, targetScore, currentScore } = test;
+    const { test, futureTest = false, dropdownIndex, index, dropdownIsOpen, onEnterAnswers, onEditTest, onDownloadReport, onDeleteTest } = this.props;
+    const { title, version = '', testDate, weekNumber, initialScore, targetScore, currentScore, totalGain } = test;
     return (
       <div className="col s12 m8 l7 xl5">
         <div className="card-main-col">
@@ -74,10 +74,10 @@ class TestCard extends React.Component {
                           className='dropdown-content'
                           style={{ display: 'block', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
                         >
-                          <li><a href="#">Enter Answers</a></li>
-                          <li><a href="#">Edit</a></li>
-                          <li><a href="#" className="disabled">Download Report</a></li>
-                          <li><a href="#" className="red-text text-darken-3">Delete</a></li>
+                          <li><a href="#" onClick={onEnterAnswers}>Enter Answers</a></li>
+                          <li><a href="#" onClick={onEditTest}>Edit</a></li>
+                          <li><a href="#" onClick={onDownloadReport} className="disabled">Download Report</a></li>
+                          <li><a href="#" onClick={onDeleteTest} className="red-text text-darken-3">Delete</a></li>
                         </ul>
                       </If>
                     </div>
@@ -105,7 +105,11 @@ class TestCard extends React.Component {
                             tooltips: false,
                           }}
                         />
-                        <span className="js-diff-holder"><span className="js-diff"><span className="txt">119</span></span></span>
+                        <span className="js-diff-holder">
+                          <span className="js-diff">
+                            <span className="txt" style={{ opacity: '1', bottom: '75px', color: 'black', fontWeight: '600', fontSize: '12px' }}>+{totalGain}</span>
+                          </span>
+                        </span>
                       </span>
                       <span className="chart-value" style={{ backgroundColor: '#00bbf7' }}><span data-count-up data-start-val="1100" data-end-val="1210" data-duration="1">{currentScore}</span></span>
                     </div>
@@ -138,9 +142,13 @@ TestCard.propTypes = {
   futureTest: PropTypes.bool,
   dropdownIndex: PropTypes.number,
   test: PropTypes.object.isRequired,
+  onEditTest: PropTypes.func.isRequired,
+  onDeleteTest: PropTypes.func.isRequired,
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
+  onEnterAnswers: PropTypes.func.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
+  onDownloadReport: PropTypes.func.isRequired,
 };
 
 export default TestCard;
