@@ -110,6 +110,7 @@ class Dashboard extends Component {
             currentMonth = getNextMonthAsCurrentMonth(activeMonthIndex);
             inMonth = true;
           } else if (inMonth === true && calDate === daysInActiveMonth) {
+            currentMonth = activeMonthIndex > 9 ? activeMonthIndex + 2 : `0${activeMonthIndex + 2}`;
             calDate = 1;
             inMonth = false;
           }
