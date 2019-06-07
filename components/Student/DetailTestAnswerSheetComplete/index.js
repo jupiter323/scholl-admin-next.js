@@ -19,7 +19,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
-    const { user: { testScoreDetails: { reading, writing: { sampleAnswers}}}} = this.props;
+    const { user: { testScoreDetails: { reading, mathNoCalc, writing: { sampleAnswers}}}} = this.props;
     if (activeSlide === 'reading') {
       return <ReadingPage reading={reading} />;
     }
@@ -27,7 +27,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       return <WritingPage sampleAnswers={sampleAnswers}/>;
     }
     if (activeSlide === 'math (no calc)') {
-      return <MathNoCalcPage />;
+      return <MathNoCalcPage mathNoCalc={mathNoCalc}/>;
     }
     if (activeSlide === 'math (calculator)') {
       return <MathCalculatorPage />;

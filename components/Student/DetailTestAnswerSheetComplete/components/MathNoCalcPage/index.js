@@ -1,10 +1,45 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import AnswerRow from '../WritingPage/components/AnswerRow';
 
-const MathNoCalcPage = () => (
-  <div className="slide">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis totam eaque minima consectetur. Temporibus, obcaecati qui ab impedit veniam ut eius deleniti pariatur, deserunt expedita rerum, eum, rem ea magnam.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit deserunt odit iste molestias cumque expedita tempora qui, quasi saepe facere asperiores id iure eius quidem similique earum ipsa officia aliquam?</p>
-  </div>
-)
 
+class MathNoCalcPage extends React.Component {
+
+  mapMathNoCalcAnswers = () => {
+    const { mathNoCalc: {sampleAnswers} } = this.props;
+    return sampleAnswers.map(question => (
+      <AnswerRow question={question} />
+    ))
+  }
+
+  render() {
+
+    return (
+      <div className="slide">
+        <div className="row">
+          <div className="col s12 l4">
+            <ol className="answers-list">
+              {this.mapMathNoCalcAnswers()}
+            </ol>
+          </div>
+          <div className="col s12 l4">
+            <ol className="answers-list">
+              {this.mapMathNoCalcAnswers()}
+            </ol>
+          </div>
+          <div className="col s12 l4">
+            <ol className="answers-list">
+              {this.mapMathNoCalcAnswers()}
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    )
+  }
+}
+
+MathNoCalcPage.propTypes = {
+  mathNoCalc: PropTypes.object.isRequired,
+}
 export default MathNoCalcPage;
