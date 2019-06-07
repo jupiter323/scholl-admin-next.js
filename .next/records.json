@@ -93,7 +93,19 @@
       "static/ftj6Q2XDXlNm9UGzwiG6q/pages/instructors.js": 25,
       "static/ftj6Q2XDXlNm9UGzwiG6q/pages/locations.js": 26,
       "static/ftj6Q2XDXlNm9UGzwiG6q/pages/students.js": 27,
-      "static/ftj6Q2XDXlNm9UGzwiG6q/pages/worksheets.js": 28
+      "static/ftj6Q2XDXlNm9UGzwiG6q/pages/worksheets.js": 28,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/_app.js": 3,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/_error.js": 4,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/all-instructors.js": 5,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/all-locations.js": 6,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/classes.js": 7,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/courseTemplates.js": 8,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/dashboard.js": 9,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/help.js": 10,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/instructors.js": 11,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/locations.js": 12,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/students.js": 13,
+      "static/~h1LtMDjtw0rvAl6a8slg/pages/worksheets.js": 14
     },
     "bySource": {
       "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Student/AccountPage/components/CourseContext/index.js ../../../../FormComponents/DatePicker": 2,
@@ -102,21 +114,21 @@
     "usedIds": [
       0,
       1,
+      10,
+      11,
+      12,
+      13,
+      14,
       15,
       16,
-      17,
-      18,
-      19,
       2,
-      20,
-      21,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
     ]
   }
 }
