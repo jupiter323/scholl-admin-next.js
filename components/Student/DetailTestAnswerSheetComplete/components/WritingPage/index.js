@@ -7,7 +7,7 @@ class WritingPage extends React.Component {
    mapSampleAnswers = () => {
      const { sampleAnswers } = this.props;
      return sampleAnswers.map((question, index) => (
-       <AnswerRow sampleAnswers={sampleAnswers} key={question.id} question={question} index={index} />
+       <AnswerRow key={question.id} question={question} index={index} />
      ))
    }
   render() {

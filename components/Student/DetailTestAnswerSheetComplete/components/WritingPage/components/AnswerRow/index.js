@@ -14,9 +14,8 @@ class AnswerRow extends React.Component {
   onOpenQuestionModal = () => this.setState({ open: true })
   onCloseQuestionModal = () => this.setState({ open: false });
 
-  mapNumberBubbles = ({ index }) => {
-    const { sampleAnswers } = this.props;
-    const { answer, studentChoice } = sampleAnswers[index];
+  mapNumberBubbles = () => {
+    const { question: {answer, studentChoice} } = this.props;
     if (answer === studentChoice) {
       return (
         <li key={answer}>
@@ -37,7 +36,7 @@ class AnswerRow extends React.Component {
   };
 
  render() {
-    const { question, index } = this.props;
+    const { question } = this.props;
     const { open } = this.state;
     return (
       <React.Fragment>
@@ -48,21 +47,10 @@ class AnswerRow extends React.Component {
               <ul className="answer-list">
                 <Choose>
                   <When condition={!question.numeric}>
-                    <BubbleGroup
-                      id={question.id}
-                      question={question}
-                    />
-                    {/* <Choose>
-                      <When condition={studentChoice === ""}>
-                          {this.renderAnsweredBubbles(question.id)}
-                        </When>
-                        <Otherwise>
-                          {this.mapEmptyBubbles(question.id)}
-                        </Otherwise>
-                      </Choose> */}
+                    <BubbleGroup id={question.id} question={question}/>
                   </When>
                   <Otherwise>
-                    {this.mapNumberBubbles({ index })}
+                    {this.mapNumberBubbles()}
                   </Otherwise>
                 </Choose>
               </ul>
@@ -105,8 +93,6 @@ class AnswerRow extends React.Component {
 
 AnswerRow.propTypes = {
   question: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  sampleAnswers: PropTypes.array.isRequired,
 }
 
 export default AnswerRow;
