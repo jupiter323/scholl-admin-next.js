@@ -86,7 +86,6 @@ class AnswerRow extends React.Component {
           </If>
         </li>
       </React.Fragment>
-
     )
   }
 }

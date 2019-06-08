@@ -13,7 +13,6 @@ class MathNoCalcPage extends React.Component {
   }
 
   render() {
-
     return (
       <div className="slide">
         <div className="row"  style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
@@ -22,7 +21,6 @@ class MathNoCalcPage extends React.Component {
           </ol>
         </div>
       </div>
-
     )
   }
 }

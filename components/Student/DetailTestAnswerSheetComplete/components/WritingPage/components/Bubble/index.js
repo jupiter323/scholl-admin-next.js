@@ -7,6 +7,7 @@ const styles = {
   greenBorderOnly: { position: 'relative', color: '#32955c', borderColor: '#32955c', border: '1px solid', backgroundColor: '#fff', height: '19px', width: '19px', borderRadius: '50%' },
   plain: { position: 'relative', color: '#a6a8ab', border: '1px solid', borderColor: '#a6a8ab', height: '19px', width: '19px', borderRadius: '50%' },
 }
+
 class BubbleGroup extends React.Component {
   constructor(props){
     super(props)
@@ -15,7 +16,8 @@ class BubbleGroup extends React.Component {
       correct: null,
     }
   }
-componentDidMount = () => {
+
+  componentDidMount = () => {
     const { question: {studentChoice } }= this.props
     this.setState({selected: studentChoice}, () => this.checkIfCorrect(this.state.selected));
   }
@@ -44,50 +46,49 @@ componentDidMount = () => {
     }else{
       this.setState({correct: false})
     }
-    // update counter on writing page
   }
 
-mapEmptyBubbles = (id) => {
-  const letters = ["A", "B", "C", "D"];
-  return letters.map(letter => (
-    <li key={letter}>
-      <form>
-        <input
-          type="radio"
-          id={`${id}${letter}`}
-          name="letter"
-          value={letter}
-          checked={this.state.selected === letter}
-          onChange={(event) => this.onHandleBubbleChange(event, letter)}
-          onClick={(event)=> this.onSelectedBubbleClick(event)}
-          />
-        <label
-          htmlFor={`${id}${letter}`}
-          style={this.state.selected ? this.renderBubbleStyle(letter) : styles.plain}
-          >
-        <span style={{ display: 'block', marginTop: '2px', paddingLeft: "4.5px" }}>{letter}</span>
-        </label>
-      </form>
-    </li>
-  ))
-}
+  mapEmptyBubbles = (id) => {
+    const letters = ["A", "B", "C", "D"];
+    return letters.map(letter => (
+      <li key={letter}>
+        <form>
+          <input
+            type="radio"
+            id={`${id}${letter}`}
+            name="letter"
+            value={letter}
+            checked={this.state.selected === letter}
+            onChange={(event) => this.onHandleBubbleChange(event, letter)}
+            onClick={(event)=> this.onSelectedBubbleClick(event)}
+            />
+          <label
+            htmlFor={`${id}${letter}`}
+            style={this.state.selected ? this.renderBubbleStyle(letter) : styles.plain}
+            >
+          <span style={{ display: 'block', marginTop: '2px', paddingLeft: "4.5px" }}>{letter}</span>
+          </label>
+        </form>
+      </li>
+    ))
+  }
 
-renderBubbleStyle = ( letter ) => {
-  const { correct, selected } = this.state;
-  const { question: { answer } } = this.props;
-  if (selected === letter && correct) {
-    return styles.greenFilled
-  }
-  if (selected === letter && !correct) {
-    return styles.red
-  }
-  if (letter !== selected && letter === !answer) {
+  renderBubbleStyle = ( letter ) => {
+    const { correct, selected } = this.state;
+    const { question: { answer } } = this.props;
+    if (selected === letter && correct) {
+      return styles.greenFilled
+    }
+    if (selected === letter && !correct) {
+      return styles.red
+    }
+    if (letter !== selected && letter === !answer) {
+      return styles.plain
+    }if(letter !== selected && letter === answer){
+      return styles.greenBorderOnly
+    }
     return styles.plain
-  }if(letter !== selected && letter === answer){
-    return styles.greenBorderOnly
   }
-  return styles.plain
-}
 
 
   render() {
