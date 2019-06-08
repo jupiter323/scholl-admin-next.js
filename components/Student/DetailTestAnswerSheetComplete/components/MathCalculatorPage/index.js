@@ -16,24 +16,12 @@ class MathCalculatorPage extends React.Component {
 
     return (
       <div className="slide">
-        <div className="row">
-          <div className="col s12 l4">
+        <div className="row" style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
             <ol className="answers-list">
               {this.mapMathCalculatorAnswers()}
             </ol>
-          </div>
-          <div className="col s12 l4">
-            <ol className="answers-list">
-              {this.mapMathCalculatorAnswers()}
-            </ol>
-          </div>
-          <div className="col s12 l4">
-            <ol className="answers-list">
-              {this.mapMathCalculatorAnswers()}
-            </ol>
-          </div>
-        </div>
-      </div>
+         </div>
+         </div>
 
     )
   }

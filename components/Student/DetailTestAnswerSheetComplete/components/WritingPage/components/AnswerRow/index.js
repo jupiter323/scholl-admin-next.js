@@ -41,7 +41,7 @@ class AnswerRow extends React.Component {
     return (
       <React.Fragment>
         <QuestionModal open={open} onOpenQuestionModal={this.onOpenQuestionModal} onCloseQuestionModal={this.onCloseQuestionModal} question={question} />
-        <li className="answers-list-holder" key={question.problem}>
+        <li className="answers-list-holder" key={question.problem} style={{marginRight:"15px"}}>
           <div className="answer-row row mb-0" >
             <div className="col col-120">
               <ul className="answer-list">
