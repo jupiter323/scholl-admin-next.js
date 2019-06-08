@@ -8,7 +8,7 @@ class MathCalculatorPage extends React.Component {
   mapMathCalculatorAnswers = () => {
     const { mathCalculator: {sampleAnswers} } = this.props;
     return sampleAnswers.map(question => (
-      <AnswerRow question={question} />
+      <AnswerRow question={question} key={question.id}/>
     ))
   }
 

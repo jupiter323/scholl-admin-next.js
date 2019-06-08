@@ -8,7 +8,7 @@ class MathNoCalcPage extends React.Component {
   mapMathNoCalcAnswers = () => {
     const { mathNoCalc: {sampleAnswers} } = this.props;
     return sampleAnswers.map(question => (
-      <AnswerRow question={question} />
+      <AnswerRow question={question} key={question.id} />
     ))
   }
 
