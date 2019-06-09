@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default [{\n  value: '',\n  label: 'Any'\n}, {\n  value: 'Miami',\n  label: 'Miami'\n}, {\n  value: 'Austin',\n  label: 'Austin'\n}, {\n  value: 'option1',\n  label: 'Option 1'\n}, {\n  value: 'option2',\n  label: 'Option 2'\n}];","map":null,"metadata":{},"sourceType":"module"}
