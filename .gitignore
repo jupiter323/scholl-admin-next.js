@@ -8,6 +8,8 @@ converage
 .env.development.local
 .env.test.local
 .env.production.local
+node_modules
+.next
 
 npm_debug.log
 yarn-debug.log
