@@ -12,6 +12,7 @@ const data = (current, target, initial) => ({
     ],
   }],
 })
+
 class StudentCard extends React.Component {
     constructor(props) {
         super(props);
@@ -32,7 +33,7 @@ class StudentCard extends React.Component {
     onCloseEditModal = () => this.setState({editModalOpen: false})
 
     render() {
-    const { onHandleStudentCard, index, student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
+    const { onHandleStudentCard, onDeleteStudent, onCloneStudent, index, student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
         emailAddress: { email }} }= this.props;
     const { dropdownIsOpen, editModalOpen } = this.state;
     return (
@@ -77,9 +78,9 @@ class StudentCard extends React.Component {
                       <li>
                         <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
                       </li>
-                      <li><a href="#!">Clone</a></li>
+                      <li><a href="#!"  onClick={() => onCloneStudent(index)}>Clone</a></li>
                       <li><a href="#!">Show Owner</a></li>
-                      <li><a href="#!">Delete</a></li>
+                      <li><a href="#!" onClick={() => onDeleteStudent(index)}>Delete</a></li>
                     </ul>
                   </ClickOffComponentWrapper>
                 </If>
@@ -100,7 +101,6 @@ class StudentCard extends React.Component {
                   data={() => data(currentScore, targetScore, initialScore)}
                   height={210}
                   options={{
-
                     circumference: 1.45 * Math.PI,
                     rotation: -3.85,
                     cutoutPercentage: 60,
@@ -164,6 +164,8 @@ class StudentCard extends React.Component {
     student: PropTypes.object.isRequired,
     onHandleStudentCard: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
+    onDeleteStudent: PropTypes.func.isRequired,
+    onCloneStudent: PropTypes.func.isRequired,
   };
 
 export default StudentCard;

@@ -53,7 +53,6 @@ class Students extends Component {
     }, []);
   }
 
-
   onHandleStudentCard = (index) => {
     const { students } = this.state;
     this.setState({ selectedStudent: students[index] });
@@ -64,6 +63,21 @@ class Students extends Component {
     this.setState({selectedStudent: null})
   }
 
+  onDeleteStudent = (index) => {
+    const { students } = this.state;
+    const newStudentArray = this.arrayItemRemover(students, students[index])
+    this.setState({students: newStudentArray})
+  }
+
+  onCloneStudent = (index) => {
+    const { students } = this.state;
+    this.setState(prevState => {
+      prevState.students.push(students[index]);
+      return { students: prevState.students}
+    })
+  }
+
+   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
 
   render() {
     const { studentModalOpen, students, selectedStudent } = this.state;
@@ -95,7 +109,15 @@ class Students extends Component {
               <div className="content-section">
                 <div className="row d-flex-content">
                   {students.map((student, index) => (
-                    <StudentCard student={student} index={index} id={student.id} key={student.id} onHandleStudentCard={() => this.onHandleStudentCard(index)} />
+                    <StudentCard
+                    student={student}
+                    index={index}
+                    id={student.id}
+                    key={student.id}
+                    onHandleStudentCard={() => this.onHandleStudentCard(index)}
+                    onDeleteStudent={() => this.onDeleteStudent(index)}
+                    onCloneStudent={() => this.onCloneStudent(index, student.id)}
+                    />
                   ))}
                 </div>
               </div>
