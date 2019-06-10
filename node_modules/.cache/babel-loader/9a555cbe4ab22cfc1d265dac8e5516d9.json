@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default [{\n  label: 'Right Triangles',\n  value: 'rightTriangles'\n}, {\n  label: 'Trigonometry',\n  value: 'trigonometry'\n}, {\n  label: 'Topic 3',\n  value: 'topic3'\n}, {\n  label: 'Topic 4',\n  value: 'topic4'\n}, {\n  label: 'Topic 5',\n  value: 'topic5'\n}];","map":null,"metadata":{},"sourceType":"module"}
