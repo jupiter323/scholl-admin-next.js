@@ -1,137 +1,171 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import updatedUser from '../../utils/sampleUser';
+import { Doughnut } from 'react-chartjs-2';
+import EditModal from './components/EditModal';
+const data = (current, target, initial) => ({
+  datasets: [{
+    data: [current-initial, (target-initial) - (current-initial) ],
+    backgroundColor: [
+      '#0085ce',
+      '#eaeaea',
+    ],
+  }],
+})
 
 class StudentCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            active: false,
-            studentEditModalOpen: false,
+            dropdownIsOpen: false,
+            editModalOpen: false,
             cloneModalOpen: false,
             showOwnerModalOpen: false,
             deleteModalOpen: false,
             activateAccountModalOpen: false,
             assignInstructorModalOpen: false,
-            addStudentModalOpen: false,
-            newStudentInfo: {},
         }
     }
 
+    onSetDropdown = (event, dropdownIsOpen) => {
+      event.preventDefault();
+      this.setState({dropdownIsOpen: !dropdownIsOpen});
+    };
 
-render() {
-    // const { studentEditModalOpen, cloneModalOpen, showOwnerModalOpen, deleteModalOpen, addStudentModalOpen, newStudentInfo } = this.state;
-    const { active, studentInformation: { firstName, lastName },
-        emailAddress: { email },
+    onOpenEditModal = () => this.setState({editModalOpen: true})
+    onCloseEditModal = () => this.setState({editModalOpen: false})
 
-    } = this.props.student;
-return (
-    <div className="card-main-col col s12 m8 l7 xl5">
-      <div className="card-main card-location card card-large">
-    <div className="owner-box card-panel card-panel-panel card-panel-large" style={{ backgroundColor: active ? '#0085ce' : '#9b9b9b', color: '#fff' }}>
-      <div className="card-panel-row row">
-      <div className="col s9">
-        <div className="user-block">
-          <div className="user-circle" style={{ backgroundColor: active ? '#14b14b' : '#808080', color: '#fff', height: '45px' }}>
-             <img src="#" alt="" />
-          </div>
-          <div className="user-text" style={{ color: '#fff' }}>
-            <h4 className="h3">{lastName}, {firstName}</h4>
-            <a href={`mailto:${email}`}>{email}</a>
-          </div>
-        </div>
-      </div>
-      <div className="col s2 right-align">
-        <span className="block-icon">
-          <i className="icon-user"></i>
-          <span className="text-icon">Student</span>
-        </span>
-      </div>
-      <div className="col s1 right-align">
-        <div className="row icons-row">
-          <div className="dropdown-block col">
-            {/* <!-- Dropdown Trigger --> */}
-            <a className='dropdown-trigger btn' href='#' data-target='dropdown01'><i className="material-icons dots-icon">more_vert</i></a>
-            {/* <!-- Dropdown Structure --> */}
-            <ul id='dropdown01' className='dropdown-content dropdown-wide'>
-              <li>
-                {/* <!-- Modal Trigger --> */}
-                <a href="#modal_user_edit" className="modal-trigger link-block">Edit</a>
-              </li>
-              <li><a href="#!">Clone</a></li>
-              <li><a href="#!">Show Owner</a></li>
-              <li><a href="#!">Delete</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    render() {
+    const { onHandleStudentCard, onDeleteStudent, onCloneStudent, index, student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
+        emailAddress: { email }} }= this.props;
+    const { dropdownIsOpen, editModalOpen } = this.state;
+    return (
+      <React.Fragment>
+      <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student}/>
 
-  {/* card content */}
-  <div className="card-content">
-      <div className="row d-flex align-items-center mb-0">
-        <div className="col s12 m6">
-          <div className="chart-container chart-container-large">
-            <div className="chart-holder">
-              <span className="svg-curved-bar" data-values='{"from": 1040, "to": 1510, "current": 1270}' data-duration="1">
-                <svg  width="146px" height="146px" viewBox="0 0 146 146">
-                  <path fill="none" style={{ strokeWidth: "30", stroke: "#eaeaea", d:"M 19.154659885067794 94.556422428299 A 58 58 0 1 1 126.84534011493221 94.556422428299"}}></path>
-                  <path data-dinamic fill="none" style={{strokeWidth: "30", stroke: "#0085ce", d:"M 19.154659885067794 94.556422428299 A 58 58 0 0 1 19.154659885067794 94.556422428299"}}></path></svg>
-                <span className="js-diff-holder"><span className="js-diff"><span className="txt"></span></span></span>
-              </span>
-              <span className="chart-value" style={{backgroundColor: "#0085ce"}}><span data-count-up data-start-val="1040" data-end-val="1270" data-duration="1">1040</span></span>
-            </div>
-            <div className="chart-row">
-              <div className="chart-col chart-start">
-                <span className="amount">1040</span>
-                <span className="amount-text">initial</span>
+      <div className="card-main-col col s12 m8 l7 xl5" id={id}>
+          <div className={ active? "card-main card-location card card-large" : "card-main card-location card-disabled card-large card"}>
+
+        <div className="owner-box card-panel card-panel-panel card-panel-large" style={{ backgroundColor: active ? '#0085ce' : '#9b9b9b', color: '#fff' }}>
+          <div className="card-panel-row row">
+          <div className="col s9">
+            <div className="user-block">
+              <div className="user-circle" style={{ backgroundColor: active ? '#14b14b' : '#808080', color: '#fff', height: '45px' }}>
+                <img src="#" alt="" />
               </div>
-              <div className="chart-col chart-end">
-                <span className="amount">1510</span>
-                <span className="amount-text">target</span>
+              <div className="user-text" style={{ color: '#fff' }}>
+                <h4 className="h3"><a href="#" value={student} onClick={() => onHandleStudentCard({index})}>{lastName}, {firstName}</a></h4>
+                <a href={`mailto:${email}`}>{email}</a>
+              </div>
+            </div>
+          </div>
+          <div className="col s2 right-align">
+            <span className="block-icon">
+              <i className="icon-user"></i>
+              <span className="text-icon">Student</span>
+            </span>
+          </div>
+          <div className="col s1 right-align">
+            <div className="row icons-row">
+              <div className="dropdown-block col">
+                <a
+                href='#'
+                className='dropdown-trigger btn'
+                data-target='dropdown01'
+                onClick={(event) => this.onSetDropdown(event, dropdownIsOpen)}>
+                <i className="material-icons dots-icon">more_vert</i>
+                </a>
+                <If condition={dropdownIsOpen}>
+                <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
+                  <li>
+                    <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
+                  </li>
+                  <li><a href="#!" onClick={() => onCloneStudent(index)}>Clone</a></li>
+                  <li><a href="#!">Show Owner</a></li>
+                  <li><a href="#!" onClick={() => onDeleteStudent(index)}>Delete</a></li>
+                </ul>
+                </If>
               </div>
             </div>
           </div>
         </div>
-        <div className="col s12 m6">
-          <ul className="points-list-bordered">
-            <li className="style-green">
-              <span className="badge-circle">61</span>
-              <span className="point-text">complete</span>
-            </li>
-            <li className="style-red">
-              <span className="badge-circle">7</span>
-              <span className="point-text">overdue</span>
-            </li>
-            <li className="style-orange">
-              <span className="badge-circle">3</span>
-              <span className="point-text">practice tests</span>
-            </li>
-            <li className="style-blue-lighter">
-              <span className="badge-circle"><span>17</span> <span className="of">of 23</span></span>
-              <span className="point-text">sessions</span>
-            </li>
-          </ul>
+      </div>
+
+      {/* card content */}
+      <div className="card-content" ref={this.studentCard}>
+          <div className="row d-flex align-items-center mb-0">
+            <div className="col s12 m6">
+              <div className="chart-container chart-container-large">
+                <div className="chart-holder">
+                  <If condition={active}>
+                  <Doughnut
+                  data={() => data(currentScore, targetScore, initialScore)}
+                  height={210}
+                  options={{
+                    circumference: 1.45 * Math.PI,
+                    rotation: -3.85,
+                    cutoutPercentage: 60,
+                    tooltips: false,
+                  }}
+                  />
+                  </If>
+                  <span className="chart-value" style={{backgroundColor: "#0085ce", bottom: "7px"}}><span data-count-up data-start-val={initialScore} data-end-val={currentScore} data-duration="1">{currentScore}</span></span>
+                </div>
+                <div className="chart-row">
+                  <div className="chart-col chart-start">
+                    <span className="amount" style={{color: '#0085ce'}}>{initialScore}</span>
+                    <span className="amount-text">&nbsp; initial</span>
+                  </div>
+                  <div className="chart-col chart-end">
+                    <span className="amount">{targetScore}</span>
+                    <span className="amount-text">&nbsp; target</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col s12 m6">
+              <ul className="points-list-bordered">
+                <li className="style-green">
+                  <span className="badge-circle">61</span>
+                  <span className="point-text">complete</span>
+                </li>
+                <li className="style-red">
+                  <span className="badge-circle">7</span>
+                  <span className="point-text">overdue</span>
+                </li>
+                <li className="style-orange">
+                  <span className="badge-circle">3</span>
+                  <span className="point-text">practice tests</span>
+                </li>
+                <li className="style-blue-lighter">
+                  <span className="badge-circle"><span>17</span> <span className="of">of 23</span></span>
+                  <span className="point-text">sessions</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="card-inner-row">
+            <div className="row-holder">
+              <ul className="category-list">
+                <li className="category-box">
+                  <span className="category-badge badge-purple"></span>
+                  <span className="category-text">{tutor}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="card-inner-row">
-        <div className="row-holder">
-          <ul className="category-list">
-            <li className="category-box">
-              <span className="category-badge badge-purple">TW</span>
-              <span className="category-text">Tutor Withalongername</span>
-            </li>
-          </ul>
-        </div>
       </div>
-    </div>
-  </div>
-  </div>
-    )}};
+     {/* </div> */}
+    </React.Fragment>
+)}};
 
   StudentCard.propTypes = {
     student: PropTypes.object.isRequired,
+    onHandleStudentCard: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
+    onDeleteStudent: PropTypes.func.isRequired,
+    onCloneStudent: PropTypes.func.isRequired,
   };
 
 export default StudentCard;

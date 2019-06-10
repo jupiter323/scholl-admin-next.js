@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
-// import subjectColorChart from '../../utils/subjectColorChart';
-// eslint-disable-next-line react/prop-types
 
 const data = (totalScore, totalPossible) => ({
   datasets: [{

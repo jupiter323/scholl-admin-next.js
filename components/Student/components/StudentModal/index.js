@@ -29,13 +29,6 @@ class StudentModal extends React.Component {
     }
 
     onCloseModal = () => this.setState({ newStudent: [] }, this.props.onClose )
-    // onSaveStudent = () => {
-    //   const { handleNewStudent } = this.props;
-    //   const { firstName, lastName, gender, phone, address, city, state, zipCode, email, location} = this.state.newStudent;
-    //   handleNewStudent(firstName, lastName, gender, phone, address, city, state, zipCode, email, location);
-    //   this.onCloseModal();
-    // }
-
     onSetGender = (gender) => this.setState({newStudent: { gender }});
     onSetState = (state) => this.setState({newStudent: {state}});
 
