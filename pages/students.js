@@ -70,23 +70,14 @@ class Students extends Component {
   }
 
   onCloneStudent = (index) => {
-    // increment id using onIncrementCloneId method
-    // this.onIncrementCloneId(index);
     const { students } = this.state;
     this.setState(prevState => {
       prevState.students.push(students[index]);
       return { students: prevState.students}
     })
-    // set dropdown to close
   }
 
-  // needs tweaking
-  // onIncrementCloneId = (index) => {
-  //   const array = this.state.students;
-  //   array.find(this.array[index].id++);
-  //   this.setState({students: array})
-  // }
-  arrayItemRemover = (array, value) => array.filter((student) => student !== value)
+   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
 
   render() {
     const { studentModalOpen, students, selectedStudent } = this.state;
@@ -125,7 +116,7 @@ class Students extends Component {
                     key={student.id}
                     onHandleStudentCard={() => this.onHandleStudentCard(index)}
                     onDeleteStudent={() => this.onDeleteStudent(index)}
-                    onCloneStudent={() => this.onCloneStudent(index)}
+                    onIncrementCloneId={() => this.onIncrementCloneId(index, student.id)}
                     />
                   ))}
                 </div>
