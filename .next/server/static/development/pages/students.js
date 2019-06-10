@@ -4263,7 +4263,8 @@ function (_React$Component) {
 
       var dropdownIsOpen = this.state.dropdownIsOpen;
       var _this$props = this.props,
-          onRemoveOption = _this$props.onRemoveOption,
+          onDeleteLesson = _this$props.onDeleteLesson,
+          onCloneLesson = _this$props.onCloneLesson,
           _this$props$lesson = _this$props.lesson,
           subject = _this$props$lesson.subject,
           unitNumber = _this$props$lesson.unitNumber,
@@ -4336,15 +4337,15 @@ function (_React$Component) {
         }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        className: "modal-trigger link-block",
-        onClick: this.onOpenEditModal
+        className: "modal-trigger link-block"
       }, "Edit")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        href: "#!"
+        href: "#!",
+        onClick: onCloneLesson
       }, "Clone")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#!"
       }, "Show Owner")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#!",
-        onClick: onRemoveOption
+        onClick: onDeleteLesson
       }, "Delete")))) : null))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-content"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
@@ -4385,7 +4386,9 @@ function (_React$Component) {
 
 LessonCard.propTypes = {
   lesson: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired,
-  onRemoveOption: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+  onDeleteLesson: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  onCloneLesson: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  index: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (LessonCard);
 
@@ -4442,30 +4445,49 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(DetailLessonList).call(this, props));
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onRemoveOption", function (optionIndex) {
-      var lessons = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(_this.state, {
-        lessons: {
-          $splice: [[optionIndex, 1]]
-        }
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onCloneLesson", function (index) {
+      var lessons = _this.state.lessons;
+
+      _this.setState(function (prevState) {
+        prevState.lessons.push(lessons[index]);
+        return {
+          lessons: prevState.lessons
+        };
       });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onDeleteLesson", function (index) {
+      var lessons = _this.state.lessons;
+
+      var newLessonsArray = _this.arrayItemRemover(lessons, lessons[index]);
 
       _this.setState({
-        lessons: lessons
+        lessons: newLessonsArray
       });
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapLessons", function () {
-      var lessons = _this.state.lessons;
+      var _this$state = _this.state,
+          lessons = _this$state.lessons,
+          dropdownisOpen = _this$state.dropdownisOpen;
       return lessons.map(function (lesson, index) {
         return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_LessonCard__WEBPACK_IMPORTED_MODULE_10__["default"], {
           key: index,
+          index: index,
           lesson: lesson,
-          onRemoveOption: function onRemoveOption() {
-            return _this.onRemoveOption({
-              index: index
-            });
+          onCloneLesson: function onCloneLesson() {
+            return _this.onCloneLesson(index);
+          },
+          onDeleteLesson: function onDeleteLesson() {
+            return _this.onDeleteLesson(index);
           }
         });
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "arrayItemRemover", function (array, value) {
+      return array.filter(function (lesson) {
+        return lesson !== value;
       });
     });
 
