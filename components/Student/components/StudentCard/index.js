@@ -42,7 +42,6 @@ class StudentCard extends React.Component {
       <React.Fragment>
       <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student}/>
 
-      {/* <div className="cardholder" role="button" id={id} tabIndex={index}> */}
       <div className="card-main-col col s12 m8 l7 xl5" id={id}>
           <div className={ active? "card-main card-location card card-large" : "card-main card-location card-disabled card-large card"}>
 

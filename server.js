@@ -5,6 +5,8 @@ const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const port = process.env.PORT || 3000;
+
 
 app.prepare().then(() => {
   createServer((request, response) => {
@@ -17,7 +19,7 @@ app.prepare().then(() => {
     } else {
       handle(request, response, parsedUrl);
     }
-  }).listen(3000, error => {
+  }).listen(port, error => {
     if (error) throw error;
   });
 });

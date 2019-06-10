@@ -116,7 +116,7 @@ class Students extends Component {
                     key={student.id}
                     onHandleStudentCard={() => this.onHandleStudentCard(index)}
                     onDeleteStudent={() => this.onDeleteStudent(index)}
-                    onIncrementCloneId={() => this.onIncrementCloneId(index, student.id)}
+                    onCloneStudent={() => this.onCloneStudent(index, student.id)}
                     />
                   ))}
                 </div>
