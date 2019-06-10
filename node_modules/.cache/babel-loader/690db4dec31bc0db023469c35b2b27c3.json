@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default {\n  accountInfo: {\n    firstName: '',\n    lastName: '',\n    email: '',\n    gender: ''\n  },\n  contactInfo: {\n    phone: '',\n    streetAddress: '',\n    city: '',\n    state: '',\n    zip: ''\n  },\n  locations: []\n};","map":null,"metadata":{},"sourceType":"module"}
