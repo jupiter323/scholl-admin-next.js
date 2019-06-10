@@ -1,3 +1,43 @@
+.slick-prev:before {
+	content: none!important;
+}
+
+.slick-prev:after {
+	content: '<'!important;
+	margin-left: 10px;
+	color: black!important;
+	font-size: 18px!important;
+	font-family: 'Raleway'!important;
+}
+
+.slick-next:before {
+	content: '>'!important;
+	margin-right: 10px;
+	color: black!important;
+	font-size: 18px!important;
+	font-family: 'Raleway'!important;
+}
+
+.slick-next {
+	left: 140px!important;
+	font-size: 13px!important;
+	padding: 0!important;
+}
+
+.slick-prev {
+	left: -150px!important;
+	font-size: 13px!important;
+	padding: 0!important;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+	width: 100%!important;
+}
+
+.react-datepicker-popper {
+	z-index: 99!important;
+}
+
 .chart-container.chartjs-render-monitor {
 	height: 125px!important;
 	width: 250px!important;
