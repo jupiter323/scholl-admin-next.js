@@ -14,26 +14,44 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onRemoveOption = (optionIndex) => {
-    const lessons = update(this.state, {
-        lessons: {
-          $splice: [[optionIndex, 1]],
-      },
-    });
-    this.setState({ lessons });
+// wasn't working
+  // onRemoveOption = (optionIndex) => {
+  //   const lessons = update(this.state, {
+  //       lessons: {
+  //         $splice: [[optionIndex, 1]],
+  //     },
+  //   });
+  //   this.setState({ lessons });
+  // }
+
+  onCloneLesson = (index) => {
+    const { lessons } = this.state;
+    this.setState(prevState => {
+      prevState.lessons.push(lessons[index]);
+      return { lessons: prevState.lessons}
+     })
+  }
+
+  onDeleteLesson = (index) => {
+    const { lessons } = this.state;
+    const newLessonsArray = this.arrayItemRemover(lessons, lessons[index])
+    this.setState({lessons: newLessonsArray})
   }
 
   mapLessons = () => {
-    const { lessons } = this.state;
+    const { lessons, dropdownisOpen } = this.state;
     return lessons.map((lesson, index) => (
     <LessonCard
       key={index}
+      index={index}
       lesson={lesson}
-      onRemoveOption={() => this.onRemoveOption({index})}
+      onCloneLesson={() => this.onCloneLesson(index)}
+      onDeleteLesson={() => this.onDeleteLesson(index)}
     />
   )
     )}
 
+  arrayItemRemover = (array, value) => array.filter((lesson) => lesson !== value)
 
   render() {
     return (

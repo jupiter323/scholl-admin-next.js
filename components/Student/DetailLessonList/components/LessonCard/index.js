@@ -139,7 +139,7 @@ class LessonCard extends React.Component {
 
   render() {
     const { dropdownIsOpen } = this.state;
-    const { onRemoveOption, lesson: { subject, unitNumber, lessonName, assigned, alerts,
+    const { onDeleteLesson, onCloneLesson, lesson: { subject, unitNumber, lessonName, assigned, alerts,
       lessonType, totalProblems, solvedProblems = '', passage, dueDate, dueTime,
       completed, availableDate, completionDate, completionTime, completedLate, overdue } } = this.props;
     return (
@@ -169,11 +169,11 @@ class LessonCard extends React.Component {
                      <ClickOffComponentWrapper onOuterClick={() => this.onSetDropdown(dropdownIsOpen)}>
                      <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
                       <li>
-                        <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
+                        <a href="#" className="modal-trigger link-block">Edit</a>
                       </li>
-                      <li><a href="#!">Clone</a></li>
+                      <li><a href="#!" onClick={onCloneLesson}>Clone</a></li>
                       <li><a href="#!">Show Owner</a></li>
-                      <li><a href="#!" onClick={onRemoveOption}>Delete</a></li>
+                      <li><a href="#!" onClick={onDeleteLesson}>Delete</a></li>
                     </ul>
                      </ClickOffComponentWrapper>
                 </If>
@@ -221,7 +221,9 @@ class LessonCard extends React.Component {
 
 LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
-  onRemoveOption: PropTypes.func.isRequired,
+  onDeleteLesson: PropTypes.func.isRequired,
+  onCloneLesson: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default LessonCard;
