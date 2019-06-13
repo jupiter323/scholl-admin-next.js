@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// needs to have onSetActivePage defined on parent component
 const StudentNavBar = ({ active, onSetActivePage }) => (
   <nav className="nav-additional">
     <ul className="menu-additional">
