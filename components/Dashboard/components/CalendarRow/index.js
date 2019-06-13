@@ -44,7 +44,7 @@ class CalendarRow extends React.Component {
   mapDateSessions = (shouldMapSessions, sessions) => {
     if (shouldMapSessions) {
       return sessions.map((session, index) => (
-        <li className="event-frame" key={session.date}>
+        <li className="event-frame" key={index}>
           <Draggable
             key={index}
             index={index}
@@ -70,7 +70,7 @@ class CalendarRow extends React.Component {
   mapDateLessons = (shouldMapLessons, lessons) => {
     if (shouldMapLessons) {
       return lessons.map((lesson, index) => (
-        <li className="event-frame" key={lesson.date}>
+        <li className="event-frame" key={index}>
           <Draggable
             key={index}
             index={index}
@@ -99,7 +99,7 @@ class CalendarRow extends React.Component {
   mapDateWorksheets = (shouldMapWorksheets, worksheets) => {
     if (shouldMapWorksheets) {
       return worksheets.map((worksheet, index) => (
-        <li className="event-frame" key={worksheet.date}>
+        <li className="event-frame" key={index}>
           <Draggable
             key={index}
             index={index}
@@ -128,7 +128,7 @@ class CalendarRow extends React.Component {
   mapTestSections = (shouldMapTestSections, testSections) => {
     if (shouldMapTestSections) {
       return testSections.map((testSection, index) => (
-        <li className="event-frame" key={testSection.date}>
+        <li className="event-frame" key={index}>
           <Draggable
             key={index}
             index={index}
@@ -154,7 +154,7 @@ class CalendarRow extends React.Component {
   mapSimulatedSats = (shouldMapSimulatedSats, simulatedSat) => {
     if (shouldMapSimulatedSats) {
       return simulatedSat.map((sat, index) => (
-        <li className="event-frame">
+        <li className="event-frame" key={index}>
           <Draggable
             key={index}
             index={index}
