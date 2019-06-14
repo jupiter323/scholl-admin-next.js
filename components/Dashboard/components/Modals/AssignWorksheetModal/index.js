@@ -9,31 +9,7 @@ import FilterSection from './components/FilterSection';
 import WorksheetCard from './components/WorksheetCard';
 import { difficultySort, problemSort, timeEstimateSort, subjectSort } from '../../../utils/sortOptions';
 import sampleWorksheets from '../../../utils/sampleWorksheets';
-
-const worksheetTypeMap = {
-  'SAT Practice': 'satPractice',
-  'Skill Builders': 'skillBuilders',
-  'Mixed': 'mixedType',
-};
-
-const worksheetSourceMap = {
-  'Built-In': 'builtIn',
-  'User Created': 'userCreated',
-};
-
-const worksheetDifficultyMap = {
-  'Easy': 'easy',
-  'Medium': 'medium',
-  'Difficult': 'difficult',
-  'Mixed': 'mixedDifficulty',
-};
-
-const worksheetSubjectMap = {
-  'Reading': 'readingSubject',
-  'Writing': 'writingSubject',
-  'Math': 'mathSubject',
-  'Mixed': 'mixedSubject',
-};
+import { worksheetTypeMap, worksheetSourceMap, worksheetDifficultyMap, worksheetSubjectMap } from '../../../utils/worksheetModalMaps';
 
 class AssignWorksheetModal extends React.Component {
   constructor(props) {
