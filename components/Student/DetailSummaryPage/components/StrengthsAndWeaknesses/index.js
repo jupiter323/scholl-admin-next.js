@@ -1,27 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const getIndicatorStatus = (activeSection) => {
-  switch (activeSection) {
-    case 'reading':
-      return {
-        left: '0',
-        right: '66%',
-      }
-    case 'writing':
-      return {
-        left: '33%',
-        right: '33%',
-      }
-    case 'math':
-      return {
-        left: '66%',
-        right: '0',
-      }
-    default:
-      return null;
-  }
-}
+import { getIndicatorStatus } from './utils';
 
 // TODO: Figure out how the client wants this data visualized and what these bar graphs actually mean
 class StrengthsAndWeaknesses extends React.Component {
