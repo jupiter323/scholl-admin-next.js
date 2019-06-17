@@ -9,7 +9,7 @@ converage
 .env.test.local
 .env.production.local
 node_modules
-.next
+.next/*
 .idea
 !.next/.gitkeep
 
