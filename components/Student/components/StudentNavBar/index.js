@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// needs to have onSetActivePage defined on parent component
-const StudentNavBar = ({ active, onSetActivePage }) => (
+const StudentNavBar = ({ activePage, onSetActivePage }) => (
   <nav className="nav-additional">
     <ul className="menu-additional">
       <li>
         <a
-          className={active === 'summary' ? 'active' : ''}
+          className={activePage === 'summary' ? 'active' : ''}
           onClick={() => onSetActivePage('summary')}
           href="#"
         >
@@ -16,7 +15,7 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
       </li>
       <li>
         <a
-          className={active === 'calendar' ? 'active' : ''}
+          className={activePage === 'calendar' ? 'active' : ''}
           onClick={() => onSetActivePage('calendar')}
           href="#"
         >
@@ -25,7 +24,7 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
       </li>
       <li>
         <a
-          className={active === 'lessons' ? 'active' : ''}
+          className={activePage === 'lessons' ? 'active' : ''}
           onClick={() => onSetActivePage('lessons')}
           href="#"
         >
@@ -34,7 +33,7 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
       </li>
       <li>
         <a
-          className={active === 'worksheets' ? 'active' : ''}
+          className={activePage === 'worksheets' ? 'active' : ''}
           onClick={() => onSetActivePage('worksheets')}
           href="#"
         >
@@ -43,7 +42,7 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
       </li>
       <li>
         <a
-          className={active === 'test' ? 'active' : ''}
+          className={activePage === 'test' ? 'active' : ''}
           onClick={() => onSetActivePage('test')}
           href="#"
         >
@@ -52,7 +51,7 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
       </li>
       <li>
         <a
-          className={active === 'account' ? 'active' : ''}
+          className={activePage === 'account' ? 'active' : ''}
           onClick={() => onSetActivePage('account')}
           href="#"
         >
@@ -64,7 +63,7 @@ const StudentNavBar = ({ active, onSetActivePage }) => (
 );
 
 StudentNavBar.propTypes = {
-  active: PropTypes.string.isRequired,
+  activePage: PropTypes.string.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
 };
 
