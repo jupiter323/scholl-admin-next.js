@@ -97,7 +97,8 @@
               "ssr": true,
               "displayName": true
             }
-          ]
+          ],
+          "jsx-control-statements"
         ]
       },
       "test": {
