@@ -18,6 +18,10 @@ const menuItems = [
         page: 'dashboard',
     },
     {
+        key: 'students',
+        page: 'students',
+    },
+    {
 
         key: 'instructors',
         page: 'all-instructors',
