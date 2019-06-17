@@ -11,6 +11,7 @@ converage
 node_modules
 .next
 .idea
+!.next/.gitkeep
 
 npm_debug.log
 yarn-debug.log
