@@ -338,6 +338,15 @@ function (_Component) {
         className: "wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Core_SideNav__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Inner, null, this.props.children)), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("script", {
         src: "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("link", {
+        rel: "stylesheet",
+        type: "text/css",
+        charSet: "UTF-8",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("link", {
+        rel: "stylesheet",
+        type: "text/css",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       })));
     }
   }]);
