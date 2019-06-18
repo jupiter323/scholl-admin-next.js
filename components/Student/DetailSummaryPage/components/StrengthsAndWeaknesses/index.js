@@ -1,41 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getIndicatorStatus, data } from './utils';
 import { Doughnut } from 'react-chartjs-2';
-
-const getIndicatorStatus = (activeSection) => {
-  switch (activeSection) {
-    case 'reading':
-      return {
-        left: '1.5%',
-        right: '92%',
-        height: '2px',
-      }
-    case 'writing':
-      return {
-        left: '11%',
-        right: '83%',
-        height: '2px',
-      }
-    case 'math':
-      return {
-        left: '20%',
-        right: '75%',
-        height: '2px',
-      }
-    default:
-      return null;
-  }
-}
-const data = (totalScore, totalPossible) => ({
-  datasets: [{
-    data: [totalPossible, totalPossible-totalScore],
-    backgroundColor: [
-      '#ce237a',
-      'rgb(234, 234, 234)',
-    ],
-  }],
-});
-
 
 // TODO: Figure out how the client wants this data visualized and what these bar graphs actually mean
 class StrengthsAndWeaknesses extends React.Component {

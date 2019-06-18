@@ -1,6 +1,6 @@
 const updatedUser = {
   id: '1232',
-  active: false,
+  active: true,
   studentInformation: {
     firstName: 'Christian',
     lastName: 'Chavarro',
