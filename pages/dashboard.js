@@ -9,7 +9,7 @@ import AssignSessionModal from '../components/Dashboard/components/Modals/Assign
 import AssignLessonModal from '../components/Dashboard/components/Modals/AssignLessonModal';
 import AssignWorksheetModal from '../components/Dashboard/components/Modals/AssignWorksheetModal';
 import AssignTestSectionModal from '../components/Dashboard/components/Modals/AssignTestSectionModal';
-import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSatModal';
+import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSATModal';
 import AssignTargetTestModal from '../components/Dashboard/components/Modals/AssignTargetTestModal';
 
 import { currentYear, getFirstDay, getDaysInActiveMonth, getDaysInPreviousMonth, getDayDate, getNextMonthAsCurrentMonth } from '../components/Dashboard/utils/dateAndCalendarUtils';

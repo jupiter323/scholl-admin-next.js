@@ -13,6 +13,7 @@ converage
 npm_debug.log
 yarn-debug.log
 yarn-error.log
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

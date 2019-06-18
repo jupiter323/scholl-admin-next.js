@@ -263,7 +263,7 @@
       "publicPath": "static/chunks/commons.c65923968536c258f8d1.js"
     }
   ],
-  "./styles/ControlComponent": [
+  "../../../../FormComponents/Dropdown/styles/ControlComponent": [
     {
       "id": "4vSA",
       "name": "./components/FormComponents/Dropdown/styles/ControlComponent.js",
@@ -551,7 +551,7 @@
       "publicPath": "static/chunks/commons.c65923968536c258f8d1.js"
     }
   ],
-  "../../../../FormComponents/Dropdown": [
+  "../../../FormComponents/Dropdown": [
     {
       "id": "EABn",
       "name": "./components/FormComponents/Dropdown/index.js",
@@ -1159,7 +1159,7 @@
       "publicPath": "static/chunks/commons.c65923968536c258f8d1.js"
     }
   ],
-  "./styles": [
+  "./": [
     {
       "id": "Rgyi",
       "name": "./components/FormComponents/Dropdown/styles/index.js",
@@ -1407,7 +1407,7 @@
       "publicPath": "static/chunks/commons.c65923968536c258f8d1.js"
     }
   ],
-  "../modules/_core": [
+  "../../modules/_core": [
     {
       "id": "WEpk",
       "name": "./node_modules/core-js/library/modules/_core.js",
@@ -2223,7 +2223,7 @@
       "publicPath": "static/chunks/commons.c65923968536c258f8d1.js"
     }
   ],
-  "./styles/dropdownStyles": [
+  "../../../../FormComponents/Dropdown/styles/dropdownStyles": [
     {
       "id": "uhPQ",
       "name": "./components/FormComponents/Dropdown/styles/dropdownStyles.js",
