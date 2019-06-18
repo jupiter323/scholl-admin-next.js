@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var getUserInitials = function getUserInitials(user) {\n  return \"\".concat(user.accountInfo.firstName[0]).concat(user.accountInfo.lastName[0]);\n};\nexport var getTutorInitials = function getTutorInitials(user) {\n  return \"\".concat(user.firstName[0]).concat(user.lastName[0]);\n};","map":null,"metadata":{},"sourceType":"module"}

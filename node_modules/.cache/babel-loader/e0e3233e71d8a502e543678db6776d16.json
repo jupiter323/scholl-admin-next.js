@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default [{\n  value: 'lastNameDescending',\n  label: 'Last Name (Descending)'\n}, {\n  value: 'lastNameAscending',\n  label: 'Last Name (Ascending)'\n}, {\n  value: 'firstNameDescending',\n  label: 'First Name (Descending)'\n}, {\n  value: 'firstNameAscending',\n  label: 'First Name (Ascending)'\n}];","map":null,"metadata":{},"sourceType":"module"}
