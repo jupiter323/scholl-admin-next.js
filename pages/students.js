@@ -77,7 +77,7 @@ class Students extends Component {
     })
   }
 
-   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
+  arrayItemRemover = (array, value) => array.filter((student) => student !== value)
 
   render() {
     const { studentModalOpen, students, selectedStudent } = this.state;
@@ -86,7 +86,6 @@ class Students extends Component {
         <div className="main-holder grey lighten-5">
           {!selectedStudent && (
             <React.Fragment>
-
               <div className="title-row card-panel">
                 <div className="mobile-header">
                   <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
