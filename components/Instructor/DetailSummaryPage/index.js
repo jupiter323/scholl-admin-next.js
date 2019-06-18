@@ -6,7 +6,6 @@ import Pipeline from '../../SharedSummaryPageComponents/Pipeline';
 import StudentImprovement from '../../SharedSummaryPageComponents/StudentImprovement';
 import TargetScores from '../../SharedSummaryPageComponents/TargetScores';
 import AveragePerCourse from '../../SharedSummaryPageComponents/AveragePerCourse';
-
 // eslint-disable-next-line react/prefer-stateless-function
 class InstructorDetailSummaryPage extends React.Component {
   render() {
