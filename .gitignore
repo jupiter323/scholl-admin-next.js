@@ -1,3 +1,4 @@
+node_modules
 .pnp
 .pnp.js
 
@@ -8,6 +9,10 @@ converage
 .env.development.local
 .env.test.local
 .env.production.local
+.next
+.idea
+
+/build
 
 npm_debug.log
 yarn-debug.log
