@@ -10,7 +10,7 @@ converage
 .env.production.local
 .next
 node_modules
-
+.idea
 
 npm_debug.log
 yarn-debug.log
