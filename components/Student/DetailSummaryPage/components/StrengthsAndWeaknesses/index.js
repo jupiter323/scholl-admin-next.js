@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getIndicatorStatus } from './utils';
+import { getIndicatorStatus, data } from './utils';
+import { Doughnut } from 'react-chartjs-2';
 
 // TODO: Figure out how the client wants this data visualized and what these bar graphs actually mean
 class StrengthsAndWeaknesses extends React.Component {
@@ -28,28 +29,31 @@ class StrengthsAndWeaknesses extends React.Component {
         <Choose>
           <When condition={active}>
             <div className="card-panel light-blue accent-2 white-text">
-              <ul className="tabs row">
-                <li className="tab col s4 l4" style={{ margin: '0' }}>
+              <ul className="tabs" >
+                <li className="tab col s4 l3" style={{ margin: '0', paddingRight: '20px', paddingLeft: '20px', height: '24px'}}>
                   <a
                     href="#"
+                    style={{fontSize: '17px'}}
                     className={openSection === 'reading' ? 'active' : ''}
                     onClick={(event) => this.onSetOpenSection(event, 'reading')}
                   >
                     Reading
                   </a>
                 </li>
-                <li className="tab col s4 l4" style={{ margin: '0' }}>
+                <li className="tab col s4 l3" style={{ margin: '0', paddingRight: '20px', paddingLeft: '20px', height: '24px'}}>
                   <a
                     href="#"
+                    style={{fontSize: '17px'}}
                     className={openSection === 'writing' ? 'active' : ''}
                     onClick={(event) => this.onSetOpenSection(event, 'writing')}
                   >
                     Writing
                   </a>
                 </li>
-                <li className="tab col s4 l4" style={{ margin: '0' }}>
+                <li className="tab col s4 l3" style={{ margin: '0', paddingRight: '20px', paddingLeft: '20px', height: '24px'}}>
                   <a
                     href="#"
+                    style={{fontSize: '17px'}}
                     className={openSection === 'math' ? 'active' : ''}
                     onClick={(event) => this.onSetOpenSection(event, 'math')}
                   >
@@ -64,7 +68,13 @@ class StrengthsAndWeaknesses extends React.Component {
                   <div className="row mb-0">
                     <div className="col s12 l5 xl4 chart-column">
                       <div className="chart-block chart-block-large">
-                        <div className="js-donut-chart js-donut-large" data-stroke-width="32" data-source='./inc/score-data-reading.json'></div>
+                      <Doughnut
+                        data={() => data(reading.correctAnswers, reading.totalAnswers )}
+                        width={250}
+                        height={250}
+                        options={{
+                          cutoutPercentage: 80,
+                        }} />
                         <div className="chart-text">
                           <span className="title">Reading</span>
                           <span className="value">{reading.correctAnswers}</span>

@@ -86,7 +86,7 @@ class TestScores extends React.Component {
                 </li>
                 <li className="indicator" style={getIndicatorStatus(openSection, active)}></li>
               </ul>
-              <div id="scores_tab01" className={openSection === 'compositeScore' ? '' : 'tab-content'}  style={{filter: !active ? 'blur(3px)': ""}}>
+              <div id="scores_tab01" className={openSection === 'compositeScore' ? '' : 'tab-content'} style={active ? {} : { filter: 'blur(3px)'}}>
                 <div className={active ? 'card-panel panel-scores light-blue accent-2 white-text' : 'card-panel panel-scores white-text'}>
                   <ul className="panel-list">
                     <li className="panel-block">
@@ -119,7 +119,7 @@ class TestScores extends React.Component {
                   <Line data={data} />
                 </div>
               </div>
-              <div id="scores_tab02" className={openSection === 'subjectScores' ? '' : 'tab-content'}  style={{filter: !active ? 'blur(3px)': ""}}>
+              <div id="scores_tab02" className={openSection === 'subjectScores' ? '' : 'tab-content'} style={active ? {} : { filter: 'blur(3px)'}}>
                 <div className={active ? 'card-panel panel-scores light-blue accent-2 white-text' : 'card-panel panel-scores white-text'}>
                   <ul className="panel-list">
                     <li className="panel-block">
