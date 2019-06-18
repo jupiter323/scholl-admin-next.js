@@ -83,7 +83,7 @@ class SideNav extends Component {
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
-          <h1 className="white-text"><img src="" alt="image description" /></h1>
+          <h1 className="white-text"><img src="/static/images/logo.jpg" alt="image description" /></h1>
           <ul>
             {menuItems.map(menuItem => (
               <li
