@@ -1,70 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import update from 'immutability-helper';
-import Portal from '../../../Portal';
-import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
-import Dropdown from '../../../FormComponents/Dropdown';
-import genderOptions from '../../../utils/genderOptions';
-import getValueFromState from '../../../utils/getValueFromState';
-import stateOptions from '../../../utils/stateOptions';
+import Portal from '../../../../Portal';
+import ClickOffComponentWrapper from '../.././../../ClickOffComponentWrapper';
+import Dropdown from '../../../../FormComponents/Dropdown';
+import genderOptions from '../../../../utils/genderOptions';
+import stateOptions from '../../../../utils/stateOptions';
 
 
-class StudentModal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            newStudent: {
-              firstName: "",
-              lastName: "",
-              gender: "",
-              phone: "",
-              address: "",
-              city: "",
-              state: "",
-              zipCode: "",
-              email: "",
-              location: "",
-             },
-        }
+class EditModal extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      updatedStudent: {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        email: "",
+        location: "",
+       },
     }
+  }
+  handleChange = (event) => {
+    this.setState({
+      updatedStudent: {
+       [event.target.id]: event.target.value,
+      },
+    });
+  }
+  render () {
+    const { open, onCloseEditModal, student } = this.props
+    const { firstName, lastName, phone, address, city, zipCode, email } = this.state.updatedStudent;
 
-    onCloseModal = () => this.setState({ newStudent: [] }, this.props.onClose )
-    onSetGender = (gender) => this.setState({newStudent: { gender }});
-    onSetState = (state) => this.setState({newStudent: {state}});
-
-    handleNewStudent = (firstName, lastName, gender, phone, address, city, state, zipCode, email, location) => {
-        const newStudent = update(this.state.newStudent, {
-            firstName: {$set: [firstName]},
-            lastName: {$set: [lastName]},
-            gender: {$set: [gender]},
-            phone: {$set: [phone]},
-            address: {$set: [address]},
-            city: {$set: [city]},
-            state: {$set: [state]},
-            zipCode: {$set: [zipCode]},
-            email: {$set: [email]},
-            location: {$set: [location]},
-        });
-        this.setState({ newStudent })
-    }
-
-    handleChange = (event) => {
-      this.setState({
-        newStudent: {
-         [event.target.id]: event.target.value,
-        },
-      });
-    }
-    render() {
-        const { open } = this.props;
-        const { firstName, lastName, gender, phone, address, city, state, zipCode, email } = this.state.newStudent;
-        // const { newStudent } = this.state;
-        return(
-            <Portal selector="#modal">
-              {open && (
-                <div className="overlay">
-                  <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
-                    <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
+    return(
+      <Portal selector="#modal">
+        {open && (
+          <div className="overlay">
+            <ClickOffComponentWrapper onOuterClick={onCloseEditModal}>
+            <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
                     <form action="#" className="custom-form">
                         <fieldset>
                             <div className="card-modal card-main card grey lighten-3">
@@ -103,26 +80,26 @@ class StudentModal extends React.Component {
                         <div className="row mb-0">
                           <div className="input-field col s12">
                             <input type="text" id="firstName" value={firstName} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="firstName">First Name*</label>
+                            <label className="label" htmlFor="firstName">{student.studentInformation.firstName}</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
                             <input type="text" id="lastName" value={lastName} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="lastName">Last Name*</label>
+                            <label className="label" htmlFor="lastName">{student.studentInformation.lastName}</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
                             <input type="text" id="email" value={email} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="email">Email Address*</label>
+                            <label className="label" htmlFor="email">{student.emailAddress.email}</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="">
                             <div className="input-field col s12 l7">
                               <Dropdown
-                                value={getValueFromState(gender, genderOptions)}
+                                value={student.studentInformation.gender}
                                 onChange={this.onSetGender}
                                 options={genderOptions}
                                 label="Gender"
@@ -144,26 +121,26 @@ class StudentModal extends React.Component {
                         <div className="row mb-0">
                           <div className="input-field col s12">
                             <input type="tel" id="phone" value={phone} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="phone">Phone (optional)</label>
+                            <label className="label" htmlFor="phone">{student.contactInformation.phone}</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
                             <input type="text" id="address" value={address} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="address">Street Address (optional)</label>
+                            <label className="label" htmlFor="address">{student.contactInformation.addressLine1} (optional)</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="input-field col s12">
                             <input type="text" id="city" value={city} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="city">City (optional)</label>
+                            <label className="label" htmlFor="city">{student.contactInformation.city}(optional)</label>
                           </div>
                         </div>
                         <div className="row mb-0">
                           <div className="col s12 m6 l5">
                             <div className="input-field">
                             <Dropdown
-                              value={getValueFromState(state, stateOptions)}
+                              value={student.contactInformation.state}
                               onChange={this.onSetState}
                               options={stateOptions}
                               label="State"
@@ -175,7 +152,7 @@ class StudentModal extends React.Component {
                           <div className="col s12 m6 l7">
                             <div className="input-field">
                               <input type="tel" id="zipCode" value={zipCode} onChange={this.handleChange}/>
-                              <label className="label" htmlFor="zipCode">Zip (optional)</label>
+                              <label className="label" htmlFor="zipCode">{student.contactInformation.zipCode}(optional)</label>
                             </div>
                           </div>
                         </div>
@@ -269,20 +246,18 @@ class StudentModal extends React.Component {
             </div>
             <div className="modal-footer">
               <a href="#!" className="waves-effect waves-teal btn-flat pink-text text-darken-1">Delete</a>
-              <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={this.onCloseModal}>Cancel</a>
-              <a href="#" className="btn" onClick={this.handleNewStudent}>Save</a>
+              <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={onCloseEditModal}>Cancel</a>
+              <a href="#" className="btn">Save</a>
             </div>
           </div>
-
-
             </div>
             </fieldset>
             </form>
             </div>
-        </ClickOffComponentWrapper>
-        </div>
+            </ClickOffComponentWrapper>
+          </div>
         )}
-         <style jsx>
+        <style jsx>
           {`
             .overlay {
               position: fixed;
@@ -318,15 +293,14 @@ class StudentModal extends React.Component {
             }
           `}
         </style>
-        </Portal>
-        );
-    }
+      </Portal>
+    )
+  }
 }
 
-StudentModal.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-};
-
-export default StudentModal;
-
+EditModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onCloseEditModal: PropTypes.func.isRequired,
+  student: PropTypes.object.isRequired,
+}
+export default EditModal;

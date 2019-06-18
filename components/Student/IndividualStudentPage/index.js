@@ -10,13 +10,11 @@ class IndividualStudentPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: 'worksheets',
-      accountActivated: false,
+      activePage: 'summary',
       activationDropdownOpen: false,
       licenseCode: '',
     };
   }
-
   onToggleActivationDropdown = () => this.setState(({ activationDropdownOpen }) => ({ activationDropdownOpen: !activationDropdownOpen }))
 
   onSetActivePage = (activePage) => this.setState({ activePage })
@@ -40,16 +38,15 @@ class IndividualStudentPage extends React.Component {
     }
     return null;
   }
-
   render() {
-    const { onRedirectToStudentPage, student: { studentInformation: { firstName, lastName } } } = this.props
-    const { activePage, accountActivated, activationDropdownOpen, licenseCode } = this.state;
+    const { onRedirectToStudentPage, student: {active, studentInformation: {firstName, lastName}}} = this.props
+    const { activePage, activationDropdownOpen, licenseCode } = this.state;
     return (
       <React.Fragment>
-        <div className="title-row card-panel">
-          <div className="mobile-header">
-            <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
-          </div>
+          <div className="title-row card-panel">
+            <div className="mobile-header">
+              <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+            </div>
 
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">
@@ -74,7 +71,7 @@ class IndividualStudentPage extends React.Component {
           />
           <div className="activate-block">
             <Choose>
-              <When condition={accountActivated}>
+              <When condition={active}>
                 <a
                   href="#"
                   className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"

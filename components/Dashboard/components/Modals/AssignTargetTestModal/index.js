@@ -62,7 +62,7 @@ class AssignTargetTestModal extends React.Component {
                         </h2>
                       </div>
                       <div className="col right-align">
-                        <a href="#!" className="panel-link close modal-close"><i className="icon-close-thin"></i></a>
+                        <a href="#" className="panel-link close modal-close"><i className="icon-close-thin"></i></a>
                       </div>
                     </div>
                   </div>
