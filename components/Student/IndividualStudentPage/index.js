@@ -51,7 +51,6 @@ class IndividualStudentPage extends React.Component {
     const { activePage, activationDropdownOpen, licenseCode } = this.state;
     return (
       <React.Fragment>
-
           <div className="title-row card-panel">
             <div className="mobile-header">
               <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>

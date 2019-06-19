@@ -11,15 +11,44 @@ if (typeof window !== 'undefined') {
   require('materialize-css');
 }
 
+
 const menuItems = [
-  'dashboard',
-  'students',
-  'instructors',
-  'classes',
-  'locations',
-  'worksheets',
-  'course templates',
-  'help',
+    {
+        key: 'dashboard',
+        page: 'dashboard',
+    },
+    {
+        key: 'students',
+        page: 'students',
+    },
+    {
+
+        key: 'instructors',
+        page: 'all-instructors',
+    },
+    {
+
+        key: 'classes',
+        page: 'classes',
+    },
+    {
+
+        key: 'locations',
+        page: 'all-locations',
+    },
+    {
+
+        key: 'worksheets',
+        page: 'worksheets',
+    },
+    {
+        key: 'course templates',
+        page: 'courseTemplates',
+    },
+    {
+        key: 'help',
+        page: 'help',
+    },
 ];
 
 const menuIconMap = {
@@ -54,19 +83,19 @@ class SideNav extends Component {
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
-          <h1 className="white-text"><img src="" alt="image description" /></h1>
+          <h1 className="white-text"><img src="/static/images/logo.jpg" alt="image description" /></h1>
           <ul>
             {menuItems.map(menuItem => (
               <li
-                className={this.state.active === menuItem ? "active" : ''}
-                onClick={() => this.handleClick(menuItem)}
-                key={menuItem}
+                className={this.state.active === menuItem.key ? "active" : ''}
+                onClick={() => this.handleClick(menuItem.key)}
+                key={menuItem.key}
               >
-                <Link href={`/${menuItem === 'course templates' ? 'courseTemplates' : menuItem}`} >
+                <Link href={`/${menuItem.page}`} >
                   <a>
-                    <i className={menuIconMap[menuItem]}></i>
+                    <i className={menuIconMap[menuItem.key]}></i>
                     {
-                      menuItem.charAt(0).toUpperCase() + menuItem.slice(1)
+                      menuItem.key.charAt(0).toUpperCase() + menuItem.key.slice(1)
                     }
                   </a>
                 </Link>

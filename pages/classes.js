@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 
 import ClassNavBar from '../components/Class/components/ClassNavBar';
 import TestSectionsPage from '../components/Class/TestSectionsPage';
+import DetailSummaryPage from '../components/Class/DetailSummaryPage';
 
-// eslint-disable-next-line react/prefer-stateless-function
+import sampleClass from '../components/Class/utils/sampleClass';
+
 class Classes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 'testSections',
+      active: 'summary',
     }
   }
 
@@ -16,6 +18,9 @@ class Classes extends Component {
 
   renderCurrentPage = () => {
     const { active } = this.state;
+    if (active === 'summary') {
+      return <DetailSummaryPage currentClass={sampleClass} />
+    }
     if (active === 'testSections') {
       return <TestSectionsPage />;
     }
@@ -23,6 +28,7 @@ class Classes extends Component {
   }
 
   render() {
+    const { active } = this.state;
     return (
       <React.Fragment>
         <main id="main" role="main">
@@ -42,7 +48,7 @@ class Classes extends Component {
                   <span className="heading-block">Some Class in June</span>
                 </span>
               </h2>
-              <ClassNavBar />
+              <ClassNavBar onSetActivePage={this.onSetActivePage} active={active} />
             </div>
             {this.renderCurrentPage()}
           </div>
