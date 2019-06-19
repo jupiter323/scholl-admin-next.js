@@ -151,7 +151,7 @@
       "publicPath": "static/chunks/commons.dd6191404f8304a47831.js"
     }
   ],
-  "../../../../Portal": [
+  "../../../Portal": [
     {
       "id": "2Iwh",
       "name": "./components/Portal/index.js",
@@ -2383,7 +2383,7 @@
       "publicPath": "static/chunks/commons.dd6191404f8304a47831.js"
     }
   ],
-  "./../webpack/buildin/global.js": [
+  "./../../webpack/buildin/global.js": [
     {
       "id": "yLpj",
       "name": "./node_modules/webpack/buildin/global.js",
