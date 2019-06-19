@@ -11,6 +11,7 @@ converage
 .env.production.local
 .next
 .idea
+node_modules
 
 /build
 
