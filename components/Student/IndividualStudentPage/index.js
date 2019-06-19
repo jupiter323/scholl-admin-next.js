@@ -4,6 +4,8 @@ import AccountPage from '../AccountPage';
 import DetailSummaryPage from '../DetailSummaryPage';
 import DetailWorksheetPage from '../DetailWorksheetPage';
 import DetailLessonList from '../DetailLessonList';
+import DetailTestList from '../DetailTestList';
+import LessonDetailAnswerSheet from '../LessonDetailAnswerSheet';
 import StudentNavBar from '../components/StudentNavBar';
 
 class IndividualStudentPage extends React.Component {
@@ -35,6 +37,12 @@ class IndividualStudentPage extends React.Component {
     }
     if (activePage === 'worksheets') {
       return <DetailWorksheetPage user={student} />;
+    }
+    if (activePage === 'answer-sheet') {
+      return <LessonDetailAnswerSheet />;
+    }
+    if (activePage === 'test') {
+      return <DetailTestList />;
     }
     return null;
   }
