@@ -6367,7 +6367,7 @@ input[type=range]::-ms-thumb {
 }
 
 .sidenav li.active {
-	background-color: rgba(0, 0, 0, .05);
+	background-color: #e74021;
 }
 
 .sidenav li > a {
