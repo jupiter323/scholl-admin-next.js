@@ -81,7 +81,19 @@
       "static/E_JaenVFGtic3l2L~6aHA/pages/locations.js": 12,
       "static/E_JaenVFGtic3l2L~6aHA/pages/students.js": 13,
       "static/E_JaenVFGtic3l2L~6aHA/pages/worksheets.js": 14,
-      "static/runtime/main.js": 15
+      "static/runtime/main.js": 15,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/_app.js": 17,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/_error.js": 18,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/all-instructors.js": 19,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/all-locations.js": 20,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/classes.js": 21,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/courseTemplates.js": 22,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/dashboard.js": 23,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/help.js": 24,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/instructors.js": 25,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/locations.js": 26,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/students.js": 27,
+      "static/pKN6bLA5cRDFZb1toEP5c/pages/worksheets.js": 28
     },
     "bySource": {
       "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Student/AccountPage/components/CourseContext/index.js ../../../../FormComponents/DatePicker": 2,
@@ -90,21 +102,21 @@
     "usedIds": [
       0,
       1,
-      10,
-      11,
-      12,
-      13,
-      14,
       15,
       16,
+      17,
+      18,
+      19,
       2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
     ]
   }
 }
