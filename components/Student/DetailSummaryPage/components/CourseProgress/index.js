@@ -1,8 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 
-// TODO: Implement doughnut charts
-const CourseProgress = ({ state: { startDate, testDate, progress, improvement, lessons, instruction, practiceTests }, active }) => (
+const areaColorMap = {
+  maroon: '#ce237a',
+  blue: '#1aa3ef',
+  purple: '#752189',
+  green: '#3a8745',
+  orange: '#e28100',
+};
+
+const data = (percentage, color) => ({
+  datasets: [{
+    data: [100, 100-percentage],
+    backgroundColor: [
+      areaColorMap[color],
+      'rgb(234, 234, 234)',
+    ],
+  }],
+})
+
+  // TODO: Implement doughnut charts
+  const CourseProgress = ({ state: { startDate, testDate, progress, improvement, lessons, instruction, practiceTests }, active }) => (
   <div className="col s12 l7 card-width-747">
     <div className="card-main card card-chart">
       <div className="card-content">
@@ -26,16 +45,30 @@ const CourseProgress = ({ state: { startDate, testDate, progress, improvement, l
             </Choose>
           </div>
           <div className="progress">
-            <div className="determinate" style={{ width: `${active ? progress : '0'}%` }}>
-              {active && <span className="progress-label">{progress}%</span>}
-            </div>
+            <div className="determinate" style={{ width: active ? `${progress}%` : '0%'}}>
+                {active && <span className="progress-label">{progress}%</span>}
+              </div>
           </div>
         </div>
         <div className="charts-container">
           <div className="row mb-0">
             <div className="col">
               <div className="chart-block">
+              <Choose>
+                <When condition={active}>
+                <Doughnut
+                  data={() => data(improvement, 'maroon')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
                 <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
                 <div className="chart-text">
                   <span className="title">Improvement</span>
                   <Choose>
@@ -53,8 +86,22 @@ const CourseProgress = ({ state: { startDate, testDate, progress, improvement, l
             </div>
             <div className="col">
               <div className="chart-block">
-                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-lessons.json'></div>
-                <div className="chart-text">
+              <Choose>
+                <When condition={active}>
+                <Doughnut
+                  data={() => data(lessons, 'purple')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
+                 <div className="chart-text">
                   <span className="title">Lessons</span>
                   <Choose>
                     <When condition={active}>
@@ -70,7 +117,21 @@ const CourseProgress = ({ state: { startDate, testDate, progress, improvement, l
             </div>
             <div className="col">
               <div className="chart-block">
-                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-instruction.json'></div>
+              <Choose>
+                <When condition={active}>
+                <Doughnut
+                  data={() => data(instruction, 'orange')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
                 <div className="chart-text">
                   <span className="title">Instruction</span>
                   <Choose>
@@ -87,8 +148,22 @@ const CourseProgress = ({ state: { startDate, testDate, progress, improvement, l
             </div>
             <div className="col">
               <div className="chart-block">
-                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-practice-tests.json'></div>
-                <div className="chart-text">
+              <Choose>
+                <When condition={active}>
+                <Doughnut
+                  data={() => data(practiceTests, 'blue')}
+                  width={156}
+                  height={156}
+                  options={{
+                    cutoutPercentage: 75,
+                  }}
+                />
+                </When>
+                <Otherwise>
+                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                </Otherwise>
+              </Choose>
+                 <div className="chart-text">
                   <span className="title">Practice Tests</span>
                   <Choose>
                     <When condition={active}>

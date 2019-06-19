@@ -54,21 +54,6 @@ class StudentListPage extends React.Component {
         }, []);
     }
 
-//    handleNewStudent = (firstName, lastName, gender, phone, address, city, state, zipCode, email, location) => {
-//         const newStudent = update(this.state.newStudent, {
-//             firstName: {$set: [firstName]},
-//             lastName: {$set: [lastName]},
-//             gender: {$set: [gender]},
-//             phone: {$set: [phone]},
-//             address: {$set: [address]},
-//             city: {$set: [city]},
-//             state: {$set: [state]},
-//             zipCode: {$set: [zipCode]},
-//             email: {$set: [email]},
-//             location: {$set: [location]},
-//         });
-//         this.setState({ newStudent })
-
    render() {
         const { students, studentModalOpen } = this.state;
         return(

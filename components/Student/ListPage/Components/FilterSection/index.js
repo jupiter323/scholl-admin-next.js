@@ -12,7 +12,7 @@ class FilterSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true,
+      open: false,
       name: '',
       location: {},
       sort: {},
@@ -295,9 +295,11 @@ class FilterSection extends React.Component {
           </div>
 
         <div className="filter-inputs-holder">
+          <div className="col s12 18" style={{marginTop: '-30px', marginBottom: '-10px'}}>
+
         <div className="row mb-0">
           <div className="col s12 m3">
-            <div className="search-field input-field">
+            <div className="search-field input-field" style={{marginTop: '50px'}}>
               <input
                 type="search"
                 id="name_search"
@@ -305,7 +307,7 @@ class FilterSection extends React.Component {
                 name="name"
                 value={name}
                 onChange={(event) => this.handleFilterChange(event, 'name')}
-              />
+                />
               <button
                 type="submit"
                 className="search-button"
@@ -337,9 +339,10 @@ class FilterSection extends React.Component {
                 label="Sort"
                 stateKey="sort"
                 dropdownKey="sort"
-              />
+                />
             </div>
           </div>
+                </div>
           <div className="col s12 14">
                 <div className="option-filters">
                   <div className="option-item clear"><a href="#" onClick={this.onClearFilters}>Clear Filters</a></div>
