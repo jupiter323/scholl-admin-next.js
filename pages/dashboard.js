@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
@@ -35,6 +36,9 @@ class Dashboard extends Component {
       assignSimulatedSatModalOpen: false,
       assignTargetTestDateModalOpen: false,
       modalDate: null,
+      accountActivated: false,
+      activationDropdownOpen: false,
+      licenseCode: '',
     };
   }
 
@@ -243,6 +247,43 @@ class Dashboard extends Component {
 
   onClearFilters = () => this.setState({ filters: [], eventFilters: [] })
 
+  onHandleDetailsChange = (name, event) => this.setState({ [name]: event.target.value })
+
+  onDragEnd = (result) => {
+    const { rows } = this.state;
+    const { source, destination, draggableId } = result;
+    // The following draggable vars are pulled from the dragged item to identify the event type (lesson, worksheet, etc), date, and index in that date's array of that type of event
+    const draggableKeys = draggableId.split('-');
+    const draggableType = draggableKeys[0];
+    const draggableIndex = draggableKeys[2];
+
+    // If the event isn't switching dates, we return out of the function early and do nothing
+    if (!destination || source.droppableId === destination.droppableId) {
+      return;
+    }
+
+    // The follwing sourceDate and destinationDate vars are used to find the dates being modified and their index in the month of calendar dates
+    const sourceDateKey = source.droppableId.split('-')[1];
+    const destinationDateKey = destination.droppableId.split('-')[1];
+
+    const sourceDate = rows.filter(row => row.date === sourceDateKey)[0];
+    const destinationDate = rows.filter(row => row.date === destinationDateKey)[0];
+
+    const sourceDateIndex = rows.indexOf(sourceDate);
+    const destinationDateIndex = rows.indexOf(destinationDate);
+
+    // Here we target the event being moved, alter its date to that of the destintion, splice it from the source and push it to the destination
+    // Finally, we perform two splice operations to replace the old source and destination dates with their updated equivalents
+    const movedEvent = sourceDate[draggableType][draggableIndex];
+    movedEvent.date = destinationDate.date;
+    sourceDate[draggableType].splice(draggableIndex, 1);
+    destinationDate[draggableType].push(movedEvent);
+    const updatedRows = update(rows, {
+      $splice: [[ sourceDateIndex, 1, sourceDate ], [ destinationDateIndex, 1, destinationDate ]],
+    });
+    this.setState({ rows: updatedRows });
+  }
+
   handleFilterClick = (filter, eventFilter = false) => {
     // TODO: Only the following filters are active: sessions, lessons, worksheets, test sections, simulated sats, target tests
     // The other filters dont seem to have corresponding data in this page
@@ -306,6 +347,7 @@ class Dashboard extends Component {
     const { assignSessionModalOpen, assignLessonsModalOpen, assignWorksheetsModalOpen, activeMonth,
       assignTestSectionModalOpen, assignSimulatedSatModalOpen, assignTargetTestDateModalOpen,
       modalDate, assignDropdownIsOpen, onToggleHandleFilteredItemsDropdown, filters, eventFilters,
+      accountActivated, activationDropdownOpen, licenseCode,
     } = this.state;
     return (
       <React.Fragment>
@@ -361,7 +403,6 @@ class Dashboard extends Component {
                   <span className="heading-block">Some Class in June</span>
                 </span>
               </h2>
-              {/* <!-- navigation additional --> */}
               <nav className="nav-additional">
                 <ul className="menu-additional">
                   <li><a href="#">Summary</a></li>
@@ -372,26 +413,44 @@ class Dashboard extends Component {
                 </ul>
               </nav>
               <div className="activate-block">
-                <a href="#" className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"><b className="btn-text visible-lg">Account Activated</b> <i className="icon-unlock"></i></a>
-                <a href="#" className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger" data-target="dropdown_activate"><b className="btn-text visible-lg">Activate Account</b> <i className="icon-key"></i></a>
-                {/* <!-- Dropdown Activate Structure --> */}
-                <div id='dropdown_activate' className='dropdown-content'>
+                <Choose>
+                  <When condition={accountActivated}>
+                    <a
+                      href="#"
+                      className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"
+                    >
+                      <b className="btn-text visible-lg">Account Activated</b> <i className="icon-unlock"></i>
+                    </a>
+                  </When>
+                  <Otherwise>
+                    <a
+                      href="#"
+                      onClick={this.onToggleActivationDropdown}
+                      className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger"
+                      data-target="dropdown_activate"
+                    >
+                      <b className="btn-text visible-lg">Activate Account</b> <i className="icon-key"></i>
+                    </a>
+                  </Otherwise>
+                </Choose>
+                <div id="dropdown_activate" className="dropdown-content" style={activationDropdownOpen ? { display: 'block', opacity: '1' } : {}}>
                   <div className="card-panel">
                     <div className="title-block">
                       <div className="h3">Ready to begin your course?</div>
                       <div className="subtitle">Please enter a valid license code below.</div>
                     </div>
-                    <form action="#" className="activate-form">
-                      <fieldset>
-                        <div className="input-field">
-                          <input type="text" value="4BF86266-A2A4-C9FB-387D07ABB5471305" id="license_code" />
-                          <label className="label" htmlFor="license_code">License Code</label>
-                        </div>
-                        <div className="btn-holder center-align">
-                          <button className="btn btn-blue" type="submit">Activate </button>
-                        </div>
-                      </fieldset>
-                    </form>
+                    <div className="input-field">
+                      <input
+                        type="text"
+                        value={licenseCode}
+                        id="license-code"
+                        onChange={(event) => this.onHandleDetailsChange('licenseCode', event)}
+                      />
+                      <label className="label" htmlFor="license_code">License Code</label>
+                    </div>
+                    <div className="btn-holder center-align">
+                      <button className="btn btn-blue" type="submit">Activate</button>
+                    </div>
                     <div className="text-block center-align">
                       <p>If you need license codes, you can get them here: <a href="#" className="waves-effect waves-light btn-small btn-blue">Purchase Licenses</a></p>
                     </div>
@@ -416,13 +475,9 @@ class Dashboard extends Component {
                   onSetActiveMonth={this.onSetActiveMonth}
                 />
                 <div id="calendar" className="main-slick-calendar cal-context" style={{ width: '100%' }}>
-                  {/* <!-- calendar month slide January--> */}
                   <div className="slide">
                     <table className="calendar-table cal-month-box">
                       <thead>
-                        <tr className="month-title">
-                          <td colSpan="7"><div className="cal-month-day">January</div></td>
-                        </tr>
                         <tr className="calendar-head-row">
                           <th>Su</th>
                           <th>M</th>
@@ -434,14 +489,12 @@ class Dashboard extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {this.mapRows()}
+                        <DragDropContext onDragEnd={this.onDragEnd}>
+                          {this.mapRows()}
+                        </DragDropContext>
                       </tbody>
                     </table>
                   </div>
-                  {/* <!-- calendar month slide February --> */}
-                  <div className="slide"></div>
-                  {/* <!-- calendar month slide March --> */}
-                  <div className="slide"></div>
                 </div>
                 <div className="add-btn-block">
                   <a
@@ -493,16 +546,3 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
-
-
-/* <!-- Modal structure view Lesson --> */
-// <div id="modal_view_lesson" className="modal modal-custom"></div>
-
-/* <!-- Modal structure view Session --> */
-// <div id="modal_view_session" className="modal modal-custom"></div>
-
-/* <!-- Modal structure view Practice Test --> */
-// <div id="modal_view_practice_test" className="modal modal-custom"></div>
-
-/* <!-- Modal structure view Worksheet --> */
-// <div id="modal_view_worksheet" className="modal modal-custom"></div>

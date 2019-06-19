@@ -1,3 +1,4 @@
+node_modules
 .pnp
 .pnp.js
 
@@ -8,6 +9,8 @@ converage
 .env.development.local
 .env.test.local
 .env.production.local
+.next
+node_modules
 .idea
 
 npm_debug.log
