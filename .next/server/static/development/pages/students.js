@@ -6669,7 +6669,9 @@ function (_React$Component) {
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapWorksheetCards", function () {
-      var worksheets = _this.props.worksheets;
+      var _this$props = _this.props,
+          worksheets = _this$props.worksheets,
+          onToggleDetailModalOpen = _this$props.onToggleDetailModalOpen;
       var _this$state = _this.state,
           dropdownIndex = _this$state.dropdownIndex,
           dropdownIsOpen = _this$state.dropdownIsOpen;
@@ -6742,8 +6744,9 @@ function (_React$Component) {
             transform: 'scaleX(1) scaleY(1)'
           }
         }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-          href: "#modal_user_edit",
-          className: "modal-trigger link-block"
+          href: "#",
+          className: "modal-trigger link-block",
+          onClick: onToggleDetailModalOpen
         }, "View Details")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
           href: "#!"
         }, "Dismiss Flags")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
@@ -6878,7 +6881,8 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
 FullView.propTypes = {
-  worksheets: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired
+  worksheets: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired,
+  onToggleDetailModalOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (FullView);
 
@@ -7004,7 +7008,9 @@ function (_React$Component) {
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapWorksheetRows", function () {
-      var worksheets = _this.props.worksheets;
+      var _this$props = _this.props,
+          worksheets = _this$props.worksheets,
+          onToggleDetailModalOpen = _this$props.onToggleDetailModalOpen;
       var _this$state = _this.state,
           dropdownIndex = _this$state.dropdownIndex,
           dropdownIsOpen = _this$state.dropdownIsOpen;
@@ -7086,8 +7092,9 @@ function (_React$Component) {
             transform: 'scaleX(1) scaleY(1)'
           }
         }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-          href: "#modal_user_edit",
-          className: "modal-trigger link-block"
+          href: "#",
+          className: "modal-trigger link-block",
+          onClick: onToggleDetailModalOpen
         }, "View Details")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
           href: "#!"
         }, "Dismiss Flags")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
@@ -7132,7 +7139,8 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
 ListView.propTypes = {
-  worksheets: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired
+  worksheets: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired,
+  onToggleDetailModalOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (ListView);
 
@@ -7161,6 +7169,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_FilterSection__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/FilterSection */ "./components/Student/DetailWorksheetPage/components/FilterSection/index.js");
 /* harmony import */ var _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils/sampleWorksheets */ "./components/Student/DetailWorksheetPage/utils/sampleWorksheets.js");
 /* harmony import */ var _utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/sortFunctions */ "./components/utils/sortFunctions.js");
+/* harmony import */ var _LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../LessonWorksheetTestSection */ "./components/Student/LessonWorksheetTestSection/index.js");
+
 
 
 
@@ -7194,6 +7204,15 @@ function (_React$Component) {
         var assignWorksheetDropdownOpen = _ref.assignWorksheetDropdownOpen;
         return {
           assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen
+        };
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleDetailModalOpen", function () {
+      return _this.setState(function (_ref2) {
+        var detailModalOpen = _ref2.detailModalOpen;
+        return {
+          detailModalOpen: !detailModalOpen
         };
       });
     });
@@ -7358,11 +7377,13 @@ function (_React$Component) {
       switch (currentView) {
         case 'list':
           return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ListView__WEBPACK_IMPORTED_MODULE_9__["default"], {
+            onToggleDetailModalOpen: _this.onToggleDetailModalOpen,
             worksheets: _this.getMappableWorksheets()
           });
 
         case 'full':
           return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FullView__WEBPACK_IMPORTED_MODULE_8__["default"], {
+            onToggleDetailModalOpen: _this.onToggleDetailModalOpen,
             worksheets: _this.getMappableWorksheets()
           });
 
@@ -7377,7 +7398,8 @@ function (_React$Component) {
       filterTopic: '',
       currentView: 'full',
       assignWorksheetDropdownOpen: false,
-      worksheets: _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_11__["default"]
+      worksheets: _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_11__["default"],
+      detailModalOpen: true
     };
     return _this;
   }
@@ -7389,9 +7411,13 @@ function (_React$Component) {
 
       var _this$state5 = this.state,
           currentView = _this$state5.currentView,
-          assignWorksheetDropdownOpen = _this$state5.assignWorksheetDropdownOpen;
-      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "main-holder grey lighten-5 switcher-section"
+          assignWorksheetDropdownOpen = _this$state5.assignWorksheetDropdownOpen,
+          detailModalOpen = _this$state5.detailModalOpen;
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, detailModalOpen ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        onClose: this.onToggleDetailModalOpen
+      }) : [react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "main-holder grey lighten-5 switcher-section",
+        key: "0"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_10__["default"], {
         currentView: currentView,
         onChangeView: this.onChangeView,
@@ -7401,7 +7427,8 @@ function (_React$Component) {
         onSetFilteredTopicState: this.onSetFilteredTopicState,
         onUnsetFilteredTopicState: this.onUnsetFilteredTopicState
       }), this.renderWorksheetView()), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "add-btn-block"
+        className: "add-btn-block",
+        key: "1"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
         "data-target": "dropdown_assign_selected",
@@ -7426,7 +7453,7 @@ function (_React$Component) {
         onClick: function onClick() {
           return _this2.onAssignWorksheet('createNew');
         }
-      }, "Create New")))));
+      }, "Create New"))))]);
     }
   }]);
 
@@ -7877,6 +7904,1250 @@ IndividualStudentPage.propTypes = {
   onRedirectToStudentPage: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (IndividualStudentPage);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/components/ChallengeQuestions/index.js":
+/*!**********************************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/components/ChallengeQuestions/index.js ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _Question__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Question */ "./components/Student/LessonWorksheetTestSection/components/Question/index.js");
+
+
+
+
+
+
+
+
+
+
+
+var ChallengeQuestions =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(ChallengeQuestions, _React$Component);
+
+  function ChallengeQuestions() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ChallengeQuestions);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, (_getPrototypeOf2 = Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(ChallengeQuestions)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapQuestions", function () {
+      return _this.props.questions.map(function (question) {
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Question__WEBPACK_IMPORTED_MODULE_9__["default"], {
+          key: question.id,
+          question: question,
+          answerSheetComplete: _this.props.answerSheetComplete,
+          onOpenQuestionModal: _this.props.onOpenQuestionModal
+        });
+      });
+    });
+
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ChallengeQuestions, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col s12 l6"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-block"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h2", null, "Challenge"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-answer card"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-content"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ol", {
+        className: "answers-list"
+      }, this.mapQuestions())))));
+    }
+  }]);
+
+  return ChallengeQuestions;
+}(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
+
+ChallengeQuestions.propTypes = {
+  questions: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired,
+  answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (ChallengeQuestions);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/components/PracticeQuestions/index.js":
+/*!*********************************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/components/PracticeQuestions/index.js ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _Question__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Question */ "./components/Student/LessonWorksheetTestSection/components/Question/index.js");
+
+
+
+
+
+
+
+
+
+
+
+var PracticeQuestions =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(PracticeQuestions, _React$Component);
+
+  function PracticeQuestions() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, PracticeQuestions);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, (_getPrototypeOf2 = Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(PracticeQuestions)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapQuestions", function () {
+      return _this.props.questions.map(function (question) {
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Question__WEBPACK_IMPORTED_MODULE_9__["default"], {
+          key: question.id,
+          question: question,
+          answerSheetComplete: _this.props.answerSheetComplete,
+          onOpenQuestionModal: _this.props.onOpenQuestionModal
+        });
+      });
+    });
+
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(PracticeQuestions, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col s12 l6"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-block"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h2", null, "Practice"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-content"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ol", {
+        className: "answers-list"
+      }, this.mapQuestions())))));
+    }
+  }]);
+
+  return PracticeQuestions;
+}(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
+
+PracticeQuestions.propTypes = {
+  questions: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired,
+  answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (PracticeQuestions);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/components/Question/index.js":
+/*!************************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/components/Question/index.js ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../utils */ "./components/Student/LessonWorksheetTestSection/utils/index.js");
+
+
+
+
+
+
+
+
+
+
+
+var Question =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(Question, _React$Component);
+
+  function Question() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, Question);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, (_getPrototypeOf2 = Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(Question)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapAnswerChoices", function () {
+      var _this$props = _this.props,
+          _this$props$question = _this$props.question,
+          answerType = _this$props$question.answerType,
+          answerChoices = _this$props$question.answerChoices,
+          studentAnswer = _this$props$question.studentAnswer,
+          answerSheetComplete = _this$props.answerSheetComplete;
+
+      if (answerSheetComplete) {
+        if (answerType === 'letter') {
+          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+            className: "answer-list"
+          }, answerChoices.map(function (answer) {
+            return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", {
+              key: answer.answerLetter
+            }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+              className: "badge-circle badge-circle-bordered",
+              style: Object(_utils__WEBPACK_IMPORTED_MODULE_9__["getCompleteAnswerColor"])('letter', answer, studentAnswer)
+            }, answer.answerLetter));
+          }));
+        }
+
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+          className: "answer-list"
+        }, answerChoices.map(function (answer) {
+          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", {
+            key: answer.answerValue
+          }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+            className: "badge badge-rounded badge-rounded-bordered",
+            style: Object(_utils__WEBPACK_IMPORTED_MODULE_9__["getCompleteAnswerColor"])('value', answer, studentAnswer)
+          }, answer.answerValue));
+        }));
+      }
+
+      if (answerType === 'letter') {
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+          className: "answer-list"
+        }, answerChoices.map(function (answer) {
+          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", {
+            key: answer.answerLetter
+          }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+            className: "badge-circle badge-circle-bordered",
+            style: Object(_utils__WEBPACK_IMPORTED_MODULE_9__["getAnswerColor"])(answer)
+          }, answer.answerLetter));
+        }));
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        className: "answer-list"
+      }, answerChoices.map(function (answer) {
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", {
+          key: answer.answerValue
+        }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+          className: "badge badge-rounded badge-rounded-bordered",
+          style: Object(_utils__WEBPACK_IMPORTED_MODULE_9__["getAnswerColor"])(answer)
+        }, answer.answerValue));
+      }));
+    });
+
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(Question, [{
+    key: "render",
+    value: function render() {
+      var _this$props2 = this.props,
+          onOpenQuestionModal = _this$props2.onOpenQuestionModal,
+          question = _this$props2.question,
+          answerSheetComplete = _this$props2.answerSheetComplete;
+      var difficulty = question.difficulty,
+          hasVideo = question.hasVideo,
+          flagged = question.flagged,
+          studentNotes = question.studentNotes;
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", {
+        className: "answers-list-holder"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "answer-row row mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col col-120"
+      }, this.mapAnswerChoices()), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col col-30"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "status-info"
+      }, _utils__WEBPACK_IMPORTED_MODULE_9__["difficultyMap"][difficulty])), hasVideo && react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col col-43"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "play-progress",
+        "data-video-id": "video001"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "play"
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("svg", {
+        viewBox: "0 0 50 50",
+        width: "50",
+        height: "50",
+        version: "1.1",
+        xmlns: "http://www.w3.org/2000/svg"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("circle", {
+        className: "circle-static",
+        cx: "25.8",
+        cy: "24.3",
+        r: "22.8",
+        style: {
+          strokeWidth: '3',
+          fill: 'rgba(0,0,0,0)'
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("circle", {
+        className: "circle-progress",
+        cx: "25.8",
+        cy: "24.3",
+        r: "22.8",
+        style: {
+          stroke: 'none',
+          strokeWidth: '3',
+          fill: 'rgba(0,0,0,0)'
+        }
+      })))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col col-auto"
+      }, answerSheetComplete && flagged ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "status-answer",
+        style: {
+          color: '#c0272d'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
+        className: "icon-flag"
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("b", {
+        className: "status-text"
+      }, "Review")) : null), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "dropdown-block col col-35"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        className: "modal-trigger",
+        onClick: function onClick() {
+          return onOpenQuestionModal(question);
+        },
+        href: "#"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
+        className: "material-icons dots-icon"
+      }, "more_vert")))), answerSheetComplete && studentNotes ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "comment-block"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("p", null, "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?")) : null);
+    }
+  }]);
+
+  return Question;
+}(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
+
+;
+Question.propTypes = {
+  question: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired,
+  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (Question);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/components/QuestionModal/index.js":
+/*!*****************************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/components/QuestionModal/index.js ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-jsx/style */ "./node_modules/styled-jsx/style.js");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _Portal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../Portal */ "./components/Portal/index.js");
+/* harmony import */ var _ClickOffComponentWrapper__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../../ClickOffComponentWrapper */ "./components/ClickOffComponentWrapper/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils */ "./components/Student/LessonWorksheetTestSection/utils/index.js");
+
+
+
+
+
+
+
+
+
+/* eslint-disable jsx-a11y/media-has-caption */
+
+
+
+
+
+
+var QuestionModal =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(QuestionModal, _React$Component);
+
+  function QuestionModal(props) {
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, QuestionModal);
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(QuestionModal).call(this, props));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "toggleReviewedStatus", function () {
+      return _this.setState(function (_ref) {
+        var reviewedWithStudent = _ref.reviewedWithStudent;
+        return {
+          reviewedWithStudent: !reviewedWithStudent
+        };
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapAnswerChoices", function () {
+      var _this$props$question = _this.props.question,
+          answerChoices = _this$props$question.answerChoices,
+          studentAnswer = _this$props$question.studentAnswer;
+
+      if (answerChoices[0].answerLetter) {
+        return answerChoices.map(function (answer) {
+          return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", {
+            className: "answer-block",
+            key: answer.answerLetter
+          }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+            className: "answer-box",
+            style: Object(_utils__WEBPACK_IMPORTED_MODULE_12__["getAnswerChoiceColors"])(answer.answerLetter, answer.correctAnswer, studentAnswer)
+          }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+            className: "answer-circle"
+          }, answer.answerLetter, "."), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+            className: "answer-text"
+          }, answer.answerText)));
+        });
+      }
+
+      return answerChoices.map(function (answer) {
+        return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", {
+          className: "answer-block",
+          key: answer.answerValue
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "answer-box",
+          style: Object(_utils__WEBPACK_IMPORTED_MODULE_12__["getAnswerChoiceColors"])(answer.answerValue, answer.correctAnswer, studentAnswer)
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+          className: "answer-text",
+          style: {
+            marginLeft: '30px'
+          }
+        }, answer.answerValue)));
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "renderAnswerPercentageBreakdown", function () {
+      var _this$props$question2 = _this.props.question,
+          answerChoices = _this$props$question2.answerChoices,
+          studentAnswer = _this$props$question2.studentAnswer;
+
+      if (answerChoices[0].answerLetter) {
+        return answerChoices.map(function (answer) {
+          return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", {
+            className: "informer-block",
+            key: answer.answerLetter
+          }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+            className: "informer-box",
+            style: Object(_utils__WEBPACK_IMPORTED_MODULE_12__["getAnswerPercentageBreakdownColors"])('half', answer.answerLetter, answer.answerPercentage, answer.correctAnswer, studentAnswer)
+          }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+            className: "informer-circle",
+            style: Object(_utils__WEBPACK_IMPORTED_MODULE_12__["getAnswerPercentageBreakdownColors"])('full', answer.answerLetter, answer.answerPercentage, answer.correctAnswer, studentAnswer)
+          }, answer.answerLetter)), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+            className: "informer-value"
+          }, answer.answerPercentage, "%"));
+        });
+      }
+
+      return answerChoices.map(function (answer) {
+        return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", {
+          className: "informer-block",
+          key: answer.answerValue
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "informer-box",
+          style: Object(_utils__WEBPACK_IMPORTED_MODULE_12__["getAnswerPercentageBreakdownColors"])('half', answer.answerValue, answer.answerPercentage, answer.correctAnswer, studentAnswer)
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+          className: "informer-circle",
+          style: Object(_utils__WEBPACK_IMPORTED_MODULE_12__["getAnswerPercentageBreakdownColors"])('full', answer.answerValue, answer.answerPercentage, answer.correctAnswer, studentAnswer)
+        }, answer.answerValue)), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+          className: "informer-value"
+        }, answer.answerPercentage, "%"));
+      });
+    });
+
+    _this.state = {
+      reviewedWithStudent: false
+    };
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(QuestionModal, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          open = _this$props.open,
+          onCloseModal = _this$props.onCloseModal,
+          _this$props$question3 = _this$props.question,
+          question = _this$props$question3 === void 0 ? {} : _this$props$question3;
+      var reviewedWithStudent = this.state.reviewedWithStudent;
+      var topic = question.topic,
+          questionType = question.questionType,
+          questionText = question.question,
+          hasVideo = question.hasVideo,
+          flagged = question.flagged,
+          questionNumber = question.questionNumber,
+          videoSource = question.videoSource,
+          studentNotes = question.studentNotes,
+          passage = question.passage,
+          videoThumbnail = question.videoThumbnail;
+      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_Portal__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        selector: "#modal"
+      }, open && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "overlay"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_ClickOffComponentWrapper__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        onOuterClick: onCloseModal
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        id: "modal_video001",
+        className: "jsx-4127667448" + " " + "modal modal-answer"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "modal-header row mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "col s10"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+        className: "jsx-4127667448" + " " + "subtitle"
+      }, topic), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+        className: "jsx-4127667448" + " " + "title"
+      }, questionType, " Problem #", questionNumber)), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "col s2 right-align"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+        href: "#",
+        onClick: onCloseModal,
+        className: "jsx-4127667448" + " " + "close modal-close"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-4127667448" + " " + "icon-close-thin"
+      })))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "modal-content"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "d-flex row mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "col s12 l6 order-lg-2"
+      }, hasVideo && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "card-panel"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "video-frame"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "embed-responsive embed-responsive-16by9"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("video", {
+        id: "video001",
+        "data-current-time": "0",
+        poster: videoThumbnail,
+        preload: "metadata",
+        controls: true,
+        playsinline: true,
+        className: "jsx-4127667448" + " " + "in-modal embed-responsive-item"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("source", {
+        type: "video/mp4",
+        src: videoSource,
+        className: "jsx-4127667448"
+      }))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "card-panel"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "panel-block"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "d-flex align-items-center row mb-0"
+      }, flagged && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "col"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+        style: {
+          color: '#c0272d'
+        },
+        className: "jsx-4127667448" + " " + "status-answer"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-4127667448" + " " + "icon-flag"
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+        className: "jsx-4127667448" + " " + "status-text"
+      }, "Flagged"))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "col"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", {
+        className: "jsx-4127667448"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        type: "checkbox",
+        checked: reviewedWithStudent,
+        onChange: this.toggleReviewedStatus,
+        className: "jsx-4127667448" + " " + "filled-in"
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+        className: "jsx-4127667448"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+        className: "jsx-4127667448"
+      }, "Reviewed with Student")))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "panel-block"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("ul", {
+        className: "jsx-4127667448" + " " + "informers-list"
+      }, this.renderAnswerPercentageBreakdown())), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "panel-block"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("strong", {
+        className: "jsx-4127667448" + " " + "subtitle"
+      }, "Student\u2019s Notes:"), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "text-content custom-form"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "jcf-scrollable height-22"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "text-holder"
+      }, studentNotes)))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "col s12 l6 order-lg-1"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "card-panel"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "text-content custom-form"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "jcf-scrollable height-45"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "text-holder"
+      }, passage)))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-4127667448" + " " + "card-panel"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("strong", {
+        className: "jsx-4127667448" + " " + "h3 subtitle"
+      }, questionText), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("ul", {
+        className: "jsx-4127667448" + " " + "answer-full-list"
+      }, this.mapAnswerChoices())))))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(styled_jsx_style__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        id: "4127667448"
+      }, ".overlay.jsx-4127667448{position:fixed;background-color:rgba(0,0,0,0.7);top:0;right:0;bottom:0;left:0;z-index:9999;}.modal-answer.jsx-4127667448{opacity:1;visibility:visible;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9jaHJpc2NoYXZhcnJvL2NsZWFyLWNob2ljZS9jbGVhci1jaG9pY2UtYWRtaW4vY29tcG9uZW50cy9TdHVkZW50L0xlc3NvbldvcmtzaGVldFRlc3RTZWN0aW9uL2NvbXBvbmVudHMvUXVlc3Rpb25Nb2RhbC9pbmRleC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUErSlcsQUFHOEIsQUFTTCxVQUNTLEtBVGlCLGNBVXRDLG1CQVRRLE1BQ0UsUUFDQyxTQUNGLE9BQ00sYUFDZiIsImZpbGUiOiIvVXNlcnMvY2hyaXNjaGF2YXJyby9jbGVhci1jaG9pY2UvY2xlYXItY2hvaWNlLWFkbWluL2NvbXBvbmVudHMvU3R1ZGVudC9MZXNzb25Xb3Jrc2hlZXRUZXN0U2VjdGlvbi9jb21wb25lbnRzL1F1ZXN0aW9uTW9kYWwvaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKiBlc2xpbnQtZGlzYWJsZSBqc3gtYTExeS9tZWRpYS1oYXMtY2FwdGlvbiAqL1xuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCBQcm9wVHlwZXMgZnJvbSAncHJvcC10eXBlcyc7XG5cbmltcG9ydCBQb3J0YWwgZnJvbSAnLi4vLi4vLi4vLi4vUG9ydGFsJztcbmltcG9ydCBDbGlja09mZkNvbXBvbmVudFdyYXBwZXIgZnJvbSAnLi4vLi4vLi4vLi4vQ2xpY2tPZmZDb21wb25lbnRXcmFwcGVyJztcblxuaW1wb3J0IHsgZ2V0QW5zd2VyQ2hvaWNlQ29sb3JzLCBnZXRBbnN3ZXJQZXJjZW50YWdlQnJlYWtkb3duQ29sb3JzIH0gZnJvbSAnLi4vLi4vdXRpbHMnO1xuXG5jbGFzcyBRdWVzdGlvbk1vZGFsIGV4dGVuZHMgUmVhY3QuQ29tcG9uZW50IHtcbiAgY29uc3RydWN0b3IocHJvcHMpIHtcbiAgICBzdXBlcihwcm9wcyk7XG4gICAgdGhpcy5zdGF0ZSA9IHtcbiAgICAgIHJldmlld2VkV2l0aFN0dWRlbnQ6IGZhbHNlLFxuICAgIH1cbiAgfVxuXG4gIHRvZ2dsZVJldmlld2VkU3RhdHVzID0gKCkgPT4gdGhpcy5zZXRTdGF0ZSgoeyByZXZpZXdlZFdpdGhTdHVkZW50IH0pID0+ICh7IHJldmlld2VkV2l0aFN0dWRlbnQ6ICFyZXZpZXdlZFdpdGhTdHVkZW50IH0pKVxuXG4gIG1hcEFuc3dlckNob2ljZXMgPSAoKSA9PiB7XG4gICAgY29uc3QgeyBxdWVzdGlvbjogeyBhbnN3ZXJDaG9pY2VzLCBzdHVkZW50QW5zd2VyIH0gfSA9IHRoaXMucHJvcHM7XG4gICAgaWYgKGFuc3dlckNob2ljZXNbMF0uYW5zd2VyTGV0dGVyKSB7XG4gICAgICByZXR1cm4gYW5zd2VyQ2hvaWNlcy5tYXAoYW5zd2VyID0+IChcbiAgICAgICAgPGxpIGNsYXNzTmFtZT1cImFuc3dlci1ibG9ja1wiIGtleT17YW5zd2VyLmFuc3dlckxldHRlcn0+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhbnN3ZXItYm94XCIgc3R5bGU9e2dldEFuc3dlckNob2ljZUNvbG9ycyhhbnN3ZXIuYW5zd2VyTGV0dGVyLCBhbnN3ZXIuY29ycmVjdEFuc3dlciwgc3R1ZGVudEFuc3dlcil9PlxuICAgICAgICAgICAgPGIgY2xhc3NOYW1lPVwiYW5zd2VyLWNpcmNsZVwiPnthbnN3ZXIuYW5zd2VyTGV0dGVyfS48L2I+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJhbnN3ZXItdGV4dFwiPnthbnN3ZXIuYW5zd2VyVGV4dH08L3NwYW4+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvbGk+XG4gICAgICApKVxuICAgIH1cbiAgICByZXR1cm4gYW5zd2VyQ2hvaWNlcy5tYXAoYW5zd2VyID0+IChcbiAgICAgIDxsaSBjbGFzc05hbWU9XCJhbnN3ZXItYmxvY2tcIiBrZXk9e2Fuc3dlci5hbnN3ZXJWYWx1ZX0+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYW5zd2VyLWJveFwiIHN0eWxlPXtnZXRBbnN3ZXJDaG9pY2VDb2xvcnMoYW5zd2VyLmFuc3dlclZhbHVlLCBhbnN3ZXIuY29ycmVjdEFuc3dlciwgc3R1ZGVudEFuc3dlcil9PlxuICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImFuc3dlci10ZXh0XCIgc3R5bGU9e3sgbWFyZ2luTGVmdDogJzMwcHgnIH19PnthbnN3ZXIuYW5zd2VyVmFsdWV9PC9zcGFuPlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvbGk+XG4gICAgKSlcbiAgfVxuXG4gIHJlbmRlckFuc3dlclBlcmNlbnRhZ2VCcmVha2Rvd24gPSAoKSA9PiB7XG4gICAgY29uc3QgeyBxdWVzdGlvbjogeyBhbnN3ZXJDaG9pY2VzLCBzdHVkZW50QW5zd2VyIH0gfSA9IHRoaXMucHJvcHM7XG4gICAgaWYgKGFuc3dlckNob2ljZXNbMF0uYW5zd2VyTGV0dGVyKSB7XG4gICAgICByZXR1cm4gYW5zd2VyQ2hvaWNlcy5tYXAoYW5zd2VyID0+IChcbiAgICAgICAgPGxpIGNsYXNzTmFtZT1cImluZm9ybWVyLWJsb2NrXCIga2V5PXthbnN3ZXIuYW5zd2VyTGV0dGVyfT5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImluZm9ybWVyLWJveFwiIHN0eWxlPXtnZXRBbnN3ZXJQZXJjZW50YWdlQnJlYWtkb3duQ29sb3JzKCdoYWxmJywgYW5zd2VyLmFuc3dlckxldHRlciwgYW5zd2VyLmFuc3dlclBlcmNlbnRhZ2UsIGFuc3dlci5jb3JyZWN0QW5zd2VyLCBzdHVkZW50QW5zd2VyKX0+XG4gICAgICAgICAgICA8YiBjbGFzc05hbWU9XCJpbmZvcm1lci1jaXJjbGVcIiBzdHlsZT17Z2V0QW5zd2VyUGVyY2VudGFnZUJyZWFrZG93bkNvbG9ycygnZnVsbCcsIGFuc3dlci5hbnN3ZXJMZXR0ZXIsIGFuc3dlci5hbnN3ZXJQZXJjZW50YWdlLCBhbnN3ZXIuY29ycmVjdEFuc3dlciwgc3R1ZGVudEFuc3dlcil9PnthbnN3ZXIuYW5zd2VyTGV0dGVyfTwvYj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICA8YiBjbGFzc05hbWU9XCJpbmZvcm1lci12YWx1ZVwiPnthbnN3ZXIuYW5zd2VyUGVyY2VudGFnZX0lPC9iPlxuICAgICAgICA8L2xpPlxuICAgICAgKSlcbiAgICB9XG4gICAgcmV0dXJuIGFuc3dlckNob2ljZXMubWFwKGFuc3dlciA9PiAoXG4gICAgICA8bGkgY2xhc3NOYW1lPVwiaW5mb3JtZXItYmxvY2tcIiBrZXk9e2Fuc3dlci5hbnN3ZXJWYWx1ZX0+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaW5mb3JtZXItYm94XCIgc3R5bGU9e2dldEFuc3dlclBlcmNlbnRhZ2VCcmVha2Rvd25Db2xvcnMoJ2hhbGYnLCBhbnN3ZXIuYW5zd2VyVmFsdWUsIGFuc3dlci5hbnN3ZXJQZXJjZW50YWdlLCBhbnN3ZXIuY29ycmVjdEFuc3dlciwgc3R1ZGVudEFuc3dlcil9PlxuICAgICAgICAgIDxiIGNsYXNzTmFtZT1cImluZm9ybWVyLWNpcmNsZVwiIHN0eWxlPXtnZXRBbnN3ZXJQZXJjZW50YWdlQnJlYWtkb3duQ29sb3JzKCdmdWxsJywgYW5zd2VyLmFuc3dlclZhbHVlLCBhbnN3ZXIuYW5zd2VyUGVyY2VudGFnZSwgYW5zd2VyLmNvcnJlY3RBbnN3ZXIsIHN0dWRlbnRBbnN3ZXIpfT57YW5zd2VyLmFuc3dlclZhbHVlfTwvYj5cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxiIGNsYXNzTmFtZT1cImluZm9ybWVyLXZhbHVlXCI+e2Fuc3dlci5hbnN3ZXJQZXJjZW50YWdlfSU8L2I+XG4gICAgICA8L2xpPlxuICAgICkpXG4gIH1cblxuICByZW5kZXIoKSB7XG4gICAgY29uc3QgeyBvcGVuLCBvbkNsb3NlTW9kYWwsIHF1ZXN0aW9uID0ge30gfSA9IHRoaXMucHJvcHM7XG4gICAgY29uc3QgeyByZXZpZXdlZFdpdGhTdHVkZW50IH0gPSB0aGlzLnN0YXRlO1xuICAgIGNvbnN0IHsgdG9waWMsIHF1ZXN0aW9uVHlwZSwgcXVlc3Rpb246IHF1ZXN0aW9uVGV4dCwgaGFzVmlkZW8sIGZsYWdnZWQsIHF1ZXN0aW9uTnVtYmVyLCB2aWRlb1NvdXJjZSwgc3R1ZGVudE5vdGVzLCBwYXNzYWdlLCB2aWRlb1RodW1ibmFpbCB9ID0gcXVlc3Rpb247XG4gICAgcmV0dXJuIChcbiAgICAgIDxQb3J0YWwgc2VsZWN0b3I9XCIjbW9kYWxcIj5cbiAgICAgICAge29wZW4gJiYgKFxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib3ZlcmxheVwiPlxuICAgICAgICAgICAgPENsaWNrT2ZmQ29tcG9uZW50V3JhcHBlciBvbk91dGVyQ2xpY2s9e29uQ2xvc2VNb2RhbH0+XG4gICAgICAgICAgICAgIDxkaXYgaWQ9XCJtb2RhbF92aWRlbzAwMVwiIGNsYXNzTmFtZT1cIm1vZGFsIG1vZGFsLWFuc3dlclwiPlxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibW9kYWwtaGVhZGVyIHJvdyBtYi0wXCI+XG4gICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbCBzMTBcIj5cbiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwic3VidGl0bGVcIj57dG9waWN9PC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0aXRsZVwiPntxdWVzdGlvblR5cGV9IFByb2JsZW0gI3txdWVzdGlvbk51bWJlcn08L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sIHMyIHJpZ2h0LWFsaWduXCI+XG4gICAgICAgICAgICAgICAgICAgIDxhIGhyZWY9XCIjXCIgY2xhc3NOYW1lPVwiY2xvc2UgbW9kYWwtY2xvc2VcIiBvbkNsaWNrPXtvbkNsb3NlTW9kYWx9PjxpIGNsYXNzTmFtZT1cImljb24tY2xvc2UtdGhpblwiPjwvaT48L2E+XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm1vZGFsLWNvbnRlbnRcIj5cbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZC1mbGV4IHJvdyBtYi0wXCI+XG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sIHMxMiBsNiBvcmRlci1sZy0yXCI+XG4gICAgICAgICAgICAgICAgICAgICAge2hhc1ZpZGVvICYmIChcbiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZC1wYW5lbFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInZpZGVvLWZyYW1lXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbWJlZC1yZXNwb25zaXZlIGVtYmVkLXJlc3BvbnNpdmUtMTZieTlcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx2aWRlbyBpZD1cInZpZGVvMDAxXCIgY2xhc3NOYW1lPVwiaW4tbW9kYWwgZW1iZWQtcmVzcG9uc2l2ZS1pdGVtXCIgZGF0YS1jdXJyZW50LXRpbWU9XCIwXCIgcG9zdGVyPXt2aWRlb1RodW1ibmFpbH0gcHJlbG9hZD1cIm1ldGFkYXRhXCIgY29udHJvbHMgcGxheXNpbmxpbmU+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c291cmNlIHR5cGU9XCJ2aWRlby9tcDRcIiBzcmM9e3ZpZGVvU291cmNlfSAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC92aWRlbz5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZC1wYW5lbFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJwYW5lbC1ibG9ja1wiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImQtZmxleCBhbGlnbi1pdGVtcy1jZW50ZXIgcm93IG1iLTBcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7ZmxhZ2dlZCAmJiAoXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJzdGF0dXMtYW5zd2VyXCIgc3R5bGU9e3sgY29sb3I6ICcjYzAyNzJkJyB9fT5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aSBjbGFzc05hbWU9XCJpY29uLWZsYWdcIj48L2k+PGIgY2xhc3NOYW1lPVwic3RhdHVzLXRleHRcIj5GbGFnZ2VkPC9iPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGFiZWw+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU9XCJjaGVja2JveFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiZmlsbGVkLWluXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjaGVja2VkPXtyZXZpZXdlZFdpdGhTdHVkZW50fVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXt0aGlzLnRvZ2dsZVJldmlld2VkU3RhdHVzfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c3Bhbj48Yj5SZXZpZXdlZCB3aXRoIFN0dWRlbnQ8L2I+PC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9sYWJlbD5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicGFuZWwtYmxvY2tcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT1cImluZm9ybWVycy1saXN0XCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAge3RoaXMucmVuZGVyQW5zd2VyUGVyY2VudGFnZUJyZWFrZG93bigpfVxuICAgICAgICAgICAgICAgICAgICAgICAgICA8L3VsPlxuICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInBhbmVsLWJsb2NrXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgIDxzdHJvbmcgY2xhc3NOYW1lPVwic3VidGl0bGVcIj5TdHVkZW504oCZcyBOb3Rlczo8L3N0cm9uZz5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWNvbnRlbnQgY3VzdG9tLWZvcm1cIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImpjZi1zY3JvbGxhYmxlIGhlaWdodC0yMlwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWhvbGRlclwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7c3R1ZGVudE5vdGVzfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbCBzMTIgbDYgb3JkZXItbGctMVwiPlxuICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZC1wYW5lbFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWNvbnRlbnQgY3VzdG9tLWZvcm1cIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJqY2Ytc2Nyb2xsYWJsZSBoZWlnaHQtNDVcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtaG9sZGVyXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7cGFzc2FnZX1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNhcmQtcGFuZWxcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxzdHJvbmcgY2xhc3NOYW1lPVwiaDMgc3VidGl0bGVcIj57cXVlc3Rpb25UZXh0fTwvc3Ryb25nPlxuICAgICAgICAgICAgICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT1cImFuc3dlci1mdWxsLWxpc3RcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAge3RoaXMubWFwQW5zd2VyQ2hvaWNlcygpfVxuICAgICAgICAgICAgICAgICAgICAgICAgPC91bD5cbiAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICA8L0NsaWNrT2ZmQ29tcG9uZW50V3JhcHBlcj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKX1cbiAgICAgICAgPHN0eWxlIGpzeD5cbiAgICAgICAgICB7YFxuICAgICAgICAgICAgLm92ZXJsYXkge1xuICAgICAgICAgICAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMCwgMCwgMCwgMC43KTtcbiAgICAgICAgICAgICAgdG9wOiAwO1xuICAgICAgICAgICAgICByaWdodDogMDtcbiAgICAgICAgICAgICAgYm90dG9tOiAwO1xuICAgICAgICAgICAgICBsZWZ0OiAwO1xuICAgICAgICAgICAgICB6LWluZGV4OiA5OTk5O1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgLm1vZGFsLWFuc3dlciB7XG4gICAgICAgICAgICAgIG9wYWNpdHk6IDE7XG4gICAgICAgICAgICAgIHZpc2liaWxpdHk6IHZpc2libGU7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgYH1cbiAgICAgICAgPC9zdHlsZT5cbiAgICAgIDwvUG9ydGFsPlxuICAgICk7XG4gIH1cbn1cblxuUXVlc3Rpb25Nb2RhbC5wcm9wVHlwZXMgPSB7XG4gIG9wZW46IFByb3BUeXBlcy5ib29sLmlzUmVxdWlyZWQsXG4gIHF1ZXN0aW9uOiBQcm9wVHlwZXMub2JqZWN0LmlzUmVxdWlyZWQsXG4gIG9uQ2xvc2VNb2RhbDogUHJvcFR5cGVzLmZ1bmMuaXNSZXF1aXJlZCxcbn1cblxuZXhwb3J0IGRlZmF1bHQgUXVlc3Rpb25Nb2RhbDtcbiJdfQ== */\n/*@ sourceURL=/Users/chrischavarro/clear-choice/clear-choice-admin/components/Student/LessonWorksheetTestSection/components/QuestionModal/index.js */"));
+    }
+  }]);
+
+  return QuestionModal;
+}(react__WEBPACK_IMPORTED_MODULE_8___default.a.Component);
+
+QuestionModal.propTypes = {
+  open: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.bool.isRequired,
+  question: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.object.isRequired,
+  onCloseModal: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (QuestionModal);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/index.js":
+/*!****************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/index.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _Portal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Portal */ "./components/Portal/index.js");
+/* harmony import */ var _components_PracticeQuestions__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/PracticeQuestions */ "./components/Student/LessonWorksheetTestSection/components/PracticeQuestions/index.js");
+/* harmony import */ var _components_ChallengeQuestions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/ChallengeQuestions */ "./components/Student/LessonWorksheetTestSection/components/ChallengeQuestions/index.js");
+/* harmony import */ var _components_QuestionModal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/QuestionModal */ "./components/Student/LessonWorksheetTestSection/components/QuestionModal/index.js");
+/* harmony import */ var _utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils/sampleQuestions */ "./components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js");
+
+
+
+
+
+
+
+
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
+
+
+
+
+
+
+
+var LessonWorksheetTestSection =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(LessonWorksheetTestSection, _React$Component);
+
+  function LessonWorksheetTestSection(props) {
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, LessonWorksheetTestSection);
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(LessonWorksheetTestSection).call(this, props));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleQuestionModal", function () {
+      var selectedQuestion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      return _this.setState(function (_ref) {
+        var questionModalOpen = _ref.questionModalOpen;
+        return {
+          questionModalOpen: !questionModalOpen,
+          selectedQuestion: selectedQuestion
+        };
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onOpenDropdown", function () {
+      return _this.setState({
+        dropdownIsOpen: true
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onCloseDropdown", function () {
+      return _this.setState({
+        dropdownIsOpen: false
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleDropdownClick", function (event) {
+      var dropdownIsOpen = _this.state.dropdownIsOpen;
+      event.preventDefault();
+
+      if (dropdownIsOpen) {
+        return _this.onCloseDropdown();
+      }
+
+      return _this.onOpenDropdown();
+    });
+
+    _this.state = {
+      selectedQuestion: {},
+      questionModalOpen: false,
+      answerSheetComplete: false,
+      questions: _utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_13__["default"],
+      status: 'notStarted',
+      dropdownIsOpen: false // can be started, complete, or instructor editing
+
+    };
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(LessonWorksheetTestSection, [{
+    key: "render",
+    value: function render() {
+      var _this$state = this.state,
+          questionModalOpen = _this$state.questionModalOpen,
+          selectedQuestion = _this$state.selectedQuestion,
+          questions = _this$state.questions,
+          answerSheetComplete = _this$state.answerSheetComplete,
+          dropdownIsOpen = _this$state.dropdownIsOpen;
+      var onClose = this.props.onClose;
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_QuestionModal__WEBPACK_IMPORTED_MODULE_12__["default"], {
+        open: questionModalOpen,
+        question: selectedQuestion,
+        onCloseModal: this.onToggleQuestionModal
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Portal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        selector: "#modal"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "wrapper modal",
+        style: {
+          zIndex: '1003',
+          display: 'block',
+          position: 'absolute',
+          top: '0',
+          width: '100%'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "header-box card-panel light-blue lighten-1 white-text",
+        style: {
+          zIndex: '9'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "header-flex-row row mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col s12 m7 xl8"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "header-holder"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "header-col"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "icon-col"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
+        className: "icon-books-l"
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "text-icon"
+      }, "Lesson"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "header-col"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-panel-text"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "text-small"
+      }, "Reading Unit #2"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
+        className: "text-large"
+      }, "Read Something"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "text-small"
+      }, "p.128  (challenge + practice)"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col s9 m4 xl3 position-mobile-left"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "card-panel-text"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h2", {
+        className: "text-large"
+      }, "Arnold Studently"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+        className: "text-small dl-horizontal"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Assigned:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
+        dateTime: "2019-01-06T08:00"
+      }, "1/6/19 at 8:00 AM"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+        className: "text-small dl-horizontal"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Due:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
+        dateTime: "2019-01-06T16:00"
+      }, "Today at 4:00 PM"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+        className: "text-small dl-horizontal"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Completed:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
+        dateTime: "2019-09-01T06:59"
+      }, "1/9/19 at 6:59 PM"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col s2 m1 right-align position-mobile-right"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "dropdown-block"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#",
+        "data-target": "dropdown_top",
+        className: "dropdown-trigger btn",
+        onClick: this.handleDropdownClick
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
+        className: "material-icons dots-icon"
+      }, "more_vert")), dropdownIsOpen ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        id: "dropdown_top",
+        className: "dropdown-content dropdown-exwide",
+        style: {
+          display: 'block',
+          opacity: '1',
+          transform: 'scaleX(1) scaleY(1)'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#",
+        className: "modal-trigger"
+      }, "Change Date")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#",
+        className: "modal-trigger"
+      }, "Change Due Date")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#",
+        className: "modal-trigger"
+      }, "Remove Due Date")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#"
+      }, "Excuse Latness")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#"
+      }, "Reset")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#",
+        className: "link-delete"
+      }, "Delete"))) : null), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "close-block",
+        onClick: onClose
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#",
+        className: "modal-close close"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
+        className: "icon-close-thin"
+      })))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "content-section content-section-85"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "container-sm"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "main-row row"
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ChallengeQuestions__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        answerSheetComplete: answerSheetComplete,
+        onOpenQuestionModal: this.onToggleQuestionModal,
+        questions: questions.filter(function (question) {
+          return question.questionType === 'Challenge';
+        })
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_PracticeQuestions__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        answerSheetComplete: answerSheetComplete,
+        onOpenQuestionModal: this.onToggleQuestionModal,
+        questions: questions.filter(function (question) {
+          return question.questionType === 'Practice';
+        })
+      })))))));
+    }
+  }]);
+
+  return LessonWorksheetTestSection;
+}(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
+
+LessonWorksheetTestSection.propTypes = {
+  onClose: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (LessonWorksheetTestSection);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/utils/index.js":
+/*!**********************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/utils/index.js ***!
+  \**********************************************************************/
+/*! exports provided: getAnswerChoiceColors, getAnswerPercentageBreakdownColors, getAnswerColor, difficultyMap, getCompleteAnswerColor */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAnswerChoiceColors", function() { return getAnswerChoiceColors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAnswerPercentageBreakdownColors", function() { return getAnswerPercentageBreakdownColors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAnswerColor", function() { return getAnswerColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "difficultyMap", function() { return difficultyMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCompleteAnswerColor", function() { return getCompleteAnswerColor; });
+var getAnswerChoiceColors = function getAnswerChoiceColors(answerLetter, correctAnswer, studentAnswer) {
+  if (correctAnswer) {
+    return {
+      backgroundColor: '#32955e'
+    };
+  } else if (answerLetter === studentAnswer && studentAnswer !== correctAnswer) {
+    return {
+      backgroundColor: '#db1d41'
+    };
+  }
+
+  return null;
+};
+var getAnswerPercentageBreakdownColors = function getAnswerPercentageBreakdownColors(colorType, answerLetter, answerPercentage, correctAnswer, studentAnswer) {
+  if (correctAnswer) {
+    if (colorType === 'full') {
+      return {
+        backgroundColor: '#32955c',
+        color: '#fff'
+      };
+    }
+
+    return {
+      width: "".concat(answerPercentage, "%"),
+      backgroundColor: '#d3efde'
+    };
+  } else if (answerLetter === studentAnswer && studentAnswer !== correctAnswer) {
+    if (colorType === 'full') {
+      return {
+        backgroundColor: '#db1d41',
+        color: '#fff'
+      };
+    }
+
+    return {
+      width: "".concat(answerPercentage, "%"),
+      backgroundColor: '#db1d41'
+    };
+  }
+
+  if (colorType === 'full') {
+    return {
+      backgroundColor: '#e5e5e5'
+    };
+  }
+
+  return {
+    width: "".concat(answerPercentage, "%"),
+    backgroundColor: '#e5e5e5'
+  };
+};
+var getAnswerColor = function getAnswerColor(answer) {
+  if (answer.correctAnswer) {
+    return {
+      color: '#3eb777',
+      borderColor: '#32955c'
+    };
+  }
+
+  return null;
+};
+var difficultyMap = {
+  'Easy': 'E',
+  'Medium': 'M',
+  'Difficult': 'D'
+};
+var getCompleteAnswerColor = function getCompleteAnswerColor(answerType, answer, studentAnswer) {
+  if (answerType === 'letter') {
+    if (answer.answerLetter !== studentAnswer && answer.correctAnswer) {
+      return {
+        color: '#32955c',
+        borderColor: '#32955c',
+        backgroundColor: '#fff'
+      };
+    } else if (answer.answerLetter === studentAnswer && answer.correctAnswer) {
+      return {
+        color: '#fff',
+        borderColor: '#32955c',
+        backgroundColor: '#3eb777'
+      };
+    } else if (!answer.correctAnswer && answer.answerLetter === studentAnswer) {
+      return {
+        color: '#fff',
+        borderColor: '#ad1e3e',
+        backgroundColor: '#db1d41'
+      };
+    }
+
+    return null;
+  }
+
+  if (answer.answerValue !== studentAnswer && answer.correctAnswer) {
+    return {
+      color: '#32955c',
+      borderColor: '#32955c',
+      backgroundColor: '#fff'
+    };
+  } else if (answer.answerValue === studentAnswer && answer.correctAnswer) {
+    return {
+      color: '#fff',
+      borderColor: '#32955c',
+      backgroundColor: '#3eb777'
+    };
+  } else if (!answer.correctAnswer && answer.answerValue === studentAnswer) {
+    return {
+      color: '#fff',
+      borderColor: '#ad1e3e',
+      backgroundColor: '#db1d41'
+    };
+  }
+
+  return null;
+};
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js":
+/*!********************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ([{
+  id: 1,
+  hasVideo: false,
+  questionType: 'Challenge',
+  questionNumber: 1,
+  topic: 'Special Right Triangles',
+  difficulty: 'Easy',
+  studentNotes: '1 this is an example of some pretty long student notes 1 this is an example of some pretty long student notes 1 this is an example of some pretty long student notes 1 this is an example of some pretty long student notes 1 this is an example of some pretty long student notes',
+  passage: "Question 1-10 are based on the following passage.\n    Why do we use it? \n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro id eius voluptatem explicabo harum eligendi modi minus velit, aliquam, repellat magni ab obcaecati. Maxime rerum beatae numquam aliquam vel soluta. Voluptatum architecto iusto totam error aliquid, et excepturi accusamus omnis, labore magni recusandae odit maxime. Velit laborum ab enim minima provident atque. Aperiam possimus quo maxime dolores voluptatem consequatur explicabo architecto corrupti, hic, laborum suscipit sequi voluptates dignissimos. Nostrum nesciunt possimus, eveniet dignissimos fugiat!\n    Where does it come from?\n    Inventore quod obcaecati labore aut molestiae illum sint harum, corrupti, neque incidunt sunt optio commodi, sequi aliquam vel mollitia aspernatur ad! Atque. Itaque earum suscipit voluptatem magni quaerat officia repudiandae.\n    ",
+  question: 'As it is used in line 14, convention most nearly means',
+  flagged: false,
+  studentAnswer: 'B',
+  answerType: 'letter',
+  answerChoices: [{
+    answerLetter: 'A',
+    answerText: 'ceremony',
+    correctAnswer: false,
+    answerPercentage: '12'
+  }, {
+    answerLetter: 'B',
+    answerText: 'ceremony2',
+    correctAnswer: false,
+    answerPercentage: '18'
+  }, {
+    answerLetter: 'C',
+    answerText: 'generalization',
+    correctAnswer: true,
+    answerPercentage: '40'
+  }, {
+    answerLetter: 'D',
+    answerText: 'code',
+    correctAnswer: false,
+    answerPercentage: '30'
+  }]
+}, {
+  id: 2,
+  hasVideo: true,
+  questionType: 'Challenge',
+  videoSource: 'https://www.youtube.com/watch?v=zGP6zk7jcrQ',
+  videoThumbnail: 'https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225921/Pembroke-Welsh-Corgi-MP.jpg',
+  questionNumber: 2,
+  topic: 'Geometry',
+  difficulty: 'Medium',
+  studentNotes: '2 this is an example of some pretty long student notes 2 this is an example of some pretty long student notes 2 this is an example of some pretty long student notes 2 this is an example of some pretty long student notes 2 this is an example of some pretty long student notes',
+  passage: "This is the start of another passage.\n    Why do we use it?\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro id eius voluptatem explicabo harum eligendi modi minus velit, aliquam, repellat magni ab obcaecati. Maxime rerum beatae numquam aliquam vel soluta. Voluptatum architecto iusto totam error aliquid, et excepturi accusamus omnis, labore magni recusandae odit maxime. Velit laborum ab enim minima provident atque. Aperiam possimus quo maxime dolores voluptatem consequatur explicabo architecto corrupti, hic, laborum suscipit sequi voluptates dignissimos. Nostrum nesciunt possimus, eveniet dignissimos fugiat!\n    Where does it come from?\n    Inventore quod obcaecati labore aut molestiae illum sint harum, corrupti, neque incidunt sunt optio commodi, sequi aliquam vel mollitia aspernatur ad! Atque. Itaque earum suscipit voluptatem magni quaerat officia repudiandae.\n    ",
+  question: 'What is the correct number choice',
+  flagged: true,
+  studentAnswer: '2.91',
+  answerType: 'value',
+  answerChoices: [{
+    answerValue: '5.12',
+    correctAnswer: true,
+    answerPercentage: '67'
+  }, {
+    answerValue: '2.91',
+    correctAnswer: false,
+    answerPercentage: '33'
+  }]
+}, {
+  id: 3,
+  hasVideo: true,
+  questionType: 'Challenge',
+  videoSource: 'https://www.youtube.com/watch?v=zGP6zk7jcrQ',
+  videoThumbnail: 'https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225921/Pembroke-Welsh-Corgi-MP.jpg',
+  questionNumber: 3,
+  topic: 'Pythagorean Theorem',
+  difficulty: 'Difficult',
+  studentNotes: '3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes',
+  passage: "Question three!\n    Why do we use it? \n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro id eius voluptatem explicabo harum eligendi modi minus velit, aliquam, repellat magni ab obcaecati. Maxime rerum beatae numquam aliquam vel soluta. Voluptatum architecto iusto totam error aliquid, et excepturi accusamus omnis, labore magni recusandae odit maxime. Velit laborum ab enim minima provident atque. Aperiam possimus quo maxime dolores voluptatem consequatur explicabo architecto corrupti, hic, laborum suscipit sequi voluptates dignissimos. Nostrum nesciunt possimus, eveniet dignissimos fugiat!\n    Where does it come from?\n    Inventore quod obcaecati labore aut molestiae illum sint harum, corrupti, neque incidunt sunt optio commodi, sequi aliquam vel mollitia aspernatur ad! Atque. Itaque earum suscipit voluptatem magni quaerat officia repudiandae.\n    ",
+  question: 'Here is the third question',
+  flagged: false,
+  studentAnswer: 'C',
+  answerType: 'letter',
+  answerChoices: [{
+    answerLetter: 'A',
+    answerText: 'answera',
+    correctAnswer: true,
+    answerPercentage: '62'
+  }, {
+    answerLetter: 'B',
+    answerText: 'answerb',
+    correctAnswer: false,
+    answerPercentage: '8'
+  }, {
+    answerLetter: 'C',
+    answerText: 'answerc',
+    correctAnswer: false,
+    answerPercentage: '20'
+  }, {
+    answerLetter: 'D',
+    answerText: 'answerd',
+    correctAnswer: false,
+    answerPercentage: '10'
+  }]
+}, {
+  id: 4,
+  hasVideo: false,
+  questionType: 'Challenge',
+  questionNumber: 4,
+  topic: 'Algebra',
+  difficulty: 'Medium',
+  studentNotes: '4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes',
+  passage: "Fourth passage sample.\n    Why do we use it?\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro id eius voluptatem explicabo harum eligendi modi minus velit, aliquam, repellat magni ab obcaecati. Maxime rerum beatae numquam aliquam vel soluta. Voluptatum architecto iusto totam error aliquid, et excepturi accusamus omnis, labore magni recusandae odit maxime. Velit laborum ab enim minima provident atque. Aperiam possimus quo maxime dolores voluptatem consequatur explicabo architecto corrupti, hic, laborum suscipit sequi voluptates dignissimos. Nostrum nesciunt possimus, eveniet dignissimos fugiat!\n    Where does it come from?\n    Inventore quod obcaecati labore aut molestiae illum sint harum, corrupti, neque incidunt sunt optio commodi, sequi aliquam vel mollitia aspernatur ad! Atque. Itaque earum suscipit voluptatem magni quaerat officia repudiandae.\n    ",
+  question: 'What is the correct number choice 2',
+  flagged: true,
+  studentAnswer: '6.91',
+  answerType: 'value',
+  answerChoices: [{
+    answerValue: '6.91',
+    correctAnswer: false,
+    answerPercentage: '22'
+  }, {
+    answerValue: '4.53',
+    correctAnswer: true,
+    answerPercentage: '78'
+  }]
+}, {
+  id: 5,
+  hasVideo: true,
+  questionType: 'Practice',
+  videoSource: 'https://www.youtube.com/watch?v=zGP6zk7jcrQ',
+  videoThumbnail: 'https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225921/Pembroke-Welsh-Corgi-MP.jpg',
+  questionNumber: 3,
+  topic: 'Pythagorean Theorem',
+  difficulty: 'Difficult',
+  studentNotes: '3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes 3 this is an example of some pretty long student notes',
+  passage: "Question three!\n    Why do we use it? \n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro id eius voluptatem explicabo harum eligendi modi minus velit, aliquam, repellat magni ab obcaecati. Maxime rerum beatae numquam aliquam vel soluta. Voluptatum architecto iusto totam error aliquid, et excepturi accusamus omnis, labore magni recusandae odit maxime. Velit laborum ab enim minima provident atque. Aperiam possimus quo maxime dolores voluptatem consequatur explicabo architecto corrupti, hic, laborum suscipit sequi voluptates dignissimos. Nostrum nesciunt possimus, eveniet dignissimos fugiat!\n    Where does it come from?\n    Inventore quod obcaecati labore aut molestiae illum sint harum, corrupti, neque incidunt sunt optio commodi, sequi aliquam vel mollitia aspernatur ad! Atque. Itaque earum suscipit voluptatem magni quaerat officia repudiandae.\n    ",
+  question: 'Here is the third question',
+  flagged: false,
+  studentAnswer: 'C',
+  answerType: 'letter',
+  answerChoices: [{
+    answerLetter: 'A',
+    answerText: 'answera',
+    correctAnswer: true,
+    answerPercentage: '62'
+  }, {
+    answerLetter: 'B',
+    answerText: 'answerb',
+    correctAnswer: false,
+    answerPercentage: '8'
+  }, {
+    answerLetter: 'C',
+    answerText: 'answerc',
+    correctAnswer: false,
+    answerPercentage: '20'
+  }, {
+    answerLetter: 'D',
+    answerText: 'answerd',
+    correctAnswer: false,
+    answerPercentage: '10'
+  }]
+}, {
+  id: 6,
+  hasVideo: false,
+  questionType: 'Practice',
+  questionNumber: 4,
+  topic: 'Algebra',
+  difficulty: 'Medium',
+  studentNotes: '4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes 4 this is an example of some pretty long student notes',
+  passage: "Fourth passage sample.\n    Why do we use it? \n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro id eius voluptatem explicabo harum eligendi modi minus velit, aliquam, repellat magni ab obcaecati. Maxime rerum beatae numquam aliquam vel soluta. Voluptatum architecto iusto totam error aliquid, et excepturi accusamus omnis, labore magni recusandae odit maxime. Velit laborum ab enim minima provident atque. Aperiam possimus quo maxime dolores voluptatem consequatur explicabo architecto corrupti, hic, laborum suscipit sequi voluptates dignissimos. Nostrum nesciunt possimus, eveniet dignissimos fugiat!\n    Where does it come from?\n    Inventore quod obcaecati labore aut molestiae illum sint harum, corrupti, neque incidunt sunt optio commodi, sequi aliquam vel mollitia aspernatur ad! Atque. Itaque earum suscipit voluptatem magni quaerat officia repudiandae.\n    ",
+  question: 'What is the correct number choice 2',
+  flagged: true,
+  studentAnswer: '6.91',
+  answerType: 'value',
+  answerChoices: [{
+    answerValue: '6.91',
+    correctAnswer: false,
+    answerPercentage: '22'
+  }, {
+    answerValue: '4.53',
+    correctAnswer: true,
+    answerPercentage: '78'
+  }]
+}]);
 
 /***/ }),
 
