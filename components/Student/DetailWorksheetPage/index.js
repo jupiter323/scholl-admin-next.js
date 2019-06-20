@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FullView from './components/FullView';
 import ListView from './components/ListView';
@@ -183,6 +184,10 @@ class DetailWorksheetPage extends React.Component {
       </React.Fragment>
     );
   }
+}
+
+DetailWorksheetPage.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 export default DetailWorksheetPage;
