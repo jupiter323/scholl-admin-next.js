@@ -7,8 +7,11 @@ class ChallengeQuestions extends React.Component {
     <Question
       key={question.id}
       question={question}
+      questionDropdownIndex={this.props.questionDropdownIndex}
+      questionDropdownOpen={this.props.questionDropdownOpen}
       answerSheetComplete={this.props.answerSheetComplete}
       onOpenQuestionModal={this.props.onOpenQuestionModal}
+      handleQuestionDropdownClick={this.props.handleQuestionDropdownClick}
     />
   ))
 
@@ -32,8 +35,11 @@ class ChallengeQuestions extends React.Component {
 
 ChallengeQuestions.propTypes = {
   questions: PropTypes.array.isRequired,
+  questionDropdownIndex: PropTypes.number,
   answerSheetComplete: PropTypes.bool.isRequired,
   onOpenQuestionModal: PropTypes.func.isRequired,
+  questionDropdownOpen: PropTypes.bool.isRequired,
+  handleQuestionDropdownClick: PropTypes.func.isRequired,
 };
 
 export default ChallengeQuestions;

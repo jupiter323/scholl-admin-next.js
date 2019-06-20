@@ -18,7 +18,8 @@ class DetailWorksheetPage extends React.Component {
       currentView: 'full',
       assignWorksheetDropdownOpen: false,
       worksheets: sampleWorksheets,
-      detailModalOpen: true,
+      detailModalOpen: false,
+      activeWorksheet: null,
     };
   }
 
@@ -27,7 +28,7 @@ class DetailWorksheetPage extends React.Component {
     this.setState(({ assignWorksheetDropdownOpen }) => ({ assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen }))
 }
 
-  onToggleDetailModalOpen = () => this.setState(({ detailModalOpen }) => ({ detailModalOpen: !detailModalOpen }))
+  onToggleDetailModalOpen = (worksheetIndex) => this.setState(({ detailModalOpen, worksheets }) => ({ detailModalOpen: !detailModalOpen, activeWorksheet: worksheets[worksheetIndex] }))
 
   onSetSort = (sort) => this.setState({ sort })
   onChangeView = (view) => this.setState({ currentView: view });
@@ -134,13 +135,16 @@ class DetailWorksheetPage extends React.Component {
   }
 
   render() {
-    const { currentView, assignWorksheetDropdownOpen, detailModalOpen } = this.state;
+    const { currentView, assignWorksheetDropdownOpen, detailModalOpen, activeWorksheet } = this.state;
+    const { user } = this.props;
     return (
       <React.Fragment>
         <Choose>
           <When condition={detailModalOpen}>
             <LessonWorksheetTestSection
               onClose={this.onToggleDetailModalOpen}
+              worksheet={activeWorksheet}
+              user={user}
             />
           </When>
           <Otherwise>

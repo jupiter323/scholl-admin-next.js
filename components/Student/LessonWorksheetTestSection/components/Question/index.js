@@ -71,7 +71,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { onOpenQuestionModal, question, answerSheetComplete } = this.props;
+    const { onOpenQuestionModal, question, answerSheetComplete, handleQuestionDropdownClick, questionDropdownOpen, questionDropdownIndex } = this.props;
     const { difficulty, hasVideo, flagged, studentNotes } = question;
     return (
       <li className="answers-list-holder">
@@ -101,7 +101,21 @@ class Question extends React.Component {
             </If>
           </div>
           <div className="dropdown-block col col-35">
-            <a className='modal-trigger' onClick={() => onOpenQuestionModal(question)} href="#"><i className="material-icons dots-icon">more_vert</i></a>
+            <a
+              href='#'
+              className='dropdown-trigger'
+              data-target='dropdown_answer01-3'
+              onClick={(event) => handleQuestionDropdownClick(event, question)}
+            >
+              <i className="material-icons dots-icon">more_vert</i>
+            </a>
+            <If condition={questionDropdownOpen && question.id === questionDropdownIndex}>
+              <ul id='dropdown_answer01-3' className='dropdown-content dropdown-exwide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
+                <li><a className='modal-trigger' href="#" onClick={() => onOpenQuestionModal(question)}>View Problem</a></li>
+                <li><a href="#!">Dismiss Flag</a></li>
+                <li><a href="#!">Edit Response</a></li>
+              </ul>
+            </If>
           </div>
         </div>
         <If condition={answerSheetComplete && studentNotes}>
@@ -118,6 +132,9 @@ Question.propTypes = {
   question: PropTypes.object.isRequired,
   onOpenQuestionModal: PropTypes.func.isRequired,
   answerSheetComplete: PropTypes.bool.isRequired,
+  questionDropdownOpen: PropTypes.bool.isRequired,
+  questionDropdownIndex: PropTypes.number.isRequired,
+  handleQuestionDropdownClick: PropTypes.func.isRequired,
 };
 
 export default Question;

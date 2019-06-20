@@ -19,11 +19,13 @@ class LessonWorksheetTestSection extends React.Component {
       questions: sampleQuestions,
       status: 'notStarted',
       dropdownIsOpen: false,
+      questionDropdownOpen: false,
+      questionDropdownIndex: null,
       // can be started, complete, or instructor editing
     };
   }
 
-  onToggleQuestionModal = (selectedQuestion = null) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, selectedQuestion }))
+  onToggleQuestionModal = (selectedQuestion = {}) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, selectedQuestion }))
 
   onOpenDropdown = () => this.setState({ dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
@@ -37,9 +39,24 @@ class LessonWorksheetTestSection extends React.Component {
     return this.onOpenDropdown();
   }
 
+  handleQuestionDropdownClick = (event, question) => {
+    const { questionDropdownOpen, questionDropdownIndex } = this.state;
+    event.preventDefault();
+    if (questionDropdownOpen && question.id === questionDropdownIndex) {
+      this.setState({ questionDropdownOpen: false, questionDropdownIndex: null });
+    } else if (questionDropdownOpen && question !== questionDropdownIndex) {
+      this.setState({ questionDropdownIndex: question.id });
+    } else if (questionDropdownOpen && question.id === questionDropdownIndex) {
+      this.setState({ questionDropdownOpen: false, questionDropdownIndex: null });
+    } else {
+      this.setState({ questionDropdownOpen: true, questionDropdownIndex: question.id });
+    }
+  }
+
   render() {
-    const { questionModalOpen, selectedQuestion, questions, answerSheetComplete, dropdownIsOpen } = this.state;
-    const { onClose } = this.props;
+    const { questionModalOpen, selectedQuestion, questions, answerSheetComplete, dropdownIsOpen, questionDropdownOpen, questionDropdownIndex } = this.state;
+    const { onClose, worksheet, user = {} } = this.props;
+    const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
         <QuestionModal
@@ -61,23 +78,23 @@ class LessonWorksheetTestSection extends React.Component {
                     </div>
                     <div className="header-col">
                       <div className="card-panel-text">
-                        <div className="text-small">Reading Unit #2</div>
-                        <h1 className="text-large">Read Something</h1>
-                        <div className="text-small">p.128  (challenge + practice)</div>
+                        <div className="text-small">{worksheet.unit}</div>
+                        <h1 className="text-large">{worksheet.worksheetName}</h1>
+                        <div className="text-small">p.{worksheet.passage}  ({worksheet.type})</div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="col s9 m4 xl3 position-mobile-left">
                   <div className="card-panel-text">
-                    <h2 className="text-large">Arnold Studently</h2>
+                    <h2 className="text-large">{firstName} {lastName}</h2>
                     <dl className="text-small dl-horizontal">
                       <dt>Assigned:</dt>
-                      <dd><time dateTime="2019-01-06T08:00">1/6/19 at 8:00 AM</time></dd>
+                      <dd><time dateTime="2019-01-06T08:00">{worksheet.assignDate} at {worksheet.assignTime}</time></dd>
                     </dl>
                     <dl className="text-small dl-horizontal">
                       <dt>Due:</dt>
-                      <dd><time dateTime="2019-01-06T16:00">Today at 4:00 PM</time></dd>
+                      <dd><time dateTime="2019-01-06T16:00">{worksheet.dueDate} at {worksheet.dueTime}</time></dd>
                     </dl>
                     <dl className="text-small dl-horizontal">
                       <dt>Completed:</dt>
@@ -117,12 +134,18 @@ class LessonWorksheetTestSection extends React.Component {
                 <div className="main-row row">
                   <ChallengeQuestions
                     answerSheetComplete={answerSheetComplete}
+                    questionDropdownIndex={questionDropdownIndex}
+                    questionDropdownOpen={questionDropdownOpen}
                     onOpenQuestionModal={this.onToggleQuestionModal}
+                    handleQuestionDropdownClick={this.handleQuestionDropdownClick}
                     questions={questions.filter(question => question.questionType === 'Challenge')}
                   />
                   <PracticeQuestions
                     answerSheetComplete={answerSheetComplete}
+                    questionDropdownIndex={questionDropdownIndex}
+                    questionDropdownOpen={questionDropdownOpen}
                     onOpenQuestionModal={this.onToggleQuestionModal}
+                    handleQuestionDropdownClick={this.handleQuestionDropdownClick}
                     questions={questions.filter(question => question.questionType === 'Practice')}
                   />
                 </div>

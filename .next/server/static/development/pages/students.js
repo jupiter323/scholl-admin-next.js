@@ -6746,7 +6746,9 @@ function (_React$Component) {
         }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
           href: "#",
           className: "modal-trigger link-block",
-          onClick: onToggleDetailModalOpen
+          onClick: function onClick() {
+            return onToggleDetailModalOpen(index);
+          }
         }, "View Details")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
           href: "#!"
         }, "Dismiss Flags")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
@@ -7208,11 +7210,13 @@ function (_React$Component) {
       });
     });
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleDetailModalOpen", function () {
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleDetailModalOpen", function (worksheetIndex) {
       return _this.setState(function (_ref2) {
-        var detailModalOpen = _ref2.detailModalOpen;
+        var detailModalOpen = _ref2.detailModalOpen,
+            worksheets = _ref2.worksheets;
         return {
-          detailModalOpen: !detailModalOpen
+          detailModalOpen: !detailModalOpen,
+          activeWorksheet: worksheets[worksheetIndex]
         };
       });
     });
@@ -7399,7 +7403,8 @@ function (_React$Component) {
       currentView: 'full',
       assignWorksheetDropdownOpen: false,
       worksheets: _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_11__["default"],
-      detailModalOpen: true
+      detailModalOpen: false,
+      activeWorksheet: null
     };
     return _this;
   }
@@ -7412,9 +7417,13 @@ function (_React$Component) {
       var _this$state5 = this.state,
           currentView = _this$state5.currentView,
           assignWorksheetDropdownOpen = _this$state5.assignWorksheetDropdownOpen,
-          detailModalOpen = _this$state5.detailModalOpen;
+          detailModalOpen = _this$state5.detailModalOpen,
+          activeWorksheet = _this$state5.activeWorksheet;
+      var user = this.props.user;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, detailModalOpen ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_13__["default"], {
-        onClose: this.onToggleDetailModalOpen
+        onClose: this.onToggleDetailModalOpen,
+        worksheet: activeWorksheet,
+        user: user
       }) : [react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "main-holder grey lighten-5 switcher-section",
         key: "0"
@@ -7494,6 +7503,8 @@ var formatTimeEstimate = function formatTimeEstimate(totalMinutes) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../LessonWorksheetTestSection/utils/sampleQuestions */ "./components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ([{
   id: 1,
   worksheetName: 'Some SAT Problems about Triangles',
@@ -7504,16 +7515,24 @@ __webpack_require__.r(__webpack_exports__);
   difficulty: 'Beginner',
   timeEstimate: '14',
   assignDate: '1/27/19',
+  assignTime: '3:01 PM',
   availableDate: '1/27/19',
   dueDate: '2/10/19',
+  dueTime: '9:32 AM',
+  completedDate: '3/12/19',
+  completedTime: '2:53 PM',
   completed: '',
+  unit: 'Reading Unit #4',
+  passage: '214',
+  type: 'challenge + practice',
   flags: [],
   status: 'Assigned',
   disabled: true,
   late: false,
   topic: 'specialRightTriangles',
   worksheetSource: 'Admin Created',
-  classifications: ['Right Triangles', 'More Math', "Lots Of Math"]
+  classifications: ['Right Triangles', 'More Math', "Lots Of Math"],
+  questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 2,
   worksheetName: 'Worksheet 2',
@@ -7524,16 +7543,24 @@ __webpack_require__.r(__webpack_exports__);
   difficulty: 'Beginner',
   timeEstimate: '30',
   assignDate: '1/19/19',
+  assignTime: '3:01 PM',
   availableDate: '1/19/19',
   dueDate: '2/02/19',
+  dueTime: '9:32 AM',
+  completedDate: '',
+  completedTime: '',
   completed: 0,
+  unit: 'Reading Unit #4',
+  passage: '51',
+  type: 'challenge + practice',
   flags: ['one', 'two', 'three'],
   status: 'Assigned',
   disabled: false,
   late: true,
   topic: 'topic2',
   worksheetSource: 'User Created',
-  classifications: ['Math', 'More Math', "Lots Of Math"]
+  classifications: ['Math', 'More Math', "Lots Of Math"],
+  questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 3,
   worksheetName: 'Worksheet 3',
@@ -7544,16 +7571,24 @@ __webpack_require__.r(__webpack_exports__);
   difficulty: 'Advanced',
   timeEstimate: '24',
   assignDate: '1/11/19',
+  assignTime: '3:01 PM',
   availableDate: '1/11/19',
   dueDate: '2/12/19',
+  dueTime: '9:32 AM',
+  completedDate: '3/12/19',
+  completedTime: '2:53 PM',
   completed: 10,
+  unit: 'Reading Unit #4',
+  passage: '121',
+  type: 'challenge + practice',
   flags: [],
   status: 'Accomplished',
   disabled: false,
   late: false,
   topic: 'topic2',
   worksheetSource: 'Admin Created',
-  classifications: ['Right Triangles', 'Math', "Lots Of Math"]
+  classifications: ['Right Triangles', 'Math', "Lots Of Math"],
+  questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 4,
   worksheetName: 'Worksheet 4',
@@ -7564,16 +7599,24 @@ __webpack_require__.r(__webpack_exports__);
   difficulty: 'Mixed',
   timeEstimate: '31',
   assignDate: '1/24/19',
+  assignTime: '3:01 PM',
   availableDate: '1/24/19',
   dueDate: '2/27/19',
+  dueTime: '9:32 AM',
+  completedDate: '',
+  completedTime: '',
   completed: 4,
+  unit: 'Reading Unit #4',
+  passage: '128',
+  type: 'challenge + practice',
   flags: [],
   status: 'Beginning',
   disabled: false,
   late: true,
   topic: 'topic3',
   worksheetSource: 'User Created',
-  classifications: ['Trigonometry', 'More Math', "Lots Of Math"]
+  classifications: ['Trigonometry', 'More Math', "Lots Of Math"],
+  questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 5,
   worksheetName: 'Worksheet 5',
@@ -7584,16 +7627,24 @@ __webpack_require__.r(__webpack_exports__);
   difficulty: 'Mixed',
   timeEstimate: '23',
   assignDate: '1/12/19',
+  assignTime: '3:01 PM',
   availableDate: '1/12/19',
   dueDate: '2/03/19',
+  dueTime: '9:32 AM',
+  completedDate: '3/12/19',
+  completedTime: '2:53 PM',
   completed: 6,
+  unit: 'Reading Unit #4',
+  passage: '73',
+  type: 'challenge + practice',
   flags: [],
   status: 'Exemplary',
   disabled: false,
   late: false,
   topic: 'topic3',
   worksheetSource: 'Admin Created',
-  classifications: ['Trigonometry', 'Math', "Lots Of Math"]
+  classifications: ['Trigonometry', 'Math', "Lots Of Math"],
+  questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 6,
   worksheetName: 'Worksheet 6',
@@ -7604,16 +7655,24 @@ __webpack_require__.r(__webpack_exports__);
   difficulty: 'Advanced',
   timeEstimate: '65',
   assignDate: '1/09/19',
+  assignTime: '3:01 PM',
   availableDate: '1/09/19',
   dueDate: '2/12/19',
+  dueTime: '9:32 AM',
+  completedDate: '',
+  completedTime: '',
   completed: 5,
+  unit: 'Reading Unit #4',
+  passage: '153',
+  type: 'challenge + practice',
   flags: [],
   status: 'Developing',
   disabled: false,
   late: false,
   topic: 'topic4',
   worksheetSource: 'User Created',
-  classifications: ['Right Triangles', 'Trigonometry', 'More Math']
+  classifications: ['Right Triangles', 'Trigonometry', 'More Math'],
+  questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }]);
 
 /***/ }),
@@ -7962,8 +8021,11 @@ function (_React$Component) {
         return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Question__WEBPACK_IMPORTED_MODULE_9__["default"], {
           key: question.id,
           question: question,
+          questionDropdownIndex: _this.props.questionDropdownIndex,
+          questionDropdownOpen: _this.props.questionDropdownOpen,
           answerSheetComplete: _this.props.answerSheetComplete,
-          onOpenQuestionModal: _this.props.onOpenQuestionModal
+          onOpenQuestionModal: _this.props.onOpenQuestionModal,
+          handleQuestionDropdownClick: _this.props.handleQuestionDropdownClick
         });
       });
     });
@@ -7993,8 +8055,11 @@ function (_React$Component) {
 
 ChallengeQuestions.propTypes = {
   questions: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired,
+  questionDropdownIndex: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number,
   answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
-  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  questionDropdownOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  handleQuestionDropdownClick: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (ChallengeQuestions);
 
@@ -8055,8 +8120,11 @@ function (_React$Component) {
         return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Question__WEBPACK_IMPORTED_MODULE_9__["default"], {
           key: question.id,
           question: question,
+          questionDropdownIndex: _this.props.questionDropdownIndex,
+          questionDropdownOpen: _this.props.questionDropdownOpen,
           answerSheetComplete: _this.props.answerSheetComplete,
-          onOpenQuestionModal: _this.props.onOpenQuestionModal
+          onOpenQuestionModal: _this.props.onOpenQuestionModal,
+          handleQuestionDropdownClick: _this.props.handleQuestionDropdownClick
         });
       });
     });
@@ -8086,8 +8154,11 @@ function (_React$Component) {
 
 PracticeQuestions.propTypes = {
   questions: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.array.isRequired,
+  questionDropdownIndex: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number,
   answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
-  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+  onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  questionDropdownOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  handleQuestionDropdownClick: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (PracticeQuestions);
 
@@ -8211,7 +8282,10 @@ function (_React$Component) {
       var _this$props2 = this.props,
           onOpenQuestionModal = _this$props2.onOpenQuestionModal,
           question = _this$props2.question,
-          answerSheetComplete = _this$props2.answerSheetComplete;
+          answerSheetComplete = _this$props2.answerSheetComplete,
+          handleQuestionDropdownClick = _this$props2.handleQuestionDropdownClick,
+          questionDropdownOpen = _this$props2.questionDropdownOpen,
+          questionDropdownIndex = _this$props2.questionDropdownIndex;
       var difficulty = question.difficulty,
           hasVideo = question.hasVideo,
           flagged = question.flagged,
@@ -8272,14 +8346,33 @@ function (_React$Component) {
       }, "Review")) : null), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "dropdown-block col col-35"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        className: "modal-trigger",
-        onClick: function onClick() {
-          return onOpenQuestionModal(question);
-        },
-        href: "#"
+        href: "#",
+        className: "dropdown-trigger",
+        "data-target": "dropdown_answer01-3",
+        onClick: function onClick(event) {
+          return handleQuestionDropdownClick(event, question);
+        }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
         className: "material-icons dots-icon"
-      }, "more_vert")))), answerSheetComplete && studentNotes ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, "more_vert")), questionDropdownOpen && question.id === questionDropdownIndex ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        id: "dropdown_answer01-3",
+        className: "dropdown-content dropdown-exwide",
+        style: {
+          display: 'block',
+          opacity: '1',
+          transform: 'scaleX(1) scaleY(1)'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        className: "modal-trigger",
+        href: "#",
+        onClick: function onClick() {
+          return onOpenQuestionModal(question);
+        }
+      }, "View Problem")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#!"
+      }, "Dismiss Flag")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
+        href: "#!"
+      }, "Edit Response"))) : null)), answerSheetComplete && studentNotes ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "comment-block"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("p", null, "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?")) : null);
     }
@@ -8292,7 +8385,10 @@ function (_React$Component) {
 Question.propTypes = {
   question: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired,
   onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
-  answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired
+  answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  questionDropdownOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  questionDropdownIndex: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number.isRequired,
+  handleQuestionDropdownClick: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (Question);
 
@@ -8642,7 +8738,7 @@ function (_React$Component) {
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(LessonWorksheetTestSection).call(this, props));
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleQuestionModal", function () {
-      var selectedQuestion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var selectedQuestion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       return _this.setState(function (_ref) {
         var questionModalOpen = _ref.questionModalOpen;
         return {
@@ -8675,13 +8771,43 @@ function (_React$Component) {
       return _this.onOpenDropdown();
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleQuestionDropdownClick", function (event, question) {
+      var _this$state = _this.state,
+          questionDropdownOpen = _this$state.questionDropdownOpen,
+          questionDropdownIndex = _this$state.questionDropdownIndex;
+      event.preventDefault();
+
+      if (questionDropdownOpen && question.id === questionDropdownIndex) {
+        _this.setState({
+          questionDropdownOpen: false,
+          questionDropdownIndex: null
+        });
+      } else if (questionDropdownOpen && question !== questionDropdownIndex) {
+        _this.setState({
+          questionDropdownIndex: question.id
+        });
+      } else if (questionDropdownOpen && question.id === questionDropdownIndex) {
+        _this.setState({
+          questionDropdownOpen: false,
+          questionDropdownIndex: null
+        });
+      } else {
+        _this.setState({
+          questionDropdownOpen: true,
+          questionDropdownIndex: question.id
+        });
+      }
+    });
+
     _this.state = {
       selectedQuestion: {},
       questionModalOpen: false,
       answerSheetComplete: false,
       questions: _utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_13__["default"],
       status: 'notStarted',
-      dropdownIsOpen: false // can be started, complete, or instructor editing
+      dropdownIsOpen: false,
+      questionDropdownOpen: false,
+      questionDropdownIndex: null // can be started, complete, or instructor editing
 
     };
     return _this;
@@ -8690,13 +8816,22 @@ function (_React$Component) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(LessonWorksheetTestSection, [{
     key: "render",
     value: function render() {
-      var _this$state = this.state,
-          questionModalOpen = _this$state.questionModalOpen,
-          selectedQuestion = _this$state.selectedQuestion,
-          questions = _this$state.questions,
-          answerSheetComplete = _this$state.answerSheetComplete,
-          dropdownIsOpen = _this$state.dropdownIsOpen;
-      var onClose = this.props.onClose;
+      var _this$state2 = this.state,
+          questionModalOpen = _this$state2.questionModalOpen,
+          selectedQuestion = _this$state2.selectedQuestion,
+          questions = _this$state2.questions,
+          answerSheetComplete = _this$state2.answerSheetComplete,
+          dropdownIsOpen = _this$state2.dropdownIsOpen,
+          questionDropdownOpen = _this$state2.questionDropdownOpen,
+          questionDropdownIndex = _this$state2.questionDropdownIndex;
+      var _this$props = this.props,
+          onClose = _this$props.onClose,
+          worksheet = _this$props.worksheet,
+          _this$props$user = _this$props.user,
+          user = _this$props$user === void 0 ? {} : _this$props$user;
+      var _user$studentInformat = user.studentInformation,
+          firstName = _user$studentInformat.firstName,
+          lastName = _user$studentInformat.lastName;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_QuestionModal__WEBPACK_IMPORTED_MODULE_12__["default"], {
         open: questionModalOpen,
         question: selectedQuestion,
@@ -8737,25 +8872,25 @@ function (_React$Component) {
         className: "card-panel-text"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "text-small"
-      }, "Reading Unit #2"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
+      }, worksheet.unit), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
         className: "text-large"
-      }, "Read Something"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, worksheet.worksheetName), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "text-small"
-      }, "p.128  (challenge + practice)"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, "p.", worksheet.passage, "  (", worksheet.type, ")"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s9 m4 xl3 position-mobile-left"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-panel-text"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h2", {
         className: "text-large"
-      }, "Arnold Studently"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+      }, firstName, " ", lastName), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
         className: "text-small dl-horizontal"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Assigned:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
         dateTime: "2019-01-06T08:00"
-      }, "1/6/19 at 8:00 AM"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+      }, worksheet.assignDate, " at ", worksheet.assignTime))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
         className: "text-small dl-horizontal"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Due:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
         dateTime: "2019-01-06T16:00"
-      }, "Today at 4:00 PM"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+      }, worksheet.dueDate, " at ", worksheet.dueTime))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
         className: "text-small dl-horizontal"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Completed:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
         dateTime: "2019-09-01T06:59"
@@ -8810,13 +8945,19 @@ function (_React$Component) {
         className: "main-row row"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ChallengeQuestions__WEBPACK_IMPORTED_MODULE_11__["default"], {
         answerSheetComplete: answerSheetComplete,
+        questionDropdownIndex: questionDropdownIndex,
+        questionDropdownOpen: questionDropdownOpen,
         onOpenQuestionModal: this.onToggleQuestionModal,
+        handleQuestionDropdownClick: this.handleQuestionDropdownClick,
         questions: questions.filter(function (question) {
           return question.questionType === 'Challenge';
         })
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_PracticeQuestions__WEBPACK_IMPORTED_MODULE_10__["default"], {
         answerSheetComplete: answerSheetComplete,
+        questionDropdownIndex: questionDropdownIndex,
+        questionDropdownOpen: questionDropdownOpen,
         onOpenQuestionModal: this.onToggleQuestionModal,
+        handleQuestionDropdownClick: this.handleQuestionDropdownClick,
         questions: questions.filter(function (question) {
           return question.questionType === 'Practice';
         })
