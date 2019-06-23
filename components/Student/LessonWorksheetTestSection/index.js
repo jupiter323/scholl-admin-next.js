@@ -127,10 +127,12 @@ class LessonWorksheetTestSection extends React.Component {
                       <dt>Due:</dt>
                       <dd><time dateTime="2019-01-06T16:00">{worksheet.dueDate} at {worksheet.dueTime}</time></dd>
                     </dl>
-                    <dl className="text-small dl-horizontal">
-                      <dt>Completed:</dt>
-                      <dd><time dateTime="2019-09-01T06:59">1/9/19 at 6:59 PM</time></dd>
-                    </dl>
+                    <If condition={worksheet.completionDate}>
+                      <dl className="text-small dl-horizontal">
+                        <dt>Completed:</dt>
+                        <dd><time dateTime="2019-09-01T06:59">{worksheet.completionDate} at {worksheet.completionTime}</time></dd>
+                      </dl>
+                    </If>
                   </div>
                 </div>
                 <div className="col s2 m1 right-align position-mobile-right">
@@ -167,7 +169,7 @@ class LessonWorksheetTestSection extends React.Component {
                     flags={worksheet.flags}
                     status={worksheet.status}
                     problems={worksheet.problems}
-                    completedProblems={worksheet.completed}
+                    completedProblems={worksheet.completedProblems}
                     completionLevel={worksheet.completionLevel}
                     totalVideoMinutesWatched={worksheet.totalVideoMinutesWatched}
                     totalVideoMinutesAllMissedProblems={worksheet.totalVideoMinutesAllMissedProblems}

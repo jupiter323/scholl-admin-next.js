@@ -1,26 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const getProblemCompletionStatusColor = (solvedProblems, totalProblems) => {
-  if (solvedProblems / totalProblems <= .25) {
-    return { backgroundColor: '#ed1c25' };
-  } else if (solvedProblems / totalProblems <= .5) {
-    return { backgroundColor: '#a005a5' };
-  }
-  return { backgroundColor: '#0200fd' };
-}
-
-// assigned ? 'card-main card-lesson-detail card-assigned card' : 'card-main card-lesson-detail card'}
-
-const getLessonActivityStatus = (assigned, dueDate) => {
-  if (assigned && dueDate) {
-    return 'card-main card-lesson-detail card-assigned card';
-  }
-  if (!assigned && !dueDate) {
-    return 'card-main card-lesson-detail card-not-assigned card';
-  }
-  return 'card-main card-lesson-detail card';
-}
+import { getProblemCompletionStatusColor, getLessonActivityStatus } from '../../utils';
 
 class LessonCard extends React.Component {
   constructor(props) {
@@ -28,6 +9,15 @@ class LessonCard extends React.Component {
     this.state = {
       test: true,
     };
+  }
+
+  handleDropdownClick = (event) => {
+    const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
+    event.preventDefault();
+    if (dropdownIsOpen) {
+      return onCloseDropdown();
+    }
+    return onSetDropdown(index);
   }
 
   // eslint-disable-next-line consistent-return
@@ -123,9 +113,10 @@ class LessonCard extends React.Component {
   }
 
   render() {
-    const { lesson: { subject, unitNumber, lessonName, assigned, alerts,
-      lessonType, totalProblems, solvedProblems = '', passage, dueDate, dueTime,
-      completed, availableDate, completionDate, completionTime, completedLate, overdue } } = this.props;
+    const { lesson: { subject, unitNumber, lessonName, assigned, alerts, lessonType,
+      totalProblems, solvedProblems = '', passage, dueDate, dueTime, completed, availableDate,
+      completionDate, completionTime, completedLate, overdue }, dropdownIsOpen, dropdownIndex,
+      onToggleDetailModalOpen, index } = this.props;
     return (
       <div className="card-main-col col s12 m8 l7 xl5">
        <div className={getLessonActivityStatus(assigned, dueDate)}>
@@ -143,18 +134,28 @@ class LessonCard extends React.Component {
              <div className="col s1 right-align">
                <div className="row icons-row">
                  <div className="dropdown-block col">
-                   {/* <!-- Dropdown Trigger --> */}
-                   <a className='dropdown-trigger btn' href='#' data-target='dropdown01'><i className="material-icons dots-icon">more_vert</i></a>
-                   {/* <!-- Dropdown Structure --> */}
-                   <ul id='dropdown01' className='dropdown-content dropdown-wide'>
-                     <li>
-                       {/* <!-- Modal Trigger --> */}
-                       <a href="#modal_user_edit" className="modal-trigger link-block">Edit</a>
-                     </li>
-                     <li><a href="#!">Clone</a></li>
-                     <li><a href="#!">Show Owner</a></li>
-                     <li><a href="#!">Delete</a></li>
-                   </ul>
+                   <a
+                     href='#'
+                     data-target='dropdown01'
+                     className='dropdown-trigger btn'
+                     onClick={this.handleDropdownClick}
+                   >
+                    <i className="material-icons dots-icon">more_vert</i>
+                   </a>
+                   <If condition={dropdownIsOpen && dropdownIndex === index}>
+                     <ul
+                       id='dropdown01'
+                       className='dropdown-content dropdown-wide'
+                       style={{ display: 'block', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
+                     >
+                       <li>
+                         <a href="#" onClick={() => onToggleDetailModalOpen(index)} className="modal-trigger link-block">Edit</a>
+                       </li>
+                       <li><a href="#">Clone</a></li>
+                       <li><a href="#">Show Owner</a></li>
+                       <li><a href="#">Delete</a></li>
+                     </ul>
+                   </If>
                  </div>
                </div>
              </div>
@@ -194,7 +195,13 @@ class LessonCard extends React.Component {
 }
 
 LessonCard.propTypes = {
+  dropdownIndex: PropTypes.number,
+  index: PropTypes.number.isRequired,
   lesson: PropTypes.object.isRequired,
+  onSetDropdown: PropTypes.func.isRequired,
+  dropdownIsOpen: PropTypes.bool.isRequired,
+  onCloseDropdown: PropTypes.func.isRequired,
+  onToggleDetailModalOpen: PropTypes.func.isRequired,
 };
 
 export default LessonCard;

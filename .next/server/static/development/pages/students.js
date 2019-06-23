@@ -4061,6 +4061,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../utils */ "./components/Student/DetailLessonList/utils/index.js");
 
 
 
@@ -4071,34 +4072,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var getProblemCompletionStatusColor = function getProblemCompletionStatusColor(solvedProblems, totalProblems) {
-  if (solvedProblems / totalProblems <= .25) {
-    return {
-      backgroundColor: '#ed1c25'
-    };
-  } else if (solvedProblems / totalProblems <= .5) {
-    return {
-      backgroundColor: '#a005a5'
-    };
-  }
-
-  return {
-    backgroundColor: '#0200fd'
-  };
-}; // assigned ? 'card-main card-lesson-detail card-assigned card' : 'card-main card-lesson-detail card'}
-
-
-var getLessonActivityStatus = function getLessonActivityStatus(assigned, dueDate) {
-  if (assigned && dueDate) {
-    return 'card-main card-lesson-detail card-assigned card';
-  }
-
-  if (!assigned && !dueDate) {
-    return 'card-main card-lesson-detail card-not-assigned card';
-  }
-
-  return 'card-main card-lesson-detail card';
-};
 
 var LessonCard =
 /*#__PURE__*/
@@ -4111,6 +4084,21 @@ function (_React$Component) {
     Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, LessonCard);
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(LessonCard).call(this, props));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleDropdownClick", function (event) {
+      var _this$props = _this.props,
+          onSetDropdown = _this$props.onSetDropdown,
+          onCloseDropdown = _this$props.onCloseDropdown,
+          dropdownIsOpen = _this$props.dropdownIsOpen,
+          index = _this$props.index;
+      event.preventDefault();
+
+      if (dropdownIsOpen) {
+        return onCloseDropdown();
+      }
+
+      return onSetDropdown(index);
+    });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "renderLessonIcon", function (subject) {
       switch (subject) {
@@ -4132,7 +4120,7 @@ function (_React$Component) {
       if (assigned) {
         return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
           className: "chart-value chart-value-column",
-          style: getProblemCompletionStatusColor(solvedProblems, totalProblems)
+          style: Object(_utils__WEBPACK_IMPORTED_MODULE_9__["getProblemCompletionStatusColor"])(solvedProblems, totalProblems)
         }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
           className: "chart-count",
           "data-count-up": true,
@@ -4231,35 +4219,39 @@ function (_React$Component) {
       test: true
     };
     return _this;
-  } // eslint-disable-next-line consistent-return
-
+  }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(LessonCard, [{
     key: "render",
     value: function render() {
-      var _this$props$lesson = this.props.lesson,
-          subject = _this$props$lesson.subject,
-          unitNumber = _this$props$lesson.unitNumber,
-          lessonName = _this$props$lesson.lessonName,
-          assigned = _this$props$lesson.assigned,
-          alerts = _this$props$lesson.alerts,
-          lessonType = _this$props$lesson.lessonType,
-          totalProblems = _this$props$lesson.totalProblems,
-          _this$props$lesson$so = _this$props$lesson.solvedProblems,
-          solvedProblems = _this$props$lesson$so === void 0 ? '' : _this$props$lesson$so,
-          passage = _this$props$lesson.passage,
-          dueDate = _this$props$lesson.dueDate,
-          dueTime = _this$props$lesson.dueTime,
-          completed = _this$props$lesson.completed,
-          availableDate = _this$props$lesson.availableDate,
-          completionDate = _this$props$lesson.completionDate,
-          completionTime = _this$props$lesson.completionTime,
-          completedLate = _this$props$lesson.completedLate,
-          overdue = _this$props$lesson.overdue;
+      var _this$props2 = this.props,
+          _this$props2$lesson = _this$props2.lesson,
+          subject = _this$props2$lesson.subject,
+          unitNumber = _this$props2$lesson.unitNumber,
+          lessonName = _this$props2$lesson.lessonName,
+          assigned = _this$props2$lesson.assigned,
+          alerts = _this$props2$lesson.alerts,
+          lessonType = _this$props2$lesson.lessonType,
+          totalProblems = _this$props2$lesson.totalProblems,
+          _this$props2$lesson$s = _this$props2$lesson.solvedProblems,
+          solvedProblems = _this$props2$lesson$s === void 0 ? '' : _this$props2$lesson$s,
+          passage = _this$props2$lesson.passage,
+          dueDate = _this$props2$lesson.dueDate,
+          dueTime = _this$props2$lesson.dueTime,
+          completed = _this$props2$lesson.completed,
+          availableDate = _this$props2$lesson.availableDate,
+          completionDate = _this$props2$lesson.completionDate,
+          completionTime = _this$props2$lesson.completionTime,
+          completedLate = _this$props2$lesson.completedLate,
+          overdue = _this$props2$lesson.overdue,
+          dropdownIsOpen = _this$props2.dropdownIsOpen,
+          dropdownIndex = _this$props2.dropdownIndex,
+          onToggleDetailModalOpen = _this$props2.onToggleDetailModalOpen,
+          index = _this$props2.index;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-main-col col s12 m8 l7 xl5"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: getLessonActivityStatus(assigned, dueDate)
+        className: Object(_utils__WEBPACK_IMPORTED_MODULE_9__["getLessonActivityStatus"])(assigned, dueDate)
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-panel",
         style: {
@@ -4287,24 +4279,34 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "dropdown-block col"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        className: "dropdown-trigger btn",
         href: "#",
-        "data-target": "dropdown01"
+        "data-target": "dropdown01",
+        className: "dropdown-trigger btn",
+        onClick: this.handleDropdownClick
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
         className: "material-icons dots-icon"
-      }, "more_vert")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+      }, "more_vert")), dropdownIsOpen && dropdownIndex === index ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         id: "dropdown01",
-        className: "dropdown-content dropdown-wide"
+        className: "dropdown-content dropdown-wide",
+        style: {
+          display: 'block',
+          transformOrigin: '0px 0px 0px',
+          opacity: '1',
+          transform: 'scaleX(1) scaleY(1)'
+        }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        href: "#modal_user_edit",
+        href: "#",
+        onClick: function onClick() {
+          return onToggleDetailModalOpen(index);
+        },
         className: "modal-trigger link-block"
       }, "Edit")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        href: "#!"
+        href: "#"
       }, "Clone")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        href: "#!"
+        href: "#"
       }, "Show Owner")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
-        href: "#!"
-      }, "Delete")))))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        href: "#"
+      }, "Delete"))) : null))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-content"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-top-row row mb-0"
@@ -4356,7 +4358,13 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
 LessonCard.propTypes = {
-  lesson: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired
+  dropdownIndex: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number,
+  index: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number.isRequired,
+  lesson: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired,
+  onSetDropdown: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  dropdownIsOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
+  onCloseDropdown: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  onToggleDetailModalOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (LessonCard);
 
@@ -4382,8 +4390,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _components_LessonCard__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/LessonCard */ "./components/Student/DetailLessonList/components/LessonCard/index.js");
-/* harmony import */ var _components_FilterSection__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/FilterSection */ "./components/Student/DetailLessonList/components/FilterSection/index.js");
+/* harmony import */ var _LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../LessonWorksheetTestSection */ "./components/Student/LessonWorksheetTestSection/index.js");
+/* harmony import */ var _components_LessonCard__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/LessonCard */ "./components/Student/DetailLessonList/components/LessonCard/index.js");
+/* harmony import */ var _components_FilterSection__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/FilterSection */ "./components/Student/DetailLessonList/components/FilterSection/index.js");
 
 
 
@@ -4391,8 +4400,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/* eslint-disable react/no-did-mount-set-state */
+
+/* eslint-disable react/no-did-update-set-state */
 
 /* eslint-disable react/no-array-index-key */
+
 
 
 
@@ -4410,34 +4424,100 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(DetailLessonList).call(this, props));
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleDetailModalOpen", function (worksheetIndex) {
+      return _this.setState(function (_ref) {
+        var detailModalOpen = _ref.detailModalOpen,
+            lessons = _ref.lessons;
+        return {
+          detailModalOpen: !detailModalOpen,
+          activeLesson: lessons[worksheetIndex],
+          dropdownIsOpen: false,
+          dropdownIndex: null
+        };
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onSetDropdown", function (dropdownIndex) {
+      return _this.setState({
+        dropdownIndex: dropdownIndex,
+        dropdownIsOpen: true
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onCloseDropdown", function () {
+      return _this.setState({
+        dropdownIsOpen: false
+      });
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapLessons", function () {
-      return _this.props.user.lessons.map(function (lesson, index) {
-        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_LessonCard__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      return _this.state.lessons.map(function (lesson, index) {
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_LessonCard__WEBPACK_IMPORTED_MODULE_10__["default"], {
           key: index,
-          lesson: lesson
+          index: index,
+          lesson: lesson,
+          onSetDropdown: _this.onSetDropdown,
+          onCloseDropdown: _this.onCloseDropdown,
+          dropdownIndex: _this.state.dropdownIndex,
+          dropdownIsOpen: _this.state.dropdownIsOpen,
+          onToggleDetailModalOpen: _this.onToggleDetailModalOpen
         });
       });
     });
 
     _this.state = {
-      test: true
+      dropdownIsOpen: false,
+      dropdownIndex: null,
+      detailModalOpen: false,
+      lessons: [],
+      activeLesson: null
     };
     return _this;
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(DetailLessonList, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.setState({
+        lessons: this.props.user.lessons
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var user = this.props.user;
+
+      if (prevProps.user.id !== user.id) {
+        this.setState({
+          lessons: this.props.user.lessons
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_10__["default"], null), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "content-section"
+      var user = this.props.user;
+      var _this$state = this.state,
+          detailModalOpen = _this$state.detailModalOpen,
+          activeLesson = _this$state.activeLesson;
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, detailModalOpen ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        onClose: this.onToggleDetailModalOpen,
+        worksheet: activeLesson,
+        user: user
+      }) : [react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        key: "0"
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "content-section",
+        key: "1"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "row d-flex-content card-width-272"
       }, this.mapLessons())), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        className: "waves-effect waves-teal btn add-btn"
+        className: "waves-effect waves-teal btn add-btn",
+        key: "2"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
         className: "material-icons"
-      }, "add"), "New Lesson"));
+      }, "add"), "New Lesson")]);
     }
   }]);
 
@@ -4448,6 +4528,46 @@ DetailLessonList.propTypes = {
   user: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (DetailLessonList);
+
+/***/ }),
+
+/***/ "./components/Student/DetailLessonList/utils/index.js":
+/*!************************************************************!*\
+  !*** ./components/Student/DetailLessonList/utils/index.js ***!
+  \************************************************************/
+/*! exports provided: getProblemCompletionStatusColor, getLessonActivityStatus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getProblemCompletionStatusColor", function() { return getProblemCompletionStatusColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLessonActivityStatus", function() { return getLessonActivityStatus; });
+var getProblemCompletionStatusColor = function getProblemCompletionStatusColor(solvedProblems, totalProblems) {
+  if (solvedProblems / totalProblems <= .25) {
+    return {
+      backgroundColor: '#ed1c25'
+    };
+  } else if (solvedProblems / totalProblems <= .5) {
+    return {
+      backgroundColor: '#a005a5'
+    };
+  }
+
+  return {
+    backgroundColor: '#0200fd'
+  };
+};
+var getLessonActivityStatus = function getLessonActivityStatus(assigned, dueDate) {
+  if (assigned && dueDate) {
+    return 'card-main card-lesson-detail card-assigned card';
+  }
+
+  if (!assigned && !dueDate) {
+    return 'card-main card-lesson-detail card-not-assigned card';
+  }
+
+  return 'card-main card-lesson-detail card';
+};
 
 /***/ }),
 
@@ -7527,9 +7647,9 @@ __webpack_require__.r(__webpack_exports__);
   availableDate: '1/27/19',
   dueDate: '2/10/19',
   dueTime: '9:32 AM',
-  completedDate: '3/12/19',
-  completedTime: '2:53 PM',
-  completed: '',
+  completionDate: '3/12/19',
+  completionTime: '2:53 PM',
+  completedProblems: '',
   completionLevel: 'Complete',
   unit: 'Reading Unit #4',
   passage: '214',
@@ -7558,9 +7678,9 @@ __webpack_require__.r(__webpack_exports__);
   availableDate: '1/19/19',
   dueDate: '2/02/19',
   dueTime: '9:32 AM',
-  completedDate: '',
-  completedTime: '',
-  completed: 0,
+  completionDate: '',
+  completionTime: '',
+  completedProblems: 0,
   completionLevel: 'Not Started',
   unit: 'Reading Unit #4',
   passage: '51',
@@ -7598,9 +7718,9 @@ __webpack_require__.r(__webpack_exports__);
   availableDate: '1/11/19',
   dueDate: '2/12/19',
   dueTime: '9:32 AM',
-  completedDate: '3/12/19',
-  completedTime: '2:53 PM',
-  completed: 10,
+  completionDate: '3/12/19',
+  completionTime: '2:53 PM',
+  completedProblems: 10,
   completionLevel: 'Complete',
   unit: 'Reading Unit #4',
   passage: '121',
@@ -7629,9 +7749,9 @@ __webpack_require__.r(__webpack_exports__);
   availableDate: '1/24/19',
   dueDate: '2/27/19',
   dueTime: '9:32 AM',
-  completedDate: '',
-  completedTime: '',
-  completed: 4,
+  completionDate: '',
+  completionTime: '',
+  completedProblems: 4,
   completionLevel: 'Started',
   unit: 'Reading Unit #4',
   passage: '128',
@@ -7672,9 +7792,9 @@ __webpack_require__.r(__webpack_exports__);
   availableDate: '1/12/19',
   dueDate: '2/03/19',
   dueTime: '9:32 AM',
-  completedDate: '3/12/19',
-  completedTime: '2:53 PM',
-  completed: 6,
+  completionDate: '3/12/19',
+  completionTime: '2:53 PM',
+  completedProblems: 6,
   completionLevel: 'Instructor Editing',
   unit: 'Reading Unit #4',
   passage: '73',
@@ -7709,9 +7829,9 @@ __webpack_require__.r(__webpack_exports__);
   availableDate: '1/09/19',
   dueDate: '2/12/19',
   dueTime: '9:32 AM',
-  completedDate: '',
-  completedTime: '',
-  completed: 5,
+  completionDate: '',
+  completionTime: '',
+  completedProblems: 5,
   completionLevel: 'Not Started',
   unit: 'Reading Unit #4',
   passage: '153',
@@ -9512,11 +9632,11 @@ function (_React$Component) {
         className: "text-small dl-horizontal"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Due:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
         dateTime: "2019-01-06T16:00"
-      }, worksheet.dueDate, " at ", worksheet.dueTime))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
+      }, worksheet.dueDate, " at ", worksheet.dueTime))), worksheet.completionDate ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dl", {
         className: "text-small dl-horizontal"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dt", null, "Completed:"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("dd", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("time", {
         dateTime: "2019-09-01T06:59"
-      }, "1/9/19 at 6:59 PM"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, worksheet.completionDate, " at ", worksheet.completionTime))) : null)), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s2 m1 right-align position-mobile-right"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "dropdown-block"
@@ -9570,7 +9690,7 @@ function (_React$Component) {
         flags: worksheet.flags,
         status: worksheet.status,
         problems: worksheet.problems,
-        completedProblems: worksheet.completed,
+        completedProblems: worksheet.completedProblems,
         completionLevel: worksheet.completionLevel,
         totalVideoMinutesWatched: worksheet.totalVideoMinutesWatched,
         totalVideoMinutesAllMissedProblems: worksheet.totalVideoMinutesAllMissedProblems
@@ -11782,6 +11902,8 @@ StudentNavBar.propTypes = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../LessonWorksheetTestSection/utils/sampleQuestions */ "./components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js");
+
 var sampleStudentList = [{
   id: '1232',
   active: false,
@@ -12291,7 +12413,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Math',
     unitNumber: '4',
@@ -12309,7 +12452,28 @@ var sampleStudentList = [{
     completionDate: '12/01/18',
     completionTime: '2:21 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '3',
@@ -12327,7 +12491,28 @@ var sampleStudentList = [{
     completionDate: '04/15/19',
     completionTime: '7:34 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '6',
@@ -12345,7 +12530,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '4',
@@ -12363,7 +12569,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: true
+    overdue: true,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Complete',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '9',
@@ -12381,7 +12608,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '1',
@@ -12399,7 +12647,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Writing',
     unitNumber: '5',
@@ -12417,7 +12686,28 @@ var sampleStudentList = [{
     completionDate: '11/23/18',
     completionTime: '4:21 PM',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Complete',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }]
 }, {
   id: '1233',
@@ -12928,7 +13218,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Math',
     unitNumber: '4',
@@ -12946,7 +13257,28 @@ var sampleStudentList = [{
     completionDate: '12/01/18',
     completionTime: '2:21 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '3',
@@ -12964,7 +13296,28 @@ var sampleStudentList = [{
     completionDate: '04/15/19',
     completionTime: '7:34 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '6',
@@ -12982,7 +13335,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '4',
@@ -13000,7 +13374,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: true
+    overdue: true,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Complete',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '9',
@@ -13018,7 +13413,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '1',
@@ -13036,7 +13452,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Writing',
     unitNumber: '5',
@@ -13054,7 +13491,28 @@ var sampleStudentList = [{
     completionDate: '11/23/18',
     completionTime: '4:21 PM',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }]
 }, {
   id: '1234',
@@ -13565,7 +14023,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Math',
     unitNumber: '4',
@@ -13583,7 +14062,28 @@ var sampleStudentList = [{
     completionDate: '12/01/18',
     completionTime: '2:21 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '3',
@@ -13601,7 +14101,28 @@ var sampleStudentList = [{
     completionDate: '04/15/19',
     completionTime: '7:34 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Complete',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '6',
@@ -13619,7 +14140,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '4',
@@ -13637,7 +14179,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: true
+    overdue: true,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '9',
@@ -13655,7 +14218,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Reading',
     unitNumber: '1',
@@ -13673,7 +14257,28 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Complete',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }, {
     subject: 'Writing',
     unitNumber: '5',
@@ -13691,7 +14296,28 @@ var sampleStudentList = [{
     completionDate: '11/23/18',
     completionTime: '4:21 PM',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    flags: [{
+      title: 'one',
+      status: 'reviewed'
+    }, {
+      title: 'two',
+      status: 'reviewed'
+    }, {
+      title: 'three',
+      status: 'toReview'
+    }],
+    totalVideoMinutesWatched: '132',
+    totalVideoMinutesAllMissedProblems: '312',
+    questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    assignDate: '1/19/19',
+    assignTime: '3:01 PM',
+    completionLevel: 'Not Started',
+    unit: 'Reading Unit #4',
+    type: 'challenge + practice',
+    completedProblems: 10,
+    status: 'Assigned',
+    problems: 17
   }]
 }, {
   id: '1236',

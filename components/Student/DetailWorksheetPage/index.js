@@ -27,7 +27,7 @@ class DetailWorksheetPage extends React.Component {
   onToggleAssignWorksheetDropdown = (event) => {
     event.preventDefault();
     this.setState(({ assignWorksheetDropdownOpen }) => ({ assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen }))
-}
+  }
 
   onToggleDetailModalOpen = (worksheetIndex) => this.setState(({ detailModalOpen, worksheets }) => ({ detailModalOpen: !detailModalOpen, activeWorksheet: worksheets[worksheetIndex] }))
 
