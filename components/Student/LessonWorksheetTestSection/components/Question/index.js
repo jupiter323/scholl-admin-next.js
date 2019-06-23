@@ -130,10 +130,10 @@ class Question extends React.Component {
 
 Question.propTypes = {
   question: PropTypes.object.isRequired,
+  questionDropdownIndex: PropTypes.number,
   onOpenQuestionModal: PropTypes.func.isRequired,
   answerSheetComplete: PropTypes.bool.isRequired,
   questionDropdownOpen: PropTypes.bool.isRequired,
-  questionDropdownIndex: PropTypes.number.isRequired,
   handleQuestionDropdownClick: PropTypes.func.isRequired,
 };
 

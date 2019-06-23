@@ -84,7 +84,7 @@ class ListView extends React.Component {
                     <a
                       href="#"
                       className="modal-trigger link-block"
-                      onClick={onToggleDetailModalOpen}
+                      onClick={() => onToggleDetailModalOpen(index)}
                     >
                       View Details
                     </a>

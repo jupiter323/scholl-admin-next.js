@@ -104,3 +104,38 @@ export const getCompleteAnswerColor = (answerType, answer, studentAnswer) => {
   }
   return null;
 }
+
+export const statusColorMap = {
+  Assigned: 'grey darken-4',
+  Accomplished: 'purple darken-3',
+  Beginning: 'red darken-3',
+  Exemplary: 'blue accent-4',
+  Developing: 'purple',
+};
+
+export const chartColorMap = {
+  Assigned: '#333',
+  Accomplished: '#7327cc',
+  Beginning: '#ed1c24',
+  Exemplary: 'rgb(0, 100, 244)',
+  Developing: '#c10078',
+}
+
+export const data = (percentage, status, colorOverride = null) => ({
+  datasets: [{
+    data: [percentage, 100 - percentage],
+    backgroundColor: [
+      colorOverride || chartColorMap[status],
+      '#eaeaea',
+    ],
+  }],
+});
+
+export const formatTimeEstimate = (totalMinutes) => {
+  const hours = Math.floor(totalMinutes / 60) === 0 ? 0 : Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60 === 0 ? 0 : totalMinutes % 60;
+  const hourString = hours !== 0 ? `${hours}:` : '';
+  const minuteString = minutes !== 0 ? `${minutes}` : '';
+  return `${hourString}${minuteString}`
+}
+

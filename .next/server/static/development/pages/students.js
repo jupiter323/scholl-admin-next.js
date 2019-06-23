@@ -7096,7 +7096,9 @@ function (_React$Component) {
         }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
           href: "#",
           className: "modal-trigger link-block",
-          onClick: onToggleDetailModalOpen
+          onClick: function onClick() {
+            return onToggleDetailModalOpen(index);
+          }
         }, "View Details")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
           href: "#!"
         }, "Dismiss Flags")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
@@ -7166,12 +7168,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _components_FullView__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/FullView */ "./components/Student/DetailWorksheetPage/components/FullView/index.js");
-/* harmony import */ var _components_ListView__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/ListView */ "./components/Student/DetailWorksheetPage/components/ListView/index.js");
-/* harmony import */ var _components_FilterSection__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/FilterSection */ "./components/Student/DetailWorksheetPage/components/FilterSection/index.js");
-/* harmony import */ var _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils/sampleWorksheets */ "./components/Student/DetailWorksheetPage/utils/sampleWorksheets.js");
-/* harmony import */ var _utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/sortFunctions */ "./components/utils/sortFunctions.js");
-/* harmony import */ var _LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../LessonWorksheetTestSection */ "./components/Student/LessonWorksheetTestSection/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _components_FullView__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/FullView */ "./components/Student/DetailWorksheetPage/components/FullView/index.js");
+/* harmony import */ var _components_ListView__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/ListView */ "./components/Student/DetailWorksheetPage/components/ListView/index.js");
+/* harmony import */ var _components_FilterSection__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/FilterSection */ "./components/Student/DetailWorksheetPage/components/FilterSection/index.js");
+/* harmony import */ var _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./utils/sampleWorksheets */ "./components/Student/DetailWorksheetPage/utils/sampleWorksheets.js");
+/* harmony import */ var _utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../utils/sortFunctions */ "./components/utils/sortFunctions.js");
+/* harmony import */ var _LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../LessonWorksheetTestSection */ "./components/Student/LessonWorksheetTestSection/index.js");
+
 
 
 
@@ -7311,25 +7316,25 @@ function (_React$Component) {
 
       switch (sort) {
         case 'dueDate':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["dueDate"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["dueDate"]);
 
         case 'assignDate':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["assignDate"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["assignDate"]);
 
         case 'problems':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["problems"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["problems"]);
 
         case 'completed':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["completed"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["completed"]);
 
         case 'flags':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["flags"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["flags"]);
 
         case 'score':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["score"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["score"]);
 
         case 'timeEstimate':
-          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__["timeEstimate"]);
+          return worksheets.sort(_utils_sortFunctions__WEBPACK_IMPORTED_MODULE_13__["timeEstimate"]);
 
         default:
           break;
@@ -7380,13 +7385,13 @@ function (_React$Component) {
 
       switch (currentView) {
         case 'list':
-          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ListView__WEBPACK_IMPORTED_MODULE_9__["default"], {
+          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ListView__WEBPACK_IMPORTED_MODULE_10__["default"], {
             onToggleDetailModalOpen: _this.onToggleDetailModalOpen,
             worksheets: _this.getMappableWorksheets()
           });
 
         case 'full':
-          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FullView__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FullView__WEBPACK_IMPORTED_MODULE_9__["default"], {
             onToggleDetailModalOpen: _this.onToggleDetailModalOpen,
             worksheets: _this.getMappableWorksheets()
           });
@@ -7402,7 +7407,7 @@ function (_React$Component) {
       filterTopic: '',
       currentView: 'full',
       assignWorksheetDropdownOpen: false,
-      worksheets: _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_11__["default"],
+      worksheets: _utils_sampleWorksheets__WEBPACK_IMPORTED_MODULE_12__["default"],
       detailModalOpen: false,
       activeWorksheet: null
     };
@@ -7420,14 +7425,14 @@ function (_React$Component) {
           detailModalOpen = _this$state5.detailModalOpen,
           activeWorksheet = _this$state5.activeWorksheet;
       var user = this.props.user;
-      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, detailModalOpen ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_13__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, detailModalOpen ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_LessonWorksheetTestSection__WEBPACK_IMPORTED_MODULE_14__["default"], {
         onClose: this.onToggleDetailModalOpen,
         worksheet: activeWorksheet,
         user: user
       }) : [react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "main-holder grey lighten-5 switcher-section",
         key: "0"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_11__["default"], {
         currentView: currentView,
         onChangeView: this.onChangeView,
         onSetSort: this.onSetSort,
@@ -7469,6 +7474,9 @@ function (_React$Component) {
   return DetailWorksheetPage;
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
+DetailWorksheetPage.propTypes = {
+  user: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired
+};
 /* harmony default export */ __webpack_exports__["default"] = (DetailWorksheetPage);
 
 /***/ }),
@@ -7522,6 +7530,7 @@ __webpack_require__.r(__webpack_exports__);
   completedDate: '3/12/19',
   completedTime: '2:53 PM',
   completed: '',
+  completionLevel: 'Complete',
   unit: 'Reading Unit #4',
   passage: '214',
   type: 'challenge + practice',
@@ -7532,6 +7541,8 @@ __webpack_require__.r(__webpack_exports__);
   topic: 'specialRightTriangles',
   worksheetSource: 'Admin Created',
   classifications: ['Right Triangles', 'More Math', "Lots Of Math"],
+  totalVideoMinutesWatched: '77',
+  totalVideoMinutesAllMissedProblems: '214',
   questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 2,
@@ -7550,16 +7561,28 @@ __webpack_require__.r(__webpack_exports__);
   completedDate: '',
   completedTime: '',
   completed: 0,
+  completionLevel: 'Not Started',
   unit: 'Reading Unit #4',
   passage: '51',
   type: 'challenge + practice',
-  flags: ['one', 'two', 'three'],
+  flags: [{
+    title: 'one',
+    status: 'reviewed'
+  }, {
+    title: 'two',
+    status: 'reviewed'
+  }, {
+    title: 'three',
+    status: 'toReview'
+  }],
   status: 'Assigned',
   disabled: false,
   late: true,
   topic: 'topic2',
   worksheetSource: 'User Created',
   classifications: ['Math', 'More Math', "Lots Of Math"],
+  totalVideoMinutesWatched: '77',
+  totalVideoMinutesAllMissedProblems: '214',
   questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 3,
@@ -7578,6 +7601,7 @@ __webpack_require__.r(__webpack_exports__);
   completedDate: '3/12/19',
   completedTime: '2:53 PM',
   completed: 10,
+  completionLevel: 'Complete',
   unit: 'Reading Unit #4',
   passage: '121',
   type: 'challenge + practice',
@@ -7588,6 +7612,8 @@ __webpack_require__.r(__webpack_exports__);
   topic: 'topic2',
   worksheetSource: 'Admin Created',
   classifications: ['Right Triangles', 'Math', "Lots Of Math"],
+  totalVideoMinutesWatched: '124',
+  totalVideoMinutesAllMissedProblems: '312',
   questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 4,
@@ -7606,16 +7632,31 @@ __webpack_require__.r(__webpack_exports__);
   completedDate: '',
   completedTime: '',
   completed: 4,
+  completionLevel: 'Started',
   unit: 'Reading Unit #4',
   passage: '128',
   type: 'challenge + practice',
-  flags: [],
+  flags: [{
+    title: 'one',
+    status: 'reviewed'
+  }, {
+    title: 'two',
+    status: 'reviewed'
+  }, {
+    title: 'three',
+    status: 'toReview'
+  }, {
+    title: 'four',
+    status: 'toReview'
+  }],
   status: 'Beginning',
   disabled: false,
   late: true,
   topic: 'topic3',
   worksheetSource: 'User Created',
   classifications: ['Trigonometry', 'More Math', "Lots Of Math"],
+  totalVideoMinutesWatched: '311',
+  totalVideoMinutesAllMissedProblems: '401',
   questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 5,
@@ -7634,16 +7675,25 @@ __webpack_require__.r(__webpack_exports__);
   completedDate: '3/12/19',
   completedTime: '2:53 PM',
   completed: 6,
+  completionLevel: 'Instructor Editing',
   unit: 'Reading Unit #4',
   passage: '73',
   type: 'challenge + practice',
-  flags: [],
-  status: 'Exemplary',
+  flags: [{
+    title: 'one',
+    status: 'toReview'
+  }, {
+    title: 'two',
+    status: 'toReview'
+  }],
+  status: 'Developing',
   disabled: false,
   late: false,
   topic: 'topic3',
   worksheetSource: 'Admin Created',
   classifications: ['Trigonometry', 'Math', "Lots Of Math"],
+  totalVideoMinutesWatched: '51',
+  totalVideoMinutesAllMissedProblems: '200',
   questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   id: 6,
@@ -7662,6 +7712,7 @@ __webpack_require__.r(__webpack_exports__);
   completedDate: '',
   completedTime: '',
   completed: 5,
+  completionLevel: 'Not Started',
   unit: 'Reading Unit #4',
   passage: '153',
   type: 'challenge + practice',
@@ -7672,6 +7723,8 @@ __webpack_require__.r(__webpack_exports__);
   topic: 'topic4',
   worksheetSource: 'User Created',
   classifications: ['Right Triangles', 'Trigonometry', 'More Math'],
+  totalVideoMinutesWatched: '83',
+  totalVideoMinutesAllMissedProblems: '305',
   questions: _LessonWorksheetTestSection_utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_0__["default"]
 }]);
 
@@ -7963,6 +8016,241 @@ IndividualStudentPage.propTypes = {
   onRedirectToStudentPage: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (IndividualStudentPage);
+
+/***/ }),
+
+/***/ "./components/Student/LessonWorksheetTestSection/components/CardSection/index.js":
+/*!***************************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/components/CardSection/index.js ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-chartjs-2 */ "react-chartjs-2");
+/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_chartjs_2__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/index */ "./components/Student/LessonWorksheetTestSection/utils/index.js");
+
+
+
+
+
+var CardSection = function CardSection(_ref) {
+  var completionLevel = _ref.completionLevel,
+      problems = _ref.problems,
+      completedProblems = _ref.completedProblems,
+      status = _ref.status,
+      flags = _ref.flags,
+      totalVideoMinutesWatched = _ref.totalVideoMinutesWatched,
+      totalVideoMinutesAllMissedProblems = _ref.totalVideoMinutesAllMissedProblems;
+  var percentageComplete = Number(completedProblems / problems * 100).toFixed(0);
+  var videoWatchedPercentage = Number(totalVideoMinutesWatched / totalVideoMinutesAllMissedProblems * 100).toFixed(0);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "cards-section"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "d-flex same-height justify-center row mb-0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s12 l5 col-435"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-block"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Performance"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-student-detail card-main-full card"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-content"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "d-flex sameheight-all row mb-0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-container chart-container-195"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-holder"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_2__["Doughnut"], {
+    data: function data() {
+      return Object(_utils_index__WEBPACK_IMPORTED_MODULE_3__["data"])(percentageComplete, status);
+    },
+    options: {
+      circumference: 1 * Math.PI,
+      rotation: 1 * Math.PI,
+      cutoutPercentage: 60,
+      tooltips: false
+    }
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "chart-value",
+    style: {
+      backgroundColor: _utils_index__WEBPACK_IMPORTED_MODULE_3__["chartColorMap"][status]
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    "data-count-up": true,
+    "data-start-val": "0",
+    "data-end-val": "75",
+    "data-duration": "1"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "percentage"
+  }, completionLevel === 'Complete' ? percentageComplete : '', completionLevel !== 'Started' ? '%' : ''))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-col chart-start"
+  }, "\xA0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-col chart-end"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "amount",
+    style: {
+      color: _utils_index__WEBPACK_IMPORTED_MODULE_3__["chartColorMap"][status]
+    }
+  }, problems))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-description"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("dl", {
+    className: "dl-horizontal"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("dt", {
+    className: "text-large"
+  }, "Status:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("dd", {
+    className: "text-large"
+  }, completionLevel)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", {
+    className: "text-small"
+  }, completedProblems, " out of ", problems, " ", completionLevel === 'Started' ? 'completed' : 'correct')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-description"
+  }, completionLevel === 'Completed' || completionLevel === 'Instructor Editing' ? [react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("dl", {
+    className: "dl-horizontal",
+    key: "0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("dt", {
+    className: "text-large"
+  }, "Score:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("dd", {
+    className: "text-large"
+  }, percentageComplete, "%")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", {
+    className: "text-small",
+    key: "1"
+  }, completedProblems, " out of ", problems, " correct")] : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "text-large gray-text"
+  }, "Score: Incomplete")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "align-self-end"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "badge badge-rounded-lg ".concat(_utils_index__WEBPACK_IMPORTED_MODULE_3__["statusColorMap"][status], " white-text")
+  }, status)))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s12 l3 col-320"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-block"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Video"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-student-detail card-main-full card"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-content"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "d-flex sameheight-all row mb-0 align-center"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s6",
+    style: {
+      marginBottom: '12px'
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-container chart-container-195"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "chart-holder",
+    style: {
+      width: '130px'
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      position: 'absolute',
+      top: '30px',
+      left: '42px'
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      fontSize: '23px',
+      fontWeight: '700',
+      color: '#02baf7'
+    }
+  }, Object(_utils_index__WEBPACK_IMPORTED_MODULE_3__["formatTimeEstimate"])(totalVideoMinutesWatched)), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      fontSize: '16px',
+      color: '#bbbbbb'
+    }
+  }, "out of"), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      fontSize: '23px',
+      fontWeight: '700',
+      color: '#838383'
+    }
+  }, Object(_utils_index__WEBPACK_IMPORTED_MODULE_3__["formatTimeEstimate"])(totalVideoMinutesAllMissedProblems))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_2__["Doughnut"], {
+    data: function data() {
+      return Object(_utils_index__WEBPACK_IMPORTED_MODULE_3__["data"])(videoWatchedPercentage, status, '#02baf7');
+    },
+    height: 300,
+    width: 300,
+    options: {
+      circumference: 2 * Math.PI,
+      rotation: 1 * Math.PI,
+      cutoutPercentage: 70,
+      tooltips: false
+    }
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "video-description"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", {
+    className: "blue-text"
+  }, "total minutes of video watched")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "video-description"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", {
+    className: "grey-text"
+  }, "total minutes of video for all missed problems")))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s12 l3 col-320"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-block"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Flagged for Review"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-student-detail card-main-full card"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-content"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "d-flex sameheight-all row mb-0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col s12"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "badges-container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "badge-block red-text"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "badge-rounded-md badge red darken-2 white-text"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", {
+    className: "badge-text"
+  }, flags.filter(function (flag) {
+    return flag.status === 'toReview';
+  }).length), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "icon-flag"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "badge-block-text"
+  }, "To Review")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "badge-block"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "badge-rounded-md badge grey darken-2 white-text"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", {
+    className: "badge-text"
+  }, flags.filter(function (flag) {
+    return flag.status === 'reviewed';
+  }).length), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "icon-flag"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "badge-block-text"
+  }, "Reviewed")))))))))));
+};
+
+CardSection.propTypes = {
+  flags: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array.isRequired,
+  status: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  problems: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired,
+  completionLevel: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  completedProblems: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired,
+  totalVideoMinutesWatched: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  totalVideoMinutesAllMissedProblems: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (CardSection);
 
 /***/ }),
 
@@ -8384,10 +8672,10 @@ function (_React$Component) {
 ;
 Question.propTypes = {
   question: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired,
+  questionDropdownIndex: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number,
   onOpenQuestionModal: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
   answerSheetComplete: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
   questionDropdownOpen: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.bool.isRequired,
-  questionDropdownIndex: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number.isRequired,
   handleQuestionDropdownClick: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (Question);
@@ -8683,6 +8971,286 @@ QuestionModal.propTypes = {
 
 /***/ }),
 
+/***/ "./components/Student/LessonWorksheetTestSection/components/ReassignModal/index.js":
+/*!*****************************************************************************************!*\
+  !*** ./components/Student/LessonWorksheetTestSection/components/ReassignModal/index.js ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-jsx/style */ "./node_modules/styled-jsx/style.js");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var react_datepicker__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-datepicker */ "react-datepicker");
+/* harmony import */ var react_datepicker__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_datepicker__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var react_datepicker_dist_react_datepicker_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-datepicker/dist/react-datepicker.css */ "./node_modules/react-datepicker/dist/react-datepicker.css");
+/* harmony import */ var react_datepicker_dist_react_datepicker_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react_datepicker_dist_react_datepicker_css__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var react_datepicker_dist_react_datepicker_cssmodules_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-datepicker/dist/react-datepicker-cssmodules.css */ "./node_modules/react-datepicker/dist/react-datepicker-cssmodules.css");
+/* harmony import */ var react_datepicker_dist_react_datepicker_cssmodules_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(react_datepicker_dist_react_datepicker_cssmodules_css__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var _Portal__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../../Portal */ "./components/Portal/index.js");
+/* harmony import */ var _ClickOffComponentWrapper__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../../ClickOffComponentWrapper */ "./components/ClickOffComponentWrapper/index.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var ReassignModal =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(ReassignModal, _React$Component);
+
+  function ReassignModal(props) {
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ReassignModal);
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(ReassignModal).call(this, props));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onResetModal", function () {
+      return _this.setState({
+        assignDate: '',
+        assignTime: '',
+        dueDate: '',
+        dueTime: ''
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onCloseModal", function () {
+      var onClose = _this.props.onClose;
+      onClose();
+
+      _this.onResetModal();
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "reassignDate", function () {
+      var onReassignDate = _this.props.onReassignDate;
+      var _this$state = _this.state,
+          unformattedAssignDate = _this$state.assignDate,
+          unformattedAssignTime = _this$state.assignTime,
+          unformattedDueDate = _this$state.dueDate,
+          unformattedDueTime = _this$state.dueTime;
+      var assignDate = moment__WEBPACK_IMPORTED_MODULE_10___default()(unformattedAssignDate).format('MM/DD/YY');
+      var assignTime = moment__WEBPACK_IMPORTED_MODULE_10___default()(unformattedAssignTime).format('hh:mm');
+      var dueDate = moment__WEBPACK_IMPORTED_MODULE_10___default()(unformattedDueDate).format('MM/DD/YY');
+      var dueTime = moment__WEBPACK_IMPORTED_MODULE_10___default()(unformattedDueTime).format('hh:mm');
+      onReassignDate({
+        assignDate: assignDate,
+        assignTime: assignTime,
+        dueDate: dueDate,
+        dueTime: dueTime
+      });
+
+      _this.onResetModal();
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleDatePickerChange", function (field, value) {
+      return _this.setState(Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])({}, field, value));
+    });
+
+    _this.state = {
+      assignDate: '',
+      assignTime: '',
+      dueDate: '',
+      dueTime: ''
+    };
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ReassignModal, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var open = this.props.open;
+      var _this$state2 = this.state,
+          assignDate = _this$state2.assignDate,
+          assignTime = _this$state2.assignTime,
+          dueDate = _this$state2.dueDate,
+          dueTime = _this$state2.dueTime;
+      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_Portal__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        selector: "#modal"
+      }, open && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "overlay"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_ClickOffComponentWrapper__WEBPACK_IMPORTED_MODULE_15__["default"], {
+        onOuterClick: this.onCloseModal
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        id: "modal_reschedule",
+        className: "jsx-1282990627" + " " + "modal modal-custom modal-calendar"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "card-modal card"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        style: {
+          backgroundColor: '#25bbf7',
+          color: '#fff'
+        },
+        className: "jsx-1282990627" + " " + "card-panel card-panel-title"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "card-panel-row row"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "col"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("h2", {
+        className: "jsx-1282990627"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+        className: "jsx-1282990627" + " " + "heading-holder"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+        className: "jsx-1282990627" + " " + "heading-block"
+      }, "Reschedule")))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "col right-align"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+        href: "#",
+        className: "jsx-1282990627" + " " + "panel-link close modal-close"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-1282990627" + " " + "icon-close-thin"
+      }))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        style: {
+          height: '410px'
+        },
+        className: "jsx-1282990627" + " " + "card-content"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        style: {
+          height: '335px'
+        },
+        className: "jsx-1282990627" + " " + "card-body"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "modal-row row"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "col s6"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "datepicker-field input-field"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-1282990627" + " " + "icon-calendar"
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        selected: assignDate,
+        withPortal: true,
+        dateFormat: "MM/dd/yy",
+        id: "assignDate",
+        name: "assignDate",
+        onChange: function onChange(event) {
+          return _this2.handleDatePickerChange('assignDate', event);
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", {
+        htmlFor: "new_test_section_assign_date",
+        className: "jsx-1282990627" + " " + ((assignDate ? 'label active' : 'label') || "")
+      }, "Assign For"))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "col s6"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "datepicker-field input-field"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-1282990627" + " " + "icon-clock2"
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        selected: assignTime,
+        withPortal: true,
+        showTimeSelect: true,
+        showTimeSelectOnly: true,
+        timeIntervals: 15,
+        dateFormat: "h:mm aa",
+        timeCaption: "Time",
+        id: "assignTime",
+        name: "assignTime",
+        onChange: function onChange(event) {
+          return _this2.handleDatePickerChange('assignTime', event);
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", {
+        htmlFor: "assignTime",
+        className: "jsx-1282990627" + " " + ((assignTime ? 'label active' : 'label') || "")
+      }, "Time")))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "modal-row row"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "col s6"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "datepicker-field input-field"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-1282990627" + " " + "icon-calendar"
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        selected: dueDate,
+        withPortal: true,
+        dateFormat: "MM/dd/yy",
+        id: "dueDate",
+        name: "dueDate",
+        onChange: function onChange(event) {
+          return _this2.handleDatePickerChange('dueDate', event);
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", {
+        htmlFor: "dueDate",
+        className: "jsx-1282990627" + " " + ((dueDate ? 'label active' : 'label') || "")
+      }, "Due (optional)"))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "col s6"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "datepicker-field input-field"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+        className: "jsx-1282990627" + " " + "icon-clock2"
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        selected: dueTime,
+        withPortal: true,
+        showTimeSelect: true,
+        showTimeSelectOnly: true,
+        timeIntervals: 15,
+        dateFormat: "h:mm aa",
+        timeCaption: "Time",
+        id: "dueTime",
+        name: "dueTime",
+        onChange: function onChange(event) {
+          return _this2.handleDatePickerChange('dueTime', event);
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", {
+        htmlFor: "dueTime",
+        className: "jsx-1282990627" + " " + ((dueTime ? 'label active' : 'label') || "")
+      }, "Time")))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "modal-row row"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", {
+        className: "jsx-1282990627"
+      }, "\xA0"))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-1282990627" + " " + "modal-footer modal-footer-width"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+        href: "#",
+        className: "jsx-1282990627" + " " + "modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+      }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+        href: "#",
+        className: "jsx-1282990627" + " " + "link-btn waves-effect waves-teal btn-flat"
+      }, "Save Changes"))))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(styled_jsx_style__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        id: "1282990627"
+      }, ".card-modal.jsx-1282990627{margin:0;border-radius:6px;}.overlay.jsx-1282990627{position:fixed;background-color:rgba(0,0,0,0.7);top:0;right:0;bottom:0;left:0;z-index:1003;}.modal-custom.jsx-1282990627{opacity:1;visibility:visible;}.modal-footer.jsx-1282990627{background-color:white;}#modal_reschedule.jsx-1282990627{top:10%;}div.react-datepicker__portal.jsx-1282990627{height:100%!important;width:100%!important;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9jaHJpc2NoYXZhcnJvL2NsZWFyLWNob2ljZS9jbGVhci1jaG9pY2UtYWRtaW4vY29tcG9uZW50cy9TdHVkZW50L0xlc3NvbldvcmtzaGVldFRlc3RTZWN0aW9uL2NvbXBvbmVudHMvUmVhc3NpZ25Nb2RhbC9pbmRleC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUF1SlcsQUFHd0IsQUFJTSxBQVNMLEFBSWEsQUFHZixBQUdjLFFBRnhCLENBcEJvQixDQWFDLEtBVGlCLE9BbUJmLENBTnZCLElBaEJBLEVBYUEsY0FVQSxLQW5CUSxNQUNFLFFBQ0MsU0FDRixPQUNNLGFBQ2YiLCJmaWxlIjoiL1VzZXJzL2NocmlzY2hhdmFycm8vY2xlYXItY2hvaWNlL2NsZWFyLWNob2ljZS1hZG1pbi9jb21wb25lbnRzL1N0dWRlbnQvTGVzc29uV29ya3NoZWV0VGVzdFNlY3Rpb24vY29tcG9uZW50cy9SZWFzc2lnbk1vZGFsL2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCBQcm9wVHlwZXMgZnJvbSAncHJvcC10eXBlcyc7XG5pbXBvcnQgbW9tZW50IGZyb20gJ21vbWVudCc7XG5pbXBvcnQgRGF0ZVBpY2tlciBmcm9tICdyZWFjdC1kYXRlcGlja2VyJztcbmltcG9ydCBcInJlYWN0LWRhdGVwaWNrZXIvZGlzdC9yZWFjdC1kYXRlcGlja2VyLmNzc1wiO1xuaW1wb3J0ICdyZWFjdC1kYXRlcGlja2VyL2Rpc3QvcmVhY3QtZGF0ZXBpY2tlci1jc3Ntb2R1bGVzLmNzcyc7XG5cbmltcG9ydCBQb3J0YWwgZnJvbSAnLi4vLi4vLi4vLi4vUG9ydGFsJztcbmltcG9ydCBDbGlja09mZkNvbXBvbmVudFdyYXBwZXIgZnJvbSAnLi4vLi4vLi4vLi4vQ2xpY2tPZmZDb21wb25lbnRXcmFwcGVyJztcblxuY2xhc3MgUmVhc3NpZ25Nb2RhbCBleHRlbmRzIFJlYWN0LkNvbXBvbmVudCB7XG4gIGNvbnN0cnVjdG9yKHByb3BzKSB7XG4gICAgc3VwZXIocHJvcHMpO1xuICAgIHRoaXMuc3RhdGUgPSB7XG4gICAgICBhc3NpZ25EYXRlOiAnJyxcbiAgICAgIGFzc2lnblRpbWU6ICcnLFxuICAgICAgZHVlRGF0ZTogJycsXG4gICAgICBkdWVUaW1lOiAnJyxcbiAgICB9O1xuICB9XG5cbiAgb25SZXNldE1vZGFsID0gKCkgPT4gdGhpcy5zZXRTdGF0ZSh7IGFzc2lnbkRhdGU6ICcnLCBhc3NpZ25UaW1lOiAnJywgZHVlRGF0ZTogJycsIGR1ZVRpbWU6ICcnIH0pXG5cbiAgb25DbG9zZU1vZGFsID0gKCkgPT4ge1xuICAgIGNvbnN0IHsgb25DbG9zZSB9ID0gdGhpcy5wcm9wcztcbiAgICBvbkNsb3NlKCk7XG4gICAgdGhpcy5vblJlc2V0TW9kYWwoKTtcbiAgfVxuXG4gIHJlYXNzaWduRGF0ZSA9ICgpID0+IHtcbiAgICBjb25zdCB7IG9uUmVhc3NpZ25EYXRlIH0gPSB0aGlzLnByb3BzO1xuICAgIGNvbnN0IHsgYXNzaWduRGF0ZTogdW5mb3JtYXR0ZWRBc3NpZ25EYXRlLCBhc3NpZ25UaW1lOiB1bmZvcm1hdHRlZEFzc2lnblRpbWUsIGR1ZURhdGU6IHVuZm9ybWF0dGVkRHVlRGF0ZSwgZHVlVGltZTogdW5mb3JtYXR0ZWREdWVUaW1lIH0gPSB0aGlzLnN0YXRlO1xuICAgIGNvbnN0IGFzc2lnbkRhdGUgPSBtb21lbnQodW5mb3JtYXR0ZWRBc3NpZ25EYXRlKS5mb3JtYXQoJ01NL0REL1lZJyk7XG4gICAgY29uc3QgYXNzaWduVGltZSA9IG1vbWVudCh1bmZvcm1hdHRlZEFzc2lnblRpbWUpLmZvcm1hdCgnaGg6bW0nKTtcbiAgICBjb25zdCBkdWVEYXRlID0gbW9tZW50KHVuZm9ybWF0dGVkRHVlRGF0ZSkuZm9ybWF0KCdNTS9ERC9ZWScpO1xuICAgIGNvbnN0IGR1ZVRpbWUgPSBtb21lbnQodW5mb3JtYXR0ZWREdWVUaW1lKS5mb3JtYXQoJ2hoOm1tJyk7XG4gICAgb25SZWFzc2lnbkRhdGUoeyBhc3NpZ25EYXRlLCBhc3NpZ25UaW1lLCBkdWVEYXRlLCBkdWVUaW1lIH0pO1xuICAgIHRoaXMub25SZXNldE1vZGFsKCk7XG4gIH1cblxuICBoYW5kbGVEYXRlUGlja2VyQ2hhbmdlID0gKGZpZWxkLCB2YWx1ZSkgPT4gdGhpcy5zZXRTdGF0ZSh7IFtmaWVsZF06IHZhbHVlIH0pXG5cbiAgcmVuZGVyKCkge1xuICAgIGNvbnN0IHsgb3BlbiB9ID0gdGhpcy5wcm9wcztcbiAgICBjb25zdCB7IGFzc2lnbkRhdGUsIGFzc2lnblRpbWUsIGR1ZURhdGUsIGR1ZVRpbWUgfSA9IHRoaXMuc3RhdGU7XG4gICAgcmV0dXJuIChcbiAgICAgIDxQb3J0YWwgc2VsZWN0b3I9XCIjbW9kYWxcIj5cbiAgICAgICAge29wZW4gJiYgKFxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib3ZlcmxheVwiPlxuICAgICAgICAgICAgPENsaWNrT2ZmQ29tcG9uZW50V3JhcHBlciBvbk91dGVyQ2xpY2s9e3RoaXMub25DbG9zZU1vZGFsfT5cbiAgICAgICAgICAgICAgPGRpdiBpZD1cIm1vZGFsX3Jlc2NoZWR1bGVcIiBjbGFzc05hbWU9XCJtb2RhbCBtb2RhbC1jdXN0b20gbW9kYWwtY2FsZW5kYXJcIj5cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNhcmQtbW9kYWwgY2FyZFwiPlxuICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjYXJkLXBhbmVsIGNhcmQtcGFuZWwtdGl0bGVcIiBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICcjMjViYmY3JywgY29sb3I6ICcjZmZmJyB9fT5cbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjYXJkLXBhbmVsLXJvdyByb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPGgyPlxuICAgICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJoZWFkaW5nLWhvbGRlclwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImhlYWRpbmctYmxvY2tcIj5SZXNjaGVkdWxlPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2gyPlxuICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sIHJpZ2h0LWFsaWduXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICA8YSBocmVmPVwiI1wiIGNsYXNzTmFtZT1cInBhbmVsLWxpbmsgY2xvc2UgbW9kYWwtY2xvc2VcIj48aSBjbGFzc05hbWU9XCJpY29uLWNsb3NlLXRoaW5cIj48L2k+PC9hPlxuICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjYXJkLWNvbnRlbnRcIiBzdHlsZT17eyBoZWlnaHQ6ICc0MTBweCcgfX0+XG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZC1ib2R5XCIgc3R5bGU9e3sgaGVpZ2h0OiAnMzM1cHgnIH19PlxuICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibW9kYWwtcm93IHJvd1wiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjb2wgczZcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJkYXRlcGlja2VyLWZpZWxkIGlucHV0LWZpZWxkXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPGkgY2xhc3NOYW1lPVwiaWNvbi1jYWxlbmRhclwiPjwvaT5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8RGF0ZVBpY2tlclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZWN0ZWQ9e2Fzc2lnbkRhdGV9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICB3aXRoUG9ydGFsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRlRm9ybWF0PVwiTU0vZGQveXlcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWQ9XCJhc3NpZ25EYXRlXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWU9XCJhc3NpZ25EYXRlXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZXZlbnQpID0+IHRoaXMuaGFuZGxlRGF0ZVBpY2tlckNoYW5nZSgnYXNzaWduRGF0ZScsIGV2ZW50KX1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9e2Fzc2lnbkRhdGUgPyAnbGFiZWwgYWN0aXZlJyA6ICdsYWJlbCd9IGh0bWxGb3I9XCJuZXdfdGVzdF9zZWN0aW9uX2Fzc2lnbl9kYXRlXCI+QXNzaWduIEZvcjwvbGFiZWw+XG4gICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbCBzNlwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImRhdGVwaWNrZXItZmllbGQgaW5wdXQtZmllbGRcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aSBjbGFzc05hbWU9XCJpY29uLWNsb2NrMlwiPjwvaT5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8RGF0ZVBpY2tlclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZWN0ZWQ9e2Fzc2lnblRpbWV9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICB3aXRoUG9ydGFsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaG93VGltZVNlbGVjdFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2hvd1RpbWVTZWxlY3RPbmx5XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aW1lSW50ZXJ2YWxzPXsxNX1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGVGb3JtYXQ9XCJoOm1tIGFhXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWVDYXB0aW9uPVwiVGltZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZD1cImFzc2lnblRpbWVcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZT1cImFzc2lnblRpbWVcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhldmVudCkgPT4gdGhpcy5oYW5kbGVEYXRlUGlja2VyQ2hhbmdlKCdhc3NpZ25UaW1lJywgZXZlbnQpfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT17YXNzaWduVGltZSA/ICdsYWJlbCBhY3RpdmUnIDogJ2xhYmVsJ30gaHRtbEZvcj1cImFzc2lnblRpbWVcIj5UaW1lPC9sYWJlbD5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm1vZGFsLXJvdyByb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sIHM2XCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZGF0ZXBpY2tlci1maWVsZCBpbnB1dC1maWVsZFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpIGNsYXNzTmFtZT1cImljb24tY2FsZW5kYXJcIj48L2k+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPERhdGVQaWNrZXJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdGVkPXtkdWVEYXRlfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgd2l0aFBvcnRhbFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0ZUZvcm1hdD1cIk1NL2RkL3l5XCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlkPVwiZHVlRGF0ZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYW1lPVwiZHVlRGF0ZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGV2ZW50KSA9PiB0aGlzLmhhbmRsZURhdGVQaWNrZXJDaGFuZ2UoJ2R1ZURhdGUnLCBldmVudCl9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPXtkdWVEYXRlID8gJ2xhYmVsIGFjdGl2ZScgOiAnbGFiZWwnfSBodG1sRm9yPVwiZHVlRGF0ZVwiPkR1ZSAob3B0aW9uYWwpPC9sYWJlbD5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sIHM2XCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZGF0ZXBpY2tlci1maWVsZCBpbnB1dC1maWVsZFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpIGNsYXNzTmFtZT1cImljb24tY2xvY2syXCI+PC9pPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxEYXRlUGlja2VyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWxlY3RlZD17ZHVlVGltZX1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHdpdGhQb3J0YWxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNob3dUaW1lU2VsZWN0XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaG93VGltZVNlbGVjdE9ubHlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWVJbnRlcnZhbHM9ezE1fVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0ZUZvcm1hdD1cImg6bW0gYWFcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGltZUNhcHRpb249XCJUaW1lXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlkPVwiZHVlVGltZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYW1lPVwiZHVlVGltZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGV2ZW50KSA9PiB0aGlzLmhhbmRsZURhdGVQaWNrZXJDaGFuZ2UoJ2R1ZVRpbWUnLCBldmVudCl9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPXtkdWVUaW1lID8gJ2xhYmVsIGFjdGl2ZScgOiAnbGFiZWwnfSBodG1sRm9yPVwiZHVlVGltZVwiPlRpbWU8L2xhYmVsPlxuICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibW9kYWwtcm93IHJvd1wiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPHA+Jm5ic3A7PC9wPlxuICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtb2RhbC1mb290ZXIgbW9kYWwtZm9vdGVyLXdpZHRoXCI+XG4gICAgICAgICAgICAgICAgICAgICAgPGEgaHJlZj1cIiNcIiBjbGFzc05hbWU9XCJtb2RhbC1jbG9zZSB3YXZlcy1lZmZlY3Qgd2F2ZXMtdGVhbCBidG4tZmxhdCBwaW5rLXRleHQgdGV4dC1kYXJrZW4tMVwiPkNhbmNlbDwvYT5cbiAgICAgICAgICAgICAgICAgICAgICA8YSBocmVmPVwiI1wiIGNsYXNzTmFtZT1cImxpbmstYnRuIHdhdmVzLWVmZmVjdCB3YXZlcy10ZWFsIGJ0bi1mbGF0XCI+U2F2ZSBDaGFuZ2VzPC9hPlxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvQ2xpY2tPZmZDb21wb25lbnRXcmFwcGVyPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICApfVxuICAgICAgICA8c3R5bGUganN4PlxuICAgICAgICAgIHtgXG4gICAgICAgICAgICAuY2FyZC1tb2RhbCB7XG4gICAgICAgICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogNnB4O1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgLm92ZXJsYXkge1xuICAgICAgICAgICAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMCwgMCwgMCwgMC43KTtcbiAgICAgICAgICAgICAgdG9wOiAwO1xuICAgICAgICAgICAgICByaWdodDogMDtcbiAgICAgICAgICAgICAgYm90dG9tOiAwO1xuICAgICAgICAgICAgICBsZWZ0OiAwO1xuICAgICAgICAgICAgICB6LWluZGV4OiAxMDAzO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgLm1vZGFsLWN1c3RvbSB7XG4gICAgICAgICAgICAgIG9wYWNpdHk6IDE7XG4gICAgICAgICAgICAgIHZpc2liaWxpdHk6IHZpc2libGU7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAubW9kYWwtZm9vdGVyIHtcbiAgICAgICAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogd2hpdGU7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAjbW9kYWxfcmVzY2hlZHVsZSB7XG4gICAgICAgICAgICAgIHRvcDogMTAlO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgZGl2LnJlYWN0LWRhdGVwaWNrZXJfX3BvcnRhbCB7XG4gICAgICAgICAgICAgIGhlaWdodDogMTAwJSFpbXBvcnRhbnQ7XG4gICAgICAgICAgICAgIHdpZHRoOiAxMDAlIWltcG9ydGFudDtcbiAgICAgICAgICAgIH1cbiAgICAgICAgICBgfVxuICAgICAgICA8L3N0eWxlPlxuICAgICAgPC9Qb3J0YWw+XG4gICAgKTtcbiAgfVxufVxuXG5SZWFzc2lnbk1vZGFsLnByb3BUeXBlcyA9IHtcbiAgb3BlbjogUHJvcFR5cGVzLmJvb2wuaXNSZXF1aXJlZCxcbiAgb25DbG9zZTogUHJvcFR5cGVzLmZ1bmMuaXNSZXF1aXJlZCxcbiAgb25SZWFzc2lnbkRhdGU6IFByb3BUeXBlcy5mdW5jLmlzUmVxdWlyZWQsXG59XG5cbmV4cG9ydCBkZWZhdWx0IFJlYXNzaWduTW9kYWw7XG4iXX0= */\n/*@ sourceURL=/Users/chrischavarro/clear-choice/clear-choice-admin/components/Student/LessonWorksheetTestSection/components/ReassignModal/index.js */"));
+    }
+  }]);
+
+  return ReassignModal;
+}(react__WEBPACK_IMPORTED_MODULE_8___default.a.Component);
+
+ReassignModal.propTypes = {
+  open: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.bool.isRequired,
+  onClose: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
+  onReassignDate: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (ReassignModal);
+
+/***/ }),
+
 /***/ "./components/Student/LessonWorksheetTestSection/index.js":
 /*!****************************************************************!*\
   !*** ./components/Student/LessonWorksheetTestSection/index.js ***!
@@ -8708,6 +9276,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ChallengeQuestions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/ChallengeQuestions */ "./components/Student/LessonWorksheetTestSection/components/ChallengeQuestions/index.js");
 /* harmony import */ var _components_QuestionModal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/QuestionModal */ "./components/Student/LessonWorksheetTestSection/components/QuestionModal/index.js");
 /* harmony import */ var _utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils/sampleQuestions */ "./components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js");
+/* harmony import */ var _components_CardSection__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/CardSection */ "./components/Student/LessonWorksheetTestSection/components/CardSection/index.js");
+/* harmony import */ var _components_ReassignModal__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/ReassignModal */ "./components/Student/LessonWorksheetTestSection/components/ReassignModal/index.js");
 
 
 
@@ -8715,8 +9285,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/* eslint-disable react/no-did-mount-set-state */
+
+/* eslint-disable react/no-did-update-set-state */
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+
+
 
 
 
@@ -8737,13 +9313,25 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(LessonWorksheetTestSection).call(this, props));
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleReassignModal", function () {
+      return _this.setState(function (_ref) {
+        var reassigNModalOpen = _ref.reassigNModalOpen;
+        return {
+          reassigNModalOpen: !reassigNModalOpen,
+          dropdownIsOpen: false
+        };
+      });
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onToggleQuestionModal", function () {
       var selectedQuestion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return _this.setState(function (_ref) {
-        var questionModalOpen = _ref.questionModalOpen;
+      return _this.setState(function (_ref2) {
+        var questionModalOpen = _ref2.questionModalOpen;
         return {
           questionModalOpen: !questionModalOpen,
-          selectedQuestion: selectedQuestion
+          selectedQuestion: selectedQuestion,
+          questionDropdownOpen: false,
+          questionDropdownIndex: null
         };
       });
     });
@@ -8760,15 +9348,8 @@ function (_React$Component) {
       });
     });
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleDropdownClick", function (event) {
-      var dropdownIsOpen = _this.state.dropdownIsOpen;
-      event.preventDefault();
-
-      if (dropdownIsOpen) {
-        return _this.onCloseDropdown();
-      }
-
-      return _this.onOpenDropdown();
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onReassignDate", function (assignDate, assignTime, dueDate, dueTime) {
+      console.warn('Stubbed out date functionality', assignDate, assignTime, dueDate, dueTime);
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleQuestionDropdownClick", function (event, question) {
@@ -8799,21 +9380,57 @@ function (_React$Component) {
       }
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleDropdownClick", function (event) {
+      var dropdownIsOpen = _this.state.dropdownIsOpen;
+      event.preventDefault();
+
+      if (dropdownIsOpen) {
+        return _this.onCloseDropdown();
+      }
+
+      return _this.onOpenDropdown();
+    });
+
     _this.state = {
       selectedQuestion: {},
       questionModalOpen: false,
       answerSheetComplete: false,
       questions: _utils_sampleQuestions__WEBPACK_IMPORTED_MODULE_13__["default"],
-      status: 'notStarted',
       dropdownIsOpen: false,
       questionDropdownOpen: false,
-      questionDropdownIndex: null // can be started, complete, or instructor editing
-
+      questionDropdownIndex: null,
+      reassigNModalOpen: false
     };
     return _this;
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(LessonWorksheetTestSection, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.props.worksheet.completionLevel !== 'Not Started') {
+        this.setState({
+          answerSheetComplete: true
+        });
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var worksheet = this.props.worksheet;
+
+      if (prevProps.worksheet.id !== worksheet.id) {
+        if (worksheet.completionLevel === 'Not Started') {
+          this.setState({
+            answerSheetComplete: false
+          });
+        } else {
+          this.setState({
+            answerSheetComplete: true
+          });
+        }
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this$state2 = this.state,
@@ -8823,7 +9440,8 @@ function (_React$Component) {
           answerSheetComplete = _this$state2.answerSheetComplete,
           dropdownIsOpen = _this$state2.dropdownIsOpen,
           questionDropdownOpen = _this$state2.questionDropdownOpen,
-          questionDropdownIndex = _this$state2.questionDropdownIndex;
+          questionDropdownIndex = _this$state2.questionDropdownIndex,
+          reassigNModalOpen = _this$state2.reassigNModalOpen;
       var _this$props = this.props,
           onClose = _this$props.onClose,
           worksheet = _this$props.worksheet,
@@ -8836,6 +9454,10 @@ function (_React$Component) {
         open: questionModalOpen,
         question: selectedQuestion,
         onCloseModal: this.onToggleQuestionModal
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ReassignModal__WEBPACK_IMPORTED_MODULE_15__["default"], {
+        open: reassigNModalOpen,
+        onClose: this.onToggleReassignModal,
+        onReassignDate: this.onReassignDate
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Portal__WEBPACK_IMPORTED_MODULE_9__["default"], {
         selector: "#modal"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
@@ -8915,13 +9537,16 @@ function (_React$Component) {
         }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        className: "modal-trigger"
+        className: "modal-trigger",
+        onClick: this.onToggleReassignModal
       }, "Change Date")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        className: "modal-trigger"
+        className: "modal-trigger",
+        onClick: this.onToggleReassignModal
       }, "Change Due Date")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        className: "modal-trigger"
+        className: "modal-trigger",
+        onClick: this.onToggleReassignModal
       }, "Remove Due Date")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#"
       }, "Excuse Latness")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
@@ -8941,7 +9566,15 @@ function (_React$Component) {
         className: "content-section content-section-85"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "container-sm"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, worksheet.completionLevel !== 'Not Started' ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_CardSection__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        flags: worksheet.flags,
+        status: worksheet.status,
+        problems: worksheet.problems,
+        completedProblems: worksheet.completed,
+        completionLevel: worksheet.completionLevel,
+        totalVideoMinutesWatched: worksheet.totalVideoMinutesWatched,
+        totalVideoMinutesAllMissedProblems: worksheet.totalVideoMinutesAllMissedProblems
+      }) : null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "main-row row"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ChallengeQuestions__WEBPACK_IMPORTED_MODULE_11__["default"], {
         answerSheetComplete: answerSheetComplete,
@@ -8969,7 +9602,9 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
 LessonWorksheetTestSection.propTypes = {
-  onClose: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired
+  user: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired,
+  onClose: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func.isRequired,
+  worksheet: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.object.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (LessonWorksheetTestSection);
 
@@ -8979,7 +9614,7 @@ LessonWorksheetTestSection.propTypes = {
 /*!**********************************************************************!*\
   !*** ./components/Student/LessonWorksheetTestSection/utils/index.js ***!
   \**********************************************************************/
-/*! exports provided: getAnswerChoiceColors, getAnswerPercentageBreakdownColors, getAnswerColor, difficultyMap, getCompleteAnswerColor */
+/*! exports provided: getAnswerChoiceColors, getAnswerPercentageBreakdownColors, getAnswerColor, difficultyMap, getCompleteAnswerColor, statusColorMap, chartColorMap, data, formatTimeEstimate */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8989,6 +9624,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAnswerColor", function() { return getAnswerColor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "difficultyMap", function() { return difficultyMap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCompleteAnswerColor", function() { return getCompleteAnswerColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "statusColorMap", function() { return statusColorMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "chartColorMap", function() { return chartColorMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "data", function() { return data; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatTimeEstimate", function() { return formatTimeEstimate; });
 var getAnswerChoiceColors = function getAnswerChoiceColors(answerLetter, correctAnswer, studentAnswer) {
   if (correctAnswer) {
     return {
@@ -9101,6 +9740,36 @@ var getCompleteAnswerColor = function getCompleteAnswerColor(answerType, answer,
   }
 
   return null;
+};
+var statusColorMap = {
+  Assigned: 'grey darken-4',
+  Accomplished: 'purple darken-3',
+  Beginning: 'red darken-3',
+  Exemplary: 'blue accent-4',
+  Developing: 'purple'
+};
+var chartColorMap = {
+  Assigned: '#333',
+  Accomplished: '#7327cc',
+  Beginning: '#ed1c24',
+  Exemplary: 'rgb(0, 100, 244)',
+  Developing: '#c10078'
+};
+var data = function data(percentage, status) {
+  var colorOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  return {
+    datasets: [{
+      data: [percentage, 100 - percentage],
+      backgroundColor: [colorOverride || chartColorMap[status], '#eaeaea']
+    }]
+  };
+};
+var formatTimeEstimate = function formatTimeEstimate(totalMinutes) {
+  var hours = Math.floor(totalMinutes / 60) === 0 ? 0 : Math.floor(totalMinutes / 60);
+  var minutes = totalMinutes % 60 === 0 ? 0 : totalMinutes % 60;
+  var hourString = hours !== 0 ? "".concat(hours, ":") : '';
+  var minuteString = minutes !== 0 ? "".concat(minutes) : '';
+  return "".concat(hourString).concat(minuteString);
 };
 
 /***/ }),
@@ -15092,6 +15761,28 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "regenerator-run
 
 /***/ }),
 
+/***/ "./node_modules/react-datepicker/dist/react-datepicker-cssmodules.css":
+/*!****************************************************************************!*\
+  !*** ./node_modules/react-datepicker/dist/react-datepicker-cssmodules.css ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./node_modules/react-datepicker/dist/react-datepicker.css":
+/*!*****************************************************************!*\
+  !*** ./node_modules/react-datepicker/dist/react-datepicker.css ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ "./node_modules/react-toastify/dist/ReactToastify.css":
 /*!************************************************************!*\
   !*** ./node_modules/react-toastify/dist/ReactToastify.css ***!
@@ -16274,6 +16965,17 @@ module.exports = require("core-js/library/fn/symbol/iterator");
 /***/ (function(module, exports) {
 
 module.exports = require("immutability-helper");
+
+/***/ }),
+
+/***/ "moment":
+/*!*************************!*\
+  !*** external "moment" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("moment");
 
 /***/ }),
 

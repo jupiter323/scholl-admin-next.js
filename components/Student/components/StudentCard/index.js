@@ -97,16 +97,16 @@ class StudentCard extends React.Component {
               <div className="chart-container chart-container-large">
                 <div className="chart-holder">
                   <If condition={active}>
-                  <Doughnut
-                  data={() => data(currentScore, targetScore, initialScore)}
-                  height={210}
-                  options={{
-                    circumference: 1.45 * Math.PI,
-                    rotation: -3.85,
-                    cutoutPercentage: 60,
-                    tooltips: false,
-                  }}
-                  />
+                    <Doughnut
+                      data={() => data(currentScore, targetScore, initialScore)}
+                      height={210}
+                      options={{
+                        circumference: 1.45 * Math.PI,
+                        rotation: -3.85,
+                        cutoutPercentage: 60,
+                        tooltips: false,
+                      }}
+                    />
                   </If>
                   <span className="chart-value" style={{backgroundColor: "#0085ce", bottom: "7px"}}><span data-count-up data-start-val={initialScore} data-end-val={currentScore} data-duration="1">{currentScore}</span></span>
                 </div>
