@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import LessonCard from './components/LessonCard';
 import FilterSection from './components/FilterSection';
+import FullView from './components/FullView';
 
 class DetailLessonList extends React.Component {
   constructor(props) {
@@ -11,8 +11,12 @@ class DetailLessonList extends React.Component {
     this.state = {
       test: true,
       lessons: this.props.user.lessons,
+      currentView: 'full',
+      active: 'full',
     }
   };
+
+  onChangeView = (view) => this.setState({currentView: view, active: view})
 
 // wasn't working
   // onRemoveOption = (optionIndex) => {
@@ -38,30 +42,26 @@ class DetailLessonList extends React.Component {
     this.setState({lessons: newLessonsArray})
   }
 
-  mapLessons = () => {
-    const { lessons, dropdownisOpen } = this.state;
-    return lessons.map((lesson, index) => (
-    <LessonCard
-      key={index}
-      index={index}
-      lesson={lesson}
-      onCloneLesson={() => this.onCloneLesson(index)}
-      onDeleteLesson={() => this.onDeleteLesson(index)}
-    />
-  )
-    )}
-
+  
   arrayItemRemover = (array, value) => array.filter((lesson) => lesson !== value)
 
+  renderCurrentView = () => {
+    const {active, lessons} = this.state;
+    if (active === 'full') {
+      return <FullView lessons={lessons} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson}/>
+    }
+  }
+
+
   render() {
+    const { currentView } = this.state;
     return (
       <React.Fragment>
-        <FilterSection />
-        <div className="content-section">
-          <div className="row d-flex-content card-width-272">
-            {this.mapLessons()}
-          </div>
-        </div>
+        <FilterSection
+        currentView={currentView}
+        onChangeView={this.onChangeView}
+        />
+        {this.renderCurrentView()}
       <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Lesson</a>
       </React.Fragment>
     )

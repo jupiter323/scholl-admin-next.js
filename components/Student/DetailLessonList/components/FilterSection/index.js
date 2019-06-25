@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import update from 'immutability-helper';
+import PropTypes from 'prop-types';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class FilterSection extends React.Component {
 
   render() {
     const { open, activeFilters } = this.state;
+    const { currentView, onChangeView } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -255,38 +257,61 @@ class FilterSection extends React.Component {
                 </ul>
               </div>
             </div>
-            <div className="row mb-0 d-flex align-items-flex-end">
-              <div className="col s12 l8">
-                <div className="row mb-0">
-                  <div className="col s12 m3">
+            <div className="d-flex row mb-0 justify-center">
+              <div className="col s12 m3">
                     <div className="search-field input-field">
-                      <input type="search" id="name_search" className="input-control  validate" placeholder="Edwar" />
+                      <input type="search" id="name_search" className="input-control  validate"  />
                       <button type="submit" className="search-button"><i className="icon-search"></i></button>
                       <label className="label" htmlFor="name_search">Search</label>
                     </div>
-                  </div>
-                  <div className="col s12 m3">
-                    <div className="input-field">
-                      <select id="location_search">
-                        <option>Any</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label className="label" htmlFor="location_search">Location</label>
-                    </div>
-                  </div>
-                  <div className="col s12 m3">
-                    <div className="input-field">
-                      <select id="sort_search">
-                        <option>Last Name (ascending)</option>
-                        <option>Option</option>
-                        <option>Option</option>
-                      </select>
-                      <label className="label" htmlFor="sort_search">Sort</label>
+              </div>
+            <div className="col s12 m3">
+              <div className="input-field">
+                <select id="location_search">
+                  <option>Any</option>
+                  <option>Option</option>
+                  <option>Option</option>
+                </select>
+                <label className="label" htmlFor="location_search">Location</label>
+              </div>
+            </div>
+            </div>
+
+            <div className="row mb-0 d-flex align-items-center">
+              <div className="col s12 l4">
+                <div className="row mb-0">
+                  
+                  <div className="col s12 x17">
+                   <div className="input-field">
+                      {/* sort dropdown  */}
+                      <select id="sort">
+                  <option>Any</option>
+                  <option>Option</option>
+                  <option>Option</option>
+                  <label htmlFor="sort" className="label">Sort options</label>
+                </select>
                     </div>
                   </div>
                 </div>
               </div>
+              <div className="switcher-block col s12 l4" style={{marginTop: '14px'}}>
+              <div className="view-switcher">
+                <ul className="switcher center-align">
+                  <li
+                  data-view="view-full"
+                  className={currentView === 'full' ? 'active' : ""}
+                  >
+                    <a href="#" onClick={() => onChangeView('full')}>Full View</a>
+                  </li>
+                  <li
+                      data-view="view-list"
+                      className={currentView === 'list' ? 'active' : ''}
+                    >
+                      <a href="#" onClick={() => onChangeView('list')}>List View</a>
+                    </li>
+                  </ul>
+              </div>
+            </div>
               <div className="col s12 l4">
                 <div className="option-filters">
                   <div className="option-item clear"><a href="#" onClick={this.onClearFilters}>Clear Filters</a></div>
@@ -308,4 +333,8 @@ class FilterSection extends React.Component {
   }
 }
 
+FilterSection.propTypes = {
+  currentView: PropTypes.string.isRequired,
+  onChangeView: PropTypes.func.isRequired,
+}
 export default FilterSection;
