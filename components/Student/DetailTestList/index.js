@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TestCard from './components/TestCard';
 
 import sampleTests from './utils/sampleTests';
+import EditTestModal from './components/EditTestModal';
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -10,11 +12,15 @@ class DetailTestList extends React.Component {
       tests: sampleTests,
       dropdownIndex: null,
       dropdownIsOpen: false,
+      editTestModalOpen: false,
+      activeTest: null,
     };
   }
 
+  onToggleEditTestModal = (activeTest = null) => this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown)
+
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = (event) => {
     event.preventDefault();
@@ -24,16 +30,21 @@ class DetailTestList extends React.Component {
   onEnterAnswers = () => console.warn('Pending implementation of enter answers UI and functionality')
   onEditTest = () => console.warn('Pending implementation edit test UI and functionality')
   onDownloadReport = () => console.warn('Pending implementation of download report ui and functionality')
-  onDeleteTest = () => console.warn('Pending implementation of delete test UI and functionality')
+  onDeleteTest = () => this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
+
+  onSaveTestChanges = (testVersion, settings) => {
+    this.onToggleEditTestModal();
+    console.warn('Pending save test changes functionality', testVersion, settings);
+  }
 
   mapCompletedTests = () => {
     const { tests } = this.state;
     return tests.filter(test => test.status === 'complete').map((test, index) => (
       <TestCard
         test={test}
-        key={test.id}
+        key={`completed-${test.id}`}
         index={index}
-        onEditTest={this.onEditTest}
+        onEditTest={() => this.onToggleEditTestModal(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
         onEnterAnswers={this.onEnterAnswers}
@@ -51,8 +62,8 @@ class DetailTestList extends React.Component {
       <TestCard
         futureTest
         test={test}
-        key={test.id}
-        onEditTest={this.onEditTest}
+        key={`future-${test.id}`}
+        onEditTest={() => this.onToggleEditTestModal(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
         onEnterAnswers={this.onEnterAnswers}
@@ -66,26 +77,46 @@ class DetailTestList extends React.Component {
   }
 
   render() {
+    const { editTestModalOpen, activeTest } = this.state;
+    const { user } = this.props;
     return (
-      <div className="content-section">
-        <div className="section-holder">
-          <div className="content-container">
-            <h2>Completed Tests</h2>
-            <div className="row d-flex-content card-width-366">
-              {this.mapCompletedTests()}
+      <React.Fragment>
+        <Choose>
+          <When condition={editTestModalOpen}>
+            <EditTestModal
+              user={user}
+              test={activeTest}
+              onDeleteTest={this.onDeleteTest}
+              onSaveTestChanges={this.onSaveTestChanges}
+            />
+          </When>
+          <Otherwise>
+            <div className="content-section">
+              <div className="section-holder">
+                <div className="content-container">
+                  <h2>Completed Tests</h2>
+                  <div className="row d-flex-content card-width-366">
+                    {this.mapCompletedTests()}
+                  </div>
+                </div>
+                <div className="content-container">
+                  <h2>Future Tests</h2>
+                  <div className="row d-flex-content card-width-366">
+                    {this.mapFutureTests()}
+                  </div>
+                </div>
+              </div>
+              <a href="#" onClick={this.onCreateTest} className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Test</a>
             </div>
-          </div>
-          <div className="content-container">
-            <h2>Future Tests</h2>
-            <div className="row d-flex-content card-width-366">
-              {this.mapFutureTests()}
-            </div>
-          </div>
-        </div>
-        <a href="#" onClick={this.onCreateTest} className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Test</a>
-      </div>
+          </Otherwise>
+        </Choose>
+      </React.Fragment>
     );
   }
 }
+
+DetailTestList.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 export default DetailTestList;

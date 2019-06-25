@@ -4,13 +4,6 @@ import PropTypes from 'prop-types';
 import { getProblemCompletionStatusColor, getLessonActivityStatus } from '../../utils';
 
 class LessonCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      test: true,
-    };
-  }
-
   handleDropdownClick = (event) => {
     const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
     event.preventDefault();
