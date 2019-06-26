@@ -135,7 +135,6 @@ class EditTestModal extends React.Component {
       },
       settings: { testDate, dueDate, allowStudentToEnterAnswers, timed },
     } = this.state;
-    console.warn('completion date', test.dueDate, completionDate, test.dueDate < completionDate)
     return (
       <Portal selector="#modal">
         <div className="main-holder grey lighten-5 modal" style={{ zIndex: '1003', display: 'block', position: 'absolute', top: '0', width: '100%' }}>
