@@ -28,7 +28,7 @@ class FullView extends React.Component {
 }
 
 FullView.propTypes = {
-  lessons: PropTypes.object.isRequired,
+  lessons: PropTypes.array.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
 }
