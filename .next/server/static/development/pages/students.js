@@ -3712,50 +3712,38 @@ function (_React$Component) {
       });
     });
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onHandleFilterClick", function (filter) {
-      var currentActiveFilters = _this.state.activeFilters;
-      var activeFilters;
-
-      if (currentActiveFilters.indexOf(filter) === -1) {
-        activeFilters = immutability_helper__WEBPACK_IMPORTED_MODULE_8___default()(currentActiveFilters, {
-          $push: [filter]
-        });
-      } else {
-        var filterIndex = currentActiveFilters.indexOf(filter);
-        activeFilters = immutability_helper__WEBPACK_IMPORTED_MODULE_8___default()(currentActiveFilters, {
-          $splice: [[filterIndex, 1]]
-        });
-      }
-
-      _this.setState({
-        activeFilters: activeFilters
-      });
-    });
-
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onClearFilters", function () {
-      return _this.setState({
-        activeFilters: []
-      });
-    });
-
     _this.state = {
-      open: true,
-      activeFilters: []
+      open: true
     };
     return _this;
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(FilterSection, [{
     key: "render",
+    // onHandleFilterClick = (filter) => {
+    //   const { activeFilters: currentActiveFilters } = this.state;
+    //   let activeFilters;
+    //   if (currentActiveFilters.indexOf(filter) === -1) {
+    //     activeFilters = update(currentActiveFilters, {
+    //       $push: [filter],
+    //     });
+    //   } else {
+    //     const filterIndex = currentActiveFilters.indexOf(filter);
+    //     activeFilters = update(currentActiveFilters, {
+    //       $splice: [[ filterIndex, 1 ]],
+    //     });
+    //   }
+    //   this.setState({ activeFilters });
+    // }
+    // onClearFilters = () => this.setState({ activeFilters: [] })
     value: function render() {
-      var _this2 = this;
-
-      var _this$state = this.state,
-          open = _this$state.open,
-          activeFilters = _this$state.activeFilters;
+      var open = this.state.open;
       var _this$props = this.props,
           currentView = _this$props.currentView,
-          onChangeView = _this$props.onChangeView;
+          onClearFilters = _this$props.onClearFilters,
+          onChangeView = _this$props.onChangeView,
+          onHandleFilterClick = _this$props.onHandleFilterClick,
+          activeFilters = _this$props.activeFilters;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "filter-form-holder"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
@@ -3768,222 +3756,173 @@ function (_React$Component) {
           display: 'none'
         }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "filter-form_checkbox-list-holder"
+        className: "filter-form_checkbox-list-holder justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "activated",
-        checked: activeFilters.indexOf("activated") !== -1,
+        id: "reading",
+        checked: activeFilters.indexOf('reading') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('activated');
+          return onHandleFilterClick('reading');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "activated"
-      }, "Activated")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "reading"
+      }, "Reading")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "unactivated",
-        checked: activeFilters.indexOf("unactivated") !== -1,
+        id: "writing",
+        checked: activeFilters.indexOf('writing') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('unactivated');
+          return onHandleFilterClick('writing');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "unactivated"
-      }, "Unactivated")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "writing"
+      }, "Writing")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "expired",
-        checked: activeFilters.indexOf("expired") !== -1,
+        id: "math",
+        checked: activeFilters.indexOf('math') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('expired');
+          return onHandleFilterClick('math');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "expired"
-      }, "Expired"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        htmlFor: "math"
+      }, "Math"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "current",
-        checked: activeFilters.indexOf("current") !== -1,
+        id: "beginning",
+        checked: activeFilters.indexOf('beginning') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('current');
+          return onHandleFilterClick('beginning');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "current"
-      }, "Current")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "beginning"
+      }, "Beginning")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "archived",
-        checked: activeFilters.indexOf("archived") !== -1,
+        id: "developing",
+        checked: activeFilters.indexOf('developing') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('archived');
+          return onHandleFilterClick('developing');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "archived"
-      }, "Archived"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        htmlFor: "developing"
+      }, "Developing")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        type: "checkbox",
+        id: "accomplished",
+        checked: activeFilters.indexOf('accomplished') !== -1,
+        onChange: function onChange() {
+          return onHandleFilterClick('accomplished');
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
+        htmlFor: "accomplished"
+      }, "Accomplished")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        type: "checkbox",
+        id: "exemplary",
+        checked: activeFilters.indexOf('exemplary') !== -1,
+        onChange: function onChange() {
+          return onHandleFilterClick('exemplary');
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
+        htmlFor: "exemplary"
+      }, "Exemplary"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "no-gain",
-        checked: activeFilters.indexOf("no-gain") !== -1,
+        id: "unassigned",
+        checked: activeFilters.indexOf('unassigned') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('no-gain');
+          return onHandleFilterClick('unassigned');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "no-gain"
-      }, "No Gain")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "unassigned"
+      }, "Unassigned")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "some-gain",
-        checked: activeFilters.indexOf("some-gain") !== -1,
+        id: "complete",
+        checked: activeFilters.indexOf('complete') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('some-gain');
+          return onHandleFilterClick('complete');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "some-gain"
-      }, "Some Gain")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "complete"
+      }, "Complete")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "gain-100+",
-        checked: activeFilters.indexOf("gain-100+") !== -1,
+        id: "incomplete",
+        checked: activeFilters.indexOf('incomplete') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('gain-100+');
+          return onHandleFilterClick('incomplete');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "gain-100+"
-      }, "Gain of 100+")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "gain-200+",
-        checked: activeFilters.indexOf("gain-200+") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('gain-200+');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "gain-200+"
-      }, "Gain of 200+"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        htmlFor: "incomplete"
+      }, "Incomplete"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "hit-target-score",
-        checked: activeFilters.indexOf("hit-target-score") !== -1,
+        id: "hasReviewFlags",
+        checked: activeFilters.indexOf('hasReviewFlags') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('hit-target-score');
+          return onHandleFilterClick('hasReviewFlags');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "hit-target-score"
-      }, "Hit Target Score")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "hasnt-hit-target-score",
-        checked: activeFilters.indexOf("hasnt-hit-target-score") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('hasnt-hit-target-score');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "hasnt-hit-target-score"
-      }, "Hasn\u2019t Hit Target Score"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        htmlFor: "hasReviewFlags"
+      }, "Has Review Flags"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "no-tests",
-        checked: activeFilters.indexOf("no-tests") !== -1,
+        id: "dueToday",
+        checked: activeFilters.indexOf('dueToday') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('tests');
+          return onHandleFilterClick('dueToday');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "no-tests"
-      }, "No Tests")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "dueToday"
+      }, "Due Today")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "1-test",
-        checked: activeFilters.indexOf("1-test") !== -1,
+        id: "dueNextSession",
+        checked: activeFilters.indexOf('dueNextSession') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('1-test');
+          return onHandleFilterClick('dueNextSession');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "1-test"
-      }, "1 Test")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "dueNextSession"
+      }, "Due By Next Session")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "2-test",
-        checked: activeFilters.indexOf("2-test") !== -1,
+        id: "dueThisWeek",
+        checked: activeFilters.indexOf('dueThisWeek') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('2-test');
+          return onHandleFilterClick('dueThisWeek');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "2-test"
-      }, "2 Tests")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "dueThisWeek"
+      }, "Due this Week")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "3-test",
-        checked: activeFilters.indexOf("3-test") !== -1,
+        id: "overdue",
+        checked: activeFilters.indexOf('overdue') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('3-test');
+          return onHandleFilterClick('overdue');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "3-test"
-      }, "3+ Tests"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+        htmlFor: "overdue"
+      }, "Overdue"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "has-overdue-work",
-        checked: activeFilters.indexOf("has-overdue-work") !== -1,
+        id: "some-class",
+        checked: activeFilters.indexOf('class') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('has-overdue-work');
+          return onHandleFilterClick('class');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "has-overdue-work"
-      }, "Has Overdue Work")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "some-class"
+      }, "Some Class")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "unreviewed-flags",
-        checked: activeFilters.indexOf("unreviewed-flags") !== -1,
+        id: "tutoring",
+        checked: activeFilters.indexOf('tutoring') !== -1,
         onChange: function onChange() {
-          return _this2.onHandleFilterClick('unreviewed-flags');
+          return onHandleFilterClick('tutoring');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "unreviewed-flags"
-      }, "Unreviewed Flags"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
-        className: "filter-form_checkbox-list"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "sessions-this-week",
-        checked: activeFilters.indexOf("sessions-this-week") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('sessions-this-week');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "sessions-this-week"
-      }, "Sessions This Week")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "session-today",
-        checked: activeFilters.indexOf("session-today") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('session-today');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "session-today"
-      }, "Session Today")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "no-sessions",
-        checked: activeFilters.indexOf("no-sessions") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('no-sessions');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "no-sessions"
-      }, "No Sessions Scheduled"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
-        className: "filter-form_checkbox-list"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "entered-actual-score",
-        checked: activeFilters.indexOf("entered-actual-score") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('entered-actual-score');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "entered-actual-score"
-      }, "Entered Actual Score")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "no-actual-score",
-        checked: activeFilters.indexOf("no-actual-score") !== -1,
-        onChange: function onChange() {
-          return _this2.onHandleFilterClick('no-actual-score');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "no-actual-score"
-      }, "No Actual Score"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        htmlFor: "tutoring"
+      }, "Tutoring"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "d-flex row mb-0 justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s12 m3"
@@ -4022,10 +3961,10 @@ function (_React$Component) {
         className: "input-field"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("select", {
         id: "sort"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Any"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Any"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "sort",
         className: "label"
-      }, "Sort options")))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, "Sort options"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "switcher-block col s12 l4",
         style: {
           marginTop: '14px'
@@ -4058,7 +3997,7 @@ function (_React$Component) {
         className: "option-item clear"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        onClick: this.onClearFilters
+        onClick: onClearFilters
       }, "Clear Filters")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "option-item"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
@@ -4075,7 +4014,10 @@ function (_React$Component) {
 
 FilterSection.propTypes = {
   currentView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.string.isRequired,
-  onChangeView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
+  onChangeView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
+  onHandleFilterClick: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
+  activeFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  onClearFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (FilterSection);
 
@@ -4577,6 +4519,12 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(DetailLessonList).call(this, props));
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onClearFilters", function () {
+      return _this.setState({
+        activeFilters: []
+      });
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onChangeView", function (view) {
       return _this.setState({
         currentView: view,
@@ -4605,6 +4553,26 @@ function (_React$Component) {
       });
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onHandleFilterClick", function (filter) {
+      var currentActiveFilters = _this.state.activeFilters;
+      var activeFilters;
+
+      if (currentActiveFilters.indexOf(filter) === -1) {
+        activeFilters = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(currentActiveFilters, {
+          $push: [filter]
+        });
+      } else {
+        var filterIndex = currentActiveFilters.indexOf(filter);
+        activeFilters = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(currentActiveFilters, {
+          $splice: [[filterIndex, 1]]
+        });
+      }
+
+      _this.setState({
+        activeFilters: activeFilters
+      });
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "arrayItemRemover", function (array, value) {
       return array.filter(function (lesson) {
         return lesson !== value;
@@ -4629,7 +4597,8 @@ function (_React$Component) {
       test: true,
       lessons: _this.props.user.lessons,
       currentView: 'full',
-      active: 'full'
+      active: 'full',
+      activeFilters: []
     };
     return _this;
   }
@@ -4637,10 +4606,15 @@ function (_React$Component) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(DetailLessonList, [{
     key: "render",
     value: function render() {
-      var currentView = this.state.currentView;
+      var _this$state2 = this.state,
+          currentView = _this$state2.currentView,
+          activeFilters = _this$state2.activeFilters;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_10__["default"], {
         currentView: currentView,
-        onChangeView: this.onChangeView
+        onChangeView: this.onChangeView,
+        onHandleFilterClick: this.onHandleFilterClick,
+        activeFilters: activeFilters,
+        onClearFilters: this.onClearFilters
       }), this.renderCurrentView(), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
         className: "waves-effect waves-teal btn add-btn"
