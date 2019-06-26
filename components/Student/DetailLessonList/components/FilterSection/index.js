@@ -8,251 +8,201 @@ class FilterSection extends React.Component {
     super(props);
     this.state = {
       open: true,
-      activeFilters: [],
     }
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
 
-  onHandleFilterClick = (filter) => {
-    const { activeFilters: currentActiveFilters } = this.state;
-    let activeFilters;
-    if (currentActiveFilters.indexOf(filter) === -1) {
-      activeFilters = update(currentActiveFilters, {
-        $push: [filter],
-      });
-    } else {
-      const filterIndex = currentActiveFilters.indexOf(filter);
-      activeFilters = update(currentActiveFilters, {
-        $splice: [[ filterIndex, 1 ]],
-      });
-    }
-    this.setState({ activeFilters });
-  }
+  // onHandleFilterClick = (filter) => {
+  //   const { activeFilters: currentActiveFilters } = this.state;
+  //   let activeFilters;
+  //   if (currentActiveFilters.indexOf(filter) === -1) {
+  //     activeFilters = update(currentActiveFilters, {
+  //       $push: [filter],
+  //     });
+  //   } else {
+  //     const filterIndex = currentActiveFilters.indexOf(filter);
+  //     activeFilters = update(currentActiveFilters, {
+  //       $splice: [[ filterIndex, 1 ]],
+  //     });
+  //   }
+  //   this.setState({ activeFilters });
+  // }
 
-  onClearFilters = () => this.setState({ activeFilters: [] })
+  // onClearFilters = () => this.setState({ activeFilters: [] })
 
   render() {
-    const { open, activeFilters } = this.state;
-    const { currentView, onChangeView } = this.props;
+    const { open } = this.state;
+    const { currentView, onClearFilters, onChangeView, onHandleFilterClick, activeFilters } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
           <li>
             <div className="collapsible-body" style={open ? { display: 'block' } : { display: 'none' }}>
-              <div className="filter-form_checkbox-list-holder">
+              <div className="filter-form_checkbox-list-holder justify-center">
                 <ul className="filter-form_checkbox-list">
-                  <li>
+                <li>
                     <input
                       type="checkbox"
-                      id="activated"
-                      checked={activeFilters.indexOf("activated") !== -1}
-                      onChange={() => this.onHandleFilterClick('activated')}
+                      id="reading"
+                      checked={activeFilters.indexOf('reading') !== -1}
+                      onChange={() => onHandleFilterClick('reading')}
                     />
-                    <label htmlFor="activated">Activated</label>
+                    <label htmlFor="reading">Reading</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="unactivated"
-                      checked={activeFilters.indexOf("unactivated") !== -1}
-                      onChange={() => this.onHandleFilterClick('unactivated')}
+                      id="writing"
+                      checked={activeFilters.indexOf('writing') !== -1}
+                      onChange={() => onHandleFilterClick('writing')}
                     />
-                    <label htmlFor="unactivated">Unactivated</label>
+                    <label htmlFor="writing">Writing</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="expired"
-                      checked={activeFilters.indexOf("expired") !== -1}
-                      onChange={() => this.onHandleFilterClick('expired')}
+                      id="math"
+                      checked={activeFilters.indexOf('math') !== -1}
+                      onChange={() => onHandleFilterClick('math')}
                     />
-                    <label htmlFor="expired">Expired</label>
+                    <label htmlFor="math">Math</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="current"
-                      checked={activeFilters.indexOf("current") !== -1}
-                      onChange={() => this.onHandleFilterClick('current')}
+                      id="beginning"
+                      checked={activeFilters.indexOf('beginning') !== -1}
+                      onChange={() => onHandleFilterClick('beginning')}
                     />
-                    <label htmlFor="current">Current</label>
+                    <label htmlFor="beginning">Beginning</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="archived"
-                      checked={activeFilters.indexOf("archived") !== -1}
-                      onChange={() => this.onHandleFilterClick('archived')}
+                      id="developing"
+                      checked={activeFilters.indexOf('developing') !== -1}
+                      onChange={() => onHandleFilterClick('developing')}
                     />
-                    <label htmlFor="archived">Archived</label>
-                  </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="no-gain"
-                      checked={activeFilters.indexOf("no-gain") !== -1}
-                      onChange={() => this.onHandleFilterClick('no-gain')}
-                    />
-                    <label htmlFor="no-gain">No Gain</label>
+                    <label htmlFor="developing">Developing</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="some-gain"
-                      checked={activeFilters.indexOf("some-gain") !== -1}
-                      onChange={() => this.onHandleFilterClick('some-gain')}
+                      id="accomplished"
+                      checked={activeFilters.indexOf('accomplished') !== -1}
+                      onChange={() => onHandleFilterClick('accomplished')}
                     />
-                    <label htmlFor="some-gain">Some Gain</label>
+                    <label htmlFor="accomplished">Accomplished</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="gain-100+"
-                      checked={activeFilters.indexOf("gain-100+") !== -1}
-                      onChange={() => this.onHandleFilterClick('gain-100+')}
+                      id="exemplary"
+                      checked={activeFilters.indexOf('exemplary') !== -1}
+                      onChange={() => onHandleFilterClick('exemplary')}
                     />
-                    <label htmlFor="gain-100+">Gain of 100+</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="gain-200+"
-                      checked={activeFilters.indexOf("gain-200+") !== -1}
-                      onChange={() => this.onHandleFilterClick('gain-200+')}
-                    />
-                    <label htmlFor="gain-200+">Gain of 200+</label>
+                    <label htmlFor="exemplary">Exemplary</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="hit-target-score"
-                      checked={activeFilters.indexOf("hit-target-score") !== -1}
-                      onChange={() => this.onHandleFilterClick('hit-target-score')}
+                      id="unassigned"
+                      checked={activeFilters.indexOf('unassigned') !== -1}
+                      onChange={() => onHandleFilterClick('unassigned')}
                     />
-                    <label htmlFor="hit-target-score">Hit Target Score</label>
+                    <label htmlFor="unassigned">Unassigned</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="hasnt-hit-target-score"
-                      checked={activeFilters.indexOf("hasnt-hit-target-score") !== -1}
-                      onChange={() => this.onHandleFilterClick('hasnt-hit-target-score')}
+                      id="complete"
+                      checked={activeFilters.indexOf('complete') !== -1}
+                      onChange={() => onHandleFilterClick('complete')}
                     />
-                    <label htmlFor="hasnt-hit-target-score">Hasn’t Hit Target Score</label>
-                  </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="no-tests"
-                      checked={activeFilters.indexOf("no-tests") !== -1}
-                      onChange={() => this.onHandleFilterClick('tests')}
-                    />
-                    <label htmlFor="no-tests">No Tests</label>
+                    <label htmlFor="complete">Complete</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="1-test"
-                      checked={activeFilters.indexOf("1-test") !== -1}
-                      onChange={() => this.onHandleFilterClick('1-test')}
+                      id="incomplete"
+                      checked={activeFilters.indexOf('incomplete') !== -1}
+                      onChange={() => onHandleFilterClick('incomplete')}
                     />
-                    <label htmlFor="1-test">1 Test</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="2-test"
-                      checked={activeFilters.indexOf("2-test") !== -1}
-                      onChange={() => this.onHandleFilterClick('2-test')}
-                    />
-                    <label htmlFor="2-test">2 Tests</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="3-test"
-                      checked={activeFilters.indexOf("3-test") !== -1}
-                      onChange={() => this.onHandleFilterClick('3-test')}
-                    />
-                    <label htmlFor="3-test">3+ Tests</label>
+                    <label htmlFor="incomplete">Incomplete</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="has-overdue-work"
-                      checked={activeFilters.indexOf("has-overdue-work") !== -1}
-                      onChange={() => this.onHandleFilterClick('has-overdue-work')}
+                      id="hasReviewFlags"
+                      checked={activeFilters.indexOf('hasReviewFlags') !== -1}
+                      onChange={() => onHandleFilterClick('hasReviewFlags')}
                     />
-                    <label htmlFor="has-overdue-work">Has Overdue Work</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="unreviewed-flags"
-                      checked={activeFilters.indexOf("unreviewed-flags") !== -1}
-                      onChange={() => this.onHandleFilterClick('unreviewed-flags')}
-                    />
-                    <label htmlFor="unreviewed-flags">Unreviewed Flags</label>
+                    <label htmlFor="hasReviewFlags">Has Review Flags</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="sessions-this-week"
-                      checked={activeFilters.indexOf("sessions-this-week") !== -1}
-                      onChange={() => this.onHandleFilterClick('sessions-this-week')}
+                      id="dueToday"
+                      checked={activeFilters.indexOf('dueToday') !== -1}
+                      onChange={() => onHandleFilterClick('dueToday')}
                     />
-                    <label htmlFor="sessions-this-week">Sessions This Week</label>
+                    <label htmlFor="dueToday">Due Today</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="session-today"
-                      checked={activeFilters.indexOf("session-today") !== -1}
-                      onChange={() => this.onHandleFilterClick('session-today')}
+                      id="dueNextSession"
+                      checked={activeFilters.indexOf('dueNextSession') !== -1}
+                      onChange={() => onHandleFilterClick('dueNextSession')}
                     />
-                    <label htmlFor="session-today">Session Today</label>
+                    <label htmlFor="dueNextSession">Due By Next Session</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="no-sessions"
-                      checked={activeFilters.indexOf("no-sessions") !== -1}
-                      onChange={() => this.onHandleFilterClick('no-sessions')}
+                      id="dueThisWeek"
+                      checked={activeFilters.indexOf('dueThisWeek') !== -1}
+                      onChange={() => onHandleFilterClick('dueThisWeek')}
                     />
-                    <label htmlFor="no-sessions">No Sessions Scheduled</label>
+                    <label htmlFor="dueThisWeek">Due this Week</label>
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="overdue"
+                      checked={activeFilters.indexOf('overdue') !== -1}
+                      onChange={() => onHandleFilterClick('overdue')}
+                    />
+                    <label htmlFor="overdue">Overdue</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="entered-actual-score"
-                      checked={activeFilters.indexOf("entered-actual-score") !== -1}
-                      onChange={() => this.onHandleFilterClick('entered-actual-score')}
+                      id="some-class"
+                      checked={activeFilters.indexOf('class') !== -1}
+                      onChange={() => onHandleFilterClick('class')}
                     />
-                    <label htmlFor="entered-actual-score">Entered Actual Score</label>
+                    <label htmlFor="some-class">Some Class</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="no-actual-score"
-                      checked={activeFilters.indexOf("no-actual-score") !== -1}
-                      onChange={() => this.onHandleFilterClick('no-actual-score')}
+                      id="tutoring"
+                      checked={activeFilters.indexOf('tutoring') !== -1}
+                      onChange={() => onHandleFilterClick('tutoring')}
                     />
-                    <label htmlFor="no-actual-score">No Actual Score</label>
+                    <label htmlFor="tutoring">Tutoring</label>
                   </li>
                 </ul>
               </div>
@@ -288,8 +238,8 @@ class FilterSection extends React.Component {
                   <option>Any</option>
                   <option>Option</option>
                   <option>Option</option>
-                  <label htmlFor="sort" className="label">Sort options</label>
                 </select>
+                  <label htmlFor="sort" className="label">Sort options</label>
                     </div>
                   </div>
                 </div>
@@ -314,7 +264,7 @@ class FilterSection extends React.Component {
             </div>
               <div className="col s12 l4">
                 <div className="option-filters">
-                  <div className="option-item clear"><a href="#" onClick={this.onClearFilters}>Clear Filters</a></div>
+                  <div className="option-item clear"><a href="#" onClick={onClearFilters}>Clear Filters</a></div>
                   <div className="option-item">
                     <span
                       className="collapsible-header"
@@ -336,5 +286,8 @@ class FilterSection extends React.Component {
 FilterSection.propTypes = {
   currentView: PropTypes.string.isRequired,
   onChangeView: PropTypes.func.isRequired,
+  onHandleFilterClick: PropTypes.func.isRequired,
+  activeFilters: PropTypes.array.isRequired,
+  onClearFilters: PropTypes.func.isRequired,
 }
 export default FilterSection;
