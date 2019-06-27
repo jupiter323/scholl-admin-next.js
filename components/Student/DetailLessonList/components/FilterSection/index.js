@@ -2,17 +2,27 @@
 import React from 'react';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
+import Dropdown from '../../../../FormComponents/Dropdown';
+import getValueFromState from '../../../../utils/getValueFromState';
+import lessonSortOptions from '../../utils/lessonSortOptions';
 
 class FilterSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: true,
+      sort: {},
+      filterName: "",
+      unitFilter: {},
     }
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
-
+  handleSortChange = (event) => {
+    const {onSetSort} = this.props;
+    this.setState({sort: event});
+    onSetSort(event);
+  }
   // onHandleFilterClick = (filter) => {
   //   const { activeFilters: currentActiveFilters } = this.state;
   //   let activeFilters;
@@ -30,9 +40,28 @@ class FilterSection extends React.Component {
   // }
 
   // onClearFilters = () => this.setState({ activeFilters: [] })
-
+  handleFilterChange = (event, name) => {
+    const { onUnsetFilteredState, onSetFilteredState} = this.props;
+    const value = event.target ? event.target.value : event;
+    const updatedState = update(this.state, {
+      $merge: { [name]: value },
+    });
+    this.setState(updatedState);
+    if (name === 'nameFilter') {
+      if (event === '') {
+        return onUnsetFilteredState();
+      }
+      return onSetFilteredState(event);
+    }
+    if (name === 'unitFilter') {
+      if (event === "") {
+        return onUnsetFilteredState();
+      }
+      return onSetFilteredState(event);
+    }
+  }
   render() {
-    const { open } = this.state;
+    const { open, sort } = this.state;
     const { currentView, onClearFilters, onChangeView, onHandleFilterClick, activeFilters } = this.props;
     return (
       <div className="filter-form-holder">
@@ -233,13 +262,14 @@ class FilterSection extends React.Component {
                   
                   <div className="col s12 x17">
                    <div className="input-field">
-                      {/* sort dropdown  */}
-                      <select id="sort">
-                  <option>Any</option>
-                  <option>Option</option>
-                  <option>Option</option>
-                </select>
-                  <label htmlFor="sort" className="label">Sort options</label>
+                      <Dropdown
+                        value={getValueFromState(sort, lessonSortOptions)}
+                        onChange={(event) => this.handleSortChange(event)}
+                        options={lessonSortOptions}
+                        label="Sort by"
+                        stateKey="sort"
+                        dropdownKey="sort"
+                        />
                     </div>
                   </div>
                 </div>
@@ -289,5 +319,8 @@ FilterSection.propTypes = {
   onHandleFilterClick: PropTypes.func.isRequired,
   activeFilters: PropTypes.array.isRequired,
   onClearFilters: PropTypes.func.isRequired,
+  onSetFilteredState: PropTypes.func.isRequired,
+  onUnsetFilteredState: PropTypes.func.isRequired,
+  onSetSort: PropTypes.func.isRequired,
 }
 export default FilterSection;

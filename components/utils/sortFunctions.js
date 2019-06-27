@@ -62,3 +62,28 @@ export const subjectDescending = ({ subject: subjectA }, { subject: subjectB }) 
   if (subjectA > subjectB) { return -1; }
   return 0;
 }
+
+export const passage = ({passage: passageA }, {passage: passageB}) => {
+  if (passageA < passageB) {return -1; }
+  return 0;
+}
+
+export const statusDescending = ({status: statusA}, {status: statusB}) => {
+  if (statusA > statusB) {return -1; }
+  return 0;
+}
+
+export const statusAscending = ({status: statusA}, {status: statusB}) => {
+  if (statusA < statusB) {return -1; }
+  return 0;
+}
+
+export const alerts = ({alerts: alertsA}, {alerts: alertsB}) => {
+  if (alertsA.length > alertsB.length) {return -1; }
+  return 0;
+}
+
+export const availableDate = ({ availableDate: availableDateA }, { availableDate: availableDateB }) => {
+  if (availableDateA > availableDateB) { return -1; }
+  return 0;
+}
