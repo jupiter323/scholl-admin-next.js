@@ -23,7 +23,7 @@ class FilterSection extends React.Component {
     this.setState({sort: event});
     onSetSort(event);
   }
-  // onHandleFilterClick = (filter) => {
+  // handleFilterClick = (filter) => {
   //   const { activeFilters: currentActiveFilters } = this.state;
   //   let activeFilters;
   //   if (currentActiveFilters.indexOf(filter) === -1) {
@@ -62,7 +62,7 @@ class FilterSection extends React.Component {
   }
   render() {
     const { open, sort } = this.state;
-    const { currentView, onClearFilters, onChangeView, onHandleFilterClick, activeFilters } = this.props;
+    const { currentView, onClearFilters, dueDateFilters, flagFilters, subjectFilters, statusFilters, completeFilters, classTypeFilters, onChangeView, handleFilterClick } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -74,8 +74,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="reading"
-                      checked={activeFilters.indexOf('reading') !== -1}
-                      onChange={() => onHandleFilterClick('reading')}
+                      checked={subjectFilters.indexOf('Reading') !== -1}
+                      onChange={() => handleFilterClick("subject", 'Reading')}
                     />
                     <label htmlFor="reading">Reading</label>
                   </li>
@@ -83,8 +83,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="writing"
-                      checked={activeFilters.indexOf('writing') !== -1}
-                      onChange={() => onHandleFilterClick('writing')}
+                      checked={subjectFilters.indexOf('Writing') !== -1}
+                      onChange={() => handleFilterClick("subject", 'Writing')}
                     />
                     <label htmlFor="writing">Writing</label>
                   </li>
@@ -92,8 +92,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="math"
-                      checked={activeFilters.indexOf('math') !== -1}
-                      onChange={() => onHandleFilterClick('math')}
+                      checked={subjectFilters.indexOf('Math') !== -1}
+                      onChange={() => handleFilterClick("subject", 'Math')}
                     />
                     <label htmlFor="math">Math</label>
                   </li>
@@ -103,8 +103,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="beginning"
-                      checked={activeFilters.indexOf('beginning') !== -1}
-                      onChange={() => onHandleFilterClick('beginning')}
+                      checked={statusFilters.indexOf('Beginning') !== -1}
+                      onChange={() => handleFilterClick("status", 'Beginning')}
                     />
                     <label htmlFor="beginning">Beginning</label>
                   </li>
@@ -112,8 +112,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="developing"
-                      checked={activeFilters.indexOf('developing') !== -1}
-                      onChange={() => onHandleFilterClick('developing')}
+                      checked={statusFilters.indexOf('Developing') !== -1}
+                      onChange={() => handleFilterClick("status", 'Developing')}
                     />
                     <label htmlFor="developing">Developing</label>
                   </li>
@@ -121,8 +121,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="accomplished"
-                      checked={activeFilters.indexOf('accomplished') !== -1}
-                      onChange={() => onHandleFilterClick('accomplished')}
+                      checked={statusFilters.indexOf('Accomplished') !== -1}
+                      onChange={() => handleFilterClick("status", 'Accomplished')}
                     />
                     <label htmlFor="accomplished">Accomplished</label>
                   </li>
@@ -130,8 +130,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="exemplary"
-                      checked={activeFilters.indexOf('exemplary') !== -1}
-                      onChange={() => onHandleFilterClick('exemplary')}
+                      checked={statusFilters.indexOf('Exemplary') !== -1}
+                      onChange={() => handleFilterClick("status", 'Exemplary')}
                     />
                     <label htmlFor="exemplary">Exemplary</label>
                   </li>
@@ -141,8 +141,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="unassigned"
-                      checked={activeFilters.indexOf('unassigned') !== -1}
-                      onChange={() => onHandleFilterClick('unassigned')}
+                      checked={completeFilters.indexOf('unassigned') !== -1}
+                      onChange={() => handleFilterClick('complete', 'unassigned')}
                     />
                     <label htmlFor="unassigned">Unassigned</label>
                   </li>
@@ -150,8 +150,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="complete"
-                      checked={activeFilters.indexOf('complete') !== -1}
-                      onChange={() => onHandleFilterClick('complete')}
+                      checked={completeFilters.indexOf('complete') !== -1}
+                      onChange={() => handleFilterClick('complete', 'complete')}
                     />
                     <label htmlFor="complete">Complete</label>
                   </li>
@@ -159,8 +159,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="incomplete"
-                      checked={activeFilters.indexOf('incomplete') !== -1}
-                      onChange={() => onHandleFilterClick('incomplete')}
+                      checked={completeFilters.indexOf('incomplete') !== -1}
+                      onChange={() => handleFilterClick('complete', 'incomplete')}
                     />
                     <label htmlFor="incomplete">Incomplete</label>
                   </li>
@@ -170,8 +170,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="hasReviewFlags"
-                      checked={activeFilters.indexOf('hasReviewFlags') !== -1}
-                      onChange={() => onHandleFilterClick('hasReviewFlags')}
+                      checked={flagFilters.indexOf('alerts') !== -1}
+                      onChange={() => handleFilterClick('alerts', 'true')}
                     />
                     <label htmlFor="hasReviewFlags">Has Review Flags</label>
                   </li>
@@ -181,8 +181,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="dueToday"
-                      checked={activeFilters.indexOf('dueToday') !== -1}
-                      onChange={() => onHandleFilterClick('dueToday')}
+                      checked={dueDateFilters.indexOf('dueToday') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'dueToday')}
                     />
                     <label htmlFor="dueToday">Due Today</label>
                   </li>
@@ -190,8 +190,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="dueNextSession"
-                      checked={activeFilters.indexOf('dueNextSession') !== -1}
-                      onChange={() => onHandleFilterClick('dueNextSession')}
+                      checked={dueDateFilters.indexOf('dueNextSession') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'dueNextSession')}
                     />
                     <label htmlFor="dueNextSession">Due By Next Session</label>
                   </li>
@@ -199,8 +199,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="dueThisWeek"
-                      checked={activeFilters.indexOf('dueThisWeek') !== -1}
-                      onChange={() => onHandleFilterClick('dueThisWeek')}
+                      checked={dueDateFilters.indexOf('dueThisWeek') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'dueThisWeek')}
                     />
                     <label htmlFor="dueThisWeek">Due this Week</label>
                   </li>
@@ -208,8 +208,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="overdue"
-                      checked={activeFilters.indexOf('overdue') !== -1}
-                      onChange={() => onHandleFilterClick('overdue')}
+                      checked={dueDateFilters.indexOf('overdue') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'overdue')}
                     />
                     <label htmlFor="overdue">Overdue</label>
                   </li>
@@ -219,8 +219,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="some-class"
-                      checked={activeFilters.indexOf('class') !== -1}
-                      onChange={() => onHandleFilterClick('class')}
+                      checked={classTypeFilters.indexOf('class') !== -1}
+                      onChange={() => handleFilterClick('classType', 'class')}
                     />
                     <label htmlFor="some-class">Some Class</label>
                   </li>
@@ -228,8 +228,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="tutoring"
-                      checked={activeFilters.indexOf('tutoring') !== -1}
-                      onChange={() => onHandleFilterClick('tutoring')}
+                      checked={classTypeFilters.indexOf('tutoring') !== -1}
+                      onChange={() => handleFilterClick('classType', 'tutoring')}
                     />
                     <label htmlFor="tutoring">Tutoring</label>
                   </li>
@@ -246,12 +246,12 @@ class FilterSection extends React.Component {
               </div>
             <div className="col s12 m3">
               <div className="input-field">
-                <select id="location_search">
+                <select id="unit-search">
                   <option>Any</option>
                   <option>Option</option>
                   <option>Option</option>
                 </select>
-                <label className="label" htmlFor="location_search">Location</label>
+                <label className="label" htmlFor="unit_search">Unit</label>
               </div>
             </div>
             </div>
@@ -316,11 +316,17 @@ class FilterSection extends React.Component {
 FilterSection.propTypes = {
   currentView: PropTypes.string.isRequired,
   onChangeView: PropTypes.func.isRequired,
-  onHandleFilterClick: PropTypes.func.isRequired,
-  activeFilters: PropTypes.array.isRequired,
+  handleFilterClick: PropTypes.func.isRequired,
   onClearFilters: PropTypes.func.isRequired,
   onSetFilteredState: PropTypes.func.isRequired,
   onUnsetFilteredState: PropTypes.func.isRequired,
   onSetSort: PropTypes.func.isRequired,
+  handleFilterClick: PropTypes.func.isRequired,
+  subjectFilters: PropTypes.array.isRequired,
+  statusFilters: PropTypes.array.isRequired,
+  completeFilters: PropTypes.array.isRequired,
+  flagFilters: PropTypes.array.isRequired,
+  dueDateFilters: PropTypes.array.isRequired,
+  classTypeFilters: PropTypes.array.isRequired,
 }
 export default FilterSection;

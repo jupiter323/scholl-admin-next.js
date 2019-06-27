@@ -1244,6 +1244,7 @@ const sampleStudentList = [
         completionTime: '',
         completedLate: false,
         overdue: false,
+        classType: 'tutoring',
       },
       {
         subject: 'Math',
@@ -1266,6 +1267,7 @@ const sampleStudentList = [
         completionTime: '',
         completedLate: false,
         overdue: false,
+        classType: 'class',
       },
       {
         subject: 'Reading',
@@ -1288,6 +1290,8 @@ const sampleStudentList = [
         completionTime: '7:34 PM',
         completedLate: true,
         overdue: false,
+        classType: 'class',
+
       },
       {
         subject: 'Reading',
@@ -1310,13 +1314,15 @@ const sampleStudentList = [
         completionTime: '',
         completedLate: false,
         overdue: false,
+        classType: 'class',
+
       },
       {
         subject: 'Reading',
         unitNumber: '4',
         lessonName: 'Reading Someing 4',
         assigned: true,
-        status: 'Developing',
+        status: 'Accomplished',
         alerts: [],
         lessonType: 'Challenge + Practice',
         timeEstimate: '14 min',
@@ -1332,13 +1338,15 @@ const sampleStudentList = [
         completionTime: '2:38 PM',
         completedLate: false,
         overdue: false,
+        classType: 'tutoring',
+
       },
       {
         subject: 'Reading',
         unitNumber: '9',
         lessonName: 'Reading Someing 9',
         assigned: true,
-        status: "DevelopingLow",
+        status: "Developing",
         alerts: [],
         lessonType: 'Challenge + Practice',
         timeEstimate: '14 min',
@@ -1354,13 +1362,15 @@ const sampleStudentList = [
         completionTime: '12:51 PM',
         completedLate: true,
         overdue: false,
+        classType: 'tutoring',
+
       },
       {
         subject: 'Reading',
         unitNumber: '1',
         lessonName: 'Reading Something 1',
         assigned: true,
-        status: "DevelopingLow",
+        status: "Developing",
         alerts: [],
         lessonType: 'Challenge + Practice',
         timeEstimate: '14 min',
@@ -1376,6 +1386,8 @@ const sampleStudentList = [
         completionTime: '2:00 PM',
         completedLate: false,
         overdue: false,
+        classType: 'class',
+
       },
       {
         subject: 'Writing',
@@ -1398,6 +1410,32 @@ const sampleStudentList = [
         completionTime: '4:21 PM',
         completedLate: false,
         overdue: false,
+        classType: 'class',
+
+      },
+      {
+        subject: 'Writing',
+        unitNumber: '6',
+        lessonName: 'Writing Lesson 11',
+        assigned: false,
+        status: 'unassigned',
+        alerts: [],
+        timeEstimate: '14 min',
+        lessonType: 'Drill',
+        totalProblems: '14',
+        solvedProblems: '',
+        score: '',
+        passage: '250',
+        dueDate: '',
+        dueTime: '',
+        completed: false,
+        availableDate: '',
+        completionDate: '',
+        completionTime: '',
+        completedLate: false,
+        overdue: false,
+        classType: 'class',
+
       },
     ],
   },

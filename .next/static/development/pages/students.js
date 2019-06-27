@@ -3560,6 +3560,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _FilterSection$propTy;
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 
@@ -3647,9 +3649,14 @@ function (_React$Component) {
       var _this$props2 = this.props,
           currentView = _this$props2.currentView,
           onClearFilters = _this$props2.onClearFilters,
+          dueDateFilters = _this$props2.dueDateFilters,
+          flagFilters = _this$props2.flagFilters,
+          subjectFilters = _this$props2.subjectFilters,
+          statusFilters = _this$props2.statusFilters,
+          completeFilters = _this$props2.completeFilters,
+          classTypeFilters = _this$props2.classTypeFilters,
           onChangeView = _this$props2.onChangeView,
-          onHandleFilterClick = _this$props2.onHandleFilterClick,
-          activeFilters = _this$props2.activeFilters;
+          handleFilterClick = _this$props2.handleFilterClick;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "filter-form-holder"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
@@ -3668,27 +3675,27 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "reading",
-        checked: activeFilters.indexOf('reading') !== -1,
+        checked: subjectFilters.indexOf('Reading') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('reading');
+          return handleFilterClick("subject", 'Reading');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "reading"
       }, "Reading")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "writing",
-        checked: activeFilters.indexOf('writing') !== -1,
+        checked: subjectFilters.indexOf('Writing') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('writing');
+          return handleFilterClick("subject", 'Writing');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "writing"
       }, "Writing")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "math",
-        checked: activeFilters.indexOf('math') !== -1,
+        checked: subjectFilters.indexOf('Math') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('math');
+          return handleFilterClick("subject", 'Math');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "math"
@@ -3697,36 +3704,36 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "beginning",
-        checked: activeFilters.indexOf('beginning') !== -1,
+        checked: statusFilters.indexOf('Beginning') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('beginning');
+          return handleFilterClick("status", 'Beginning');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "beginning"
       }, "Beginning")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "developing",
-        checked: activeFilters.indexOf('developing') !== -1,
+        checked: statusFilters.indexOf('Developing') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('developing');
+          return handleFilterClick("status", 'Developing');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "developing"
       }, "Developing")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "accomplished",
-        checked: activeFilters.indexOf('accomplished') !== -1,
+        checked: statusFilters.indexOf('Accomplished') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('accomplished');
+          return handleFilterClick("status", 'Accomplished');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "accomplished"
       }, "Accomplished")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "exemplary",
-        checked: activeFilters.indexOf('exemplary') !== -1,
+        checked: statusFilters.indexOf('Exemplary') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('exemplary');
+          return handleFilterClick("status", 'Exemplary');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "exemplary"
@@ -3735,27 +3742,27 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "unassigned",
-        checked: activeFilters.indexOf('unassigned') !== -1,
+        checked: completeFilters.indexOf('unassigned') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('unassigned');
+          return handleFilterClick('complete', 'unassigned');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "unassigned"
       }, "Unassigned")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "complete",
-        checked: activeFilters.indexOf('complete') !== -1,
+        checked: completeFilters.indexOf('complete') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('complete');
+          return handleFilterClick('complete', 'complete');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "complete"
       }, "Complete")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "incomplete",
-        checked: activeFilters.indexOf('incomplete') !== -1,
+        checked: completeFilters.indexOf('incomplete') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('incomplete');
+          return handleFilterClick('complete', 'incomplete');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "incomplete"
@@ -3764,9 +3771,9 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "hasReviewFlags",
-        checked: activeFilters.indexOf('hasReviewFlags') !== -1,
+        checked: flagFilters.indexOf('alerts') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('hasReviewFlags');
+          return handleFilterClick('alerts', 'true');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "hasReviewFlags"
@@ -3775,36 +3782,36 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "dueToday",
-        checked: activeFilters.indexOf('dueToday') !== -1,
+        checked: dueDateFilters.indexOf('dueToday') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('dueToday');
+          return handleFilterClick('dueDate', 'dueToday');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "dueToday"
       }, "Due Today")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "dueNextSession",
-        checked: activeFilters.indexOf('dueNextSession') !== -1,
+        checked: dueDateFilters.indexOf('dueNextSession') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('dueNextSession');
+          return handleFilterClick('dueDate', 'dueNextSession');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "dueNextSession"
       }, "Due By Next Session")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "dueThisWeek",
-        checked: activeFilters.indexOf('dueThisWeek') !== -1,
+        checked: dueDateFilters.indexOf('dueThisWeek') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('dueThisWeek');
+          return handleFilterClick('dueDate', 'dueThisWeek');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "dueThisWeek"
       }, "Due this Week")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "overdue",
-        checked: activeFilters.indexOf('overdue') !== -1,
+        checked: dueDateFilters.indexOf('overdue') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('overdue');
+          return handleFilterClick('dueDate', 'overdue');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "overdue"
@@ -3813,18 +3820,18 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "some-class",
-        checked: activeFilters.indexOf('class') !== -1,
+        checked: classTypeFilters.indexOf('class') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('class');
+          return handleFilterClick('classType', 'class');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "some-class"
       }, "Some Class")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "tutoring",
-        checked: activeFilters.indexOf('tutoring') !== -1,
+        checked: classTypeFilters.indexOf('tutoring') !== -1,
         onChange: function onChange() {
-          return onHandleFilterClick('tutoring');
+          return handleFilterClick('classType', 'tutoring');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "tutoring"
@@ -3851,11 +3858,11 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "input-field"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("select", {
-        id: "location_search"
+        id: "unit-search"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Any"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         className: "label",
-        htmlFor: "location_search"
-      }, "Location")))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        htmlFor: "unit_search"
+      }, "Unit")))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "row mb-0 d-flex align-items-center"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s12 l4"
@@ -3922,16 +3929,15 @@ function (_React$Component) {
   return FilterSection;
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
-FilterSection.propTypes = {
+FilterSection.propTypes = (_FilterSection$propTy = {
   currentView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.string.isRequired,
   onChangeView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
-  onHandleFilterClick: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
-  activeFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  handleFilterClick: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onClearFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onSetFilteredState: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onUnsetFilteredState: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onSetSort: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
-};
+}, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "handleFilterClick", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "subjectFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "statusFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "completeFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "flagFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "dueDateFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "classTypeFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), _FilterSection$propTy);
 /* harmony default export */ __webpack_exports__["default"] = (FilterSection);
 
 /***/ }),
@@ -4441,7 +4447,14 @@ function (_React$Component) {
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onClearFilters", function () {
       return _this.setState({
-        activeFilters: []
+        statusFilters: [],
+        subjectFilters: [],
+        completeFilters: [],
+        flagFilters: [],
+        classTypeFilters: [],
+        dueDateFilters: [],
+        unitFilter: "",
+        nameFilter: ""
       });
     });
 
@@ -4513,37 +4526,147 @@ function (_React$Component) {
       });
     });
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onHandleFilterClick", function (filter) {
-      var currentActiveFilters = _this.state.activeFilters;
-      var activeFilters;
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onFilterLessons", function () {
+      var _this$state = _this.state,
+          statusFilters = _this$state.statusFilters,
+          subjectFilters = _this$state.subjectFilters,
+          classTypeFilters = _this$state.classTypeFilters,
+          completeFilters = _this$state.completeFilters,
+          flagFilters = _this$state.flagFilters,
+          allLessons = _this$state.lessons;
+      var lessons = allLessons;
 
-      if (currentActiveFilters.indexOf(filter) === -1) {
-        activeFilters = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(currentActiveFilters, {
-          $push: [filter]
-        });
-      } else {
-        var filterIndex = currentActiveFilters.indexOf(filter);
-        activeFilters = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(currentActiveFilters, {
-          $splice: [[filterIndex, 1]]
+      if (statusFilters.length && statusFilters.indexOf("all") === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return statusFilters.indexOf(lesson.status) !== -1;
         });
       }
 
-      _this.setState({
-        activeFilters: activeFilters
-      });
+      if (subjectFilters.length && subjectFilters.indexOf('all') === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return subjectFilters.indexOf(lesson.subject) !== -1;
+        });
+      }
+
+      if (completeFilters.length && completeFilters.indexOf('complete') !== -1) {
+        lessons = lessons.filter(function (lesson) {
+          return lesson.completed === true;
+        });
+      } else if (completeFilters.indexOf('unassigned')) {
+        lessons = lessons.filter(function (lesson) {
+          return lesson.status === 'Started';
+        });
+      } else if (completeFilters.length && completeFilters.indexOf('incomplete')) {
+        lessons = lessons.filter(function (lesson) {
+          return lesson.assigned === false;
+        });
+      }
+
+      if (flagFilters.length && flagFilters.indexOf('all') === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return lesson.alerts.length !== 0;
+        });
+      }
+
+      if (classTypeFilters.length && classTypeFilters.indexOf("all") === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return classTypeFilters.indexOf(lesson.classType) !== -1;
+        });
+      }
+
+      return lessons;
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "getMappableLessons", function () {
-      var _this$state = _this.state,
-          sort = _this$state.sort,
-          lessons = _this$state.lessons;
+      var _this$state2 = _this.state,
+          sort = _this$state2.sort,
+          dueDateFilters = _this$state2.dueDateFilters,
+          lessons = _this$state2.lessons,
+          statusFilters = _this$state2.statusFilters,
+          subjectFilters = _this$state2.subjectFilters,
+          classTypeFilters = _this$state2.classTypeFilters,
+          completeFilters = _this$state2.completeFilters,
+          flagFilters = _this$state2.flagFilters;
       var mappableLessons = lessons;
+
+      if (statusFilters.length || subjectFilters.length || completeFilters.length || classTypeFilters.length || flagFilters.length) {
+        mappableLessons = _this.onFilterLessons();
+      } // if (completeFilters.length) {
+      //   mappableLessons = this.onFilterCompletion();
+      // }
+
+
+      if (dueDateFilters) {
+        return mappableLessons;
+      }
 
       if (sort) {
         return _this.onSortLessons(mappableLessons);
       }
 
       return mappableLessons;
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleFilterClick", function (filterType, filter) {
+      var _this$state3 = _this.state,
+          currentSubjectFilters = _this$state3.subjectFilters,
+          currentCompleteFilters = _this$state3.completeFilters,
+          currentStatusFilters = _this$state3.statusFilters,
+          currentFlagFilters = _this$state3.flagFilters,
+          currentDueDateFilters = _this$state3.dueDateFilters,
+          currentClassTypeFilters = _this$state3.classTypeFilters;
+      var modifiedFilterCurrentState;
+      var modifiedFilterName;
+      var modifiedFilterUpdatedState;
+
+      switch (filterType) {
+        case 'subject':
+          modifiedFilterCurrentState = currentSubjectFilters;
+          modifiedFilterName = 'subjectFilters';
+          break;
+
+        case 'status':
+          modifiedFilterCurrentState = currentStatusFilters;
+          modifiedFilterName = 'statusFilters';
+          break;
+
+        case 'complete':
+          modifiedFilterCurrentState = currentCompleteFilters;
+          modifiedFilterName = 'completeFilters';
+          break;
+
+        case 'alerts':
+          modifiedFilterCurrentState = currentFlagFilters;
+          modifiedFilterName = 'flagFilters';
+          break;
+
+        case 'dueDate':
+          modifiedFilterCurrentState = currentDueDateFilters;
+          modifiedFilterName = 'dueDateFilters';
+          break;
+
+        case 'classType':
+          modifiedFilterCurrentState = currentClassTypeFilters;
+          modifiedFilterName = 'classTypeFilters';
+          break;
+
+        default:
+          break;
+      } // Decide whether we're adding or removing the selected filter
+
+
+      if (modifiedFilterCurrentState.indexOf(filter) === -1) {
+        modifiedFilterUpdatedState = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(modifiedFilterCurrentState, {
+          $push: [filter]
+        });
+      } else {
+        var filterIndex = modifiedFilterCurrentState.indexOf(filter);
+        modifiedFilterUpdatedState = immutability_helper__WEBPACK_IMPORTED_MODULE_9___default()(modifiedFilterCurrentState, {
+          $splice: [[filterIndex, 1]]
+        });
+      }
+
+      _this.setState(Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])({}, modifiedFilterName, modifiedFilterUpdatedState));
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "arrayItemRemover", function (array, value) {
@@ -4569,7 +4692,12 @@ function (_React$Component) {
       lessons: _this.props.user.lessons,
       currentView: 'full',
       active: 'full',
-      activeFilters: [],
+      statusFilters: [],
+      subjectFilters: [],
+      completeFilters: [],
+      flagFilters: [],
+      classTypeFilters: [],
+      dueDateFilters: [],
       sort: "",
       nameFilter: "",
       unitFilter: ""
@@ -4580,18 +4708,29 @@ function (_React$Component) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(DetailLessonList, [{
     key: "render",
     value: function render() {
-      var _this$state2 = this.state,
-          currentView = _this$state2.currentView,
-          activeFilters = _this$state2.activeFilters;
+      var _this$state4 = this.state,
+          currentView = _this$state4.currentView,
+          subjectFilters = _this$state4.subjectFilters,
+          statusFilters = _this$state4.statusFilters,
+          completeFilters = _this$state4.completeFilters,
+          flagFilters = _this$state4.flagFilters,
+          dueDateFilters = _this$state4.dueDateFilters,
+          classTypeFilters = _this$state4.classTypeFilters;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_10__["default"], {
         currentView: currentView,
         onChangeView: this.onChangeView,
         onHandleFilterClick: this.onHandleFilterClick,
-        activeFilters: activeFilters,
         onClearFilters: this.onClearFilters,
         onSetFilteredState: this.onSetFilteredState,
         onUnsetFilteredState: this.onUnsetFilteredState,
-        onSetSort: this.onSetSort
+        onSetSort: this.onSetSort,
+        subjectFilters: subjectFilters,
+        statusFilters: statusFilters,
+        completeFilters: completeFilters,
+        flagFilters: flagFilters,
+        dueDateFilters: dueDateFilters,
+        classTypeFilters: classTypeFilters,
+        handleFilterClick: this.handleFilterClick
       }), this.renderCurrentView(), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
         className: "waves-effect waves-teal btn add-btn"
@@ -10931,7 +11070,8 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    classType: 'tutoring'
   }, {
     subject: 'Math',
     unitNumber: '4',
@@ -10952,7 +11092,8 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    classType: 'class'
   }, {
     subject: 'Reading',
     unitNumber: '3',
@@ -10973,7 +11114,8 @@ var sampleStudentList = [{
     completionDate: '04/15/19',
     completionTime: '7:34 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    classType: 'class'
   }, {
     subject: 'Reading',
     unitNumber: '6',
@@ -10994,13 +11136,14 @@ var sampleStudentList = [{
     completionDate: '',
     completionTime: '',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    classType: 'class'
   }, {
     subject: 'Reading',
     unitNumber: '4',
     lessonName: 'Reading Someing 4',
     assigned: true,
-    status: 'Developing',
+    status: 'Accomplished',
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11015,13 +11158,14 @@ var sampleStudentList = [{
     completionDate: '12/31/2018',
     completionTime: '2:38 PM',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    classType: 'tutoring'
   }, {
     subject: 'Reading',
     unitNumber: '9',
     lessonName: 'Reading Someing 9',
     assigned: true,
-    status: "DevelopingLow",
+    status: "Developing",
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11036,13 +11180,14 @@ var sampleStudentList = [{
     completionDate: '06/01/2019',
     completionTime: '12:51 PM',
     completedLate: true,
-    overdue: false
+    overdue: false,
+    classType: 'tutoring'
   }, {
     subject: 'Reading',
     unitNumber: '1',
     lessonName: 'Reading Something 1',
     assigned: true,
-    status: "DevelopingLow",
+    status: "Developing",
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11057,7 +11202,8 @@ var sampleStudentList = [{
     completionDate: '04/30/2019',
     completionTime: '2:00 PM',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    classType: 'class'
   }, {
     subject: 'Writing',
     unitNumber: '5',
@@ -11078,7 +11224,30 @@ var sampleStudentList = [{
     completionDate: '11/23/18',
     completionTime: '4:21 PM',
     completedLate: false,
-    overdue: false
+    overdue: false,
+    classType: 'class'
+  }, {
+    subject: 'Writing',
+    unitNumber: '6',
+    lessonName: 'Writing Lesson 11',
+    assigned: false,
+    status: 'unassigned',
+    alerts: [],
+    timeEstimate: '14 min',
+    lessonType: 'Drill',
+    totalProblems: '14',
+    solvedProblems: '',
+    score: '',
+    passage: '250',
+    dueDate: '',
+    dueTime: '',
+    completed: false,
+    availableDate: '',
+    completionDate: '',
+    completionTime: '',
+    completedLate: false,
+    overdue: false,
+    classType: 'class'
   }]
 }, {
   id: '1234',
