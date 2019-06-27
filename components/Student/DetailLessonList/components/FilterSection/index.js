@@ -5,15 +5,16 @@ import PropTypes from 'prop-types';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import lessonSortOptions from '../../utils/lessonSortOptions';
+import unitOptions from '../../utils/unitOptions';
 
 class FilterSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true,
+      open: false,
       sort: {},
-      filterName: "",
-      unitFilter: {},
+      nameFilter: "",
+      unitFilter: "",
     }
   }
 
@@ -22,6 +23,22 @@ class FilterSection extends React.Component {
     const {onSetSort} = this.props;
     this.setState({sort: event});
     onSetSort(event);
+  }
+
+  submitNameFilter = () => {
+    const { onSetFilteredState, onUnsetFilteredState } = this.props;
+    const { nameFilter } = this.state;
+    if (nameFilter === '') {
+      onUnsetFilteredState(nameFilter);
+    }
+    const transformedName = nameFilter.replace(/\s/g, "").toLowerCase();
+    onSetFilteredState(transformedName);
+  }
+
+  handleUnitChange = (event) => {
+    const { onSetUnitFilter } = this.props;
+    this.setState({unitFilter: event});
+    onSetUnitFilter(event);
   }
   // handleFilterClick = (filter) => {
   //   const { activeFilters: currentActiveFilters } = this.state;
@@ -41,7 +58,7 @@ class FilterSection extends React.Component {
 
   // onClearFilters = () => this.setState({ activeFilters: [] })
   handleFilterChange = (event, name) => {
-    const { onUnsetFilteredState, onSetFilteredState} = this.props;
+    const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter} = this.props;
     const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
       $merge: { [name]: value },
@@ -57,11 +74,11 @@ class FilterSection extends React.Component {
       if (event === "") {
         return onUnsetFilteredState();
       }
-      return onSetFilteredState(event);
+      return onSetUnitFilter(event);
     }
   }
   render() {
-    const { open, sort } = this.state;
+    const { open, sort, nameFilter, unitFilter } = this.state;
     const { currentView, onClearFilters, dueDateFilters, flagFilters, subjectFilters, statusFilters, completeFilters, classTypeFilters, onChangeView, handleFilterClick } = this.props;
     return (
       <div className="filter-form-holder">
@@ -235,24 +252,36 @@ class FilterSection extends React.Component {
                   </li>
                 </ul>
               </div>
-            </div>
             <div className="d-flex row mb-0 justify-center">
               <div className="col s12 m3">
-                    <div className="search-field input-field">
-                      <input type="search" id="name_search" className="input-control  validate"  />
-                      <button type="submit" className="search-button"><i className="icon-search"></i></button>
-                      <label className="label" htmlFor="name_search">Search</label>
+                    <div className="search-field input-field" style={{marginTop: '30px'}}>
+                      <input
+                      type="search"
+                      id="name_search"
+                      className="input-control  validate"
+                      name="nameFilter"
+                      value={nameFilter}
+                      onChange={(event) =>  this.handleFilterChange(event, 'nameFilter')}
+                      />
+                      <button
+                      type="submit"
+                      className="search-button"
+                      onClick={this.submitNameFilter}><i className="icon-search"></i></button>
+                      <label className={nameFilter.length ? "label active" : "label"} htmlFor="name_search">Search</label>
                     </div>
               </div>
             <div className="col s12 m3">
-              <div className="input-field">
-                <select id="unit-search">
-                  <option>Any</option>
-                  <option>Option</option>
-                  <option>Option</option>
-                </select>
-                <label className="label" htmlFor="unit_search">Unit</label>
+              <div className="input-field" style={{marginTop: '-7px'}}>
+                <Dropdown
+                value={getValueFromState(unitFilter, unitOptions)}
+                onChange={(event) => this.handleUnitChange(event)}
+                options={unitOptions}
+                label="Unit Number"
+                stateKey="unit"
+                dropdownKey="unit"
+                />
               </div>
+            </div>
             </div>
             </div>
 
@@ -321,12 +350,12 @@ FilterSection.propTypes = {
   onSetFilteredState: PropTypes.func.isRequired,
   onUnsetFilteredState: PropTypes.func.isRequired,
   onSetSort: PropTypes.func.isRequired,
-  handleFilterClick: PropTypes.func.isRequired,
   subjectFilters: PropTypes.array.isRequired,
   statusFilters: PropTypes.array.isRequired,
   completeFilters: PropTypes.array.isRequired,
   flagFilters: PropTypes.array.isRequired,
   dueDateFilters: PropTypes.array.isRequired,
   classTypeFilters: PropTypes.array.isRequired,
+  onSetUnitFilter: PropTypes.func.isRequired,
 }
 export default FilterSection;

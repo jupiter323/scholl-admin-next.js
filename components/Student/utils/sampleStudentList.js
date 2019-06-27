@@ -1320,7 +1320,7 @@ const sampleStudentList = [
       {
         subject: 'Reading',
         unitNumber: '4',
-        lessonName: 'Reading Someing 4',
+        lessonName: 'Reading Something 4',
         assigned: true,
         status: 'Accomplished',
         alerts: [],
@@ -1343,8 +1343,8 @@ const sampleStudentList = [
       },
       {
         subject: 'Reading',
-        unitNumber: '9',
-        lessonName: 'Reading Someing 9',
+        unitNumber: '5',
+        lessonName: 'Reading Something 5',
         assigned: true,
         status: "Developing",
         alerts: [],

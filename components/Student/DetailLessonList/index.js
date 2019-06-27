@@ -32,6 +32,8 @@ class DetailLessonList extends React.Component {
   onUnsetFilteredState = (filter) => this.setState({[filter]: "" })
   onChangeView = (view) => this.setState({currentView: view, active: view})
 
+  onSetUnitFilter = (unit) => this.setState({unitFilter: unit})
+
   onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch(sort) {
@@ -46,11 +48,21 @@ class DetailLessonList extends React.Component {
       case 'alerts':
         return lessons.sort(alerts);
       default:
-        break;  
-
+        break;
     }
   }
 
+  onFilterByName = () => {
+    const { lessons, nameFilter } = this.state;
+    return lessons.reduce((finalArr, currentLesson) => {
+      const { lessonName } = currentLesson;
+      const lessonString = lessonName.replace(/\s/g, "").toLowerCase();
+      if (lessonString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentLesson) === -1) {
+        finalArr.push(currentLesson);
+      }
+      return finalArr;
+    }, []);
+  }
   onCloneLesson = (index) => {
     const { lessons } = this.state;
     this.setState(prevState => {
@@ -64,24 +76,10 @@ class DetailLessonList extends React.Component {
     const newLessonsArray = this.arrayItemRemover(lessons, lessons[index])
     this.setState({lessons: newLessonsArray})
   }
-//   onFilterCompletion = () => {
-//     const { completeFilters, lessons: allLessons } = this.state;
-//     let lessons = allLessons
-//     if (completeFilters.length && completeFilters.indexOf('complete')) {
-//       lessons = lessons.filter(lesson => lesson.completed === true)
-//     }
-//     if (completeFilters.length && completeFilters.indexOf('incomplete')) {
-//       lessons = lessons.filter(lesson => lesson.status === "Started")
-//     }
-//     if (completeFilters.length && completeFilters.indexOf('unassigned')) {
-//       lessons = lessons.filter(lesson => lesson.assigned === false)
-//     }
-//     return lessons
-// }
-
-  // TODO: separate unitfilter method and due date method
+  // TODO: separate due date method
+  // note: unassigned and incomplete are filtering opposite, but this works for some reason
   onFilterLessons = () => {
-    const { statusFilters, subjectFilters, classTypeFilters, completeFilters, flagFilters, lessons: allLessons } = this.state;
+    const { statusFilters, subjectFilters, unitFilter, classTypeFilters, completeFilters, flagFilters, lessons: allLessons } = this.state;
     let lessons = allLessons;
     if (statusFilters.length && statusFilters.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => statusFilters.indexOf(lesson.status) !== -1);
@@ -89,41 +87,65 @@ class DetailLessonList extends React.Component {
     if (subjectFilters.length && subjectFilters.indexOf('all') === -1) {
       lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1)
     }
-    if (completeFilters.length && completeFilters.indexOf('complete') !== -1) {
-        lessons = lessons.filter(lesson => lesson.completed === true)
-    }
-    else if (completeFilters.indexOf('unassigned')) {
-      lessons = lessons.filter(lesson => lesson.status === 'Started')
-    }
-      else if (completeFilters.length && completeFilters.indexOf('incomplete')) {
-        lessons = lessons.filter(lesson => lesson.assigned === false)
-      }
     if (flagFilters.length && flagFilters.indexOf('all') === -1) {
       lessons = lessons.filter(lesson => lesson.alerts.length !== 0)
     }
     if (classTypeFilters.length && classTypeFilters.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => classTypeFilters.indexOf(lesson.classType) !== -1)
     }
+    if (unitFilter.length && unitFilter.indexOf('all') === -1) {
+      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unitNumber) !== -1)
+    }
     return lessons;
   }
+// NOT WORKING
+  // onFilterCompletionStatus = () => {
+  //   const { completeFilters, lessons: allLessons} = this.state;
+  //   let lessons = allLessons;
+  //   if (completeFilters.length && completeFilters.indexOf('complete') !== -1) {
+  //     return lessons.filter(lesson => lesson.completed === true)
+  // }
+  //  if (completeFilters.indexOf('unassigned')) {
+  //   lessons = lessons.filter(lesson => lesson.status === 'Started')
+  // }
+  //  if (completeFilters.length && completeFilters.indexOf('incomplete')) {
+  //     lessons = lessons.filter(lesson => lesson.assigned === false)
+  //   }
+  //   return lessons
+  // }
 
+ 
   getMappableLessons = () => {
-    const { sort, dueDateFilters, lessons, statusFilters, subjectFilters, classTypeFilters, completeFilters, flagFilters} = this.state;
+    const { sort, unitFilter, lessons, nameFilter, statusFilters, subjectFilters, classTypeFilters, completeFilters, flagFilters} = this.state;
     let mappableLessons = lessons;
-    if (statusFilters.length || subjectFilters.length || completeFilters.length || classTypeFilters.length || flagFilters.length) {
+    if (nameFilter.length) {
+      mappableLessons = this.onFilterByName();
+    }
+    if (statusFilters.length || unitFilter.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
       mappableLessons = this.onFilterLessons();
     }
-    // if (completeFilters.length) {
-    //   mappableLessons = this.onFilterCompletion();
+    // if (dueDateFilters) {
+    //   mappableLessons= this.calculateDueDate();
     // }
-    if (dueDateFilters) {
-      return mappableLessons
-    }
+    // if (completeFilters.length) {
+    //   mappableLessons = this.onFilterCompletionStatus();
+    // }
     if (sort) {
       return this.onSortLessons(mappableLessons)
     }
+
     return mappableLessons
   }
+
+   calculateDueDate = () => {
+    const { dueDateFilters, lessons: allLessons } = this.state;
+    let lessons = allLessons;
+    if (dueDateFilters.length && dueDateFilters.indexOf('all') === -1) {
+      lessons = lessons.filter(lesson => dueDateFilters.indexOf(lesson.overdue) !== -1)
+    }
+    return lessons;
+  }
+
 
   handleFilterClick = (filterType, filter) => {
     const { subjectFilters: currentSubjectFilters, completeFilters: currentCompleteFilters, statusFilters: currentStatusFilters, flagFilters: currentFlagFilters, dueDateFilters: currentDueDateFilters, classTypeFilters: currentClassTypeFilters } = this.state;
@@ -202,6 +224,7 @@ class DetailLessonList extends React.Component {
         dueDateFilters={dueDateFilters}
         classTypeFilters={classTypeFilters}
         handleFilterClick={this.handleFilterClick}
+        onSetUnitFilter={this.onSetUnitFilter}
         />
         {this.renderCurrentView()}
       <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Lesson</a>

@@ -3552,6 +3552,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FormComponents_Dropdown__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../FormComponents/Dropdown */ "./components/FormComponents/Dropdown/index.js");
 /* harmony import */ var _utils_getValueFromState__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../../utils/getValueFromState */ "./components/utils/getValueFromState.js");
 /* harmony import */ var _utils_lessonSortOptions__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/lessonSortOptions */ "./components/Student/DetailLessonList/utils/lessonSortOptions.js");
+/* harmony import */ var _utils_unitOptions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../utils/unitOptions */ "./components/Student/DetailLessonList/utils/unitOptions.js");
 
 
 
@@ -3559,10 +3560,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-var _FilterSection$propTy;
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+
 
 
 
@@ -3601,10 +3601,35 @@ function (_React$Component) {
       onSetSort(event);
     });
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleFilterChange", function (event, name) {
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "submitNameFilter", function () {
       var _this$props = _this.props,
-          onUnsetFilteredState = _this$props.onUnsetFilteredState,
-          onSetFilteredState = _this$props.onSetFilteredState;
+          onSetFilteredState = _this$props.onSetFilteredState,
+          onUnsetFilteredState = _this$props.onUnsetFilteredState;
+      var nameFilter = _this.state.nameFilter;
+
+      if (nameFilter === '') {
+        onUnsetFilteredState(nameFilter);
+      }
+
+      var transformedName = nameFilter.replace(/\s/g, "").toLowerCase();
+      onSetFilteredState(transformedName);
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleUnitChange", function (event) {
+      var onSetUnitFilter = _this.props.onSetUnitFilter;
+
+      _this.setState({
+        unitFilter: event
+      });
+
+      onSetUnitFilter(event);
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleFilterChange", function (event, name) {
+      var _this$props2 = _this.props,
+          onUnsetFilteredState = _this$props2.onUnsetFilteredState,
+          onSetFilteredState = _this$props2.onSetFilteredState,
+          onSetUnitFilter = _this$props2.onSetUnitFilter;
       var value = event.target ? event.target.value : event;
       var updatedState = immutability_helper__WEBPACK_IMPORTED_MODULE_8___default()(_this.state, {
         $merge: Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])({}, name, value)
@@ -3625,15 +3650,15 @@ function (_React$Component) {
           return onUnsetFilteredState();
         }
 
-        return onSetFilteredState(event);
+        return onSetUnitFilter(event);
       }
     });
 
     _this.state = {
-      open: true,
+      open: false,
       sort: {},
-      filterName: "",
-      unitFilter: {}
+      nameFilter: "",
+      unitFilter: ""
     };
     return _this;
   }
@@ -3645,18 +3670,20 @@ function (_React$Component) {
 
       var _this$state = this.state,
           open = _this$state.open,
-          sort = _this$state.sort;
-      var _this$props2 = this.props,
-          currentView = _this$props2.currentView,
-          onClearFilters = _this$props2.onClearFilters,
-          dueDateFilters = _this$props2.dueDateFilters,
-          flagFilters = _this$props2.flagFilters,
-          subjectFilters = _this$props2.subjectFilters,
-          statusFilters = _this$props2.statusFilters,
-          completeFilters = _this$props2.completeFilters,
-          classTypeFilters = _this$props2.classTypeFilters,
-          onChangeView = _this$props2.onChangeView,
-          handleFilterClick = _this$props2.handleFilterClick;
+          sort = _this$state.sort,
+          nameFilter = _this$state.nameFilter,
+          unitFilter = _this$state.unitFilter;
+      var _this$props3 = this.props,
+          currentView = _this$props3.currentView,
+          onClearFilters = _this$props3.onClearFilters,
+          dueDateFilters = _this$props3.dueDateFilters,
+          flagFilters = _this$props3.flagFilters,
+          subjectFilters = _this$props3.subjectFilters,
+          statusFilters = _this$props3.statusFilters,
+          completeFilters = _this$props3.completeFilters,
+          classTypeFilters = _this$props3.classTypeFilters,
+          onChangeView = _this$props3.onChangeView,
+          handleFilterClick = _this$props3.handleFilterClick;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "filter-form-holder"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
@@ -3835,34 +3862,50 @@ function (_React$Component) {
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "tutoring"
-      }, "Tutoring"))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, "Tutoring")))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "d-flex row mb-0 justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s12 m3"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "search-field input-field"
+        className: "search-field input-field",
+        style: {
+          marginTop: '30px'
+        }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "search",
         id: "name_search",
-        className: "input-control  validate"
+        className: "input-control  validate",
+        name: "nameFilter",
+        value: nameFilter,
+        onChange: function onChange(event) {
+          return _this2.handleFilterChange(event, 'nameFilter');
+        }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("button", {
         type: "submit",
-        className: "search-button"
+        className: "search-button",
+        onClick: this.submitNameFilter
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
         className: "icon-search"
       })), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        className: "label",
+        className: nameFilter.length ? "label active" : "label",
         htmlFor: "name_search"
       }, "Search"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s12 m3"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "input-field"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("select", {
-        id: "unit-search"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Any"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option"), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("option", null, "Option")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        className: "label",
-        htmlFor: "unit_search"
-      }, "Unit")))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "input-field",
+        style: {
+          marginTop: '-7px'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_FormComponents_Dropdown__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: Object(_utils_getValueFromState__WEBPACK_IMPORTED_MODULE_11__["default"])(unitFilter, _utils_unitOptions__WEBPACK_IMPORTED_MODULE_13__["default"]),
+        onChange: function onChange(event) {
+          return _this2.handleUnitChange(event);
+        },
+        options: _utils_unitOptions__WEBPACK_IMPORTED_MODULE_13__["default"],
+        label: "Unit Number",
+        stateKey: "unit",
+        dropdownKey: "unit"
+      }))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "row mb-0 d-flex align-items-center"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col s12 l4"
@@ -3929,15 +3972,22 @@ function (_React$Component) {
   return FilterSection;
 }(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
 
-FilterSection.propTypes = (_FilterSection$propTy = {
+FilterSection.propTypes = {
   currentView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.string.isRequired,
   onChangeView: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   handleFilterClick: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onClearFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onSetFilteredState: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   onUnsetFilteredState: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
-  onSetSort: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
-}, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "handleFilterClick", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "subjectFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "statusFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "completeFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "flagFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "dueDateFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(_FilterSection$propTy, "classTypeFilters", prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired), _FilterSection$propTy);
+  onSetSort: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
+  subjectFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  statusFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  completeFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  flagFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  dueDateFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  classTypeFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  onSetUnitFilter: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired
+};
 /* harmony default export */ __webpack_exports__["default"] = (FilterSection);
 
 /***/ }),
@@ -4481,6 +4531,12 @@ function (_React$Component) {
       });
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onSetUnitFilter", function (unit) {
+      return _this.setState({
+        unitFilter: unit
+      });
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onSortLessons", function (lessons) {
       var sort = _this.state.sort;
 
@@ -4505,6 +4561,22 @@ function (_React$Component) {
       }
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onFilterByName", function () {
+      var _this$state = _this.state,
+          lessons = _this$state.lessons,
+          nameFilter = _this$state.nameFilter;
+      return lessons.reduce(function (finalArr, currentLesson) {
+        var lessonName = currentLesson.lessonName;
+        var lessonString = lessonName.replace(/\s/g, "").toLowerCase();
+
+        if (lessonString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentLesson) === -1) {
+          finalArr.push(currentLesson);
+        }
+
+        return finalArr;
+      }, []);
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onCloneLesson", function (index) {
       var lessons = _this.state.lessons;
 
@@ -4527,13 +4599,14 @@ function (_React$Component) {
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onFilterLessons", function () {
-      var _this$state = _this.state,
-          statusFilters = _this$state.statusFilters,
-          subjectFilters = _this$state.subjectFilters,
-          classTypeFilters = _this$state.classTypeFilters,
-          completeFilters = _this$state.completeFilters,
-          flagFilters = _this$state.flagFilters,
-          allLessons = _this$state.lessons;
+      var _this$state2 = _this.state,
+          statusFilters = _this$state2.statusFilters,
+          subjectFilters = _this$state2.subjectFilters,
+          unitFilter = _this$state2.unitFilter,
+          classTypeFilters = _this$state2.classTypeFilters,
+          completeFilters = _this$state2.completeFilters,
+          flagFilters = _this$state2.flagFilters,
+          allLessons = _this$state2.lessons;
       var lessons = allLessons;
 
       if (statusFilters.length && statusFilters.indexOf("all") === -1) {
@@ -4545,20 +4618,6 @@ function (_React$Component) {
       if (subjectFilters.length && subjectFilters.indexOf('all') === -1) {
         lessons = lessons.filter(function (lesson) {
           return subjectFilters.indexOf(lesson.subject) !== -1;
-        });
-      }
-
-      if (completeFilters.length && completeFilters.indexOf('complete') !== -1) {
-        lessons = lessons.filter(function (lesson) {
-          return lesson.completed === true;
-        });
-      } else if (completeFilters.indexOf('unassigned')) {
-        lessons = lessons.filter(function (lesson) {
-          return lesson.status === 'Started';
-        });
-      } else if (completeFilters.length && completeFilters.indexOf('incomplete')) {
-        lessons = lessons.filter(function (lesson) {
-          return lesson.assigned === false;
         });
       }
 
@@ -4574,31 +4633,41 @@ function (_React$Component) {
         });
       }
 
+      if (unitFilter.length && unitFilter.indexOf('all') === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return unitFilter.indexOf(lesson.unitNumber) !== -1;
+        });
+      }
+
       return lessons;
     });
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "getMappableLessons", function () {
-      var _this$state2 = _this.state,
-          sort = _this$state2.sort,
-          dueDateFilters = _this$state2.dueDateFilters,
-          lessons = _this$state2.lessons,
-          statusFilters = _this$state2.statusFilters,
-          subjectFilters = _this$state2.subjectFilters,
-          classTypeFilters = _this$state2.classTypeFilters,
-          completeFilters = _this$state2.completeFilters,
-          flagFilters = _this$state2.flagFilters;
+      var _this$state3 = _this.state,
+          sort = _this$state3.sort,
+          unitFilter = _this$state3.unitFilter,
+          lessons = _this$state3.lessons,
+          nameFilter = _this$state3.nameFilter,
+          statusFilters = _this$state3.statusFilters,
+          subjectFilters = _this$state3.subjectFilters,
+          classTypeFilters = _this$state3.classTypeFilters,
+          completeFilters = _this$state3.completeFilters,
+          flagFilters = _this$state3.flagFilters;
       var mappableLessons = lessons;
 
-      if (statusFilters.length || subjectFilters.length || completeFilters.length || classTypeFilters.length || flagFilters.length) {
+      if (nameFilter.length) {
+        mappableLessons = _this.onFilterByName();
+      }
+
+      if (statusFilters.length || unitFilter.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
         mappableLessons = _this.onFilterLessons();
-      } // if (completeFilters.length) {
-      //   mappableLessons = this.onFilterCompletion();
+      } // if (dueDateFilters) {
+      //   mappableLessons= this.calculateDueDate();
+      // }
+      // if (completeFilters.length) {
+      //   mappableLessons = this.onFilterCompletionStatus();
       // }
 
-
-      if (dueDateFilters) {
-        return mappableLessons;
-      }
 
       if (sort) {
         return _this.onSortLessons(mappableLessons);
@@ -4607,14 +4676,29 @@ function (_React$Component) {
       return mappableLessons;
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "calculateDueDate", function () {
+      var _this$state4 = _this.state,
+          dueDateFilters = _this$state4.dueDateFilters,
+          allLessons = _this$state4.lessons;
+      var lessons = allLessons;
+
+      if (dueDateFilters.length && dueDateFilters.indexOf('all') === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return dueDateFilters.indexOf(lesson.overdue) !== -1;
+        });
+      }
+
+      return lessons;
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleFilterClick", function (filterType, filter) {
-      var _this$state3 = _this.state,
-          currentSubjectFilters = _this$state3.subjectFilters,
-          currentCompleteFilters = _this$state3.completeFilters,
-          currentStatusFilters = _this$state3.statusFilters,
-          currentFlagFilters = _this$state3.flagFilters,
-          currentDueDateFilters = _this$state3.dueDateFilters,
-          currentClassTypeFilters = _this$state3.classTypeFilters;
+      var _this$state5 = _this.state,
+          currentSubjectFilters = _this$state5.subjectFilters,
+          currentCompleteFilters = _this$state5.completeFilters,
+          currentStatusFilters = _this$state5.statusFilters,
+          currentFlagFilters = _this$state5.flagFilters,
+          currentDueDateFilters = _this$state5.dueDateFilters,
+          currentClassTypeFilters = _this$state5.classTypeFilters;
       var modifiedFilterCurrentState;
       var modifiedFilterName;
       var modifiedFilterUpdatedState;
@@ -4708,14 +4792,14 @@ function (_React$Component) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(DetailLessonList, [{
     key: "render",
     value: function render() {
-      var _this$state4 = this.state,
-          currentView = _this$state4.currentView,
-          subjectFilters = _this$state4.subjectFilters,
-          statusFilters = _this$state4.statusFilters,
-          completeFilters = _this$state4.completeFilters,
-          flagFilters = _this$state4.flagFilters,
-          dueDateFilters = _this$state4.dueDateFilters,
-          classTypeFilters = _this$state4.classTypeFilters;
+      var _this$state6 = this.state,
+          currentView = _this$state6.currentView,
+          subjectFilters = _this$state6.subjectFilters,
+          statusFilters = _this$state6.statusFilters,
+          completeFilters = _this$state6.completeFilters,
+          flagFilters = _this$state6.flagFilters,
+          dueDateFilters = _this$state6.dueDateFilters,
+          classTypeFilters = _this$state6.classTypeFilters;
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_FilterSection__WEBPACK_IMPORTED_MODULE_10__["default"], {
         currentView: currentView,
         onChangeView: this.onChangeView,
@@ -4730,7 +4814,8 @@ function (_React$Component) {
         flagFilters: flagFilters,
         dueDateFilters: dueDateFilters,
         classTypeFilters: classTypeFilters,
-        handleFilterClick: this.handleFilterClick
+        handleFilterClick: this.handleFilterClick,
+        onSetUnitFilter: this.onSetUnitFilter
       }), this.renderCurrentView(), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
         className: "waves-effect waves-teal btn add-btn"
@@ -4774,6 +4859,40 @@ __webpack_require__.r(__webpack_exports__);
 }, {
   label: "Flag Count",
   value: "alerts"
+}]);
+
+/***/ }),
+
+/***/ "./components/Student/DetailLessonList/utils/unitOptions.js":
+/*!******************************************************************!*\
+  !*** ./components/Student/DetailLessonList/utils/unitOptions.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ([{
+  label: "Any",
+  value: ""
+}, {
+  label: "1",
+  value: "1"
+}, {
+  label: "2",
+  value: "2"
+}, {
+  label: "3",
+  value: "3"
+}, {
+  label: "4",
+  value: "4"
+}, {
+  label: "5",
+  value: "5"
+}, {
+  label: "6",
+  value: "6"
 }]);
 
 /***/ }),
@@ -11141,7 +11260,7 @@ var sampleStudentList = [{
   }, {
     subject: 'Reading',
     unitNumber: '4',
-    lessonName: 'Reading Someing 4',
+    lessonName: 'Reading Something 4',
     assigned: true,
     status: 'Accomplished',
     alerts: [],
@@ -11162,8 +11281,8 @@ var sampleStudentList = [{
     classType: 'tutoring'
   }, {
     subject: 'Reading',
-    unitNumber: '9',
-    lessonName: 'Reading Someing 9',
+    unitNumber: '5',
+    lessonName: 'Reading Something 5',
     assigned: true,
     status: "Developing",
     alerts: [],
