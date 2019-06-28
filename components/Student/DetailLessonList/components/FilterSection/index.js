@@ -40,23 +40,12 @@ class FilterSection extends React.Component {
     this.setState({unitFilter: event});
     onSetUnitFilter(event);
   }
-  // handleFilterClick = (filter) => {
-  //   const { activeFilters: currentActiveFilters } = this.state;
-  //   let activeFilters;
-  //   if (currentActiveFilters.indexOf(filter) === -1) {
-  //     activeFilters = update(currentActiveFilters, {
-  //       $push: [filter],
-  //     });
-  //   } else {
-  //     const filterIndex = currentActiveFilters.indexOf(filter);
-  //     activeFilters = update(currentActiveFilters, {
-  //       $splice: [[ filterIndex, 1 ]],
-  //     });
-  //   }
-  //   this.setState({ activeFilters });
-  // }
 
-  // onClearFilters = () => this.setState({ activeFilters: [] })
+  clearAllFilters = () => {
+    const { onClearFilters } = this.props;
+    this.setState({sort: {}, nameFilter: "", unitFilter: ""})
+    onClearFilters()
+  }
   handleFilterChange = (event, name) => {
     const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter} = this.props;
     const value = event.target ? event.target.value : event;
@@ -323,7 +312,7 @@ class FilterSection extends React.Component {
             </div>
               <div className="col s12 l4">
                 <div className="option-filters">
-                  <div className="option-item clear"><a href="#" onClick={onClearFilters}>Clear Filters</a></div>
+                  <div className="option-item clear"><a href="#" onClick={this.clearAllFilters}>Clear Filters</a></div>
                   <div className="option-item">
                     <span
                       className="collapsible-header"

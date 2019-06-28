@@ -3625,6 +3625,18 @@ function (_React$Component) {
       onSetUnitFilter(event);
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "clearAllFilters", function () {
+      var onClearFilters = _this.props.onClearFilters;
+
+      _this.setState({
+        sort: {},
+        nameFilter: "",
+        unitFilter: ""
+      });
+
+      onClearFilters();
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleFilterChange", function (event, name) {
       var _this$props2 = _this.props,
           onUnsetFilteredState = _this$props2.onUnsetFilteredState,
@@ -3957,7 +3969,7 @@ function (_React$Component) {
         className: "option-item clear"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("a", {
         href: "#",
-        onClick: onClearFilters
+        onClick: this.clearAllFilters
       }, "Clear Filters")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "option-item"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
