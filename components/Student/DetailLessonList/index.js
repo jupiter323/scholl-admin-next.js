@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
 import { passage, statusAscending, availableDate, dueDate, alerts} from '../../utils/sortFunctions';
+import ListView from './components/ListView';
 
 class DetailLessonList extends React.Component {
   constructor(props) {
@@ -205,6 +206,7 @@ class DetailLessonList extends React.Component {
     if (active === 'full') {
       return <FullView lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson}/>
     }
+    return <ListView lessons={this.getMappableLessons()}/>
   }
 
 

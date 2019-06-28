@@ -4595,6 +4595,307 @@ FullView.propTypes = {
 
 /***/ }),
 
+/***/ "./components/Student/DetailLessonList/components/ListView/components/tableHeader.js":
+/*!*******************************************************************************************!*\
+  !*** ./components/Student/DetailLessonList/components/ListView/components/tableHeader.js ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var TableHeader = function TableHeader() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-header"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell icon-cell"
+  }, "\xA0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell name-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Lesson")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell graph-cell"
+  }, "\xA0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell completed-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Status")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell completed-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Subject")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell graph-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Page")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell date-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Date")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell dueDate-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Due")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell completed-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Completed")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell completed-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Type")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell flags-cell"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, "Flags")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "list-table-cell drop-cell"
+  }, "\xA0")));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (TableHeader);
+
+/***/ }),
+
+/***/ "./components/Student/DetailLessonList/components/ListView/index.js":
+/*!**************************************************************************!*\
+  !*** ./components/Student/DetailLessonList/components/ListView/index.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-jsx/style */ "./node_modules/styled-jsx/style.js");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _components_tableHeader__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/tableHeader */ "./components/Student/DetailLessonList/components/ListView/components/tableHeader.js");
+/* harmony import */ var _DetailWorksheetPage_utils_formatTimeEstimate__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../DetailWorksheetPage/utils/formatTimeEstimate */ "./components/Student/DetailWorksheetPage/utils/formatTimeEstimate.js");
+/* harmony import */ var _DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../DetailWorksheetPage/utils/statusColorMap */ "./components/Student/DetailWorksheetPage/utils/statusColorMap.js");
+
+
+
+
+
+
+
+
+
+ // import TableHeader from './components/TableHeader';
+
+
+
+
+var widthStyle = {
+  width: '160px !important'
+};
+
+var ListView =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_5__["default"])(ListView, _React$Component);
+
+  function ListView(props) {
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ListView);
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(ListView).call(this, props));
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onSetDropdown", function (dropdownIndex) {
+      return _this.setState({
+        dropdownIndex: dropdownIndex,
+        dropdownIsOpen: true
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "onCloseDropdown", function () {
+      return _this.setState({
+        dropdownIsOpen: false
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleDropdownClick", function (event, index) {
+      var dropdownIsOpen = _this.state.dropdownIsOpen;
+      event.preventDefault();
+
+      if (dropdownIsOpen) {
+        return _this.onCloseDropdown();
+      }
+
+      return _this.onSetDropdown(index);
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "mapWorksheetRows", function () {
+      var lessons = _this.props.lessons;
+      var _this$state = _this.state,
+          dropdownIndex = _this$state.dropdownIndex,
+          dropdownIsOpen = _this$state.dropdownIsOpen;
+      return lessons.map(function (lesson, index) {
+        var lessonName = lesson.lessonName,
+            score = lesson.score,
+            scoreStatus = lesson.scoreStatus,
+            passage = lesson.passage,
+            solvedProblems = lesson.solvedProblems,
+            subject = lesson.subject,
+            status = lesson.status,
+            completionDate = lesson.completionDate,
+            totalProblems = lesson.totalProblems,
+            timeEstimate = lesson.timeEstimate,
+            lessonType = lesson.lessonType,
+            availableDate = lesson.availableDate,
+            dueDate = lesson.dueDate,
+            completed = lesson.completed,
+            alerts = lesson.alerts;
+        return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "card list-table-row",
+          key: lesson.index
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell icon-cell"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+          className: "block-icon"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+          className: _this.renderLessonIcon(subject)
+        }))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell type-cell"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "card-panel-text truncate"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "text-large truncate",
+          id: "lessonName"
+        }, lessonName))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell graph-cell",
+          style: {
+            marginLeft: '50px'
+          }
+        }, scoreStatus && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+          className: "chart-bar ".concat(_DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_12__["default"][scoreStatus], " white-text")
+        }, score, "%")), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell status-cell"
+        }, scoreStatus !== "" ? react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+          className: "badge badge-rounded-md ".concat(_DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_12__["default"][scoreStatus], " white-text")
+        }, scoreStatus) : react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+          className: "badge badge-rounded-md ".concat(_DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_12__["default"][status], " white-text")
+        }, status)), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell type-cell",
+          style: {
+            marginLeft: '10px'
+          }
+        }, subject), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell type-cell"
+        }, "p. ", passage), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell date-cell"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("time", {
+          dateTime: "2019-01-27"
+        }, availableDate)), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell dueDate-cell"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("time", {
+          dateTime: "2019-01-27"
+        }, dueDate)), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell completed-cell"
+        }, completionDate), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell type-cell"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "card-panel-text truncate"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "text-large truncate"
+        }, lessonType))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell flags-cell"
+        }, alerts.length > 0 && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+          className: "badge-rounded-xs badge red darken-2 white-text"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+          className: "badge-text"
+        }, alerts.length), " ", react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+          className: "icon-flag"
+        }))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "list-table-cell drop-cell"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          className: "dropdown-block"
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+          href: "#",
+          "data-target": "dropdown01",
+          className: "dropdown-trigger btn",
+          onClick: function onClick(event) {
+            return _this.handleDropdownClick(event, index);
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("i", {
+          className: "material-icons dots-icon"
+        }, "more_vert")), dropdownIsOpen && dropdownIndex === index ? react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("ul", {
+          id: "dropdown01",
+          className: "dropdown-content dropdown-wide",
+          style: {
+            display: 'block',
+            opacity: '1',
+            transform: 'scaleX(1) scaleY(1)'
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+          href: "#modal_user_edit",
+          className: "modal-trigger link-block"
+        }, "View Details")), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+          href: "#!"
+        }, "Dismiss Flags")), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+          href: "#!"
+        }, "Reset")), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("a", {
+          href: "#!",
+          className: "link-delete"
+        }, "Delete"))) : null)));
+      });
+    });
+
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "renderLessonIcon", function (subject) {
+      switch (subject) {
+        case 'Reading':
+          return 'icon-books';
+
+        case 'Writing':
+          return 'icon-hands';
+
+        case 'Math':
+          return 'icon-calculator';
+
+        default:
+          break;
+      }
+    });
+
+    _this.state = {
+      dropdownIsOpen: false,
+      dropdownIndex: null
+    };
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ListView, [{
+    key: "render",
+    value: function render() {
+      var lessons = this.props.lessons;
+      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-107841986" + " " + "content-section"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-107841986" + " " + "container-md"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-107841986" + " " + "result-row center-align"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("b", {
+        className: "jsx-107841986" + " " + "result"
+      }, " - ", lessons.length, " results -")), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-107841986" + " " + "list-view-section"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-107841986" + " " + "list-table"
+      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_components_tableHeader__WEBPACK_IMPORTED_MODULE_10__["default"], null), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "jsx-107841986" + " " + "list-table-body"
+      }, this.mapWorksheetRows()))))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(styled_jsx_style__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        id: "107841986"
+      }, ".list-view-section.jsx-107841986{margin:0 -70px;}.list-table.jsx-107841986 .list-table-cell.type-cell.jsx-107841986{max-width:12%;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcS0ZST0VcXE9uZURyaXZlXFxEZXNrdG9wXFxDbGVhciBDaG9pY2VcXGNsZWFyLWNob2ljZS1hZG1pblxcY29tcG9uZW50c1xcU3R1ZGVudFxcRGV0YWlsTGVzc29uTGlzdFxcY29tcG9uZW50c1xcTGlzdFZpZXdcXGluZGV4LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQW1KVyxBQUlXLEFBR0EsY0FBQyxDQUhBIiwiZmlsZSI6IkM6XFxVc2Vyc1xcS0ZST0VcXE9uZURyaXZlXFxEZXNrdG9wXFxDbGVhciBDaG9pY2VcXGNsZWFyLWNob2ljZS1hZG1pblxcY29tcG9uZW50c1xcU3R1ZGVudFxcRGV0YWlsTGVzc29uTGlzdFxcY29tcG9uZW50c1xcTGlzdFZpZXdcXGluZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcclxuaW1wb3J0IFByb3BUeXBlcyBmcm9tICdwcm9wLXR5cGVzJztcclxuXHJcbi8vIGltcG9ydCBUYWJsZUhlYWRlciBmcm9tICcuL2NvbXBvbmVudHMvVGFibGVIZWFkZXInO1xyXG5pbXBvcnQgVGFibGVIZWFkZXIgZnJvbSAnLi9jb21wb25lbnRzL3RhYmxlSGVhZGVyJztcclxuXHJcbmltcG9ydCBmb3JtYXRUaW1lRXN0aW1hdGUgZnJvbSAnLi4vLi4vLi4vRGV0YWlsV29ya3NoZWV0UGFnZS91dGlscy9mb3JtYXRUaW1lRXN0aW1hdGUnO1xyXG5pbXBvcnQgc3RhdHVzQ29sb3JNYXAsIHsgY2hhcnRDb2xvck1hcCB9IGZyb20gJy4uLy4uLy4uL0RldGFpbFdvcmtzaGVldFBhZ2UvdXRpbHMvc3RhdHVzQ29sb3JNYXAnO1xyXG5jb25zdCB3aWR0aFN0eWxlID0ge1xyXG4gIHdpZHRoOiAnMTYwcHggIWltcG9ydGFudCcsXHJcbn1cclxuY2xhc3MgTGlzdFZpZXcgZXh0ZW5kcyBSZWFjdC5Db21wb25lbnQge1xyXG4gIGNvbnN0cnVjdG9yKHByb3BzKSB7XHJcbiAgICBzdXBlcihwcm9wcyk7XHJcbiAgICB0aGlzLnN0YXRlID0ge1xyXG4gICAgICBkcm9wZG93bklzT3BlbjogZmFsc2UsXHJcbiAgICAgIGRyb3Bkb3duSW5kZXg6IG51bGwsXHJcbiAgICB9O1xyXG4gIH1cclxuXHJcbiAgb25TZXREcm9wZG93biA9IChkcm9wZG93bkluZGV4KSA9PiB0aGlzLnNldFN0YXRlKHsgZHJvcGRvd25JbmRleCwgZHJvcGRvd25Jc09wZW46IHRydWUgfSk7XHJcbiAgb25DbG9zZURyb3Bkb3duID0gKCkgPT4gdGhpcy5zZXRTdGF0ZSh7IGRyb3Bkb3duSXNPcGVuOiBmYWxzZSB9KTtcclxuXHJcbiAgaGFuZGxlRHJvcGRvd25DbGljayA9IChldmVudCwgaW5kZXgpID0+IHtcclxuICAgIGNvbnN0IHsgZHJvcGRvd25Jc09wZW4gfSA9IHRoaXMuc3RhdGU7XHJcbiAgICBldmVudC5wcmV2ZW50RGVmYXVsdCgpO1xyXG4gICAgaWYgKGRyb3Bkb3duSXNPcGVuKSB7XHJcbiAgICAgIHJldHVybiB0aGlzLm9uQ2xvc2VEcm9wZG93bigpO1xyXG4gICAgfVxyXG4gICAgcmV0dXJuIHRoaXMub25TZXREcm9wZG93bihpbmRleCk7XHJcbiAgfVxyXG5cclxuICBtYXBXb3Jrc2hlZXRSb3dzID0gKCkgPT4ge1xyXG4gICAgY29uc3QgeyBsZXNzb25zIH0gPSB0aGlzLnByb3BzO1xyXG4gICAgY29uc3QgeyBkcm9wZG93bkluZGV4LCBkcm9wZG93bklzT3BlbiB9ID0gdGhpcy5zdGF0ZTtcclxuICAgIHJldHVybiBsZXNzb25zLm1hcCgobGVzc29uLCBpbmRleCkgPT4ge1xyXG4gICAgICBjb25zdCB7IGxlc3Nvbk5hbWUsIHNjb3JlLCBzY29yZVN0YXR1cywgcGFzc2FnZSwgc29sdmVkUHJvYmxlbXMsIHN1YmplY3QsIHN0YXR1cywgY29tcGxldGlvbkRhdGUsIHRvdGFsUHJvYmxlbXMsIHRpbWVFc3RpbWF0ZSwgbGVzc29uVHlwZSwgYXZhaWxhYmxlRGF0ZSwgZHVlRGF0ZSwgY29tcGxldGVkLCBhbGVydHMgfSA9IGxlc3NvbjtcclxuICAgICAgcmV0dXJuIChcclxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT0nY2FyZCBsaXN0LXRhYmxlLXJvdycga2V5PXtsZXNzb24uaW5kZXh9PlxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsaXN0LXRhYmxlLWNlbGwgaWNvbi1jZWxsXCI+XHJcbiAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImJsb2NrLWljb25cIj5cclxuICAgICAgICAgICAgICA8aSBjbGFzc05hbWU9e3RoaXMucmVuZGVyTGVzc29uSWNvbihzdWJqZWN0KX0+PC9pPlxyXG4gICAgICAgICAgICA8L3NwYW4+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGlzdC10YWJsZS1jZWxsIHR5cGUtY2VsbFwiPlxyXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNhcmQtcGFuZWwtdGV4dCB0cnVuY2F0ZVwiPlxyXG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidGV4dC1sYXJnZSB0cnVuY2F0ZVwiICBpZD0nbGVzc29uTmFtZSc+e2xlc3Nvbk5hbWV9PC9kaXY+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsaXN0LXRhYmxlLWNlbGwgZ3JhcGgtY2VsbFwiIHN0eWxlPXt7bWFyZ2luTGVmdDogJzUwcHgnfX0+XHJcbiAgICAgICAgICAgIHtzY29yZVN0YXR1cyAmJiAoXHJcbiAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPXtgY2hhcnQtYmFyICR7c3RhdHVzQ29sb3JNYXBbc2NvcmVTdGF0dXNdfSB3aGl0ZS10ZXh0YH0+e3Njb3JlfSU8L3NwYW4+XHJcbiAgICAgICAgICAgICl9XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCBzdGF0dXMtY2VsbFwiID5cclxuICAgICAgICAgIDxDaG9vc2U+XHJcbiAgICAgICAgICAgIDxXaGVuIGNvbmRpdGlvbj17c2NvcmVTdGF0dXMgIT09IFwiXCJ9PlxyXG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9e2BiYWRnZSBiYWRnZS1yb3VuZGVkLW1kICR7c3RhdHVzQ29sb3JNYXBbc2NvcmVTdGF0dXNdfSB3aGl0ZS10ZXh0YH0+e3Njb3JlU3RhdHVzfTwvc3Bhbj5cclxuICAgICAgICAgICAgPC9XaGVuPlxyXG4gICAgICAgICAgICA8T3RoZXJ3aXNlPlxyXG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9e2BiYWRnZSBiYWRnZS1yb3VuZGVkLW1kICR7c3RhdHVzQ29sb3JNYXBbc3RhdHVzXX0gd2hpdGUtdGV4dGB9PntzdGF0dXN9PC9zcGFuPlxyXG4gICAgICAgICAgICA8L090aGVyd2lzZT5cclxuICAgICAgICAgIDwvQ2hvb3NlPlxyXG4gICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCB0eXBlLWNlbGxcIiBzdHlsZT17e21hcmdpbkxlZnQ6ICcxMHB4J319PntzdWJqZWN0fTwvZGl2PlxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsaXN0LXRhYmxlLWNlbGwgdHlwZS1jZWxsXCI+cC4ge3Bhc3NhZ2V9PC9kaXY+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCBkYXRlLWNlbGxcIj48dGltZSBkYXRlVGltZT1cIjIwMTktMDEtMjdcIj57YXZhaWxhYmxlRGF0ZX08L3RpbWU+PC9kaXY+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCBkdWVEYXRlLWNlbGxcIj48dGltZSBkYXRlVGltZT1cIjIwMTktMDEtMjdcIj57ZHVlRGF0ZX08L3RpbWU+PC9kaXY+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCBjb21wbGV0ZWQtY2VsbFwiPntjb21wbGV0aW9uRGF0ZX1cclxuICAgICAgICAgICAgey8qIHtjb21wbGV0ZWQgJiYgKFxyXG4gICAgICAgICAgICAgIDxSZWFjdC5GcmFnbWVudD5cclxuICAgICAgICAgICAgICAgIHtjb21wbGV0aW9uRGF0ZX1cclxuICAgICAgICAgICAgICA8L1JlYWN0LkZyYWdtZW50PlxyXG4gICAgICAgICAgICApfSAqL31cclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCB0eXBlLWNlbGxcIj5cclxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjYXJkLXBhbmVsLXRleHQgdHJ1bmNhdGVcIj5cclxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtbGFyZ2UgdHJ1bmNhdGVcIj57bGVzc29uVHlwZX08L2Rpdj5cclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGlzdC10YWJsZS1jZWxsIGZsYWdzLWNlbGxcIj5cclxuICAgICAgICAgICAge2FsZXJ0cy5sZW5ndGggPiAwICYmIChcclxuICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJiYWRnZS1yb3VuZGVkLXhzIGJhZGdlIHJlZCBkYXJrZW4tMiB3aGl0ZS10ZXh0XCI+PGIgY2xhc3NOYW1lPVwiYmFkZ2UtdGV4dFwiPnthbGVydHMubGVuZ3RofTwvYj4gPGkgY2xhc3NOYW1lPVwiaWNvbi1mbGFnXCI+PC9pPjwvc3Bhbj5cclxuICAgICAgICAgICAgKX1cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgXHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3QtdGFibGUtY2VsbCBkcm9wLWNlbGxcIj5cclxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJkcm9wZG93bi1ibG9ja1wiPlxyXG4gICAgICAgICAgICAgIDxhXHJcbiAgICAgICAgICAgICAgICBocmVmPScjJ1xyXG4gICAgICAgICAgICAgICAgZGF0YS10YXJnZXQ9J2Ryb3Bkb3duMDEnXHJcbiAgICAgICAgICAgICAgICBjbGFzc05hbWU9J2Ryb3Bkb3duLXRyaWdnZXIgYnRuJ1xyXG4gICAgICAgICAgICAgICAgb25DbGljaz17KGV2ZW50KSA9PiB0aGlzLmhhbmRsZURyb3Bkb3duQ2xpY2soZXZlbnQsIGluZGV4KX1cclxuICAgICAgICAgICAgICA+XHJcbiAgICAgICAgICAgICAgICA8aSBjbGFzc05hbWU9XCJtYXRlcmlhbC1pY29ucyBkb3RzLWljb25cIj5tb3JlX3ZlcnQ8L2k+XHJcbiAgICAgICAgICAgICAgPC9hPlxyXG4gICAgICAgICAgICAgIDxJZiBjb25kaXRpb249e2Ryb3Bkb3duSXNPcGVuICYmIGRyb3Bkb3duSW5kZXggPT09IGluZGV4fT5cclxuICAgICAgICAgICAgICAgIDx1bCBpZD0nZHJvcGRvd24wMScgY2xhc3NOYW1lPSdkcm9wZG93bi1jb250ZW50IGRyb3Bkb3duLXdpZGUnIHN0eWxlPXt7IGRpc3BsYXk6ICdibG9jaycsIG9wYWNpdHk6ICcxJywgdHJhbnNmb3JtOiAnc2NhbGVYKDEpIHNjYWxlWSgxKScgfX0+XHJcbiAgICAgICAgICAgICAgICAgIDxsaT5cclxuICAgICAgICAgICAgICAgICAgICA8YSBocmVmPVwiI21vZGFsX3VzZXJfZWRpdFwiIGNsYXNzTmFtZT1cIm1vZGFsLXRyaWdnZXIgbGluay1ibG9ja1wiPlZpZXcgRGV0YWlsczwvYT5cclxuICAgICAgICAgICAgICAgICAgPC9saT5cclxuICAgICAgICAgICAgICAgICAgPGxpPjxhIGhyZWY9XCIjIVwiPkRpc21pc3MgRmxhZ3M8L2E+PC9saT5cclxuICAgICAgICAgICAgICAgICAgPGxpPjxhIGhyZWY9XCIjIVwiPlJlc2V0PC9hPjwvbGk+XHJcbiAgICAgICAgICAgICAgICAgIDxsaT48YSBocmVmPVwiIyFcIiBjbGFzc05hbWU9XCJsaW5rLWRlbGV0ZVwiPkRlbGV0ZTwvYT48L2xpPlxyXG4gICAgICAgICAgICAgICAgPC91bD5cclxuICAgICAgICAgICAgICA8L0lmPlxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgIDwvZGl2PlxyXG4gICAgICApXHJcbiAgICB9KVxyXG4gIH1cclxuXHJcbiAgLy8gZXNsaW50LWRpc2FibGUtbmV4dC1saW5lIGNvbnNpc3RlbnQtcmV0dXJuXHJcbiAgcmVuZGVyTGVzc29uSWNvbiA9IChzdWJqZWN0KSA9PiB7XHJcbiAgICBzd2l0Y2ggKHN1YmplY3QpIHtcclxuICAgICAgY2FzZSAnUmVhZGluZyc6XHJcbiAgICAgICAgcmV0dXJuICdpY29uLWJvb2tzJztcclxuICAgICAgY2FzZSAnV3JpdGluZyc6XHJcbiAgICAgICAgcmV0dXJuICdpY29uLWhhbmRzJztcclxuICAgICAgY2FzZSAnTWF0aCc6XHJcbiAgICAgICAgcmV0dXJuICdpY29uLWNhbGN1bGF0b3InO1xyXG4gICAgICBkZWZhdWx0OlxyXG4gICAgICAgIGJyZWFrO1xyXG4gICAgfVxyXG4gIH1cclxuXHJcbiAgcmVuZGVyKCkge1xyXG4gICAgY29uc3QgeyBsZXNzb25zIH0gPSB0aGlzLnByb3BzO1xyXG4gICAgcmV0dXJuIChcclxuICAgICAgPFJlYWN0LkZyYWdtZW50PlxyXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29udGVudC1zZWN0aW9uXCI+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbnRhaW5lci1tZFwiPlxyXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInJlc3VsdC1yb3cgY2VudGVyLWFsaWduXCI+XHJcbiAgICAgICAgICAgICAgPGIgY2xhc3NOYW1lPVwicmVzdWx0XCI+IC0ge2xlc3NvbnMubGVuZ3RofSByZXN1bHRzIC08L2I+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxpc3Qtdmlldy1zZWN0aW9uXCI+XHJcbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsaXN0LXRhYmxlXCI+XHJcbiAgICAgICAgICAgICAgICA8VGFibGVIZWFkZXIgLz5cclxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGlzdC10YWJsZS1ib2R5XCI+XHJcbiAgICAgICAgICAgICAgICAgIHt0aGlzLm1hcFdvcmtzaGVldFJvd3MoKX1cclxuICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgIDwvZGl2PlxyXG4gICAgICAgIDxzdHlsZSBqc3g+XHJcbiAgICAgICAgICB7YFxyXG4gICAgICAgICAgIC5saXN0LXZpZXctc2VjdGlvbiB7XHJcbiAgICAgICAgICAgICBtYXJnaW46IDAgLTcwcHhcclxuICAgICAgICAgICB9XHJcbiAgICAgICAgICAgLmxpc3QtdGFibGUgLmxpc3QtdGFibGUtY2VsbC50eXBlLWNlbGwge1xyXG4gICAgICAgICAgICAgbWF4LXdpZHRoOiAxMiVcclxuICAgICAgICAgICB9YH1cclxuICAgICAgICAgICA8L3N0eWxlPlxyXG4gICAgICA8L1JlYWN0LkZyYWdtZW50PlxyXG4gICAgICBcclxuICAgICk7XHJcbiAgfVxyXG59XHJcblxyXG5MaXN0Vmlldy5wcm9wVHlwZXMgPSB7XHJcbiAgbGVzc29uczogUHJvcFR5cGVzLmFycmF5LmlzUmVxdWlyZWQsXHJcbn1cclxuXHJcbmV4cG9ydCBkZWZhdWx0IExpc3RWaWV3OyJdfQ== */\n/*@ sourceURL=C:\\Users\\KFROE\\OneDrive\\Desktop\\Clear Choice\\clear-choice-admin\\components\\Student\\DetailLessonList\\components\\ListView\\index.js */"));
+    }
+  }]);
+
+  return ListView;
+}(react__WEBPACK_IMPORTED_MODULE_8___default.a.Component);
+
+ListView.propTypes = {
+  lessons: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (ListView);
+
+/***/ }),
+
 /***/ "./components/Student/DetailLessonList/index.js":
 /*!******************************************************!*\
   !*** ./components/Student/DetailLessonList/index.js ***!
@@ -4620,6 +4921,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_FilterSection__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/FilterSection */ "./components/Student/DetailLessonList/components/FilterSection/index.js");
 /* harmony import */ var _components_FullView__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/FullView */ "./components/Student/DetailLessonList/components/FullView/index.js");
 /* harmony import */ var _utils_sortFunctions__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/sortFunctions */ "./components/utils/sortFunctions.js");
+/* harmony import */ var _components_ListView__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/ListView */ "./components/Student/DetailLessonList/components/ListView/index.js");
 
 
 
@@ -4629,6 +4931,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* eslint-disable react/no-array-index-key */
+
 
 
 
@@ -4928,6 +5231,10 @@ function (_React$Component) {
           onCloneLesson: _this.onCloneLesson
         });
       }
+
+      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_ListView__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        lessons: _this.getMappableLessons()
+      });
     });
 
     _this.state = {
