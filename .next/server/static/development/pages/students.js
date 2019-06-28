@@ -3816,12 +3816,11 @@ function (_React$Component) {
           unitFilter = _this$state.unitFilter;
       var _this$props3 = this.props,
           currentView = _this$props3.currentView,
-          onClearFilters = _this$props3.onClearFilters,
           dueDateFilters = _this$props3.dueDateFilters,
           flagFilters = _this$props3.flagFilters,
           subjectFilters = _this$props3.subjectFilters,
           statusFilters = _this$props3.statusFilters,
-          completeFilters = _this$props3.completeFilters,
+          scoreStatusFilters = _this$props3.scoreStatusFilters,
           classTypeFilters = _this$props3.classTypeFilters,
           onChangeView = _this$props3.onChangeView,
           handleFilterClick = _this$props3.handleFilterClick;
@@ -3872,36 +3871,36 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "beginning",
-        checked: statusFilters.indexOf('Beginning') !== -1,
+        checked: scoreStatusFilters.indexOf('Beginning') !== -1,
         onChange: function onChange() {
-          return handleFilterClick("status", 'Beginning');
+          return handleFilterClick("score", 'Beginning');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "beginning"
       }, "Beginning")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "developing",
-        checked: statusFilters.indexOf('Developing') !== -1,
+        checked: scoreStatusFilters.indexOf('Developing') !== -1,
         onChange: function onChange() {
-          return handleFilterClick("status", 'Developing');
+          return handleFilterClick("score", 'Developing');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "developing"
       }, "Developing")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "accomplished",
-        checked: statusFilters.indexOf('Accomplished') !== -1,
+        checked: scoreStatusFilters.indexOf('Accomplished') !== -1,
         onChange: function onChange() {
-          return handleFilterClick("status", 'Accomplished');
+          return handleFilterClick("score", 'Accomplished');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "accomplished"
       }, "Accomplished")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "exemplary",
-        checked: statusFilters.indexOf('Exemplary') !== -1,
+        checked: scoreStatusFilters.indexOf('Exemplary') !== -1,
         onChange: function onChange() {
-          return handleFilterClick("status", 'Exemplary');
+          return handleFilterClick("score", 'Exemplary');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "exemplary"
@@ -3909,32 +3908,41 @@ function (_React$Component) {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
-        id: "unassigned",
-        checked: completeFilters.indexOf('unassigned') !== -1,
+        id: "scheduled",
+        checked: statusFilters.indexOf('Scheduled') !== -1,
         onChange: function onChange() {
-          return handleFilterClick('complete', 'unassigned');
+          return handleFilterClick('status', 'Scheduled');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "unassigned"
-      }, "Unassigned")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        htmlFor: "scheduled"
+      }, "Scheduled")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        type: "checkbox",
+        id: "assigned",
+        checked: statusFilters.indexOf('Assigned') !== -1,
+        onChange: function onChange() {
+          return handleFilterClick('status', 'Assigned');
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
+        htmlFor: "assigned"
+      }, "Assigned")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
+        type: "checkbox",
+        id: "started",
+        checked: statusFilters.indexOf('Started') !== -1,
+        onChange: function onChange() {
+          return handleFilterClick('status', 'Started');
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
+        htmlFor: "started"
+      }, "Started")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
         id: "complete",
-        checked: completeFilters.indexOf('complete') !== -1,
+        checked: statusFilters.indexOf('Complete') !== -1,
         onChange: function onChange() {
-          return handleFilterClick('complete', 'complete');
+          return handleFilterClick('status', 'Complete');
         }
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
         htmlFor: "complete"
-      }, "Complete")), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
-        type: "checkbox",
-        id: "incomplete",
-        checked: completeFilters.indexOf('incomplete') !== -1,
-        onChange: function onChange() {
-          return handleFilterClick('complete', 'incomplete');
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("label", {
-        htmlFor: "incomplete"
-      }, "Incomplete"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
+      }, "Complete"))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("ul", {
         className: "filter-form_checkbox-list"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("input", {
         type: "checkbox",
@@ -4123,7 +4131,7 @@ FilterSection.propTypes = {
   onSetSort: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.func.isRequired,
   subjectFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
   statusFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
-  completeFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
+  scoreStatusFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
   flagFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
   dueDateFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
   classTypeFilters: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.array.isRequired,
@@ -4241,7 +4249,7 @@ function (_React$Component) {
       }, "Unassign")));
     });
 
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "renderProblemCount", function (status, score, totalProblems, solvedProblems) {
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "renderProblemCount", function (status, scoreStatus, score, totalProblems, solvedProblems) {
       if (status === "Started") {
         return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
           className: "chart-value chart-value-column",
@@ -4279,7 +4287,7 @@ function (_React$Component) {
           height: '50px',
           width: '50px',
           bottom: '6px',
-          backgroundColor: _DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_11__["chartColorMap"][status]
+          backgroundColor: _DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_11__["chartColorMap"][scoreStatus]
         }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
         "data-count-up": true,
@@ -4324,6 +4332,7 @@ function (_React$Component) {
           subject = _this$props$lesson.subject,
           timeEstimate = _this$props$lesson.timeEstimate,
           status = _this$props$lesson.status,
+          scoreStatus = _this$props$lesson.scoreStatus,
           score = _this$props$lesson.score,
           unitNumber = _this$props$lesson.unitNumber,
           lessonName = _this$props$lesson.lessonName,
@@ -4409,7 +4418,7 @@ function (_React$Component) {
         }
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_9__["Doughnut"], {
         data: completionDate ? function () {
-          return data(score, totalProblems, status);
+          return data(score, totalProblems, scoreStatus);
         } : function () {
           return data(solvedProblems, totalProblems, status);
         },
@@ -4420,7 +4429,7 @@ function (_React$Component) {
           cutoutPercentage: 60,
           tooltips: false
         }
-      }), this.renderProblemCount(status, score, totalProblems, solvedProblems)), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }), this.renderProblemCount(status, scoreStatus, score, totalProblems, solvedProblems)), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "chart-row"
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "chart-col chart-start"
@@ -4468,7 +4477,9 @@ function (_React$Component) {
         dateTime: completionDate
       }, completionDate))) : null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "align-self-end"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+      }, scoreStatus !== "" ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "badge badge-rounded-md ".concat(_DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_11__["default"][scoreStatus], " white-text")
+      }, scoreStatus) : react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
         className: "badge badge-rounded-md ".concat(_DetailWorksheetPage_utils_statusColorMap__WEBPACK_IMPORTED_MODULE_11__["default"][status], " white-text")
       }, status))))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "card-text"
@@ -4746,10 +4757,16 @@ function (_React$Component) {
           subjectFilters = _this$state2.subjectFilters,
           unitFilter = _this$state2.unitFilter,
           classTypeFilters = _this$state2.classTypeFilters,
-          completeFilters = _this$state2.completeFilters,
+          scoreStatusFilters = _this$state2.scoreStatusFilters,
           flagFilters = _this$state2.flagFilters,
           allLessons = _this$state2.lessons;
       var lessons = allLessons;
+
+      if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
+        lessons = lessons.filter(function (lesson) {
+          return scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1;
+        });
+      }
 
       if (statusFilters.length && statusFilters.indexOf("all") === -1) {
         lessons = lessons.filter(function (lesson) {
@@ -4792,8 +4809,8 @@ function (_React$Component) {
           nameFilter = _this$state3.nameFilter,
           statusFilters = _this$state3.statusFilters,
           subjectFilters = _this$state3.subjectFilters,
+          scoreStatusFilters = _this$state3.scoreStatusFilters,
           classTypeFilters = _this$state3.classTypeFilters,
-          completeFilters = _this$state3.completeFilters,
           flagFilters = _this$state3.flagFilters;
       var mappableLessons = lessons;
 
@@ -4801,7 +4818,7 @@ function (_React$Component) {
         mappableLessons = _this.onFilterByName();
       }
 
-      if (statusFilters.length || unitFilter.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
+      if (statusFilters.length || unitFilter.length || scoreStatusFilters.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
         mappableLessons = _this.onFilterLessons();
       } // if (dueDateFilters) {
       //   mappableLessons= this.calculateDueDate();
@@ -4836,7 +4853,7 @@ function (_React$Component) {
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "handleFilterClick", function (filterType, filter) {
       var _this$state5 = _this.state,
           currentSubjectFilters = _this$state5.subjectFilters,
-          currentCompleteFilters = _this$state5.completeFilters,
+          currentScoreStatusFilters = _this$state5.scoreStatusFilters,
           currentStatusFilters = _this$state5.statusFilters,
           currentFlagFilters = _this$state5.flagFilters,
           currentDueDateFilters = _this$state5.dueDateFilters,
@@ -4856,9 +4873,9 @@ function (_React$Component) {
           modifiedFilterName = 'statusFilters';
           break;
 
-        case 'complete':
-          modifiedFilterCurrentState = currentCompleteFilters;
-          modifiedFilterName = 'completeFilters';
+        case 'score':
+          modifiedFilterCurrentState = currentScoreStatusFilters;
+          modifiedFilterName = 'scoreStatusFilters';
           break;
 
         case 'alerts':
@@ -4920,7 +4937,7 @@ function (_React$Component) {
       active: 'full',
       statusFilters: [],
       subjectFilters: [],
-      completeFilters: [],
+      scoreStatusFilters: [],
       flagFilters: [],
       classTypeFilters: [],
       dueDateFilters: [],
@@ -4938,7 +4955,7 @@ function (_React$Component) {
           currentView = _this$state6.currentView,
           subjectFilters = _this$state6.subjectFilters,
           statusFilters = _this$state6.statusFilters,
-          completeFilters = _this$state6.completeFilters,
+          scoreStatusFilters = _this$state6.scoreStatusFilters,
           flagFilters = _this$state6.flagFilters,
           dueDateFilters = _this$state6.dueDateFilters,
           classTypeFilters = _this$state6.classTypeFilters;
@@ -4952,7 +4969,7 @@ function (_React$Component) {
         onSetSort: this.onSetSort,
         subjectFilters: subjectFilters,
         statusFilters: statusFilters,
-        completeFilters: completeFilters,
+        scoreStatusFilters: scoreStatusFilters,
         flagFilters: flagFilters,
         dueDateFilters: dueDateFilters,
         classTypeFilters: classTypeFilters,
@@ -8067,23 +8084,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "chartColorMap", function() { return chartColorMap; });
 var statusColorMap = {
   Assigned: 'grey darken-4',
+  Overdue: 'grey darken-4',
   Started: 'grey darken-4',
   Scheduled: 'grey',
   Accomplished: 'purple darken-3',
   Beginning: 'red darken-3',
   Exemplary: 'blue accent-4',
-  Developing: 'purple',
-  DevelopingLow: 'pink lighten-2'
+  Developing: 'purple'
 };
 var chartColorMap = {
   Assigned: '#333',
   Started: "#333",
+  Overdue: '#333',
   Scheduled: "#b2b2b2",
   Accomplished: '#7327cc',
   Beginning: '#ed1c24',
   Exemplary: 'rgb(0, 100, 244)',
-  Developing: '#c10078',
-  DevelopingLow: '#f06292'
+  Developing: '#c10078'
 };
 /* harmony default export */ __webpack_exports__["default"] = (statusColorMap);
 
@@ -11318,7 +11335,8 @@ var sampleStudentList = [{
     subject: 'Reading',
     unitNumber: '2',
     lessonName: 'Reading Something 1',
-    status: 'Scheduled',
+    status: "Scheduled",
+    scoreStatus: '',
     assigned: true,
     alerts: [],
     lessonType: 'Challenge + Practice',
@@ -11341,7 +11359,8 @@ var sampleStudentList = [{
     unitNumber: '4',
     lessonName: 'Pythagorean Theorem',
     assigned: true,
-    status: 'Started',
+    status: "Started",
+    scoreStatus: '',
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11363,7 +11382,8 @@ var sampleStudentList = [{
     unitNumber: '3',
     lessonName: 'More Reading Stuff',
     assigned: true,
-    status: 'Beginning',
+    status: "Complete",
+    scoreStatus: 'Beginning',
     alerts: [{}, {}, {}, {}, {}],
     lessonType: 'Read from the Book',
     timeEstimate: '14 min',
@@ -11386,6 +11406,7 @@ var sampleStudentList = [{
     lessonName: 'Reading Something 7',
     assigned: true,
     status: "Scheduled",
+    scoreStatus: "",
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11407,7 +11428,8 @@ var sampleStudentList = [{
     unitNumber: '4',
     lessonName: 'Reading Something 4',
     assigned: true,
-    status: 'Accomplished',
+    status: "Complete",
+    scoreStatus: 'Accomplished',
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11429,29 +11451,31 @@ var sampleStudentList = [{
     unitNumber: '5',
     lessonName: 'Reading Something 5',
     assigned: true,
-    status: "Developing",
+    status: "Overdue",
+    scoreStatus: "",
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
     totalProblems: '22',
-    solvedProblems: '22',
-    score: "17",
+    solvedProblems: '',
+    score: "",
     passage: '141',
     dueDate: '05/31/2019',
     dueTime: '4:00 PM',
-    completed: true,
+    completed: false,
     availableDate: '01/01/2019',
-    completionDate: '06/01/2019',
-    completionTime: '12:51 PM',
-    completedLate: true,
-    overdue: false,
+    completionDate: '',
+    completionTime: '',
+    completedLate: false,
+    overdue: true,
     classType: 'tutoring'
   }, {
     subject: 'Reading',
     unitNumber: '1',
     lessonName: 'Reading Something 1',
     assigned: true,
-    status: "Developing",
+    status: "Complete",
+    scoreStatus: "Developing",
     alerts: [],
     lessonType: 'Challenge + Practice',
     timeEstimate: '14 min',
@@ -11473,7 +11497,8 @@ var sampleStudentList = [{
     unitNumber: '5',
     lessonName: 'Writing Lesson 5',
     assigned: true,
-    status: 'Exemplary',
+    status: "Complete",
+    scoreStatus: 'Exemplary',
     alerts: [{}, {}],
     timeEstimate: '14 min',
     lessonType: 'Drill',
@@ -11495,7 +11520,8 @@ var sampleStudentList = [{
     unitNumber: '6',
     lessonName: 'Writing Lesson 11',
     assigned: false,
-    status: 'unassigned',
+    status: "Assigned",
+    scoreStatus: '',
     alerts: [],
     timeEstimate: '14 min',
     lessonType: 'Drill',
@@ -11506,7 +11532,7 @@ var sampleStudentList = [{
     dueDate: '',
     dueTime: '',
     completed: false,
-    availableDate: '',
+    availableDate: '4/02/2019',
     completionDate: '',
     completionTime: '',
     completedLate: false,

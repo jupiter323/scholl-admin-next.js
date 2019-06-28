@@ -16,7 +16,7 @@ class DetailLessonList extends React.Component {
       active: 'full',
       statusFilters: [],
       subjectFilters: [],
-      completeFilters: [],
+      scoreStatusFilters: [],
       flagFilters: [],
       classTypeFilters: [],
       dueDateFilters: [],
@@ -79,8 +79,11 @@ class DetailLessonList extends React.Component {
   // TODO: separate due date method
   // note: unassigned and incomplete are filtering opposite, but this works for some reason
   onFilterLessons = () => {
-    const { statusFilters, subjectFilters, unitFilter, classTypeFilters, completeFilters, flagFilters, lessons: allLessons } = this.state;
+    const { statusFilters, subjectFilters, unitFilter, classTypeFilters, scoreStatusFilters, flagFilters, lessons: allLessons } = this.state;
     let lessons = allLessons;
+    if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
+      lessons = lessons.filter(lesson => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
+    }
     if (statusFilters.length && statusFilters.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => statusFilters.indexOf(lesson.status) !== -1);
     }
@@ -116,12 +119,12 @@ class DetailLessonList extends React.Component {
 
  
   getMappableLessons = () => {
-    const { sort, unitFilter, lessons, nameFilter, statusFilters, subjectFilters, classTypeFilters, completeFilters, flagFilters} = this.state;
+    const { sort, unitFilter, lessons, nameFilter, statusFilters, subjectFilters, scoreStatusFilters, classTypeFilters, flagFilters} = this.state;
     let mappableLessons = lessons;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
-    if (statusFilters.length || unitFilter.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
+    if (statusFilters.length || unitFilter.length || scoreStatusFilters.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
       mappableLessons = this.onFilterLessons();
     }
     // if (dueDateFilters) {
@@ -148,7 +151,7 @@ class DetailLessonList extends React.Component {
 
 
   handleFilterClick = (filterType, filter) => {
-    const { subjectFilters: currentSubjectFilters, completeFilters: currentCompleteFilters, statusFilters: currentStatusFilters, flagFilters: currentFlagFilters, dueDateFilters: currentDueDateFilters, classTypeFilters: currentClassTypeFilters } = this.state;
+    const { subjectFilters: currentSubjectFilters, scoreStatusFilters: currentScoreStatusFilters, statusFilters: currentStatusFilters, flagFilters: currentFlagFilters, dueDateFilters: currentDueDateFilters, classTypeFilters: currentClassTypeFilters } = this.state;
     let modifiedFilterCurrentState;
     let modifiedFilterName;
     let modifiedFilterUpdatedState;
@@ -161,9 +164,9 @@ class DetailLessonList extends React.Component {
         modifiedFilterCurrentState = currentStatusFilters;
         modifiedFilterName = 'statusFilters';
         break;
-      case 'complete':
-        modifiedFilterCurrentState = currentCompleteFilters;
-        modifiedFilterName = 'completeFilters';
+      case 'score':
+        modifiedFilterCurrentState = currentScoreStatusFilters;
+        modifiedFilterName = 'scoreStatusFilters';
         break;
       case 'alerts':
           modifiedFilterCurrentState = currentFlagFilters;
@@ -206,7 +209,7 @@ class DetailLessonList extends React.Component {
 
 
   render() {
-    const { currentView, subjectFilters, statusFilters, completeFilters, flagFilters, dueDateFilters, classTypeFilters } = this.state;
+    const { currentView, subjectFilters, statusFilters, scoreStatusFilters, flagFilters, dueDateFilters, classTypeFilters } = this.state;
     return (
       <React.Fragment>
         <FilterSection
@@ -219,7 +222,7 @@ class DetailLessonList extends React.Component {
         onSetSort={this.onSetSort}
         subjectFilters={subjectFilters}
         statusFilters={statusFilters}
-        completeFilters={completeFilters}
+        scoreStatusFilters={scoreStatusFilters}
         flagFilters={flagFilters}
         dueDateFilters={dueDateFilters}
         classTypeFilters={classTypeFilters}

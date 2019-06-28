@@ -68,7 +68,7 @@ class FilterSection extends React.Component {
   }
   render() {
     const { open, sort, nameFilter, unitFilter } = this.state;
-    const { currentView, onClearFilters, dueDateFilters, flagFilters, subjectFilters, statusFilters, completeFilters, classTypeFilters, onChangeView, handleFilterClick } = this.props;
+    const { currentView, dueDateFilters, flagFilters, subjectFilters, statusFilters, scoreStatusFilters, classTypeFilters, onChangeView, handleFilterClick } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -109,8 +109,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="beginning"
-                      checked={statusFilters.indexOf('Beginning') !== -1}
-                      onChange={() => handleFilterClick("status", 'Beginning')}
+                      checked={scoreStatusFilters.indexOf('Beginning') !== -1}
+                      onChange={() => handleFilterClick("score", 'Beginning')}
                     />
                     <label htmlFor="beginning">Beginning</label>
                   </li>
@@ -118,8 +118,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="developing"
-                      checked={statusFilters.indexOf('Developing') !== -1}
-                      onChange={() => handleFilterClick("status", 'Developing')}
+                      checked={scoreStatusFilters.indexOf('Developing') !== -1}
+                      onChange={() => handleFilterClick("score", 'Developing')}
                     />
                     <label htmlFor="developing">Developing</label>
                   </li>
@@ -127,8 +127,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="accomplished"
-                      checked={statusFilters.indexOf('Accomplished') !== -1}
-                      onChange={() => handleFilterClick("status", 'Accomplished')}
+                      checked={scoreStatusFilters.indexOf('Accomplished') !== -1}
+                      onChange={() => handleFilterClick("score", 'Accomplished')}
                     />
                     <label htmlFor="accomplished">Accomplished</label>
                   </li>
@@ -136,8 +136,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="exemplary"
-                      checked={statusFilters.indexOf('Exemplary') !== -1}
-                      onChange={() => handleFilterClick("status", 'Exemplary')}
+                      checked={scoreStatusFilters.indexOf('Exemplary') !== -1}
+                      onChange={() => handleFilterClick("score", 'Exemplary')}
                     />
                     <label htmlFor="exemplary">Exemplary</label>
                   </li>
@@ -146,29 +146,38 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="unassigned"
-                      checked={completeFilters.indexOf('unassigned') !== -1}
-                      onChange={() => handleFilterClick('complete', 'unassigned')}
+                      id="scheduled"
+                      checked={statusFilters.indexOf('Scheduled') !== -1}
+                      onChange={() => handleFilterClick('status', 'Scheduled')}
                     />
-                    <label htmlFor="unassigned">Unassigned</label>
+                    <label htmlFor="scheduled">Scheduled</label>
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="assigned"
+                      checked={statusFilters.indexOf('Assigned') !== -1}
+                      onChange={() => handleFilterClick('status', 'Assigned')}
+                    />
+                    <label htmlFor="assigned">Assigned</label>
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="started"
+                      checked={statusFilters.indexOf('Started') !== -1}
+                      onChange={() => handleFilterClick('status', 'Started')}
+                    />
+                    <label htmlFor="started">Started</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
                       id="complete"
-                      checked={completeFilters.indexOf('complete') !== -1}
-                      onChange={() => handleFilterClick('complete', 'complete')}
+                      checked={statusFilters.indexOf('Complete') !== -1}
+                      onChange={() => handleFilterClick('status', 'Complete')}
                     />
                     <label htmlFor="complete">Complete</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="incomplete"
-                      checked={completeFilters.indexOf('incomplete') !== -1}
-                      onChange={() => handleFilterClick('complete', 'incomplete')}
-                    />
-                    <label htmlFor="incomplete">Incomplete</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
@@ -341,7 +350,7 @@ FilterSection.propTypes = {
   onSetSort: PropTypes.func.isRequired,
   subjectFilters: PropTypes.array.isRequired,
   statusFilters: PropTypes.array.isRequired,
-  completeFilters: PropTypes.array.isRequired,
+  scoreStatusFilters: PropTypes.array.isRequired,
   flagFilters: PropTypes.array.isRequired,
   dueDateFilters: PropTypes.array.isRequired,
   classTypeFilters: PropTypes.array.isRequired,
