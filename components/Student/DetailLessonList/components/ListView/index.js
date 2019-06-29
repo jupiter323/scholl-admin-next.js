@@ -110,7 +110,7 @@ class ListView extends React.Component {
               </React.Fragment>
             )} */}
             </div>
-          <div className="list-table-cell type-cell">
+          <div className="list-table-cell name-cell">
             <div className="card-panel-text truncate">
               <div className="text-large truncate">{lessonType}</div>
             </div>
@@ -176,7 +176,7 @@ class ListView extends React.Component {
             <div className="result-row center-align">
               {/* <b className="result"> - {lessons.length} results -</b> */}
             </div>
-            <div className="list-view-section">
+            <div className="list-view-section" style={{margin: '0 -160px'}}>
               <div className="list-table">
               <div className="list-table-header">
                 <div className="list-table-row">
@@ -197,27 +197,27 @@ class ListView extends React.Component {
                       <b>Status</b>
                       </a>
                       </div>
-                  <div className="list-table-cell completed-cell" style={{marginLeft: '30px'}}><a
+                  <div className="list-table-cell completed-cell" style={{marginLeft: '5px'}}><a
                     href="#"
                     onClick={() => this.setSortType("subject")}
                     >
                       <b>Subject</b>
                       </a>
                       </div>
-                  <div className="list-table-cell page-cell" >
+                  <div className="list-table-cell page-cell" style={{paddingRight: '82px  '}}>
                   <a
                     href="#"
                     onClick={() => this.setSortType("passage")}
                     ><b>Page</b>
                     </a></div>
-                  <div className="list-table-cell date-cell" style={{marginLeft: '15px'}}><a
+                  <div className="list-table-cell date-cell" style={{marginLeft: '-53px'}}><a
                     href="#"
                     onClick={() => this.setSortType("availableDate")}
                     >
                       <b>Date</b>
                       </a>
                       </div>
-                  <div className="list-table-cell dueDate-cell"><a
+                  <div className="list-table-cell dueDate-cell" style={{marginLeft: '13px', paddingLeft: '-1px'}}><a
                     href="#"
                     onClick={() => this.setSortType("dueDate")}
                     >
@@ -233,7 +233,7 @@ class ListView extends React.Component {
                       </div>
                   <div className="list-table-cell completed-cell"><a
                     href="#"
-                    onClick={() => this.setSortType("problemType")}
+                    onClick={() => this.setSortType("lessonType")}
                     >
                       <b>Type</b>
                       </a>
@@ -258,8 +258,8 @@ class ListView extends React.Component {
         </div>
         <style jsx>
           {`
-           .list-view-section {
-             margin: 0 -70px
+           #nameCell {
+             width: 140px;
            }
            .list-table .list-table-cell.type-cell {
              max-width: 12%

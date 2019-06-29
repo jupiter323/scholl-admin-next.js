@@ -127,12 +127,12 @@ export const completionDateDescending = ({completionDate: completionDateA}, {com
   return 0;
 }
 
-export const problemTypeAscending = ({problemType: problemTypeA}, {problemType: problemTypeB}) => {
-  if (problemTypeA < problemTypeB) {return -1; }
+export const lessonTypeAscending = ({lessonType: lessonTypeA}, {lessonType: lessonTypeB}) => {
+  if (lessonTypeA < lessonTypeB) {return -1; }
   return 0;
 }
 
-export const problemTypeDescending = ({problemType: problemTypeA}, {problemType: problemTypeB}) => {
-  if (problemTypeA > problemTypeB) {return -1; }
+export const lessonTypeDescending = ({lessonType: lessonTypeA}, {lessonType: lessonTypeB}) => {
+  if (lessonTypeA > lessonTypeB) {return -1; }
   return 0;
 }

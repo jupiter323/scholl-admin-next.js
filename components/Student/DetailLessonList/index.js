@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
-import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, problemTypeAscending, problemTypeDescending} from '../../utils/sortFunctions';
+import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending} from '../../utils/sortFunctions';
 import ListView from './components/ListView';
 
 class DetailLessonList extends React.Component {
@@ -70,10 +70,10 @@ class DetailLessonList extends React.Component {
         return lessons.sort(completionDateAscending);
       case 'completionDateDescending':
         return lessons.sort(completionDateDescending);
-      case 'problemTypeAscending':
-        return lessons.sort(problemTypeAscending);
-      case 'problemTypeDescending':
-        return lessons.sort(problemTypeDescending);  
+      case 'lessonTypeAscending':
+        return lessons.sort(lessonTypeAscending);
+      case 'lessonTypeDescending':
+        return lessons.sort(lessonTypeDescending);  
       default:
         break;
     }
