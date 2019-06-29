@@ -1,15 +1,15 @@
 export default [
   {
     label: "Page Number",
-    value: "passage",
+    value: "passageAscending",
   },
   {
     label: "Status/Score",
-    value: "status",
+    value: "statusAscending",
   },
   {
     label: "Assignment Date",
-    value: "availableDate",
+    value: "availableDateAscending",
   },
   {
     label: "Due Date",
@@ -17,6 +17,6 @@ export default [
   },
   {
     label: "Flag Count",
-    value: "alerts",
+    value: "alertsAscending",
   },
 ]

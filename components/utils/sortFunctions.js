@@ -63,8 +63,12 @@ export const subjectDescending = ({ subject: subjectA }, { subject: subjectB }) 
   return 0;
 }
 
-export const passage = ({passage: passageA }, {passage: passageB}) => {
+export const passageAscending = ({passage: passageA }, {passage: passageB}) => {
   if (passageA < passageB) {return -1; }
+  return 0;
+}
+export const passageDescending = ({passage: passageA }, {passage: passageB}) => {
+  if (passageA > passageB) {return -1; }
   return 0;
 }
 
@@ -78,12 +82,57 @@ export const statusAscending = ({status: statusA}, {status: statusB}) => {
   return 0;
 }
 
-export const alerts = ({alerts: alertsA}, {alerts: alertsB}) => {
+export const alertsDescending = ({alerts: alertsA}, {alerts: alertsB}) => {
   if (alertsA.length > alertsB.length) {return -1; }
   return 0;
 }
 
-export const availableDate = ({ availableDate: availableDateA }, { availableDate: availableDateB }) => {
+export const alertsAscending = ({alerts: alertsA}, {alerts: alertsB}) => {
+  if (alertsA.length < alertsB.length) {return -1; }
+  return 0;
+}
+
+export const availableDateDescending = ({ availableDate: availableDateA }, { availableDate: availableDateB }) => {
   if (availableDateA > availableDateB) { return -1; }
+  return 0;
+}
+
+export const availableDateAscending = ({ availableDate: availableDateA }, { availableDate: availableDateB }) => {
+  if (availableDateA < availableDateB) { return -1; }
+  return 0;
+}
+
+export const lessonNameAscending = ({lessonName: lessonNameA}, {lessonName: lessonNameB}) => {
+  if (lessonNameA < lessonNameB) { return -1; }
+  return 0;
+}
+
+export const lessonNameDescending = ({lessonName: lessonNameA}, {lessonName: lessonNameB}) => {
+  if (lessonNameA > lessonNameB) { return -1; }
+  return 0;
+}
+
+export const dueDateAscending = ({ dueDate: dueDateA }, { dueDate: dueDateB }) => {
+  if (dueDateA < dueDateB) { return -1; }
+  return 0;
+}
+
+export const completionDateAscending = ({completionDate: completionDateA}, {completionDate: completionDateB}) => {
+  if (completionDateA < completionDateB) { return -1; }
+  return 0;
+}
+
+export const completionDateDescending = ({completionDate: completionDateA}, {completionDate: completionDateB}) => {
+  if (completionDateA > completionDateB) { return -1; }
+  return 0;
+}
+
+export const problemTypeAscending = ({problemType: problemTypeA}, {problemType: problemTypeB}) => {
+  if (problemTypeA < problemTypeB) {return -1; }
+  return 0;
+}
+
+export const problemTypeDescending = ({problemType: problemTypeA}, {problemType: problemTypeB}) => {
+  if (problemTypeA > problemTypeB) {return -1; }
   return 0;
 }

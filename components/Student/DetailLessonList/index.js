@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
-import { passage, statusAscending, availableDate, dueDate, alerts} from '../../utils/sortFunctions';
+import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, problemTypeAscending, problemTypeDescending} from '../../utils/sortFunctions';
 import ListView from './components/ListView';
 
 class DetailLessonList extends React.Component {
@@ -38,20 +38,47 @@ class DetailLessonList extends React.Component {
   onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch(sort) {
-      case 'passage':
-        return lessons.sort(passage);
-      case 'status':
-          return lessons.sort(statusAscending);
-      case 'availableDate':
-          return lessons.sort(availableDate);
-      case 'dueDate':
+      case 'subjectAscending':
+        return lessons.sort(subjectAscending);
+      case 'subjectDescending':
+        return lessons.sort(subjectDescending);
+      case 'passageAscending':
+        return lessons.sort(passageAscending);
+      case 'statusAscending':
+        return lessons.sort(statusAscending);
+      case 'passageDescending':
+        return lessons.sort(passageDescending);
+      case 'statusDescending':
+        return lessons.sort(statusDescending);   
+      case 'availableDateAscending':
+          return lessons.sort(availableDateAscending);
+      case 'availableDateDescending':
+       return lessons.sort(availableDateDescending)
+      case 'dueDateDescending':
         return lessons.sort(dueDate);
-      case 'alerts':
-        return lessons.sort(alerts);
+      case 'dueDateAscending':
+        return lessons.sort(dueDateAscending)
+      case 'alertsAscending':
+        return lessons.sort(alertsAscending);
+      case 'alertsDescending':
+        return lessons.sort(alertsDescending);
+      case 'lessonNameAscending':
+        return lessons.sort(lessonNameAscending);
+      case 'lessonNameDescending':
+        return lessons.sort(lessonNameDescending);
+      case 'completionDateAscending':
+        return lessons.sort(completionDateAscending);
+      case 'completionDateDescending':
+        return lessons.sort(completionDateDescending);
+      case 'problemTypeAscending':
+        return lessons.sort(problemTypeAscending);
+      case 'problemTypeDescending':
+        return lessons.sort(problemTypeDescending);  
       default:
         break;
     }
   }
+
 
   onFilterByName = () => {
     const { lessons, nameFilter } = this.state;
@@ -102,23 +129,7 @@ class DetailLessonList extends React.Component {
     }
     return lessons;
   }
-// NOT WORKING
-  // onFilterCompletionStatus = () => {
-  //   const { completeFilters, lessons: allLessons} = this.state;
-  //   let lessons = allLessons;
-  //   if (completeFilters.length && completeFilters.indexOf('complete') !== -1) {
-  //     return lessons.filter(lesson => lesson.completed === true)
-  // }
-  //  if (completeFilters.indexOf('unassigned')) {
-  //   lessons = lessons.filter(lesson => lesson.status === 'Started')
-  // }
-  //  if (completeFilters.length && completeFilters.indexOf('incomplete')) {
-  //     lessons = lessons.filter(lesson => lesson.assigned === false)
-  //   }
-  //   return lessons
-  // }
 
- 
   getMappableLessons = () => {
     const { sort, unitFilter, lessons, nameFilter, statusFilters, subjectFilters, scoreStatusFilters, classTypeFilters, flagFilters} = this.state;
     let mappableLessons = lessons;
@@ -128,16 +139,9 @@ class DetailLessonList extends React.Component {
     if (statusFilters.length || unitFilter.length || scoreStatusFilters.length || subjectFilters.length || classTypeFilters.length || flagFilters.length) {
       mappableLessons = this.onFilterLessons();
     }
-    // if (dueDateFilters) {
-    //   mappableLessons= this.calculateDueDate();
-    // }
-    // if (completeFilters.length) {
-    //   mappableLessons = this.onFilterCompletionStatus();
-    // }
     if (sort) {
       return this.onSortLessons(mappableLessons)
     }
-
     return mappableLessons
   }
 
@@ -206,7 +210,7 @@ class DetailLessonList extends React.Component {
     if (active === 'full') {
       return <FullView lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson}/>
     }
-    return <ListView lessons={this.getMappableLessons()}/>
+    return <ListView lessons={this.getMappableLessons()} onSetSort={this.onSetSort} sort={this.state.sort}/>
   }
 
 
