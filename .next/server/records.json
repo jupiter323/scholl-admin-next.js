@@ -33,19 +33,19 @@
   },
   "chunks": {
     "byName": {
-      "static/_~HUeE498N7mm79rXPlJQ/pages/_app.js": 0,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/_document.js": 1,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/_error.js": 2,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/all-instructors.js": 3,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/all-locations.js": 4,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/classes.js": 5,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/courseTemplates.js": 6,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/dashboard.js": 7,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/help.js": 8,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/instructors.js": 9,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/locations.js": 10,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/students.js": 11,
-      "static/_~HUeE498N7mm79rXPlJQ/pages/worksheets.js": 12
+      "static/YdGLnIxJOugjivT38Sm9t/pages/_app.js": 0,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/_document.js": 1,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/_error.js": 2,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/all-instructors.js": 3,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/all-locations.js": 4,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/classes.js": 5,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/courseTemplates.js": 6,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/dashboard.js": 7,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/help.js": 8,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/instructors.js": 9,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/locations.js": 10,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/students.js": 11,
+      "static/YdGLnIxJOugjivT38Sm9t/pages/worksheets.js": 12
     },
     "bySource": {
       "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Student/AccountPage/components/CourseContext/index.js ../../../../FormComponents/DatePicker": 13

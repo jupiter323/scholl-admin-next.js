@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
@@ -27,8 +28,8 @@ class TestCard extends React.Component {
   mapTestSubjects = () => {
     const { test, futureTest } = this.props;
     const { subjects } = test;
-    return subjects.map(subject => (
-      <div className="chart-block chart-block-test" key={subject.subject}>
+    return subjects.map((subject, index) => (
+      <div className="chart-block chart-block-test" key={index}>
         <span className="value-max">{subject.targetScore}</span>
         <div className="js-donut-chart" data-stroke-width="15" data-source='./inc/score-data-test-reading.json'></div>
         <div className="chart-text">

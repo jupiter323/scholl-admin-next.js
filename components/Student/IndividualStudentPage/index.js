@@ -42,7 +42,7 @@ class IndividualStudentPage extends React.Component {
       return <LessonDetailAnswerSheet />;
     }
     if (activePage === 'test') {
-      return <DetailTestList />;
+      return <DetailTestList user={student} />;
     }
     return null;
   }
@@ -51,10 +51,10 @@ class IndividualStudentPage extends React.Component {
     const { activePage, activationDropdownOpen, licenseCode } = this.state;
     return (
       <React.Fragment>
-          <div className="title-row card-panel">
-            <div className="mobile-header">
-              <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
-            </div>
+        <div className="title-row card-panel">
+          <div className="mobile-header">
+            <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+          </div>
 
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">

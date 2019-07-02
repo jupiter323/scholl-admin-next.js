@@ -2,30 +2,139 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11949b2e-b33b-43ae-921a-9aaffa7187bf" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.next/server/13.636b932e567da482bab5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/_document.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/all-instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/all-locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/classes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/courseTemplates.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/help.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/students.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/86OEOSQDqY_LJMwGiMdr3/pages/worksheets.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/_app.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/_document.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/_document.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/_error.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/classes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/classes.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/dashboard.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/development/pages/next/dist/pages/_error.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/_document.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/all-instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/all-locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/classes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/courseTemplates.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/help.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/students.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/static/zq_MHT7I8e6vYxo2lCm_0/pages/worksheets.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/all-instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/all-locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/classes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/courseTemplates.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/help.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/students.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/86OEOSQDqY_LJMwGiMdr3/pages/worksheets.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/0.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/0.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/16.670fd3be3d57880785be.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/29.c4b7b614753eb5c1a226.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/commons.2f957504dcb918048abb.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/commons.d43186db8abbb24c14eb.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/styles.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/styles.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/css/styles.chunk.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/css/styles.chunk.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/dll/dll_7bc611f04f4f15742e11.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/_app.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/_error.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/classes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/classes.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/dashboard.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/pages/next/dist/pages/_error.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/main-5ed9e3f0bb9a23055928.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/main-cb1d443a461ed061c084.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/main.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/webpack-79149397bd1eb729fe0f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/webpack-9af32d11c6b835106fef.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/webpack.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/runtime/webpack.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/737f8a476d75bec3d13d.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/953a68d78444d65b5911.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/9f13b011d5ad4751e6ea.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/ff088b3b70f54d69bf5f.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/all-instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/all-locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/classes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/courseTemplates.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/help.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/instructors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/locations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/students.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/zq_MHT7I8e6vYxo2lCm_0/pages/worksheets.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/DetailLessonList/utils/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/DetailTestList/components/EditTestModal/components/Settings/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/DetailTestList/components/EditTestModal/components/TestVersionSettings/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/DetailTestList/components/EditTestModal/components/TestVersionSettings/utils/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/DetailTestList/components/EditTestModal/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/components/CardSection/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/components/ChallengeQuestions/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/components/PracticeQuestions/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/components/Question/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/components/QuestionModal/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/components/ReassignModal/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/utils/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Student/LessonWorksheetTestSection/utils/sampleQuestions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.next/BUILD_ID" beforeDir="false" afterPath="$PROJECT_DIR$/.next/BUILD_ID" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.next/build-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/.next/build-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.next/react-loadable-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/.next/react-loadable-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.next/records.json" beforeDir="false" afterPath="$PROJECT_DIR$/.next/records.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.next/server/pages-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/.next/server/pages-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.next/server/records.json" beforeDir="false" afterPath="$PROJECT_DIR$/.next/server/records.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/00/d5/079b06b157832e0912df55524546adb425647acbb2f686695a3cf986bb69" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/00/d5/079b06b157832e0912df55524546adb425647acbb2f686695a3cf986bb69" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/1b/1e/1ac925ed7b1f74ba6c165058b6d5f097465b6e73dedc5cbf6f7e99dfa8bc" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/1b/1e/1ac925ed7b1f74ba6c165058b6d5f097465b6e73dedc5cbf6f7e99dfa8bc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/2b/01/59d661e2eb71de43d1e24836501e8e80d811d0fd49cc15a4527862bfb4b3" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/2b/01/59d661e2eb71de43d1e24836501e8e80d811d0fd49cc15a4527862bfb4b3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/4d/0a/b42852600bf8840403c7c603830ab500f988a26d6a23baf5f4b82575cac0" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/4d/0a/b42852600bf8840403c7c603830ab500f988a26d6a23baf5f4b82575cac0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/4f/47/7f46d3613819c50850d5d52868ccff966a34edccf21c4dad72b89862ccf5" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/4f/47/7f46d3613819c50850d5d52868ccff966a34edccf21c4dad72b89862ccf5" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/93/08/2ea6d91afeda234c7b5c6e287c7d23e5dd9e2d1f928df0ee85cf9d507dfa" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/93/08/2ea6d91afeda234c7b5c6e287c7d23e5dd9e2d1f928df0ee85cf9d507dfa" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/9f/e7/7210388893ec404da99a7d8c94706be610e9534c11177b4f8e2de126576e" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/9f/e7/7210388893ec404da99a7d8c94706be610e9534c11177b4f8e2de126576e" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/b3/45/5c02e9981014b6a3a66c24a37bd56c6076cd91fd49110b80aca66b40aee1" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/b3/45/5c02e9981014b6a3a66c24a37bd56c6076cd91fd49110b80aca66b40aee1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/cd/d5/87b3c1ac88cbfafe12fce598918cf7469cfa5e5b7e4642832312e4574a65" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/cd/d5/87b3c1ac88cbfafe12fce598918cf7469cfa5e5b7e4642832312e4574a65" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/db/63/55ef92cec5b6d7125b185f0605b2c13a842565b6e9ba9d229af445b0c807" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/db/63/55ef92cec5b6d7125b185f0605b2c13a842565b6e9ba9d229af445b0c807" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/e8/5b/9ba39c1d4776672f28f1fa0f8eceb27f50027612f7c6c9833f59e9c0dfdf" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/e8/5b/9ba39c1d4776672f28f1fa0f8eceb27f50027612f7c6c9833f59e9c0dfdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/f2/57/d502684ebe866bb095e1e55cd0bb11c97427f148bd48c0f828771a21460d" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/f2/57/d502684ebe866bb095e1e55cd0bb11c97427f148bd48c0f828771a21460d" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/f8/ba/42986227b8495c03ddf95379edef72076f2d2aa2d17470f5b74b574478ba" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/f8/ba/42986227b8495c03ddf95379edef72076f2d2aa2d17470f5b74b574478ba" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/fa/8c/16c1e630c82d03f7f39e8091491bf00554991ecd4e98ecef0989971052b7" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/terser-webpack-plugin/index-v5/fa/8c/16c1e630c82d03f7f39e8091491bf00554991ecd4e98ecef0989971052b7" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/react-dom/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/react-dom/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/scheduler/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/scheduler/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.next/static/css/styles.343903c0.chunk.css" beforeDir="false" afterPath="$PROJECT_DIR$/.next/static/css/styles.343903c0.chunk.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailLessonList/components/LessonCard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailLessonList/components/LessonCard/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailLessonList/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailLessonList/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailSummaryPage/components/CourseProgress/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailSummaryPage/components/CourseProgress/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailTestList/components/TestCard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailTestList/components/TestCard/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailTestList/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailTestList/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailTestList/utils/sampleTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailTestList/utils/sampleTests.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/components/FullView/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/components/FullView/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/components/ListView/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/components/ListView/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/utils/sampleWorksheets.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/DetailWorksheetPage/utils/sampleWorksheets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/IndividualStudentPage/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/IndividualStudentPage/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/components/StudentCard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/components/StudentCard/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/utils/sampleStudentList.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/utils/sampleStudentList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Student/utils/sampleUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Student/utils/sampleUser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/main.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -39,19 +148,90 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/css/main.css">
+        <entry file="file://$PROJECT_DIR$/pages/dashboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="6386" column="20" lean-forward="true" selection-start-line="6386" selection-start-column="20" selection-end-line="6386" selection-end-column="20" />
+            <state relative-caret-position="242">
+              <caret line="11" column="97" selection-start-line="11" selection-start-column="97" selection-end-line="11" selection-end-column="97" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+        <entry file="file://$PROJECT_DIR$/../clear-choice-admin-psd-to-html/markaup5/4-dashboard-upcoming-sessions.html">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/Core/Header.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+            <state relative-caret-position="88">
+              <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="637494">
+              <caret line="28977" selection-start-line="28977" selection-end-line="28977" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/Dashboard/components/Modals/AssignSimulatedSATModal/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/Core/SideNav.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1188">
+              <caret line="56" column="36" selection-start-line="56" selection-start-column="36" selection-end-line="56" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/utils/getValueFromState.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/FormComponents/Dropdown/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/Portal/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1848">
+              <caret line="84" column="11" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -67,13 +247,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>AssignSimulatedSatModal</find>
-      <find>.title-row.card-panel</find>
-      <find>.sidenav h1</find>
-      <find>.sidenav .sidenav-holder</find>
-      <find>bg-si</find>
       <find>.add-btn</find>
-      <find>li.active</find>
+      <find>AssignSimulatedSatModal</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -85,6 +260,7 @@
         <option value="$PROJECT_DIR$/components/Core/SideNAv.js" />
         <option value="$PROJECT_DIR$/components/Core/Header.js" />
         <option value="$PROJECT_DIR$/.eslintrc.js" />
+        <option value="$PROJECT_DIR$/components/Core/SideNav.js" />
         <option value="$PROJECT_DIR$/pages/_app.js" />
         <option value="$PROJECT_DIR$/components/Page.js" />
         <option value="$PROJECT_DIR$/components/Meta.js" />
@@ -99,16 +275,12 @@
         <option value="$PROJECT_DIR$/pages/Worksheets.js" />
         <option value="$PROJECT_DIR$/pages/help.js" />
         <option value="$PROJECT_DIR$/server.js" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/pages/dashboard.js" />
-        <option value="$PROJECT_DIR$/components/Core/SideNav.js" />
-        <option value="$PROJECT_DIR$/static/css/main.css" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-1920" />
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="1057" />
@@ -118,8 +290,57 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Dashboard" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="clear-choice-admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="clear-choice-admin" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -156,18 +377,17 @@
       <option name="presentableId" value="Default" />
       <updated>1550782177863</updated>
       <workItem from="1550782180534" duration="7977000" />
-      <workItem from="1560915599073" duration="1791000" />
+      <workItem from="1562037739721" duration="127000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11588000" />
+    <option name="totallyTimeSpent" value="9026000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1920" y="23" width="1920" height="1057" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1920" height="1057" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24960506" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24960506" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -180,7 +400,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3284974" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3284974" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="10" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -192,54 +412,16 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/components/Dashboard/components/CalendarHeader/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#26#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/Dashboard/components/CalendarRow/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#115#141#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/next.config.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/moment/moment.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/prop-types/index.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/react-datepicker/lib/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/immutability-helper/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-75">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/moment/moment.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="-222">
           <folding />
         </state>
       </provider>
@@ -267,7 +449,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="44">
           <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -302,7 +483,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -324,7 +504,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="8" column="31" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -339,7 +518,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -358,6 +536,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pages/dashboard.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
@@ -372,9 +557,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637494">
+          <caret line="28977" selection-start-line="28977" selection-end-line="28977" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/components/Dashboard/components/Modals/AssignSimulatedSATModal/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
+        <state relative-caret-position="374">
           <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
@@ -412,27 +604,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2200">
-          <caret line="100" column="10" selection-start-line="100" selection-start-column="10" selection-end-line="100" selection-end-column="10" />
+        <state relative-caret-position="1848">
+          <caret line="84" column="11" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-datepicker/lib/index.js">
+    <entry file="file://$PROJECT_DIR$/../clear-choice-admin-psd-to-html/markaup5/4-dashboard-upcoming-sessions.html">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="6386" column="20" lean-forward="true" selection-start-line="6386" selection-start-column="20" selection-end-line="6386" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-        </state>
-      </provider>
     </entry>
   </component>
 </project>
