@@ -7,6 +7,7 @@ import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
 import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending} from '../../utils/sortFunctions';
 import ListView from './components/ListView';
+import AssignLessonModal from './components/AssignLessonModal';
 
 class DetailLessonList extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class DetailLessonList extends React.Component {
     this.state = {
       test: true,
       lessons: this.props.user.lessons,
+      modalOpen: false,
       currentView: 'full',
       active: 'full',
       statusFilters: [],
@@ -28,6 +30,7 @@ class DetailLessonList extends React.Component {
     }
   };
 
+  onOpenModal = () => this.setState({modalOpen: true});
   onClearFilters = () => this.setState({ statusFilters: [], subjectFilters: [], completeFilters: [], flagFilters: [], classTypeFilters: [], dueDateFilters: [], unitFilter: "", nameFilter: "" })
   onSetSort = (sort) => this.setState({sort})
   onSetFilteredState = (lesson) => this.setState({nameFilter: lesson })
@@ -149,27 +152,37 @@ class DetailLessonList extends React.Component {
     return mappableLessons
   }
 
+  
   // may need to alter dueNextSession depending if client wants ALL vs incomplete/overdue
   // TODO: only works with one due date filter, not multiple
    filterDueDate = () => {
      const { user } = this.props;
     const { dueDateFilters, lessons: allLessons } = this.state;
     let lessons = allLessons;
+    // const set = new Set();
     if (dueDateFilters.length && dueDateFilters.indexOf('all') === -1) {
       if (dueDateFilters.includes('overdue')) {
       lessons = lessons.filter(lesson => lesson.overdue === true)
+    
       }
       if(dueDateFilters.includes('dueToday')) {
         lessons = lessons.filter(lesson => lesson.dueDate === moment().format("MM/DD/Y"))
+      
       }
       if(dueDateFilters.includes('dueThisWeek')) {
         lessons = lessons.filter(lesson => moment(lesson.dueDate).format('w') === moment().format("W"))
+        
       }
       if (dueDateFilters.includes('dueNextSession')) {
         lessons = lessons.filter(lesson => moment(user.nextSession).isSameOrAfter(lesson.dueDate, 'day'))
+      
       }
-      return lessons;
+      return lessons
+      // set.add(lessons);
     }
+    // console.log(set)
+    // const filteredLessons = Array.from(set);
+    // console.log(filteredLessons)
     return lessons
   }
 
@@ -256,7 +269,8 @@ class DetailLessonList extends React.Component {
         filterDueDate={this.filterDueDate}
         />
         {this.renderCurrentView()}
-      <a href="#" className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>New Lesson</a>
+        <AssignLessonModal open={this.state.modalOpen} lessons={this.props.user.lessons} />
+      <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>Assign Lesson</a>
       </React.Fragment>
     )
   }
