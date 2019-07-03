@@ -87,11 +87,11 @@ class AssignLessonModal extends React.Component {
     const { statusFilters, subjectFilters, lessonTypeFilters, unitFilter, lessons: allLessons } = this.state;
     let lessons = allLessons;
     if (statusFilters.length && statusFilters.indexOf('all') === -1) {
-      if(statusFilters.indexOf("Unassigned") !== -1){
-        lessons = lessons.filter(lesson =>  statusFilters.indexOf(lesson.status) !== -1)
-      }else
-      lessons = lessons.filter(lesson => lesson.assigned === true)
-     
+      if (statusFilters.indexOf("Unassigned") !== -1) {
+        lessons = lessons.filter(lesson => statusFilters.indexOf(lesson.status) !== -1)
+      } else
+        lessons = lessons.filter(lesson => lesson.assigned === true)
+
     }
     if (subjectFilters.length && subjectFilters.indexOf('all') === -1) {
       lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1)
@@ -104,6 +104,20 @@ class AssignLessonModal extends React.Component {
     }
     return lessons;
   }
+
+  setSortType = (name) => {
+    const { sort } = this.state;
+    if (sort !== `${name}Ascending` && sort !== `${name}Descending`) {
+      this.onSetSort(`${name}Ascending`)
+    }
+    if (sort === `${name}Descending`) {
+      this.onSetSort(`${name}Ascending`)
+    }
+    else {
+      this.onSetSort(`${name}Descending`)
+    }
+  }
+
 
   getMappableLessons = () => {
     const { sort, unitFilter, lessons, statusFilters, subjectFilters, lessonTypeFilters, nameFilter } = this.state;
@@ -121,7 +135,6 @@ class AssignLessonModal extends React.Component {
   }
 
   handleFilterClick = (filterType, filter) => {
-    console.log('clicked')
     const { subjectFilters: currentSubjectFilters, statusFilters: currentStatusFilters, lessonTypeFilters: currentLessonTypeFilters } = this.state;
     let modifiedFilterCurrentState;
     let modifiedFilterName;
@@ -190,65 +203,31 @@ class AssignLessonModal extends React.Component {
         </label>
       </div>
       <div className="list-table-cell name-cell" value="lessonName">
-        <a
-          href="#"
-        // onClick={() => this.setSortType("lessonName")}
-        >
-          <b>Lesson</b>
-        </a>
+        <a href="#" onClick={() => this.setSortType("lessonName")}><b>Lesson</b></a>
       </div>
-      <div className="list-table-cell completed-cell"><a
-        href="#"
-      // onClick={() => this.setSortType("status")}
-      >
-        <b>Status</b>
-      </a>
+      <div className="list-table-cell completed-cell">
+        <a href="#" onClick={() => this.setSortType("status")}><b>Status</b></a>
       </div>
       <div className="list-table-call completed-cell">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-      <div className="list-table-cell completed-cell" style={{ marginLeft: '5px' }}><a
-        href="#"
-      // onClick={() => this.setSortType("subject")}
-      >
-        <b>Subject</b>
-      </a>
+      <div className="list-table-cell completed-cell" style={{ marginLeft: '5px' }}>
+        <a href="#" onClick={() => this.setSortType("subject")}><b>Subject</b></a>
       </div>
       <div className="list-table-cell completed-cell" >
-        <a
-          href="#"
-        // onClick={() => this.setSortType("passage")}
-        ><b>Page</b>
-        </a></div>
-      <div className="list-table-cell date-cell"><a
-        href="#"
-      // onClick={() => this.setSortType("availableDate")}
-      >
-        <b>Time Est</b>
-      </a>
+        <a href="#" onClick={() => this.setSortType("passage")}><b>Page</b></a>
       </div>
-      <div className="list-table-cell type-cell" style={{ marginLeft: '13px', paddingLeft: '-1px' }}><a
-        href="#"
-      // onClick={() => this.setSortType("dueDate")}
-      >
-        <b>Problems</b>
-      </a>
+      <div className="list-table-cell date-cell">
+        <a href="#" onClick={() => this.setSortType("timeEstimate")}><b>Time Est</b></a>
       </div>
-
-      <div className="list-table-cell completed-cell"><a
-        href="#"
-      // onClick={() => this.setSortType("lessonType")}
-      >
-        <b>Type</b>
-      </a>
+      <div className="list-table-cell type-cell" style={{ marginLeft: '13px', paddingLeft: '-1px' }}>
+        <a href="#" onClick={() => this.setSortType("totalProblems")}><b>Problems</b></a>
+      </div>
+      <div className="list-table-cell completed-cell">
+        <a href="#" onClick={() => this.setSortType("lessonType")}><b>Type</b></a>
       </div>
       <div className="list-table-cell flags-cell"><b>&nbsp;</b></div>
       <div className="list-table-cell flags-cell"><b>&nbsp;</b></div>
-
-      <div className="list-table-cell flags-cell"><a
-        href="#"
-      // onClick={() => this.setSortType("alerts")}
-      >
-        <b>Flags</b>
-      </a>
+      <div className="list-table-cell flags-cell">
+        <a href="#" onClick={() => this.setSortType("alerts")}><b>Flags</b></a>
       </div>
     </div>
   )

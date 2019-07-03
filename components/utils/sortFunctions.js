@@ -53,6 +53,11 @@ export const timeEstimate = ({ timeEstimate: timeEstimateA }, { timeEstimate: ti
   return 0;
 }
 
+export const timeEstimateAscending= ({ timeEstimate: timeEstimateA }, { timeEstimate: timeEstimateB }) => {
+  if (timeEstimateA < timeEstimateB) { return -1; }
+  return 0;
+}
+
 export const subjectAscending = ({ subject: subjectA }, { subject: subjectB }) => {
   if (subjectA < subjectB) { return -1; }
   return 0;
@@ -134,5 +139,15 @@ export const lessonTypeAscending = ({lessonType: lessonTypeA}, {lessonType: less
 
 export const lessonTypeDescending = ({lessonType: lessonTypeA}, {lessonType: lessonTypeB}) => {
   if (lessonTypeA > lessonTypeB) {return -1; }
+  return 0;
+}
+
+export const totalProblemsAscending = ({totalProblems: totalProblemsA}, {totalProblems: totalProblemsB}) => {
+  if (totalProblemsA < totalProblemsB) {return -1; }
+  return 0;
+}
+
+export const totalProblemsDescending = ({totalProblems: totalProblemsA}, {totalProblems: totalProblemsB}) => {
+  if (totalProblemsA > totalProblemsB) {return -1; }
   return 0;
 }

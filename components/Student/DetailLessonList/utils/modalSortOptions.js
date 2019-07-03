@@ -9,15 +9,15 @@ export default [
   },
   {
     label: "Time Est",
-    value: "timeEstimate",
+    value: "timeEstimateDescending",
   },
   {
     label: "Type",
-    value: "lessonTypeAscending ",
+    value: "lessonTypeAscending",
   },
   {
     label: "Flag Count",
-    value: "alertsAscending",
+    value: "alertsDescending",
   },
   {
     label: "Subject",
