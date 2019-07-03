@@ -270,7 +270,7 @@ class DetailLessonList extends React.Component {
         />
         {this.renderCurrentView()}
         <AssignLessonModal open={this.state.modalOpen} lessons={this.props.user.lessons} />
-      <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i>Assign Lesson</a>
+      <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Lesson</a>
       </React.Fragment>
     )
   }

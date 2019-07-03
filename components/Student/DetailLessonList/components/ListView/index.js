@@ -66,7 +66,7 @@ class ListView extends React.Component {
     return this.onSetDropdown(index);
   }
 
-
+  
   mapWorksheetRows = () => {
     const { lessons } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
