@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import statusColorMap from '../../../DetailWorksheetPage/utils/statusColorMap';
 import Portal from '../../../../Portal';
 import LessonListItem from './components/LessonListItem';
 import { totalProblemsDescending, totalProblemsAscending, timeEstimate, timeEstimateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, alertsAscending, alertsDescending, lessonTypeAscending, lessonTypeDescending } from '../../../../utils/sortFunctions';
@@ -202,20 +201,21 @@ class AssignLessonModal extends React.Component {
           <span><b>&nbsp;</b></span>
         </label>
       </div>
+      <div className="list-table-cell icon-cell">&nbsp;</div>
       <div className="list-table-cell name-cell" value="lessonName">
         <a href="#" onClick={() => this.setSortType("lessonName")}><b>Lesson</b></a>
       </div>
-      <div className="list-table-cell completed-cell">
+      <div className="list-table-cell name-cell" style={{ width: '100px', paddingLeft: '237px' }}>
         <a href="#" onClick={() => this.setSortType("status")}><b>Status</b></a>
       </div>
       <div className="list-table-call completed-cell">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-      <div className="list-table-cell completed-cell" style={{ marginLeft: '5px' }}>
+      <div className="list-table-cell type-cell" style={{ marginLeft: '30px', paddingLeft: '58px' }}>
         <a href="#" onClick={() => this.setSortType("subject")}><b>Subject</b></a>
       </div>
-      <div className="list-table-cell completed-cell" >
+      <div className="list-table-cell completed-cell" style={{ paddingLeft: '56px' }}>
         <a href="#" onClick={() => this.setSortType("passage")}><b>Page</b></a>
       </div>
-      <div className="list-table-cell date-cell">
+      <div className="list-table-cell completed-cell" style={{ marginLeft: '30px' }}>
         <a href="#" onClick={() => this.setSortType("timeEstimate")}><b>Time Est</b></a>
       </div>
       <div className="list-table-cell type-cell" style={{ marginLeft: '13px', paddingLeft: '-1px' }}>
@@ -235,21 +235,31 @@ class AssignLessonModal extends React.Component {
 
   render() {
     const { lessons, subjectFilters, statusFilters, lessonTypeFilters } = this.state;
-    const { open } = this.props;
+    const { open, onCloseModal } = this.props;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
             <div id="assign-lesson-modal" className="modal modal-custom">
-              <div className="title-row card-panel" id="assign-lessons-header">
-                <div className="mobile-header">
+              <div className="header-row card-panel light-blue lighten-1 white-text">
+                <div className="card-panel-row row">
+                  <div className="col s3">&nbsp;</div>
+                  <div className="col s9 right-align">
+                    <div className="row icons-row"> <span>
+                      <a href="#" onClick={onCloseModal}><i className="icon-close"></i></a>
+                    </span></div>
+                  </div>
                 </div>
-                <h2 className="h1 white-text">
-                  <span className="heading-holder">
+                <div className="card-panel-row row">
+                  <div className="icon-col col s1">
                     <i className="icon-books"></i>
-                    <span className="heading-block">Assign Lessons</span>
-                  </span>
-                </h2>
+                  </div>
+                  <div className="col s9">
+                    <div className="card-panel-text">
+                      <div className="text-large">Assign Lessons</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <ModalFilterSection
                 handleFilterClick={this.handleFilterClick}
@@ -268,7 +278,7 @@ class AssignLessonModal extends React.Component {
                     <b className="result"> - {lessons.length} Lessons</b>
                   </div>
                   <div className="list-view-section" style={{ margin: '0 -160px' }}>
-                    <div className="list-table">
+                    <div className="list-table" >
                       <div className="list-table-header">
                         {this.renderTableHeader()}
                       </div>
@@ -302,9 +312,9 @@ class AssignLessonModal extends React.Component {
               display: block;
               background-color: white;
               position: absolute;
-              top: 20%;
+              top: 13%;
               right: 0%;
-              left: 13%;
+              left: 14%;
               box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
             }
             .modal-footer {
@@ -329,5 +339,6 @@ class AssignLessonModal extends React.Component {
 AssignLessonModal.propTypes = {
   lessons: PropTypes.array.isRequired,
   open: PropTypes.bool.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
 }
 export default AssignLessonModal

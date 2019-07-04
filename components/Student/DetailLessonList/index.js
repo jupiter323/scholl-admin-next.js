@@ -31,6 +31,7 @@ class DetailLessonList extends React.Component {
   };
 
   onOpenModal = () => this.setState({modalOpen: true});
+  onCloseModal = () => this.setState({modalOpen: false}, console.log('clicked'));
   onClearFilters = () => this.setState({ statusFilters: [], subjectFilters: [], completeFilters: [], flagFilters: [], classTypeFilters: [], dueDateFilters: [], unitFilter: "", nameFilter: "" })
   onSetSort = (sort) => this.setState({sort})
   onSetFilteredState = (lesson) => this.setState({nameFilter: lesson })
@@ -269,7 +270,7 @@ class DetailLessonList extends React.Component {
         filterDueDate={this.filterDueDate}
         />
         {this.renderCurrentView()}
-        <AssignLessonModal open={this.state.modalOpen} lessons={this.props.user.lessons} />
+        <AssignLessonModal open={this.state.modalOpen} lessons={this.props.user.lessons} onCloseModal={this.onCloseModal}/>
       <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Lesson</a>
       </React.Fragment>
     )

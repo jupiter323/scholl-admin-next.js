@@ -28,7 +28,7 @@ class LessonListItem extends React.Component {
 
   render(){
     const { checked } = this.state;
-    const { selectAll, index, lesson: { lessonName, assigned, score, scoreStatus, reviewedAlerts, subject, unitNumber, passage, timeEstimate, totalProblems, lessonType, alerts}  } = this.props
+    const { selectAll, index, lesson: { lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unitNumber, passage, timeEstimate, totalProblems, lessonType, alerts}  } = this.props
     return(
       <div className='card list-table-row' key={index} style={{opacity: assigned ? .5 : 1}}>
       <div className="list-table-cell icon-cell">
@@ -48,7 +48,7 @@ class LessonListItem extends React.Component {
           <i className={this.renderLessonIcon(subject)}></i>
         </span>
       </div>
-      <div className="list-table-cell name-cell">
+      <div className="list-table-cell name-cell" style={{width: '140px'}}>
         <div className="card-panel-text truncate">
           <div className="text-large truncate" id='lessonName'>{subject} Unit #{unitNumber} {lessonName}</div>
         </div>

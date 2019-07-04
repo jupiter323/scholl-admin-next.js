@@ -186,6 +186,7 @@ class ModalFilterSection extends React.Component {
                 />
               </div>
             </div>
+            
             </div>
             </div>
 
@@ -193,8 +194,8 @@ class ModalFilterSection extends React.Component {
               <div className="col s12 l4">
                 <div className="row mb-0">
 
-                  <div className="col s12 x17">
-                   <div className="input-field">
+                  <div className="col s12 14">
+                   <div className="input-field" style={{overflow: 'auto'}} >
                       <Dropdown
                         value={getValueFromState(sort, modalSortOptions)}
                         onChange={(event) => this.handleSortChange(event)}
@@ -207,7 +208,7 @@ class ModalFilterSection extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col s12 l4">
+              <div className="col s12 l4 offset-s12">
                 <div className="option-filters">
                   <div className="option-item clear"><a href="#" onClick={this.clearAllFilters}>Clear Filters</a></div>
                   <div className="option-item">

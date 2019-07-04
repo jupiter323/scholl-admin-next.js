@@ -102,7 +102,7 @@ class ListView extends React.Component {
           <div className="list-table-cell type-cell" style={{marginLeft: '10px'}}>{subject}</div>
           <div className="list-table-cell type-cell">p. {passage}</div>
           <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{availableDate}</time></div>
-          <div className="list-table-cell dueDate-cell"><time dateTime="2019-01-27">{dueDate}</time></div>
+          <div className="list-table-cell dueDate-cell" style={{color: lesson.overdue ? "#db1b29" : ""}}><time dateTime="2019-01-27">{dueDate}</time></div>
           <div className="list-table-cell completed-cell">{completionDate}
             {/* {completed && (
               <React.Fragment>
