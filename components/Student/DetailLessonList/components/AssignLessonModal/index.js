@@ -34,7 +34,7 @@ class AssignLessonModal extends React.Component {
   onSetFilteredState = (lesson) => this.setState({ nameFilter: lesson })
   onUnsetFilteredState = (filter) => this.setState({ [filter]: "" })
   onSetUnitFilter = (unit) => this.setState({ unitFilter: unit })
-  
+
   onSelectLesson = (lesson) => {
     this.setState(prevState => {
       prevState.checkedLessons.push(lesson);
@@ -134,6 +134,28 @@ class AssignLessonModal extends React.Component {
     }
     return lessons;
   }
+// takes input from the assign selected lessons modal and updates the updatedLessons array in parent
+  // eslint-disable-next-line consistent-return
+  onHandleDates = (assignDate, assignTime, dueDate, dueTime) => {
+    const { onAddUpdatedLessons } = this.props;
+    const updatedLessons = [];
+    const { checkedLessons: previousCheckedLessons } = this.state;
+    for (let i = 0; i < previousCheckedLessons.length; i++){
+      const updatedCheckedLessons = update(previousCheckedLessons[i], {
+        $merge: {
+            assigned: true,
+            dueDate,
+            dueTime,
+            availableDate: assignDate,
+            status: "Scheduled",
+            assignTime,
+        },
+      },
+      )
+      updatedLessons.push(updatedCheckedLessons)
+    }
+    onAddUpdatedLessons(updatedLessons)
+    };
 
   setSortType = (name) => {
     const { sort } = this.state;
@@ -147,7 +169,6 @@ class AssignLessonModal extends React.Component {
       this.onSetSort(`${name}Descending`)
     }
   }
-
 
   getMappableLessons = () => {
     const { sort, unitFilter, lessons, statusFilters, subjectFilters, lessonTypeFilters, nameFilter } = this.state;
@@ -200,16 +221,13 @@ class AssignLessonModal extends React.Component {
   }
 
 
-  mapLessonListItem = () => {
-    return this.getMappableLessons().map((lesson, index) =>
+  mapLessonListItem = () => this.getMappableLessons().map((lesson, index) =>
       <LessonListItem
         lesson={lesson}
         index={index}
         selectAll={this.state.checked}
         onSelectLesson={this.onSelectLesson} />
     )
-  }
-
 
   renderTableHeader = () => (
     <div className="list-table-row">
@@ -314,7 +332,11 @@ class AssignLessonModal extends React.Component {
                 </div>
               </div>
             </div>
-            <AssignDatesModal open={this.state.datesModalOpen} onCloseDatesModal={this.onCloseDatesModal} />
+            <AssignDatesModal
+              open={this.state.datesModalOpen}
+              onCloseDatesModal={this.onCloseDatesModal}
+              onHandleDates={this.onHandleDates}
+            />
             <a href="#" onClick={this.onOpenDatesModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Selected</a>
           </div>
         )}
@@ -354,6 +376,7 @@ class AssignLessonModal extends React.Component {
               background: rgb(24,181,233) !important
               background: linear-gradient(90deg, rgba(24,181,233,1) 0%, rgba(8,107,140,1) 100%) !important;
             }
+            
           `}
         </style>
       </Portal>
@@ -365,5 +388,6 @@ AssignLessonModal.propTypes = {
   lessons: PropTypes.array.isRequired,
   open: PropTypes.bool.isRequired,
   onCloseModal: PropTypes.func.isRequired,
+  onAddUpdatedLessons: PropTypes.func.isRequired,
 }
 export default AssignLessonModal

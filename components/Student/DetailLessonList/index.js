@@ -27,6 +27,7 @@ class DetailLessonList extends React.Component {
       sort: "",
       nameFilter: "",
       unitFilter: "",
+      updatedLessons: [],
     }
   };
 
@@ -83,7 +84,18 @@ class DetailLessonList extends React.Component {
         break;
     }
   }
+  // onUpdateAssignedLessons = (checkedLessons) => {
+  //   const {lessons: previousLessons} = this.state;
+  //   for (let i = 0; i <previousLessons.length; i++){
+  //     if (checkedLessons.includes(previousLessons[i].lessonName)) {
+  //   const newLessons = update(previousLessons[i], {
+  //     $merge: {
 
+  //     }
+  //   }
+  // }
+  // }}
+  onAddUpdatedLessons = (lessons) => this.setState({updatedLessons: lessons})
 
   onFilterByName = () => {
     const { lessons, nameFilter } = this.state;
@@ -270,7 +282,11 @@ class DetailLessonList extends React.Component {
         filterDueDate={this.filterDueDate}
         />
         {this.renderCurrentView()}
-        <AssignLessonModal open={this.state.modalOpen} lessons={this.props.user.lessons} onCloseModal={this.onCloseModal}/>
+        <AssignLessonModal
+          open={this.state.modalOpen}
+          lessons={this.props.user.lessons}
+          onCloseModal={this.onCloseModal}
+          onAddUpdatedLessons={this.onAddUpdatedLessons}/>
       <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Lesson</a>
       </React.Fragment>
     )

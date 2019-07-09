@@ -21,27 +21,35 @@ class AssignDatesModal extends React.Component {
       assignDate: "",
       assignTime: "",
       dueDate: "",
-      dueDateTime: "",
+      dueTime: "",
     }
   }
-// currently not working
+
+  closeModal = () => {
+    const { onCloseDatesModal } = this.props;
+    this.setState({
+      assignDate: "",
+      assignTime: "",
+      dueDate: "",
+      dueTime: "",
+    },  onCloseDatesModal)
+  }
+
   handleChange = (event, name) => {
     const value = event.target ? event.target.value : event;
-    
-    const dates = update(this.state({
-      [name]: value,    
-    }))
-    this.setState(dates)
+    this.setState({
+      [name]: value,
+    });
   }
 
   render(){
-    const { open, onCloseDatesModal } = this.props;
-    const { assignTime, dueDateTime } = this.state;
+    const { open, onHandleDates } = this.props;
+    const { assignTime, assignDate, dueDate, dueTime } = this.state;
     return(
       <Portal selector="#modal">
         {open && (
           <div className="outer-overlay">
-            <ClickOffComponentWrapper onOuterClick={onCloseDatesModal}>
+            <ClickOffComponentWrapper onOuterClick={this.closeModal}>
             <div id="datesModal" className="modal modal-custom modal-assignDates">
                 <div className="card-modal card" style={{overflow: 'auto'}}>
                   <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: 'rgb(24,181,233)', color: '#fff' }}>
@@ -58,7 +66,7 @@ class AssignDatesModal extends React.Component {
                   </div>
                   <div className="card-content">
                     <div className="card-body" style={{ height: '300px', padding: '10px 37px'}}>
-                      <div className="row justify-center" style={{marginTop: '25px'}}>
+                      <div className="row justify-center" style={{marginTop: '18px'}}>
                         <div className="col s6">
                           <label htmlFor="assignDate">Assignment Date</label>
                           <div className="datepicker-field input-field">
@@ -94,6 +102,7 @@ class AssignDatesModal extends React.Component {
                           <i className="icon-calendar-dark" style={{marginRight: '20px', zIndex: '1001'}}></i>
                             <DatePicker
                               id="dueDate"
+                              selected={this.state.dueDate}
                               onChange={(event) => this.handleChange(event, 'dueDate')}
                               name="dueDate"
                               />
@@ -102,13 +111,13 @@ class AssignDatesModal extends React.Component {
                         <div className="col s6">
                           <div className="input-field focus-blue" style={{marginTop: '35px'}}>
                           <Dropdown
-                            value={getValueFromState(dueDateTime, timeOptions)}
-                            onChange={(event) => this.handleChange(event, "dueDateTime")}
+                            value={getValueFromState(dueTime, timeOptions)}
+                            onChange={(event) => this.handleChange(event, "dueTime")}
                             label="Time"
                             options={timeOptions}
-                            stateKey="dueDateTime"
-                            dropdownKey="dueDateTime"
-                            name="dueDateTime"
+                            stateKey="dueTime"
+                            dropdownKey="dueTime"
+                            name="dueTime"
                             />
                             </div>
                         </div>
@@ -117,7 +126,7 @@ class AssignDatesModal extends React.Component {
                     <div className="modal-footer">
                       <a
                         href="#"
-                        onClick={onCloseDatesModal}
+                        onClick={this.closeModal}
                         className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
                       >
                         Cancel
@@ -125,7 +134,7 @@ class AssignDatesModal extends React.Component {
                       <a
                         href="#"
                         className="btn"
-                        // onClick={}
+                        onClick={()=> onHandleDates(assignDate, assignTime, dueDate, dueTime)}
                       >
                         Assign Dates
                       </a>
@@ -188,6 +197,7 @@ class AssignDatesModal extends React.Component {
 AssignDatesModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onCloseDatesModal: PropTypes.func.isRequired,
+  onHandleDates: PropTypes.func.isRequired,
 }
 
 
