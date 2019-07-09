@@ -46,20 +46,23 @@ class AssignDatesModal extends React.Component {
                 <div className="card-modal card" style={{overflow: 'auto'}}>
                   <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: 'rgb(24,181,233)', color: '#fff' }}>
                     <div className="card-panel-row row">
+                      <div className=" icon-col">
                       <i className="icon-calendar"></i>
-                      <div className="col">
 
-                        <h4>Select Dates</h4>
+                      </div>
+                      <div className="col" >
+
+                        <h4 style={{padding: '8px 0px 0px 20px'}}>Select Dates</h4>
                       </div>
                     </div>
                   </div>
                   <div className="card-content">
-                    <div className="card-body" style={{marginTop: '50px', height: '300px'}}>
-                      <div className="row justify-center">
+                    <div className="card-body" style={{ height: '300px', padding: '10px 37px'}}>
+                      <div className="row justify-center" style={{marginTop: '25px'}}>
                         <div className="col s6">
                           <label htmlFor="assignDate">Assignment Date</label>
                           <div className="datepicker-field input-field">
-                          <i className="icon-calendar-dark" style={{marginRight: '95px'}}></i>
+                          <i className="icon-calendar-dark" style={{marginRight: '20px', zIndex: '1001'}}></i>
                             <DatePicker
                               id="assignDate"
                               selected={this.state.assignDate}
@@ -69,7 +72,7 @@ class AssignDatesModal extends React.Component {
                           </div>
                         </div>
                         <div className="col s6">
-                          <div className="input-field focus-blue" style={{marginTop: '-28px'}}>
+                          <div className="input-field focus-blue" style={{marginTop: '-15px', zIndex: '1001'}}>
                           <Dropdown
                             value={getValueFromState(assignTime, timeOptions)}
                             onChange={(event) => this.handleChange(event, 'assignTime')}
@@ -78,16 +81,17 @@ class AssignDatesModal extends React.Component {
                             stateKey="assignmentDate"
                             dropdownKey="assignmentDate"
                             name="assignTime"
+                            id="assignTime"
                             />
                             </div>
                         </div>
                         </div> 
                      
-                        <div className="row" style={{marginTop: '50px'}}>
+                        <div className="row" style={{marginTop: '43px'}}>
                         <div className="col s6">
-                          <div className="datepicker-field input-field" style={{marginTop: '50px'}}>
-                          <label htmlFor="dueDate">Due Date (optional)</label>
-                          <i className="icon-calendar-dark" style={{marginRight: '95px'}}></i>
+                          <label htmlFor="dueDate"style={{marginTop: '50px'}}>Due Date (optional)</label>
+                          <div className="datepicker-field input-field" >
+                          <i className="icon-calendar-dark" style={{marginRight: '20px', zIndex: '1001'}}></i>
                             <DatePicker
                               id="dueDate"
                               onChange={(event) => this.handleChange(event, 'dueDate')}
@@ -96,7 +100,7 @@ class AssignDatesModal extends React.Component {
                           </div>
                         </div>
                         <div className="col s6">
-                          <div className="input-field focus-blue">
+                          <div className="input-field focus-blue" style={{marginTop: '35px'}}>
                           <Dropdown
                             value={getValueFromState(dueDateTime, timeOptions)}
                             onChange={(event) => this.handleChange(event, "dueDateTime")}
@@ -160,7 +164,7 @@ class AssignDatesModal extends React.Component {
                 display: block;
                 background-color: white;
                 position: absolute;
-                width: 35%;
+                width: 30%;
                 top: 10%;
                 right: 10%;
                 left: 10%;
@@ -173,10 +177,7 @@ class AssignDatesModal extends React.Component {
               .modal-footer {
                 background-color: white;
               }
-              .react-datepicker-popper {
-                transform: translate3d(102px, -187px, 0px)
-
-              }
+            
             `}
         </style>
       </Portal>
