@@ -5,6 +5,7 @@ import Portal from '../../../../Portal';
 import LessonListItem from './components/LessonListItem';
 import { totalProblemsDescending, totalProblemsAscending, timeEstimate, timeEstimateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, alertsAscending, alertsDescending, lessonTypeAscending, lessonTypeDescending } from '../../../../utils/sortFunctions';
 import ModalFilterSection from '../ModalFilterSection';
+import AssignDatesModal from '../AssignDatesModal';
 
 class AssignLessonModal extends React.Component {
   constructor(props) {
@@ -19,15 +20,45 @@ class AssignLessonModal extends React.Component {
       unitFilter: "",
       checked: false,
       checkedLessons: [],
+      datesModalOpen: false,
     }
   }
 
-  onToggleChecked = () => this.setState({ checked: !this.state.checked })
+  onOpenDatesModal = () => this.setState({datesModalOpen: true})
+  onCloseDatesModal = () => this.setState({datesModalOpen: false})
+  onToggleChecked = () => {
+    this.setState({ checked: !this.state.checked }, () => this.onChecked());
+  }
   onClearFilters = () => this.setState({ statusFilters: [], subjectFilters: [], lessonTypeFilters: [], unitFilter: "", nameFilter: "" })
   onSetSort = (sort) => this.setState({ sort })
   onSetFilteredState = (lesson) => this.setState({ nameFilter: lesson })
   onUnsetFilteredState = (filter) => this.setState({ [filter]: "" })
   onSetUnitFilter = (unit) => this.setState({ unitFilter: unit })
+  
+  onSelectLesson = (lesson) => {
+    this.setState(prevState => {
+      prevState.checkedLessons.push(lesson);
+      return { checkedLessons: prevState.checkedLessons}
+    })
+    console.log(lesson)
+  }
+// checks if SelectAll checkbox is checked and adds or empties checkedLessons array
+  onChecked = () => {
+    const { checkedLessons, checked } = this.state;
+    if ( checked) {
+      const mappedLessons = this.getMappableLessons();
+      checkedLessons.push(...mappedLessons)
+    }
+    else (
+      this.setState({checkedLessons: []})
+    )
+  }
+    // addCheckedLessons = (lesson) => {
+  //   this.setState(prevState => {
+  //     prevState.checkedLessons.push(lesson);
+  //     return { checkedLessons: prevState.checkedLessons}
+  //   })
+  // }
 
 
   onSortLessons = (lessons) => {
@@ -175,16 +206,9 @@ class AssignLessonModal extends React.Component {
         lesson={lesson}
         index={index}
         selectAll={this.state.checked}
-        addCheckedLessons={this.addCheckedLessons} />
+        onSelectLesson={this.onSelectLesson} />
     )
   }
-
-  // addCheckedLessons = (lesson) => {
-  //   this.setState(prevState => {
-  //     prevState.checkedLessons.push(lesson);
-  //     return { checkedLessons: prevState.checkedLessons}
-  //   })
-  // }
 
 
   renderTableHeader = () => (
@@ -261,6 +285,7 @@ class AssignLessonModal extends React.Component {
                   </div>
                 </div>
               </div>
+              <div className="content-section" style={{backgroundColor: '#f2f2f2'}}>
               <ModalFilterSection
                 handleFilterClick={this.handleFilterClick}
                 subjectFilters={subjectFilters}
@@ -272,8 +297,7 @@ class AssignLessonModal extends React.Component {
                 onSetSort={this.onSetSort}
                 onSetUnitFilter={this.onSetUnitFilter}
               />
-              <div className="content-section">
-                <div className="container-md">
+                <div className="container-md" style={{marginTop: '50px'}}>
                   <div className="result-row center-align">
                     <b className="result"> - {lessons.length} Lessons</b>
                   </div>
@@ -290,7 +314,8 @@ class AssignLessonModal extends React.Component {
                 </div>
               </div>
             </div>
-            <a href="#" className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Selected</a>
+            <AssignDatesModal open={this.state.datesModalOpen} onCloseDatesModal={this.onCloseDatesModal} />
+            <a href="#" onClick={this.onOpenDatesModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Selected</a>
           </div>
         )}
         <style jsx>

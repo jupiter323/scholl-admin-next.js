@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import memoize from 'memoize-one';
 import statusColorMap from '../../../../DetailWorksheetPage/utils/statusColorMap';
 
 class LessonListItem extends React.Component {
@@ -9,8 +10,27 @@ class LessonListItem extends React.Component {
       checked: false,
     }
   }
+  // if checked, push to checked lessons array in parent
+  onToggleChecked = () => this.setState({checked: !this.state.checked}, () => this.checkIfChecked())
 
-  onToggleChecked = () => this.setState({checked: !this.state.checked}, )
+  checkIfChecked= () => {
+    const { onSelectLesson, lesson } = this.props;
+      if (this.state.checked){
+        onSelectLesson(lesson);
+        console.log('selected lesson ', lesson)
+      }
+    }
+// not working yet
+  // isChecked = memoize(
+  //   (selectAll, listItemSelect) => {
+  //     if (selectAll) {
+  //       return 'checked'
+  //     }
+  //     if (listItemSelect) {
+  //       return 'checked'
+  //     }
+  //   }
+  // )
 
   renderLessonIcon = (subject) => {
     switch (subject) {
@@ -24,7 +44,7 @@ class LessonListItem extends React.Component {
         break;
     }
   }
-
+ 
 
   render(){
     const { checked } = this.state;
@@ -98,6 +118,7 @@ LessonListItem.propTypes = {
   index: PropTypes.number.isRequired,
   lesson: PropTypes.array.isRequired,
   selectAll: PropTypes.bool.isRequired,
+  onSelectLesson: PropTypes.func.isRequired,
 }
 
 export default LessonListItem;

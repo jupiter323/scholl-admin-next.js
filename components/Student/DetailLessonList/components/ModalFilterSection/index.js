@@ -195,7 +195,7 @@ class ModalFilterSection extends React.Component {
                 <div className="row mb-0">
 
                   <div className="col s12 14">
-                   <div className="input-field" style={{overflow: 'auto'}} >
+                   <div className="input-field"  >
                       <Dropdown
                         value={getValueFromState(sort, modalSortOptions)}
                         onChange={(event) => this.handleSortChange(event)}
