@@ -1,9 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 
 import InstructorDetailsModal from '../InstructorDetailsModal';
 
 import Modal from '../../../../Modal';
+
+const data = (total, current) => ({
+  datasets: [{
+    data: [current, total-current],
+    backgroundColor: [
+      'rgb(49, 131, 122)',
+      '#eaeaea',
+    ],
+  }],
+})
 
 class InstructorCard extends React.Component {
   constructor(props) {
@@ -45,7 +56,7 @@ class InstructorCard extends React.Component {
   render() {
     const { deleteModalOpen, instructorDetailsModalOpen } = this.state;
     const {
-      dropdownIsOpen, dropdownIndex, index, instructor, onSaveInstructorChanges } = this.props;
+      dropdownIsOpen, dropdownIndex, index, instructor, instructor: {studentsAchievingTargetScore, activeStudents}, onSaveInstructorChanges } = this.props;
     const {
       accountInfo: { lastName, firstName, email } = {},
       basicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore } = {},
@@ -143,14 +154,25 @@ class InstructorCard extends React.Component {
                 <div className="col s12 m5">
                   <div className="chart-container">
                     <div className="chart-holder">
-                      <span className="svg-curved-bar" data-values='{"from": 0, "to": 100, "current": 71}' data-duration="1">
+                      <Doughnut
+                        data={() => data(activeStudents, studentsAchievingTargetScore)}
+                        height={110}
+                        width={110}
+                        options={{
+                          circumference: 1.45 * Math.PI,
+                          rotation: -3.85,
+                          cutoutPercentage: 60,
+                          tooltips: false,
+                        }}
+                        />
+                      {/* <span className="svg-curved-bar" data-values='{"from": 0, "to": 100, "current": 71}' data-duration="1">
                         {/* <!-- do not change path attribute "d" !!! --> */}
-                        <svg width="110px" height="110px" viewBox=" 0 0 110 110">
+                        {/* <svg width="110px" height="110px" viewBox=" 0 0 110 110">
                           <path fill="none" style={{ strokeWidth: '22', stroke: '#eaeaea' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 1 1 95.8481890527072 71.35314804905443"></path>
                           <path data-dinamic fill="none" style={{ strokeWidth: '22', stroke: '#31837a' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 0 1 14.151810947292809 71.35314804905443"></path>
                         </svg>
-                      </span>
-                      <span className="chart-value" style={{ backgroundColor: '#31837a' }}><span data-count-up data-start-val="0" data-end-val="71" data-duration="1"></span>%</span>
+                      </span>  */}
+                      <span className="chart-value" style={{ backgroundColor: '#31837a', bottom: '7px' }}><span data-count-up data-start-val="0" data-end-val="71" data-duration="1"></span>{Math.floor(`${studentsAchievingTargetScore / activeStudents} * 100`)}%</span>
                     </div>
                     <div className="chart-description" style={{ color: '#31837a' }}>Students Who Achieved Target Score</div>
                   </div>
