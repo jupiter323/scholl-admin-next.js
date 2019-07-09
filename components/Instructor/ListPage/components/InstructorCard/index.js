@@ -56,10 +56,10 @@ class InstructorCard extends React.Component {
   render() {
     const { deleteModalOpen, instructorDetailsModalOpen } = this.state;
     const {
-      dropdownIsOpen, dropdownIndex, index, instructor, instructor: {studentsAchievingTargetScore, activeStudents}, onSaveInstructorChanges } = this.props;
+      dropdownIsOpen, dropdownIndex, index, instructor, onSaveInstructorChanges } = this.props;
     const {
       accountInfo: { lastName, firstName, email } = {},
-      basicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore } = {},
+      basicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore, studentsAchievingTargetScore } = {},
     } = instructor;
     return (
       <React.Fragment>
@@ -159,22 +159,15 @@ class InstructorCard extends React.Component {
                         height={110}
                         width={110}
                         options={{
-                          circumference: 1.45 * Math.PI,
-                          rotation: -3.85,
-                          cutoutPercentage: 60,
+                          circumference: 4,
+                          rotation: -3.58,
+                          cutoutPercentage: 50,
                           tooltips: false,
                         }}
                         />
-                      {/* <span className="svg-curved-bar" data-values='{"from": 0, "to": 100, "current": 71}' data-duration="1">
-                        {/* <!-- do not change path attribute "d" !!! --> */}
-                        {/* <svg width="110px" height="110px" viewBox=" 0 0 110 110">
-                          <path fill="none" style={{ strokeWidth: '22', stroke: '#eaeaea' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 1 1 95.8481890527072 71.35314804905443"></path>
-                          <path data-dinamic fill="none" style={{ strokeWidth: '22', stroke: '#31837a' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 0 1 14.151810947292809 71.35314804905443"></path>
-                        </svg>
-                      </span>  */}
-                      <span className="chart-value" style={{ backgroundColor: '#31837a', bottom: '7px' }}><span data-count-up data-start-val="0" data-end-val="71" data-duration="1"></span>{Math.floor(`${studentsAchievingTargetScore / activeStudents} * 100`)}%</span>
+                      <span className="chart-value" style={{ backgroundColor: '#31837a', bottom: '-22px' }}><span data-count-up data-start-val="0" data-end-val="71" data-duration="1"></span>{Math.floor((studentsAchievingTargetScore / activeStudents) * 100)}%</span>
                     </div>
-                    <div className="chart-description" style={{ color: '#31837a' }}>Students Who Achieved Target Score</div>
+                    <div className="chart-description" style={{ color: '#31837a', marginTop: '36px' }}>Students Who Achieved Target Score</div>
                   </div>
                 </div>
                 <div className="col s12 m7">

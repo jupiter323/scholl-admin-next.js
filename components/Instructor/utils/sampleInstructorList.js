@@ -46,7 +46,7 @@ export default [
       averageImprovement: 200,
       averageInitialScore: 1000,
       averageFinalScore: 1213,
-      studentsAchievingTargetScore: 14,
+      studentsAchievingTargetScore: 11,
     },
   },
   {

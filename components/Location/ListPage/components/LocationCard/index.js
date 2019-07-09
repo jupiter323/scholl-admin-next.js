@@ -6,7 +6,7 @@ const data = (total, current) => ({
   datasets: [{
     data: [current, total-current],
     backgroundColor: [
-      'rgb(98, 183, 113)',  
+      'rgb(98, 183, 113)',
       '#eaeaea',
     ],
   }],
@@ -44,21 +44,21 @@ const LocationCard = ({ location: {
         <div className="row d-flex align-items-center mb-0">
           <div className="col s12 m5">
             <div className="chart-container">
-              <div className="chart-holder"> 
-                  <Doughnut
-                  data={() => data(activeStudents, studentsAchievingTargetScore)}
-                  height={110}
-                  width={110}
-                  options={{
-                    circumference: 1.45 * Math.PI,
-                    rotation: -3.85,
-                    cutoutPercentage: 60,
-                    tooltips: false,
-                  }}
-                  />
-                <span className="chart-value" style={{ backgroundColor: '#62b771', bottom: '7px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor(`${studentsAchievingTargetScore / activeStudents} * 100`)}%</span>
+              <div className="chart-holder">
+              <Doughnut
+                data={() => data(activeStudents, studentsAchievingTargetScore)}
+                height={110}
+                width={110}
+                options={{
+                  circumference: 4,
+                  rotation: -3.58,
+                  cutoutPercentage: 50,
+                  tooltips: false,
+                }}
+                />
+                <span className="chart-value" style={{ backgroundColor: '#62b771', bottom: '-22px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor((studentsAchievingTargetScore / activeStudents) * 100)}%</span>
               </div>
-              <div className="chart-description" style={{ color: '#31837a' }}>Students Who Achieved Target Score</div>
+              <div className="chart-description" style={{ color: '#31837a', marginTop: '36px' }}>Students Who Achieved Target Score</div>
             </div>
           </div>
           <div className="col s12 m7">
