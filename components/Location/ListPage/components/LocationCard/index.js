@@ -1,8 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
+
+const data = (total, current) => ({
+  datasets: [{
+    data: [current, total-current],
+    backgroundColor: [
+      'rgb(98, 183, 113)',
+      '#eaeaea',
+    ],
+  }],
+})
 
 const LocationCard = ({ location: {
-  locationBasicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore } = {},
+  locationBasicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore, studentsAchievingTargetScore } = {},
   locationContactInfo: { locationName, locationNickname } = {},
 } = {} }) => (
   <div className="card-main-col col s12 m8 l7 xl5">
@@ -34,15 +45,20 @@ const LocationCard = ({ location: {
           <div className="col s12 m5">
             <div className="chart-container">
               <div className="chart-holder">
-                <span className="svg-curved-bar" data-values='{"from": 0, "to": 100, "current": 71}' data-duration="1">
-                  <svg width="110px" height="110px" viewBox=" 0 0 110 110">
-                    <path fill="none" style={{ strokeWidth: '22', stroke: '#eaeaea' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 1 1 95.8481890527072 71.35314804905443"></path>
-                    <path data-dinamic fill="none" style={{ strokeWidth: '22', stroke: '#62b771' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 0 1 14.151810947292809 71.35314804905443"></path>
-                  </svg>
-                </span>
-                <span className="chart-value" style={{ backgroundColor: '#62b771' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>%</span>
+              <Doughnut
+                data={() => data(activeStudents, studentsAchievingTargetScore)}
+                height={110}
+                width={110}
+                options={{
+                  circumference: 4,
+                  rotation: -3.58,
+                  cutoutPercentage: 50,
+                  tooltips: false,
+                }}
+                />
+                <span className="chart-value" style={{ backgroundColor: '#62b771', bottom: '-22px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor((studentsAchievingTargetScore / activeStudents) * 100)}%</span>
               </div>
-              <div className="chart-description" style={{ color: '#31837a' }}>Students Who Achieved Target Score</div>
+              <div className="chart-description" style={{ color: '#31837a', marginTop: '36px' }}>Students Who Achieved Target Score</div>
             </div>
           </div>
           <div className="col s12 m7">
