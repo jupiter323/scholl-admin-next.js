@@ -1,8 +1,12 @@
+/* eslint-disable react/no-did-mount-set-state */
+/* eslint-disable react/no-did-update-set-state */
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import moment from 'moment';
+
+import LessonWorksheetTestSection from '../LessonWorksheetTestSection';
+import LessonCard from './components/LessonCard';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
 import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending} from '../../utils/sortFunctions';

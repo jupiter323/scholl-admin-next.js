@@ -1,3 +1,4 @@
+node_modules
 .pnp
 .pnp.js
 
@@ -11,10 +12,14 @@ converage
 .next
 node_modules
 
+.idea
+
+/build
 
 npm_debug.log
 yarn-debug.log
 yarn-error.log
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

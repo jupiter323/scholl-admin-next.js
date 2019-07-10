@@ -133,7 +133,31 @@ if (typeof window !== 'undefined') {
   __webpack_require__(/*! materialize-css */ "materialize-css");
 }
 
-var menuItems = ['dashboard', 'students', 'instructors', 'classes', 'locations', 'worksheets', 'course templates', 'help'];
+var menuItems = [{
+  key: 'dashboard',
+  page: 'dashboard'
+}, {
+  key: 'students',
+  page: 'students'
+}, {
+  key: 'instructors',
+  page: 'all-instructors'
+}, {
+  key: 'classes',
+  page: 'classes'
+}, {
+  key: 'locations',
+  page: 'all-locations'
+}, {
+  key: 'worksheets',
+  page: 'worksheets'
+}, {
+  key: 'course templates',
+  page: 'courseTemplates'
+}, {
+  key: 'help',
+  page: 'help'
+}];
 var menuIconMap = {
   'dashboard': 'icon-speed',
   'students': 'icon-student',
@@ -188,20 +212,20 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("h1", {
         className: "white-text"
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("img", {
-        src: "",
+        src: "/static/images/logo.jpg",
         alt: "image description"
       })), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("ul", null, menuItems.map(function (menuItem) {
         return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("li", {
-          className: _this2.state.active === menuItem ? "active" : '',
+          className: _this2.state.active === menuItem.key ? "active" : '',
           onClick: function onClick() {
-            return _this2.handleClick(menuItem);
+            return _this2.handleClick(menuItem.key);
           },
-          key: menuItem
+          key: menuItem.key
         }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_6___default.a, {
-          href: "/".concat(menuItem === 'course templates' ? 'courseTemplates' : menuItem)
+          href: "/".concat(menuItem.page)
         }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("a", null, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("i", {
-          className: menuIconMap[menuItem]
-        }), menuItem.charAt(0).toUpperCase() + menuItem.slice(1))));
+          className: menuIconMap[menuItem.key]
+        }), menuItem.key.charAt(0).toUpperCase() + menuItem.key.slice(1))));
       })), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("a", {
         href: "#",
         className: "log-block white-text"
@@ -338,6 +362,15 @@ function (_Component) {
         className: "wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Core_SideNav__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(Inner, null, this.props.children)), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("script", {
         src: "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("link", {
+        rel: "stylesheet",
+        type: "text/css",
+        charSet: "UTF-8",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("link", {
+        rel: "stylesheet",
+        type: "text/css",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       })));
     }
   }]);

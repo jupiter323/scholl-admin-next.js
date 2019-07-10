@@ -1,6 +1,8 @@
+import sampleQuestions from '../LessonWorksheetTestSection/utils/sampleQuestions';
+
 const updatedUser = {
   id: '1232',
-  active: false,
+  active: true,
   studentInformation: {
     firstName: 'Christian',
     lastName: 'Chavarro',
@@ -544,6 +546,10 @@ const updatedUser = {
       completionTime: '',
       completedLate: false,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Math',
@@ -563,6 +569,10 @@ const updatedUser = {
       completionTime: '2:21 PM',
       completedLate: true,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Reading',
@@ -582,6 +592,10 @@ const updatedUser = {
       completionTime: '7:34 PM',
       completedLate: true,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Reading',
@@ -601,6 +615,10 @@ const updatedUser = {
       completionTime: '',
       completedLate: false,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Reading',
@@ -620,6 +638,10 @@ const updatedUser = {
       completionTime: '',
       completedLate: false,
       overdue: true,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Reading',
@@ -639,6 +661,10 @@ const updatedUser = {
       completionTime: '',
       completedLate: false,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Reading',
@@ -658,6 +684,10 @@ const updatedUser = {
       completionTime: '',
       completedLate: false,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
     {
       subject: 'Writing',
@@ -677,6 +707,10 @@ const updatedUser = {
       completionTime: '4:21 PM',
       completedLate: false,
       overdue: false,
+      flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
+      totalVideoMinutesWatched: '124',
+      totalVideoMinutesAllMissedProblems: '312',
+      questions: sampleQuestions,
     },
   ],
 };

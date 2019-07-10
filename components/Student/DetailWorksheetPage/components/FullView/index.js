@@ -37,7 +37,7 @@ class FullView extends React.Component {
   }
 
   mapWorksheetCards = () => {
-    const { worksheets } = this.props;
+    const { worksheets, onToggleDetailModalOpen } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
     return worksheets.map((worksheet, index) => {
       const { disabled, worksheetName, worksheetSource, subject, problemType, difficulty, score, status, problems, timeEstimate, availableDate, dueDate, classifications, flags, late } = worksheet;
@@ -76,7 +76,13 @@ class FullView extends React.Component {
                       <If condition={dropdownIsOpen && dropdownIndex === index}>
                         <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
                           <li>
-                            <a href="#modal_user_edit" className="modal-trigger link-block">View Details</a>
+                            <a
+                              href="#"
+                              className="modal-trigger link-block"
+                              onClick={() => onToggleDetailModalOpen(index)}
+                            >
+                              View Details
+                            </a>
                           </li>
                           <li><a href="#!">Dismiss Flags</a></li>
                           <li><a href="#!">Reset</a></li>
@@ -202,6 +208,7 @@ class FullView extends React.Component {
 
 FullView.propTypes = {
   worksheets: PropTypes.array.isRequired,
+  onToggleDetailModalOpen: PropTypes.func.isRequired,
 };
 
 export default FullView;
