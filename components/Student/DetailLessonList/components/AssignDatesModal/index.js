@@ -24,6 +24,12 @@ class AssignDatesModal extends React.Component {
       dueTime: "",
     }
   }
+  onAssignDates = () => {
+    const { assignDate, assignTime, dueDate, dueTime } = this.state;
+    const { onHandleDates } = this.props;
+    onHandleDates(assignDate, assignTime, dueDate, dueTime);
+    this.closeModal();
+  }
 
   closeModal = () => {
     const { onCloseDatesModal } = this.props;
@@ -43,8 +49,8 @@ class AssignDatesModal extends React.Component {
   }
 
   render(){
-    const { open, onHandleDates } = this.props;
-    const { assignTime, assignDate, dueDate, dueTime } = this.state;
+    const { open } = this.props;
+    const { assignTime, dueTime } = this.state;
     return(
       <Portal selector="#modal">
         {open && (
@@ -134,7 +140,7 @@ class AssignDatesModal extends React.Component {
                       <a
                         href="#"
                         className="btn"
-                        onClick={()=> onHandleDates(assignDate, assignTime, dueDate, dueTime)}
+                        onClick={this.onAssignDates}
                       >
                         Assign Dates
                       </a>

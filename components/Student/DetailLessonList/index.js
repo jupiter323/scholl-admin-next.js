@@ -9,6 +9,7 @@ import { dueDateAscending, subjectAscending, subjectDescending, passageAscending
 import ListView from './components/ListView';
 import AssignLessonModal from './components/AssignLessonModal';
 
+// TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
   constructor(props) {
     super(props);
@@ -84,18 +85,8 @@ class DetailLessonList extends React.Component {
         break;
     }
   }
-  // onUpdateAssignedLessons = (checkedLessons) => {
-  //   const {lessons: previousLessons} = this.state;
-  //   for (let i = 0; i <previousLessons.length; i++){
-  //     if (checkedLessons.includes(previousLessons[i].lessonName)) {
-  //   const newLessons = update(previousLessons[i], {
-  //     $merge: {
-
-  //     }
-  //   }
-  // }
-  // }}
   onAddUpdatedLessons = (lessons) => this.setState({updatedLessons: lessons})
+
 
   onFilterByName = () => {
     const { lessons, nameFilter } = this.state;
@@ -121,7 +112,6 @@ class DetailLessonList extends React.Component {
     const newLessonsArray = this.arrayItemRemover(lessons, lessons[index])
     this.setState({lessons: newLessonsArray})
   }
-  // TODO: separate due date method
   // note: unassigned and incomplete are filtering opposite, but this works for some reason
   onFilterLessons = () => {
     const { statusFilters, subjectFilters, unitFilter, classTypeFilters, scoreStatusFilters, flagFilters, lessons: allLessons } = this.state;
@@ -165,37 +155,28 @@ class DetailLessonList extends React.Component {
     return mappableLessons
   }
 
-  
+
   // may need to alter dueNextSession depending if client wants ALL vs incomplete/overdue
   // TODO: only works with one due date filter, not multiple
    filterDueDate = () => {
      const { user } = this.props;
     const { dueDateFilters, lessons: allLessons } = this.state;
     let lessons = allLessons;
-    // const set = new Set();
     if (dueDateFilters.length && dueDateFilters.indexOf('all') === -1) {
       if (dueDateFilters.includes('overdue')) {
       lessons = lessons.filter(lesson => lesson.overdue === true)
-    
       }
       if(dueDateFilters.includes('dueToday')) {
         lessons = lessons.filter(lesson => lesson.dueDate === moment().format("MM/DD/Y"))
-      
       }
       if(dueDateFilters.includes('dueThisWeek')) {
         lessons = lessons.filter(lesson => moment(lesson.dueDate).format('w') === moment().format("W"))
-        
       }
       if (dueDateFilters.includes('dueNextSession')) {
         lessons = lessons.filter(lesson => moment(user.nextSession).isSameOrAfter(lesson.dueDate, 'day'))
-      
       }
       return lessons
-      // set.add(lessons);
     }
-    // console.log(set)
-    // const filteredLessons = Array.from(set);
-    // console.log(filteredLessons)
     return lessons
   }
 
@@ -247,7 +228,6 @@ class DetailLessonList extends React.Component {
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   }
 
-  
   arrayItemRemover = (array, value) => array.filter((lesson) => lesson !== value)
 
   renderCurrentView = () => {

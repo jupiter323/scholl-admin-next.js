@@ -1225,6 +1225,7 @@ const sampleStudentList = [
     },
     lessons: [
       {
+        id: 1,
         subject: 'Reading',
         unitNumber: '2',
         lessonName: 'Reading Something 1',
@@ -1250,6 +1251,7 @@ const sampleStudentList = [
         classType: 'tutoring',
       },
       {
+        id: 2,
         subject: 'Math',
         unitNumber: '4',
         lessonName: 'Pythagorean Theorem',
@@ -1275,6 +1277,7 @@ const sampleStudentList = [
         classType: 'class',
       },
       {
+        id: 3,
         subject: 'Reading',
         unitNumber: '3',
         lessonName: 'More Reading Stuff',
@@ -1301,6 +1304,7 @@ const sampleStudentList = [
 
       },
       {
+        id: 4,
         subject: 'Reading',
         unitNumber: '6',
         lessonName: 'Reading Something 7',
@@ -1327,6 +1331,7 @@ const sampleStudentList = [
 
       },
       {
+        id: 5,
         subject: 'Reading',
         unitNumber: '4',
         lessonName: 'Reading Something 4',
@@ -1353,6 +1358,7 @@ const sampleStudentList = [
 
       },
       {
+        id: 6,
         subject: 'Reading',
         unitNumber: '5',
         lessonName: 'Reading Something 5',
@@ -1379,6 +1385,7 @@ const sampleStudentList = [
 
       },
       {
+        id: 7,
         subject: 'Reading',
         unitNumber: '1',
         lessonName: 'Reading Something 1',
@@ -1405,6 +1412,7 @@ const sampleStudentList = [
 
       },
       {
+        id: 8,
         subject: 'Writing',
         unitNumber: '5',
         lessonName: 'Writing Lesson 5',
@@ -1431,6 +1439,7 @@ const sampleStudentList = [
 
       },
       {
+        id: 9,
         subject: 'Writing',
         unitNumber: '6',
         lessonName: 'Writing Lesson 11',

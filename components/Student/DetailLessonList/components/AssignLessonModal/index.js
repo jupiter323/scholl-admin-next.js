@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import moment from 'moment';
 import Portal from '../../../../Portal';
 import LessonListItem from './components/LessonListItem';
 import { totalProblemsDescending, totalProblemsAscending, timeEstimate, timeEstimateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, alertsAscending, alertsDescending, lessonTypeAscending, lessonTypeDescending } from '../../../../utils/sortFunctions';
@@ -134,6 +135,8 @@ class AssignLessonModal extends React.Component {
     }
     return lessons;
   }
+
+  // TODO: add toast verifying lessons were assigned
 // takes input from the assign selected lessons modal and updates the updatedLessons array in parent
   // eslint-disable-next-line consistent-return
   onHandleDates = (assignDate, assignTime, dueDate, dueTime) => {
@@ -144,9 +147,9 @@ class AssignLessonModal extends React.Component {
       const updatedCheckedLessons = update(previousCheckedLessons[i], {
         $merge: {
             assigned: true,
-            dueDate,
+            dueDate: moment(dueDate).format('DD/MM/YYYY'),
             dueTime,
-            availableDate: assignDate,
+            availableDate: moment(assignDate).format("DD/MM/YYYY"),
             status: "Scheduled",
             assignTime,
         },
@@ -154,7 +157,8 @@ class AssignLessonModal extends React.Component {
       )
       updatedLessons.push(updatedCheckedLessons)
     }
-    onAddUpdatedLessons(updatedLessons)
+    onAddUpdatedLessons(updatedLessons);
+    this.props.onCloseModal();
     };
 
   setSortType = (name) => {
