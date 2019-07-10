@@ -81,7 +81,19 @@
       "static/SyNHejrhd1T51BWu5HBcB/pages/locations.js": 12,
       "static/SyNHejrhd1T51BWu5HBcB/pages/students.js": 13,
       "static/SyNHejrhd1T51BWu5HBcB/pages/worksheets.js": 14,
-      "static/runtime/main.js": 15
+      "static/runtime/main.js": 15,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/_app.js": 17,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/_error.js": 18,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/all-instructors.js": 19,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/all-locations.js": 20,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/classes.js": 21,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/courseTemplates.js": 22,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/dashboard.js": 23,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/help.js": 24,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/instructors.js": 25,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/locations.js": 26,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/students.js": 27,
+      "static/4sHeJ0zRqjZX2sAR6fvJC/pages/worksheets.js": 28
     },
     "bySource": {
       "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Student/AccountPage/components/CourseContext/index.js ../../../../FormComponents/DatePicker": 16
@@ -89,21 +101,21 @@
     "usedIds": [
       0,
       1,
-      10,
-      11,
-      12,
-      13,
-      14,
       15,
       16,
+      17,
+      18,
+      19,
       2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
     ]
   }
 }
