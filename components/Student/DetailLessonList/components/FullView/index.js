@@ -4,14 +4,16 @@ import LessonCard from '../FullView/components/LessonCard';
 
 class FullView extends React.Component {
   mapLessons = () => {
-    const { lessons, onCloneLesson, onDeleteLesson } = this.props;
+    const { lessons, onCloneLesson, onDeleteLesson, user } = this.props;
     return lessons.map((lesson, index) => (
     <LessonCard
+      // eslint-disable-next-line react/no-array-index-key
       key={index}
       index={index}
       lesson={lesson}
       onCloneLesson={() => onCloneLesson(index)}
       onDeleteLesson={() => onDeleteLesson(index)}
+      user={user}
     />
   )
   )}
@@ -29,6 +31,7 @@ class FullView extends React.Component {
 
 FullView.propTypes = {
   lessons: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
 }

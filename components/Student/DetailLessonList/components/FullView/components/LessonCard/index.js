@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import ClickOffComponentWrapper from '../../../../../../ClickOffComponentWrapper';
 import statusColorMap, {chartColorMap} from '../../../../../DetailWorksheetPage/utils/statusColorMap';
+import LessonDetailAnswerSheet from '../../../../../LessonDetailAnswerSheet';
 
 const data = (current, target, status) => ({
   datasets: [{
@@ -27,10 +28,18 @@ class LessonCard extends React.Component {
     this.state = {
       test: true,
       dropdownIsOpen: false,
+      detailModalOpen: false,
     };
   }
 
+  onOpenDetailModal = () => this.setState({detailModalOpen: true})
+  onCloseDetailModal = () => this.setState({detailModalOpen: false});
   onSetDropdown = (dropdownIsOpen) => this.setState({ dropdownIsOpen: !dropdownIsOpen });
+
+  onReschedule = (assignDate, assignTime, dueDate, dueTime) => {
+    // eslint-disable-next-line no-console
+    console.warn('Stubbed out date functionality', assignDate, assignTime, dueDate, dueTime);
+  }
 
   // eslint-disable-next-line consistent-return
   renderLessonIcon = (subject) => {
@@ -47,6 +56,7 @@ class LessonCard extends React.Component {
   }
 
   renderDropdownOptions = (status) => {
+    const { lesson: {assignDate, assignTime, dueDate, dueTime}} = this.props;
     if (status === "Scheduled" || status === 'Assigned'){
       return (
         <React.Fragment>
@@ -57,9 +67,9 @@ class LessonCard extends React.Component {
     }
       return (
         <React.Fragment>
-        <li><a href="#">Reschedule</a></li>
+        <li><a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>Reschedule</a></li>
         <li><a href="#!" >Mark all Flags Reviewed</a></li>
-        <li><a href="#!">Reset</a></li>
+        <li><a href="#!" >Reset</a></li>
         <li><a href="#!">Unassign</a></li>
         </React.Fragment>
       )
@@ -97,11 +107,17 @@ class LessonCard extends React.Component {
 
   render() {
     const { dropdownIsOpen } = this.state;
-    const {  lesson: { subject, timeEstimate, status, scoreStatus, score, unitNumber, lessonName, assigned, alerts,
-      lessonType, totalProblems, solvedProblems = '', passage, dueDate, dueTime,
-      completed, availableDate, completionDate, completionTime, completedLate, overdue } } = this.props;
+    const {  lesson, lesson: { subject, timeEstimate, status, scoreStatus, score, unitNumber, lessonName, assigned, alerts,
+      lessonType, totalProblems, solvedProblems = '', passage, dueDate,
+       availableDate, completionDate, overdue } } = this.props;
     return (
-      <div className="card-main-col col s12 m8 l7 xl5">
+      <React.Fragment>
+      <LessonDetailAnswerSheet
+        onCloseDetailModal={this.onCloseDetailModal}
+        open={this.state.detailModalOpen}
+        user={this.props.user}
+        lesson={lesson}  />
+              <div className="card-main-col col s12 m8 l7 xl5">
         <div className={getLessonActivityStatus(status)}>
           <div className="card-panel" style={{ backgroundColor: '#666', color: '#fff' }}>
             <div className="card-panel-row row">
@@ -111,7 +127,7 @@ class LessonCard extends React.Component {
               <div className="col s9">
                 <div className="card-panel-text center-align">
                   <div className="text-small">{subject} Unit {unitNumber}</div>
-                  <div className="text-large">{lessonName}</div>
+                  <div className="text-large"><a href="#" onClick={this.onOpenDetailModal}>{lessonName}</a></div>
                 </div>
               </div>
               <div className="col s1 right-align">
@@ -214,6 +230,7 @@ class LessonCard extends React.Component {
           </div>
         </div>
       </div>
+      </React.Fragment>
 
     );
   }
@@ -221,6 +238,8 @@ class LessonCard extends React.Component {
 
 LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+
 };
 
 export default LessonCard;

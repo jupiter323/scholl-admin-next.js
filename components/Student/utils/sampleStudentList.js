@@ -1357,7 +1357,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1395,7 +1394,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1434,7 +1432,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1473,7 +1470,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1502,7 +1498,6 @@ const sampleStudentList = [
         overdue: false,
         classType: 'tutoring',
 
-        overdue: true,
         flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
         totalVideoMinutesWatched: '132',
         totalVideoMinutesAllMissedProblems: '312',
@@ -1513,7 +1508,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1542,7 +1536,6 @@ const sampleStudentList = [
         overdue: true,
         classType: 'tutoring',
 
-        overdue: false,
         flags: [{ title: 'one', status: 'reviewed' }, { title: 'two', status: 'reviewed' }, { title: 'three', status: 'toReview' }],
         totalVideoMinutesWatched: '132',
         totalVideoMinutesAllMissedProblems: '312',
@@ -1553,7 +1546,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1592,7 +1584,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
       {
@@ -1630,7 +1621,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
 
       },
@@ -1670,7 +1660,6 @@ const sampleStudentList = [
         unit: 'Reading Unit #4',
         type: 'challenge + practice',
         completedProblems: 10,
-        status: 'Assigned',
         problems: 17,
       },
     ],

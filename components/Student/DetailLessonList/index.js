@@ -4,9 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-
-import LessonWorksheetTestSection from '../LessonWorksheetTestSection';
-import LessonCard from './components/LessonCard';
+import moment from 'moment';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
 import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending} from '../../utils/sortFunctions';
@@ -37,7 +35,7 @@ class DetailLessonList extends React.Component {
   };
 
   onOpenModal = () => this.setState({modalOpen: true});
-  onCloseModal = () => this.setState({modalOpen: false}, console.log('clicked'));
+  onCloseModal = () => this.setState({modalOpen: false});
   onClearFilters = () => this.setState({ statusFilters: [], subjectFilters: [], completeFilters: [], flagFilters: [], classTypeFilters: [], dueDateFilters: [], unitFilter: "", nameFilter: "" })
   onSetSort = (sort) => this.setState({sort})
   onSetFilteredState = (lesson) => this.setState({nameFilter: lesson })
@@ -46,6 +44,7 @@ class DetailLessonList extends React.Component {
 
   onSetUnitFilter = (unit) => this.setState({unitFilter: unit})
 
+  // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch(sort) {
@@ -60,7 +59,7 @@ class DetailLessonList extends React.Component {
       case 'passageDescending':
         return lessons.sort(passageDescending);
       case 'statusDescending':
-        return lessons.sort(statusDescending);   
+        return lessons.sort(statusDescending);
       case 'availableDateAscending':
           return lessons.sort(availableDateAscending);
       case 'availableDateDescending':
@@ -84,7 +83,7 @@ class DetailLessonList extends React.Component {
       case 'lessonTypeAscending':
         return lessons.sort(lessonTypeAscending);
       case 'lessonTypeDescending':
-        return lessons.sort(lessonTypeDescending);  
+        return lessons.sort(lessonTypeDescending);
       default:
         break;
     }
@@ -235,11 +234,12 @@ class DetailLessonList extends React.Component {
   arrayItemRemover = (array, value) => array.filter((lesson) => lesson !== value)
 
   renderCurrentView = () => {
-    const {active } = this.state;
+    const { active } = this.state;
+    const { user } = this.props;
     if (active === 'full') {
-      return <FullView lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson}/>
+      return <FullView user={user} lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson}/>
     }
-    return <ListView lessons={this.getMappableLessons()} onSetSort={this.onSetSort} sort={this.state.sort}/>
+    return <ListView user={user} lessons={this.getMappableLessons()} onSetSort={this.onSetSort} sort={this.state.sort}/>
   }
 
 
