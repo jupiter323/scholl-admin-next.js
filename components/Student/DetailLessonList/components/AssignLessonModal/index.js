@@ -36,32 +36,26 @@ class AssignLessonModal extends React.Component {
   onUnsetFilteredState = (filter) => this.setState({ [filter]: "" })
   onSetUnitFilter = (unit) => this.setState({ unitFilter: unit })
 
-  onSelectLesson = (lesson) => {
-    this.setState(prevState => {
-      prevState.checkedLessons.push(lesson);
-      return { checkedLessons: prevState.checkedLessons}
-    })
-    console.log(lesson)
-  }
-// checks if SelectAll checkbox is checked and adds or empties checkedLessons array
+// checks if SelectAll checkbox is checked and adds lessons or empties checkedLessons array on uncheck
   onChecked = () => {
     const { checkedLessons, checked } = this.state;
     if ( checked) {
-      const mappedLessons = this.getMappableLessons();
-      checkedLessons.push(...mappedLessons)
-    }
+      let mappedLessons = this.getMappableLessons();
+      for (let i = 0; i < mappedLessons.length; i++ ){
+        if (checkedLessons.indexOf(mappedLessons[i]) > -1) {
+          mappedLessons = mappedLessons.filter(lesson => checkedLessons.indexOf(lesson) === -1 )
+        }
+      }
+      this.setState(prevState => {
+        prevState.checkedLessons.push(...mappedLessons)
+    })
+  }
     else (
       this.setState({checkedLessons: []})
     )
   }
-    // addCheckedLessons = (lesson) => {
-  //   this.setState(prevState => {
-  //     prevState.checkedLessons.push(lesson);
-  //     return { checkedLessons: prevState.checkedLessons}
-  //   })
-  // }
 
-
+  // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch (sort) {
@@ -189,6 +183,20 @@ class AssignLessonModal extends React.Component {
     return mappableLessons
   }
 
+
+  handleCheckbox = (selectedLesson) => {
+    const { checkedLessons } = this.state;
+    let updatedLessonArray;
+    if (checkedLessons.indexOf(selectedLesson) > -1){
+      updatedLessonArray = checkedLessons.filter(lesson => lesson !== selectedLesson )
+    }
+    else {
+      updatedLessonArray = [...checkedLessons, selectedLesson]
+    }
+    this.setState({checkedLessons: updatedLessonArray})
+  }
+
+
   handleFilterClick = (filterType, filter) => {
     const { subjectFilters: currentSubjectFilters, statusFilters: currentStatusFilters, lessonTypeFilters: currentLessonTypeFilters } = this.state;
     let modifiedFilterCurrentState;
@@ -224,13 +232,16 @@ class AssignLessonModal extends React.Component {
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   }
 
-
   mapLessonListItem = () => this.getMappableLessons().map((lesson, index) =>
       <LessonListItem
         lesson={lesson}
         index={index}
         selectAll={this.state.checked}
-        onSelectLesson={this.onSelectLesson} />
+        key={lesson.id}
+        onSelectLesson={this.onSelectLesson}
+        renderLessonIcon={this.renderLessonIcon}
+        checkedLessons={this.state.checkedLessons}
+        handleCheckbox={this.handleCheckbox}/>
     )
 
   renderTableHeader = () => (

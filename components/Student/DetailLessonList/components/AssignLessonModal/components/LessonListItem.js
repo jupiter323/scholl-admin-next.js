@@ -1,37 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import memoize from 'memoize-one';
 import statusColorMap from '../../../../DetailWorksheetPage/utils/statusColorMap';
 
 class LessonListItem extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      checked: false,
-    }
-  }
-  // if checked, push to checked lessons array in parent
-  onToggleChecked = () => this.setState({checked: !this.state.checked}, () => this.checkIfChecked())
 
-  checkIfChecked= () => {
-    const { onSelectLesson, lesson } = this.props;
-      if (this.state.checked){
-        onSelectLesson(lesson);
-        console.log('selected lesson ', lesson)
-      }
-    }
-// not working yet
-  // isChecked = memoize(
-  //   (selectAll, listItemSelect) => {
-  //     if (selectAll) {
-  //       return 'checked'
-  //     }
-  //     if (listItemSelect) {
-  //       return 'checked'
-  //     }
-  //   }
-  // )
-
+  // eslint-disable-next-line consistent-return
   renderLessonIcon = (subject) => {
     switch (subject) {
       case 'Reading':
@@ -44,11 +17,9 @@ class LessonListItem extends React.Component {
         break;
     }
   }
- 
 
   render(){
-    const { checked } = this.state;
-    const { selectAll, index, lesson: { id, lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unitNumber, passage, timeEstimate, totalProblems, lessonType, alerts}  } = this.props
+    const { checkedLessons, selectAll, handleCheckbox, index, lesson, lesson: { id, lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unitNumber, passage, timeEstimate, totalProblems, lessonType, alerts}  } = this.props
     return(
       <div className='card list-table-row' key={id} style={{opacity: assigned ? .5 : 1}}>
       <div className="list-table-cell icon-cell">
@@ -56,8 +27,8 @@ class LessonListItem extends React.Component {
       <input
         type="checkbox"
         id={index}
-        checked={!selectAll ? checked : selectAll}
-        onChange={this.onToggleChecked}
+        checked={!selectAll? checkedLessons.indexOf(lesson) > -1 : true}
+        onChange={() => handleCheckbox(lesson)}
         className="filled-in"
       />
    <span><b>&nbsp;</b></span>
@@ -88,7 +59,6 @@ class LessonListItem extends React.Component {
           </Otherwise>
         </Choose>
       </div>
-      
       <div className="list-table-cell type-cell" style={{ marginLeft: '10px' }}>{subject}</div>
       <div className="list-table-cell type-cell">p. {passage}</div>
       <div className="list-table-cell date-cell">{timeEstimate}</div>
@@ -116,9 +86,10 @@ class LessonListItem extends React.Component {
 
 LessonListItem.propTypes = {
   index: PropTypes.number.isRequired,
-  lesson: PropTypes.array.isRequired,
+  lesson: PropTypes.object.isRequired,
   selectAll: PropTypes.bool.isRequired,
-  onSelectLesson: PropTypes.func.isRequired,
+  handleCheckbox: PropTypes.func.isRequired,
+  checkedLessons: PropTypes.array.isRequired,
 }
 
 export default LessonListItem;
