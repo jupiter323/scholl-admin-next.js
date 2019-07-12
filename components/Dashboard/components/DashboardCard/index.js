@@ -4,18 +4,18 @@ class DashboardCard extends Component {
     constructor(props) {
       super(props)
         this.state = {
-            menuOpacity: 0
+            menuOpacity: 0,
         }
     }
 
     cycleMenuOpacity() {
         if (this.state.menuOpacity === 0) {
             this.setState({
-                menuOpacity: 1
+                menuOpacity: 1,
             })
         } else {
             this.setState({
-                menuOpacity: 0
+                menuOpacity: 0,
             });
         }
     }
@@ -39,7 +39,8 @@ class DashboardCard extends Component {
             <div className="card-main-col col s12 m8 l7 xl5">
                 <ul className="card-dashboard-session card-main card collapsible expandable">
                     <li className="card-collapsible-holder">
-                        <div className="collapsible-card owner-box card-panel"
+                        <div
+className="collapsible-card owner-box card-panel"
                              style={{"background-color": "#14b04b", "color": "#fff"}}>
                             <div className="card-panel-row row">
                                 <div className="col s9">
@@ -56,11 +57,13 @@ class DashboardCard extends Component {
                                         <div className="dropdown-block col">
                                             <a onClick={() => this.cycleMenuOpacity()} className="dropdown-trigger btn" href="#" data-target="dropdown01_01"><i
                                                 className="material-icons dots-icon">more_vert</i></a>
-                                            <ul id="dropdown01_01" className="dropdown-content dropdown-wide"
+                                            <ul
+id="dropdown01_01" className="dropdown-content dropdown-wide"
                                                 tabIndex="0"
                                                 style={{ "display": "block", "width": "120px", "left": "133px", "top": "8px", "height": "104px", "transform-origi": "0px 0px", "opacity": this.state.menuOpacity , "transform": "scaleX(1) scaleY(1)" }}>
                                                 <li tabIndex="0">
-                                                    <a href="#modal_user_edit"
+                                                    <a
+href="#modal_user_edit"
                                                        className="modal-trigger link-block">Edit</a>
                                                 </li>
                                                 <li tabIndex="0"><a href="#!">Clone</a></li>
@@ -82,7 +85,8 @@ class DashboardCard extends Component {
                                 <div className="card-panel-row row">
                                     <div className="col s12">
                                         <div className="user-block">
-                                            <div className="user-circle"
+                                            <div
+className="user-circle"
                                                  style={{ "background-color": "#af1e90", "color": "#fff" }}>
                                                 <span className="initials">JS</span>
                                             </div>
@@ -98,15 +102,19 @@ class DashboardCard extends Component {
                                 <div className="col s12 m6">
                                     <div className="chart-container chart-container-large start-anim">
                                         <div className="chart-holder">
-                                <span className="svg-curved-bar"
+                                <span
+className="svg-curved-bar"
                                       data-values="{&quot;from&quot;: 1040, &quot;to&quot;: 1510, &quot;current&quot;: 1270}"
                                       data-duration="1">
                                   <svg width="146px" height="146px" viewBox="0 0 146 146">
-                                    <path fill="none" style={{ "stroke-width":30, "stroke": "#eaeaea" }}
+                                    <path
+fill="none" style={{ "stroke-width":30, "stroke": "#eaeaea" }}
                                           d="M 19.154659885067794 94.556422428299 A 58 58 0 1 1 126.84534011493221 94.556422428299"></path>
-                                    <path data-dinamic="" fill="none" style={{ "stroke-width":30, "stroke": "#0085ce" }}
+                                    <path
+data-dinamic="" fill="none" style={{ "stroke-width":30, "stroke": "#0085ce" }}
                                           d="M 19.154659885067794 94.556422428299 A 58 58 0 0 1 69.48595978278411 15.106550272489471"></path></svg>
-                                  <span className="js-diff-holder"><span className="js-diff visible"
+                                  <span className="js-diff-holder"><span
+className="js-diff visible"
                                                                          data-position="position-2"><span
                                       className="txt" style={{ "top": "-56px", "left": "-16px" }}>+230</span></span></span>
                                 </span>
