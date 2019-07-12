@@ -194,7 +194,7 @@ class Calendar extends Component {
   }
 
   onAssignTargetTest = (targetTestDate) => {
-    throw 'pending decision of what test date assign ui looks like' + targetTestDate.toString();
+    throw `pending decision of what test date assign ui looks like${  targetTestDate.toString()}`;
     // console.warn(, targetTestDate);
   }
 
