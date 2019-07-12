@@ -7,7 +7,7 @@ class DashboardCard extends Component {
             menuOpacity: 0,
             collapseStyle: {},
             dropDownActive: false,
-            listClasses: "card-collapsible-holder"
+            listClasses: "card-collapsible-holder",
         }
     }
 
@@ -28,13 +28,13 @@ class DashboardCard extends Component {
             this.setState({
                 collapseStyle: {"display": "block"},
                 listClasses: "card-collapsible-holder active",
-                dropDownActive: true
+                dropDownActive: true,
             })
         } else {
             this.setState({
                 collapseStyle: {},
                 listClasses: "card-collapsible-holder",
-                dropDownActive: false
+                dropDownActive: false,
             })
         }
     }

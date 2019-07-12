@@ -16,9 +16,9 @@ export default {
                     initials: "JS",
                     email: "arnold.studently@gmail.com",
 
-                }
-            ]
-        }
+                },
+            ],
+        },
     ],
 
 }
