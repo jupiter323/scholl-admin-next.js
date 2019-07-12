@@ -5,6 +5,9 @@ class DashboardCard extends Component {
       super(props)
         this.state = {
             menuOpacity: 0,
+            collapseStyle: {},
+            dropDownActive: false,
+            listClasses: "card-collapsible-holder"
         }
     }
 
@@ -17,6 +20,22 @@ class DashboardCard extends Component {
             this.setState({
                 menuOpacity: 0,
             });
+        }
+    }
+
+    cycleDropDown() {
+        if (!this.state.dropDownActive) {
+            this.setState({
+                collapseStyle: {"display": "block"},
+                listClasses: "card-collapsible-holder active",
+                dropDownActive: true
+            })
+        } else {
+            this.setState({
+                collapseStyle: {},
+                listClasses: "card-collapsible-holder",
+                dropDownActive: false
+            })
         }
     }
 
@@ -37,11 +56,11 @@ class DashboardCard extends Component {
     render() {
         return (
             <div className="card-main-col col s12 m8 l7 xl5">
-                <ul className="card-dashboard-session card-main card collapsible expandable">
-                    <li className="card-collapsible-holder">
+                <ul className="card-dashboard-session card-main card expandable">
+                    <li className={ this.state.listClasses }>
                         <div
 className="collapsible-card owner-box card-panel"
-                             style={{"background-color": "#14b04b", "color": "#fff"}}>
+                             style={{"backgroundColor": "#14b04b", "color": "#fff"}}>
                             <div className="card-panel-row row">
                                 <div className="col s9">
                                     <span className="meta-info"><time
@@ -60,7 +79,7 @@ className="collapsible-card owner-box card-panel"
                                             <ul
 id="dropdown01_01" className="dropdown-content dropdown-wide"
                                                 tabIndex="0"
-                                                style={{ "display": "block", "width": "120px", "left": "133px", "top": "8px", "height": "104px", "transform-origi": "0px 0px", "opacity": this.state.menuOpacity , "transform": "scaleX(1) scaleY(1)" }}>
+                                                style={{ "display": "block", "width": "120px", "left": "133px", "top": "8px", "height": "104px", "transformOrigin": "0px 0px", "opacity": this.state.menuOpacity , "transform": "scaleX(1) scaleY(1)" }}>
                                                 <li tabIndex="0">
                                                     <a
 href="#modal_user_edit"
@@ -72,7 +91,7 @@ href="#modal_user_edit"
                                             </ul>
                                         </div>
                                         <div className="col right-align">
-                                <span className="collapsible-header collapsible-opener">
+                                <span className="collapsible-header collapsible-opener" onClick={() => this.cycleDropDown()}>
                                   <i className="custom-icon-triangle-right color-white"></i>
                                 </span>
                                         </div>
@@ -80,14 +99,14 @@ href="#modal_user_edit"
                                 </div>
                             </div>
                         </div>
-                        <div className="card-content collapsible-body">
-                            <div className="owner-box card-panel" style={{ "background-color": "#14b04b", "color": "#fff" }}>
+                        <div className="card-content collapsible-body" style={ this.state.collapseStyle }>
+                            <div className="owner-box card-panel" style={{ "backgroundColor": "#14b04b", "color": "#fff" }}>
                                 <div className="card-panel-row row">
                                     <div className="col s12">
                                         <div className="user-block">
                                             <div
 className="user-circle"
-                                                 style={{ "background-color": "#af1e90", "color": "#fff" }}>
+                                                 style={{ "backgroundColor": "#af1e90", "color": "#fff" }}>
                                                 <span className="initials">JS</span>
                                             </div>
                                             <div className="user-text" style={{ "color": "#fff" }}>
@@ -118,7 +137,7 @@ className="js-diff visible"
                                                                          data-position="position-2"><span
                                       className="txt" style={{ "top": "-56px", "left": "-16px" }}>+230</span></span></span>
                                 </span>
-                                            <span className="chart-value" style={{ "background-color": "#0085ce" }}><span
+                                            <span className="chart-value" style={{ "backgroundColor": "#0085ce" }}><span
                                                 data-count-up="" data-start-val="1040" data-end-val="1270"
                                                 data-duration="1">1270</span></span>
                                         </div>
