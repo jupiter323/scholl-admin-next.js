@@ -1,38 +1,51 @@
 import React, { Component } from 'react';
+import update from 'immutability-helper';
 import StudentCard from '../components/Student/components/StudentCard';
 import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
-import sampleLocationList from '../components/Location/utils/sampleLocationList';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
+import LocationModal from '../components/Location/components/LocationModal';
 
 class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedStudent: null,
-      locations: sampleLocationList,
       students: sampleStudentList,
       studentModalOpen: false,
+      locationModalOpen: false,
       sort: "",
       filterName: "",
       newStudent: {
         active: false,
-        firstName: {},
-        lastName: {},
-        gender: {},
-        phone: {},
-        address: {},
-        city: {},
-        state: {},
-        zipCode: {},
-        email: {},
-        location: {},
-      },
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: {
+          email: '',
+        },
+        location: {
+          locations: [],
+        },
+     },
     }
   }
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
+  onOpenLocationModal = () => this.setState({locationModalOpen: true});
+  onCloseLocationModal = () => this.setState({locationModalOpen: false})
+
 
   onSetSort = (sort) => this.setState({ sort });
   onSetFilteredState = (filterName) => this.setState({ filterName });
@@ -40,6 +53,52 @@ class Students extends Component {
 
   onSetFilteredLocationState = (location) => this.setState({ location });
   onUnsetFilteredLocationState = () => this.setState({ location: '' });
+ // TODO add a toas or some notification that a student has been saved
+  onSaveNewStudent = () => {
+    // eslint-disable-next-line no-console
+    console.warn('do something with the new student info')
+    this.onCloseStudentModal();
+  }
+
+  onDeleteNewStudent = () => {
+    const {newStudent: previousStudentState} = this.state;
+    const newStudent = update(previousStudentState, {
+      $set:
+       { active: false,
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: {
+          email: '',
+        },
+        location: {
+          locations: [],
+        },
+    }}
+    );
+    this.setState({newStudent})
+    // this.onCloseStudentModal();
+  }
+
+  onRemoveLocation = (index) => {
+    const {newStudent: previousStudentState} = this.state;
+    const {location: { locations } } = this.state.newStudent;
+    const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
+    const newStudent = update(previousStudentState, {
+      location: { $set: {locations: newLocationsArray}},
+    })
+    this.setState({newStudent})
+  }
 
   onFilterByName = () => {
     const { students, filterName } = this.state;
@@ -76,6 +135,16 @@ class Students extends Component {
       return { students: prevState.students}
     })
   }
+
+  handleChange = (event, name, section) => {
+    const { newStudent: previousStudentState } = this.state;
+    const value = event.target ? event.target.value : event;
+    const updatedStudent = update(previousStudentState, {
+      [section]: { $merge: { [name]: value }}
+    })
+    this.setState({newStudent: updatedStudent})
+}
+
 
   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
 
@@ -121,8 +190,22 @@ class Students extends Component {
                 </div>
               </div>
               <a href="#" className="waves-effect waves-teal btn add-btn modal-trigger" onClick={this.onOpenStudentModal}><i className="material-icons">add</i>New Student</a>
-              <StudentModal open={studentModalOpen} onOpenStudentModal={this.OpenStudentModal} onClose={this.onCloseStudentModal} />
-            </React.Fragment>
+              <StudentModal
+                open={studentModalOpen}
+                onClose={this.onCloseStudentModal}
+                handleChange={this.handleChange}
+                state={this.state.newStudent}
+                onSave={this.onSaveNewStudent}
+                onOpenLocationModal={this.onOpenLocationModal}
+                onRemoveLocation={this.onRemoveLocation}
+                onDeleteNewStudent={this.onDeleteNewStudent}
+                />
+                <LocationModal
+                open={this.state.locationModalOpen}
+                onClose={this.onCloseLocationModal}
+                handleLocationsChange={(selectedLocations) => this.handleChange(selectedLocations, 'locations', 'location')}
+                />
+                </React.Fragment>
           )}
           {selectedStudent && (
             <IndividualStudentPage student={selectedStudent} onRedirectToStudentPage={this.onRedirectToStudentPage} />
