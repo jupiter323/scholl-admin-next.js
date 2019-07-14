@@ -77,7 +77,7 @@ className="collapsible-card owner-box card-panel"
                                 </div>
                                 <div className="col s2 right-align">
                                     <span className="badge-rounded-sm badge red darken-2 white-text"><b
-                                        className="badge-text">3</b> <i className="icon-flag"></i></span>
+                                        className="badge-text">{this.sessionStats.numberOfFlags}</b> <i className="icon-flag"></i></span>
                                 </div>
                                 <div className="col s2 right-align">
                                     <div className="row icons-row">

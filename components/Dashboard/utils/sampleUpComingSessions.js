@@ -18,7 +18,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -42,7 +42,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -66,7 +66,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -90,7 +90,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -114,7 +114,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -138,7 +138,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -162,7 +162,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -186,31 +186,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
-                        datetime: moment().format('M/D/YYYY @ 4:30 PM'),
-                    },
-                    testStats: {
-                        currentScore: Math.floor(Math.random() * (1510-1040)) + 1040,
-                        initial: 1040,
-                        target: 1510,
-                    },
-                    user: {
-                        firstName: faker.name.firstName(),
-                        lastName: faker.name.lastName(),
-                        initials: 'JS',
-                        email: faker.internet.email(),
-                    },
-                },
-                {
-                    uuid: uuidv4(),
-                    sessionStats: {
-                        complete: Math.floor(Math.random() * 100),
-                        overdue: Math.floor(Math.random() * 10),
-                        practiceTests: Math.floor(Math.random() * 10),
-                        sessions: Math.floor(Math.random() * 23) + 1,
-                        numberOfSessions: 12,
-                        sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -240,7 +216,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -264,7 +240,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -288,7 +264,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -312,7 +288,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -336,7 +312,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -360,7 +336,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
@@ -384,7 +360,7 @@ export default {
                         sessions: Math.floor(Math.random() * 23) + 1,
                         numberOfSessions: 12,
                         sessionNumber: 10,
-                        numberOfFlags: 3,
+                        numberOfFlags: Math.floor(Math.random() * 10),
                         datetime: moment().format('M/D/YYYY @ 4:30 PM'),
                     },
                     testStats: {
