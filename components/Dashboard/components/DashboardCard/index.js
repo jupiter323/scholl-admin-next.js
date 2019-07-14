@@ -6,7 +6,7 @@ class DashboardCard extends Component {
         const {
             sessionStats,
             testStats,
-            user
+            user,
         } = props;
         this.state = {
             menuOpacity: 0,
@@ -14,6 +14,9 @@ class DashboardCard extends Component {
             dropDownActive: false,
             listClasses: "card-collapsible-holder",
         }
+        this.sessionStats = sessionStats;
+        this.testStats = testStats;
+        this.user = user;
     }
 
     cycleMenuOpacity() {
@@ -69,8 +72,8 @@ className="collapsible-card owner-box card-panel"
                             <div className="card-panel-row row">
                                 <div className="col s9">
                                     <span className="meta-info"><time
-                                        dateTime="2018-12-09T15:30">2/6/2019 @ 4:30 PM </time><span className="amount"> (10 of 12)</span></span>
-                                    <h3 className="collapsible-title hidden-active">Studently, James</h3>
+                                        dateTime="2018-12-09T15:30">{ this.sessionStats.datetime}</time><span className="amount"> (10 of 12)</span></span>
+                                    <h3 className="collapsible-title hidden-active">{ `${this.user.lastName  }, ${  this.user.firstName}` }</h3>
                                 </div>
                                 <div className="col s2 right-align">
                                     <span className="badge-rounded-sm badge red darken-2 white-text"><b
@@ -112,11 +115,11 @@ href="#modal_user_edit"
                                             <div
 className="user-circle"
                                                  style={{ "backgroundColor": "#af1e90", "color": "#fff" }}>
-                                                <span className="initials">JS</span>
+                                                <span className="initials">{this.user.initials}</span>
                                             </div>
                                             <div className="user-text" style={{ "color": "#fff" }}>
-                                                <h4 className="h3">Studently, James</h4>
-                                                <a href="mailto:arnold.studently@gmail.com">arnold.studently@gmail.com</a>
+                                                <h4 className="h3">{ `${this.user.firstName  }, ${  this.user.lastName}` }</h4>
+                                                <a href="mailto:arnold.studently@gmail.com">{ this.user.email }</a>
                                             </div>
                                         </div>
                                     </div>
@@ -140,19 +143,19 @@ data-dinamic="" fill="none" style={{ "strokeWidth":30, "stroke": "#0085ce" }}
                                   <span className="js-diff-holder"><span
 className="js-diff visible"
                                                                          data-position="position-2"><span
-                                      className="txt" style={{ "top": "-56px", "left": "-16px" }}>+230</span></span></span>
+                                      className="txt" style={{ "top": "-56px", "left": "-16px" }}>{`+${  this.testStats.currentScore - this.testStats.initial}`}</span></span></span>
                                 </span>
                                             <span className="chart-value" style={{ "backgroundColor": "#0085ce" }}><span
                                                 data-count-up="" data-start-val="1040" data-end-val="1270"
-                                                data-duration="1">1270</span></span>
+                                                data-duration="1">{this.testStats.currentScore}</span></span>
                                         </div>
                                         <div className="chart-row">
                                             <div className="chart-col chart-start">
-                                                <span className="amount">1040</span>
+                                                <span className="amount">{this.testStats.initial}</span>
                                                 <span className="amount-text">initial</span>
                                             </div>
                                             <div className="chart-col chart-end">
-                                                <span className="amount">1510</span>
+                                                <span className="amount">{this.testStats.target}</span>
                                                 <span className="amount-text">target</span>
                                             </div>
                                         </div>
@@ -161,19 +164,19 @@ className="js-diff visible"
                                 <div className="col s12 m6">
                                     <ul className="points-list-bordered">
                                         <li className="style-green">
-                                            <span className="badge-circle">61</span>
+                                            <span className="badge-circle">{this.sessionStats.complete}</span>
                                             <span className="point-text">complete</span>
                                         </li>
                                         <li className="style-red">
-                                            <span className="badge-circle">7</span>
+                                            <span className="badge-circle">{this.sessionStats.overdue}</span>
                                             <span className="point-text">overdue</span>
                                         </li>
                                         <li className="style-orange">
-                                            <span className="badge-circle">3</span>
+                                            <span className="badge-circle">{this.sessionStats.practiceTests}</span>
                                             <span className="point-text">practice tests</span>
                                         </li>
                                         <li className="style-blue-lighter">
-                                            <span className="badge-circle"><span>17</span> <span
+                                            <span className="badge-circle"><span>{this.sessionStats.sessions}</span> <span
                                                 className="of">of 23</span></span>
                                             <span className="point-text">sessions</span>
                                         </li>
