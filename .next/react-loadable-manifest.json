@@ -1857,7 +1857,7 @@
       "publicPath": "static/chunks/commons.fa73fb0fb0eb4912c13f.js"
     }
   ],
-  "./TransitionGroup": [
+  "react-transition-group/TransitionGroup": [
     {
       "id": "UnXY",
       "name": "./node_modules/react-transition-group/TransitionGroup.js",
