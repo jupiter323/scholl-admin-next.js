@@ -8,202 +8,186 @@ import stateOptions from '../../../utils/stateOptions';
 import Location from './components/Location';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class StudentModal  extends React.Component {
+class StudentModal extends React.Component {
   render() {
-  const { state, open, handleChange, onSave, onClose, onOpenLocationModal, onRemoveLocation, onDeleteNewStudent } = this.props;
-  return(
-  <Portal selector="#modal">
-    {open && (
-      <div className="overlay">
+    const { state, open, handleChange, onSave, onClose, onOpenLocationModal, onRemoveLocation, onDeleteNewStudent } = this.props;
+    return (
+      <Portal selector="#modal">
+        {open && (
+          <div className="overlay">
 
-        <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
-          <form action="#" className="custom-form" >
-            <fieldset>
-              <div className="card-modal card-main card grey lighten-3">
-                <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: "#31837a", color: "#fff" }}>
-                  <div className="card-panel-row row">
-                    <div className="col s9">
-                      <div className="user-block">
-                        <div className="user-circle" style={{ backgroundColor: "#0085ce", color: "#fff" }}>
-                          <img src="images/img-owner01.jpg" alt="" />
+            <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
+              <form action="#" className="custom-form" >
+                <fieldset>
+                  <div className="card-modal card-main card grey lighten-3">
+                    <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: "#31837a", color: "#fff" }}>
+                      <div className="card-panel-row row">
+                        <div className="col s9">
+                          <div className="user-block">
+                            <div className="user-circle" style={{ backgroundColor: "#0085ce", color: "#fff" }}>
+                              <img src="images/img-owner01.jpg" alt="" />
+                            </div>
+                            <div className="user-text" style={{ color: "#fff" }}>
+                              <h4 className="h3">Ownerly, Jennifer</h4>
+                              <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+                            </div>
+                          </div>
                         </div>
-                        <div className="user-text" style={{ color: "#fff" }}>
-                          <h4 className="h3">Ownerly, Jennifer</h4>
-                          <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+                        <div className="col">
+                          <span className="block-icon">
+                            <i className="icon-owner"></i>
+                            <span className="text-icon">Owner</span>
+                          </span>
                         </div>
                       </div>
                     </div>
-                    <div className="col">
-                      <span className="block-icon">
-                        <i className="icon-owner"></i>
-                        <span className="text-icon">Owner</span>
-                      </span>
+
+                    <div className="card-content">
+                      <div className="card-body">
+                        <div className="row mb-0">
+                          <div className="col s12 l6">
+
+                            {/* form panel */}
+                            <div className="card-block">
+                              <h3>Account Info</h3>
+                              <div className="card-main card">
+                                <div className="card-content">
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        value={state.studentInformation.firstName}
+                                        onChange={(event) => handleChange(event, 'firstName', 'studentInformation')} />
+                                      <label className="label" htmlFor="firstName">First Name*</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        value={state.studentInformation.lastName}
+                                        onChange={(event) => handleChange(event, 'lastName', 'studentInformation')} />
+                                      <label className="label" htmlFor="lastName">Last Name*</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="email"
+                                        name="email"
+                                        value={state.emailAddress.email}
+                                        onChange={(event) => handleChange(event, 'email', 'emailAddress')} />
+                                      <label className="label" htmlFor="email">Email Address*</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="">
+                                      <div className="input-field col s12 l7">
+                                        <Dropdown
+                                          value={getValueFromState(state.studentInformation.gender, genderOptions)}
+                                          onChange={(event) => handleChange(event, 'gender', 'studentInformation')}
+                                          options={genderOptions}
+                                          label="Gender"
+                                          stateKey="state"
+                                          dropdownKey="state"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {/* form panel */}
+                            <div className="card-block">
+                              <h3>Contact Info</h3>
+                              <div className="card-main card">
+                                <div className="card-content">
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        value={state.contactInformation.phone}
+                                        onChange={(event) => handleChange(event, 'phone', 'contactInformation')} />
+                                      <label className="label" htmlFor="phone">Phone (optional)</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="address"
+                                        name="address"
+                                        value={state.contactInformation.addressLine1}
+                                        onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')} />
+                                      <label className="label" htmlFor="address">Street Address (optional)</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="city"
+                                        name="city"
+                                        value={state.contactInformation.city}
+                                        onChange={(event) => handleChange(event, 'city', 'contactInformation')} />
+                                      <label className="label" htmlFor="city">City (optional)</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="col s12 m6 l5">
+                                      <div className="input-field">
+                                        <Dropdown
+                                          value={getValueFromState(state.contactInformation.state, stateOptions)}
+                                          onChange={(event) => handleChange(event, 'state', 'contactInformation')}
+                                          options={stateOptions}
+                                          label="State"
+                                          stateKey="state"
+                                          dropdownKey="state"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col s12 m6 l7">
+                                      <div className="input-field">
+                                        <input
+                                          type="tel"
+                                          name="zipCode"
+                                          id="zipCode"
+                                          value={state.contactInformation.zipCode}
+                                          onChange={(event) => handleChange(event, 'zipCode', 'contactInformation')} />
+                                        <label className="label" htmlFor="zipCode">Zip (optional)</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col s12 l6">
+                            <Location locations={state.location.locations} onOpenLocationModal={onOpenLocationModal} onRemoveLocation={onRemoveLocation} />
+                            <div className="modal-footer">
+                              <a href="#!" className="waves-effect waves-teal btn-flat pink-text text-darken-1" onClick={onDeleteNewStudent}>Delete</a>
+                              <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={onClose}>Cancel</a>
+                              <a href="#" className="btn" onClick={onSave}>Save</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="card-content">
-                  <div className="card-body">
-                    <div className="row mb-0">
-                      <div className="col s12 l6">
-
-                        {/* form panel */}
-                        <div className="card-block">
-                          <h3>Account Info</h3>
-                          <div className="card-main card">
-                            <div className="card-content">
-                              <div className="row mb-0">
-                                <div className="input-field col s12">
-                                  <input
-                                    type="text"
-                                    id="firstName"
-                                    name="firstName"
-                                    value={state.studentInformation.firstName}
-                                    onChange={(event) => handleChange(event, 'firstName', 'studentInformation')} />
-                                  <label className="label" htmlFor="firstName">First Name*</label>
-                                </div>
-                              </div>
-                              <div className="row mb-0">
-                                <div className="input-field col s12">
-                                  <input
-                                    type="text"
-                                    id="lastName"
-                                    name="lastName"
-                                    value={state.studentInformation.lastName}
-                                    onChange={(event) => handleChange(event, 'lastName', 'studentInformation')} />
-                                  <label className="label" htmlFor="lastName">Last Name*</label>
-                                </div>
-                              </div>
-                              <div className="row mb-0">
-                                <div className="input-field col s12">
-                                  <input
-                                    type="text"
-                                    id="email"
-                                    name="email"
-                                    value={state.emailAddress.email}
-                                    onChange={(event) => handleChange(event, 'email', 'emailAddress')} />
-                                  <label className="label" htmlFor="email">Email Address*</label>
-                                </div>
-                              </div>
-                              <div className="row mb-0">
-                                <div className="">
-                                  <div className="input-field col s12 l7">
-                                    <Dropdown
-                                      value={getValueFromState(state.studentInformation.gender, genderOptions)}
-                                      onChange={(event) => handleChange(event, 'gender', 'studentInformation')}
-                                      options={genderOptions}
-                                      label="Gender"
-                                      stateKey="state"
-                                      dropdownKey="state"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* form panel */}
-                        <div className="card-block">
-                          <h3>Contact Info</h3>
-                          <div className="card-main card">
-                            <div className="card-content">
-                              <div className="row mb-0">
-                                <div className="input-field col s12">
-                                  <input
-                                    type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    value={state.contactInformation.phone}
-                                    onChange={(event) => handleChange(event, 'phone', 'contactInformation')} />
-                                  <label className="label" htmlFor="phone">Phone (optional)</label>
-                                </div>
-                              </div>
-                              <div className="row mb-0">
-                                <div className="input-field col s12">
-                                  <input
-                                    type="text"
-                                    id="address"
-                                    name="address"
-                                    value={state.contactInformation.addressLine1}
-                                    onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')} />
-                                  <label className="label" htmlFor="address">Street Address (optional)</label>
-                                </div>
-                              </div>
-                              <div className="row mb-0">
-                                <div className="input-field col s12">
-                                  <input
-                                    type="text"
-                                    id="city"
-                                    name="city"
-                                    value={state.contactInformation.city}
-                                    onChange={(event) => handleChange(event, 'city', 'contactInformation')} />
-                                  <label className="label" htmlFor="city">City (optional)</label>
-                                </div>
-                              </div>
-                              <div className="row mb-0">
-                                <div className="col s12 m6 l5">
-                                  <div className="input-field">
-                                    <Dropdown
-                                      value={getValueFromState(state.contactInformation.state, stateOptions)}
-                                      onChange={(event) => handleChange(event, 'state', 'contactInformation')}
-                                      options={stateOptions}
-                                      label="State"
-                                      stateKey="state"
-                                      dropdownKey="state"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col s12 m6 l7">
-                                  <div className="input-field">
-                                    <input
-                                      type="tel"
-                                      name="zipCode"
-                                      id="zipCode"
-                                      value={state.contactInformation.zipCode}
-                                      onChange={(event) => handleChange(event, 'zipCode', 'contactInformation')} />
-                                    <label className="label" htmlFor="zipCode">Zip (optional)</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s12 l6">
-                      <Location locations={state.location.locations} onOpenLocationModal={onOpenLocationModal} onRemoveLocation={onRemoveLocation}/>
-
-                        {/* <div className="card-block">
-                          <h3>Location(s)</h3>
-
-                          {state.location.locations.length > 0 && (
-                            state.location.locations.map((location, index) => (
-                              <LcoationCard location={location} onRemoveLocation={() => onRemoveLocation(index, 'location', 'locations')} />
-                            ))
-                          )}
-                          
-
-              <div className="add-box">
-                <div className="add-box-holder">
-                  <a href="#" lassName="btn-floating waves-effect waves-light green lighten-1" onClick={onOpenLocationModal}><i className="material-icons">add</i></a>
-                </div>
-              </div> */}
-              <div className="modal-footer">
-                <a href="#!" className="waves-effect waves-teal btn-flat pink-text text-darken-1" onClick={onDeleteNewStudent }>Delete</a>
-                <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={onClose}>Cancel</a>
-                <a href="#" className="btn" onClick={onSave}>Save</a>
-              </div>
-              </div>
-              </div>
-              </div>
-              </div>
-              </div>
-            </fieldset>
-            </form>
+                </fieldset>
+              </form>
             </div>
-        </div>
-)}
-<style jsx>
-  {`
+          </div>
+        )}
+        <style jsx>
+          {`
             .overlay {
               position: fixed;
               background-color: rgba(0, 0, 0, 0.7);
@@ -237,10 +221,11 @@ class StudentModal  extends React.Component {
               background-color: white;
             }
           `}
-</style>
-        </Portal >
-        )
-          }};
+        </style>
+      </Portal >
+    )
+  }
+};
 
 StudentModal.propTypes = {
   open: PropTypes.bool.isRequired,

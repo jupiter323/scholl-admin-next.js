@@ -53,6 +53,7 @@ class Students extends Component {
 
   onSetFilteredLocationState = (location) => this.setState({ location });
   onUnsetFilteredLocationState = () => this.setState({ location: '' });
+
  // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = () => {
     // eslint-disable-next-line no-console
@@ -87,7 +88,6 @@ class Students extends Component {
     }}
     );
     this.setState({newStudent})
-    // this.onCloseStudentModal();
   }
 
   onRemoveLocation = (index) => {
