@@ -32,9 +32,9 @@ class SessionList extends Component {
             return 'Today';
         } else if (moment().add(1, 'days').isSame(moment(datetime, 'M/D/YYYY'), 'day')) {
             return 'Tomorrow';
-        } else {
-            return 'Other';
         }
+            return 'Other';
+
     }
 }
 

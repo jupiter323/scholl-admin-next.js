@@ -1,0 +1,74 @@
+{
+  "devFiles": [],
+  "pages": {
+    "/_app": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/all-instructors": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/all-locations": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/calendar": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/css/styles.343903c0.chunk.css",
+      "static/chunks/styles.a2d49a471273d52da2d1.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/classes": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/courseTemplates": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/dashboard": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/help": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/instructors": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/locations": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/students": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/css/styles.343903c0.chunk.css",
+      "static/chunks/styles.a2d49a471273d52da2d1.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/worksheets": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ],
+    "/_error": [
+      "static/runtime/webpack-b8901c829c1dd01cc2fb.js",
+      "static/chunks/commons.990f6b3a7e0330739238.js",
+      "static/runtime/main-017f51a971cfe81d5dc5.js"
+    ]
+  }
+}

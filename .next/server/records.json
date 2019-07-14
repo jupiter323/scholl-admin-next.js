@@ -1,0 +1,74 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "multi private-next-pages/_app.js": 0,
+      "multi private-next-pages/_document.js": 1,
+      "multi private-next-pages/all-instructors.js": 2,
+      "multi private-next-pages/all-locations.js": 3,
+      "multi private-next-pages/calendar.js": 4,
+      "multi private-next-pages/classes.js": 5,
+      "multi private-next-pages/courseTemplates.js": 6,
+      "multi private-next-pages/dashboard.js": 7,
+      "multi private-next-pages/help.js": 8,
+      "multi private-next-pages/instructors.js": 9,
+      "multi private-next-pages/locations.js": 10,
+      "multi private-next-pages/students.js": 11,
+      "multi private-next-pages/worksheets.js": 12,
+      "multi next/dist/pages/_error": 13
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8,
+      "9": 9,
+      "10": 10,
+      "11": 11,
+      "12": 12,
+      "13": 13
+    }
+  },
+  "chunks": {
+    "byName": {
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/_app.js": 0,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/_document.js": 1,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/_error.js": 2,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/all-instructors.js": 3,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/all-locations.js": 4,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/calendar.js": 5,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/classes.js": 6,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/courseTemplates.js": 7,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/dashboard.js": 8,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/help.js": 9,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/instructors.js": 10,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/locations.js": 11,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/students.js": 12,
+      "static/~mjijXhxpdfQsJxuYj~Em/pages/worksheets.js": 13
+    },
+    "bySource": {
+      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Student/AccountPage/components/CourseContext/index.js ../../../../FormComponents/DatePicker": 14
+    },
+    "usedIds": [
+      0,
+      1,
+      10,
+      11,
+      12,
+      13,
+      14,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  }
+}
