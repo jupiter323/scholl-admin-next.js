@@ -343,7 +343,7 @@
       "publicPath": "static/chunks/commons.fa73fb0fb0eb4912c13f.js"
     }
   ],
-  "./styles/ControlComponent": [
+  "../../../../FormComponents/Dropdown/styles/ControlComponent": [
     {
       "id": "4vSA",
       "name": "./components/FormComponents/Dropdown/styles/ControlComponent.js",
@@ -1615,7 +1615,7 @@
       "publicPath": "static/chunks/commons.fa73fb0fb0eb4912c13f.js"
     }
   ],
-  "./styles": [
+  "./": [
     {
       "id": "Rgyi",
       "name": "./components/FormComponents/Dropdown/styles/index.js",
@@ -3209,7 +3209,7 @@
       "publicPath": "static/chunks/commons.fa73fb0fb0eb4912c13f.js"
     }
   ],
-  "./styles/dropdownStyles": [
+  "../../../../FormComponents/Dropdown/styles/dropdownStyles": [
     {
       "id": "uhPQ",
       "name": "./components/FormComponents/Dropdown/styles/dropdownStyles.js",
