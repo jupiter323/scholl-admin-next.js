@@ -3,6 +3,11 @@ import { Component } from 'react';
 class DashboardCard extends Component {
     constructor(props) {
       super(props)
+        const {
+            sessionStats,
+            testStats,
+            user
+        } = props;
         this.state = {
             menuOpacity: 0,
             collapseStyle: {},
@@ -127,10 +132,10 @@ className="svg-curved-bar"
                                       data-duration="1">
                                   <svg width="146px" height="146px" viewBox="0 0 146 146">
                                     <path
-fill="none" style={{ "stroke-width":30, "stroke": "#eaeaea" }}
+fill="none" style={{ "strokeWidth":30, "stroke": "#eaeaea" }}
                                           d="M 19.154659885067794 94.556422428299 A 58 58 0 1 1 126.84534011493221 94.556422428299"></path>
                                     <path
-data-dinamic="" fill="none" style={{ "stroke-width":30, "stroke": "#0085ce" }}
+data-dinamic="" fill="none" style={{ "strokeWidth":30, "stroke": "#0085ce" }}
                                           d="M 19.154659885067794 94.556422428299 A 58 58 0 0 1 69.48595978278411 15.106550272489471"></path></svg>
                                   <span className="js-diff-holder"><span
 className="js-diff visible"
