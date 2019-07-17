@@ -3,6 +3,7 @@ import update from 'immutability-helper';
 import StudentCard from '../components/Student/components/StudentCard';
 import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
+// import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
@@ -140,7 +141,7 @@ class Students extends Component {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
-      [section]: { $merge: { [name]: value }}
+      [section]: { $merge: { [name]: value }},
     })
     this.setState({newStudent: updatedStudent})
 }
