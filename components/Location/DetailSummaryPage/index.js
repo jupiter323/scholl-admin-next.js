@@ -8,7 +8,7 @@ import TargetScores from '../../SharedSummaryPageComponents/TargetScores';
 import AveragePerCourse from '../../SharedSummaryPageComponents/AveragePerCourse';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class LocationDetailSummaryPage extends React.Component {
+class DetailSummaryPage extends React.Component {
   render() {
     const { location: { averageImprovement, pipeline, targetScores, studentImprovement, averagePerCourse } } = this.props;
     return (
@@ -43,8 +43,8 @@ class LocationDetailSummaryPage extends React.Component {
   }
 }
 
-LocationDetailSummaryPage.propTypes = {
+DetailSummaryPage.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default LocationDetailSummaryPage;
+export default DetailSummaryPage;
