@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LocationEmailSettings = ({ state: { automatedEmailOriginAddress, automatedEmailSalutation }, handleDetailsChange }) => (
+const LocationEmailSettings = ({ state: { automatedEmailOrigin, automatedEmailSalutation }, handleDetailsChange }) => (
   <div className="card-block">
     <h3>Location Email Settings</h3>
     <div className="card-main card">
@@ -10,12 +10,12 @@ const LocationEmailSettings = ({ state: { automatedEmailOriginAddress, automated
           <div className="input-field col s12">
             <input
               type="text"
-              id="automated-email-origin-address"
-              name="automatedEmailOriginAddress"
-              value={automatedEmailOriginAddress}
-              onChange={(event) => handleDetailsChange(event, 'automatedEmailOriginAddress', 'locationEmailSettings')}
+              id="automated-email-origin"
+              name="automatedEmailOrigin"
+              value={automatedEmailOrigin}
+              onChange={(event) => handleDetailsChange(event, 'automatedEmailOrigin', 'locationEmailSettings')}
             />
-            <label className={automatedEmailOriginAddress.length ? 'label active' : 'label'} htmlFor="automated-email-origin-address">Automated Emails Come From (email)*</label>
+            <label className={automatedEmailOrigin.length ? 'label active' : 'label'} htmlFor="automated-email-origin">Automated Emails Come From (email)*</label>
           </div>
         </div>
         <div className="row mb-0">
