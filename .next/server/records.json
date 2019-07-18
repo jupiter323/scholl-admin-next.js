@@ -14,7 +14,8 @@
       "multi private-next-pages/locations.js": 10,
       "multi private-next-pages/students.js": 11,
       "multi private-next-pages/worksheets.js": 12,
-      "multi next/dist/pages/_error": 13
+      "multi next/dist/pages/_error": 13,
+      "multi private-next-pages/account.js": 14
     },
     "usedIds": {
       "0": 0,
@@ -30,7 +31,8 @@
       "10": 10,
       "11": 11,
       "12": 12,
-      "13": 13
+      "13": 13,
+      "14": 14
     }
   },
   "chunks": {
@@ -48,27 +50,43 @@
       "static/_wjLJtXBIuk8P666JdmdU/pages/instructors.js": 10,
       "static/_wjLJtXBIuk8P666JdmdU/pages/locations.js": 11,
       "static/_wjLJtXBIuk8P666JdmdU/pages/students.js": 12,
-      "static/_wjLJtXBIuk8P666JdmdU/pages/worksheets.js": 13
+      "static/_wjLJtXBIuk8P666JdmdU/pages/worksheets.js": 13,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/_app.js": 15,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/_document.js": 16,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/_error.js": 17,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/account.js": 18,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/all-instructors.js": 19,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/all-locations.js": 20,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/calendar.js": 21,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/classes.js": 22,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/courseTemplates.js": 23,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/dashboard.js": 24,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/help.js": 25,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/instructors.js": 26,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/locations.js": 27,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/students.js": 28,
+      "static/_LpMJZQnAocLQEYsK5lp5/pages/worksheets.js": 29
     },
     "bySource": {
       "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Student/AccountPage/components/CourseContext/index.js ../../../../FormComponents/DatePicker": 14
     },
     "usedIds": [
-      0,
-      1,
-      10,
-      11,
-      12,
-      13,
       14,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
     ]
   }
 }
