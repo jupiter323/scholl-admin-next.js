@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 import Meta from './Meta';
 import SideNav from './Core/SideNav';
+import sampleInstructors from '../components/utils/sampleInstructors';
 // import Main from './Core/Main';
 
 const theme = {
@@ -24,7 +25,7 @@ class Page extends Component {
         <StyledPage>
           <Meta />
           <div className="wrapper">
-            <SideNav />
+            <SideNav user={sampleInstructors[0]}/>
             <Inner>
               { this.props.children }
             </Inner>

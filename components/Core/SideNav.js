@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import $ from 'jquery';
 
@@ -13,42 +14,42 @@ if (typeof window !== 'undefined') {
 
 
 const menuItems = [
-    {
-        key: 'dashboard',
-        page: 'dashboard',
-    },
-    {
-        key: 'students',
-        page: 'students',
-    },
-    {
+  {
+    key: 'dashboard',
+    page: 'dashboard',
+  },
+  {
+    key: 'students',
+    page: 'students',
+  },
+  {
 
-        key: 'instructors',
-        page: 'all-instructors',
-    },
-    {
+    key: 'instructors',
+    page: 'all-instructors',
+  },
+  {
 
-        key: 'classes',
-        page: 'classes',
-    },
-    {
+    key: 'classes',
+    page: 'classes',
+  },
+  {
 
-        key: 'locations',
-        page: 'all-locations',
-    },
-    {
+    key: 'locations',
+    page: 'all-locations',
+  },
+  {
 
-        key: 'worksheets',
-        page: 'worksheets',
-    },
-    {
-        key: 'course templates',
-        page: 'courseTemplates',
-    },
-    {
-        key: 'help',
-        page: 'help',
-    },
+    key: 'worksheets',
+    page: 'worksheets',
+  },
+  {
+    key: 'course templates',
+    page: 'courseTemplates',
+  },
+  {
+    key: 'help',
+    page: 'help',
+  },
 ];
 
 const menuIconMap = {
@@ -80,6 +81,7 @@ class SideNav extends Component {
   }
 
   render() {
+    const { firstName, lastName } = this.props.user
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
@@ -102,16 +104,23 @@ class SideNav extends Component {
               </li>
             ))}
           </ul>
-          <a href="#" className="log-block white-text">
+          <div className="log-block white-text">
             <div className="text">
-              <div className="block">Log Out</div>
-              <div className="block">Joe Smith</div>
+              <a href="#"><div className="block white-text">Log Out</div></a>
+              <Link href="/account">
+                <a><div className="block white-text">{firstName} {lastName}</div></a>
+              </Link>
+
             </div>
-          </a>
+          </div>
         </div>
       </aside>
     );
   }
+}
+
+SideNav.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 export default SideNav;
