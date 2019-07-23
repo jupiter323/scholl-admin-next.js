@@ -1,14 +1,13 @@
 /* eslint-disable react/jsx-indent */
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import LocationNavBar from '../components/Location/components/LocationNavBar';
 import DetailAccountPage from '../components/Location/DetailAccountPage';
 import DetailSummaryPage from '../components/Location/DetailSummaryPage';
-
-import sampleLocation from '../components/Location/utils/sampleLocation';
-
+import sampleLocation from '../components/Location/utils/sampleLocation'
+;
 // eslint-disable-next-line react/prefer-stateless-function
-class Instructors extends Component {
+class Locations extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,27 +18,43 @@ class Instructors extends Component {
   onSetActivePage = (active) => this.setState({ active })
 
   renderCurrentPage = () => {
+    const {location } = this.props;
     const { active } = this.state;
     if (active === 'summary') {
-      return <DetailSummaryPage location={sampleLocation} />;
+      return <DetailSummaryPage location={this.props.location ? location : sampleLocation} />;
     }
     if (active === 'account') {
-      return <DetailAccountPage location={sampleLocation} />;
+      return <DetailAccountPage location={this.props.location ? location : sampleLocation} />;
     }
     return null;
   }
 
   render() {
     const { active } = this.state;
+    const { location, onRedirectToLocationsPage } = this.props;
     return (
-      <main id="main" role="main">
+      <Choose>
+        <When condition={!location}>
+        <main id="main" role="main">
         <div className="main-holder grey lighten-5">
-          <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} />
+          <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} onRedirectToLocationsPage={onRedirectToLocationsPage} location={this.props.location ? location : sampleLocation}/>
           {this.renderCurrentPage()}
         </div>
-      </main>
+        </main>
+        </When>
+        <Otherwise>
+        <div className="main-holder grey lighten-5">
+          <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} onRedirectToLocationsPage={onRedirectToLocationsPage} location={this.props.location ? location : sampleLocation}/>
+          {this.renderCurrentPage()}
+        </div>
+        </Otherwise>
+      </Choose>
     );
   }
 }
 
-export default Instructors;
+Locations.propTypes = {
+  location: PropTypes.object.isRequired,
+  onRedirectToLocationsPage: PropTypes.func.isRequired,
+}
+export default Locations;

@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LocationNavBar = ({ active, onSetActivePage }) => (
+const LocationNavBar = ({ active, onSetActivePage, location : {locationContactInfo}, onRedirectToLocationsPage }) => (
   <div className="title-row card-panel">
     <div className="mobile-header">
       <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
     </div>
     <nav className="breadcrumb-holder">
       <div className="nav-wrapper ">
-        <a href="#!" className="breadcrumb">&lt;  Locations</a>
+        <a href="#!" onClick={onRedirectToLocationsPage} className="breadcrumb">&lt;  Locations</a>
       </div>
     </nav>
     <h2 className="h1 white-text">
       <span className="heading-holder">
         <i className="icon-location"></i>
-        <span className="heading-block">Study Hut - Redondo Beach, CA</span>
+        <span className="heading-block">{locationContactInfo.locationName} - {locationContactInfo.locationCity}, {locationContactInfo.locationState}</span>
       </span>
     </h2>
     <nav className="nav-additional">
@@ -45,6 +45,8 @@ const LocationNavBar = ({ active, onSetActivePage }) => (
 LocationNavBar.propTypes = {
   active: PropTypes.string.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
+  onRedirectToLocationsPage: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default LocationNavBar;

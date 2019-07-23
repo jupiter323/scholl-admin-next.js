@@ -11,7 +11,7 @@ const Meta = () => (
     <link rel="stylesheet" href="/static/css/materialize.css" />
     <link rel="stylesheer" href="/static/css/lmdd.min.css" />
     <link rel="stylesheet" href="/static/css/main.css" />
-    <title>Clean Choice Test Prep</title>
+    <title>Clear Choice Test Prep</title>
   </Head>
 );
 
