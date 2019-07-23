@@ -24,7 +24,7 @@ class LessonDetailAnswerSheet extends React.Component {
   render() {
     const { questionModalOpen, selectedQuestion, questions, answerSheetComplete } = this.state;
     const { open, onCloseDetailModal, user,
-      lesson: { lessonName, unit, passage, completionDate, completionTime, assignTime, assignDate, dueDate, dueTime, lessonType } } = this.props;
+      lesson: { lessonName, unit, passage, completionDate, completionTime, assignTime, assignDate, dueDate, dueTime, type } } = this.props;
     const { studentInformation: { firstName, lastName } } = user
     return (
       <React.Fragment>
@@ -56,7 +56,7 @@ class LessonDetailAnswerSheet extends React.Component {
                     <i className="icon-books"></i>
                   </div>
                 <div className="col s2">
-                    <span style={{fontSize: '17px'}}>{`p.${passage} (${lessonType})`} </span>
+                    <span style={{fontSize: '17px'}}>{`p.${passage} (${type})`} </span>
                 </div>
                   <div className="col s7">
                     <div className="card-panel-text center-align">

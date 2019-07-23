@@ -46,6 +46,7 @@ class FilterSection extends React.Component {
     this.setState({sort: {}, nameFilter: "", unitFilter: ""})
     onClearFilters()
   }
+  // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
     const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter} = this.props;
     const value = event.target ? event.target.value : event;
@@ -185,8 +186,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="hasReviewFlags"
-                      checked={flagFilters.indexOf('alerts') !== -1}
-                      onChange={() => handleFilterClick('alerts', 'true')}
+                      checked={flagFilters.indexOf("flags") !== -1}
+                      onChange={() => handleFilterClick('flags', 'true')}
                     />
                     <label htmlFor="hasReviewFlags">Has Review Flags</label>
                   </li>
@@ -286,7 +287,7 @@ class FilterSection extends React.Component {
             <div className="row mb-0 d-flex align-items-center">
               <div className="col s12 l4">
                 <div className="row mb-0">
-                  
+
                   <div className="col s12 x17">
                    <div className="input-field">
                       <Dropdown

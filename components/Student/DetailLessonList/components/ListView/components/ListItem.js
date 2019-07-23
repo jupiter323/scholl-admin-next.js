@@ -50,7 +50,7 @@ class ListItem extends React.Component {
 
 
   render() {
-    const { lessonName, score, scoreStatus, passage, reviewedAlerts, overdue, subject, status, completionDate, totalProblems, lessonType, availableDate, dueDate, alerts } = this.props.lesson;
+    const { lessonName, score, scoreStatus, passage, reviewedAlerts, overdue, subject, status, completionDate, problems, type, availableDate, dueDate, flags } = this.props.lesson;
     const {dropdownIndex, lesson, dropdownIsOpen, index, user, handleDropdownClick} = this.props;
     return (
       <React.Fragment>
@@ -72,7 +72,7 @@ class ListItem extends React.Component {
         </div>
          <div className="list-table-cell graph-cell" style={{marginLeft: '50px'}}>
           {scoreStatus && (
-            <span className={`chart-bar ${statusColorMap[scoreStatus]} white-text`}>{Math.floor(`${score / totalProblems * 100}`)}%</span>
+            <span className={`chart-bar ${statusColorMap[scoreStatus]} white-text`}>{Math.floor(`${score / problems * 100}`)}%</span>
           )}
           </div>
           <div className="list-table-cell status-cell" >
@@ -98,7 +98,7 @@ class ListItem extends React.Component {
           </div>
         <div className="list-table-cell name-cell">
           <div className="card-panel-text truncate">
-            <div className="text-large truncate">{lessonType}</div>
+            <div className="text-large truncate">{type}</div>
           </div>
         </div>
         <div className="list-table-cell graph-cell">
@@ -107,8 +107,8 @@ class ListItem extends React.Component {
           )}
         </div>
         <div className="list-table-cell flags-cell">
-          {alerts.length > 0 && (
-            <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{alerts.length}</b> <i className="icon-flag"></i></span>
+          {flags.length > 0 && (
+            <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
           )}
         </div>
 

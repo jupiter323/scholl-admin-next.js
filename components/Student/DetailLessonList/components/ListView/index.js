@@ -139,7 +139,7 @@ class ListView extends React.Component {
                   <div className="list-table-cell flags-cell"><b>&nbsp;</b></div>
                   <div className="list-table-cell flags-cell"><a
                     href="#"
-                    onClick={() => this.setSortType("alerts")}
+                    onClick={() => this.setSortType("flags")}
                     >
                       <b>Flags</b>
                       </a>

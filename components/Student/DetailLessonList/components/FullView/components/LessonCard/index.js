@@ -75,29 +75,29 @@ class LessonCard extends React.Component {
       )
   }
 
-  renderProblemCount = (status, scoreStatus, score, totalProblems, solvedProblems) => {
+  renderProblemCount = (status, scoreStatus, score, problems, completedProblems) => {
     if (status === "Started") {
       return (
         <span className="chart-value chart-value-column" style={{ bottom: '8px', backgroundColor: chartColorMap[status]}}>
-          <span className="chart-count" data-count-up data-start-val="0" data-end-val="4" data-duration="1"><span className="text-small" style={{fontSize: 'x-small'}}>{solvedProblems}</span></span>
-          <span className="text-small" style={{fontSize: 'xx-small'}}>out of</span> <span className="text-small" style={{fontSize: 'x-small'}}>{totalProblems}</span>
+          <span className="chart-count" data-count-up data-start-val="0" data-end-val="4" data-duration="1"><span className="text-small" style={{fontSize: 'x-small'}}>{completedProblems}</span></span>
+          <span className="text-small" style={{fontSize: 'xx-small'}}>out of</span> <span className="text-small" style={{fontSize: 'x-small'}}>{problems}</span>
         </span>
       )
     }
     return (
       <span className="chart-value" style={{ height: '50px', width: '50px', bottom: '6px', backgroundColor: chartColorMap[scoreStatus]}}><span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
       <If condition={score !== ""}>
-        <span className="percentage">{Math.floor(`${score / totalProblems * 100}`)}%</span>
+        <span className="percentage">{Math.floor(`${score / problems * 100}`)}%</span>
         </If>
         </span>
     )
   }
 
 
-  renderAlerts = (alerts) => {
-    if (alerts.length) {
+  renderAlerts = (flags) => {
+    if (flags.length) {
       return (
-          <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{alerts.length}</b> <i className="icon-flag"></i></span>
+          <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
       )
     }
     return (
@@ -107,8 +107,8 @@ class LessonCard extends React.Component {
 
   render() {
     const { dropdownIsOpen } = this.state;
-    const {  lesson, lesson: { subject, timeEstimate, status, scoreStatus, score, unitNumber, lessonName, assigned, alerts,
-      lessonType, totalProblems, solvedProblems = '', passage, dueDate,
+    const {  lesson, lesson: { subject, timeEstimate, status, scoreStatus, score, unit, lessonName, assigned, flags,
+      type, problems, completedProblems = '', passage, dueDate,
        availableDate, completionDate, overdue } } = this.props;
     return (
       <React.Fragment>
@@ -126,13 +126,13 @@ class LessonCard extends React.Component {
               </div>
               <div className="col s9">
                 <div className="card-panel-text center-align">
-                  <div className="text-small">{subject} Unit {unitNumber}</div>
+                  <div className="text-small">{unit}</div>
                   <div className="text-large"><a href="#" onClick={this.onOpenDetailModal}>{lessonName}</a></div>
                 </div>
               </div>
               <div className="col s1 right-align">
                 <div className="row icons-row">
-                  {this.renderAlerts(alerts)}
+                  {this.renderAlerts(flags)}
                   <div className="dropdown-block col">
                     <a
                       className='dropdown-trigger btn'
@@ -158,7 +158,7 @@ class LessonCard extends React.Component {
                 <div className="chart-container">
                   <div className="chart-holder" style={{width: '140px', height: '95px'}}>
                         <Doughnut
-                          data={completionDate ? () => data(score, totalProblems, scoreStatus) : () => data(solvedProblems, totalProblems, status)}
+                          data={completionDate ? () => data(score, problems, scoreStatus) : () => data(completedProblems, problems, status)}
                           height={210}
                           options={{
                             circumference: 1.45 * Math.PI,
@@ -167,12 +167,12 @@ class LessonCard extends React.Component {
                             tooltips: false,
                           }}
                           />
-                          {this.renderProblemCount(status, scoreStatus, score, totalProblems, solvedProblems)}
+                          {this.renderProblemCount(status, scoreStatus, score, problems, completedProblems)}
                   </div>
                   <div className="chart-row">
                     <div className="chart-col chart-start">&nbsp;</div>
                     <div className="chart-col chart-end">
-                      <span className="amount" style={{color: chartColorMap[status]}}>{totalProblems}</span>
+                      <span className="amount" style={{color: chartColorMap[status]}}>{problems}</span>
                     </div>
                   </div>
                   <div className="chart-description" style={{marginTop: '10px'}}>
@@ -182,7 +182,7 @@ class LessonCard extends React.Component {
                     </dl>
                     <dl className="dl-horizontal">
                       <dt>Problems:</dt>
-                      <dd>{totalProblems}</dd>
+                      <dd>{problems}</dd>
                     </dl>
                   </div>
                 </div>
@@ -225,7 +225,7 @@ class LessonCard extends React.Component {
             <div className="card-text">
               <dl className="dl-horizontal">
                   <dt>p.{passage}</dt>
-                  <dd>({lessonType})</dd>
+                  <dd>({type})</dd>
                 </dl>
           </div>
         </div>

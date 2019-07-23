@@ -19,7 +19,7 @@ class LessonListItem extends React.Component {
   }
 
   render(){
-    const { checkedLessons, selectAll, handleCheckbox, index, lesson, lesson: { id, lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unitNumber, passage, timeEstimate, totalProblems, lessonType, alerts}  } = this.props
+    const { checkedLessons, selectAll, handleCheckbox, index, lesson, lesson: { id, lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unit, passage, timeEstimate, problems, lessonType, flags}  } = this.props
     return(
       <div className='card list-table-row' key={id} style={{opacity: assigned ? .5 : 1}}>
       <div className="list-table-cell icon-cell">
@@ -41,12 +41,12 @@ class LessonListItem extends React.Component {
       </div>
       <div className="list-table-cell name-cell" style={{width: '140px'}}>
         <div className="card-panel-text truncate">
-          <div className="text-large truncate" id='lessonName'>{subject} Unit #{unitNumber} {lessonName}</div>
+          <div className="text-large truncate" id='lessonName'>{unit} {lessonName}</div>
         </div>
       </div>
       <div className="list-table-cell graph-cell" style={{ marginLeft: '50px' }}>
         {scoreStatus && (
-          <span className={`chart-bar ${statusColorMap[scoreStatus]} white-text`}>{Math.floor(`${score / totalProblems * 100}`)}%</span>
+          <span className={`chart-bar ${statusColorMap[scoreStatus]} white-text`}>{Math.floor(`${score / problems * 100}`)}%</span>
         )}
       </div>
       <div className="list-table-cell status-cell" >
@@ -62,7 +62,7 @@ class LessonListItem extends React.Component {
       <div className="list-table-cell type-cell" style={{ marginLeft: '10px' }}>{subject}</div>
       <div className="list-table-cell type-cell">p. {passage}</div>
       <div className="list-table-cell date-cell">{timeEstimate}</div>
-      <div className="list-table-cell date-cell"style={{paddingLeft: '50px'}}>{totalProblems}</div>
+      <div className="list-table-cell date-cell"style={{paddingLeft: '50px'}}>{problems}</div>
 
       <div className="list-table-cell name-cell">
         <div className="card-panel-text truncate">
@@ -75,8 +75,8 @@ class LessonListItem extends React.Component {
         )}
       </div>
       <div className="list-table-cell flags-cell">
-        {alerts.length > 0 && (
-          <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{alerts.length}</b> <i className="icon-flag"></i></span>
+        {flags.length > 0 && (
+          <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
         )}
       </div>
     </div>

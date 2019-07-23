@@ -87,13 +87,13 @@ export const statusAscending = ({status: statusA}, {status: statusB}) => {
   return 0;
 }
 
-export const alertsDescending = ({alerts: alertsA}, {alerts: alertsB}) => {
-  if (alertsA.length > alertsB.length) {return -1; }
+export const flagsDescending = ({flags: flagsA}, {flags: flagsB}) => {
+  if (flagsA.length > flagsB.length) {return -1; }
   return 0;
 }
 
-export const alertsAscending = ({alerts: alertsA}, {alerts: alertsB}) => {
-  if (alertsA.length < alertsB.length) {return -1; }
+export const flagsAscending = ({flags: flagsA}, {flags: flagsB}) => {
+  if (flagsA.length < flagsB.length) {return -1; }
   return 0;
 }
 
@@ -132,13 +132,13 @@ export const completionDateDescending = ({completionDate: completionDateA}, {com
   return 0;
 }
 
-export const lessonTypeAscending = ({lessonType: lessonTypeA}, {lessonType: lessonTypeB}) => {
-  if (lessonTypeA < lessonTypeB) {return -1; }
+export const lessonTypeAscending = ({type: typeA}, {type: typeB}) => {
+  if (typeA < typeB) {return -1; }
   return 0;
 }
 
-export const lessonTypeDescending = ({lessonType: lessonTypeA}, {lessonType: lessonTypeB}) => {
-  if (lessonTypeA > lessonTypeB) {return -1; }
+export const lessonTypeDescending = ({type: typeA}, {type: typeB}) => {
+  if (typeA > typeB) {return -1; }
   return 0;
 }
 

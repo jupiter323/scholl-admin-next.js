@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 import moment from 'moment';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
-import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, alertsAscending, alertsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending} from '../../utils/sortFunctions';
+import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, flagsAscending, flagsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending} from '../../utils/sortFunctions';
 import ListView from './components/ListView';
 import AssignLessonModal from './components/AssignLessonModal';
 
@@ -68,10 +68,10 @@ class DetailLessonList extends React.Component {
         return lessons.sort(dueDate);
       case 'dueDateAscending':
         return lessons.sort(dueDateAscending)
-      case 'alertsAscending':
-        return lessons.sort(alertsAscending);
-      case 'alertsDescending':
-        return lessons.sort(alertsDescending);
+      case 'flagsAscending':
+        return lessons.sort(flagsAscending);
+      case 'flagsDescending':
+        return lessons.sort(flagsDescending);
       case 'lessonNameAscending':
         return lessons.sort(lessonNameAscending);
       case 'lessonNameDescending':
@@ -129,13 +129,13 @@ class DetailLessonList extends React.Component {
       lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1)
     }
     if (flagFilters.length && flagFilters.indexOf('all') === -1) {
-      lessons = lessons.filter(lesson => lesson.alerts.length !== 0)
+      lessons = lessons.filter(lesson => lesson.flags.length !== 0)
     }
     if (classTypeFilters.length && classTypeFilters.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => classTypeFilters.indexOf(lesson.classType) !== -1)
+      lessons = lessons.filter(lesson => classTypeFilters.indexOf(lesson.type) !== -1)
     }
     if (unitFilter.length && unitFilter.indexOf('all') === -1) {
-      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unitNumber) !== -1)
+      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unit) !== -1)
     }
     return lessons;
   }
@@ -202,7 +202,7 @@ class DetailLessonList extends React.Component {
         modifiedFilterCurrentState = currentScoreStatusFilters;
         modifiedFilterName = 'scoreStatusFilters';
         break;
-      case 'alerts':
+      case 'flags':
           modifiedFilterCurrentState = currentFlagFilters;
           modifiedFilterName = 'flagFilters';
           break;

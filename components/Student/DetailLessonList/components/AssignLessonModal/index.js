@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import moment from 'moment';
 import Portal from '../../../../Portal';
 import LessonListItem from './components/LessonListItem';
-import { totalProblemsDescending, totalProblemsAscending, timeEstimate, timeEstimateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, alertsAscending, alertsDescending, lessonTypeAscending, lessonTypeDescending } from '../../../../utils/sortFunctions';
+import { totalProblemsDescending, totalProblemsAscending, timeEstimate, timeEstimateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, flagsAscending, flagsDescending, lessonTypeAscending, lessonTypeDescending } from '../../../../utils/sortFunctions';
 import ModalFilterSection from '../ModalFilterSection';
 import AssignDatesModal from '../AssignDatesModal';
 
@@ -71,10 +71,10 @@ class AssignLessonModal extends React.Component {
         return lessons.sort(statusAscending);
       case 'statusDescending':
         return lessons.sort(statusDescending);
-      case 'alertsAscending':
-        return lessons.sort(alertsAscending);
-      case 'alertsDescending':
-        return lessons.sort(alertsDescending);
+      case 'flagsAscending':
+        return lessons.sort(flagsAscending);
+      case 'flagsDescending':
+        return lessons.sort(flagsDescending);
       case 'lessonNameAscending':
         return lessons.sort(lessonNameAscending);
       case 'lessonNameDescending':
@@ -122,7 +122,7 @@ class AssignLessonModal extends React.Component {
       lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1)
     }
     if (lessonTypeFilters.length && lessonTypeFilters.indexOf('all') === -1) {
-      lessons = lessons.filter(lesson => lessonTypeFilters.indexOf(lesson.lessonType) !== -1)
+      lessons = lessons.filter(lesson => lessonTypeFilters.indexOf(lesson.type) !== -1)
     }
     if (unitFilter.length && unitFilter.indexOf('all') === -1) {
       lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unitNumber) !== -1)

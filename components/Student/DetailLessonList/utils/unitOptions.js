@@ -4,27 +4,39 @@ export default [
     value: "",
   },
   {
-    label: "1",
-    value: "1",
+    label: "Reading Unit #1",
+    value: "Reading Unit #1",
   },
   {
-    label: "2",
-    value: "2",
+    label: "Reading Unit #2",
+    value: "Reading Unit #2",
   },
   {
-    label: "3",
-    value: "3",
+    label: "Reading Unit #3",
+    value: "Reading Unit #3",
   },
   {
-    label: "4",
-    value: "4",
+    label: "Math Unit #1",
+    value: "Math Unit #1",
   },
   {
-    label: "5",
-    value: "5",
+    label: "Math Unit #2",
+    value: "Math Unit #2",
   },
   {
-    label: "6",
-    value: "6",
+    label: "Math Unit #3",
+    value: "Math Unit #3",
+  },
+  {
+    label: "Writing Unit #1",
+    value: "Writing Unit #1",
+  },
+  {
+    label: "Writing Unit #2",
+    value: "Writing Unit #2",
+  },
+  {
+    label: "Writing Unit #3",
+    value: "Writing Unit #3",
   },
 ]
