@@ -43,7 +43,7 @@ const StudentsWhoHave = ({ state: { overdueCoursework, flaggedProblems, fewerTha
                   </thead>
                   <tbody>
                     {overdueCoursework.map(student => (
-                      <tr>
+                      <tr key={student.name}>
                         <td>{student.name}</td>
                         <td>{student.overdueAssignments}</td>
                       </tr>
@@ -87,7 +87,7 @@ const StudentsWhoHave = ({ state: { overdueCoursework, flaggedProblems, fewerTha
                   </thead>
                   <tbody>
                     {flaggedProblems.map(student => (
-                      <tr>
+                      <tr key={student.name}>
                         <td>{student.name}</td>
                         <td>{student.flaggedProblems}</td>
                       </tr>
@@ -131,7 +131,7 @@ const StudentsWhoHave = ({ state: { overdueCoursework, flaggedProblems, fewerTha
                   </thead>
                   <tbody>
                     {fewerThan2PracticeTests.map(student => (
-                      <tr>
+                      <tr key={student.name}>
                         <td>{student.name}</td>
                         <td>{student.fewerThan2PracticeTests}</td>
                       </tr>
