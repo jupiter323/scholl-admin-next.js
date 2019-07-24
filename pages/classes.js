@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ClassNavBar from '../components/Class/components/ClassNavBar';
 import TestSectionsPage from '../components/Class/TestSectionsPage';
 import DetailSummaryPage from '../components/Class/DetailSummaryPage';
+import DetailWorksheetPage from '../components/Class/DetailWorksheetPage';
 
 import sampleClass from '../components/Class/utils/sampleClass';
 
@@ -23,6 +24,9 @@ class Classes extends Component {
     }
     if (active === 'testSections') {
       return <TestSectionsPage />;
+    }
+    if (active === 'worksheets') {
+      return <DetailWorksheetPage />;
     }
     return null;
   }
