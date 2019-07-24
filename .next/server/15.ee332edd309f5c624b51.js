@@ -1,0 +1,1 @@
+exports.ids=[15],exports.modules={SdOD:function(e,t,n){"use strict";n.r(t);var r=n("cDcd"),a=n.n(r),u=n("ZTWx"),c=n.n(u);n("5Buo"),n("xA6B");t.default=function(e){return a.a.createElement(a.a.Fragment,null,a.a.createElement(c.a,e))}}};
