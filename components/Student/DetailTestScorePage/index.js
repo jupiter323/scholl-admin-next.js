@@ -7,8 +7,7 @@ import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
 import SubScoresCard from './components/SubscoresCard';
 
-// onSetActivePage needs to be defined
-const DetailTestScorePage = ({ testScores: { subjectScores, totalScore, totalPossible, sectionScores, essayScores, crossTestScores, subScores } }) => (
+const DetailTestScorePage = ({ test: { subjectScores, totalScore, totalPossible, sectionScores, essayScores, crossTestScores, subScores } }) => (
   <div className="container">
     <div className="cards-section">
       <div className="d-flex-content same-height justify-center row mb-0">
@@ -28,7 +27,7 @@ const DetailTestScorePage = ({ testScores: { subjectScores, totalScore, totalPos
 )
 
 DetailTestScorePage.propTypes = {
-  testScores: PropTypes.object.isRequired,
+  test: PropTypes.object.isRequired,
 }
 
 export default DetailTestScorePage;
