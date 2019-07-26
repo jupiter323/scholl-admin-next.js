@@ -30,8 +30,23 @@ class TestCard extends React.Component {
     const { subjects } = test;
     return subjects.map((subject, index) => (
       <div className="chart-block chart-block-test" key={index}>
-        <span className="value-max">{subject.targetScore}</span>
+        <Choose>
+          <When condition={!futureTest}>
+        <Doughnut
+          data={() => data(subjects.length ? ((subject.currentScore) / (subject.targetScore) * 100) : 0)}
+          height={104}
+          width={104}
+          options={{
+            cutoutPercentage: 80,
+          }}
+          />
+        <span className="value-max" style={{top: '0px'}}>{subject.targetScore}</span>
+          </When>
+          <Otherwise>
+          <span className="value-max">{subject.targetScore}</span>
         <div className="js-donut-chart" data-stroke-width="15" data-source='./inc/score-data-test-reading.json'></div>
+          </Otherwise>
+        </Choose>
         <div className="chart-text">
           <Choose>
             <When condition={subject.subject === 'Reading & Writing' && !futureTest}>
@@ -49,17 +64,57 @@ class TestCard extends React.Component {
   }
 
   render() {
-    const { test, futureTest = false, dropdownIndex, index, dropdownIsOpen, onEnterAnswers, onEditTest, onDownloadReport, onDeleteTest } = this.props;
-    const { title, version = '', testDate, weekNumber, initialScore, targetScore, currentScore, totalGain } = test;
+    const { test, futureTest = false, dropdownIndex, index, dropdownIsOpen, onEnterAnswers, onEditTest, onDownloadReport, onDeleteTest, openTestScores } = this.props;
+    const { title, version = '', testDate, weekNumber, initialScore, targetScore, currentScore } = test;
     return (
       <div className="col s12 m8 l7 xl5">
         <div className="card-main-col">
           <div className={futureTest ? 'card-test card-main card-disabled card' : 'card-test card-main card'}>
             <div className="card-content">
-              <div className="card-panel-row row">
-                <div className="col">&nbsp;</div>
-                <div className="col">
-                  <div className="row icons-row">
+
+              <div className=" card-panel-row row mb-0">
+                <div className="col s7">
+                  <div className="card-title-block" style={{marginTop: !futureTest ? '-30px' : '-50px'  }}>
+                 <h4 className="h2" ><a href="#" onClick={() => openTestScores({index})}>{title}</a></h4>
+                    <time className="date" style={{marginBottom: futureTest ? '20px' : ''}}>{testDate} (week {weekNumber})</time>
+                    <If condition={!futureTest}>
+                      <p>Version {version}</p>
+                    </If>
+                  </div>
+                  <div className="chart-container chart-container-test">
+                    <div className="chart-holder">
+                      <span className="svg-curved-bar">
+                        <Doughnut
+                          data={() => (data(initialScore ? Number((currentScore-initialScore)/(targetScore-initialScore)) * 100 : 0 ))}
+                          options={{
+                            circumference: 1 * Math.PI,
+                            rotation: 1 * Math.PI,
+                            cutoutPercentage: 60,
+                            tooltips: false,
+                          }}
+                        />
+                        <span className="js-diff-holder">
+                          <span className="js-diff">
+                            <span className="txt" style={{ opacity: '1', bottom: '75px', color: 'black', fontWeight: '600', fontSize: '12px' }}>+{currentScore - initialScore}</span>
+                          </span>
+                        </span>
+                      </span>
+                      <span className="chart-value" style={{ backgroundColor: '#00bbf7' }}><span data-count-up data-start-val="1100" data-end-val="1210" data-duration="1">{currentScore}</span></span>
+                    </div>
+                    <div className="chart-row">
+                      <div className="chart-col chart-start">
+                        <span className="amount">{initialScore}</span> <br />
+                        <span className="amount-text">initial</span>
+                      </div>
+                      <div className="chart-col chart-end">
+                        <span className="amount">{targetScore}</span> <br />
+                        <span className="amount-text">target</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col s5 right-align">
+                <div className="row icons-row" style={{marginBottom: '10px'}}>
                     <div className="dropdown-block col">
                       <a
                         href='#'
@@ -83,50 +138,6 @@ class TestCard extends React.Component {
                       </If>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="card-test-row row d-flex mb-0">
-                <div className="col s7">
-                  <div className="card-title-block">
-                    <h4 className="h2">{title}</h4>
-                    <time className="date">{testDate} (week {weekNumber})</time>
-                    <If condition={!futureTest}>
-                      <p>Version {version}</p>
-                    </If>
-                  </div>
-                  <div className="chart-container chart-container-test">
-                    <div className="chart-holder">
-                      <span className="svg-curved-bar">
-                        <Doughnut
-                          data={() => (data(initialScore ? Number(initialScore / targetScore) * 100 : 0 ))}
-                          options={{
-                            circumference: 1 * Math.PI,
-                            rotation: 1 * Math.PI,
-                            cutoutPercentage: 60,
-                            tooltips: false,
-                          }}
-                        />
-                        <span className="js-diff-holder">
-                          <span className="js-diff">
-                            <span className="txt" style={{ opacity: '1', bottom: '75px', color: 'black', fontWeight: '600', fontSize: '12px' }}>+{totalGain}</span>
-                          </span>
-                        </span>
-                      </span>
-                      <span className="chart-value" style={{ backgroundColor: '#00bbf7' }}><span data-count-up data-start-val="1100" data-end-val="1210" data-duration="1">{currentScore}</span></span>
-                    </div>
-                    <div className="chart-row">
-                      <div className="chart-col chart-start">
-                        <span className="amount">{initialScore}</span> <br />
-                        <span className="amount-text">initial</span>
-                      </div>
-                      <div className="chart-col chart-end">
-                        <span className="amount">{targetScore}</span> <br />
-                        <span className="amount-text">target</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col s5 right-align">
                   {this.mapTestSubjects()}
                 </div>
               </div>
@@ -150,6 +161,7 @@ TestCard.propTypes = {
   onEnterAnswers: PropTypes.func.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
+  openTestScores: PropTypes.func.isRequired,
 };
 
 export default TestCard;

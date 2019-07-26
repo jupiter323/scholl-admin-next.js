@@ -1,11 +1,11 @@
 export default [
   {
     id: 1,
-    // owner: {
-    //   lastName: 'Bezos',
-    //   firstName: 'Jeff',
-    //   email: 'jeff-bezos@gmail.com',
-    // },
+    owner: {
+      lastName: 'Bezos',
+      firstName: 'Jeff',
+      email: 'jeff-bezos@gmail.com',
+    },
     locationContactInfo: {
       locationName: 'Amazon',
       locationNickname: 'Amazon - Online Marketplace',
@@ -13,8 +13,8 @@ export default [
       locationPhoneNumber: '123-456-7889',
       website: '',
       locationStreetAddress: '',
-      locationCity: 'AustinAustin',
-      locationState: '',
+      locationCity: 'Austin',
+      locationState: 'TX',
       locationZip: '',
     },
     locationEmailSettings: {
@@ -44,14 +44,42 @@ export default [
       averageFinalScore: 1218,
       studentsAchievingTargetScore: 12,
     },
+    averageImprovement: {
+      totalPoints: '290',
+      readingAndWriting: '47',
+      math: '146',
+    },
+    pipeline: {
+      unactivated: '31',
+      current: '9',
+      complete: '12',
+      waitingForFinalScore: '27',
+    },
+    targetScores: {
+      percentageHitTargetScore: '81',
+    },
+    studentImprovement: {
+      noGain: '32',
+      from0To50: '19',
+      from50To99: '60',
+      from100To149: '77',
+      from150To199: '62',
+      from200Plus: '91',
+    },
+    averagePerCourse: {
+      hoursOfInstruction: '31.9',
+      lessons: '74.2',
+      worksheets: '6.5',
+      practiceTests: '1.7',
+    },
   },
   {
     id: 2,
-    // owner: {
-    //   lastName: 'Chavarro',
-    //   firstName: 'Christian',
-    //   email: 'christian-chavarro@gmail.com',
-    // },
+    owner: {
+      lastName: 'Chavarro',
+      firstName: 'Christian',
+      email: 'christian-chavarro@gmail.com',
+    },
     locationContactInfo: {
       locationName: 'ChavarroLand',
       locationNickname: 'ChavarroLand - Austin, TX',
@@ -60,7 +88,7 @@ export default [
       website: '',
       locationStreetAddress: '',
       locationCity: 'Austin',
-      locationState: '',
+      locationState: 'TX',
       locationZip: '',
     },
     locationEmailSettings: {
@@ -90,14 +118,42 @@ export default [
       averageFinalScore: 1213,
       studentsAchievingTargetScore: 11,
     },
+    averageImprovement: {
+      totalPoints: '290',
+      readingAndWriting: '47',
+      math: '146',
+    },
+    pipeline: {
+      unactivated: '31',
+      current: '9',
+      complete: '12',
+      waitingForFinalScore: '27',
+    },
+    targetScores: {
+      percentageHitTargetScore: '81',
+    },
+    studentImprovement: {
+      noGain: '32',
+      from0To50: '19',
+      from50To99: '60',
+      from100To149: '77',
+      from150To199: '62',
+      from200Plus: '91',
+    },
+    averagePerCourse: {
+      hoursOfInstruction: '31.9',
+      lessons: '74.2',
+      worksheets: '6.5',
+      practiceTests: '1.7',
+    },
   },
   {
     id: 3,
-    // owner: {
-    //   lastName: 'Chavis',
-    //   firstName: 'Cellena',
-    //   email: 'cellena-chavis@gmail.com',
-    // },
+    owner: {
+      lastName: 'Chavis',
+      firstName: 'Cellena',
+      email: 'cellena-chavis@gmail.com',
+    },
     locationContactInfo: {
       locationName: 'Tutor Zone',
       locationNickname: 'Tutor Zone - Orlando, FL',
@@ -106,7 +162,7 @@ export default [
       website: '',
       locationStreetAddress: '',
       locationCity: 'Austin',
-      locationState: '',
+      locationState: 'TX',
       locationZip: '',
     },
     locationEmailSettings: {
@@ -136,14 +192,42 @@ export default [
       averageFinalScore: 1400,
       studentsAchievingTargetScore: 23,
     },
+    averageImprovement: {
+      totalPoints: '290',
+      readingAndWriting: '47',
+      math: '146',
+    },
+    pipeline: {
+      unactivated: '31',
+      current: '9',
+      complete: '12',
+      waitingForFinalScore: '27',
+    },
+    targetScores: {
+      percentageHitTargetScore: '81',
+    },
+    studentImprovement: {
+      noGain: '32',
+      from0To50: '19',
+      from50To99: '60',
+      from100To149: '77',
+      from150To199: '62',
+      from200Plus: '91',
+    },
+    averagePerCourse: {
+      hoursOfInstruction: '31.9',
+      lessons: '74.2',
+      worksheets: '6.5',
+      practiceTests: '1.7',
+    },
   },
   {
     id: 4,
-    // owner: {
-    //   lastName: 'Smith',
-    //   firstName: 'Will',
-    //   email: 'will-smithgmail.com',
-    // },
+    owner: {
+      lastName: 'Smith',
+      firstName: 'Will',
+      email: 'will-smithgmail.com',
+    },
     locationContactInfo: {
       locationName: 'Fresh Prince',
       locationNickname: 'Fresh Prince - Philladelphia',
@@ -152,7 +236,7 @@ export default [
       website: '',
       locationStreetAddress: '',
       locationCity: 'Austin',
-      locationState: '',
+      locationState: 'TX',
       locationZip: '',
     },
     locationEmailSettings: {
@@ -175,21 +259,49 @@ export default [
     },
     locationBasicInfo: {
       activeStudents: 22,
-      pastStudents: 10,
+      pastStudents: 13,
       unactivatedStudents: 12,
       averageImprovement: 261,
       averageInitialScore: 1100,
       averageFinalScore: 1233,
-      studentsAchievingTargetScore: 13,
+      studentsAchievingTargetScore: 10,
+    },
+    averageImprovement: {
+      totalPoints: '290',
+      readingAndWriting: '47',
+      math: '146',
+    },
+    pipeline: {
+      unactivated: '31',
+      current: '9',
+      complete: '12',
+      waitingForFinalScore: '27',
+    },
+    targetScores: {
+      percentageHitTargetScore: '81',
+    },
+    studentImprovement: {
+      noGain: '32',
+      from0To50: '19',
+      from50To99: '60',
+      from100To149: '77',
+      from150To199: '62',
+      from200Plus: '91',
+    },
+    averagePerCourse: {
+      hoursOfInstruction: '31.9',
+      lessons: '74.2',
+      worksheets: '6.5',
+      practiceTests: '1.7',
     },
   },
   {
     id: 5,
-    // owner: {
-    //   lastName: 'Lumberjack',
-    //   firstName: 'Arnold',
-    //   email: 'arnold-lumberjack@gmail.com',
-    // },
+    owner: {
+      lastName: 'Lumberjack',
+      firstName: 'Arnold',
+      email: 'arnold-lumberjack@gmail.com',
+    },
     locationContactInfo: {
       locationName: 'Lumberjack Tutoring',
       locationNickname: 'Lumberjack Tutoring - Canada',
@@ -198,7 +310,7 @@ export default [
       website: '',
       locationStreetAddress: '',
       locationCity: 'Miami',
-      locationState: '',
+      locationState: 'FL',
       locationZip: '',
     },
     locationEmailSettings: {
@@ -228,14 +340,42 @@ export default [
       averageFinalScore: 1459,
       studentsAchievingTargetScore: 9,
     },
+    averageImprovement: {
+      totalPoints: '290',
+      readingAndWriting: '47',
+      math: '146',
+    },
+    pipeline: {
+      unactivated: '31',
+      current: '9',
+      complete: '12',
+      waitingForFinalScore: '27',
+    },
+    targetScores: {
+      percentageHitTargetScore: '81',
+    },
+    studentImprovement: {
+      noGain: '32',
+      from0To50: '19',
+      from50To99: '60',
+      from100To149: '77',
+      from150To199: '62',
+      from200Plus: '91',
+    },
+    averagePerCourse: {
+      hoursOfInstruction: '31.9',
+      lessons: '74.2',
+      worksheets: '6.5',
+      practiceTests: '1.7',
+    },
   },
   {
     id: 6,
-    // owner: {
-    //   lastName: 'Duck',
-    //   firstName: 'Donald',
-    //   email: 'donald-duck@gmail.com',
-    // },
+    owner: {
+      lastName: 'Duck',
+      firstName: 'Donald',
+      email: 'donald-duck@gmail.com',
+    },
     locationContactInfo: {
       locationName: 'Disney Learning',
       locationNickname: 'Disney Learning - San Francisco, CA',
@@ -244,7 +384,7 @@ export default [
       website: '',
       locationStreetAddress: '',
       locationCity: 'Miami',
-      locationState: '',
+      locationState: 'FL',
       locationZip: '',
     },
     locationEmailSettings: {
@@ -267,12 +407,40 @@ export default [
     },
     locationBasicInfo: {
       activeStudents: 45,
-      pastStudents: 14,
+      pastStudents: 54,
       unactivatedStudents: 31,
       averageImprovement: 205,
       averageInitialScore: 1129,
       averageFinalScore: 1367,
       studentsAchievingTargetScore: 44,
+    },
+    averageImprovement: {
+      totalPoints: '290',
+      readingAndWriting: '47',
+      math: '146',
+    },
+    pipeline: {
+      unactivated: '31',
+      current: '9',
+      complete: '12',
+      waitingForFinalScore: '27',
+    },
+    targetScores: {
+      percentageHitTargetScore: '81',
+    },
+    studentImprovement: {
+      noGain: '32',
+      from0To50: '19',
+      from50To99: '60',
+      from100To149: '77',
+      from150To199: '62',
+      from200Plus: '91',
+    },
+    averagePerCourse: {
+      hoursOfInstruction: '31.9',
+      lessons: '74.2',
+      worksheets: '6.5',
+      practiceTests: '1.7',
     },
   },
 ];

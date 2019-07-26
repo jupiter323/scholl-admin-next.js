@@ -6,9 +6,7 @@ class LocationList extends React.Component {
   render() {
     return (
       <main id="main" role="main">
-        <div className="main-holder grey lighten-5">
           <LocationListPage />
-        </div>
       </main>
     );
   }

@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 
-const data = (total, current) => ({
+const data = (value, total) => ({
   datasets: [{
-    data: [current, total-current],
+    data: [ value, total-value ],
     backgroundColor: [
-      'rgb(98, 183, 113)',
+      '#62b771',
       '#eaeaea',
     ],
   }],
 })
 
-const LocationCard = ({ location: {
-  locationBasicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore, studentsAchievingTargetScore } = {},
+const LocationCard = ({ index, handleLocationCardClick, location: {
+  locationBasicInfo: { studentsAchievingTargetScore, activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore } = {},
   locationContactInfo: { locationName, locationNickname } = {},
 } = {} }) => (
   <div className="card-main-col col s12 m8 l7 xl5">
@@ -23,7 +23,7 @@ const LocationCard = ({ location: {
           <div className="col s10">
             <div className="user-block">
               <div className="user-text" style={{ color: '#fff' }}>
-                <h4 className="h3">{locationName}</h4>
+                <h4 className="h3"><a href="#" onClick={() => handleLocationCardClick(index)}> {locationName}</a></h4>
                 <span className="sub-title">{locationNickname}</span>
               </div>
             </div>
@@ -45,20 +45,20 @@ const LocationCard = ({ location: {
           <div className="col s12 m5">
             <div className="chart-container">
               <div className="chart-holder">
-              <Doughnut
-                data={() => data(activeStudents, studentsAchievingTargetScore)}
-                height={110}
-                width={110}
-                options={{
-                  circumference: 4,
-                  rotation: -3.58,
-                  cutoutPercentage: 50,
-                  tooltips: false,
-                }}
+                <Doughnut
+                  data={() => data(studentsAchievingTargetScore, pastStudents)}
+                  height={110}
+                  width={110}
+                  options={{
+                    circumference: 1.45 * Math.PI,
+                        rotation: -3.85,
+                        cutoutPercentage: 55,
+                        tooltips: false,
+                  }}
                 />
-                <span className="chart-value" style={{ backgroundColor: '#62b771', bottom: '-22px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor((studentsAchievingTargetScore / activeStudents) * 100)}%</span>
+                <span className="chart-value" style={{ backgroundColor: '#62b771', bottom: '-15px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor(studentsAchievingTargetScore / pastStudents * 100)}%</span>
               </div>
-              <div className="chart-description" style={{ color: '#31837a', marginTop: '36px' }}>Students Who Achieved Target Score</div>
+              <div className="chart-description" style={{ color: '#31837a', marginTop: '45px' }}>Students Who Achieved Target Score</div>
             </div>
           </div>
           <div className="col s12 m7">
@@ -97,6 +97,8 @@ const LocationCard = ({ location: {
 
 LocationCard.propTypes = {
   location: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  handleLocationCardClick: PropTypes.func.isRequired,
 };
 
 export default LocationCard;
