@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import formatTimeEstimate from '../../../../../utils/formatTimeEstimate';
+
 class FullView extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +27,9 @@ class FullView extends React.Component {
   mapWorksheetCards = () => {
     const { worksheets } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
-    return worksheets.map((worksheet, index) => (
+    return worksheets.map((worksheet, index) => {
+      const { timeEstimate, subject, difficulty, problems, problemType, worksheetName, worksheetSource, classifications } = worksheet;
+      return (
         <div className="card-main-col col s12 m8 l7 xl5" key={worksheet.id}>
           <div className="card-main work-card card">
             <div className="card-panel panel-border">
@@ -37,8 +41,8 @@ class FullView extends React.Component {
                 </div>
                 <div className="col s8">
                   <div className="card-panel-text">
-                    <div className="text-small truncate">Worksheet (Math)</div>
-                    <div className="text-large truncate">Triangle Practice</div>
+                    <div className="text-small truncate">Worksheet ({subject})</div>
+                    <div className="text-large truncate">{worksheetName}</div>
                   </div>
                 </div>
                 <div className="position-top right-align">
@@ -55,7 +59,6 @@ class FullView extends React.Component {
                       <If condition={dropdownIsOpen && dropdownIndex === index}>
                         <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
                           <li>
-                            {/* <!-- Modal Trigger --> */}
                             <a href="#modal_user_edit" className="modal-trigger link-block">Edit</a>
                           </li>
                           <li><a href="#!">Clone</a></li>
@@ -71,13 +74,13 @@ class FullView extends React.Component {
                   <div className="left-col col s7">
                     <dl className="dl-horizontal">
                       <dt>Problem Type:</dt>
-                      <dd>Mixed</dd>
+                      <dd>{problemType}</dd>
                     </dl>
                   </div>
                   <div className="right-col col s5 right-align">
                     <dl className="dl-horizontal">
                       <dt>Diﬃculty:</dt>
-                      <dd>Beginner</dd>
+                      <dd>{difficulty}</dd>
                     </dl>
                   </div>
                 </div>
@@ -106,11 +109,11 @@ class FullView extends React.Component {
                     <div className="chart-description">
                       <dl className="dl-horizontal">
                         <dt>Time Est:</dt>
-                        <dd>14 min</dd>
+                        <dd>{formatTimeEstimate(timeEstimate)}</dd>
                       </dl>
                       <dl className="dl-horizontal">
                         <dt>Problems:</dt>
-                        <dd>16</dd>
+                        <dd>{problems}</dd>
                       </dl>
                     </div>
                   </div>
@@ -119,21 +122,21 @@ class FullView extends React.Component {
               <div className="card-text">
                 <dl className="dl-horizontal">
                   <dt>Worksheet Source:</dt>
-                  <dd>User Created</dd>
+                  <dd>{worksheetSource}</dd>
                 </dl>
               </div>
               <div className="card-inner-row">
                 <div className="row-holder">
                   <ul className="classification-list">
-                    <li className="class-box">Right Trianges</li>
-                    <li className="class-box">Trigonometry</li>
+                    {classifications.map(classification => <li className="class-box" key={classification}>{classification}</li>)}
                   </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      ));
+      );
+    });
   }
 
   render() {
