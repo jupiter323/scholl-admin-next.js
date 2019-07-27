@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TableHeader from './components/TableHeader';
 
-import formatTimeEstimate from '../../utils/formatTimeEstimate';
+import formatTimeEstimate from '../../../../../utils/formatTimeEstimate';
 import statusColorMap from '../../utils/statusColorMap';
 
 class ListView extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 
-import formatTimeEstimate from '../../utils/formatTimeEstimate';
+import formatTimeEstimate from '../../../../../utils/formatTimeEstimate';
 import statusColorMap, { chartColorMap } from '../../utils/statusColorMap';
 
 const data = (percentage, status) => ({
