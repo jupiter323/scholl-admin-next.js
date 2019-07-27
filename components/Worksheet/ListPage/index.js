@@ -1,6 +1,7 @@
 import React from 'react';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
+import ListView from './components/ListView';
 
 import sampleWorksheets from '../utils/sampleWorksheets';
 import { dueDate, assignDate, problems, completed, flags, score, timeEstimate } from '../utils/sortFunctions';
@@ -105,8 +106,8 @@ class ListPage extends React.Component {
   renderWorksheetView = () => {
     const { currentView } = this.state;
     switch (currentView) {
-      // case 'list':
-      //   return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
+      case 'list':
+        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
       case 'full':
         return <FullView  worksheets={this.getMappableWorksheets()} />
       default:
@@ -115,6 +116,7 @@ class ListPage extends React.Component {
   }
 
   render() {
+    const { currentView } = this.state;
     return (
       <React.Fragment>
         <div className="title-row card-panel">
@@ -128,7 +130,15 @@ class ListPage extends React.Component {
             </span>
           </h2>
         </div>
-        <FilterSection />
+        <FilterSection
+          currentView={currentView}
+          onChangeView={this.onChangeView}
+          onSetSort={this.onSetSort}
+          onSetFilteredState={this.onSetFilteredState}
+          onUnsetFilteredState={this.onUnsetFilteredState}
+          onSetFilteredTopicState={this.onSetFilteredTopicState}
+          onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
+        />
         {this.renderWorksheetView()}
       </React.Fragment>
     );

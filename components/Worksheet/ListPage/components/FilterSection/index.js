@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,16 +7,21 @@ class FilterSection extends React.Component {
     super(props);
     this.state = {
       open: false,
+      worksheetName: '',
+      topic: {},
+      sort: {},
+      activeFilters: [],
     };
   }
 
   render() {
     const { open } = this.state;
+    const { currentView, onChangeView } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
           <li>
-          <div className="collapsible-body" style={open ? { display: 'block' } : { display: 'none' }}>
+            <div className="collapsible-body" style={open ? { display: 'block' } : { display: 'none' }}>
               <div className="filter-form_checkbox-list-holder justify-center">
                 <ul className="filter-form_checkbox-list">
                   <li>
@@ -116,8 +122,20 @@ class FilterSection extends React.Component {
               <div className="switcher-block col s12 l4">
                 <div className="view-switcher">
                   <ul className="switcher center-align">
-                    <li className="active" data-view="view-full"><a href="#">Full View</a></li>
-                    <li data-view="view-list"><a href="#">List View</a></li>
+                    <li
+                      data-view="view-full"
+                      className={currentView === 'full' ? 'active' : ''}
+                      onClick={() => onChangeView('full')}
+                    >
+                      <a href="#">Full View</a>
+                    </li>
+                    <li
+                      data-view="view-list"
+                      className={currentView === 'list' ? 'active' : ''}
+                      onClick={() => onChangeView('list')}
+                    >
+                      <a href="#">List View</a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -140,11 +158,11 @@ class FilterSection extends React.Component {
 FilterSection.propTypes = {
   currentView: PropTypes.string.isRequired,
   onChangeView: PropTypes.func.isRequired,
-  onSetSort: PropTypes.func.isRequired,
-  onSetFilteredTopicState: PropTypes.func.isRequired,
-  onUnsetFilteredTopicState: PropTypes.func.isRequired,
-  onSetFilteredState: PropTypes.func.isRequired,
-  onUnsetFilteredState: PropTypes.func.isRequired,
+  // onSetSort: PropTypes.func.isRequired,
+  // onSetFilteredTopicState: PropTypes.func.isRequired,
+  // onUnsetFilteredTopicState: PropTypes.func.isRequired,
+  // onSetFilteredState: PropTypes.func.isRequired,
+  // onUnsetFilteredState: PropTypes.func.isRequired,
 }
 
 export default FilterSection;
