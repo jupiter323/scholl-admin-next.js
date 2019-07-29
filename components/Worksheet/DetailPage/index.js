@@ -20,6 +20,7 @@ class DetailPage extends React.Component {
   onToggleProblemBankModal = () => this.setState(({ problemBankOpen }) => ({ problemBankOpen: !problemBankOpen }))
   onRemoveAllProblems = () => this.setState({ problems: [], passages: [] })
 
+  // TODO: Determine how to incorporate this method if problems/passges are pulled from worksheet instead of state
   addSelectedProblems = (incomingProblems, incomingPassages, addTime) => {
     const problems = update(this.state.problems, {
       $push: [...incomingProblems],
@@ -32,7 +33,7 @@ class DetailPage extends React.Component {
   }
 
   render() {
-    const { problemBankOpen, problems, passages } = this.state;
+    const { problemBankOpen } = this.state;
     const { worksheet, onSetActiveWorksheet } = this.props;
     return (
       <div className="main-container">
@@ -46,8 +47,8 @@ class DetailPage extends React.Component {
             <WorksheetProblems
               onOpenProblemBankModal={this.onToggleProblemBankModal}
               onRemoveAllProblems={this.onRemoveAllProblems}
-              problems={problems}
-              passages={passages}
+              problems={worksheet.problems}
+              passages={worksheet.passages}
             />
             <WorksheetDetails
               worksheet={worksheet}

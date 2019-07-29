@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 
+import { data } from '../../../utils';
 import formatTimeEstimate from '../../../../../utils/formatTimeEstimate';
 
 class FullView extends React.Component {
@@ -28,7 +30,8 @@ class FullView extends React.Component {
     const { worksheets, onSetActiveWorksheet } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
     return worksheets.map((worksheet, index) => {
-      const { timeEstimate, subject, difficulty, problems, problemType, worksheetName, worksheetSource, classifications } = worksheet;
+      const { timeEstimate, subject, difficulty, problems, completedProblems, problemType, worksheetName, worksheetSource, classifications } = worksheet;
+      const completedPercentage = Number(completedProblems / problems.length) * 100;
       return (
         <div className="card-main-col col s12 m8 l7 xl5" key={worksheet.id}>
           <div className="card-main work-card card">
@@ -97,13 +100,15 @@ class FullView extends React.Component {
                 <div className="col s12">
                   <div className="chart-container">
                     <div className="chart-holder">
-                      <span className="svg-curved-bar" data-values='{"from": 0, "to": 100, "current": 0}' data-duration="1">
-                        {/* <!-- do not change path attribute "d" !!! --> */}
-                        <svg  width="110px" height="110px" viewBox=" 0 0 110 110">
-                          <path fill="none" style={{ strokeWidth: '22', stroke: '#eaeaea' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 1 1 95.8481890527072 71.35314804905443"></path>
-                          <path data-dinamic fill="none" style={{ strokeWidth: '22', stroke: '#d6d6d6' }} d="M 14.151810947292809 71.35314804905443 A 44 44 0 0 1 14.151810947292809 71.35314804905443"></path>
-                        </svg>
-                      </span>
+                      <Doughnut
+                        data={() => data(completedPercentage)}
+                        options={{
+                          circumference: 1 * Math.PI,
+                          rotation: 1 * Math.PI,
+                          cutoutPercentage: 60,
+                          tooltips: false,
+                        }}
+                      />
                       <span className="chart-value" style={{ backgroundColor: '#333' }}><span data-count-up data-start-val="0" data-end-val="0" data-duration="1"></span><span className="percentage">%</span></span>
                     </div>
                     <div className="chart-row">
@@ -119,7 +124,7 @@ class FullView extends React.Component {
                       </dl>
                       <dl className="dl-horizontal">
                         <dt>Problems:</dt>
-                        <dd>{problems}</dd>
+                        <dd>{problems.length}</dd>
                       </dl>
                     </div>
                   </div>

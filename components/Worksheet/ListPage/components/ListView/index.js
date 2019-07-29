@@ -41,7 +41,7 @@ class ListView extends React.Component {
               <div className="text-large truncate">{worksheetName}</div>
             </div>
           </div>
-          <div className="list-table-cell description-cell">{problems}</div>
+          <div className="list-table-cell description-cell">{problems.length}</div>
           <div className="list-table-cell time-cell">{formatTimeEstimate(timeEstimate)}</div>
           <div className="list-table-cell completed-cell">{worksheetSource}</div>
           <div className="list-table-cell empty-cell"><b>&nbsp;</b></div>

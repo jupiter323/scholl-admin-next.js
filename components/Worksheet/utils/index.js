@@ -237,3 +237,13 @@ export const getDefaultCategories = (categories, subject) => {
   const subjectCategoryOptions = subjectCategories && subjectCategories.length > 0 && subjectCategories[0].options;
   return categories.map(currentCategory => subjectCategoryOptions.filter(category => category.value === currentCategory)[0]);
 }
+
+export const data = (percentage) => ({
+  datasets: [{
+    data: [percentage, 100 - percentage],
+    backgroundColor: [
+      '#03bbf7',
+      '#eaeaea',
+    ],
+  }],
+});
