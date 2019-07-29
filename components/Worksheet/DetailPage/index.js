@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
 import WorksheetDetails from './components/WorksheetDetails';
@@ -6,6 +7,37 @@ import WorksheetProblems from './components/WorksheetProblems';
 import ProblemBank from './components/ProblemBank';
 import sampleProblems from '../utils/sampleProblems';
 import samplePassages from '../utils/samplePassages';
+
+const getDefault = (categories, subject) => {
+  const subjectCategories = categoryOptions.filter(categorySection => categorySection.label === subject);
+  const subjectCategoryOptions = subjectCategories && subjectCategories.length > 0 && subjectCategories[0].options;
+  return categories.map(currentCategory => subjectCategoryOptions.filter(category => category.value === currentCategory)[0]);
+}
+
+const categoryOptions = [
+  {
+    label: 'Math',
+    options: [
+      { value: 'Special Right Triangles', label: 'Special Right Triangles' },
+      { value: 'Volumes', label: 'Volumes' },
+      { value: 'Trig Functions', label: 'Trig Functions' },
+    ],
+  },
+  {
+    label: 'Writing',
+    options: [
+      { value: 'Astrology', label: 'Astrology' },
+      { value: 'Algebra', label: 'Algebra' },
+    ],
+  },
+  {
+    label: 'Reading',
+    options: [
+      { value: 'Geometry', label: 'Geometry' },
+      { value: 'Pythagorean Theorem', label: 'Pythagorean Theorem' },
+    ],
+  },
+]
 
 class DetailPage extends React.Component {
   constructor(props) {
@@ -33,6 +65,7 @@ class DetailPage extends React.Component {
 
   render() {
     const { problemBankOpen, problems, passages } = this.state;
+    const { worksheet, onSetActiveWorksheet } = this.props;
     return (
       <div className="main-container">
         <div className="container">
@@ -49,7 +82,8 @@ class DetailPage extends React.Component {
               passages={passages}
             />
             <WorksheetDetails
-              worksheet={{}}
+              worksheet={worksheet}
+              defaultCategories={getDefault(worksheet.classifications, worksheet.subject)}
             />
           </div>
           <div className="row">
@@ -58,6 +92,7 @@ class DetailPage extends React.Component {
                 <a
                   href="#"
                   className="waves-effect waves-teal btn-flat pink-text text-darken-1"
+                  onClick={() => onSetActiveWorksheet(null)}
                 >
                   Cancel
                 </a>
@@ -75,5 +110,10 @@ class DetailPage extends React.Component {
     )
   }
 }
+
+DetailPage.propTypes = {
+  worksheet: PropTypes.object,
+  onSetActiveWorksheet: PropTypes.func.isRequired,
+};
 
 export default DetailPage;

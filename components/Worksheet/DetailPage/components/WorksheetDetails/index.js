@@ -20,7 +20,7 @@ class WorksheetDetails extends React.Component {
         subject: {},
         type: '',
         difficulty: '',
-        estimatedTime: '',
+        timeEstimate: '',
         categories: [],
         description: '',
       },
@@ -29,7 +29,7 @@ class WorksheetDetails extends React.Component {
         subject: {},
         type: '',
         difficulty: '',
-        estimatedTime: '',
+        timeEstimate: '',
         categories: [],
         description: '',
       },
@@ -38,34 +38,58 @@ class WorksheetDetails extends React.Component {
         subject: true,
         type: true,
         difficulty: true,
-        estimatedTime: true,
+        timeEstimate: true,
         categories: true,
       },
       categoryOptions: [
         {
           label: 'Math',
           options: [
-            { value: 'special-right-triangles', label: 'Special Right Triangles' },
-            { value: 'volumes', label: 'Volumes' },
-            { value: 'trig-functions', label: 'Trig Functions' },
+            { value: 'Special Right Triangles', label: 'Special Right Triangles' },
+            { value: 'Volumes', label: 'Volumes' },
+            { value: 'Trig Functions', label: 'Trig Functions' },
           ],
         },
         {
-          label: 'Science',
+          label: 'Writing',
           options: [
-            { value: 'astrology', label: 'Astrology' },
-            { value: 'algebra', label: 'Algebra' },
+            { value: 'Astrology', label: 'Astrology' },
+            { value: 'Algebra', label: 'Algebra' },
           ],
         },
         {
-          label: 'English',
+          label: 'Reading',
           options: [
-            { value: 'geometry', label: 'Geometry' },
-            { value: 'pythagorean-theorem', label: 'Pythagorean Theorem' },
+            { value: 'Geometry', label: 'Geometry' },
+            { value: 'Pythagorean Theorem', label: 'Pythagorean Theorem' },
           ],
         },
       ],
+      subjectCategoryOptions: [],
     };
+  }
+
+  componentDidMount() {
+    const { worksheet: { id, worksheetName, subject, problemType: type, difficulty, timeEstimate, classifications: categories, description } = {} } = this.props;
+    const updatedWorksheet = { id, worksheetName, subject, type, difficulty, timeEstimate, categories, description };
+    const { originalWorksheet: originalWorksheetState } = this.state;
+    const originalWorksheet = update(originalWorksheetState, {
+      $merge: updatedWorksheet,
+    });
+    this.setState({ originalWorksheet, updatedWorksheet }); // eslint-disable-line
+  }
+
+  // This resets the component state to reflect the details of the next worksheet the user clicks on
+  componentWillReceiveProps = (nextProps) => {
+    if ((!this.state.originalWorksheet || nextProps.worksheet.id !== this.state.originalWorksheet.id)) {
+      const { worksheet: { id, worksheetName, subject, problemType: type, difficulty, timeEstimate, classifications: categories, description } = {} } = nextProps;
+      const updatedWorksheet = { id, worksheetName, subject, type, difficulty, timeEstimate, categories, description };
+      const { originalWorksheet: originalWorksheetState } = this.state;
+      const originalWorksheet = update(originalWorksheetState, {
+        $merge: nextProps.worksheet,
+      });
+      this.setState({ originalWorksheet, updatedWorksheet });
+    }
   }
 
   getSectionDropdownOptions = () => {
@@ -104,7 +128,8 @@ class WorksheetDetails extends React.Component {
   }
 
   render() {
-    const { validation: { categories: categoriesValid }, updatedWorksheet: { worksheetName, estimatedTime, subject, type, difficulty, description, categories } } = this.state;
+    const { validation: { categories: categoriesValid }, updatedWorksheet: { worksheetName, timeEstimate, subject, type, difficulty, description, categories } } = this.state;
+    const { defaultCategories } = this.props;
     return (
       <div className="col s12 l6">
         <div className="card-block">
@@ -171,10 +196,10 @@ class WorksheetDetails extends React.Component {
                         type="text"
                         className="timepicker"
                         id="detail_estimated_time"
-                        value={estimatedTime}
-                        onChange={(event) => this.handleDetailsChange(event, 'estimatedTime')}
+                        value={timeEstimate}
+                        onChange={(event) => this.handleDetailsChange(event, 'timeEstimate')}
                       />
-                      <label className="label" htmlFor="detail_estimated_time">Estimated Time</label>
+                      <label className={timeEstimate.length ? 'label active' : 'label'} htmlFor="detail_estimated_time">Estimated Time</label>
                     </div>
                   </div>
                 </div>
@@ -193,6 +218,7 @@ class WorksheetDetails extends React.Component {
                       styles={categoryStyles}
                       isClearable={false}
                       label="Categories"
+                      defaultValue={defaultCategories}
                     />
                   </div>
                 </div>
@@ -206,7 +232,7 @@ class WorksheetDetails extends React.Component {
                         value={description}
                         onChange={(event) => this.handleDetailsChange(event, 'description')}
                       />
-                      <label className="label" htmlFor="detail_description">Description (optional)</label>
+                      <label className={description.length ? 'label active' : 'label'} htmlFor="detail_description">Description (optional)</label>
                     </div>
                   </div>
                 </div>
@@ -221,6 +247,7 @@ class WorksheetDetails extends React.Component {
 
 WorksheetDetails.propTypes = {
   worksheet: PropTypes.object,
+  defaultCategories: PropTypes.array,
 };
 
 export default WorksheetDetails;
