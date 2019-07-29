@@ -11,12 +11,12 @@ class Worksheets extends Component {
     };
   }
 
-  onSetActiveWorksheet = (activeWorksheet) => this.state({ activeWorksheet })
+  onSetActiveWorksheet = (activeWorksheet) => this.setState({ activeWorksheet })
 
   renderCurrentPage = () => {
     const { activeWorksheet } = this.state;
     if (!activeWorksheet) {
-      return <ListPage />
+      return <ListPage onSetActiveWorksheet={this.onSetActiveWorksheet} />
     }
     return (
       <React.Fragment>
@@ -26,7 +26,13 @@ class Worksheets extends Component {
           </div>
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">
-              <a href="#!" className="breadcrumb">&lt; Custom Worksheet Library</a>
+              <a
+                href="#"
+                className="breadcrumb"
+                onClick={() => this.onSetActiveWorksheet(null)}
+              >
+                &lt; Custom Worksheet Library
+              </a>
             </div>
           </nav>
           <h2 className="h1 white-text">
@@ -36,7 +42,7 @@ class Worksheets extends Component {
             </span>
           </h2>
         </div>
-        <DetailPage />
+        <DetailPage worksheet={activeWorksheet} onSetActiveWorksheet={this.onSetActiveWorksheet} />
       </React.Fragment>
     );
   }

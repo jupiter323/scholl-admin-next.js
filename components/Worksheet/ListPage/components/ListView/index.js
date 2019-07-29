@@ -25,7 +25,7 @@ class ListView extends React.Component {
   }
 
   mapWorksheetRows = () => {
-    const { worksheets } = this.props;
+    const { worksheets, onSetActiveWorksheet } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
     return worksheets.map((worksheet, index) => {
       const { worksheetSource, worksheetName, problems, timeEstimate } = worksheet;
@@ -58,11 +58,16 @@ class ListView extends React.Component {
               <If condition={dropdownIsOpen && dropdownIndex === index}>
                 <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
                   <li>
-                    <a href="#modal_user_edit" className="modal-trigger link-block">View Details</a>
+                    <a
+                      href="#"
+                      className="modal-trigger link-block"
+                      onClick={() => onSetActiveWorksheet(worksheet)}
+                    >
+                      Edit
+                    </a>
                   </li>
-                  <li><a href="#!">Dismiss Flags</a></li>
-                  <li><a href="#!">Reset</a></li>
-                  <li><a href="#!" className="link-delete">Delete</a></li>
+                  <li><a href="#">Clone</a></li>
+                  <li><a href="#" className="link-delete">Delete</a></li>
                 </ul>
               </If>
             </div>
@@ -106,6 +111,7 @@ class ListView extends React.Component {
 
 ListView.propTypes = {
   worksheets: PropTypes.array.isRequired,
+  onSetActiveWorksheet: PropTypes.func.isRequired,
 }
 
 export default ListView;

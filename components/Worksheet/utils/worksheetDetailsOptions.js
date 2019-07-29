@@ -1,39 +1,43 @@
 export const subjectOptions = [
   {
     label: 'Reading',
-    value: 'reading',
+    value: 'Reading',
   },
   {
     label: 'Writing',
-    value: 'writing',
+    value: 'Writing',
   },
   {
     label: 'Math',
-    value: 'math',
+    value: 'Math',
   },
 ];
 export const typeOptions = [
   {
     label: 'SAT Practice',
-    value: 'satPractice',
+    value: 'SAT Practice',
   },
   {
     label: 'Skill Builder',
-    value: 'skillBuilder',
+    value: 'Skill Builders',
   },
 ];
 export const difficultyOptions = [
   {
-    label: 'Easy',
-    value: 'easy',
+    label: 'Basic',
+    value: 'Basic',
   },
   {
     label: 'Medium',
-    value: 'medium',
+    value: 'Medium',
   },
   {
-    label: 'Hard',
-    value: 'hard',
+    label: 'Advanced',
+    value: 'Advanced',
+  },
+  {
+    label: 'Mixed',
+    value: 'Mixed',
   },
 ];
 export const tagOptions = [

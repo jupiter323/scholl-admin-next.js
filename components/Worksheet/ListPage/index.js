@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
 import FilterSection from './components/FilterSection';
@@ -175,11 +176,12 @@ class ListPage extends React.Component {
   // eslint-disable-next-line consistent-return
   renderWorksheetView = () => {
     const { currentView } = this.state;
+    const { onSetActiveWorksheet } = this.props;
     switch (currentView) {
       case 'list':
-        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
+        return <ListView onSetActiveWorksheet={onSetActiveWorksheet} worksheets={this.getMappableWorksheets()} />
       case 'full':
-        return <FullView worksheets={this.getMappableWorksheets()} />
+        return <FullView onSetActiveWorksheet={onSetActiveWorksheet} worksheets={this.getMappableWorksheets()} />
       default:
         break;
     }
@@ -226,6 +228,10 @@ class ListPage extends React.Component {
       </React.Fragment>
     );
   }
+}
+
+ListPage.propTypes = {
+  onSetActiveWorksheet: PropTypes.func.isRequired,
 }
 
 export default ListPage;
