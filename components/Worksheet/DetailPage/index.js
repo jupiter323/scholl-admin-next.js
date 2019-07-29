@@ -5,39 +5,7 @@ import update from 'immutability-helper';
 import WorksheetDetails from './components/WorksheetDetails';
 import WorksheetProblems from './components/WorksheetProblems';
 import ProblemBank from './components/ProblemBank';
-import sampleProblems from '../utils/sampleProblems';
-import samplePassages from '../utils/samplePassages';
-
-const getDefault = (categories, subject) => {
-  const subjectCategories = categoryOptions.filter(categorySection => categorySection.label === subject);
-  const subjectCategoryOptions = subjectCategories && subjectCategories.length > 0 && subjectCategories[0].options;
-  return categories.map(currentCategory => subjectCategoryOptions.filter(category => category.value === currentCategory)[0]);
-}
-
-const categoryOptions = [
-  {
-    label: 'Math',
-    options: [
-      { value: 'Special Right Triangles', label: 'Special Right Triangles' },
-      { value: 'Volumes', label: 'Volumes' },
-      { value: 'Trig Functions', label: 'Trig Functions' },
-    ],
-  },
-  {
-    label: 'Writing',
-    options: [
-      { value: 'Astrology', label: 'Astrology' },
-      { value: 'Algebra', label: 'Algebra' },
-    ],
-  },
-  {
-    label: 'Reading',
-    options: [
-      { value: 'Geometry', label: 'Geometry' },
-      { value: 'Pythagorean Theorem', label: 'Pythagorean Theorem' },
-    ],
-  },
-]
+import { getDefaultCategories, samplePassages, sampleProblems } from '../utils';
 
 class DetailPage extends React.Component {
   constructor(props) {
@@ -83,7 +51,7 @@ class DetailPage extends React.Component {
             />
             <WorksheetDetails
               worksheet={worksheet}
-              defaultCategories={getDefault(worksheet.classifications, worksheet.subject)}
+              defaultCategories={getDefaultCategories(worksheet.classifications, worksheet.subject)}
             />
           </div>
           <div className="row">

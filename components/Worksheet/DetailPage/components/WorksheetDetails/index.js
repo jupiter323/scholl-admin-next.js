@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import categoryStyles from '../../../../FormComponents/Dropdown/styles/dropdownStyles';
 import ControlComponent from '../../../../FormComponents/Dropdown/styles/ControlComponent';
 import MultiValueLabel from '../../../../FormComponents/Dropdown/styles/MultiValueLabel';
-import { subjectOptions, difficultyOptions, typeOptions } from '../../../utils/worksheetDetailsOptions';
+import { subjectOptions, difficultyOptions, typeOptions } from '../../../utils';
 
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';

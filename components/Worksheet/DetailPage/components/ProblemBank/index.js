@@ -8,8 +8,7 @@ import Portal from '../../../../Portal';
 import FilterSection from './components/FilterSection';
 import TableHeader from './components/TableHeader';
 
-import sampleProblems from '../../../utils/sampleProblems';
-import samplePassages from '../../../utils/samplePassages';
+import { sampleProblems, samplePassages } from '../../../utils';
 import { topicMap, workbookMap, subjectMap, difficultyMap, typeMap } from '../../../utils/worksheetFilterMap';
 import { subjectAscending, subjectDescending } from '../../../../utils/sortFunctions';
 
