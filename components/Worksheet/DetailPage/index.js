@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import update from 'immutability-helper';
+// import update from 'immutability-helper';
 
 import WorksheetDetails from './components/WorksheetDetails';
 import WorksheetProblems from './components/WorksheetProblems';
 import ProblemBank from './components/ProblemBank';
-import { getDefaultCategories, samplePassages, sampleProblems } from '../utils';
+import { getDefaultCategories } from '../utils';
 
 class DetailPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       problemBankOpen: false,
-      problems: sampleProblems,
-      passages: samplePassages,
+      // problems: sampleProblems,
+      // passages: samplePassages,
     }
   }
 
@@ -22,14 +22,16 @@ class DetailPage extends React.Component {
 
   // TODO: Determine how to incorporate this method if problems/passges are pulled from worksheet instead of state
   addSelectedProblems = (incomingProblems, incomingPassages, addTime) => {
-    const problems = update(this.state.problems, {
-      $push: [...incomingProblems],
-    });
-    const passages = update(this.state.passages, {
-      $push: [...incomingPassages],
-    });
+    // const problems = update(this.state.problems, {
+    //   $push: [...incomingProblems],
+    // });
+    // const passages = update(this.state.passages, {
+    //   $push: [...incomingPassages],
+    // });
+    console.warn('Likely pending wiring up via api call', incomingPassages, incomingProblems);
     console.warn('What are we doing with addTime?', addTime);
-    this.setState({ problems, passages }, this.onToggleProblemBankModal);
+    this.onToggleProblemBankModal();
+    // this.setState({ problems, passages }, this.onToggleProblemBankModal);
   }
 
   render() {
@@ -41,6 +43,9 @@ class DetailPage extends React.Component {
           <div className="main-row row">
             <ProblemBank
               open={problemBankOpen}
+              worksheetId={worksheet.id}
+              problems={worksheet.problems}
+              passages={worksheet.passages}
               onClose={this.onToggleProblemBankModal}
               addSelectedProblems={this.addSelectedProblems}
             />
