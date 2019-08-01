@@ -7,6 +7,7 @@ import DetailLessonList from '../DetailLessonList';
 import DetailTestList from '../DetailTestList';
 import LessonDetailAnswerSheet from '../LessonDetailAnswerSheet';
 import StudentNavBar from '../components/StudentNavBar';
+import ScoredTestListPage from '../ScoredTestListPage';
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -43,6 +44,9 @@ class IndividualStudentPage extends React.Component {
     }
     if (activePage === 'test') {
       return <DetailTestList user={student} />;
+    }
+    if (activePage === 'scored-tests') {
+      return <ScoredTestListPage />
     }
     return null;
   }
