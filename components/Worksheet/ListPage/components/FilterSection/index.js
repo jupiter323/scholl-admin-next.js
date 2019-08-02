@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
@@ -15,30 +15,13 @@ class FilterSection extends React.Component {
     this.state = {
       open: false,
       worksheetName: '',
-      topic: {},
+      topic: '',
       sort: {},
-      activeFilters: [],
     };
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
-  onClearFilters = () => this.setState({ activeFilters: [] })
-
-  handleFilterClick = (filter) => {
-    const { activeFilters: currentActiveFilters } = this.state;
-    let activeFilters;
-    if (currentActiveFilters.indexOf(filter) === -1) {
-      activeFilters = update(currentActiveFilters, {
-        $push: [filter],
-      });
-    } else {
-      const filterIndex = currentActiveFilters.indexOf(filter);
-      activeFilters = update(currentActiveFilters, {
-        $splice: [[ filterIndex, 1 ]],
-      });
-    }
-    this.setState({ activeFilters });
-  }
+  onClearFilters = () => this.setState({ topic: '' }, this.props.onClearFilters)
 
   // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
@@ -70,8 +53,8 @@ class FilterSection extends React.Component {
   }
 
   render() {
-    const { open, activeFilters, worksheetName, topic, sort } = this.state;
-    const { currentView, onChangeView } = this.props;
+    const { open, worksheetName, topic, sort } = this.state;
+    const { currentView, onChangeView, handleFilterClick, subjectFilters, difficultyFilters, typeFilters, sourceFilters } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -82,165 +65,138 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
+                      name="reading"
                       id="reading"
-                      checked={activeFilters.indexOf('reading') !== -1}
-                      onChange={() => this.handleFilterClick('reading')}
+                      checked={subjectFilters.indexOf('reading') !== -1}
+                      onChange={({ target }) => handleFilterClick('subject', target.name)}
                     />
                     <label htmlFor="reading">Reading</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
+                      name="writing"
                       id="writing"
-                      checked={activeFilters.indexOf('writing') !== -1}
-                      onChange={() => this.handleFilterClick('writing')}
+                      checked={subjectFilters.indexOf('writing') !== -1}
+                      onChange={({ target }) => handleFilterClick('subject', target.name)}
                     />
                     <label htmlFor="writing">Writing</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
+                      name="math"
                       id="math"
-                      checked={activeFilters.indexOf('math') !== -1}
-                      onChange={() => this.handleFilterClick('math')}
+                      checked={subjectFilters.indexOf('math') !== -1}
+                      onChange={({ target }) => handleFilterClick('subject', target.name)}
                     />
                     <label htmlFor="math">Math</label>
                   </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="beginning"
-                      checked={activeFilters.indexOf('beginning') !== -1}
-                      onChange={() => this.handleFilterClick('beginning')}
+                      name="mixedSubject"
+                      id="mixedSubject"
+                      checked={subjectFilters.indexOf('mixedSubject') !== -1}
+                      onChange={() => handleFilterClick('subject', 'mixedSubject')}
                     />
-                    <label htmlFor="beginning">Beginning</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="developing"
-                      checked={activeFilters.indexOf('developing') !== -1}
-                      onChange={() => this.handleFilterClick('developing')}
-                    />
-                    <label htmlFor="developing">Developing</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="accomplished"
-                      checked={activeFilters.indexOf('accomplished') !== -1}
-                      onChange={() => this.handleFilterClick('accomplished')}
-                    />
-                    <label htmlFor="accomplished">Accomplished</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="exemplary"
-                      checked={activeFilters.indexOf('exemplary') !== -1}
-                      onChange={() => this.handleFilterClick('exemplary')}
-                    />
-                    <label htmlFor="exemplary">Exemplary</label>
+                    <label htmlFor="mixedSubject">Mixed</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="unassigned"
-                      checked={activeFilters.indexOf('unassigned') !== -1}
-                      onChange={() => this.handleFilterClick('unassigned')}
+                      name="basic"
+                      id="basic"
+                      checked={difficultyFilters.indexOf('basic') !== -1}
+                      onChange={({ target }) => handleFilterClick('difficulty', target.name)}
                     />
-                    <label htmlFor="unassigned">Unassigned</label>
+                    <label htmlFor="basic">Basic</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="complete"
-                      checked={activeFilters.indexOf('complete') !== -1}
-                      onChange={() => this.handleFilterClick('complete')}
+                      name="medium"
+                      id="medium"
+                      checked={difficultyFilters.indexOf('medium') !== -1}
+                      onChange={({ target }) => handleFilterClick('difficulty', target.name)}
                     />
-                    <label htmlFor="complete">Complete</label>
+                    <label htmlFor="medium">Medium</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="incomplete"
-                      checked={activeFilters.indexOf('incomplete') !== -1}
-                      onChange={() => this.handleFilterClick('incomplete')}
+                      name="advanced"
+                      id="advanced"
+                      checked={difficultyFilters.indexOf('advanced') !== -1}
+                      onChange={({ target }) => handleFilterClick('difficulty', target.name)}
                     />
-                    <label htmlFor="incomplete">Incomplete</label>
-                  </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="hasReviewFlags"
-                      checked={activeFilters.indexOf('hasReviewFlags') !== -1}
-                      onChange={() => this.handleFilterClick('hasReviewFlags')}
-                    />
-                    <label htmlFor="hasReviewFlags">Has Review Flags</label>
-                  </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="dueToday"
-                      checked={activeFilters.indexOf('dueToday') !== -1}
-                      onChange={() => this.handleFilterClick('dueToday')}
-                    />
-                    <label htmlFor="dueToday">Due Today</label>
+                    <label htmlFor="advanced">Advanced</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="dueNextSession"
-                      checked={activeFilters.indexOf('dueNextSession') !== -1}
-                      onChange={() => this.handleFilterClick('dueNextSession')}
+                      name="mixedDifficulty"
+                      id="mixedDifficulty"
+                      checked={difficultyFilters.indexOf('mixedDifficulty') !== -1}
+                      onChange={({ target }) => handleFilterClick('difficulty', target.name)}
                     />
-                    <label htmlFor="dueNextSession">Due By Next Session</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="dueThisWeek"
-                      checked={activeFilters.indexOf('dueThisWeek') !== -1}
-                      onChange={() => this.handleFilterClick('dueThisWeek')}
-                    />
-                    <label htmlFor="dueThisWeek">Due this Week</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="overdue"
-                      checked={activeFilters.indexOf('overdue') !== -1}
-                      onChange={() => this.handleFilterClick('overdue')}
-                    />
-                    <label htmlFor="overdue">Overdue</label>
+                    <label htmlFor="mixedDifficulty">Mixed</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="some-class"
-                      checked={activeFilters.indexOf('class') !== -1}
-                      onChange={() => this.handleFilterClick('class')}
+                      id="skillBuilders"
+                      name="skillBuilders"
+                      checked={typeFilters.indexOf('skillBuilders') !== -1}
+                      onChange={({ target }) => handleFilterClick('type', target.name)}
                     />
-                    <label htmlFor="some-class">Some Class</label>
+                    <label htmlFor="skillBuilders">Skill Builders</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="tutoring"
-                      checked={activeFilters.indexOf('tutoring') !== -1}
-                      onChange={() => this.handleFilterClick('tutoring')}
+                      id="satPractice"
+                      name="satPractice"
+                      checked={typeFilters.indexOf('satPractice') !== -1}
+                      onChange={({ target }) => handleFilterClick('type', target.name)}
                     />
-                    <label htmlFor="tutoring">Tutoring</label>
+                    <label htmlFor="satPractice">SAT Practice</label>
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="mixedType"
+                      name="mixedType"
+                      checked={typeFilters.indexOf('mixedType') !== -1}
+                      onChange={({ target }) => handleFilterClick('type', target.name)}
+                    />
+                    <label htmlFor="mixedType">Mixed</label>
+                  </li>
+                </ul>
+                <ul className="filter-form_checkbox-list">
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="builtIn"
+                      name="builtIn"
+                      checked={sourceFilters.indexOf('builtIn') !== -1}
+                      onChange={({ target }) => handleFilterClick('source', target.name)}
+                    />
+                    <label htmlFor="builtIn">Built-In</label>
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="userCreated"
+                      name="userCreated"
+                      checked={sourceFilters.indexOf('userCreated') !== -1}
+                      onChange={({ target }) => handleFilterClick('source', target.name)}
+                    />
+                    <label htmlFor="userCreated">User Created</label>
                   </li>
                 </ul>
               </div>
@@ -337,9 +293,15 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTypes = {
+  typeFilters: PropTypes.array.isRequired,
+  sourceFilters: PropTypes.array.isRequired,
+  subjectFilters: PropTypes.array.isRequired,
+  difficultyFilters: PropTypes.array.isRequired,
   currentView: PropTypes.string.isRequired,
   onChangeView: PropTypes.func.isRequired,
+  onClearFilters: PropTypes.func.isRequired,
   onSetSort: PropTypes.func.isRequired,
+  handleFilterClick: PropTypes.func.isRequired,
   onSetFilteredTopicState: PropTypes.func.isRequired,
   onUnsetFilteredTopicState: PropTypes.func.isRequired,
   onSetFilteredState: PropTypes.func.isRequired,

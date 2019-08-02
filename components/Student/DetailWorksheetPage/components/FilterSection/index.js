@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import sampleTopics from '../../../../utils/sampleTopics';
-import worksheetSortOptions from '../../utils/worksheetSortOptions';
+import worksheetSortOptions from '../../../../../utils/worksheetSortOptions';
 
 class FilterSection extends React.Component {
   constructor(props) {
