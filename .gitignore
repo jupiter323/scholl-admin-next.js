@@ -9,6 +9,7 @@ converage
 .env.test.local
 .env.production.local
 .idea
+node_modules
 
 npm_debug.log
 yarn-debug.log
