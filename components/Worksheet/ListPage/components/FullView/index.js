@@ -2,18 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 
+import { data } from '../../../utils';
 import formatTimeEstimate from '../../../../../utils/formatTimeEstimate';
-import statusColorMap, { chartColorMap } from '../../utils/statusColorMap';
-
-const data = (percentage, status) => ({
-  datasets: [{
-    data: [percentage, 100 - percentage],
-    backgroundColor: [
-      chartColorMap[status],
-      '#eaeaea',
-    ],
-  }],
-});
 
 class FullView extends React.Component {
   constructor(props) {
@@ -37,13 +27,14 @@ class FullView extends React.Component {
   }
 
   mapWorksheetCards = () => {
-    const { worksheets, onToggleDetailModalOpen } = this.props;
+    const { worksheets, onSetActiveWorksheet } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
     return worksheets.map((worksheet, index) => {
-      const { disabled, worksheetName, worksheetSource, subject, problemType, difficulty, score, status, problems, timeEstimate, availableDate, dueDate, classifications, flags, late } = worksheet;
+      const { timeEstimate, subject, difficulty, problems, completedProblems, problemType, worksheetName, worksheetSource, classifications } = worksheet;
+      const completedPercentage = Number(completedProblems / problems.length) * 100;
       return (
         <div className="card-main-col col s12 m8 l7 xl5" key={worksheet.id}>
-          <div className={disabled ? 'card-main work-card card-disabled card' : 'card-main work-card card'}>
+          <div className="card-main work-card card">
             <div className="card-panel panel-border">
               <div className="card-panel-row row">
                 <div className="icon-col col s2">
@@ -59,11 +50,6 @@ class FullView extends React.Component {
                 </div>
                 <div className="position-top right-align">
                   <div className="icons-row">
-                    {flags.length > 0 && (
-                      <span className="badge-rounded-xs badge red darken-2 white-text">
-                        <b className="badge-text">{flags.length}</b> <i className="icon-flag"></i>
-                      </span>
-                    )}
                     <div className="dropdown-block col">
                       <a
                         href='#'
@@ -79,13 +65,12 @@ class FullView extends React.Component {
                             <a
                               href="#"
                               className="modal-trigger link-block"
-                              onClick={() => onToggleDetailModalOpen(index)}
+                              onClick={() => onSetActiveWorksheet(worksheet)}
                             >
-                              View Details
+                              Edit
                             </a>
                           </li>
-                          <li><a href="#!">Dismiss Flags</a></li>
-                          <li><a href="#!">Reset</a></li>
+                          <li><a href="#!">Clone</a></li>
                           <li><a href="#!" className="link-delete">Delete</a></li>
                         </ul>
                       </If>
@@ -112,11 +97,11 @@ class FullView extends React.Component {
             </div>
             <div className="card-content">
               <div className="d-flex sameheight-all row mb-0">
-                <div className="col s6">
+                <div className="col s12">
                   <div className="chart-container">
                     <div className="chart-holder">
                       <Doughnut
-                        data={() => data(score, status)}
+                        data={() => data(completedPercentage)}
                         options={{
                           circumference: 1 * Math.PI,
                           rotation: 1 * Math.PI,
@@ -124,12 +109,12 @@ class FullView extends React.Component {
                           tooltips: false,
                         }}
                       />
-                      <span className="chart-value" style={{ backgroundColor: chartColorMap[status] }}><span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span><span className="percentage">{score && `${score}%`}</span></span>
+                      <span className="chart-value" style={{ backgroundColor: '#333' }}><span data-count-up data-start-val="0" data-end-val="0" data-duration="1"></span><span className="percentage">%</span></span>
                     </div>
                     <div className="chart-row">
                       <div className="chart-col chart-start">&nbsp;</div>
                       <div className="chart-col chart-end">
-                        <span className="amount" style={{ color: chartColorMap[status] }}>{problems}</span>
+                        <span className="amount" style={{ color: 'inherit' }}>&nbsp;</span>
                       </div>
                     </div>
                     <div className="chart-description">
@@ -139,31 +124,9 @@ class FullView extends React.Component {
                       </dl>
                       <dl className="dl-horizontal">
                         <dt>Problems:</dt>
-                        <dd>{problems}</dd>
+                        <dd>{problems.length}</dd>
                       </dl>
                     </div>
-                  </div>
-                </div>
-                <div className="col s6 right-align justify-end">
-                  <div className="chart-description">
-                    <dl className="dl-horizontal">
-                      <dt>Available:</dt>
-                      <dd><time dateTime={availableDate}>{availableDate}</time></dd>
-                    </dl>
-                    <dl className={late ? 'dl-horizontal red-text text-darken-3' : 'dl-horizontal'}>
-                      <Choose>
-                        <When condition={disabled}>
-                          <dt>No Due Date</dt>
-                        </When>
-                        <Otherwise>
-                          <dt>Due:</dt>
-                          <dd><time dateTime={dueDate}>{dueDate}</time></dd>
-                        </Otherwise>
-                      </Choose>
-                    </dl>
-                  </div>
-                  <div className="align-self-end">
-                    <span className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}>{status}</span>
                   </div>
                 </div>
               </div>
@@ -176,39 +139,35 @@ class FullView extends React.Component {
               <div className="card-inner-row">
                 <div className="row-holder">
                   <ul className="classification-list">
-                    {classifications.map(classification => (
-                      <li className="class-box" key={classification}>
-                        {classification}
-                      </li>
-                    ))}
+                    {classifications.map(classification => <li className="class-box" key={classification}>{classification}</li>)}
                   </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      )
-    })
+      );
+    });
   }
 
   render() {
     const { worksheets } = this.props;
     return (
       <div className="content-section">
-          <div className="result-row center-align">
-            <b className="result"> - {worksheets.length} results -</b>
-          </div>
-          <div className="row d-flex-content card-width-272">
-            {this.mapWorksheetCards()}
-          </div>
+        <div className="result-row center-align">
+          <b className="result"> - {worksheets.length} results -</b>
         </div>
-    )
+        <div className="row d-flex-content card-width-272">
+          {this.mapWorksheetCards()}
+        </div>
+      </div>
+    );
   }
 }
 
 FullView.propTypes = {
   worksheets: PropTypes.array.isRequired,
-  onToggleDetailModalOpen: PropTypes.func.isRequired,
+  onSetActiveWorksheet: PropTypes.func.isRequired,
 };
 
 export default FullView;

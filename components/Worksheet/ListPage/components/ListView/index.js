@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TableHeader from './components/TableHeader';
-
 import formatTimeEstimate from '../../../../../utils/formatTimeEstimate';
-import statusColorMap from '../../utils/statusColorMap';
 
 class ListView extends React.Component {
   constructor(props) {
@@ -28,12 +25,12 @@ class ListView extends React.Component {
   }
 
   mapWorksheetRows = () => {
-    const { worksheets, onToggleDetailModalOpen } = this.props;
+    const { worksheets, onSetActiveWorksheet } = this.props;
     const { dropdownIndex, dropdownIsOpen } = this.state;
     return worksheets.map((worksheet, index) => {
-      const { disabled, worksheetName, score, status, problems, timeEstimate, assignDate, dueDate, completed, flags } = worksheet;
+      const { worksheetSource, worksheetName, problems, timeEstimate } = worksheet;
       return (
-        <div className={disabled ? 'card card-disabled list-table-row' : 'card list-table-row'} key={worksheet.id}>
+        <div className="card list-table-row" key={worksheet.id}>
           <div className="list-table-cell icon-cell">
             <span className="block-icon">
               <i className="icon-sheets-w"></i>
@@ -44,30 +41,10 @@ class ListView extends React.Component {
               <div className="text-large truncate">{worksheetName}</div>
             </div>
           </div>
-          <div className="list-table-cell graph-cell">
-            {score && (
-              <span className={`chart-bar ${statusColorMap[status]} white-text`}>{score}%</span>
-            )}
-          </div>
-          <div className="list-table-cell description-cell">{problems}</div>
+          <div className="list-table-cell description-cell">{problems.length}</div>
           <div className="list-table-cell time-cell">{formatTimeEstimate(timeEstimate)}</div>
-          <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{assignDate}</time></div>
-          <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{dueDate}</time></div>
-          <div className="list-table-cell completed-cell">
-            {completed && (
-              <React.Fragment>
-                {completed} of {problems}
-              </React.Fragment>
-            )}
-          </div>
-          <div className="list-table-cell flags-cell">
-            {flags.length > 0 && (
-              <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
-            )}
-          </div>
-          <div className="list-table-cell status-cell">
-            <span className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}>{status}</span>
-          </div>
+          <div className="list-table-cell completed-cell">{worksheetSource}</div>
+          <div className="list-table-cell empty-cell"><b>&nbsp;</b></div>
           <div className="list-table-cell drop-cell">
             <div className="dropdown-block">
               <a
@@ -84,50 +61,57 @@ class ListView extends React.Component {
                     <a
                       href="#"
                       className="modal-trigger link-block"
-                      onClick={() => onToggleDetailModalOpen(index)}
+                      onClick={() => onSetActiveWorksheet(worksheet)}
                     >
-                      View Details
+                      Edit
                     </a>
                   </li>
-                  <li><a href="#!">Dismiss Flags</a></li>
-                  <li><a href="#!">Reset</a></li>
-                  <li><a href="#!" className="link-delete">Delete</a></li>
+                  <li><a href="#">Clone</a></li>
+                  <li><a href="#" className="link-delete">Delete</a></li>
                 </ul>
               </If>
             </div>
           </div>
         </div>
-      )
+      );
     })
   }
 
   render() {
     const { worksheets } = this.props;
     return (
-      <React.Fragment>
-        <div className="content-section">
-          <div className="container-md">
-            <div className="result-row center-align">
-              <b className="result"> - {worksheets.length} results -</b>
-            </div>
-            <div className="list-view-section">
-              <div className="list-table">
-                <TableHeader />
-                <div className="list-table-body">
-                  {this.mapWorksheetRows()}
+      <div className="content-section">
+        <div className="container-md">
+          <div className="result-row center-align">
+            <b className="result"> - {worksheets.length} results -</b>
+          </div>
+          <div className="list-view-section">
+            <div className="list-table six-columns">
+              <div className="list-table-header">
+                <div className="list-table-row">
+                  <div className="list-table-cell icon-cell">&nbsp;</div>
+                  <div className="list-table-cell name-cell"><b>Worksheet</b></div>
+                  <div className="list-table-cell description-cell"><b>Problems</b></div>
+                  <div className="list-table-cell time-cell"><b>Time Est</b></div>
+                  <div className="list-table-cell completed-cell"><b>Source</b></div>
+                  <div className="list-table-cell empty-cell"><b>&nbsp;</b></div>
+                  <div className="list-table-cell drop-cell">&nbsp;</div>
                 </div>
+              </div>
+              <div className="list-table-body">
+                {this.mapWorksheetRows()}
               </div>
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
 
 ListView.propTypes = {
   worksheets: PropTypes.array.isRequired,
-  onToggleDetailModalOpen: PropTypes.func.isRequired,
+  onSetActiveWorksheet: PropTypes.func.isRequired,
 }
 
 export default ListView;

@@ -51,6 +51,15 @@ const StudentNavBar = ({ activePage, onSetActivePage }) => (
       </li>
       <li>
         <a
+          className={activePage === 'scored-tests' ? 'active' : ''}
+          onClick={() => onSetActivePage('scored-tests')}
+          href="#"
+        >
+          Scored Tests
+        </a>
+      </li>
+      <li>
+        <a
           className={activePage === 'account' ? 'active' : ''}
           onClick={() => onSetActivePage('account')}
           href="#"

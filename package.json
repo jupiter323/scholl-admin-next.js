@@ -34,7 +34,7 @@
     "chart.js": "^2.8.0",
     "faker": "^4.1.0",
     "immutability-helper": "^2.9.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "jsx-control-statements": "^3.2.8",
     "materialize-css": "^1.0.0",
     "mime": "^2.4.4",
@@ -69,7 +69,7 @@
     "eslint-plugin-jsx-a11y": "5.0.3",
     "eslint-plugin-jsx-control-statements": "^2.2.0",
     "eslint-plugin-react": "7.0.1",
-    "husky": "^2.4.1",
+    "husky": "^2.7.0",
     "jest": "^23.6.0",
     "lint-staged": "^3.6.1",
     "stylelint": "^9.10.1"

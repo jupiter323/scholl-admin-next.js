@@ -1,55 +1,63 @@
 import React from 'react';
-import update from 'immutability-helper';
+import PropTypes from 'prop-types';
+// import update from 'immutability-helper';
 
 import WorksheetDetails from './components/WorksheetDetails';
 import WorksheetProblems from './components/WorksheetProblems';
 import ProblemBank from './components/ProblemBank';
-import sampleProblems from '../utils/sampleProblems';
-import samplePassages from '../utils/samplePassages';
+import { getDefaultCategories } from '../utils';
 
 class DetailPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       problemBankOpen: false,
-      problems: sampleProblems,
-      passages: samplePassages,
+      // problems: sampleProblems,
+      // passages: samplePassages,
     }
   }
 
   onToggleProblemBankModal = () => this.setState(({ problemBankOpen }) => ({ problemBankOpen: !problemBankOpen }))
   onRemoveAllProblems = () => this.setState({ problems: [], passages: [] })
 
+  // TODO: Determine how to incorporate this method if problems/passges are pulled from worksheet instead of state
   addSelectedProblems = (incomingProblems, incomingPassages, addTime) => {
-    const problems = update(this.state.problems, {
-      $push: [...incomingProblems],
-    });
-    const passages = update(this.state.passages, {
-      $push: [...incomingPassages],
-    });
+    // const problems = update(this.state.problems, {
+    //   $push: [...incomingProblems],
+    // });
+    // const passages = update(this.state.passages, {
+    //   $push: [...incomingPassages],
+    // });
+    console.warn('Likely pending wiring up via api call', incomingPassages, incomingProblems);
     console.warn('What are we doing with addTime?', addTime);
-    this.setState({ problems, passages }, this.onToggleProblemBankModal);
+    this.onToggleProblemBankModal();
+    // this.setState({ problems, passages }, this.onToggleProblemBankModal);
   }
 
   render() {
-    const { problemBankOpen, problems, passages } = this.state;
+    const { problemBankOpen } = this.state;
+    const { worksheet, onSetActiveWorksheet } = this.props;
     return (
       <div className="main-container">
         <div className="container">
           <div className="main-row row">
             <ProblemBank
               open={problemBankOpen}
+              worksheetId={worksheet.id}
+              problems={worksheet.problems}
+              passages={worksheet.passages}
               onClose={this.onToggleProblemBankModal}
               addSelectedProblems={this.addSelectedProblems}
             />
             <WorksheetProblems
               onOpenProblemBankModal={this.onToggleProblemBankModal}
               onRemoveAllProblems={this.onRemoveAllProblems}
-              problems={problems}
-              passages={passages}
+              problems={worksheet.problems}
+              passages={worksheet.passages}
             />
             <WorksheetDetails
-              worksheet={{}}
+              worksheet={worksheet}
+              defaultCategories={getDefaultCategories(worksheet.classifications, worksheet.subject)}
             />
           </div>
           <div className="row">
@@ -58,6 +66,7 @@ class DetailPage extends React.Component {
                 <a
                   href="#"
                   className="waves-effect waves-teal btn-flat pink-text text-darken-1"
+                  onClick={() => onSetActiveWorksheet(null)}
                 >
                   Cancel
                 </a>
@@ -75,5 +84,10 @@ class DetailPage extends React.Component {
     )
   }
 }
+
+DetailPage.propTypes = {
+  worksheet: PropTypes.object,
+  onSetActiveWorksheet: PropTypes.func.isRequired,
+};
 
 export default DetailPage;
