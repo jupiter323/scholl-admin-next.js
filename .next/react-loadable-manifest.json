@@ -1665,7 +1665,7 @@
       "publicPath": "static/chunks/commons.e267f64182ba0c1454af.js"
     }
   ],
-  "react-transition-group/Transition": [
+  "./Transition": [
     {
       "id": "S3Uj",
       "name": "./node_modules/react-transition-group/Transition.js",
@@ -1865,7 +1865,7 @@
       "publicPath": "static/chunks/commons.e267f64182ba0c1454af.js"
     }
   ],
-  "react-transition-group/TransitionGroup": [
+  "./TransitionGroup": [
     {
       "id": "UnXY",
       "name": "./node_modules/react-transition-group/TransitionGroup.js",
