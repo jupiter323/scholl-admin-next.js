@@ -16,12 +16,12 @@ class TestSections extends React.Component {
 
   renderCurrentPage = () => {
     const { active } = this.state;
-    const { user, user: { testScores} } = this.props;
+    const { test } = this.props;
     if (active === 'scores') {
-      return <DetailTestScorePage testScores={testScores} />;
+      return <DetailTestScorePage test={test} />;
     }
     if (active === 'answerSheet') {
-      return <DetailTestAnswerSheetComplete user={user}/>;
+      return <DetailTestAnswerSheetComplete testScoreDetails={test.testScoreDetails}/>;
     }
     return null;
   }
@@ -42,7 +42,7 @@ class TestSections extends React.Component {
 }
 
 TestSections.propTypes = {
-  user: PropTypes.object.isRequired,
+  test: PropTypes.object.isRequired,
 }
 
 export default TestSections

@@ -19,7 +19,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
-    const { user: { testScoreDetails: { reading, mathNoCalc, mathCalculator, writing: { sampleAnswers}}}} = this.props;
+    const { testScoreDetails:  { reading, mathNoCalc, mathCalculator, writing: { sampleAnswers}}} = this.props;
     if (activeSlide === 'reading') {
       return <ReadingPage reading={reading} />;
     }
@@ -56,7 +56,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 }
 
 DetailTestAnswerSheetComplete.propTypes = {
-  user: PropTypes.object.isRequired,
+  testScoreDetails: PropTypes.object.isRequired,
 };
 
 export default DetailTestAnswerSheetComplete;

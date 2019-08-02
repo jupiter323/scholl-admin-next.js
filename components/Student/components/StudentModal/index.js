@@ -1,288 +1,192 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import update from 'immutability-helper';
 import Portal from '../../../Portal';
-import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
 import Dropdown from '../../../FormComponents/Dropdown';
 import genderOptions from '../../../utils/genderOptions';
 import getValueFromState from '../../../utils/getValueFromState';
 import stateOptions from '../../../utils/stateOptions';
+import Location from './components/Location';
 
-
+// eslint-disable-next-line react/prefer-stateless-function
 class StudentModal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            newStudent: {
-              firstName: "",
-              lastName: "",
-              gender: "",
-              phone: "",
-              address: "",
-              city: "",
-              state: "",
-              zipCode: "",
-              email: "",
-              location: "",
-             },
-        }
-    }
+  render() {
+    const { state, open, handleChange, onSave, onClose, onOpenLocationModal, onRemoveLocation, onDeleteNewStudent } = this.props;
+    return (
+      <Portal selector="#modal">
+        {open && (
+          <div className="overlay">
 
-    onCloseModal = () => this.setState({ newStudent: [] }, this.props.onClose )
-    onSetGender = (gender) => this.setState({newStudent: { gender }});
-    onSetState = (state) => this.setState({newStudent: {state}});
-
-    handleNewStudent = (firstName, lastName, gender, phone, address, city, state, zipCode, email, location) => {
-        const newStudent = update(this.state.newStudent, {
-            firstName: {$set: [firstName]},
-            lastName: {$set: [lastName]},
-            gender: {$set: [gender]},
-            phone: {$set: [phone]},
-            address: {$set: [address]},
-            city: {$set: [city]},
-            state: {$set: [state]},
-            zipCode: {$set: [zipCode]},
-            email: {$set: [email]},
-            location: {$set: [location]},
-        });
-        this.setState({ newStudent })
-    }
-
-    handleChange = (event) => {
-      this.setState({
-        newStudent: {
-         [event.target.id]: event.target.value,
-        },
-      });
-    }
-    render() {
-        const { open } = this.props;
-        const { firstName, lastName, gender, phone, address, city, state, zipCode, email } = this.state.newStudent;
-        // const { newStudent } = this.state;
-        return(
-            <Portal selector="#modal">
-              {open && (
-                <div className="overlay">
-                  <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
-                    <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
-                    <form action="#" className="custom-form">
-                        <fieldset>
-                            <div className="card-modal card-main card grey lighten-3">
-                            <div className="owner-box card-panel card-panel-title" style={{backgroundColor: "#31837a", color: "#fff"}}>
-                                <div className="card-panel-row row">
-                                <div className="col s9">
-                                    <div className="user-block">
-                                    <div className="user-circle" style={{backgroundColor: "#0085ce", color: "#fff"}}>
-                                        <img src="images/img-owner01.jpg" alt=""/>
-                                    </div>
-                                    <div className="user-text" style={{color: "#fff"}}>
-                                        <h4 className="h3">Ownerly, Jennifer</h4>
-                                        <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <span className="block-icon">
-                                    <i className="icon-owner"></i>
-                                    <span className="text-icon">Owner</span>
-                                    </span>
-                                </div>
-                                </div>
+            <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
+              <form action="#" className="custom-form" >
+                <fieldset>
+                  <div className="card-modal card-main card grey lighten-3">
+                    <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: "#31837a", color: "#fff" }}>
+                      <div className="card-panel-row row">
+                        <div className="col s9">
+                          <div className="user-block">
+                            <div className="user-circle" style={{ backgroundColor: "#0085ce", color: "#fff" }}>
+                              <img src="images/img-owner01.jpg" alt="" />
                             </div>
+                            <div className="user-text" style={{ color: "#fff" }}>
+                              <h4 className="h3">Ownerly, Jennifer</h4>
+                              <a href="mailto:&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">&#106;&#101;&#110;&#046;&#111;&#119;&#110;&#101;&#114;&#108;&#121;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col">
+                          <span className="block-icon">
+                            <i className="icon-owner"></i>
+                            <span className="text-icon">Owner</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-                            <div className="card-content">
-            <div className="card-body">
-              <div className="row mb-0">
-                <div className="col s12 l6">
+                    <div className="card-content">
+                      <div className="card-body">
+                        <div className="row mb-0">
+                          <div className="col s12 l6">
 
-              {/* form panel */}
-                  <div className="card-block">
-                    <h3>Account Info</h3>
-                    <div className="card-main card">
-                      <div className="card-content">
-                        <div className="row mb-0">
-                          <div className="input-field col s12">
-                            <input type="text" id="firstName" value={firstName} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="firstName">First Name*</label>
+                            {/* form panel */}
+                            <div className="card-block">
+                              <h3>Account Info</h3>
+                              <div className="card-main card">
+                                <div className="card-content">
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        value={state.studentInformation.firstName}
+                                        onChange={(event) => handleChange(event, 'firstName', 'studentInformation')} />
+                                      <label className="label" htmlFor="firstName">First Name*</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        value={state.studentInformation.lastName}
+                                        onChange={(event) => handleChange(event, 'lastName', 'studentInformation')} />
+                                      <label className="label" htmlFor="lastName">Last Name*</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="email"
+                                        name="email"
+                                        value={state.emailAddress.email}
+                                        onChange={(event) => handleChange(event, 'email', 'emailAddress')} />
+                                      <label className="label" htmlFor="email">Email Address*</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="">
+                                      <div className="input-field col s12 l7">
+                                        <Dropdown
+                                          value={getValueFromState(state.studentInformation.gender, genderOptions)}
+                                          onChange={(event) => handleChange(event, 'gender', 'studentInformation')}
+                                          options={genderOptions}
+                                          label="Gender"
+                                          stateKey="state"
+                                          dropdownKey="state"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {/* form panel */}
+                            <div className="card-block">
+                              <h3>Contact Info</h3>
+                              <div className="card-main card">
+                                <div className="card-content">
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        value={state.contactInformation.phone}
+                                        onChange={(event) => handleChange(event, 'phone', 'contactInformation')} />
+                                      <label className="label" htmlFor="phone">Phone (optional)</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="address"
+                                        name="address"
+                                        value={state.contactInformation.addressLine1}
+                                        onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')} />
+                                      <label className="label" htmlFor="address">Street Address (optional)</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="input-field col s12">
+                                      <input
+                                        type="text"
+                                        id="city"
+                                        name="city"
+                                        value={state.contactInformation.city}
+                                        onChange={(event) => handleChange(event, 'city', 'contactInformation')} />
+                                      <label className="label" htmlFor="city">City (optional)</label>
+                                    </div>
+                                  </div>
+                                  <div className="row mb-0">
+                                    <div className="col s12 m6 l5">
+                                      <div className="input-field">
+                                        <Dropdown
+                                          value={getValueFromState(state.contactInformation.state, stateOptions)}
+                                          onChange={(event) => handleChange(event, 'state', 'contactInformation')}
+                                          options={stateOptions}
+                                          label="State"
+                                          stateKey="state"
+                                          dropdownKey="state"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col s12 m6 l7">
+                                      <div className="input-field">
+                                        <input
+                                          type="tel"
+                                          name="zipCode"
+                                          id="zipCode"
+                                          value={state.contactInformation.zipCode}
+                                          onChange={(event) => handleChange(event, 'zipCode', 'contactInformation')} />
+                                        <label className="label" htmlFor="zipCode">Zip (optional)</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="input-field col s12">
-                            <input type="text" id="lastName" value={lastName} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="lastName">Last Name*</label>
-                          </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="input-field col s12">
-                            <input type="text" id="email" value={email} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="email">Email Address*</label>
-                          </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="">
-                            <div className="input-field col s12 l7">
-                              <Dropdown
-                                value={getValueFromState(gender, genderOptions)}
-                                onChange={this.onSetGender}
-                                options={genderOptions}
-                                label="Gender"
-                                stateKey="state"
-                                dropdownKey="state"
-                                id="gender"
-                                />
+                          <div className="col s12 l6">
+                            <Location locations={state.location.locations} onOpenLocationModal={onOpenLocationModal} onRemoveLocation={onRemoveLocation} />
+                            <div className="modal-footer">
+                              <a href="#!" className="waves-effect waves-teal btn-flat pink-text text-darken-1" onClick={onDeleteNewStudent}>Delete</a>
+                              <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={onClose}>Cancel</a>
+                              <a href="#" className="btn" onClick={onSave}>Save</a>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-            {/* form panel */}
-                  <div className="card-block">
-                    <h3>Contact Info</h3>
-                    <div className="card-main card">
-                      <div className="card-content">
-                        <div className="row mb-0">
-                          <div className="input-field col s12">
-                            <input type="tel" id="phone" value={phone} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="phone">Phone (optional)</label>
-                          </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="input-field col s12">
-                            <input type="text" id="address" value={address} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="address">Street Address (optional)</label>
-                          </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="input-field col s12">
-                            <input type="text" id="city" value={city} onChange={this.handleChange}/>
-                            <label className="label" htmlFor="city">City (optional)</label>
-                          </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="col s12 m6 l5">
-                            <div className="input-field">
-                            <Dropdown
-                              value={getValueFromState(state, stateOptions)}
-                              onChange={this.onSetState}
-                              options={stateOptions}
-                              label="State"
-                              stateKey="state"
-                              dropdownKey="state"
-                              />
-                            </div>
-                          </div>
-                          <div className="col s12 m6 l7">
-                            <div className="input-field">
-                              <input type="tel" id="zipCode" value={zipCode} onChange={this.handleChange}/>
-                              <label className="label" htmlFor="zipCode">Zip (optional)</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col s12 l6">
-                {/* form panel */}
-
-                  <div className="card-block">
-                    <h3>Location(s)</h3>
-              {/* card */}
-              <div className="card-main card-location card card-large">
-                      <div className="card-panel card-panel-location" style={{backgroundColor: "#62b771", color: "#fff"}}>
-                        <div className="card-panel-row row">
-                          <div className="col s9">
-                            <h3 className="h4 truncate">Tutor Doctor</h3>
-                            <h4 className="sub-title">Tutor Doctor - Austin, TX</h4>
-                          </div>
-                          <div className="col s3">
-                            <div className="row icons-row">
-                              <div className="col">
-                                <span className="block-icon">
-                                  <i className="icon-location"></i>
-                                  <span className="text-icon">Location</span>
-                                </span>
-                              </div>
-                              <div className="dropdown-block col">
-                                {/* dropdown trigger */}
-                                <a className='dropdown-trigger btn' href='#' data-target='dropdown105'><i className="material-icons dots-icon">more_vert</i></a>
-                                {/* dropdown structure */}
-                                <ul id='dropdown105' className='dropdown-content dropdown-wide'>
-                                  <li>
-                                {/* modal trigger */}
-                                <a href="#modal_location_edit" className="modal-trigger link-block">Edit</a>
-                                  </li>
-                                  <li><a href="#!">Clone</a></li>
-                                  <li><a href="#!">Delete</a></li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  {/* card */}
-
-                    <div className="card-main card-location card card-large">
-                      <div className="card-panel card-panel-location" style={{backgroundColor: "#62b771", color: "#fff"}}>
-                        <div className="card-panel-row row">
-                          <div className="col s9">
-                            <h3 className="h4 truncate">Tutor Doctor</h3>
-                            <h4 className="sub-title">Tutor Doctor - Dallas, TX</h4>
-                          </div>
-                          <div className="col s3">
-                            <div className="row icons-row">
-                              <div className="col">
-                                <span className="block-icon">
-                                  <i className="icon-location"></i>
-                                  <span className="text-icon">Location</span>
-                                </span>
-                              </div>
-                              <div className="dropdown-block col">
-                                {/* dropdown trigger */}
-                                <a className='dropdown-trigger btn' href='#' data-target='dropdown106'><i className="material-icons dots-icon">more_vert</i></a>
-                                {/* dropdown content */}
-                                <ul id='dropdown106' className='dropdown-content dropdown-wide'>
-                                  <li>
-                                {/* modal trigger */}
-                                <a href="#modal_location_edit" className="modal-trigger link-block">Edit</a>
-                                  </li>
-                                  <li><a href="#!">Clone</a></li>
-                                  <li><a href="#!">Delete</a></li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  {/* card add block */}
-                  <div className="add-box">
-                      <div className="add-box-holder">
-                        <a className="btn-floating waves-effect waves-light green lighten-1"><i className="material-icons">add</i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <a href="#!" className="waves-effect waves-teal btn-flat pink-text text-darken-1">Delete</a>
-              <a href="#!" className="modal-close waves-effect waves-teal btn-flat grey-text text-darken-1" onClick={this.onCloseModal}>Cancel</a>
-              <a href="#" className="btn" onClick={this.handleNewStudent}>Save</a>
+                </fieldset>
+              </form>
             </div>
           </div>
-
-
-            </div>
-            </fieldset>
-            </form>
-            </div>
-        </ClickOffComponentWrapper>
-        </div>
         )}
-         <style jsx>
+        <style jsx>
           {`
             .overlay {
               position: fixed;
@@ -318,14 +222,20 @@ class StudentModal extends React.Component {
             }
           `}
         </style>
-        </Portal>
-        );
-    }
-}
+      </Portal >
+    )
+  }
+};
 
 StudentModal.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  state: PropTypes.object.isRequired,
+  onOpenLocationModal: PropTypes.func.isRequired,
+  onRemoveLocation: PropTypes.func.isRequired,
+  onDeleteNewStudent: PropTypes.func.isRequired,
 };
 
 export default StudentModal;

@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import TestCard from './components/TestCard';
-
+import TestSections from '../TestSections';
 import sampleTests from './utils/sampleTests';
 import EditTestModal from './components/EditTestModal';
 
@@ -14,6 +15,7 @@ class DetailTestList extends React.Component {
       dropdownIsOpen: false,
       editTestModalOpen: false,
       activeTest: null,
+      selectedTest: null,
     };
   }
 
@@ -36,6 +38,11 @@ class DetailTestList extends React.Component {
     this.onToggleEditTestModal();
     console.warn('Pending save test changes functionality', testVersion, settings);
   }
+  openTestScores = (index) => {
+    const { tests } = this.state;
+    const newTestArray = tests.filter(test => test.status === 'complete');
+    this.setState({selectedTest: newTestArray[index.index]}, console.log("clicked", index[0], newTestArray, newTestArray[{index}]))
+  }
 
   mapCompletedTests = () => {
     const { tests } = this.state;
@@ -52,6 +59,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={this.state.dropdownIndex}
         dropdownIsOpen={this.state.dropdownIsOpen}
+        openTestScores={this.openTestScores}
       />
     ))
   }
@@ -71,16 +79,18 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={this.state.dropdownIndex}
         dropdownIsOpen={this.state.dropdownIsOpen}
+        openTestScores={this.openTestScores}
         index={tests.filter(filterTest => filterTest.status === 'complete').length + index}
       />
     ))
   }
 
   render() {
-    const { editTestModalOpen, activeTest } = this.state;
-    const { user } = this.props;
+    const { editTestModalOpen, activeTest, selectedTest} = this.state;
+    const {user} = this.props;
     return (
       <React.Fragment>
+      {!selectedTest && (
         <Choose>
           <When condition={editTestModalOpen}>
             <EditTestModal
@@ -110,7 +120,12 @@ class DetailTestList extends React.Component {
             </div>
           </Otherwise>
         </Choose>
-      </React.Fragment>
+      )}
+      {selectedTest && (
+        <TestSections test={selectedTest} />
+        )}
+        </React.Fragment>
+
     );
   }
 }
