@@ -46,7 +46,7 @@ class IndividualStudentPage extends React.Component {
       return <DetailTestList user={student} />;
     }
     if (activePage === 'scored-tests') {
-      return <ScoredTestListPage />
+      return <ScoredTestListPage user={student} />
     }
     return null;
   }
