@@ -93,7 +93,7 @@ class SideNav extends Component {
                 onClick={() => this.handleClick(menuItem.key)}
                 key={menuItem.key}
               >
-                <Link href={`/${menuItem.page}`} >
+                <Link prefetch href={`/${menuItem.page}`} >
                   <a>
                     <i className={menuIconMap[menuItem.key]}></i>
                     {

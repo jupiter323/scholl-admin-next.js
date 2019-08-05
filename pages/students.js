@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import StudentCard from '../components/Student/components/StudentCard';
-import sampleStudentList from '../components/Student/utils/sampleStudentList';
+  import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
-// import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
@@ -45,7 +44,7 @@ class Students extends Component {
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
   onOpenLocationModal = () => this.setState({locationModalOpen: true});
-  onCloseLocationModal = () => this.setState({locationModalOpen: false})
+  onCloseLocationModal = () => this.setState({locationModalOpen: false});
 
 
   onSetSort = (sort) => this.setState({ sort });
@@ -58,9 +57,9 @@ class Students extends Component {
  // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = () => {
     // eslint-disable-next-line no-console
-    console.warn('do something with the new student info')
+    console.warn('do something with the new student info');
     this.onCloseStudentModal();
-  }
+  };
 
   onDeleteNewStudent = () => {
     const {newStudent: previousStudentState} = this.state;
@@ -89,7 +88,7 @@ class Students extends Component {
     }}
     );
     this.setState({newStudent})
-  }
+  };
 
   onRemoveLocation = (index) => {
     const {newStudent: previousStudentState} = this.state;
@@ -97,9 +96,9 @@ class Students extends Component {
     const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
     const newStudent = update(previousStudentState, {
       location: { $set: {locations: newLocationsArray}},
-    })
+    });
     this.setState({newStudent})
-  }
+  };
 
   onFilterByName = () => {
     const { students, filterName } = this.state;
@@ -111,23 +110,23 @@ class Students extends Component {
       }
       return finalArr;
     }, []);
-  }
+  };
 
   onHandleStudentCard = (index) => {
     const { students } = this.state;
     this.setState({ selectedStudent: students[index] });
-  }
+  };
 
   onRedirectToStudentPage = (event) => {
     event.preventDefault();
     this.setState({selectedStudent: null})
-  }
+  };
 
   onDeleteStudent = (index) => {
     const { students } = this.state;
-    const newStudentArray = this.arrayItemRemover(students, students[index])
+    const newStudentArray = this.arrayItemRemover(students, students[index]);
     this.setState({students: newStudentArray})
-  }
+  };
 
   onCloneStudent = (index) => {
     const { students } = this.state;
@@ -135,19 +134,18 @@ class Students extends Component {
       prevState.students.push(students[index]);
       return { students: prevState.students}
     })
-  }
+  };
 
   handleChange = (event, name, section) => {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
       [section]: { $merge: { [name]: value }},
-    })
+    });
     this.setState({newStudent: updatedStudent})
-}
+};
 
-
-  arrayItemRemover = (array, value) => array.filter((student) => student !== value)
+  arrayItemRemover = (array, value) => array.filter((student) => student !== value);
 
   render() {
     const { studentModalOpen, students, selectedStudent } = this.state;
@@ -162,7 +160,7 @@ class Students extends Component {
                 </div>
                 <h2 className="h1 white-text">
                   <span className="heading-holder">
-                    <i className="icon-student"></i>
+                    <i className="icon-student"/>
                     <span className="heading-block">Students</span>
                   </span>
                 </h2>
