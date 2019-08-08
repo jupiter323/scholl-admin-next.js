@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-
+import { Sticky } from 'react-sticky';
 import FilterSection from './components/FilterSection';
 import FullView from './components/FullView';
 import ListView from './components/ListView';
@@ -191,7 +191,9 @@ class ListPage extends React.Component {
     const { currentView, subjectFilters, difficultyFilters, typeFilters, sourceFilters } = this.state;
     return (
       <React.Fragment>
-        <div className="title-row card-panel">
+        <Sticky>
+        {({ style }) => (
+            <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
           <div className="mobile-header">
             <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
           </div>
@@ -202,6 +204,8 @@ class ListPage extends React.Component {
             </span>
           </h2>
         </div>
+        )}
+        </Sticky>
         <FilterSection
           currentView={currentView}
           typeFilters={typeFilters}

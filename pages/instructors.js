@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {StickyContainer, Sticky} from 'react-sticky';
 import InstructorNavBar from '../components/Instructor/components/InstructorNavBar';
 import DetailManagementPage from '../components/Instructor/DetailManagementPage';
 import DetailAccountPage from '../components/Instructor/DetailAccountPage';
@@ -36,11 +36,16 @@ class Instructors extends Component {
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-3">
-          <InstructorNavBar
-            active={active}
-            onSetActivePage={this.onSetActivePage}
-          />
+          <StickyContainer id="stickycontainer">
+            
+
+                <InstructorNavBar
+                active={active}
+                onSetActivePage={this.onSetActivePage}
+                />
+              
           {this.renderCurrentPage()}
+            </StickyContainer>
         </div>
       </main>
     );

@@ -119,7 +119,7 @@ class UserListModal extends React.Component {
           right: 0;
           bottom: 0;
           left: 0;
-          z-index: 999;
+          z-index: 1999;
         }
         .modal {
           display: block;
@@ -137,7 +137,7 @@ class UserListModal extends React.Component {
           background-color: white;
         }
         .modal-full-size {
-          z-index: 999;
+          z-index: 1999;
           width: 100%;
           left: 0;
           top: 0;

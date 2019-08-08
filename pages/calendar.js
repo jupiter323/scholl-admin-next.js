@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { DragDropContext } from 'react-beautiful-dnd';
-
+import {StickyContainer, Sticky} from 'react-sticky';
 import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
 import CalendarRow from '../components/Dashboard/components/CalendarRow';
@@ -389,7 +389,10 @@ class Calendar extends Component {
         />
         <main id="main" role="main">
           <div className="main-holder grey lighten-3">
-            <div className="title-row card-panel">
+            <StickyContainer>
+            <Sticky>
+        {({ style }) => (
+          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
               <div className="mobile-header">
                 <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               </div>
@@ -463,6 +466,8 @@ class Calendar extends Component {
                 </div>
               </div>
             </div>
+            )}
+            </Sticky>
             <FilterSection
               filters={filters}
               eventFilters={eventFilters}
@@ -539,6 +544,7 @@ class Calendar extends Component {
                 </div>
               </div>
             </div>
+            </StickyContainer>
           </div>
         </main>
       </React.Fragment>
