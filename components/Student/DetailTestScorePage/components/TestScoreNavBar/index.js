@@ -7,8 +7,8 @@ class TestScoreNavBar extends React.Component {
   render() {
     const { active, onSetActivePage } = this.props;
     return (
-      <Sticky>
-        {({ style, isSticky }) => (
+      <Sticky topOffset={-100}>
+        {({ style, isSticky}) => (
 
           <div className="nav-header white" style={{ ...style, zIndex: 1999, top: isSticky ?  '95px' : "0px" }}>
             <div className="nav-additional" style={{ display: 'table', margin: "0 auto" }}>
