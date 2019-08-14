@@ -37,13 +37,13 @@ class Instructors extends Component {
       <main id="main" role="main">
         <div className="main-holder grey lighten-3">
           <StickyContainer id="stickycontainer">
-            
+
 
                 <InstructorNavBar
                 active={active}
                 onSetActivePage={this.onSetActivePage}
                 />
-              
+
           {this.renderCurrentPage()}
             </StickyContainer>
         </div>
