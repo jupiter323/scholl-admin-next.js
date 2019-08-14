@@ -125,7 +125,7 @@ export class Modal extends React.Component { // eslint-disable-line
                 background-color: white;
               }
               .modal-full-size {
-                z-index: 999;
+                z-index: 1999;
                 width: 100%;
                 left: 0;
                 top: 0;

@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-
+import { Sticky, StickyContainer } from 'react-sticky';
 import InstructorCard from './components/InstructorCard';
 import FilterSection from './components/FilterSection';
 import NewInstructorModal from './components/NewInstructorModal';
@@ -167,7 +167,10 @@ class InstructorListPage extends React.Component {
           onAddNewInstructor={this.onAddNewInstructor}
         />
         <div className="main-holder grey lighten-5">
-          <div className="title-row card-panel">
+          <StickyContainer>
+          <Sticky>
+        {({ style }) => (
+          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
             <div className="mobile-header">
               <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             </div>
@@ -178,6 +181,8 @@ class InstructorListPage extends React.Component {
               </span>
             </h2>
           </div>
+        )}
+        </Sticky>
           <FilterSection
             onSetSort={this.onSetSort}
             onSetFilteredState={this.onSetFilteredState}
@@ -190,6 +195,7 @@ class InstructorListPage extends React.Component {
               {this.mapInstructors()}
             </div>
           </div>
+          </StickyContainer>
         </div>
         <a
           href="#"

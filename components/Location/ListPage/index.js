@@ -1,5 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
+import { Sticky, StickyContainer } from 'react-sticky';
 import LocationCard from './components/LocationCard';
 import NewLocationModal from '../components/NewLocationModal';
 import sampleLocationList from '../utils/sampleLocationList';
@@ -40,7 +41,11 @@ class LocationListPage extends React.Component {
       <React.Fragment>
         {!selectedLocation && (
           <div className="main-holder grey lighten-5">
-            <div className="title-row card-panel">
+            <StickyContainer>
+            <Sticky>
+        {({ style }) => (
+          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
+
               <div className="mobile-header">
                 <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               </div>
@@ -51,6 +56,8 @@ class LocationListPage extends React.Component {
                 </span>
               </h2>
             </div>
+        )}
+        </Sticky>
             <div className="content-section">
               <div className="row d-flex-content">
                 {this.mapLocations()}
@@ -69,6 +76,7 @@ class LocationListPage extends React.Component {
               onClose={this.onCloseLocationModal}
               onAddNewLocation={this.onAddNewLocation}
             />
+            </StickyContainer>
           </div>
         )}
         {selectedLocation && (

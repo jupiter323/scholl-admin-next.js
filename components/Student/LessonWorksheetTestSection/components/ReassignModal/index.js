@@ -161,7 +161,7 @@ class ReassignModal extends React.Component {
               right: 0;
               bottom: 0;
               left: 0;
-              z-index: 1003;
+              z-index: 2003;
             }
             .modal-custom {
               opacity: 1;

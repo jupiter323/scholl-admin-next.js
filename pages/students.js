@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
+import { StickyContainer, Sticky } from 'react-sticky';
 import StudentCard from '../components/Student/components/StudentCard';
 import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
@@ -154,9 +155,13 @@ class Students extends Component {
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5">
+        <StickyContainer>
           {!selectedStudent && (
             <React.Fragment>
-              <div className="title-row card-panel">
+              <Sticky>
+                {({style}) => (
+
+                  <div className="title-row card-panel" style={{...style, zIndex: 1999}}>
                 <div className="mobile-header">
                   <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
                 </div>
@@ -167,6 +172,8 @@ class Students extends Component {
                   </span>
                 </h2>
               </div>
+               )}
+             </Sticky>
               <FilterSection
                 onSetSort={this.onSetSort}
                 onSetFilteredState={this.onSetFilteredState}
@@ -211,6 +218,7 @@ class Students extends Component {
           {selectedStudent && (
             <IndividualStudentPage student={selectedStudent} onRedirectToStudentPage={this.onRedirectToStudentPage} />
           )}
+          </StickyContainer>
         </div>
       </main>
     );
