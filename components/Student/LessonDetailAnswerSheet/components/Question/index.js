@@ -117,7 +117,7 @@ class Question extends React.Component {
 Question.propTypes = {
   question: PropTypes.object.isRequired,
   onOpenQuestionModal: PropTypes.func.isRequired,
-  answerSheetComplete: PropTypes.bool.isRequired,
+  answerSheetComplete: PropTypes.string.isRequired,
 };
 
 export default Question;

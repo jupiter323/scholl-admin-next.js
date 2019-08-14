@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
@@ -330,7 +331,7 @@ class AccountPage extends React.Component {
                 <Class
                   state={this.initialUserMount() ? course : updatedClasses}
                   onOpenClassModal={this.onOpenClassModal}
-                  onRemoveInstructor={this.onRemoveOption}
+                  onRemoveClass={this.onRemoveOption}
                 />
               </div>
             </div>

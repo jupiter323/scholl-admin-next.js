@@ -86,7 +86,7 @@ class QuestionModal extends React.Component {
                         <div className="card-panel">
                           <div className="video-frame">
                             <div className="embed-responsive embed-responsive-16by9">
-                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={videoThumbnail} preload="metadata" controls playsinline>
+                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={videoThumbnail} preload="metadata" controls playsInline>
                               <source type="video/mp4" src={videoSource} />
                               </video>
                             </div>
@@ -104,8 +104,9 @@ class QuestionModal extends React.Component {
                               </div>
                             )}
                             <div className="col">
-                              <label>
+                              <label htmlFor="reviewedWithStudent">
                                 <input
+                                  id="reviewedWithStudent"
                                   type="checkbox"
                                   className="filled-in"
                                   checked={reviewedWithStudent}
