@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { StickyContainer, Sticky } from 'react-sticky';
 import ClassNavBar from '../components/Class/components/ClassNavBar';
 import TestSectionsPage from '../components/Class/TestSectionsPage';
 import DetailSummaryPage from '../components/Class/DetailSummaryPage';
@@ -37,7 +37,10 @@ class Classes extends Component {
       <React.Fragment>
         <main id="main" role="main">
           <div className="main-holder grey lighten-5 switcher-section">
-            <div className="title-row card-panel">
+            <StickyContainer>
+            <Sticky>
+        {({ style }) => (
+          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
               <div className="mobile-header">
                 <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               </div>
@@ -54,14 +57,17 @@ class Classes extends Component {
               </h2>
               <ClassNavBar onSetActivePage={this.onSetActivePage} active={active} />
             </div>
+        )}
+            </Sticky>
             {this.renderCurrentPage()}
-          </div>
           <div className="add-btn-block dropdown-small">
             <a href="#" className="dropdown-trigger waves-effect waves-teal btn add-btn" data-target='dropdown_assign_selected'><i className="material-icons">add</i> Assign Test Section</a>
             <ul id='dropdown_assign_selected' className='dropdown-content dropdown-small'>
               <li><a href="#">From Saved</a></li>
               <li><a href="#">Create New</a></li>
             </ul>
+            </div>
+            </StickyContainer>
           </div>
         </main>
       </React.Fragment>

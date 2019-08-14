@@ -1,6 +1,6 @@
 import React from 'react';
 import update from 'immutability-helper';
-
+import {StickyContainer, Sticky} from 'react-sticky';
 import FilterSection from '../components/CourseTemplate/components/FilterSection';
 import TemplateCard from '../components/CourseTemplate/components/TemplateCard';
 
@@ -139,7 +139,10 @@ class CourseTemplates extends React.Component {
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5 switcher-section">
-          <div className="title-row card-panel">
+          <StickyContainer>
+          <Sticky>
+        {({ style }) => (
+          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
             <div className="mobile-header">
               <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             </div>
@@ -150,6 +153,8 @@ class CourseTemplates extends React.Component {
               </span>
             </h2>
           </div>
+        )}
+          </Sticky>
           <FilterSection
             subjectFilters={subjectFilters}
             sourceFilters={sourceFilters}
@@ -169,9 +174,10 @@ class CourseTemplates extends React.Component {
               </div>
             </div>
           </div>
-        </div>
         <div className="add-btn-block">
           <a href="#" onClick={this.importTemplateFromFile} className="waves-effect waves-teal btn add-btn"><i className="material-icons">add</i> Import Template from File</a>
+          </div>
+          </StickyContainer>
         </div>
       </main>
     );

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-indent */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { StickyContainer } from 'react-sticky';
 import LocationNavBar from '../components/Location/components/LocationNavBar';
 import DetailAccountPage from '../components/Location/DetailAccountPage';
 import DetailSummaryPage from '../components/Location/DetailSummaryPage';
@@ -37,15 +38,19 @@ class Locations extends Component {
         <When condition={!location}>
         <main id="main" role="main">
         <div className="main-holder grey lighten-5">
+          <StickyContainer>
           <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} onRedirectToLocationsPage={onRedirectToLocationsPage} location={this.props.location ? location : sampleLocation}/>
           {this.renderCurrentPage()}
+          </StickyContainer>
         </div>
         </main>
         </When>
         <Otherwise>
         <div className="main-holder grey lighten-5">
-          <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} onRedirectToLocationsPage={onRedirectToLocationsPage} location={this.props.location ? location : sampleLocation}/>
+          <StickyContainer>
+            <LocationNavBar active={active} onSetActivePage={this.onSetActivePage} onRedirectToLocationsPage={onRedirectToLocationsPage} location={this.props.location ? location : sampleLocation}/>
           {this.renderCurrentPage()}
+          </StickyContainer>
         </div>
         </Otherwise>
       </Choose>
