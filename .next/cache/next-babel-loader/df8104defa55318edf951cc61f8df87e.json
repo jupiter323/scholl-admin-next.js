@@ -1,1 +1,0 @@
-{"ast":null,"code":"import React, { Component } from 'react'; // eslint-disable-next-line react/prefer-stateless-function\n\nclass Help extends Component {\n  render() {\n    return React.createElement(\"h1\", null, \"Help\");\n  }\n\n}\n\nexport default Help;","map":null,"metadata":{},"sourceType":"module"}

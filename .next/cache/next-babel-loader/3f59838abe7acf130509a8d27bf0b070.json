@@ -1,1 +1,0 @@
-{"ast":null,"code":"const sampleEssayScores = [{\n  value: 2,\n  label: \"2\"\n}, {\n  value: 3,\n  label: \"3\"\n}, {\n  value: 4,\n  label: \"4\"\n}, {\n  value: 5,\n  label: \"5\"\n}, {\n  value: 6,\n  label: \"6\"\n}, {\n  value: 7,\n  label: \"7\"\n}, {\n  value: 8,\n  label: \"8\"\n}];\nexport default sampleEssayScores;","map":null,"metadata":{},"sourceType":"module"}
