@@ -8,6 +8,7 @@ import FilterSection from '../components/Student/ListPage/Components/FilterSecti
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
+import {fetchStudentApi, addNewStudentApi} from "../components/Student/index/api";
 
 class Students extends Component {
   constructor(props) {
@@ -43,6 +44,14 @@ class Students extends Component {
      },
     }
   }
+
+  componentDidMount = async () => {
+    // const students = await fetchStudentsApi();
+    // this.setState({
+    //   students,
+    // })
+  }
+
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
   onOpenLocationModal = () => this.setState({locationModalOpen: true});
@@ -57,7 +66,34 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: '' });
 
  // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = () => {
+  onSaveNewStudent = async () => {
+    const {newStudent: previousStudentState} = this.state;
+    await addNewStudentApi(previousStudentState)
+    const newStudent = update(previousStudentState, {
+      $set:
+       { active: false,
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: {
+          email: '',
+        },
+        location: {
+          locations: [],
+        },
+    }}
+    );
+    this.setState({newStudent})
     // eslint-disable-next-line no-console
     console.warn('do something with the new student info')
     this.onCloseStudentModal();
