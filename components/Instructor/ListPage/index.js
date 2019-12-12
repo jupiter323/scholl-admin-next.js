@@ -6,12 +6,12 @@ import InstructorCard from './components/InstructorCard';
 import FilterSection from './components/FilterSection';
 import NewInstructorModal from './components/NewInstructorModal';
 
-import sampleInstructorList from '../utils/sampleInstructorList';
 // import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
 import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 
 import {
-  createNewInstructorApi
+  fetchInstructorsApi,
+  createNewInstructorApi,
 } from '../index/api';
 
 
@@ -20,7 +20,7 @@ class InstructorListPage extends React.Component {
     super(props);
     this.state = {
       instructorModalOpen: false,
-      instructors: sampleInstructorList,
+      instructors: [],
       dropdownIndex: null,
       dropdownIsOpen: false,
       instructorsAreFiltered: false,
@@ -28,6 +28,13 @@ class InstructorListPage extends React.Component {
       filterLocation: '',
       sort: '',
     };
+  }
+
+  componentDidMount = async() => {
+    const {formattedInstructors:instructors} = await fetchInstructorsApi();
+    this.setState({
+      instructors,
+    })
   }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
