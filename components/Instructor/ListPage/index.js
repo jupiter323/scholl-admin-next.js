@@ -60,6 +60,7 @@ class InstructorListPage extends React.Component {
   onCloseInstructorModal = () => this.setState({ instructorModalOpen: false });
 
   onAddNewInstructor = (newInstructor) => {
+    this.onCreateNewInstructorApi(newInstructor);
     const { instructors,onSetInstructors } = this.props;
     const tempBasicInfo = {
       activeStudents: 15,
@@ -73,7 +74,6 @@ class InstructorListPage extends React.Component {
     const formattedNewInstructor = update(newInstructor,{basicInfo:{$set:tempBasicInfo}});
     const updatedInstructors = update(instructors,{$push:[formattedNewInstructor]});
     onSetInstructors(updatedInstructors);
-    this.onCreateNewInstructorApi(newInstructor);
   }
 
   onDeleteInstructor = (deletedInstructor) => {
