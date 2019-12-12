@@ -9,7 +9,7 @@ const initialState = fromJS({
     instructors:[],
 });
 
-function instructorReducer(initialState,action){
+function instructorReducer(state = initialState,action){
     switch(action.type){
         case SET_INSTRUCTORS:
             return state.set('instructors',action.instructors);

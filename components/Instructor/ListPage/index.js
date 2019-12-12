@@ -1,5 +1,8 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector} from 'reselect';
 import update from 'immutability-helper';
 import { Sticky, StickyContainer } from 'react-sticky';
 import InstructorCard from './components/InstructorCard';
@@ -13,6 +16,16 @@ import {
   fetchInstructorsApi,
   createNewInstructorApi,
 } from '../index/api';
+
+
+import {
+  setInstructors,
+} from '../index/actions';
+
+
+import {
+  makeSelectInstructors,
+} from '../index/selectors';
 
 
 class InstructorListPage extends React.Component {
@@ -34,7 +47,9 @@ class InstructorListPage extends React.Component {
     const {formattedInstructors:instructors} = await fetchInstructorsApi();
     this.setState({
       instructors,
-    })
+    });
+    const {onSetInstructors} = this.props;
+    onSetInstructors(instructors);
   }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
@@ -245,4 +260,25 @@ class InstructorListPage extends React.Component {
   }
 }
 
-export default InstructorListPage;
+
+InstructorListPage.propTypes = {
+  instructors:PropTypes.array.isRequired,
+  onSetInstructors:PropTypes.func.isRequired,
+}
+
+const mapStateToProps = createStructuredSelector({
+  instructors:makeSelectInstructors(),
+})
+
+function mapDispatchToProps(dispatch){
+  return{
+    onSetInstructors:instructors => dispatch(setInstructors(instructors)),
+  }
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(InstructorListPage);
