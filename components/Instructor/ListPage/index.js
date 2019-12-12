@@ -238,7 +238,7 @@ class InstructorListPage extends React.Component {
           className="waves-effect waves-teal btn add-btn"
         >
           <i className="material-icons">add</i>
-          New Location
+          New Instructor
         </a>
       </React.Fragment>
     );
