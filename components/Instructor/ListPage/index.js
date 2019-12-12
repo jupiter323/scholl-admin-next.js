@@ -61,7 +61,17 @@ class InstructorListPage extends React.Component {
 
   onAddNewInstructor = (newInstructor) => {
     const { instructors,onSetInstructors } = this.props;
-    const updatedInstructors = update(instructors,{$push:[newInstructor]});
+    const tempBasicInfo = {
+      activeStudents: 15,
+      pastStudents: 24,
+      unactivatedStudents: 29,
+      averageImprovement: 185,
+      averageInitialScore: 1037,
+      averageFinalScore: 1218,
+      studentsAchievingTargetScore: 12
+    }
+    const formattedNewInstructor = update(newInstructor,{basicInfo:{$set:tempBasicInfo}});
+    const updatedInstructors = update(instructors,{$push:[formattedNewInstructor]});
     onSetInstructors(updatedInstructors);
     this.onCreateNewInstructorApi(newInstructor);
   }
