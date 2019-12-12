@@ -8,7 +8,7 @@ import FilterSection from '../components/Student/ListPage/Components/FilterSecti
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
-import {fetchStudentApi, addNewStudentApi} from "../components/Student/index/api";
+import {fetchStudentsApi, addNewStudentApi} from "../components/Student/index/api";
 
 class Students extends Component {
   constructor(props) {
@@ -46,7 +46,8 @@ class Students extends Component {
   }
 
   componentDidMount = async () => {
-    // const students = await fetchStudentsApi();
+    const students = await fetchStudentsApi();
+    console.log(students);
     // this.setState({
     //   students,
     // })
@@ -68,6 +69,7 @@ class Students extends Component {
  // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const {newStudent: previousStudentState} = this.state;
+    console.log(previousStudentState);
     await addNewStudentApi(previousStudentState)
     const newStudent = update(previousStudentState, {
       $set:
