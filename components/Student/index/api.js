@@ -4,13 +4,12 @@ export const fetchStudentsApi = () =>
   fetch(`${API_URL}/api/students`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedStudents = data.students.map(student => {
-        return {
+      const formattedStudents = data.students.map(student => ({
           id: student.id,
           active: false,
           studentInformation: {
@@ -32,8 +31,7 @@ export const fetchStudentsApi = () =>
           location: {
             locations: student.locations,
           },
-        }
-      });
+        }));
       return formattedStudents;
     });
 

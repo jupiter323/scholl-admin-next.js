@@ -45,14 +45,6 @@ class Students extends Component {
     }
   }
 
-  componentDidMount = async () => {
-    const students = await fetchStudentsApi();
-    console.log(students);
-    // this.setState({
-    //   students,
-    // })
-  }
-
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
   onOpenLocationModal = () => this.setState({locationModalOpen: true});
@@ -69,7 +61,6 @@ class Students extends Component {
  // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const {newStudent: previousStudentState} = this.state;
-    console.log(previousStudentState);
     await addNewStudentApi(previousStudentState)
     const newStudent = update(previousStudentState, {
       $set:
