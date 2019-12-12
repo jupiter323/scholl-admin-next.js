@@ -43,7 +43,10 @@ class InstructorListPage extends React.Component {
   onOpenInstructorModal = () => this.setState({ instructorModalOpen: true });
   onCloseInstructorModal = () => this.setState({ instructorModalOpen: false });
 
-  onAddNewInstructor = (newInstructor) => this.setState(({ instructors }) => ({ instructors: [...instructors, newInstructor] }))
+  onAddNewInstructor = (newInstructor) => {
+    this.setState(({ instructors }) => ({ instructors: [...instructors, newInstructor] }));
+    this.onCreateNewInstructorApi(newInstructor);
+  }
 
   onDeleteInstructor = (deletedInstructor) => {
     const updatedState = update(this.state, {
@@ -54,11 +57,15 @@ class InstructorListPage extends React.Component {
 
   onCloneInstructor = (instructor) => {
     const cloneIndex = this.state.instructors.indexOf(instructor);
-    const newId = this.state.instructors.length + 1;
     const instructors = update(this.state.instructors, {
       $splice: [[cloneIndex, 0, instructor]],
     });
     this.setState({ instructors }, this.onCloseDropdown);
+    this.onCreateNewInstructorApi(instructor);
+  }
+
+  onCreateNewInstructorApi = async(instructor) => {
+    const newId = this.state.instructors.length + 1;
     const {accountInfo:{firstName,lastName,email,gender},contactInfo:{state,phone,streetAddress,city,zip}} = instructor;
     const formattedBody = {
         id:newId,
@@ -73,11 +80,7 @@ class InstructorListPage extends React.Component {
         city: city,
         zip: zip
       };
-      this.onCreateNewInstructorApi(formattedBody);
-  }
-
-  onCreateNewInstructorApi = async(postBody) => {
-    await createNewInstructorApi(postBody);
+    await createNewInstructorApi(formattedBody);
   }
 
   onSaveInstructorChanges = (updatedInstructor) => {
