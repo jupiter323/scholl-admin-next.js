@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import StatusView from "../components/Class/StatusView";
+import StatusPage from "../components/Class/StatusPage";
+import ListPage from '../components/Class/ListPage';
+
 
 class Classes extends Component {
   constructor(props) {
@@ -11,7 +13,8 @@ class Classes extends Component {
       <React.Fragment>
         <main id="main" role="main">
           <div className="main-holder grey lighten-5 switcher-section">
-            <StatusView />
+            {/* <StatusPage /> */}
+            <ListPage/>
           </div>
         </main>
       </React.Fragment>

@@ -7,7 +7,7 @@ import DetailWorksheetPage from "../DetailWorksheetPage";
 
 import sampleClass from "../utils/sampleClass";
 
-class StatusView extends React.Component {
+class StatusPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,4 +92,4 @@ class StatusView extends React.Component {
   }
 }
 
-export default StatusView;
+export default StatusPage;
