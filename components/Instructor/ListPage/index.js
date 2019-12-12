@@ -33,7 +33,6 @@ class InstructorListPage extends React.Component {
     super(props);
     this.state = {
       instructorModalOpen: false,
-      instructors: [],
       dropdownIndex: null,
       dropdownIsOpen: false,
       instructorsAreFiltered: false,
@@ -44,12 +43,14 @@ class InstructorListPage extends React.Component {
   }
 
   componentDidMount = async() => {
-    const {formattedInstructors:instructors} = await fetchInstructorsApi();
-    this.setState({
-      instructors,
-    });
-    const {onSetInstructors} = this.props;
-    onSetInstructors(instructors);
+    const {onSetInstructors,instructors} = this.props;
+    if(instructors.length === 0) {
+      const {formattedInstructors:instructors} = await fetchInstructorsApi();
+      this.setState({
+        instructors,
+      });
+      onSetInstructors(instructors);
+    }
   }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
@@ -59,28 +60,35 @@ class InstructorListPage extends React.Component {
   onCloseInstructorModal = () => this.setState({ instructorModalOpen: false });
 
   onAddNewInstructor = (newInstructor) => {
-    this.setState(({ instructors }) => ({ instructors: [...instructors, newInstructor] }));
+    const { instructors,onSetInstructors } = this.props;
+    const updatedInstructors = update(instructors,{$push:[newInstructor]});
+    onSetInstructors(updatedInstructors);
     this.onCreateNewInstructorApi(newInstructor);
   }
 
   onDeleteInstructor = (deletedInstructor) => {
-    const updatedState = update(this.state, {
+    const updatedProps = update(this.props, {
       instructors: unfilteredInstructors => unfilteredInstructors.filter(instructor => instructor.id !== deletedInstructor.id),
     });
-    this.setState({ instructors: updatedState.instructors });
+    const { onSetInstructors } = this.props;
+    onSetInstructors(updatedProps.instructors);
   }
 
   onCloneInstructor = (instructor) => {
-    const cloneIndex = this.state.instructors.indexOf(instructor);
-    const instructors = update(this.state.instructors, {
-      $splice: [[cloneIndex, 0, instructor]],
+    const cloneIndex = this.props.instructors.indexOf(instructor);
+    const newId = this.props.instructors.length + 1;
+    const updatedInstructor = update(instructor,{id:{$set:newId}})
+    const instructors = update(this.props.instructors, {
+      $splice: [[cloneIndex, 0, updatedInstructor]],
     });
-    this.setState({ instructors }, this.onCloseDropdown);
+    this.onCloseDropdown();
+    const { onSetInstructors } = this.props;
+    onSetInstructors(instructors);
     this.onCreateNewInstructorApi(instructor);
   }
 
   onCreateNewInstructorApi = async(instructor) => {
-    const newId = this.state.instructors.length + 1;
+    const newId = this.props.instructors.length + 1;
     const {accountInfo:{firstName,lastName,email,gender},contactInfo:{state,phone,streetAddress,city,zip}} = instructor;
     const formattedBody = {
         id:newId,
@@ -99,14 +107,15 @@ class InstructorListPage extends React.Component {
   }
 
   onSaveInstructorChanges = (updatedInstructor) => {
-    const { instructors: originalInstructors } = this.state;
+    const { instructors: originalInstructors,onSetInstructors } = this.props;
     const instructorToUpdate = originalInstructors.filter(instructor => instructor.id === updatedInstructor.id)[0];
     const updatedInstructorIndex = originalInstructors.indexOf(instructorToUpdate);
     const instructors = update(originalInstructors, {
       $splice: [[updatedInstructorIndex, 1, updatedInstructor]],
     });
     // saveChangesSuccess();
-    this.setState({ instructors });
+    // this.setState({ instructors });
+    onSetInstructors(instructors);
   }
 
   onSetFilteredState = (filterName) => this.setState({ instructorsAreFiltered: true, filterName })
@@ -118,7 +127,8 @@ class InstructorListPage extends React.Component {
   onSetSort = (sort) => this.setState({ sort })
 
   onFilterByName = () => {
-    const { instructors, filterName } = this.state;
+    const { instructors } = this.props;
+    const { filterName } = this.state;
     return instructors.reduce((finalArr, currentInstructor) => {
       const { accountInfo: { lastName, firstName } } = currentInstructor;
       const instructorString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
@@ -130,7 +140,8 @@ class InstructorListPage extends React.Component {
   }
 
   onFilterByLocation = (preFilteredInstructors = []) => {
-    const { instructors: allInstructors, filterLocation } = this.state;
+    const { instructors: allInstructors } = this.props;
+    const { filterLocation } = this.state;
     let instructors;
     if (preFilteredInstructors.length) {
       instructors = preFilteredInstructors;
@@ -164,7 +175,8 @@ class InstructorListPage extends React.Component {
   }
 
   getMappableInstructors = () => {
-    const { filterName, filterLocation, instructors: allInstructors, sort } = this.state;
+    const { filterName, filterLocation, sort } = this.state;
+    const { instructors: allInstructors } = this.props;
     let instructors;
     if (filterName.length && !filterLocation.length) {
       instructors = this.onFilterByName();
