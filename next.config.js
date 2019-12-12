@@ -1,4 +1,5 @@
-const withCSS = require("@zeit/next-css");
+require('dotenv').config();
+const withCSS = require('@zeit/next-css');
 
 module.exports = withCSS({
   webpack: (config, { isServer }) => {
@@ -6,12 +7,13 @@ module.exports = withCSS({
     if (!isServer) {
       // eslint-disable-next-line no-param-reassign
       config.node = {
-        fs: "empty"
+        fs: 'empty',
       };
     }
     return config;
   },
   env: {
-    API_URL: process.env.API_URL
-  }
+    API_URL: process.env.API_URL,
+  },
 });
+

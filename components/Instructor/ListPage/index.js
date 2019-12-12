@@ -10,6 +10,11 @@ import sampleInstructorList from '../utils/sampleInstructorList';
 // import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
 import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 
+import {
+  createNewInstructorApi
+} from '../index/api';
+
+
 class InstructorListPage extends React.Component {
   constructor(props) {
     super(props);
@@ -42,10 +47,30 @@ class InstructorListPage extends React.Component {
 
   onCloneInstructor = (instructor) => {
     const cloneIndex = this.state.instructors.indexOf(instructor);
+    const newId = this.state.instructors.length + 1;
     const instructors = update(this.state.instructors, {
       $splice: [[cloneIndex, 0, instructor]],
     });
     this.setState({ instructors }, this.onCloseDropdown);
+    const {accountInfo:{firstName,lastName,email,gender},contactInfo:{state,phone,streetAddress,city,zip}} = instructor;
+    const formattedBody = {
+        id:newId,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        gender: gender,
+        state: state,
+        locations: [],
+        phone: phone,
+        address: streetAddress,
+        city: city,
+        zip: zip
+      };
+      this.onCreateNewInstructorApi(formattedBody);
+  }
+
+  onCreateNewInstructorApi = async(postBody) => {
+    await createNewInstructorApi(postBody);
   }
 
   onSaveInstructorChanges = (updatedInstructor) => {
