@@ -33,6 +33,11 @@ class Classes extends React.Component {
     this.setState({classes: newClassesArray})
   }
 
+
+  onSaveNewClass = () => {
+    console.log("Created New Class!")
+  }
+
   render() {
     const { selectedClass } = this.state;
     return (
@@ -45,6 +50,7 @@ class Classes extends React.Component {
                 onHandleClassCard={this.onHandleClassCard}
                 onCloneClass = {this.onCloneClass}
                 onDeleteClass = {this.onDeleteClass}
+                onSaveNewClass = {this.onSaveNewClass}
               />
             }
             {selectedClass && <StatusPage />}

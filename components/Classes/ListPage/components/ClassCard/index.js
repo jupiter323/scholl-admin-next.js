@@ -13,7 +13,8 @@ class ClassCard extends React.Component {
     }
   }
 
-  onOpenClassDetailsModal = () => {
+  onOpenClassDetailsModal = (event) => {
+    event.preventDefault();
     this.props.onCloseDropdown();
     this.setState({ classDetailsModalOpen: true });
   };
@@ -84,7 +85,6 @@ class ClassCard extends React.Component {
                     </span>
                   </div>
                   <div className="dropdown-block col">
-                    {/* Dropdown Trigger */}
                     <a
                       className="dropdown-trigger btn"
                       href="#"
@@ -93,7 +93,6 @@ class ClassCard extends React.Component {
                     >
                       <i className="material-icons dots-icon">more_vert</i>
                     </a>
-                    {/* Dropdown Structure */}
                     <If condition={dropdownIsOpen && dropdownIndex === index}>
                       <ul
                         id="dropdown01"
@@ -101,7 +100,6 @@ class ClassCard extends React.Component {
                         style={{ display: 'block', width: '103.991px', left: '116.974px', top: '7.99716px', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
                       >
                         <li>
-                          {/* Modal Trigger */}
                           <a
                             href="#modal_user_edit"
                             onClick={this.onOpenClassDetailsModal}

@@ -16,7 +16,7 @@ class ClassInformation extends React.Component {
                 <input
                   type="text"
                   id="class_name"
-                  defaultValue="March 2018 Class"
+                  defaultValue=""
                 />
                 <label className="label" htmlFor="class_name">
                   Class Name

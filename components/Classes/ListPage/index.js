@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { StickyContainer, Sticky } from "react-sticky";
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
+
 import ClassModal from "../ClassModal";
+import LocationModal from '../LocationModal';
 
 class ListPage extends React.Component {
   constructor(props) {
@@ -13,21 +14,18 @@ class ListPage extends React.Component {
       filterName: "",
       dropdownIndex: null,
       dropdownIsOpen: false,
-      classModalOpen: false
+      classModalOpen: false,
+      locationModalOpen:false,
     };
   }
 
-  onSetFilteredLocationState = filterLocation =>
-    this.setState({ classesAreFiltered: true, filterLocation });
+  onSetFilteredLocationState = filterLocation => this.setState({ classesAreFiltered: true, filterLocation });
 
-  onUnsetFilteredLocationState = () =>
-    this.setState({ filterLocation: "" }, this.checkForFilteredState);
+  onUnsetFilteredLocationState = () => this.setState({ filterLocation: "" }, this.checkForFilteredState);
 
-  onSetDropdown = dropdownIndex =>
-    this.setState({ dropdownIsOpen: true, dropdownIndex });
+  onSetDropdown = dropdownIndex => this.setState({ dropdownIsOpen: true, dropdownIndex });
 
-  onCloseDropdown = () =>
-    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCloneClass = index => {
     const { onCloneClass } = this.props;
@@ -53,7 +51,15 @@ class ListPage extends React.Component {
     this.setState({ classModalOpen: true });
   };
 
+  onOpenLocationModal = (event) => {
+    event.preventDefault();
+    console.log("OMG")
+    this.setState({locationModalOpen:true});
+  }
+
   onCloseClassModal = () => this.setState({ classModalOpen: false });
+
+  onCloseLocationModal = () => this.setState({locationModalOpen:false});
 
   mapClassCards = () => {
     return this.props.classes.map((item, index) => (
@@ -73,7 +79,8 @@ class ListPage extends React.Component {
   };
 
   render() {
-    const { classModalOpen } = this.state;
+    const { classModalOpen,locationModalOpen } = this.state;
+    const { onSaveNewClass } = this.props;
     return (
       <div>
         <div className="title-row card-panel">
@@ -85,7 +92,7 @@ class ListPage extends React.Component {
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">
               <a href="#!" className="breadcrumb">
-                &lt; Classes{" "}
+                &lt; Classes
               </a>
             </div>
           </nav>
@@ -119,7 +126,8 @@ class ListPage extends React.Component {
             <i className="material-icons">add</i> New Class
           </a>
         </div>
-        <ClassModal open={classModalOpen} onClose={this.onCloseClassModal} />
+        <ClassModal open={classModalOpen} onClose={this.onCloseClassModal} onSave = {onSaveNewClass} onOpenLocationModal = {this.onOpenLocationModal}/>
+        <LocationModal open={locationModalOpen} onClose = {this.onCloseLocationModal}/>
       </div>
     );
   }
@@ -129,7 +137,8 @@ ListPage.propTypes = {
   classes: PropTypes.array.isRequired,
   onHandleClassCard: PropTypes.func.isRequired,
   onCloneClass: PropTypes.func.isRequired,
-  onDeleteClass: PropTypes.func.isRequired
+  onDeleteClass: PropTypes.func.isRequired,
+  onSaveNewClass: PropTypes.func.isRequired,
 };
 
 export default ListPage;

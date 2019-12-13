@@ -1,11 +1,26 @@
 import React from "react";
+import PropTypes from 'prop-types';
+import LocationCard from '../Locations/components/LocationCard';
+
 
 class Locations extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  mapLocations = () =>{
+    const { locations } = this.props;
+    return locations.map((location,index) => {
+      <LocationCard
+        key = {index}
+        index = {index}
+        location = {location}
+      />
+    })
+  }
+
   render() {
+    const { onOpenLocationModal } = this.props;
     return (
       <div className="card-block">
         <h3>Class Location</h3>
@@ -20,179 +35,12 @@ class Locations extends React.Component {
             <div className="box-scrollable">
               <div className="height-360 jcf-scrollable">
                 <div className="card-location-holder">
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#62b771",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <h3 className="h4 truncate">Location Nickname</h3>
-                        <h4 className="sub-title">Location Name</h4>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-location" />
-                          <span className="text-icon">Location</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  {this.mapLocations()}
                 </div>
               </div>
             </div>
             <div className="card-footer right-align">
-              <a href="#modal_Location1" className="modal-trigger link-block">
+              <a href="#modal_Location1" className="modal-trigger link-block" onClick = { onOpenLocationModal}>
                 Add Location
               </a>
             </div>
@@ -201,6 +49,11 @@ class Locations extends React.Component {
       </div>
     );
   }
+}
+
+Locations.propTypes = {
+  locations:PropTypes.array.isRequired,
+  onOpenLocationModal:PropTypes.func.isRequired,
 }
 
 export default Locations;

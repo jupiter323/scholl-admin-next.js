@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Portal from "../../Portal";
-import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
 
 import ClassInfo from '../SharedModalComponents/ClassInformation';
 import AccountSetting from '../SharedModalComponents/AccountSettings';
@@ -20,28 +19,37 @@ class ClassModal extends React.Component {
         activeLocation: {},
         dropdownIsOpen: false,
         dropdownIndex: null,
+        originalClass:{
+          id:"",
+          name:"",
+          start_date:"",
+          end_date:"",
+          isInactive:false,
+          isExclude:false,
+          locations:[],
+          instructors:[],
+        }
     }
   }
 
   onCloseModal = () => {
     const { onClose } = this.props;
     onClose();
-    // this.onResetClass();
   }
 
-
+  onSave = () => {
+    const { onClose,onSave } = this.props;
+    onClose();
+    onSave();
+  }
 
   render() {
-    const { open } = this.props;
-    const { deleteLocationModalOpen, newLocationModalOpen, editLocationModalOpen } = this.state;
+    const { open,onOpenLocationModal } = this.props;
+    const { originalClass:{locations} } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper
-              onOuterClick={this.onCloseModal}
-              nestedModals={deleteLocationModalOpen || editLocationModalOpen || newLocationModalOpen }
-            >
               <div id="modal_add_new_class" className="modal modal-custom modal-460" >
                 <form action="#" className="custom-form">
                   <fieldset>
@@ -67,7 +75,10 @@ class ClassModal extends React.Component {
                         <div className="card-body">
                             <ClassInfo/>
                             <AccountSetting/>
-                            <Locations/>
+                            <Locations
+                              locations = {locations}
+                              onOpenLocationModal = {onOpenLocationModal}
+                            />
                             <Instructors/>
                         </div>
                         <div className="modal-footer">
@@ -77,7 +88,7 @@ class ClassModal extends React.Component {
                           >
                             Cancel
                           </a>
-                          <a href="#" className="btn">
+                          <a href="#" className="btn" onClick = {this.onSave}>
                             Create Class
                           </a>
                         </div>
@@ -86,7 +97,6 @@ class ClassModal extends React.Component {
                   </fieldset>
                 </form>
               </div>
-            </ClickOffComponentWrapper>
           </div>
         )}
         <style jsx>
@@ -135,6 +145,8 @@ class ClassModal extends React.Component {
 ClassModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose:PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onOpenLocationModal:PropTypes.func.isRequired,
 };
 
 export default ClassModal;
