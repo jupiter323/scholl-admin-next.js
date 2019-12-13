@@ -1,12 +1,58 @@
 import React from "react";
 import PropTypes from "prop-types";
+import ClassDetailModal from '../ClassDetailModal';
+
+
 
 class ClassCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      classDetailsModalOpen: false,
+      deleteModalOpen: false,
+    }
   }
+
+  onOpenClassDetailsModal = () => {
+    this.props.onCloseDropdown();
+    this.setState({ classDetailsModalOpen: true });
+  };
+
+  onCloseClassDetailsModal = () => this.setState({ classDetailsModalOpen: false });
+  
+  onCloneClass = () => this.props.onCloneClass(this.props.classroom)
+
+  onOpenDeleteModal = () => this.setState({ deleteModalOpen: true });
+  onCloseDeleteModal = () => this.setState({ deleteModalOpen: false });
+
+  onConfirmDeleteClass = () => {
+    const { onDeleteClass, classroom, onCloseDropdown } = this.props;
+    onDeleteClass(classroom);
+    onCloseDropdown();
+    this.onCloseDeleteModal();
+  }
+
+  handleDropdownClick = (event) => {
+    const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
+    event.preventDefault();
+    if (dropdownIsOpen) {
+      return onCloseDropdown();
+    }
+    return onSetDropdown(index);
+  }
+
   render() {
+    const { dropdownIsOpen, dropdownIndex, index,classroom } = this.props;
+    const { deleteModalOpen, classDetailsModalOpen } = this.state;
     return (
+      <React.Fragment>
+        <ClassDetailModal
+          classroom={classroom}
+          open={classDetailsModalOpen}
+          onClose={this.onCloseClassDetailsModal}
+          onOpenDeleteModal={this.onOpenDeleteModal}
+          deleteModalOpen={deleteModalOpen}
+        />
       <div className="card-main-col col s12 m8 l7 xl5">
         <div className="card-main card-class card card-large">
           <div
@@ -42,34 +88,39 @@ class ClassCard extends React.Component {
                     <a
                       className="dropdown-trigger btn"
                       href="#"
+                      onClick={this.handleDropdownClick}
                       data-target="dropdown01"
                     >
                       <i className="material-icons dots-icon">more_vert</i>
                     </a>
                     {/* Dropdown Structure */}
-                    <ul
-                      id="dropdown01"
-                      className="dropdown-content dropdown-wide"
-                    >
-                      <li>
-                        {/* Modal Trigger */}
-                        <a
-                          href="#modal_user_edit"
-                          className="modal-trigger link-block"
-                        >
-                          Edit
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">Clone</a>
-                      </li>
-                      <li>
-                        <a href="#!">Impersonate</a>
-                      </li>
-                      <li>
-                        <a href="#!">Delete</a>
-                      </li>
-                    </ul>
+                    <If condition={dropdownIsOpen && dropdownIndex === index}>
+                      <ul
+                        id="dropdown01"
+                        className="dropdown-content dropdown-wide"
+                        style={{ display: 'block', width: '103.991px', left: '116.974px', top: '7.99716px', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
+                      >
+                        <li>
+                          {/* Modal Trigger */}
+                          <a
+                            href="#modal_user_edit"
+                            onClick={this.onOpenClassDetailsModal}
+                            className="modal-trigger link-block"
+                          >
+                            Edit
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#!">Clone</a>
+                        </li>
+                        <li>
+                          <a href="#!">Impersonate</a>
+                        </li>
+                        <li>
+                          <a href="#!">Delete</a>
+                        </li>
+                      </ul>
+                    </If>
                   </div>
                 </div>
               </div>
@@ -154,8 +205,18 @@ class ClassCard extends React.Component {
           </div>
         </div>
       </div>
+      </React.Fragment>
     );
   }
 }
+
+ClassCard.propTypes = {
+  index: PropTypes.number.isRequired,
+  classroom: PropTypes.object.isRequired,
+  onSetDropdown: PropTypes.func.isRequired,
+  onCloseDropdown: PropTypes.func.isRequired,
+  dropdownIsOpen: PropTypes.bool.isRequired,
+  dropdownIndex: PropTypes.number
+};
 
 export default ClassCard;

@@ -7,24 +7,41 @@ import sampleClass from "../utils/sampleClass";
 class ListPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state  = {
+    this.state = {
       classesAreFiltered: false,
-      filterName: '',
-    }
+      filterName: "",
+      dropdownIndex: null,
+      dropdownIsOpen: false
+    };
   }
 
-  onSetFilteredLocationState = (filterLocation) => this.setState({ classesAreFiltered: true, filterLocation })
-  onUnsetFilteredLocationState = () => this.setState({ filterLocation: '' }, this.checkForFilteredState)
+  onSetFilteredLocationState = filterLocation => this.setState({ classesAreFiltered: true, filterLocation });
+
+  onUnsetFilteredLocationState = () => this.setState({ filterLocation: "" }, this.checkForFilteredState);
+
+  onSetDropdown = dropdownIndex => this.setState({ dropdownIsOpen: true, dropdownIndex });
+  
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   checkForFilteredState = () => {
     const { filterName, filterLocation } = this.state;
     if (!filterName.length && !filterLocation.length) {
       this.setState({ classesAreFiltered: false });
     }
-  }
+  };
 
   mapClassCards = () => {
-    return sampleClass.map((item, index) => <ClassCard key={index} />);
+    return sampleClass.map((item, index) => (
+      <ClassCard
+        key={index}
+        index={index}
+        classroom = {item}
+        onSetDropdown={this.onSetDropdown}
+        onCloseDropdown={this.onCloseDropdown}
+        dropdownIsOpen={this.state.dropdownIsOpen}
+        dropdownIndex={this.state.dropdownIndex}
+      />
+    ));
   };
 
   render() {
@@ -50,7 +67,7 @@ class ListPage extends React.Component {
             </span>
           </h2>
         </div>
-        <FilterSection 
+        <FilterSection
           onSetFilteredLocationState={this.onSetFilteredLocationState}
           onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
         />
