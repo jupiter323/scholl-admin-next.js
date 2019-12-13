@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { StickyContainer, Sticky } from "react-sticky";
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
-import sampleClass from "../utils/sampleClass";
+
 
 class ListPage extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class ListPage extends React.Component {
   onUnsetFilteredLocationState = () => this.setState({ filterLocation: "" }, this.checkForFilteredState);
 
   onSetDropdown = dropdownIndex => this.setState({ dropdownIsOpen: true, dropdownIndex });
-  
+
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   checkForFilteredState = () => {
@@ -31,15 +32,16 @@ class ListPage extends React.Component {
   };
 
   mapClassCards = () => {
-    return sampleClass.map((item, index) => (
+    return this.props.classes.map((item, index) => (
       <ClassCard
         key={index}
         index={index}
-        classroom = {item}
+        classroom={item}
         onSetDropdown={this.onSetDropdown}
         onCloseDropdown={this.onCloseDropdown}
         dropdownIsOpen={this.state.dropdownIsOpen}
         dropdownIndex={this.state.dropdownIndex}
+        onHandleClassCard = {() => this.props.onHandleClassCard(index)}
       />
     ));
   };
@@ -82,9 +84,22 @@ class ListPage extends React.Component {
             {this.mapClassCards()}
           </div>
         </div>
+        <div className="add-btn-block">
+          <a
+            href="#modal_add_new_class"
+            className="modal-trigger waves-effect waves-teal btn add-btn"
+          >
+            <i className="material-icons">add</i> New Class
+          </a>
+        </div>
       </div>
     );
   }
+}
+
+ListPage.propTypes = {
+  classes:PropTypes.array.isRequired,
+  onHandleClassCard:PropTypes.func.isRequired,
 }
 
 export default ListPage;

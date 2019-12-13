@@ -42,7 +42,7 @@ class ClassCard extends React.Component {
   }
 
   render() {
-    const { dropdownIsOpen, dropdownIndex, index,classroom } = this.props;
+    const { dropdownIsOpen, dropdownIndex, index,classroom,onHandleClassCard } = this.props;
     const { deleteModalOpen, classDetailsModalOpen } = this.state;
     return (
       <React.Fragment>
@@ -69,7 +69,7 @@ class ClassCard extends React.Component {
                     <span className="initials">8</span>
                     <span className="ititials-text">students</span>
                   </div>
-                  <div className="user-text" style={{ color: "#fff" }}>
+                  <div className="user-text" style={{ color: "#fff" }} onClick={()=>onHandleClassCard(index)}>
                     <h4 className="h3">Some Class in June</h4>
                     <time dateTime="P120D">6/1/19 - 8/5/19</time>
                   </div>
@@ -216,7 +216,8 @@ ClassCard.propTypes = {
   onSetDropdown: PropTypes.func.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
-  dropdownIndex: PropTypes.number
+  dropdownIndex: PropTypes.number,
+  onHandleClassCard:PropTypes.func.isRequired,
 };
 
 export default ClassCard;

@@ -5,7 +5,7 @@ import TestSectionsPage from "../TestSectionsPage";
 import DetailSummaryPage from "../DetailSummaryPage";
 import DetailWorksheetPage from "../DetailWorksheetPage";
 
-import sampleClass from "../utils/sampleClass";
+import sampleClass from "../utils/sampleSummaryClass";
 
 class StatusPage extends React.Component {
   constructor(props) {
