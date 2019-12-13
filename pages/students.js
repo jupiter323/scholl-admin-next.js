@@ -8,7 +8,6 @@ import FilterSection from '../components/Student/ListPage/Components/FilterSecti
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
-import {fetchStudentsApi, addNewStudentApi} from "../components/Student/index/api";
 
 class Students extends Component {
   constructor(props) {
@@ -61,7 +60,8 @@ class Students extends Component {
  // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const {newStudent: previousStudentState} = this.state;
-    await addNewStudentApi(previousStudentState)
+    // Replace code below with action dispatch
+    // await addNewStudentApi(previousStudentState)
     const newStudent = update(previousStudentState, {
       $set:
        { active: false,
