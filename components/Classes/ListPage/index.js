@@ -1,9 +1,9 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { StickyContainer, Sticky } from "react-sticky";
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
-import ClassModal from '../ClassModal';
+import ClassModal from "../ClassModal";
 
 class ListPage extends React.Component {
   constructor(props) {
@@ -13,17 +13,33 @@ class ListPage extends React.Component {
       filterName: "",
       dropdownIndex: null,
       dropdownIsOpen: false,
-      classModalOpen:false,
+      classModalOpen: false
     };
   }
 
-  onSetFilteredLocationState = filterLocation => this.setState({ classesAreFiltered: true, filterLocation });
+  onSetFilteredLocationState = filterLocation =>
+    this.setState({ classesAreFiltered: true, filterLocation });
 
-  onUnsetFilteredLocationState = () => this.setState({ filterLocation: "" }, this.checkForFilteredState);
+  onUnsetFilteredLocationState = () =>
+    this.setState({ filterLocation: "" }, this.checkForFilteredState);
 
-  onSetDropdown = dropdownIndex => this.setState({ dropdownIsOpen: true, dropdownIndex });
+  onSetDropdown = dropdownIndex =>
+    this.setState({ dropdownIsOpen: true, dropdownIndex });
 
-  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onCloseDropdown = () =>
+    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+
+  onCloneClass = index => {
+    const { onCloneClass } = this.props;
+    this.onCloseDropdown();
+    onCloneClass(index);
+  };
+
+  onDeleteClass = index => {
+    const { onDeleteClass } = this.props;
+    this.onCloseDropdown();
+    onDeleteClass(index);
+  };
 
   checkForFilteredState = () => {
     const { filterName, filterLocation } = this.state;
@@ -32,10 +48,10 @@ class ListPage extends React.Component {
     }
   };
 
-  onOpenClassModal = (event) => {
+  onOpenClassModal = event => {
     event.preventDefault();
     this.setState({ classModalOpen: true });
-  }
+  };
 
   onCloseClassModal = () => this.setState({ classModalOpen: false });
 
@@ -47,9 +63,11 @@ class ListPage extends React.Component {
         classroom={item}
         onSetDropdown={this.onSetDropdown}
         onCloseDropdown={this.onCloseDropdown}
+        onCloneClass={() => this.onCloneClass(index)}
+        onDeleteClass={() => this.onDeleteClass(index)}
         dropdownIsOpen={this.state.dropdownIsOpen}
         dropdownIndex={this.state.dropdownIndex}
-        onHandleClassCard = {() => this.props.onHandleClassCard(index)}
+        onHandleClassCard={() => this.props.onHandleClassCard(index)}
       />
     ));
   };
@@ -67,7 +85,7 @@ class ListPage extends React.Component {
           <nav className="breadcrumb-holder">
             <div className="nav-wrapper ">
               <a href="#!" className="breadcrumb">
-                &lt; Classes
+                &lt; Classes{" "}
               </a>
             </div>
           </nav>
@@ -96,23 +114,22 @@ class ListPage extends React.Component {
           <a
             href="#modal_add_new_class"
             className="modal-trigger waves-effect waves-teal btn add-btn"
-            onClick={()=>this.onOpenClassModal(event)}
+            onClick={() => this.onOpenClassModal(event)}
           >
-            <i className="material-icons" >add</i> New Class
+            <i className="material-icons">add</i> New Class
           </a>
         </div>
-        <ClassModal
-          open = {classModalOpen}
-          onClose={this.onCloseClassModal}
-        />
+        <ClassModal open={classModalOpen} onClose={this.onCloseClassModal} />
       </div>
     );
   }
 }
 
 ListPage.propTypes = {
-  classes:PropTypes.array.isRequired,
-  onHandleClassCard:PropTypes.func.isRequired,
-}
+  classes: PropTypes.array.isRequired,
+  onHandleClassCard: PropTypes.func.isRequired,
+  onCloneClass: PropTypes.func.isRequired,
+  onDeleteClass: PropTypes.func.isRequired
+};
 
 export default ListPage;

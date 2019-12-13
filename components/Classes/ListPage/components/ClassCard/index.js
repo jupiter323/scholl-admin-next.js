@@ -42,7 +42,7 @@ class ClassCard extends React.Component {
   }
 
   render() {
-    const { dropdownIsOpen, dropdownIndex, index,classroom,onHandleClassCard } = this.props;
+    const { dropdownIsOpen, dropdownIndex, index,classroom,onHandleClassCard,onCloneClass,onDeleteClass } = this.props;
     const { deleteModalOpen, classDetailsModalOpen } = this.state;
     return (
       <React.Fragment>
@@ -111,13 +111,13 @@ class ClassCard extends React.Component {
                           </a>
                         </li>
                         <li>
-                          <a href="#!">Clone</a>
+                          <a href="#!" onClick={() => onCloneClass(index)}>Clone</a>
                         </li>
                         <li>
                           <a href="#!">Impersonate</a>
                         </li>
                         <li>
-                          <a href="#!">Delete</a>
+                          <a href="#!" onClick={() => onDeleteClass(index)}>Delete</a>
                         </li>
                       </ul>
                     </If>
@@ -218,6 +218,8 @@ ClassCard.propTypes = {
   dropdownIsOpen: PropTypes.bool.isRequired,
   dropdownIndex: PropTypes.number,
   onHandleClassCard:PropTypes.func.isRequired,
+  onCloneClass: PropTypes.func.isRequired,
+  onDeleteClass:PropTypes.func.isRequired,
 };
 
 export default ClassCard;

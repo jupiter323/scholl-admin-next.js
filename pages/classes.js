@@ -17,6 +17,22 @@ class Classes extends React.Component {
     this.setState({ selectedClass: classes[index] });
   };
 
+  onCloneClass = (index) => {
+    const { classes } = this.state;
+    this.setState(prevState => {
+      prevState.classes.push(classes[index]);
+      return { classes: prevState.classes}
+    })
+  }
+
+  arrayItemRemover = (array, value) => array.filter((classroom) => classroom !== value)
+
+  onDeleteClass = (index) => {
+    const { classes } = this.state;
+    const newClassesArray = this.arrayItemRemover(classes, classes[index])
+    this.setState({classes: newClassesArray})
+  }
+
   render() {
     const { selectedClass } = this.state;
     return (
@@ -26,7 +42,9 @@ class Classes extends React.Component {
             {!selectedClass && 
               <ListPage 
                 classes={this.state.classes}
-                onHandleClassCard={this.onHandleClassCard} 
+                onHandleClassCard={this.onHandleClassCard}
+                onCloneClass = {this.onCloneClass}
+                onDeleteClass = {this.onDeleteClass}
               />
             }
             {selectedClass && <StatusPage />}
