@@ -57,7 +57,7 @@ class ClassCard extends React.Component {
         <div className="card-main card-class card card-large">
           <div
             className="owner-box card-panel"
-            style={{ backgroundColor: "#408e49", color: "#fff" }}
+            style={{ backgroundColor: "#408e49", color: "#fff",cursor:"pointer" }}
           >
             <div className="card-panel-row row">
               <div className="col s9">

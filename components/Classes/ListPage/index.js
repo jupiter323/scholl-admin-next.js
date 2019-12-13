@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StickyContainer, Sticky } from "react-sticky";
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
-
+import ClassModal from '../ClassModal';
 
 class ListPage extends React.Component {
   constructor(props) {
@@ -12,7 +12,8 @@ class ListPage extends React.Component {
       classesAreFiltered: false,
       filterName: "",
       dropdownIndex: null,
-      dropdownIsOpen: false
+      dropdownIsOpen: false,
+      classModalOpen:false,
     };
   }
 
@@ -31,6 +32,8 @@ class ListPage extends React.Component {
     }
   };
 
+  onOpenClassModal = () => this.setState({ classModalOpen: true });
+
   mapClassCards = () => {
     return this.props.classes.map((item, index) => (
       <ClassCard
@@ -47,6 +50,7 @@ class ListPage extends React.Component {
   };
 
   render() {
+    const { classModalOpen } = this.state;
     return (
       <div>
         <div className="title-row card-panel">
@@ -88,10 +92,14 @@ class ListPage extends React.Component {
           <a
             href="#modal_add_new_class"
             className="modal-trigger waves-effect waves-teal btn add-btn"
+            onClick={this.onOpenClassModal}
           >
-            <i className="material-icons">add</i> New Class
+            <i className="material-icons" >add</i> New Class
           </a>
         </div>
+        <ClassModal
+          open = {classModalOpen}
+        />
       </div>
     );
   }
