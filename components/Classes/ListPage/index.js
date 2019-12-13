@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import update from 'immutability-helper';
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
 
@@ -16,6 +17,11 @@ class ListPage extends React.Component {
       dropdownIsOpen: false,
       classModalOpen: false,
       locationModalOpen:false,
+      newClass:{
+        location: {
+          locations: [],
+        },
+      },
     };
   }
 
@@ -53,13 +59,22 @@ class ListPage extends React.Component {
 
   onOpenLocationModal = (event) => {
     event.preventDefault();
-    console.log("OMG")
     this.setState({locationModalOpen:true});
   }
 
   onCloseClassModal = () => this.setState({ classModalOpen: false });
 
   onCloseLocationModal = () => this.setState({locationModalOpen:false});
+
+  handleChange = (event, name, section) => {
+    const { newClass: previousClassState } = this.state;
+    const value = event.target ? event.target.value : event;
+    const updatedClass = update(previousClassState, {
+      [section]: { $merge: { [name]: value }},
+    })
+    this.setState({newClass: updatedClass});
+    
+}
 
   mapClassCards = () => {
     return this.props.classes.map((item, index) => (
@@ -126,8 +141,8 @@ class ListPage extends React.Component {
             <i className="material-icons">add</i> New Class
           </a>
         </div>
-        <ClassModal open={classModalOpen} onClose={this.onCloseClassModal} onSave = {onSaveNewClass} onOpenLocationModal = {this.onOpenLocationModal}/>
-        <LocationModal open={locationModalOpen} onClose = {this.onCloseLocationModal}/>
+        <ClassModal open={classModalOpen} onClose={this.onCloseClassModal} onSave = {onSaveNewClass} onOpenLocationModal = {this.onOpenLocationModal} state={this.state.newClass}/>
+        <LocationModal open={locationModalOpen} onClose = {this.onCloseLocationModal} handleLocationsChange={(selectedLocations) => this.handleChange(selectedLocations, 'locations', 'location')}/>
       </div>
     );
   }

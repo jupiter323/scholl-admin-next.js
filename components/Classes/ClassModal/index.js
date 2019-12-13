@@ -19,16 +19,6 @@ class ClassModal extends React.Component {
         activeLocation: {},
         dropdownIsOpen: false,
         dropdownIndex: null,
-        originalClass:{
-          id:"",
-          name:"",
-          start_date:"",
-          end_date:"",
-          isInactive:false,
-          isExclude:false,
-          locations:[],
-          instructors:[],
-        }
     }
   }
 
@@ -44,8 +34,8 @@ class ClassModal extends React.Component {
   }
 
   render() {
-    const { open,onOpenLocationModal } = this.props;
-    const { originalClass:{locations} } = this.state;
+    const { open,onOpenLocationModal,state:{location} } = this.props;
+    console.log("current Location:",location.locations)
     return (
       <Portal selector="#modal">
         {open && (
@@ -76,7 +66,7 @@ class ClassModal extends React.Component {
                             <ClassInfo/>
                             <AccountSetting/>
                             <Locations
-                              locations = {locations}
+                              locations = {location.locations}
                               onOpenLocationModal = {onOpenLocationModal}
                             />
                             <Instructors/>
@@ -147,6 +137,7 @@ ClassModal.propTypes = {
   onClose:PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onOpenLocationModal:PropTypes.func.isRequired,
+  state:PropTypes.object.isRequired,
 };
 
 export default ClassModal;

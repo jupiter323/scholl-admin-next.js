@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import LocationCard from '../Locations/components/LocationCard';
+import LocationCard from '../../../Location/components/LocationCard';
 
 
 class Locations extends React.Component {
