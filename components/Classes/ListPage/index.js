@@ -4,7 +4,7 @@ import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
 
 import ClassModal from "../ClassModal";
-import LocationModal from '../LocationModal';
+import LocationModal from '../../Location/components/LocationModal';
 
 class ListPage extends React.Component {
   constructor(props) {
