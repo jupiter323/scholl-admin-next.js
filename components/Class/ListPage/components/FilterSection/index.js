@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import locationOptions from '../../../../utils/locationOptions';
-
+import sortOptions from '../../../../utils/sortOptions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class FilterSection extends React.Component {
       open: false,
       activeFilters: [],
       location: {},
+      sort: {},
     };
   }
 
@@ -56,7 +57,7 @@ class FilterSection extends React.Component {
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }));
 
   render() {
-    const { open, activeFilters,location } = this.state;
+    const { open, activeFilters,location,sort } = this.state;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -184,7 +185,6 @@ class FilterSection extends React.Component {
                       type="search"
                       id="name_search"
                       className="input-control  validate"
-                      placeholder="Edwar"
                     />
                     <button type="submit" className="search-button">
                       <i className="icon-search" />
@@ -201,14 +201,14 @@ class FilterSection extends React.Component {
                 <div className="row mb-0">
                   <div className="col s12 xl7">
                     <div className="input-field">
-                      <select id="sort_class_name">
-                        <option>Class Name (ascending)</option>
-                        <option>Class Name (ascending)</option>
-                        <option>Class Name (ascending)</option>
-                      </select>
-                      <label className="label" htmlFor="sort_class_name">
-                        Sort
-                      </label>
+                      <Dropdown
+                        value={getValueFromState(sort, sortOptions)}
+                        onChange={(event) => this.handleFilterChange(event, 'sort')}
+                        options={sortOptions}
+                        label="Sort"
+                        stateKey="sort"
+                        dropdownKey="sort"
+                      />
                     </div>
                   </div>
                 </div>
