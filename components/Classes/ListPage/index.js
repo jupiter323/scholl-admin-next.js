@@ -32,7 +32,12 @@ class ListPage extends React.Component {
     }
   };
 
-  onOpenClassModal = () => this.setState({ classModalOpen: true });
+  onOpenClassModal = (event) => {
+    event.preventDefault();
+    this.setState({ classModalOpen: true });
+  }
+
+  onCloseClassModal = () => this.setState({ classModalOpen: false });
 
   mapClassCards = () => {
     return this.props.classes.map((item, index) => (
@@ -84,7 +89,6 @@ class ListPage extends React.Component {
             </div>
           </div>
           <div className="row d-flex-content card-width-366">
-            {/* card */}
             {this.mapClassCards()}
           </div>
         </div>
@@ -92,13 +96,14 @@ class ListPage extends React.Component {
           <a
             href="#modal_add_new_class"
             className="modal-trigger waves-effect waves-teal btn add-btn"
-            onClick={this.onOpenClassModal}
+            onClick={()=>this.onOpenClassModal(event)}
           >
             <i className="material-icons" >add</i> New Class
           </a>
         </div>
         <ClassModal
           open = {classModalOpen}
+          onClose={this.onCloseClassModal}
         />
       </div>
     );
