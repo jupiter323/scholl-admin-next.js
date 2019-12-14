@@ -6,6 +6,8 @@ import FilterSection from "./components/FilterSection";
 
 import ClassModal from "../ClassModal";
 import LocationModal from '../../Location/components/LocationModal';
+import InstructorModal from '../InstructorModal';
+
 
 class ListPage extends React.Component {
   constructor(props) {
@@ -17,10 +19,14 @@ class ListPage extends React.Component {
       dropdownIsOpen: false,
       classModalOpen: false,
       locationModalOpen:false,
+      instructorModalOpen:false,
       newClass:{
         location: {
           locations: [],
         },
+        instructor:{
+          instructors:[],
+        }
       },
     };
   }
@@ -62,9 +68,16 @@ class ListPage extends React.Component {
     this.setState({locationModalOpen:true});
   }
 
+  onOpenInstructorModal = (event) =>{
+    event.preventDefault();
+    this.setState({instructorModalOpen:true});
+  }
+
   onCloseClassModal = () => this.setState({ classModalOpen: false });
 
   onCloseLocationModal = () => this.setState({locationModalOpen:false});
+
+  onCloseInstructorModal = () => this.setState({instructorModalOpen:false});
 
   handleChange = (event, name, section) => {
     const { newClass: previousClassState } = this.state;
@@ -73,8 +86,29 @@ class ListPage extends React.Component {
       [section]: { $merge: { [name]: value }},
     })
     this.setState({newClass: updatedClass});
-    
-}
+  }
+
+  arrayItemRemover = (array, value) => array.filter((item) => item !== value)
+
+  onRemoveLocation = (index) => {
+    const {newClass: previousClassState} = this.state;
+    const {location: { locations } } = this.state.newClass;
+    const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
+    const newClass = update(previousClassState, {
+      location: { $set: {locations: newLocationsArray}},
+    })
+    this.setState({newClass});
+  }
+
+  onRemoveInstructor = (index) => {
+    const { newClass:previousClassState } = this.state;
+    const  { instructor:{instructors}} = this.state.newClass;
+    const newInstructorsArray = this.arrayItemRemover(instructors,instructors[index]);
+    const newClass = update(previousClassState,{
+      instructor:{$set:{instructors:newInstructorsArray}},
+    });
+    this.setState({newClass});
+   }
 
   mapClassCards = () => {
     return this.props.classes.map((item, index) => (
@@ -94,7 +128,7 @@ class ListPage extends React.Component {
   };
 
   render() {
-    const { classModalOpen,locationModalOpen } = this.state;
+    const { classModalOpen,locationModalOpen,instructorModalOpen } = this.state;
     const { onSaveNewClass } = this.props;
     return (
       <div>
@@ -141,8 +175,26 @@ class ListPage extends React.Component {
             <i className="material-icons">add</i> New Class
           </a>
         </div>
-        <ClassModal open={classModalOpen} onClose={this.onCloseClassModal} onSave = {onSaveNewClass} onOpenLocationModal = {this.onOpenLocationModal} state={this.state.newClass}/>
-        <LocationModal open={locationModalOpen} onClose = {this.onCloseLocationModal} handleLocationsChange={(selectedLocations) => this.handleChange(selectedLocations, 'locations', 'location')}/>
+        <ClassModal 
+          open={classModalOpen}
+          onClose={this.onCloseClassModal}
+          onSave = {onSaveNewClass}
+          onOpenLocationModal = {this.onOpenLocationModal}
+          onOpenInstructorModal = {this.onOpenInstructorModal}
+          state={this.state.newClass}
+          onRemoveLocation = {this.onRemoveLocation}
+          onRemoveInstructor = {this.onRemoveInstructor}
+        />
+        <LocationModal 
+          open={locationModalOpen} 
+          onClose = {this.onCloseLocationModal} 
+          handleLocationsChange={(selectedLocations) => this.handleChange(selectedLocations, 'locations', 'location')}
+        />
+        <InstructorModal
+          open = {instructorModalOpen}
+          onClose = {this.onCloseInstructorModal}
+          handleInstructorsChange={(selectedInstructors) => this.handleChange(selectedInstructors, 'instructors', 'instructor')}
+        />
       </div>
     );
   }

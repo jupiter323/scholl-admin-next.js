@@ -34,7 +34,7 @@ class ClassModal extends React.Component {
   }
 
   render() {
-    const { open,onOpenLocationModal,state:{location} } = this.props;
+    const { open,onClose,onOpenLocationModal,onOpenInstructorModal,state:{location,instructor},onRemoveLocation,onRemoveInstructor} = this.props;
     return (
       <Portal selector="#modal">
         {open && (
@@ -67,13 +67,19 @@ class ClassModal extends React.Component {
                             <Locations
                               locations = {location.locations}
                               onOpenLocationModal = {onOpenLocationModal}
+                              onRemoveLocation = {onRemoveLocation}
                             />
-                            <Instructors/>
+                            <Instructors
+                              onOpenInstructorModal = {onOpenInstructorModal}
+                              instructors = {instructor.instructors}
+                              onRemoveInstructor = {onRemoveInstructor}
+                            />
                         </div>
                         <div className="modal-footer">
                           <a
                             href="#!"
                             className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+                            onClick = {onClose}
                           >
                             Cancel
                           </a>
@@ -136,7 +142,10 @@ ClassModal.propTypes = {
   onClose:PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onOpenLocationModal:PropTypes.func.isRequired,
+  onOpenInstructorModal:PropTypes.func.isRequired,
   state:PropTypes.object.isRequired,
+  onRemoveLocation: PropTypes.func.isRequired,
+  onRemoveInstructor:PropTypes.func.isRequired,
 };
 
 export default ClassModal;

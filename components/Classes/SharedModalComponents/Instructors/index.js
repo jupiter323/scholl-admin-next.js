@@ -1,11 +1,27 @@
 import React from "react";
+import PropTypes from 'prop-types';
+import InstructorCard from './components/InstructorCard';
+
 
 class Instructors extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  mapInstructors = () => {
+    const { instructors,onRemoveInstructor } = this.props;
+    return instructors.map((instructor,index)=>(
+      <InstructorCard
+        key = {index}
+        index = {index}
+        instructor = {instructor}
+        onRemoveInstructor = {() => onRemoveInstructor(index)}
+      />
+    ))
+  }
+
   render() {
+    const { onOpenInstructorModal } = this.props;
     return (
       <div className="card-block">
         <h3>Instructor(s)</h3>
@@ -20,246 +36,13 @@ class Instructors extends React.Component {
             </div>
             <div className="box-scrollable">
               <div className="height-360 jcf-scrollable">
-                <div className="card-location-holder">
-                  <div
-                    className="owner-box card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#31837a",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <div className="user-block">
-                          <div
-                            className="user-circle"
-                            style={{
-                              backgroundColor: "#0085ce",
-                              color: "#fff"
-                            }}
-                          >
-                            <img
-                              src="./static/images/img-owner01.jpg"
-                              alt="image description"
-                            />
-                          </div>
-                          <div className="user-text" style={{ color: "#fff" }}>
-                            <h4 className="h3">Smith, John</h4>
-                            <a href="mailto:jen.ownerly@gmail.com">
-                              jen.ownerly@gmail.com
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-user" />
-                          <span className="text-icon">Instructor</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="owner-box card-panel  card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#31837a",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <div className="user-block">
-                          <div
-                            className="user-circle"
-                            style={{
-                              backgroundColor: "#0085ce",
-                              color: "#fff"
-                            }}
-                          >
-                            <img
-                              src="./static/images/img-owner01.jpg"
-                              alt="image description"
-                            />
-                          </div>
-                          <div className="user-text" style={{ color: "#fff" }}>
-                            <h4 className="h3">Smith, John</h4>
-                            <a href="mailto:jen.ownerly@gmail.com">
-                              jen.ownerly@gmail.com
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-user" />
-                          <span className="text-icon">Instructor</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="owner-box card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#31837a",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <div className="user-block">
-                          <div
-                            className="user-circle"
-                            style={{
-                              backgroundColor: "#0085ce",
-                              color: "#fff"
-                            }}
-                          >
-                            <img
-                              src="./static/images/img-owner01.jpg"
-                              alt="image description"
-                            />
-                          </div>
-                          <div className="user-text" style={{ color: "#fff" }}>
-                            <h4 className="h3">Smith, John</h4>
-                            <a href="mailto:jen.ownerly@gmail.com">
-                              jen.ownerly@gmail.com
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-user" />
-                          <span className="text-icon">Instructor</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="owner-box card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#31837a",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <div className="user-block">
-                          <div
-                            className="user-circle"
-                            style={{
-                              backgroundColor: "#0085ce",
-                              color: "#fff"
-                            }}
-                          >
-                            <img
-                              src="./static/images/img-owner01.jpg"
-                              alt="image description"
-                            />
-                          </div>
-                          <div className="user-text" style={{ color: "#fff" }}>
-                            <h4 className="h3">Smith, John</h4>
-                            <a href="mailto:jen.ownerly@gmail.com">
-                              jen.ownerly@gmail.com
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-user" />
-                          <span className="text-icon">Instructor</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="owner-box card-panel  card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#31837a",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <div className="user-block">
-                          <div
-                            className="user-circle"
-                            style={{
-                              backgroundColor: "#0085ce",
-                              color: "#fff"
-                            }}
-                          >
-                            <img
-                              src="./static/images/img-owner01.jpg"
-                              alt="image description"
-                            />
-                          </div>
-                          <div className="user-text" style={{ color: "#fff" }}>
-                            <h4 className="h3">Smith, John</h4>
-                            <a href="mailto:jen.ownerly@gmail.com">
-                              jen.ownerly@gmail.com
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-user" />
-                          <span className="text-icon">Instructor</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="owner-box card-panel card-panel-panel card-panel-large"
-                    style={{
-                      backgroundColor: "#31837a",
-                      color: "#fff"
-                    }}
-                  >
-                    <a href="#" className="close-link icon-close-thin" />
-                    <div className="card-panel-row row">
-                      <div className="col s10">
-                        <div className="user-block">
-                          <div
-                            className="user-circle"
-                            style={{
-                              backgroundColor: "#0085ce",
-                              color: "#fff"
-                            }}
-                          >
-                            <img
-                              src="./static/images/img-owner01.jpg"
-                              alt="image description"
-                            />
-                          </div>
-                          <div className="user-text" style={{ color: "#fff" }}>
-                            <h4 className="h3">Smith, John</h4>
-                            <a href="mailto:jen.ownerly@gmail.com">
-                              jen.ownerly@gmail.com
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col s2 right-align">
-                        <span className="block-icon">
-                          <i className="icon-user" />
-                          <span className="text-icon">Instructor</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="card-location-holder" style = {{height:"320px",overflowY:"scroll"}}>
+                  {this.mapInstructors()}
                 </div>
               </div>
             </div>
             <div className="card-footer right-align">
-              <a href="#modal_Instructor1" className="modal-trigger link-block">
+              <a href="#modal_Instructor1" className="modal-trigger link-block" onClick = {onOpenInstructorModal}>
                 Add Instructor
               </a>
             </div>
@@ -268,6 +51,12 @@ class Instructors extends React.Component {
       </div>
     );
   }
+}
+
+Instructors.propTypes = {
+  onOpenInstructorModal:PropTypes.func.isRequired,
+  instructors:PropTypes.array.isRequired,
+  onRemoveInstructor:PropTypes.func.isRequired,
 }
 
 export default Instructors;

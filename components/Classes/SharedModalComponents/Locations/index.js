@@ -9,12 +9,13 @@ class Locations extends React.Component {
   }
 
   mapLocations = () =>{
-    const { locations } = this.props;
+    const { locations,onRemoveLocation } = this.props;
     return locations.map((location,index) => (
       <LocationCard
         key = {index}
         index = {index}
         location = {location}
+        onRemoveLocation={() => onRemoveLocation(index)}
       />
     ))
   }
@@ -34,7 +35,7 @@ class Locations extends React.Component {
             </div>
             <div className="box-scrollable">
               <div className="height-360 jcf-scrollable">
-                <div className="card-location-holder">
+                <div className="card-location-holder" style = {{height:"320px",overflowY:"scroll"}}>
                   {this.mapLocations()}
                 </div>
               </div>
@@ -54,6 +55,7 @@ class Locations extends React.Component {
 Locations.propTypes = {
   locations:PropTypes.array.isRequired,
   onOpenLocationModal:PropTypes.func.isRequired,
+  onRemoveLocation: PropTypes.func.isRequired,
 }
 
 export default Locations;
