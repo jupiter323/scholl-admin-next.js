@@ -10,13 +10,13 @@ class Locations extends React.Component {
 
   mapLocations = () =>{
     const { locations } = this.props;
-    return locations.map((location,index) => {
+    return locations.map((location,index) => (
       <LocationCard
         key = {index}
         index = {index}
         location = {location}
       />
-    })
+    ))
   }
 
   render() {

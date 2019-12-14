@@ -35,7 +35,6 @@ class ClassModal extends React.Component {
 
   render() {
     const { open,onOpenLocationModal,state:{location} } = this.props;
-    console.log("current Location:",location.locations)
     return (
       <Portal selector="#modal">
         {open && (
