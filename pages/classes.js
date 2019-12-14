@@ -12,7 +12,7 @@ class Classes extends React.Component {
     super(props);
     this.state = {
       selectedClass: null,
-      classes: sampleClass
+      classes: sampleClass,
     };
   }
 
@@ -25,7 +25,7 @@ class Classes extends React.Component {
     const {classes:prevClassState} = this.state;
     const updatedClasses = update(prevClassState,{$push:[newClass]});
     this.setState({ classes:updatedClasses})
-    this.onCreateNewInstructorApi(newClass);
+    this.onCreateNewClassApi(newClass);
   }
 
   onCloneClass = (index) => {
@@ -44,7 +44,7 @@ class Classes extends React.Component {
     this.setState({classes: newClassesArray})
   }
 
-  onCreateNewInstructorApi = async(classroom) => {
+  onCreateNewClassApi = async(classroom) => {
     const newId = this.state.classes.length + 1;
     const {classInfo:{className},accountInfo:{start_date,end_date,isExclude},location:{locations},instructor:{instructors}} = classroom;
     const formattedClassRoom = {
@@ -54,9 +54,9 @@ class Classes extends React.Component {
       end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
-      locations: locations,
-      instructors: instructors,
-      students: ""
+      locations,
+      instructors,
+      students: "",
     };
     await createNewClassRoomApi(formattedClassRoom);
   }
@@ -67,8 +67,8 @@ class Classes extends React.Component {
       <React.Fragment>
         <main id="main" role="main">
           <div className="main-holder grey lighten-5 switcher-section">
-            {!selectedClass && 
-              <ListPage 
+            {!selectedClass &&
+              <ListPage
                 classes={this.state.classes}
                 onHandleClassCard={this.onHandleClassCard}
                 onCloneClass = {this.onCloneClass}

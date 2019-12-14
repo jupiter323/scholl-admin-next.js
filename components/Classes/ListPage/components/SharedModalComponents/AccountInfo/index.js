@@ -5,7 +5,7 @@ import Dropdown from '../../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../../utils/getValueFromState';
 import genderOptions from '../../../../../utils/genderOptions';
 
-const AccountInfo = ({ state: { firstName, lastName, email, gender }, handleDetailsChange }) => (
+const AccountInfo = ({ state: { firstName, lastName, email, gender }, handleDetailsChange}) => (
   <div className="card-block">
     <h3>Account Info</h3>
     <div className="card-main card">

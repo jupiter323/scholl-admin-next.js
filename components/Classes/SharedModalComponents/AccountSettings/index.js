@@ -12,7 +12,7 @@ class AccountSettings extends React.Component {
 
   render() {
     const {
-      state: { start_date, end_date, active, isExclude },handleDetailsChange
+      state: { start_date, end_date, active, isExclude },handleDetailsChange,
     } = this.props;
     return (
       <div className="card-block">
@@ -48,9 +48,9 @@ class AccountSettings extends React.Component {
                 <div className="check-holder">
                   <p>
                     <label>
-                      <input 
-                        type="checkbox" 
-                        className="filled-in" 
+                      <input
+                        type="checkbox"
+                        className="filled-in"
                         checked={active}
                         onChange={(event) => handleDetailsChange(event, 'active', 'accountInfo','checkBox')}
                       />
@@ -82,7 +82,12 @@ class AccountSettings extends React.Component {
             </div>
             <p>
               <label className="label-wrap">
-                <input type="checkbox" className="filled-in" />
+                <input
+                  type="checkbox"
+                  className="filled-in"
+                  checked={isExclude}
+                  onChange={(event) => handleDetailsChange(event, 'isExclude', 'accountInfo','checkBox')}
+                />
                 <span>Exclude Class from Performance Statistics</span>
               </label>
             </p>

@@ -89,6 +89,15 @@ class ClassDetailModal extends React.Component {
     }
   }
 
+  // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
+  handleDetailsChange = (event, name, section) => {
+      const value = event.target ? event.target.value : event;
+      const updatedClassRoom = update(this.state.updatedClassRoom, {
+        [section]: { $merge: { [name]: value } },
+      });
+      this.setState({updatedClassRoom});
+  }
+
   initialclassroomMount = () => this.state.originalClassRoom.id !== this.props.classroom.id;
 
   renderModalHeader = () => {
@@ -121,11 +130,11 @@ class ClassDetailModal extends React.Component {
     const { onSaveLocationError, onSaveInstructorChanges, onClose } = this.props;
     // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
     // const valid = true;
-    const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
-    if (!valid) {
-      // return onSaveLocationError();
-      console.warn('not valid');
-    }
+    // const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
+    // if (!valid) {
+    //   // return onSaveLocationError();
+    //   console.warn('not valid');
+    // }
     const postBody = { id, basicInfo, accountInfo, contactInfo, locations };
     onSaveInstructorChanges(postBody);
     console.warn('stubbed out save function');
@@ -141,7 +150,7 @@ class ClassDetailModal extends React.Component {
   render() {
     const { open,onOpenDeleteModal, deleteModalOpen } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
-      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,},
+      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations},
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -167,7 +176,7 @@ class ClassDetailModal extends React.Component {
                             className="user-circle"
                             style={{
                               backgroundColor: "#0085ce",
-                              color: "#fff"
+                              color: "#fff",
                             }}
                           >
                             <img src="./static/images/img-owner01.jpg" alt="" />
@@ -293,7 +302,7 @@ ClassDetailModal.propTypes = {
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
-  classroom: PropTypes.object.isRequired
+  classroom: PropTypes.object.isRequired,
 };
 
 export default ClassDetailModal;
