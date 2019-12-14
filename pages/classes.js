@@ -2,6 +2,7 @@ import React from "react";
 import update from 'immutability-helper';
 import StatusPage from "../components/Classes/StatusPage";
 import ListPage from "../components/Classes/ListPage";
+import Moment from 'moment';
 import sampleClass from "../components/Classes/utils/sampleClass";
 import createNewClassRoomApi from '../components/Classes/index/api';
 
@@ -49,8 +50,8 @@ class Classes extends React.Component {
     const formattedClassRoom = {
       id:newId,
       name: className,
-      start_date: start_date,
-      end_date: end_date,
+      start_date: Moment(start_date).format('YYYY-MM-DD'),
+      end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
       locations: locations,
