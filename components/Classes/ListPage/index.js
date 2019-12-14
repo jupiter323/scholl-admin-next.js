@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import update from 'immutability-helper';
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
 
 import ClassModal from "../ClassModal";
-import LocationModal from '../../Location/components/LocationModal';
-import InstructorModal from '../InstructorModal';
+
 
 
 class ListPage extends React.Component {
@@ -18,16 +16,7 @@ class ListPage extends React.Component {
       dropdownIndex: null,
       dropdownIsOpen: false,
       classModalOpen: false,
-      locationModalOpen:false,
-      instructorModalOpen:false,
-      newClass:{
-        location: {
-          locations: [],
-        },
-        instructor:{
-          instructors:[],
-        }
-      },
+      
     };
   }
 
@@ -63,52 +52,9 @@ class ListPage extends React.Component {
     this.setState({ classModalOpen: true });
   };
 
-  onOpenLocationModal = (event) => {
-    event.preventDefault();
-    this.setState({locationModalOpen:true});
-  }
-
-  onOpenInstructorModal = (event) =>{
-    event.preventDefault();
-    this.setState({instructorModalOpen:true});
-  }
+  
 
   onCloseClassModal = () => this.setState({ classModalOpen: false });
-
-  onCloseLocationModal = () => this.setState({locationModalOpen:false});
-
-  onCloseInstructorModal = () => this.setState({instructorModalOpen:false});
-
-  handleChange = (event, name, section) => {
-    const { newClass: previousClassState } = this.state;
-    const value = event.target ? event.target.value : event;
-    const updatedClass = update(previousClassState, {
-      [section]: { $merge: { [name]: value }},
-    })
-    this.setState({newClass: updatedClass});
-  }
-
-  arrayItemRemover = (array, value) => array.filter((item) => item !== value)
-
-  onRemoveLocation = (index) => {
-    const {newClass: previousClassState} = this.state;
-    const {location: { locations } } = this.state.newClass;
-    const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
-    const newClass = update(previousClassState, {
-      location: { $set: {locations: newLocationsArray}},
-    })
-    this.setState({newClass});
-  }
-
-  onRemoveInstructor = (index) => {
-    const { newClass:previousClassState } = this.state;
-    const  { instructor:{instructors}} = this.state.newClass;
-    const newInstructorsArray = this.arrayItemRemover(instructors,instructors[index]);
-    const newClass = update(previousClassState,{
-      instructor:{$set:{instructors:newInstructorsArray}},
-    });
-    this.setState({newClass});
-   }
 
   mapClassCards = () => {
     return this.props.classes.map((item, index) => (
@@ -128,7 +74,7 @@ class ListPage extends React.Component {
   };
 
   render() {
-    const { classModalOpen,locationModalOpen,instructorModalOpen } = this.state;
+    const { classModalOpen} = this.state;
     const { onSaveNewClass } = this.props;
     return (
       <div>
@@ -179,22 +125,8 @@ class ListPage extends React.Component {
           open={classModalOpen}
           onClose={this.onCloseClassModal}
           onSave = {onSaveNewClass}
-          onOpenLocationModal = {this.onOpenLocationModal}
-          onOpenInstructorModal = {this.onOpenInstructorModal}
-          state={this.state.newClass}
-          onRemoveLocation = {this.onRemoveLocation}
-          onRemoveInstructor = {this.onRemoveInstructor}
         />
-        <LocationModal 
-          open={locationModalOpen} 
-          onClose = {this.onCloseLocationModal} 
-          handleLocationsChange={(selectedLocations) => this.handleChange(selectedLocations, 'locations', 'location')}
-        />
-        <InstructorModal
-          open = {instructorModalOpen}
-          onClose = {this.onCloseInstructorModal}
-          handleInstructorsChange={(selectedInstructors) => this.handleChange(selectedInstructors, 'instructors', 'instructor')}
-        />
+        
       </div>
     );
   }

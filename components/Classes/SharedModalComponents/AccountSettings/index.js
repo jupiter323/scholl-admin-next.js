@@ -1,4 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
+
+
 
 class AccountSettings extends React.Component {
   constructor(props) {
@@ -6,6 +12,9 @@ class AccountSettings extends React.Component {
   }
 
   render() {
+    const {
+      state: { start_date, end_date, active, isExclude },handleDetailsChange
+    } = this.props;
     return (
       <div className="card-block">
         <h3>Account Settings</h3>
@@ -15,28 +24,23 @@ class AccountSettings extends React.Component {
               <div className="col s6">
                 <div className="datepicker-field input-field">
                   <i className="icon-calendar" />
-                  <input
-                    type="text"
-                    className="datepicker"
-                    id="course_start_date"
-                  />
-                  <label className="label" htmlFor="course_start_date">
-                    Course Start Date
-                  </label>
+                    <DatePicker
+                      id="course_start_date"
+                      selected={start_date}
+                      onChange={(date) => handleDetailsChange(date, 'start_date', 'accountInfo')}
+                      placeholderText="Course Start Date"
+                    />
                 </div>
               </div>
               <div className="col s6">
                 <div className="datepicker-field input-field">
                   <i className="icon-calendar" />
-                  <input
-                    type="text"
-                    className="datepicker"
-                    defaultValue="6/1/18"
-                    id="course_end_date"
-                  />
-                  <label className="label" htmlFor="course_end_date">
-                    Course End Date
-                  </label>
+                    <DatePicker
+                      id="course_end_date"
+                      selected={end_date}
+                      onChange={(date) => handleDetailsChange(date, 'end_date', 'accountInfo')}
+                      placeholderText="Course End Date"
+                    />
                 </div>
               </div>
             </div>
@@ -45,7 +49,12 @@ class AccountSettings extends React.Component {
                 <div className="check-holder">
                   <p>
                     <label>
-                      <input type="checkbox" className="filled-in" />
+                      <input 
+                        type="checkbox" 
+                        className="filled-in" 
+                        checked={active}
+                        onChange={(event) => handleDetailsChange(event, 'active', 'accountInfo','checkBox')}
+                      />
                       <span>Inactive</span>
                     </label>
                   </p>
@@ -84,5 +93,10 @@ class AccountSettings extends React.Component {
     );
   }
 }
+
+AccountSettings.propTypes = {
+  state: PropTypes.object.isRequired,
+  handleDetailsChange:PropTypes.func.isRequired,
+};
 
 export default AccountSettings;

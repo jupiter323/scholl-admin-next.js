@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from 'prop-types';
+
 
 class ClassInformation extends React.Component {
   constructor(props) {
@@ -6,6 +8,7 @@ class ClassInformation extends React.Component {
   }
 
   render() {
+    const {handleDetailsChange,state:{className}} = this.props;
     return (
       <div className="card-block">
         <h3>Class Information</h3>
@@ -16,9 +19,10 @@ class ClassInformation extends React.Component {
                 <input
                   type="text"
                   id="class_name"
-                  defaultValue=""
+                  value = {className}
+                  onChange={(event) => handleDetailsChange(event, 'className', 'classInfo')}
                 />
-                <label className="label" htmlFor="class_name">
+                <label className={className.length ? 'label active' : 'label'} htmlFor="class_name">
                   Class Name
                 </label>
               </div>
@@ -28,6 +32,11 @@ class ClassInformation extends React.Component {
       </div>
     );
   }
+}
+
+ClassInformation.propTypes = {
+  handleDetailsChange:PropTypes.func.isRequired,
+  state:PropTypes.object.isRequired,
 }
 
 export default ClassInformation;

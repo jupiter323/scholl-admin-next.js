@@ -1,7 +1,10 @@
 import React from "react";
+import update from 'immutability-helper';
 import StatusPage from "../components/Classes/StatusPage";
 import ListPage from "../components/Classes/ListPage";
 import sampleClass from "../components/Classes/utils/sampleClass";
+import createNewClassRoomApi from '../components/Classes/index/api';
+
 
 class Classes extends React.Component {
   constructor(props) {
@@ -18,7 +21,10 @@ class Classes extends React.Component {
   };
 
   onAddNewClass = (newClass) => {
-
+    const {classes:prevClassState} = this.state;
+    const updatedClasses = update(prevClassState,{$push:[newClass]});
+    this.setState({ classes:updatedClasses})
+    this.onCreateNewInstructorApi(newClass);
   }
 
   onCloneClass = (index) => {
@@ -37,6 +43,22 @@ class Classes extends React.Component {
     this.setState({classes: newClassesArray})
   }
 
+  onCreateNewInstructorApi = async(classroom) => {
+    const newId = this.state.classes.length + 1;
+    const {classInfo:{className},accountInfo:{start_date,end_date,isExclude},location:{locations},instructor:{instructors}} = classroom;
+    const formattedClassRoom = {
+      id:newId,
+      name: className,
+      start_date: start_date,
+      end_date: end_date,
+      duration: "string",
+      exclude_from_statistics: isExclude,
+      locations: locations,
+      instructors: instructors,
+      students: ""
+    };
+    await createNewClassRoomApi(formattedClassRoom);
+  }
 
   render() {
     const { selectedClass } = this.state;
