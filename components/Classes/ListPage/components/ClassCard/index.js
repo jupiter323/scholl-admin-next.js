@@ -63,10 +63,7 @@ class ClassCard extends React.Component {
             <div className="card-panel-row row">
               <div className="col s9">
                 <div className="user-block">
-                  <div
-                    className="user-circle"
-                    style={{ backgroundColor: "#fff", color: "#408e49" }}
-                  >
+                  <div className="user-circle" style={{ backgroundColor: "#fff", color: "#408e49" }}>
                     <span className="initials">8</span>
                     <span className="ititials-text">students</span>
                   </div>

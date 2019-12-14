@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import update from 'immutability-helper';
 import Portal from "../../Portal";
 import InstructorToggleCard from './components/InstructorToggleCard';
 
 import ClickOffComponentWrapper from "../../ClickOffComponentWrapper";
 import sampleInstructors from '../../utils/sampleInstructors';
-
-
-
 
 
 class InstructorModal extends React.Component {
