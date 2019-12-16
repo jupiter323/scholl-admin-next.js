@@ -150,7 +150,7 @@ class ClassDetailModal extends React.Component {
   render() {
     const { open,onOpenDeleteModal, deleteModalOpen } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
-      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations},
+      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,},
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -176,7 +176,7 @@ class ClassDetailModal extends React.Component {
                             className="user-circle"
                             style={{
                               backgroundColor: "#0085ce",
-                              color: "#fff",
+                              color: "#fff"
                             }}
                           >
                             <img src="./static/images/img-owner01.jpg" alt="" />
@@ -302,7 +302,7 @@ ClassDetailModal.propTypes = {
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
-  classroom: PropTypes.object.isRequired,
+  classroom: PropTypes.object.isRequired
 };
 
 export default ClassDetailModal;

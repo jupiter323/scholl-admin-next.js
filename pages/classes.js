@@ -61,6 +61,17 @@ class Classes extends React.Component {
     await createNewClassRoomApi(formattedClassRoom);
   }
 
+  onSaveClassChanges = (updatedClasRoom) => {
+    const { classes: originalClasses } = this.props;
+    const classToUpdate = originalClasses.filter(classroom => classroom.id === updatedClasRoom.id)[0];
+    const updatedClassIndex = originalClasses.indexOf(classToUpdate);
+    const classes = update(originalInstructors, {
+      $splice: [[updatedClassIndex, 1, updatedClasRoom]],
+    });
+    // saveChangesSuccess();
+    this.setState({ classes });
+  }
+
   render() {
     const { selectedClass } = this.state;
     return (
@@ -74,6 +85,7 @@ class Classes extends React.Component {
                 onCloneClass = {this.onCloneClass}
                 onDeleteClass = {this.onDeleteClass}
                 onSaveNewClass = {this.onAddNewClass}
+                onSaveClassChanges = {this.onSaveClassChanges}
               />
             }
             {selectedClass && <StatusPage />}

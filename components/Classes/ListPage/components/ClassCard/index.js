@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ClassDetailModal from '../ClassDetailModal';
-
+import RadialBar from "../../../../common/RadialBar";
 
 
 class ClassCard extends React.Component {
@@ -138,11 +138,14 @@ class ClassCard extends React.Component {
                   <div className="col s6 m12">
                     <div className="chart-block chart-block-test">
                       <span className="value-max">24</span>
-                      <div
-                        className="js-donut-chart"
-                        data-stroke-width={15}
-                        data-source="./inc/score-data-class-instruction.json"
-                      />
+                      <RadialBar
+                          svgWidth={104}
+                          svgHeight={104}
+                          strokeWidth={14}
+                          maxValue={24}
+                          currentValue={14}
+                          strokeColor = "#55b24b"
+                        />
                       <div className="chart-text">
                         <span className="title">Instruction</span>
                         <span className="value">63%</span>

@@ -69,6 +69,7 @@ class ListPage extends React.Component {
         dropdownIsOpen={this.state.dropdownIsOpen}
         dropdownIndex={this.state.dropdownIndex}
         onHandleClassCard={() => this.props.onHandleClassCard(index)}
+        onSaveClassChanges = {this.props.onSaveClassChanges}
       />
     ));
   };
@@ -138,6 +139,7 @@ ListPage.propTypes = {
   onCloneClass: PropTypes.func.isRequired,
   onDeleteClass: PropTypes.func.isRequired,
   onSaveNewClass: PropTypes.func.isRequired,
+  onSaveClassChanges:PropTypes.func.isRequired,
 };
 
 export default ListPage;
