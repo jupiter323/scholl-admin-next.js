@@ -13,10 +13,11 @@ class ListPage extends React.Component {
     this.state = {
       classesAreFiltered: false,
       filterName: "",
+      filterLocation: '',
+      sort: '',
       dropdownIndex: null,
       dropdownIsOpen: false,
       classModalOpen: false,
-      
     };
   }
 
@@ -52,12 +53,79 @@ class ListPage extends React.Component {
     this.setState({ classModalOpen: true });
   };
 
-  
+  onFilterByName = () => {
+    const { classes } = this.props;
+    const { filterName } = this.state;
+    return classes.reduce((finalArr, currentClass) => {
+      const { accountInfo: { lastName, firstName } } = currentClass;
+      const classString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+      if (classString.indexOf(filterName) !== -1 && finalArr.indexOf(currentClass) === -1) {
+        finalArr.push(currentClass);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  onFilterByLocation = (preFilteredClasses = []) => {
+    const { classes: allClasses } = this.props;
+    const { filterLocation } = this.state;
+    let classes;
+    if (preFilteredClasses.length) {
+      classes = preFilteredClasses;
+    } else {
+      classes = allClasses;
+    }
+    return classes.reduce((finalArr, currentInstructor) => {
+      const { contactInfo: { city } } = currentInstructor;
+      if (city === filterLocation && finalArr.indexOf(currentInstructor) === -1) {
+        finalArr.push(currentInstructor);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  // eslint-disable-next-line consistent-return
+  onSortClasses = (classes) => {
+    const { sort } = this.state;
+    switch (sort) {
+      case 'firstNameAscending':
+        return classes.sort(firstNameAscending);
+      case 'firstNameDescending':
+        return classes.sort(firstNameDescending);
+      case 'lastNameAscending':
+        return classes.sort(lastNameAscending);
+      case 'lastNameDescending':
+        return classes.sort(lastNameDescending);
+      default:
+        break;
+    }
+  }
+
+  getMappableClasses = () => {
+    const { filterName, filterLocation, sort } = this.state;
+    const { classes: allClasses } = this.props;
+    let classes;
+    if (filterName.length && !filterLocation.length) {
+      classes = this.onFilterByName();
+    } else if (!filterName.length && filterLocation.length) {
+      classes = this.onFilterByLocation();
+    } else if (filterName.length && filterLocation.length) {
+      const filteredByName = this.onFilterByName();
+      classes = this.onFilterByLocation(filteredByName);
+    } else {
+      classes = allClasses;
+    }
+    if (sort) {
+      return this.onSortClasses(classes);
+    }
+    return classes;
+  }
 
   onCloseClassModal = () => this.setState({ classModalOpen: false });
 
   mapClassCards = () => {
-    return this.props.classes.map((item, index) => (
+    const classes = this.getMappableClasses();
+    return classes.map((item, index) => (
       <ClassCard
         key={index}
         index={index}
