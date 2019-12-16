@@ -27,15 +27,6 @@ const sampleClass = [
       state: 'TX',
       zip: '78751'
     },
-    basicInfo: {
-      activeStudents: 15,
-      pastStudents: 24,
-      unactivatedStudents: 29,
-      averageImprovement: 185,
-      averageInitialScore: 1037,
-      averageFinalScore: 1218,
-      studentsAchievingTargetScore: 12
-    }
   },
   {
     id: "2",
@@ -65,15 +56,6 @@ const sampleClass = [
       state: 'TX',
       zip: '78751'
     },
-    basicInfo: {
-      activeStudents: 15,
-      pastStudents: 24,
-      unactivatedStudents: 29,
-      averageImprovement: 185,
-      averageInitialScore: 1037,
-      averageFinalScore: 1218,
-      studentsAchievingTargetScore: 12
-    }
   }
 ];
 
