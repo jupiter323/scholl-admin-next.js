@@ -96,9 +96,7 @@ class ClassDetailModal extends React.Component {
     const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = this.props;
     const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
     const { originalClassRoom: originalClassRoomState } = this.state;
-    const originalClassRoom = update(originalClassRoomState, {
-      $merge: updatedClassRoom,
-    });
+    const originalClassRoom = update(originalClassRoomState, {$merge: updatedClassRoom,});
     this.setState({ originalClassRoom, updatedClassRoom }); // eslint-disable-line
   }
 
@@ -124,7 +122,7 @@ class ClassDetailModal extends React.Component {
       this.setState({updatedClassRoom});
   }
 
-  initialclassroomMount = () => this.state.originalClassRoom.id !== this.props.classroom.id;
+  initialClassRoomMount = () => this.state.originalClassRoom.id !== this.props.classroom.id;
 
   renderModalHeader = () => {
     const { classroom: { accountInfo: { lastName: initialLastName, firstName: initialFIrstName, email: initialEmail } } } = this.props;
@@ -132,7 +130,7 @@ class ClassDetailModal extends React.Component {
     let lastName;
     let firstName;
     let email;
-    if (this.initialclassroomMount()) {
+    if (this.initialClassRoomMount()) {
       lastName = initialLastName;
       firstName = initialFIrstName;
       email = initialEmail;
@@ -149,6 +147,10 @@ class ClassDetailModal extends React.Component {
     );
   }
 
+  // This function is passed into nestedEditFieldValidation, it takes the result of the validation check and a callback function
+  // The updated component validation state is set and then the callback is dispatched - in this case, the callback handles the toast warning at the container level
+  onSetValidation = (validation, cb) => this.setState({ validation }, cb);
+
   // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
   onSubmit = async (event) => {
     event.preventDefault();
@@ -156,11 +158,11 @@ class ClassDetailModal extends React.Component {
     const { onSaveLocationError, onSaveClassChanges, onClose } = this.props;
     // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
     // const valid = true;
-    // const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
-    // if (!valid) {
-    //   // return onSaveLocationError();
-    //   console.warn('not valid');
-    // }
+    const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
+    if (!valid) {
+      // return onSaveLocationError();
+      console.warn('not valid');
+    }
     const postBody = { id, basicInfo, accountInfo, contactInfo, locations,summary };
     onSaveClassChanges(postBody);
     onClose();
@@ -168,7 +170,7 @@ class ClassDetailModal extends React.Component {
 
   onCancelChanges = () => {
     const { onClose } = this.props;
-    const { updatedClassRoom, originalClassRoom } = this.state;
+    const { originalClassRoom } = this.state;
     this.setState({ updatedClassRoom: originalClassRoom }, onClose());
   }
 
@@ -224,12 +226,12 @@ class ClassDetailModal extends React.Component {
                       <div className="row mb-0">
                         <div className="col s12 l6">
                           <AccountInfo
-                            state={ this.initialclassroomMount()? accountInfo: updatedAccountInfo }
+                            state={ this.initialClassRoomMount()? accountInfo: updatedAccountInfo }
                             handleDetailsChange={this.handleDetailsChange}
                           />
                           <ContactInfo
                             state={
-                              this.initialclassroomMount()
+                              this.initialClassRoomMount()
                                 ? contactInfo
                                 : updatedContactInfo
                             }
@@ -238,7 +240,7 @@ class ClassDetailModal extends React.Component {
                         </div>
                         <div className="col s12 l6">
                           <Locations
-                            state={ this.initialclassroomMount()? locations : updatedLocations }
+                            state={ this.initialClassRoomMount()? locations : updatedLocations }
                             handleDetailsChange={this.handleDetailsChange}
                             dropdownIsOpen={dropdownIsOpen}
                             dropdownIndex={dropdownIndex}

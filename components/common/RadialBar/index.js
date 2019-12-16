@@ -23,7 +23,7 @@ class RadailBar extends React.Component {
           r={getRadius(svgWidth, strokeWidth)}
           fill="transparent"
           stroke="#e6e6e6"
-          stroke-width={strokeWidth}
+          strokeWidth={strokeWidth}
         />
         <circle
          cx={svgWidth/2}
@@ -31,9 +31,9 @@ class RadailBar extends React.Component {
           r={getRadius(svgWidth, strokeWidth)}
           fill="transparent"
           stroke={strokeColor}
-          stroke-width={strokeWidth}
-          stroke-dasharray={getDashArray(svgWidth, strokeWidth)}
-          stroke-dashoffset={getDashoffset( svgWidth,strokeWidth,maxValue,currentValue)}
+          strokeWidth ={strokeWidth}
+          strokeDasharray={getDashArray(svgWidth, strokeWidth)}
+          strokeDashoffset={getDashoffset( svgWidth,strokeWidth,maxValue,currentValue)}
         />
       </svg>
     );
