@@ -24,6 +24,19 @@ class ClassDetailModal extends React.Component {
       dropdownIsOpen: false,
       dropdownIndex: null,
       originalClassRoom: {
+        summary:{
+          amount_students:'',
+          start_date:'',
+          end_date:'',
+          improvement:0,
+          coursework_assigned:0,
+          coursework_completed:0,
+          problems_flagged_review:0,
+          average_score:0,
+          achieved_target_score:0,
+          average_practice_tests_completed:0,
+          instruction:0,
+        },
         accountInfo: {
           firstName: '',
           lastName: '',
@@ -40,6 +53,19 @@ class ClassDetailModal extends React.Component {
         locations: [],
       },
       updatedClassRoom: {
+        summary:{
+          amount_students:'',
+          start_date:'',
+          end_date:'',
+          improvement:0,
+          coursework_assigned:0,
+          coursework_completed:0,
+          problems_flagged_review:0,
+          average_score:0,
+          achieved_target_score:0,
+          average_practice_tests_completed:0,
+          instruction:0,
+        },
         accountInfo: {
           firstName: '',
           lastName: '',
@@ -67,8 +93,8 @@ class ClassDetailModal extends React.Component {
   }
 
   componentDidMount() {
-    const { classroom: { id, basicInfo, accountInfo, contactInfo, locations } = {} } = this.props;
-    const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations };
+    const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = this.props;
+    const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
     const { originalClassRoom: originalClassRoomState } = this.state;
     const originalClassRoom = update(originalClassRoomState, {
       $merge: updatedClassRoom,
@@ -79,8 +105,8 @@ class ClassDetailModal extends React.Component {
   // This resets the component state to reflect the details of the next classroom the user clicks on
   componentWillReceiveProps = (nextProps) => {
     if ((!this.state.originalClassRoom || nextProps.classroom.id !== this.state.originalClassRoom.id)) {
-      const { classroom: { id, basicInfo, accountInfo, contactInfo, locations } = {} } = nextProps;
-      const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations };
+      const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = nextProps;
+      const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
       const { originalClassRoom: originalClassRoomState } = this.state;
       const originalClassRoom = update(originalClassRoomState, {
         $merge: nextProps.classroom,
@@ -126,8 +152,8 @@ class ClassDetailModal extends React.Component {
   // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
   onSubmit = async (event) => {
     event.preventDefault();
-    const { updatedClassRoom: { id, basicInfo, accountInfo, contactInfo, locations } } = this.state;
-    const { onSaveLocationError, onSaveInstructorChanges, onClose } = this.props;
+    const { updatedClassRoom: { id, basicInfo, accountInfo, contactInfo, locations,summary } } = this.state;
+    const { onSaveLocationError, onSaveClassChanges, onClose } = this.props;
     // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
     // const valid = true;
     // const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
@@ -135,9 +161,8 @@ class ClassDetailModal extends React.Component {
     //   // return onSaveLocationError();
     //   console.warn('not valid');
     // }
-    const postBody = { id, basicInfo, accountInfo, contactInfo, locations };
-    onSaveInstructorChanges(postBody);
-    console.warn('stubbed out save function');
+    const postBody = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+    onSaveClassChanges(postBody);
     onClose();
   }
 
@@ -302,7 +327,8 @@ ClassDetailModal.propTypes = {
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
-  classroom: PropTypes.object.isRequired
+  classroom: PropTypes.object.isRequired,
+  onSaveClassChanges:PropTypes.func.isRequired,
 };
 
 export default ClassDetailModal;

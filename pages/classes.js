@@ -62,10 +62,10 @@ class Classes extends React.Component {
   }
 
   onSaveClassChanges = (updatedClasRoom) => {
-    const { classes: originalClasses } = this.props;
+    const { classes: originalClasses } = this.state;
     const classToUpdate = originalClasses.filter(classroom => classroom.id === updatedClasRoom.id)[0];
     const updatedClassIndex = originalClasses.indexOf(classToUpdate);
-    const classes = update(originalInstructors, {
+    const classes = update(originalClasses, {
       $splice: [[updatedClassIndex, 1, updatedClasRoom]],
     });
     // saveChangesSuccess();

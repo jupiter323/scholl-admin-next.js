@@ -43,8 +43,21 @@ class ClassCard extends React.Component {
   }
 
   render() {
-    const { dropdownIsOpen, dropdownIndex, index,classroom,onHandleClassCard,onCloneClass,onDeleteClass } = this.props;
+    const { dropdownIsOpen, dropdownIndex, index,classroom,onHandleClassCard,onCloneClass,onDeleteClass,onSaveClassChanges } = this.props;
     const { deleteModalOpen, classDetailsModalOpen } = this.state;
+    const {summary:{ 
+      amount_students,
+      start_date,
+      end_date,
+      improvement,
+      coursework_assigned,
+      coursework_completed,
+      problems_flagged_review,
+      average_score,
+      achieved_target_score,
+      average_practice_tests_completed,
+      instruction}
+    } = classroom;
     return (
       <React.Fragment>
         <ClassDetailModal
@@ -53,23 +66,21 @@ class ClassCard extends React.Component {
           onClose={this.onCloseClassDetailsModal}
           onOpenDeleteModal={this.onOpenDeleteModal}
           deleteModalOpen={deleteModalOpen}
+          onSaveClassChanges = {onSaveClassChanges}
         />
       <div className="card-main-col col s12 m8 l7 xl5">
         <div className="card-main card-class card card-large">
-          <div
-            className="owner-box card-panel"
-            style={{ backgroundColor: "#408e49", color: "#fff",cursor:"pointer" }}
-          >
+          <div className="owner-box card-panel" style={{ backgroundColor: "#408e49", color: "#fff",cursor:"pointer" }}>
             <div className="card-panel-row row">
               <div className="col s9">
                 <div className="user-block">
                   <div className="user-circle" style={{ backgroundColor: "#fff", color: "#408e49" }}>
-                    <span className="initials">8</span>
+                    <span className="initials">{amount_students}</span>
                     <span className="ititials-text">students</span>
                   </div>
                   <div className="user-text" style={{ color: "#fff" }} onClick={()=>onHandleClassCard(index)}>
                     <h4 className="h3">Some Class in June</h4>
-                    <time dateTime="P120D">6/1/19 - 8/5/19</time>
+                    <time dateTime="P120D">{start_date} - {end_date}</time>
                   </div>
                 </div>
               </div>
@@ -129,7 +140,7 @@ class ClassCard extends React.Component {
                     <ul className="points-list-custom">
                       <li className="style-aqua">
                         <span className="badge-circle">
-                          +223
+                          +{improvement}
                           <span className="badge-text">improvement</span>
                         </span>
                       </li>
@@ -143,12 +154,12 @@ class ClassCard extends React.Component {
                           svgHeight={104}
                           strokeWidth={14}
                           maxValue={24}
-                          currentValue={14}
+                          currentValue={instruction}
                           strokeColor = "#55b24b"
                         />
                       <div className="chart-text">
                         <span className="title">Instruction</span>
-                        <span className="value">63%</span>
+                        <span className="value">{((instruction/24)*100).toFixed(1)}%</span>
                         <span className="description">
                           vs scheduled instruction
                         </span>
@@ -160,29 +171,29 @@ class ClassCard extends React.Component {
               <div className="col s12 m7">
                 <ul className="points-list">
                   <li className="style-purple-darken">
-                    <span className="badge-circle">62</span>
+                    <span className="badge-circle">{coursework_assigned}</span>
                     <span className="point-text">coursework assigned</span>
                   </li>
                   <li className="style-purple-lighten">
-                    <span className="badge-circle">93%</span>
+                    <span className="badge-circle">{coursework_completed}%</span>
                     <span className="point-text">coursework completed</span>
                   </li>
                   <li className="style-red-darken-3">
-                    <span className="badge-circle">127</span>
+                    <span className="badge-circle">{problems_flagged_review}</span>
                     <span className="point-text">
                       problems ﬂagged for review
                     </span>
                   </li>
                   <li className="style-blue-light">
-                    <span className="badge-circle">1238</span>
+                    <span className="badge-circle">{average_score}</span>
                     <span className="point-text">average score</span>
                   </li>
                   <li className="style-blue">
-                    <span className="badge-circle">85%</span>
+                    <span className="badge-circle">{achieved_target_score}%</span>
                     <span className="point-text">achieved target score</span>
                   </li>
                   <li className="style-orange-accent-4">
-                    <span className="badge-circle">1.8</span>
+                    <span className="badge-circle">{average_practice_tests_completed}</span>
                     <span className="point-text">
                       average practice tests completed
                     </span>
@@ -218,6 +229,7 @@ ClassCard.propTypes = {
   onHandleClassCard:PropTypes.func.isRequired,
   onCloneClass: PropTypes.func.isRequired,
   onDeleteClass:PropTypes.func.isRequired,
+  onSaveClassChanges:PropTypes.func.isRequired,
 };
 
 export default ClassCard;
