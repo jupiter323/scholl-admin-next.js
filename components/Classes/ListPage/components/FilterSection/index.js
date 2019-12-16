@@ -14,7 +14,7 @@ class FilterSection extends React.Component {
       name: '',
       activeFilters: [],
       location: "",
-      sort: {},
+      sort: "lastNameDescending",
     };
   }
 
