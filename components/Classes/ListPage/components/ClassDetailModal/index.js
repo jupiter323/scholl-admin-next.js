@@ -175,7 +175,7 @@ class ClassDetailModal extends React.Component {
   }
 
   render() {
-    const { open,onOpenDeleteModal, deleteModalOpen } = this.props;
+    const { open,onOpenDeleteModal,onDeleteClass, deleteModalOpen,index } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
       updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,},
     } = this.state;
@@ -264,7 +264,7 @@ class ClassDetailModal extends React.Component {
                     <div className="modal-footer">
                       <a
                         href="#"
-                        onClick={onOpenDeleteModal}
+                        onClick={() => onDeleteClass(index)}
                         className="waves-effect waves-teal btn-flat pink-text text-darken-1"
                       >
                         Delete
@@ -325,6 +325,7 @@ class ClassDetailModal extends React.Component {
 }
 
 ClassDetailModal.propTypes = {
+  index:PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

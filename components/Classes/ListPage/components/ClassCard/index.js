@@ -61,12 +61,14 @@ class ClassCard extends React.Component {
     return (
       <React.Fragment>
         <ClassDetailModal
+          index = {index}
           classroom={classroom}
           open={classDetailsModalOpen}
           onClose={this.onCloseClassDetailsModal}
           onOpenDeleteModal={this.onOpenDeleteModal}
           deleteModalOpen={deleteModalOpen}
           onSaveClassChanges = {onSaveClassChanges}
+          onDeleteClass={onDeleteClass}
         />
       <div className="card-main-col col s12 m8 l7 xl5">
         <div className="card-main card-class card card-large">
