@@ -13,7 +13,7 @@ class FilterSection extends React.Component {
       open: false,
       name: '',
       activeFilters: [],
-      location: {},
+      location: "",
       sort: {},
     };
   }
