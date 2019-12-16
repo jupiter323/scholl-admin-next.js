@@ -13,7 +13,7 @@ export function setStudents(students) {
     }
 }
 
-export function addStudent(student) {
+export function addNewStudent(student) {
     return {
         type: ADD_STUDENT,
         student,

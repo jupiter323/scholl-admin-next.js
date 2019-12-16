@@ -28,9 +28,24 @@ export function* fetchStudents() {
   }
 }
 
+export function* watchForAddNewStudent() {
+  while (true) {
+    try {
+      const { student } = yield take(ADD_STUDENT);
+      const response = yield call(addNewStudentApi, student);
+      if (response && response.message) {
+        return console.warn("Something went wrong with adding a new student!");
+      }
+      yield call(fetchStudents);
+    } catch (err) {
+      console.warn("Error occurred in watchForAddStudent", err);
+    }
+  }
+}
 
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
+    watchForAddStudent(),
   ]);
 }
