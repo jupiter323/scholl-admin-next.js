@@ -11,6 +11,7 @@ class FilterSection extends React.Component {
     super(props);
     this.state = {
       open: false,
+      name: '',
       activeFilters: [],
       location: {},
       sort: {},
@@ -37,7 +38,7 @@ class FilterSection extends React.Component {
   // If either location or sort filters are changed, we dispatch the appropriate action in ListPage to ensure the rendered instructors are filtered/sorted appropriately
   // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
-    const { onSetFilteredLocationState, onUnsetFilteredLocationState } = this.props;
+    const { onSetFilteredLocationState, onUnsetFilteredLocationState,onSetSort } = this.props;
     const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
       $merge: { [name]: value },
@@ -48,7 +49,20 @@ class FilterSection extends React.Component {
         return onUnsetFilteredLocationState();
       }
       return onSetFilteredLocationState(event);
+    }else if (name === 'sort') {
+      return onSetSort(event);
     }
+  }
+
+  // Strips the entered name of any spaces and capitalizing and fires off the ListPage event that filters the instructors
+  submitNameFilter = () => {
+    const { onSetFilteredState, onUnsetFilteredState } = this.props;
+    const { name } = this.state;
+    if (name === '') {
+      onUnsetFilteredState();
+    }
+    const transformedName = name.replace(/\s/g, "").toLowerCase();
+    onSetFilteredState(transformedName);
   }
 
   onClearFilters = () => this.setState({ activeFilters: [] })
@@ -186,7 +200,7 @@ class FilterSection extends React.Component {
                       id="name_search"
                       className="input-control  validate"
                     />
-                    <button type="submit" className="search-button">
+                    <button type="submit" className="search-button" onClick={this.submitNameFilter}>
                       <i className="icon-search" />
                     </button>
                     <label className="label" htmlFor="name_search">
@@ -242,6 +256,9 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTyes = {
+    onSetSort:PropTypes.func.isRequired,
+    onSetFilteredState:PropTypes.func.isRequired,
+    onUnsetFilteredState:PropTypes.func.isRequired,
     onSetFilteredLocationState: PropTypes.func.isRequired,
     onUnsetFilteredLocationState: PropTypes.func.isRequired,
 }

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ClassCard from "./components/ClassCard";
 import FilterSection from "./components/FilterSection";
-
+import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 import ClassModal from "../ClassModal";
 
 
@@ -52,6 +52,11 @@ class ListPage extends React.Component {
     event.preventDefault();
     this.setState({ classModalOpen: true });
   };
+
+  onSetSort = (sort) => this.setState({ sort })
+
+  onSetFilteredState = (filterName) => this.setState({ classesAreFiltered: true, filterName })
+  onUnsetFilteredState = () => this.setState({ classesAreFiltered: false, filterName: '' })
 
   onFilterByName = () => {
     const { classes } = this.props;
@@ -168,6 +173,9 @@ class ListPage extends React.Component {
           </h2>
         </div>
         <FilterSection
+          onSetSort={this.onSetSort}
+          onSetFilteredState={this.onSetFilteredState}
+          onUnsetFilteredState={this.onUnsetFilteredState}
           onSetFilteredLocationState={this.onSetFilteredLocationState}
           onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
         />

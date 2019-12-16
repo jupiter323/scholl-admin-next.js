@@ -15,7 +15,7 @@ const sampleClass = [
       instruction:14,
     },
     accountInfo: {
-      lastName: 'Admin',
+      lastName: 'manager',
       firstName: 'Company',
       email: 'test2@example.com',
       gender: 'M'
