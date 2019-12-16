@@ -5,11 +5,31 @@ import {
   ADD_STUDENT
 } from "./components/Student/index/constants";
 import {
-  fetchStudents,
   setStudents,
   addStudent
 } from "./components/Student/index/actions";
 import { studentApi } from "./api";
+const {fetchStudentsApi, addNewStudentApi} = studentApi;
+
+/********************************************    STUDENTS    ********************************************/
+export function* watchForFetchStudents() {
+  while (true) {
+    yield take(FETCH_STUDENTS);
+    yield call(fetchStudents);
+  }
+}
+
+export function* fetchStudents() {
+  try {
+    const {students} = yield call(fetchStudentsApi)
+    if (students instanceof Array) {
+      yield put(setStudents(students));
+    }
+  } catch (err) {
+    console.warn('Error occurred in the watchForFetchLessons saga', err);
+  }
+}
+
 
 export default function* defaultSaga() {
   yield all([]);
