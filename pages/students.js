@@ -43,6 +43,7 @@ class Students extends Component {
      },
     }
   }
+
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
   onOpenLocationModal = () => this.setState({locationModalOpen: true});
@@ -57,7 +58,35 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: '' });
 
  // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = () => {
+  onSaveNewStudent = async () => {
+    const {newStudent: previousStudentState} = this.state;
+    // Replace code below with action dispatch
+    // await addNewStudentApi(previousStudentState)
+    const newStudent = update(previousStudentState, {
+      $set:
+       { active: false,
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: {
+          email: '',
+        },
+        location: {
+          locations: [],
+        },
+    }}
+    );
+    this.setState({newStudent})
     // eslint-disable-next-line no-console
     console.warn('do something with the new student info')
     this.onCloseStudentModal();

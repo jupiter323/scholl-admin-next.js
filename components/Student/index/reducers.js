@@ -1,0 +1,17 @@
+import { fromJS } from 'immutable';
+import { SET_STUDENTS } from './constants';
+
+const initialState = fromJS({
+  students: [],
+});
+
+function studentReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_STUDENTS:
+      return state.set('students', action.students);
+    default:
+      return state;
+  }
+}
+
+export default studentReducer;
