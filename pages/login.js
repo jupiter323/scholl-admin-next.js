@@ -192,7 +192,6 @@ class Login extends Component {
               margin-bottom: 0;
               font-family: "Raleway", sans-serif;
               font-size: 14px;
-              padding-right: 35px;
             }
           `}
         </style>
