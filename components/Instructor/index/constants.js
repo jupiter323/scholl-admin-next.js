@@ -1,0 +1,1 @@
+export const SET_INSTRUCTORS = 'SET_INSTRUCTORS';

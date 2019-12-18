@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
+import Portal from "../../../../Portal";
 import update from 'immutability-helper';
-
-import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 import AccountInfo from '../SharedModalComponents/AccountInfo';
@@ -12,7 +10,9 @@ import Locations from '../SharedModalComponents/Locations';
 
 import { nestedEditFieldValidation } from '../../../../utils/fieldValidation';
 
-class InstructorDetailsModal extends React.Component {
+
+
+class ClassDetailModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +23,20 @@ class InstructorDetailsModal extends React.Component {
       activeLocation: {},
       dropdownIsOpen: false,
       dropdownIndex: null,
-      originalInstructor: {
+      originalClassRoom: {
+        summary:{
+          amount_students:'',
+          start_date:'',
+          end_date:'',
+          improvement:0,
+          coursework_assigned:0,
+          coursework_completed:0,
+          problems_flagged_review:0,
+          average_score:0,
+          achieved_target_score:0,
+          average_practice_tests_completed:0,
+          instruction:0,
+        },
         accountInfo: {
           firstName: '',
           lastName: '',
@@ -39,7 +52,20 @@ class InstructorDetailsModal extends React.Component {
         },
         locations: [],
       },
-      updatedInstructor: {
+      updatedClassRoom: {
+        summary:{
+          amount_students:'',
+          start_date:'',
+          end_date:'',
+          improvement:0,
+          coursework_assigned:0,
+          coursework_completed:0,
+          problems_flagged_review:0,
+          average_score:0,
+          achieved_target_score:0,
+          average_practice_tests_completed:0,
+          instruction:0,
+        },
         accountInfo: {
           firstName: '',
           lastName: '',
@@ -63,91 +89,48 @@ class InstructorDetailsModal extends React.Component {
           gender: true,
         },
       },
-    };
+    }
   }
 
   componentDidMount() {
-    const { instructor: { id, basicInfo, accountInfo, contactInfo, locations } = {} } = this.props;
-    const updatedInstructor = { id, basicInfo, accountInfo, contactInfo, locations };
-    const { originalInstructor: originalInstructorState } = this.state;
-    const originalInstructor = update(originalInstructorState, {
-      $merge: updatedInstructor,
-    });
-    this.setState({ originalInstructor, updatedInstructor }); // eslint-disable-line
+    const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = this.props;
+    const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+    const { originalClassRoom: originalClassRoomState } = this.state;
+    const originalClassRoom = update(originalClassRoomState, {$merge: updatedClassRoom,});
+    this.setState({ originalClassRoom, updatedClassRoom }); // eslint-disable-line
   }
 
-  // This resets the component state to reflect the details of the next instructor the user clicks on
+  // This resets the component state to reflect the details of the next classroom the user clicks on
   componentWillReceiveProps = (nextProps) => {
-    if ((!this.state.originalInstructor || nextProps.instructor.id !== this.state.originalInstructor.id)) {
-      const { instructor: { id, basicInfo, accountInfo, contactInfo, locations } = {} } = nextProps;
-      const updatedInstructor = { id, basicInfo, accountInfo, contactInfo, locations };
-      const { originalInstructor: originalInstructorState } = this.state;
-      const originalInstructor = update(originalInstructorState, {
-        $merge: nextProps.instructor,
+    if ((!this.state.originalClassRoom || nextProps.classroom.id !== this.state.originalClassRoom.id)) {
+      const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = nextProps;
+      const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+      const { originalClassRoom: originalClassRoomState } = this.state;
+      const originalClassRoom = update(originalClassRoomState, {
+        $merge: nextProps.classroom,
       });
-      this.setState({ originalInstructor, updatedInstructor });
+      this.setState({ originalClassRoom, updatedClassRoom });
     }
   }
-
-  onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
-
-  onOpenDeleteLocationModal = (pendingLocationDelete) => this.setState({ deleteLocationModalOpen: true, pendingLocationDelete });
-  onCloseDeleteLocationModal = () => this.setState({ deleteLocationModalOpen: false, pendingLocationDelete: {} });
-
-  onOpenNewLocationModal = () => this.setState({ newLocationModalOpen: true });
-  onCloseNewLocationModal = () => this.setState({ newLocationModalOpen: false });
-
-  onOpenEditLocationModal = (activeLocation) => this.setState({ editLocationModalOpen: true, activeLocation });
-  onCloseEditLocationModal = () => this.setState({ editLocationModalOpen: false, dropdownIsOpen: false, activeLocation: {} });
-
-  onCancelChanges = () => {
-    const { onClose } = this.props;
-    const { updatedInstructor, originalInstructor } = this.state;
-    this.setState({ updatedInstructor: originalInstructor }, onClose());
-  }
-
-  // This function is passed into nestedEditFieldValidation, it takes the result of the validation check and a callback function
-  // The updated component validation state is set and then the callback is dispatched - in this case, the callback handles the toast warning at the container level
-  onSetValidation = (validation, cb) => this.setState({ validation }, cb);
-
-  // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
-  onSubmit = async (event) => {
-    event.preventDefault();
-    const { updatedInstructor: { id, basicInfo, accountInfo, contactInfo, locations } } = this.state;
-    const { onSaveLocationError, onSaveInstructorChanges, onClose } = this.props;
-    // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
-    // const valid = true;
-    const valid = await nestedEditFieldValidation(this.state, this.state.updatedInstructor, this.onSetValidation, (validation) => console.warn('validation', validation));
-    if (!valid) {
-      // return onSaveLocationError();
-      console.warn('not valid');
-    }
-    const postBody = { id, basicInfo, accountInfo, contactInfo, locations };
-    onSaveInstructorChanges(postBody);
-    console.warn('stubbed out save function');
-    onClose();
-  }
-
-  initialInstructorMount = () => this.state.originalInstructor.id !== this.props.instructor.id;
 
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section) => {
-    const { updatedInstructor: previousInstructorState } = this.state;
-    const value = event.target ? event.target.value : event;
-    const updatedInstructor = update(previousInstructorState, {
-      [section]: { $merge: { [name]: value } },
-    });
-    this.setState({ updatedInstructor });
+      const value = event.target ? event.target.value : event;
+      const updatedClassRoom = update(this.state.updatedClassRoom, {
+        [section]: { $merge: { [name]: value } },
+      });
+      this.setState({updatedClassRoom});
   }
 
+  initialClassRoomMount = () => this.state.originalClassRoom.id !== this.props.classroom.id;
+
   renderModalHeader = () => {
-    const { instructor: { accountInfo: { lastName: initialLastName, firstName: initialFIrstName, email: initialEmail } } } = this.props;
-    const { updatedInstructor: { accountInfo: { lastName: updatedLastName, firstName: updatedFirstName, email: updatedEmail } } } = this.state;
+    const { classroom: { accountInfo: { lastName: initialLastName, firstName: initialFIrstName, email: initialEmail } } } = this.props;
+    const { updatedClassRoom: { accountInfo: { lastName: updatedLastName, firstName: updatedFirstName, email: updatedEmail } } } = this.state;
     let lastName;
     let firstName;
     let email;
-    if (this.initialInstructorMount()) {
+    if (this.initialClassRoomMount()) {
       lastName = initialLastName;
       firstName = initialFIrstName;
       email = initialEmail;
@@ -164,33 +147,73 @@ class InstructorDetailsModal extends React.Component {
     );
   }
 
+  // This function is passed into nestedEditFieldValidation, it takes the result of the validation check and a callback function
+  // The updated component validation state is set and then the callback is dispatched - in this case, the callback handles the toast warning at the container level
+  onSetValidation = (validation, cb) => this.setState({ validation }, cb);
+
+  // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
+  onSubmit = async (event) => {
+    event.preventDefault();
+    const { updatedClassRoom: { id, basicInfo, accountInfo, contactInfo, locations,summary } } = this.state;
+    const { onSaveLocationError, onSaveClassChanges, onClose } = this.props;
+    // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
+    // const valid = true;
+    const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
+    if (!valid) {
+      // return onSaveLocationError();
+      console.warn('not valid');
+    }
+    const postBody = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+    onSaveClassChanges(postBody);
+    onClose();
+  }
+
+  onCancelChanges = () => {
+    const { onClose } = this.props;
+    const { originalClassRoom } = this.state;
+    this.setState({ updatedClassRoom: originalClassRoom }, onClose());
+  }
+
   render() {
-    const { open, instructor: { accountInfo, contactInfo, locations }, onOpenDeleteModal, deleteModalOpen } = this.props;
+    const { open,onOpenDeleteModal,onDeleteClass, deleteModalOpen,index } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
-      updatedInstructor: {
-        accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,
-      },
+      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,},
     } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={this.onCancelChanges} nestedModals={deleteModalOpen || deleteLocationModalOpen || editLocationModalOpen || newLocationModalOpen}>
-              <div id="modal_user_edit" className="modal modal-custom modal-custom-large modal-gray">
+            <ClickOffComponentWrapper
+              onOuterClick={this.onCancelChanges}
+              nestedModals={ deleteModalOpen || deleteLocationModalOpen || editLocationModalOpen || newLocationModalOpen }
+            >
+              <div
+                id="modal_user_edit"
+                className="modal modal-custom modal-custom-large modal-gray"
+              >
                 <div className="card-modal card-main card grey lighten-3">
-                  <div className="owner-box card-panel card-panel-title" style={{ backgroundColor: '#31837a', color: '#fff' }}>
+                  <div
+                    className="owner-box card-panel card-panel-title"
+                    style={{ backgroundColor: "#31837a", color: "#fff" }}
+                  >
                     <div className="card-panel-row row">
                       <div className="col s9">
                         <div className="user-block">
-                          <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
+                          <div
+                            className="user-circle"
+                            style={{
+                              backgroundColor: "#0085ce",
+                              color: "#fff"
+                            }}
+                          >
                             <img src="./static/images/img-owner01.jpg" alt="" />
                           </div>
-                          <div className="user-text" style={{ color: '#fff' }}>
+                          <div className="user-text" style={{ color: "#fff" }}>
                             {this.renderModalHeader()}
                           </div>
                         </div>
                       </div>
-                      <div className="col" style={{ textAlign: 'right' }}>
+                      <div className="col" style={{ textAlign: "right" }}>
                         <span className="block-icon">
                           <i className="icon-owner"></i>
                           <span className="text-icon">Owner</span>
@@ -203,19 +226,22 @@ class InstructorDetailsModal extends React.Component {
                       <div className="row mb-0">
                         <div className="col s12 l6">
                           <AccountInfo
-                            state={this.initialInstructorMount() ? accountInfo : updatedAccountInfo}
+                            state={ this.initialClassRoomMount()? accountInfo: updatedAccountInfo }
                             handleDetailsChange={this.handleDetailsChange}
                           />
                           <ContactInfo
-                            state={this.initialInstructorMount() ? contactInfo : updatedContactInfo}
+                            state={
+                              this.initialClassRoomMount()
+                                ? contactInfo
+                                : updatedContactInfo
+                            }
                             handleDetailsChange={this.handleDetailsChange}
                           />
                         </div>
                         <div className="col s12 l6">
                           <Locations
-                            state={this.initialInstructorMount() ? locations : updatedLocations}
+                            state={ this.initialClassRoomMount()? locations : updatedLocations }
                             handleDetailsChange={this.handleDetailsChange}
-
                             dropdownIsOpen={dropdownIsOpen}
                             dropdownIndex={dropdownIndex}
                             activeLocation={activeLocation}
@@ -226,11 +252,11 @@ class InstructorDetailsModal extends React.Component {
                             onSetDropdown={this.onSetDropdown}
                             onCloseDropdown={this.onCloseDropdown}
                             onOpenNewLocationModal={this.onOpenNewLocationModal}
-                            onOpenEditLocationModal={this.onOpenEditLocationModal}
-                            onCloseNewLocationModal={this.onCloseNewLocationModal}
-                            onCloseEditLocationModal={this.onCloseEditLocationModal}
-                            onOpenDeleteLocationModal={this.onOpenDeleteLocationModal}
-                            onCloseDeleteLocationModal={this.onCloseDeleteLocationModal}
+                            onOpenEditLocationModal={ this.onOpenEditLocationModal }
+                            onCloseNewLocationModal={ this.onCloseNewLocationModal}
+                            onCloseEditLocationModal={ this.onCloseEditLocationModal}
+                            onOpenDeleteLocationModal={ this.onOpenDeleteLocationModal }
+                            onCloseDeleteLocationModal={ this.onCloseDeleteLocationModal}
                           />
                         </div>
                       </div>
@@ -238,7 +264,7 @@ class InstructorDetailsModal extends React.Component {
                     <div className="modal-footer">
                       <a
                         href="#"
-                        onClick={onOpenDeleteModal}
+                        onClick={() => onDeleteClass(index)}
                         className="waves-effect waves-teal btn-flat pink-text text-darken-1"
                       >
                         Delete
@@ -250,11 +276,7 @@ class InstructorDetailsModal extends React.Component {
                       >
                         Cancel
                       </a>
-                      <a
-                        href="#"
-                        onClick={this.onSubmit}
-                        className="btn"
-                      >
+                      <a href="#" onClick={this.onSubmit} className="btn">
                         Save
                       </a>
                     </div>
@@ -302,12 +324,14 @@ class InstructorDetailsModal extends React.Component {
   }
 }
 
-InstructorDetailsModal.propTypes = {
+ClassDetailModal.propTypes = {
+  index:PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
-  instructor: PropTypes.object.isRequired,
+  classroom: PropTypes.object.isRequired,
+  onSaveClassChanges:PropTypes.func.isRequired,
 };
 
-export default InstructorDetailsModal;
+export default ClassDetailModal;

@@ -56,7 +56,7 @@ const LocationCard = ({ index, handleLocationCardClick, location: {
                         tooltips: false,
                   }}
                 />
-                <span className="chart-value" style={{ backgroundColor: '#62b771', bottom: '-15px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor(studentsAchievingTargetScore / pastStudents * 100)}%</span>
+                <span className="chart-value" style={{ backgroundColor: '#62b771', marginBottom: '-15px' }}><span data-count-up data-start-val="0" data-end-val="91" data-duration="1"></span>{Math.floor(studentsAchievingTargetScore / pastStudents * 100)}%</span>
               </div>
               <div className="chart-description" style={{ color: '#31837a', marginTop: '45px' }}>Students Who Achieved Target Score</div>
             </div>
