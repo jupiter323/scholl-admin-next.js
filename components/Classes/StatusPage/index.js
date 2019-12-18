@@ -4,7 +4,7 @@ import ClassNavBar from "../components/ClassNavBar";
 import TestSectionsPage from "../TestSectionsPage";
 import DetailSummaryPage from "../DetailSummaryPage";
 import DetailWorksheetPage from "../DetailWorksheetPage";
-
+import SessionCalendar from '../../common/Calendar';
 import sampleClass from "../utils/sampleSummaryClass";
 
 class StatusPage extends React.Component {
@@ -27,6 +27,9 @@ class StatusPage extends React.Component {
     }
     if (active === "worksheets") {
       return <DetailWorksheetPage />;
+    }
+    if ( active == "calendar") {
+      return <SessionCalendar/>;
     }
     return null;
   };
@@ -67,26 +70,7 @@ class StatusPage extends React.Component {
           )}
         </Sticky>
         {this.renderCurrentPage()}
-        <div className="add-btn-block dropdown-small">
-          <a
-            href="#"
-            className="dropdown-trigger waves-effect waves-teal btn add-btn"
-            data-target="dropdown_assign_selected"
-          >
-            <i className="material-icons">add</i> Assign Test Section
-          </a>
-          <ul
-            id="dropdown_assign_selected"
-            className="dropdown-content dropdown-small"
-          >
-            <li>
-              <a href="#">From Saved</a>
-            </li>
-            <li>
-              <a href="#">Create New</a>
-            </li>
-          </ul>
-        </div>
+        
       </StickyContainer>
     );
   }
