@@ -7,15 +7,45 @@ import DetailWorksheetPage from "../DetailWorksheetPage";
 import SessionCalendar from '../../common/Calendar';
 import sampleClass from "../utils/sampleSummaryClass";
 
+
+import AssignLessonModal from "../../Dashboard/components/Modals/AssignLessonModal";
+
 class StatusPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: "summary"
+      active: "summary",
+      assignLessonsModalOpen:false,
+      openAssignWorkSheetModal:false,
+      modalDate: null,
+      rows: [],
     };
   }
 
   onSetActivePage = active => this.setState({ active });
+
+  onToggleAssignLessonsModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignLessonsModalOpen }) => ({
+      assignLessonsModalOpen: !assignLessonsModalOpen,
+      modalDate,
+      assignDropdownIsOpen: false
+    }));
+  };
+
+  onAssignLessons = (lessons, date) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === date)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.lessons.push(...lessons);
+    const updatedRows = update(rows, {
+      $splice: [[updatedDateIndex, 1, updatedDate]]
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleAssignLessonsModal();
+  };
 
   renderCurrentPage = () => {
     const { active } = this.state;
@@ -29,17 +59,21 @@ class StatusPage extends React.Component {
       return <DetailWorksheetPage />;
     }
     if ( active == "calendar") {
-      return <SessionCalendar/>;
+      return <SessionCalendar
+                onToggleAssignLessonsModal = {this.onToggleAssignLessonsModal}
+              />;
     }
     return null;
   };
 
   render() {
-    const { active } = this.state;
+    const { active,assignLessonsModalOpen,openAssignWorkSheetModal,modalDate } = this.state;
     return (
       <StickyContainer>
+         <If condition = {!assignLessonsModalOpen && !openAssignWorkSheetModal}>
         <Sticky>
           {({ style }) => (
+           
             <div
               className="title-row card-panel"
               style={{ ...style, zIndex: 1999 }}
@@ -69,8 +103,16 @@ class StatusPage extends React.Component {
             </div>
           )}
         </Sticky>
-        {this.renderCurrentPage()}
-        
+        </If>
+        {!assignLessonsModalOpen && !openAssignWorkSheetModal && this.renderCurrentPage()}
+        {assignLessonsModalOpen && 
+          <AssignLessonModal
+            modalDate={modalDate}
+            open={assignLessonsModalOpen}
+            onClose={this.onToggleAssignLessonsModal}
+            onAssignLessons={this.onAssignLessons}
+          />
+        }
       </StickyContainer>
     );
   }

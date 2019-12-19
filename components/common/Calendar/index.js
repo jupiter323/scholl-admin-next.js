@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import update from "immutability-helper";
 import { DragDropContext } from "react-beautiful-dnd";
 import { StickyContainer } from "react-sticky";
@@ -7,7 +8,7 @@ import CalendarHeader from "../../Dashboard/components/CalendarHeader";
 import CalendarRow from "../../Dashboard/components/CalendarRow";
 
 import AssignSessionModal from "../../Dashboard/components/Modals/AssignSessionModal";
-import AssignLessonModal from "../../Dashboard/components/Modals/AssignLessonModal";
+// import AssignLessonModal from "../../Dashboard/components/Modals/AssignLessonModal";
 import AssignWorksheetModal from "../../Dashboard/components/Modals/AssignWorksheetModal";
 import AssignTestSectionModal from "../../Dashboard/components/Modals/AssignTestSectionModal";
 import AssignSimulatedSatModal from "../../Dashboard/components/Modals/AssignSimulatedSATModal";
@@ -160,17 +161,17 @@ class Calendar extends Component {
     this.onToggleAssignSessionModal();
   };
 
-  onAssignLessons = (lessons, date) => {
-    const { rows } = this.state;
-    const updatedDate = rows.filter(row => row.date === date)[0];
-    const updatedDateIndex = rows.indexOf(updatedDate);
-    updatedDate.lessons.push(...lessons);
-    const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
-    });
-    this.setState({ rows: updatedRows });
-    this.onToggleAssignLessonsModal();
-  };
+  // onAssignLessons = (lessons, date) => {
+  //   const { rows } = this.state;
+  //   const updatedDate = rows.filter(row => row.date === date)[0];
+  //   const updatedDateIndex = rows.indexOf(updatedDate);
+  //   updatedDate.lessons.push(...lessons);
+  //   const updatedRows = update(rows, {
+  //     $splice: [[updatedDateIndex, 1, updatedDate]]
+  //   });
+  //   this.setState({ rows: updatedRows });
+  //   this.onToggleAssignLessonsModal();
+  // };
 
   onAssignWorksheets = (worksheets, date) => {
     const { rows } = this.state;
@@ -228,16 +229,16 @@ class Calendar extends Component {
     }));
   };
 
-  onToggleAssignLessonsModal = (event = null, modalDate = null) => {
-    if (event) {
-      event.preventDefault();
-    }
-    this.setState(({ assignLessonsModalOpen }) => ({
-      assignLessonsModalOpen: !assignLessonsModalOpen,
-      modalDate,
-      assignDropdownIsOpen: false
-    }));
-  };
+  // onToggleAssignLessonsModal = (event = null, modalDate = null) => {
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
+  //   this.setState(({ assignLessonsModalOpen }) => ({
+  //     assignLessonsModalOpen: !assignLessonsModalOpen,
+  //     modalDate,
+  //     assignDropdownIsOpen: false
+  //   }));
+  // };
 
   onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
     if (event) {
@@ -339,7 +340,7 @@ class Calendar extends Component {
     sourceDate[draggableType].splice(draggableIndex, 1);
     destinationDate[draggableType].push(movedEvent);
     const updatedRows = update(rows, {
-      $splice: [
+      $splice: [+
         [sourceDateIndex, 1, sourceDate],
         [destinationDateIndex, 1, destinationDate]
       ]
@@ -417,7 +418,6 @@ class Calendar extends Component {
   render() {
     const {
       assignSessionModalOpen,
-      assignLessonsModalOpen,
       assignWorksheetsModalOpen,
       activeMonth,
       assignTestSectionModalOpen,
@@ -429,6 +429,9 @@ class Calendar extends Component {
       filters,
       eventFilters
     } = this.state;
+    const {
+      onToggleAssignLessonsModal,
+    } = this.props;
     return (
       <React.Fragment>
         <AssignSessionModal
@@ -437,12 +440,12 @@ class Calendar extends Component {
           onClose={this.onToggleAssignSessionModal}
           onAssignSession={this.onAssignSession}
         />
-        <AssignLessonModal
+        {/* <AssignLessonModal
           modalDate={modalDate}
           open={assignLessonsModalOpen}
           onClose={this.onToggleAssignLessonsModal}
           onAssignLessons={this.onAssignLessons}
-        />
+        /> */}
         <AssignWorksheetModal
           modalDate={modalDate}
           open={assignWorksheetsModalOpen}
@@ -534,7 +537,7 @@ class Calendar extends Component {
                   <li>
                     <a
                       href="#"
-                      onClick={this.onToggleAssignLessonsModal}
+                      onClick={onToggleAssignLessonsModal}
                       className="modal-trigger"
                     >
                       Lesson
@@ -629,6 +632,10 @@ class Calendar extends Component {
       </React.Fragment>
     );
   }
+}
+
+Calendar.propTypes = {
+  onToggleAssignLessonsModal:PropTypes.func.isRequired,
 }
 
 export default Calendar;

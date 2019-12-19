@@ -218,6 +218,7 @@ class AssignWorksheetModal extends React.Component {
 
   render() {
     const { open } = this.props;
+    console.log("AssignLessonModalOpen:",open)
     const { assignSelectedDropdownOpen, typeFilters, sourceFilters, subjectFilters, difficultyFilters, sort } = this.state;
     return (
       <Portal selector="#modal">
