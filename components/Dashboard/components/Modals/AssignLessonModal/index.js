@@ -209,11 +209,10 @@ class AssignLessonModal extends React.Component {
     const { open } = this.props;
     const { assignSelectedDropdownOpen, subjectFilters, typeFilters, sort } = this.state;
     return (
-      <Portal selector="#modal">
+      <div>
         {open && (
           <div className="wrapper">
-            <div id="modal_assign_lesson" className="modal-page modal modal-custom" style={{ zIndex: '1003' }}>
-              <div className="card-modal card-main card switcher-section grey lighten-3">
+              <div className="card-modal card-main card switcher-section grey lighten-3" style = {{minWidth:"100%"}}>
                 <div className="header-row card-panel light-blue lighten-1 white-text">
                   <div className="card-panel-row row">
                     <div className="col s11">
@@ -272,7 +271,6 @@ class AssignLessonModal extends React.Component {
                   <li><a href="#" onClick={() => this.assignLessons('customDate')}>For Date...</a></li>
                 </ul>
               </div>
-            </div>
           </div>
         )}
         <style jsx>
@@ -280,9 +278,6 @@ class AssignLessonModal extends React.Component {
             .card-modal {
               margin: 0;
               border-radius: 6px;
-            }
-            .wrapper {
-              min-height: 0px;
             }
             .modal-custom {
               opacity: 1;
@@ -293,7 +288,7 @@ class AssignLessonModal extends React.Component {
             }
           `}
         </style>
-      </Portal>
+      </div>
     );
   }
 }

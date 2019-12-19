@@ -73,11 +73,7 @@ class StatusPage extends React.Component {
          <If condition = {!assignLessonsModalOpen && !openAssignWorkSheetModal}>
         <Sticky>
           {({ style }) => (
-           
-            <div
-              className="title-row card-panel"
-              style={{ ...style, zIndex: 1999 }}
-            >
+            <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
               <div className="mobile-header">
                 <a href="#" data-target="slide-out" className="sidenav-trigger">
                   <i className="material-icons">menu</i>
