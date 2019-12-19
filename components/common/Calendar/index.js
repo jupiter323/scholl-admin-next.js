@@ -160,8 +160,10 @@ class Calendar extends Component {
       rows.push(...rowArr);
     }
     this.setState({ activeMonth: activeMonthIndex });
-    const { onSetCalendarRows } = this.props;
-    onSetCalendarRows(rows);
+    if(this.props.rows.length === 0){
+      const { onSetCalendarRows } = this.props;
+      onSetCalendarRows(rows);
+    }
   };
 
   onSetActiveDate = incomingDate => {
@@ -186,7 +188,6 @@ class Calendar extends Component {
     const { rows } = this.props;
     const updatedDate = rows.filter(row => row.date === date)[0];
     const updatedDateIndex = rows.indexOf(updatedDate);
-    console.log("updatedDateIndex:",updatedDateIndex)
     updatedDate.lessons.push(...lessons);
     const updatedRows = update(rows, {
       $splice: [[updatedDateIndex, 1, updatedDate]]
@@ -207,9 +208,7 @@ class Calendar extends Component {
 
   onAssignTestSection = testSection => {
     const { rows } = this.props;
-    const updatedDate = rows.filter(
-      row => row.date === testSection.assignDate
-    )[0];
+    const updatedDate = rows.filter( row => row.date === testSection.assignDate)[0];
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.testSections.push(testSection);
     const updatedRows = update(rows, {
