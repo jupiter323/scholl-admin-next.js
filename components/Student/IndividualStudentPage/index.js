@@ -9,6 +9,8 @@ import DetailTestList from '../DetailTestList';
 import LessonDetailAnswerSheet from '../LessonDetailAnswerSheet';
 import StudentNavBar from '../components/StudentNavBar';
 import ScoredTestListPage from '../ScoredTestListPage';
+import SessionCalendar from '../Calendar';
+
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -48,6 +50,9 @@ class IndividualStudentPage extends React.Component {
     }
     if (activePage === 'scored-tests') {
       return <ScoredTestListPage />
+    }
+    if (activePage === 'calendar'){
+      return <SessionCalendar/>
     }
     return null;
   }
