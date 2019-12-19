@@ -31,13 +31,13 @@ import {
   makeSelectAssignLessonsModalOpen,
   makeSelectAssignWorkSheetsModalOpen,
   makeSelectCalendarRows,
-} from '../../Classes/index/selectors';
+} from '../index/selectors';
 
 import {
   setAssignLessonsModalOpen,
   setAssignWorksheetModalOpen,
   setCalendarRows,
-} from '../../Classes/index/actions';
+} from '../index/actions';
 
 class Calendar extends Component {
   constructor(props) {

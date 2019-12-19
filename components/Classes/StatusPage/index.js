@@ -8,7 +8,7 @@ import ClassNavBar from "../components/ClassNavBar";
 import TestSectionsPage from "../TestSectionsPage";
 import DetailSummaryPage from "../DetailSummaryPage";
 import DetailWorksheetPage from "../DetailWorksheetPage";
-import SessionCalendar from "../../common/Calendar";
+import SessionCalendar from "../Calendar";
 import sampleClass from "../utils/sampleSummaryClass";
 
 import { makeSelectAssignLessonsModalOpen,makeSelectAssignWorkSheetsModalOpen } from "../index/selectors";
