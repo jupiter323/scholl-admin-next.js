@@ -206,7 +206,6 @@ class AssignLessonModal extends React.Component {
   render() {
     const { open } = this.props;
     const { assignSelectedDropdownOpen, subjectFilters, typeFilters, sort } = this.state;
-    console.log("Open:",open)
     return (
       <div>
         {open && (

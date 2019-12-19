@@ -15,6 +15,11 @@ const makeSelectAssignLessonsModalOpen = () => createSelector(
 const makeSelectAssignWorkSheetsModalOpen = () => createSelector(
     makeSelectClassesPageState(),
     (substate) => substate.assignWorkSheetsModalOpen
+);
+
+const makeSelectCalendarRows = () => createSelector(
+    makeSelectClassesPageState(),
+    (substate) => substate.calendarRows
 )
 
 export default selectClassesDomain;
@@ -22,4 +27,5 @@ export {
     makeSelectClassesPageState,
     makeSelectAssignLessonsModalOpen,
     makeSelectAssignWorkSheetsModalOpen,
+    makeSelectCalendarRows,
 }
