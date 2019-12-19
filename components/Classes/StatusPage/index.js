@@ -1,76 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
 import { StickyContainer, Sticky } from "react-sticky";
 import ClassNavBar from "../components/ClassNavBar";
 import TestSectionsPage from "../TestSectionsPage";
 import DetailSummaryPage from "../DetailSummaryPage";
 import DetailWorksheetPage from "../DetailWorksheetPage";
-import SessionCalendar from '../../common/Calendar';
+import SessionCalendar from "../../common/Calendar";
 import sampleClass from "../utils/sampleSummaryClass";
 
-
-import AssignLessonModal from "../../Dashboard/components/Modals/AssignLessonModal";
-import AssignWorksheetModal from "../../Dashboard/components/Modals/AssignWorksheetModal";
-
+import { makeSelectAssignLessonsModalOpen,makeSelectAssignWorkSheetsModalOpen } from "../index/selectors";
 
 class StatusPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: "summary",
-      assignLessonsModalOpen:false,
-      assignWorksheetsModalOpen:false,
-      modalDate: null,
-      rows: [],
+      active: "summary"
     };
   }
 
   onSetActivePage = active => this.setState({ active });
-
-  onToggleAssignLessonsModal = (event = null, modalDate = null) => {
-    if (event) {
-      event.preventDefault();
-    }
-    this.setState(({ assignLessonsModalOpen }) => ({
-      assignLessonsModalOpen: !assignLessonsModalOpen,
-      modalDate,
-      assignDropdownIsOpen: false
-    }));
-  };
-
-  onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
-    if (event) {
-      event.preventDefault();
-    }
-    this.setState(({ assignWorksheetsModalOpen }) => ({
-      assignWorksheetsModalOpen: !assignWorksheetsModalOpen,
-      modalDate,
-      assignDropdownIsOpen: false
-    }));
-  };
-
-  onAssignLessons = (lessons, date) => {
-    const { rows } = this.state;
-    const updatedDate = rows.filter(row => row.date === date)[0];
-    const updatedDateIndex = rows.indexOf(updatedDate);
-    updatedDate.lessons.push(...lessons);
-    const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
-    });
-    this.setState({ rows: updatedRows });
-    this.onToggleAssignLessonsModal();
-  };
-
-  onAssignWorksheets = (worksheets, date) => {
-    const { rows } = this.state;
-    const updatedDate = rows.filter(row => row.date === date)[0];
-    const updatedDateIndex = rows.indexOf(updatedDate);
-    updatedDate.worksheets.push(...worksheets);
-    const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
-    });
-    this.setState({ rows: updatedRows });
-    this.onToggleAssignWorksheetsModal();
-  };
 
   renderCurrentPage = () => {
     const { active } = this.state;
@@ -83,69 +34,72 @@ class StatusPage extends React.Component {
     if (active === "worksheets") {
       return <DetailWorksheetPage />;
     }
-    if ( active == "calendar") {
-      return <SessionCalendar
-                onToggleAssignLessonsModal = {this.onToggleAssignLessonsModal}
-                onToggleAssignWorksheetsModal = {this.onToggleAssignWorksheetsModal}
-              />;
+    if (active == "calendar") {
+      return <SessionCalendar />;
     }
     return null;
   };
 
   render() {
-    const { active,assignLessonsModalOpen,assignWorksheetsModalOpen,modalDate } = this.state;
+    const { active } = this.state;
+    const { assignLessonsModalOpen,assignWorkSheetsModalOpen } = this.props;
     return (
       <StickyContainer>
-         <If condition = {!assignLessonsModalOpen && !assignWorksheetsModalOpen}>
-        <Sticky>
-          {({ style }) => (
-            <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
-              <div className="mobile-header">
-                <a href="#" data-target="slide-out" className="sidenav-trigger">
-                  <i className="material-icons">menu</i>
-                </a>
-              </div>
-              <nav className="breadcrumb-holder">
-                <div className="nav-wrapper ">
-                  <a href="#!" className="breadcrumb">
-                    &lt; Classes
-                  </a>
+        <Choose>
+          <When condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen}>
+            <Sticky>
+              {({ style }) => (
+                <div
+                  className="title-row card-panel"
+                  style={{ ...style, zIndex: 1999 }}
+                >
+                  <div className="mobile-header">
+                    <a
+                      href="#"
+                      data-target="slide-out"
+                      className="sidenav-trigger"
+                    >
+                      <i className="material-icons">menu</i>
+                    </a>
+                  </div>
+                  <nav className="breadcrumb-holder">
+                    <div className="nav-wrapper ">
+                      <a href="#!" className="breadcrumb">
+                        &lt; Classes
+                      </a>
+                    </div>
+                  </nav>
+                  <h2 className="h1 white-text">
+                    <span className="heading-holder">
+                      <i className="icon-members"></i>
+                      <span className="heading-block">Some Class in June</span>
+                    </span>
+                  </h2>
+                  <ClassNavBar
+                    onSetActivePage={this.onSetActivePage}
+                    active={active}
+                  />
                 </div>
-              </nav>
-              <h2 className="h1 white-text">
-                <span className="heading-holder">
-                  <i className="icon-members"></i>
-                  <span className="heading-block">Some Class in June</span>
-                </span>
-              </h2>
-              <ClassNavBar
-                onSetActivePage={this.onSetActivePage}
-                active={active}
-              />
-            </div>
-          )}
-        </Sticky>
-        </If>
-        {!assignLessonsModalOpen && !assignWorksheetsModalOpen && this.renderCurrentPage()}
-        {assignLessonsModalOpen && 
-          <AssignLessonModal
-            modalDate={modalDate}
-            open={assignLessonsModalOpen}
-            onClose={this.onToggleAssignLessonsModal}
-            onAssignLessons={this.onAssignLessons}
-          />
-        }
-        {
-          <AssignWorksheetModal
-            modalDate={modalDate}
-            open={assignWorksheetsModalOpen}
-            onClose={this.onToggleAssignWorksheetsModal}
-            onAssignWorksheets={this.onAssignWorksheets}
-          />
-        }
+              )}
+            </Sticky>
+          </When>
+        </Choose>
+        {this.renderCurrentPage()}
       </StickyContainer>
     );
   }
 }
 
-export default StatusPage;
+StatusPage.propTypes = {
+  assignLessonsModalOpen: PropTypes.bool,
+  assignWorkSheetsModalOpen:PropTypes.bool,
+};
+
+const mapStateToProps = createStructuredSelector({
+  assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
+  assignWorkSheetsModalOpen:makeSelectAssignWorkSheetsModalOpen(),
+});
+
+const withConnect = connect(mapStateToProps, null);
+
+export default compose(withConnect)(StatusPage);

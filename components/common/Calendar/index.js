@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { connect} from 'react-redux'
 import update from "immutability-helper";
 import { DragDropContext } from "react-beautiful-dnd";
 import { StickyContainer } from "react-sticky";
@@ -8,10 +11,11 @@ import CalendarHeader from "../../Dashboard/components/CalendarHeader";
 import CalendarRow from "../../Dashboard/components/CalendarRow";
 
 import AssignSessionModal from "../../Dashboard/components/Modals/AssignSessionModal";
-
 import AssignTestSectionModal from "../../Dashboard/components/Modals/AssignTestSectionModal";
 import AssignSimulatedSatModal from "../../Dashboard/components/Modals/AssignSimulatedSATModal";
 import AssignTargetTestModal from "../../Dashboard/components/Modals/AssignTargetTestModal";
+import AssignLessonModal from "../../Dashboard/components/Modals/AssignLessonModal";
+import AssignWorksheetModal from '../../Dashboard/components/Modals/AssignWorksheetModal';
 
 import {
   currentYear,
@@ -21,6 +25,17 @@ import {
   getDayDate,
   getNextMonthAsCurrentMonth
 } from "../../Dashboard/utils/dateAndCalendarUtils";
+
+
+import {
+  makeSelectAssignLessonsModalOpen,
+  makeSelectAssignWorkSheetsModalOpen,
+} from '../../Classes/index/selectors';
+
+import {
+  setAssignLessonsModalOpen,
+  setAssignWorksheetModalOpen,
+} from '../../Classes/index/actions';
 
 class Calendar extends Component {
   constructor(props) {
@@ -37,8 +52,6 @@ class Calendar extends Component {
       assignDropdownIsOpen: false,
       onToggleHandleFilteredItemsDropdown: false,
       assignSessionModalOpen: false,
-      assignLessonsModalOpen: false,
-      assignWorksheetsModalOpen: false,
       assignTestSectionModalOpen: false,
       assignSimulatedSatModalOpen: false,
       assignTargetTestDateModalOpen: false,
@@ -161,18 +174,6 @@ class Calendar extends Component {
   };
 
 
-  // onAssignWorksheets = (worksheets, date) => {
-  //   const { rows } = this.state;
-  //   const updatedDate = rows.filter(row => row.date === date)[0];
-  //   const updatedDateIndex = rows.indexOf(updatedDate);
-  //   updatedDate.worksheets.push(...worksheets);
-  //   const updatedRows = update(rows, {
-  //     $splice: [[updatedDateIndex, 1, updatedDate]]
-  //   });
-  //   this.setState({ rows: updatedRows });
-  //   this.onToggleAssignWorksheetsModal();
-  // };
-
   onAssignTestSection = testSection => {
     const { rows } = this.state;
     const updatedDate = rows.filter(
@@ -216,17 +217,6 @@ class Calendar extends Component {
       assignDropdownIsOpen: false
     }));
   };
-
-  // onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
-  //   if (event) {
-  //     event.preventDefault();
-  //   }
-  //   this.setState(({ assignWorksheetsModalOpen }) => ({
-  //     assignWorksheetsModalOpen: !assignWorksheetsModalOpen,
-  //     modalDate,
-  //     assignDropdownIsOpen: false
-  //   }));
-  // };
 
   onToggleAssignTestSectionModal = (event = null, modalDate = null) => {
     if (event) {
@@ -352,6 +342,54 @@ class Calendar extends Component {
     this.setState({ [filterName]: updatedFilters });
   };
 
+  onToggleAssignLessonsModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState({
+      modalDate,
+      assignDropdownIsOpen: false
+    });
+    const { onSetAssignLessonsModalOpen,assignLessonsModalOpen } = this.props;
+    onSetAssignLessonsModalOpen(!assignLessonsModalOpen)
+  };
+
+  onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState({
+      modalDate,
+      assignDropdownIsOpen: false
+    });
+    const { onSetAssignWorksheetModalOpen,assignWorkSheetsModalOpen } = this.props;
+    onSetAssignWorksheetModalOpen(!assignWorkSheetsModalOpen);
+  };
+
+  onAssignWorksheets = (worksheets, date) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === date)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.worksheets.push(...worksheets);
+    const updatedRows = update(rows, {
+      $splice: [[updatedDateIndex, 1, updatedDate]]
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleAssignWorksheetsModal();
+  };
+
+  onAssignLessons = (lessons, date) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === date)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.lessons.push(...lessons);
+    const updatedRows = update(rows, {
+      $splice: [[updatedDateIndex, 1, updatedDate]]
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleAssignLessonsModal();
+  };
+
   mapRows = () => {
     const {
       rows,
@@ -381,7 +419,7 @@ class Calendar extends Component {
           onSetActiveDate={this.onSetActiveDate}
           onToggleAddDropdown={this.onToggleAddDropdown}
           onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-          onToggleAssignLessonsModal={this.props.onToggleAssignLessonsModal}
+          onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
           onToggleAssignSessionModal={this.onToggleAssignSessionModal}
           onToggleAssignWorksheetsModal={this.onToggleAssignWorksheetsModal}
           onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
@@ -395,7 +433,6 @@ class Calendar extends Component {
   render() {
     const {
       assignSessionModalOpen,
-      assignWorksheetsModalOpen,
       activeMonth,
       assignTestSectionModalOpen,
       assignSimulatedSatModalOpen,
@@ -407,23 +444,35 @@ class Calendar extends Component {
       eventFilters
     } = this.state;
     const {
-      onToggleAssignLessonsModal,
-      onToggleAssignWorksheetsModal,
+      assignLessonsModalOpen,
+      assignWorkSheetsModalOpen,
     } = this.props;
     return (
       <React.Fragment>
+        <Choose>
+        <When condition = {assignLessonsModalOpen}>
+        <AssignLessonModal
+            modalDate={modalDate}
+            open={assignLessonsModalOpen}
+            onClose={this.onToggleAssignLessonsModal}
+            onAssignLessons={this.onAssignLessons}
+          />
+        </When>
+        <When condition = {assignWorkSheetsModalOpen}>
+          <AssignWorksheetModal
+            modalDate={modalDate}
+            open={assignWorkSheetsModalOpen}
+            onClose={this.onToggleAssignWorksheetsModal}
+            onAssignWorksheets={this.onAssignWorksheets}
+            />
+        </When>
+        <Otherwise>
         <AssignSessionModal
           modalDate={modalDate}
           open={assignSessionModalOpen}
           onClose={this.onToggleAssignSessionModal}
           onAssignSession={this.onAssignSession}
         />
-        {/* <AssignWorksheetModal
-          modalDate={modalDate}
-          open={assignWorksheetsModalOpen}
-          onClose={this.onToggleAssignWorksheetsModal}
-          onAssignWorksheets={this.onAssignWorksheets}
-        /> */}
         <AssignTestSectionModal
           modalDate={modalDate}
           open={assignTestSectionModalOpen}
@@ -509,7 +558,7 @@ class Calendar extends Component {
                   <li>
                     <a
                       href="#"
-                      onClick={onToggleAssignLessonsModal}
+                      onClick={this.onToggleAssignLessonsModal}
                       className="modal-trigger"
                     >
                       Lesson
@@ -518,7 +567,7 @@ class Calendar extends Component {
                   <li>
                     <a
                       href="#"
-                      onClick={onToggleAssignWorksheetsModal}
+                      onClick={this.onToggleAssignWorksheetsModal}
                       className="modal-trigger"
                     >
                       Worksheet
@@ -601,14 +650,38 @@ class Calendar extends Component {
             </div>
           </div>
         </StickyContainer>
+        </Otherwise>
+        </Choose>
       </React.Fragment>
     );
   }
 }
 
+
+
 Calendar.propTypes = {
-  onToggleAssignLessonsModal:PropTypes.func.isRequired,
-  onToggleAssignWorksheetsModal:PropTypes.func.isRequired,
+  assignLessonsModalOpen:PropTypes.bool.isRequired,
+  assignWorkSheetsModalOpen:PropTypes.bool.isRequired,
+  onSetAssignLessonsModalOpen:PropTypes.func.isRequired,
+  onSetAssignWorksheetModalOpen:PropTypes.func.isRequired,
 }
 
-export default Calendar;
+
+const mapStateToProps = createStructuredSelector({
+  assignLessonsModalOpen:makeSelectAssignLessonsModalOpen(),
+  assignWorkSheetsModalOpen:makeSelectAssignWorkSheetsModalOpen(),
+})
+
+function mapDispatchToProps(dispatch){
+  return{
+    onSetAssignLessonsModalOpen:(value) => dispatch(setAssignLessonsModalOpen(value)),
+    onSetAssignWorksheetModalOpen:(value) => dispatch(setAssignWorksheetModalOpen(value)),
+  }
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(Calendar);
