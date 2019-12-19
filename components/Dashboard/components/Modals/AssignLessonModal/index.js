@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import moment from 'moment';
 
-import Portal from '../../../../Portal';
-
 import FilterSection from './components/FilterSection';
 import LessonCard from './components/LessonCard';
 import sampleLessons from '../../../utils/sampleLessons';

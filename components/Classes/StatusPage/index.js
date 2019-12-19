@@ -9,6 +9,8 @@ import sampleClass from "../utils/sampleSummaryClass";
 
 
 import AssignLessonModal from "../../Dashboard/components/Modals/AssignLessonModal";
+import AssignWorksheetModal from "../../Dashboard/components/Modals/AssignWorksheetModal";
+
 
 class StatusPage extends React.Component {
   constructor(props) {
@@ -16,7 +18,7 @@ class StatusPage extends React.Component {
     this.state = {
       active: "summary",
       assignLessonsModalOpen:false,
-      openAssignWorkSheetModal:false,
+      assignWorksheetsModalOpen:false,
       modalDate: null,
       rows: [],
     };
@@ -35,6 +37,17 @@ class StatusPage extends React.Component {
     }));
   };
 
+  onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState(({ assignWorksheetsModalOpen }) => ({
+      assignWorksheetsModalOpen: !assignWorksheetsModalOpen,
+      modalDate,
+      assignDropdownIsOpen: false
+    }));
+  };
+
   onAssignLessons = (lessons, date) => {
     const { rows } = this.state;
     const updatedDate = rows.filter(row => row.date === date)[0];
@@ -45,6 +58,18 @@ class StatusPage extends React.Component {
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignLessonsModal();
+  };
+
+  onAssignWorksheets = (worksheets, date) => {
+    const { rows } = this.state;
+    const updatedDate = rows.filter(row => row.date === date)[0];
+    const updatedDateIndex = rows.indexOf(updatedDate);
+    updatedDate.worksheets.push(...worksheets);
+    const updatedRows = update(rows, {
+      $splice: [[updatedDateIndex, 1, updatedDate]]
+    });
+    this.setState({ rows: updatedRows });
+    this.onToggleAssignWorksheetsModal();
   };
 
   renderCurrentPage = () => {
@@ -61,16 +86,17 @@ class StatusPage extends React.Component {
     if ( active == "calendar") {
       return <SessionCalendar
                 onToggleAssignLessonsModal = {this.onToggleAssignLessonsModal}
+                onToggleAssignWorksheetsModal = {this.onToggleAssignWorksheetsModal}
               />;
     }
     return null;
   };
 
   render() {
-    const { active,assignLessonsModalOpen,openAssignWorkSheetModal,modalDate } = this.state;
+    const { active,assignLessonsModalOpen,assignWorksheetsModalOpen,modalDate } = this.state;
     return (
       <StickyContainer>
-         <If condition = {!assignLessonsModalOpen && !openAssignWorkSheetModal}>
+         <If condition = {!assignLessonsModalOpen && !assignWorksheetsModalOpen}>
         <Sticky>
           {({ style }) => (
             <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
@@ -100,13 +126,21 @@ class StatusPage extends React.Component {
           )}
         </Sticky>
         </If>
-        {!assignLessonsModalOpen && !openAssignWorkSheetModal && this.renderCurrentPage()}
+        {!assignLessonsModalOpen && !assignWorksheetsModalOpen && this.renderCurrentPage()}
         {assignLessonsModalOpen && 
           <AssignLessonModal
             modalDate={modalDate}
             open={assignLessonsModalOpen}
             onClose={this.onToggleAssignLessonsModal}
             onAssignLessons={this.onAssignLessons}
+          />
+        }
+        {
+          <AssignWorksheetModal
+            modalDate={modalDate}
+            open={assignWorksheetsModalOpen}
+            onClose={this.onToggleAssignWorksheetsModal}
+            onAssignWorksheets={this.onAssignWorksheets}
           />
         }
       </StickyContainer>
