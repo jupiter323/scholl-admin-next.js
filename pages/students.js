@@ -10,7 +10,8 @@ import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
 
 import {
-  fetchStudentsApi
+  fetchStudentsApi,
+  deleteStudentApi,
 } from '../components/Student/index/api';
 
 
@@ -174,7 +175,10 @@ class Students extends Component {
   onDeleteStudent = (index) => {
     const { students } = this.state;
     const newStudentArray = this.arrayItemRemover(students, students[index])
-    this.setState({students: newStudentArray})
+    this.setState({students: newStudentArray});
+    const student_id = students[index].id;
+    deleteStudentApi({student_id});
+    this.onCloseDropdown();
   }
 
   onCloneStudent = (index) => {
