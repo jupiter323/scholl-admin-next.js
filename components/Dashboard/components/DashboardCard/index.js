@@ -86,16 +86,16 @@ className="collapsible-card owner-box card-panel"
                                                 className="material-icons dots-icon">more_vert</i></a>
                                             <ul
 id="dropdown01_01" className="dropdown-content dropdown-wide"
-                                                tabIndex="0"
+                                                tabIndex="0001"
                                                 style={{ "display": "block", "width": "120px", "left": "133px", "top": "8px", "height": "104px", "transformOrigin": "0px 0px", "opacity": this.state.menuOpacity , "transform": "scaleX(1) scaleY(1)" }}>
-                                                <li tabIndex="0">
+                                                <li tabIndex="0002">
                                                     <a
 href="#modal_user_edit"
                                                        className="modal-trigger link-block">Edit</a>
                                                 </li>
-                                                <li tabIndex="0"><a href="#!">Clone</a></li>
-                                                <li tabIndex="0"><a href="#!">Impersonate</a></li>
-                                                <li tabIndex="0"><a href="#!">Delete</a></li>
+                                                <li tabIndex="0003"><a href="#!">Clone</a></li>
+                                                <li tabIndex="0004"><a href="#!">Impersonate</a></li>
+                                                <li tabIndex="0005"><a href="#!">Delete</a></li>
                                             </ul>
                                         </div>
                                         <div className="col right-align">

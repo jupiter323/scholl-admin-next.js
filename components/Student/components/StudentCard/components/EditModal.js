@@ -170,7 +170,7 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="firstName"
                                           name="firstName"
-                                          value={firstName}
+                                          value={firstName||''}
                                           onChange={event => this.handleDetailsChange(event,"firstName")}
                                         />
                                         <label
@@ -187,7 +187,7 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="lastName"
                                           name="lastName"
-                                          value={lastName}
+                                          value={lastName ||''}
                                           onChange={event => this.handleDetailsChange(event,"lastName")}
                                         />
                                         <label
@@ -204,7 +204,7 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="email"
                                           name="email"
-                                          value={email}
+                                          value={email ||''}
                                           onChange={event => this.handleDetailsChange(event,"email")}
                                         />
                                         <label
@@ -229,7 +229,7 @@ class EditModal extends React.Component {
                                           type="tel"
                                           id="phone"
                                           name="phone"
-                                          value={phone}
+                                          value={phone ||''}
                                           onChange={event => this.handleDetailsChange(event,"phone")}
                                         />
                                         <label
@@ -246,7 +246,7 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="address"
                                           name="address"
-                                          value={address}
+                                          value={address ||''}
                                           onChange={event => this.handleDetailsChange(event,"address")}
                                         />
                                         <label
@@ -263,7 +263,7 @@ class EditModal extends React.Component {
                                         <input
                                           type="text"
                                           id="city"
-                                          value={city}
+                                          value={city ||''}
                                           name="city"
                                           onChange={event => this.handleDetailsChange(event,"city")}
                                         />
@@ -278,7 +278,6 @@ class EditModal extends React.Component {
                                         <div className="input-field">
                                           <Dropdown
                                             value={getValueFromState(state, stateOptions)}
-                                            // value={getValueFromState(student.contactInformation.state, stateOptions)}
                                             name="state"
                                             onChange={event => this.handleDetailsChange(event,"state")}
                                             options={stateOptions}
@@ -294,7 +293,7 @@ class EditModal extends React.Component {
                                             type="tel"
                                             id="zipCode"
                                             name="zipCode"
-                                            value={zipCode}
+                                            value={zipCode ||''}
                                             onChange={event => this.handleDetailsChange(event,"zipCode")}
                                           />
                                           <label
@@ -314,10 +313,8 @@ class EditModal extends React.Component {
                             <div className="col s12 l6">
                               <div className="card-block">
                                 <h3>Location(s)</h3>
-                                {/* card */}
                                 <div className="card-main card-location card card-large">
-                                  <div
-                                    className="card-panel card-panel-location"
+                                  <div className="card-panel card-panel-location"
                                     style={{
                                       backgroundColor: "#62b771",
                                       color: "#fff"
@@ -343,23 +340,13 @@ class EditModal extends React.Component {
                                             </span>
                                           </div>
                                           <div className="dropdown-block col">
-                                            {/* dropdown trigger */}
-                                            <a
-                                              className="dropdown-trigger btn"
-                                              href="#"
-                                              data-target="dropdown105"
-                                            >
+                                            <a className="dropdown-trigger btn" href="#">
                                               <i className="material-icons dots-icon">
                                                 more_vert
                                               </i>
                                             </a>
-                                            {/* dropdown structure */}
-                                            <ul
-                                              id="dropdown105"
-                                              className="dropdown-content dropdown-wide"
-                                            >
+                                            <ul id="dropdown105" className="dropdown-content dropdown-wide">
                                               <li>
-                                                {/* modal trigger */}
                                                 <a
                                                   href="#modal_location_edit"
                                                   className="modal-trigger link-block"
@@ -380,11 +367,8 @@ class EditModal extends React.Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* card */}
-
                                 <div className="card-main card-location card card-large">
-                                  <div
-                                    className="card-panel card-panel-location"
+                                  <div className="card-panel card-panel-location"
                                     style={{
                                       backgroundColor: "#62b771",
                                       color: "#fff"
@@ -410,27 +394,14 @@ class EditModal extends React.Component {
                                             </span>
                                           </div>
                                           <div className="dropdown-block col">
-                                            {/* dropdown trigger */}
-                                            <a
-                                              className="dropdown-trigger btn"
-                                              href="#"
-                                              data-target="dropdown106"
-                                            >
+                                            <a className="dropdown-trigger btn" href="#">
                                               <i className="material-icons dots-icon">
                                                 more_vert
                                               </i>
                                             </a>
-                                            {/* dropdown content */}
-                                            <ul
-                                              id="dropdown106"
-                                              className="dropdown-content dropdown-wide"
-                                            >
+                                            <ul id="dropdown106" className="dropdown-content dropdown-wide">
                                               <li>
-                                                {/* modal trigger */}
-                                                <a
-                                                  href="#modal_location_edit"
-                                                  className="modal-trigger link-block"
-                                                >
+                                                <a href="#modal_location_edit" className="modal-trigger link-block">
                                                   Edit
                                                 </a>
                                               </li>
@@ -447,7 +418,6 @@ class EditModal extends React.Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* card add block */}
                                 <div className="add-box">
                                   <div className="add-box-holder">
                                     <a className="btn-floating waves-effect waves-light green lighten-1">
