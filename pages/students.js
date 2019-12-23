@@ -22,6 +22,8 @@ class Students extends Component {
       students: sampleStudentList,
       studentModalOpen: false,
       locationModalOpen: false,
+      dropdownIsOpen: false,
+      dropdownIndex: null,
       sort: "",
       filterName: "",
       newStudent: {
@@ -184,6 +186,8 @@ class Students extends Component {
     this.setState({newStudent: updatedStudent})
 }
 
+  onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
 
@@ -227,6 +231,10 @@ class Students extends Component {
                     index={index}
                     id={student.id}
                     key={student.id}
+                    dropdownIsOpen={this.state.dropdownIsOpen}
+                    dropdownIndex={this.state.dropdownIndex}
+                    onSetDropdown={this.onSetDropdown}
+                    onCloseDropdown={this.onCloseDropdown}
                     onHandleStudentCard={() => this.onHandleStudentCard(index)}
                     onDeleteStudent={() => this.onDeleteStudent(index)}
                     onCloneStudent={() => this.onCloneStudent(index, student.id)}

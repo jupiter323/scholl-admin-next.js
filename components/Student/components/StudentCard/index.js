@@ -16,7 +16,6 @@ class StudentCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dropdownIsOpen: false,
             editModalOpen: false,
             cloneModalOpen: false,
             showOwnerModalOpen: false,
@@ -26,18 +25,25 @@ class StudentCard extends React.Component {
         }
     }
 
-    onSetDropdown = (event, dropdownIsOpen) => {
+    handleDropdownClick = (event) => {
+      const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
       event.preventDefault();
-      this.setState({dropdownIsOpen: !dropdownIsOpen});
-    };
+      if (dropdownIsOpen) {
+        return onCloseDropdown();
+      }
+      return onSetDropdown(index);
+    }
 
-    onOpenEditModal = () => this.setState({editModalOpen: true})
+    onOpenEditModal = () => {
+      this.props.onCloseDropdown();
+      this.setState({editModalOpen: true});
+    }
     onCloseEditModal = () => this.setState({editModalOpen: false})
 
     render() {
-    const { onHandleStudentCard, onDeleteStudent, onCloneStudent, index, student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
-        emailAddress: { email }} }= this.props;
-    const { dropdownIsOpen, editModalOpen } = this.state;
+    const { onHandleStudentCard, onDeleteStudent, onCloneStudent, index, dropdownIndex,student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
+        emailAddress: { email }},dropdownIsOpen }= this.props;
+    const { editModalOpen } = this.state;
     return (
       <React.Fragment>
       <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student} handleDetailsChange={this.handleDetailsChange}/>
@@ -71,10 +77,10 @@ class StudentCard extends React.Component {
                 href='#'
                 className='dropdown-trigger btn'
                 data-target='dropdown01'
-                onClick={(event) => this.onSetDropdown(event, dropdownIsOpen)}>
+                onClick={this.handleDropdownClick}>
                 <i className="material-icons dots-icon">more_vert</i>
                 </a>
-                <If condition={dropdownIsOpen}>
+                <If condition={dropdownIsOpen && dropdownIndex === index}>
                 <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)'}}>
                   <li>
                     <a href="#" className="modal-trigger link-block" onClick={this.onOpenEditModal}>Edit</a>
@@ -163,9 +169,13 @@ class StudentCard extends React.Component {
   StudentCard.propTypes = {
     student: PropTypes.object.isRequired,
     onHandleStudentCard: PropTypes.func.isRequired,
+    dropdownIsOpen: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
     onDeleteStudent: PropTypes.func.isRequired,
     onCloneStudent: PropTypes.func.isRequired,
+    onSetDropdown: PropTypes.func.isRequired,
+    onCloseDropdown: PropTypes.func.isRequired,
+    dropdownIndex: PropTypes.number,
   };
 
 export default StudentCard;
