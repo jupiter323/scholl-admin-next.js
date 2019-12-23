@@ -14,6 +14,14 @@ import {
 } from '../components/Student/index/api';
 
 
+const idGenerator = () => {
+  return subIdGenerator() + subIdGenerator() + '-' + subIdGenerator() + '-' + subIdGenerator() + '-' +
+  subIdGenerator() + '-' + subIdGenerator() + subIdGenerator() + subIdGenerator();
+}
+const subIdGenerator = () =>{
+  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+}
+
 class Students extends Component {
   constructor(props) {
     super(props);
@@ -171,8 +179,11 @@ class Students extends Component {
 
   onCloneStudent = (index) => {
     const { students } = this.state;
+    const newStudent = update(students[index],{
+      id:{$set:idGenerator()}
+    })
     this.setState(prevState => {
-      prevState.students.push(students[index]);
+      prevState.students.push(newStudent);
       return { students: prevState.students}
     })
   }
