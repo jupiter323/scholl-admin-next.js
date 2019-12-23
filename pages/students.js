@@ -201,6 +201,17 @@ class Students extends Component {
     this.setState({newStudent: updatedStudent})
 }
 
+  onSaveStudentChanges = (updatedStudent) => {
+    const { students: originalStudents } = this.state;
+    const {active,studentInformation, contactInformation, emailAddress, location } = updatedStudent;
+    const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
+    const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
+    const students = update(originalStudents, {
+      [updatedStudentIndex]:{$merge:{active:active,studentInformation:studentInformation,contactInformation:contactInformation,emailAddress:emailAddress,location:location}},
+    });
+    this.setState({ students });
+  }
+
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
@@ -253,6 +264,7 @@ class Students extends Component {
                     onHandleStudentCard={() => this.onHandleStudentCard(index)}
                     onDeleteStudent={() => this.onDeleteStudent(index)}
                     onCloneStudent={() => this.onCloneStudent(index, student.id)}
+                    onSaveStudentChanges = {this.onSaveStudentChanges}
                     />
                   ))}
                 </div>

@@ -41,12 +41,12 @@ class StudentCard extends React.Component {
     onCloseEditModal = () => this.setState({editModalOpen: false})
 
     render() {
-    const { onHandleStudentCard, onDeleteStudent, onCloneStudent, index, dropdownIndex,student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
+    const { onHandleStudentCard,onSaveStudentChanges, onDeleteStudent, onCloneStudent, index, dropdownIndex,student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
         emailAddress: { email }},dropdownIsOpen }= this.props;
     const { editModalOpen } = this.state;
     return (
       <React.Fragment>
-      <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student} handleDetailsChange={this.handleDetailsChange}/>
+      <EditModal open={editModalOpen} onSaveStudentChanges = {onSaveStudentChanges} onCloseEditModal={this.onCloseEditModal} student={student} handleDetailsChange={this.handleDetailsChange}/>
 
       <div className="card-main-col col s12 m8 l7 xl5" id={id}>
           <div className={ active? "card-main card-location card card-large" : "card-main card-location card-disabled card-large card"}>
@@ -176,6 +176,7 @@ class StudentCard extends React.Component {
     onSetDropdown: PropTypes.func.isRequired,
     onCloseDropdown: PropTypes.func.isRequired,
     dropdownIndex: PropTypes.number,
+    onSaveStudentChanges:PropTypes.func.isRequired,
   };
 
 export default StudentCard;
