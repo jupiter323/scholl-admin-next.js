@@ -40,7 +40,7 @@ class StudentCard extends React.Component {
     const { dropdownIsOpen, editModalOpen } = this.state;
     return (
       <React.Fragment>
-      <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student}/>
+      <EditModal open={editModalOpen} onCloseEditModal={this.onCloseEditModal} student={student} handleDetailsChange={this.handleDetailsChange}/>
 
       <div className="card-main-col col s12 m8 l7 xl5" id={id}>
           <div className={ active? "card-main card-location card card-large" : "card-main card-location card-disabled card-large card"}>

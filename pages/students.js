@@ -9,6 +9,11 @@ import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
 
+import {
+  fetchStudentsApi
+} from '../components/Student/index/api';
+
+
 class Students extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +29,6 @@ class Students extends Component {
         studentInformation: {
           firstName: '',
           lastName: '',
-          gender: '',
         },
         contactInformation: {
           phone: '',
@@ -42,6 +46,10 @@ class Students extends Component {
         },
      },
     }
+  }
+
+  componentDidMount = async() => {
+
   }
 
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });

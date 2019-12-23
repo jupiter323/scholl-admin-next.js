@@ -15,21 +15,33 @@ export const fetchStudentsApi = () =>
           studentInformation: {
             firstName: student.first_name,
             lastName: student.last_name,
-            gender: student.gender,
           },
           contactInformation: {
-            phone: student.phone,
-            addressLine1: student.address,
+            phone: '7865645859',
+            addressLine1: '1234 Test Lane',
             addressLine2: '',
-            city: student.city,
-            state: student.state,
-            zipCode: student.zipCode,
+            city: 'Austin',
+            state: 'TX',
+            zipCode: '78757',
           },
           emailAddress: {
             email: student.email,
           },
           location: {
-            locations: student.locations,
+            locations: [
+              {
+                locationNickname: 'Disneyworld  Tutoring',
+                locationName: 'House Of Mouse',
+              },
+              {
+                locationNickname: 'TutorZone Austin',
+                locationName: 'We Teach Real Good',
+              },
+              {
+                locationNickname: 'TutorZone Miami',
+                locationName: 'We Teach Even Better',
+              },
+            ],
           },
         }));
       return formattedStudents;
