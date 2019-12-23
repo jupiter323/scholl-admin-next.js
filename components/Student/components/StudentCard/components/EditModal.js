@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../.././../../ClickOffComponentWrapper';
 import Dropdown from '../../../../FormComponents/Dropdown';
-import genderOptions from '../../../../utils/genderOptions';
 import stateOptions from '../../../../utils/stateOptions';
 
 
@@ -14,7 +13,6 @@ class EditModal extends React.Component {
       updatedStudent: {
         firstName: "",
         lastName: "",
-        gender: "",
         phone: "",
         address: "",
         city: "",
@@ -93,21 +91,6 @@ class EditModal extends React.Component {
                           <div className="input-field col s12">
                             <input type="text" id="email" value={email} onChange={this.handleChange}/>
                             <label className="label" htmlFor="email">{student.emailAddress.email}</label>
-                          </div>
-                        </div>
-                        <div className="row mb-0">
-                          <div className="">
-                            <div className="input-field col s12 l7">
-                              <Dropdown
-                                value={student.studentInformation.gender}
-                                onChange={this.onSetGender}
-                                options={genderOptions}
-                                label="Gender"
-                                stateKey="state"
-                                dropdownKey="state"
-                                id="gender"
-                                />
-                            </div>
                           </div>
                         </div>
                       </div>
