@@ -5,6 +5,8 @@ import Portal from "../../../../Portal";
 import ClickOffComponentWrapper from "../.././../../ClickOffComponentWrapper";
 import Dropdown from "../../../../FormComponents/Dropdown";
 import stateOptions from "../../../../utils/stateOptions";
+import getValueFromState from '../../../../utils/getValueFromState';
+
 import {
   updateStudentActivationApi,
   updateStudentAddressApi,
@@ -22,6 +24,7 @@ class EditModal extends React.Component {
     super(props);
     this.state = {
       updatedStudent: {
+        id:"",
         firstName: "",
         lastName: "",
         phone: "",
@@ -34,6 +37,18 @@ class EditModal extends React.Component {
       }
     };
   }
+
+  // This resets the component state to reflect the details of the next student the user clicks on
+  componentWillReceiveProps = (nextProps) => {
+    if ((nextProps.student.id !== this.state.updatedStudent.id)) {
+      const { updatedStudent: originalStudentState } = this.state;
+      const updatedStudent = update(originalStudentState, {
+        $set:{state: nextProps.student.contactInformation.state}
+      });
+      this.setState({ updatedStudent });
+    }
+  }
+
   handleDetailsChange = (event, name) => {
     const { updatedStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
@@ -84,6 +99,7 @@ class EditModal extends React.Component {
       phone,
       address,
       city,
+      state,
       zipCode,
       email
     } = this.state.updatedStudent;
@@ -261,7 +277,8 @@ class EditModal extends React.Component {
                                       <div className="col s12 m6 l5">
                                         <div className="input-field">
                                           <Dropdown
-                                            value={student.contactInformation.state}
+                                            value={getValueFromState(state, stateOptions)}
+                                            // value={getValueFromState(student.contactInformation.state, stateOptions)}
                                             name="state"
                                             onChange={event => this.handleDetailsChange(event,"state")}
                                             options={stateOptions}
