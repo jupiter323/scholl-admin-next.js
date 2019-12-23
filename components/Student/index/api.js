@@ -55,3 +55,136 @@ export const addNewStudentApi = student => {
     .then(res => res.json())
     .catch(err => err);
 };
+
+export const deleteStudentApi = (body) =>
+  fetch (`${API_URL}/api/commands/delete-student`,{
+    method:'DELETE',
+    headers:{
+      'Access-Control-Allow-Origin':'*',
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(body)
+  })
+
+export const updateStudentActivationApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-activation`, {
+    method: 'PATCH',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+  export const updateStudentAddressApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-address`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then(res => res.json())
+    .catch(err => err);
+
+  export const updateStudentCityApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-city`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+  export const updateStudentEmailApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-email`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+  export const updateStudentFirstNameApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-first-name`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+  export const updateStudentLastNameApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-last-name`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+  export const updateStudentPhoneApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-phone`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+  export const updateStudentStateApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-state`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+  export const updateStudentZipApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-zip`,{
+      method:'PATCH',
+      headers:{
+        Accept:"application/json",
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(body)
+    })
+    .then ( res => res.json())
+    .catch( err => err);
+
+    export default [
+      fetchStudentsApi,
+      addNewStudentApi,
+      deleteStudentApi,
+      updateStudentActivationApi,
+      updateStudentAddressApi,
+      updateStudentCityApi,
+      updateStudentEmailApi,
+      updateStudentFirstNameApi,
+      updateStudentLastNameApi,
+      updateStudentPhoneApi,
+      updateStudentStateApi,
+      updateStudentZipApi,
+    ];
