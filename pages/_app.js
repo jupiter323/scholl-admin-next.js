@@ -1,8 +1,9 @@
 import React from "react";
 import App, { Container } from "next/app";
 import { Provider } from "react-redux";
+import "isomorphic-fetch";
 import Page from "../components/Page";
-import withReduxStore from "../utils/with-redux-store.js";
+import withReduxStore from "../utils/with-redux-store";
 
 class ClearChoice extends App {
   render() {

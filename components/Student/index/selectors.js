@@ -1,14 +1,35 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-const selectStudentDomain = state => state.studentReducer;
+const selectStudentsDomain = (state) => state.studentReducer;
 
-const makeSelectStudentsPageState = () =>
-  createSelector(selectStudentDomain, substate =>
-    substate ? substate.toJS() : {}
-  );
+const makeSelectStudentPageState = () => createSelector(
+    selectStudentsDomain,
+    (substate) => substate?substate.toJS():{}
+);
 
 const makeSelectStudents = () =>
-  createSelector(makeSelectStudentsPageState(), substate => substate.students);
+  createSelector(makeSelectStudentPageState(), substate => substate.students);
 
-export default selectStudentDomain;
-export { makeSelectStudents };
+const makeSelectAssignLessonsModalOpen = () => createSelector(
+    makeSelectStudentPageState(),
+    (substate) =>substate.assignLessonsModalOpen
+);
+
+const makeSelectAssignWorkSheetsModalOpen = () => createSelector(
+    makeSelectStudentPageState(),
+    (substate) => substate.assignWorkSheetsModalOpen
+);
+
+const makeSelectCalendarRows = () => createSelector(
+    makeSelectStudentPageState(),
+    (substate) => substate.calendarRows
+)
+
+export default selectStudentsDomain;
+export {
+    makeSelectStudentPageState,
+    makeSelectAssignLessonsModalOpen,
+    makeSelectAssignWorkSheetsModalOpen,
+    makeSelectCalendarRows,
+    makeSelectStudents,
+}
