@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { StickyContainer, Sticky } from 'react-sticky';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import {deleteStudent} from '../components/Student/index/actions';
 import StudentCard from '../components/Student/components/StudentCard';
 import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
-// import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
@@ -153,7 +156,9 @@ class Students extends Component {
     this.setState({selectedStudent: null})
   }
 
-  onDeleteStudent = (index) => {
+  onDeleteStudent = (index, id) => {
+    console.log(id);
+    // onStudentDelete(id)
     const { students } = this.state;
     const newStudentArray = this.arrayItemRemover(students, students[index])
     this.setState({students: newStudentArray})
@@ -254,4 +259,12 @@ class Students extends Component {
   }
 }
 
-export default Students;
+const mapStateToProps = createStructuredSelector({});
+
+const mapDispatchToProps = (dispatch) => ({
+  onStudentDelete: (id) => dispatch(deleteStudent(id)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(Students);
