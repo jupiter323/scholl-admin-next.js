@@ -14,4 +14,4 @@ const ActiveLink = ({ router, children, ...props }) => {
   return <Link {...props}>{React.cloneElement(child, { className })}</Link>;
 };
 
-  export default withRouter(ActiveLink);
+export default withRouter(ActiveLink);

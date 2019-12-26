@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Link from "../../utils/ActiveLink";
-import $ from "jquery";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'next/router'
+import Link from 'next/link';
+import $ from 'jquery';
 
 if (typeof window !== "undefined") {
   window.$ = $;
@@ -63,7 +64,7 @@ class SideNav extends Component {
     super(props);
     this.props = props;
     this.state = {
-      active: ""
+      active: this.props.router.pathname.substr(1),
     };
   }
 
@@ -122,7 +123,8 @@ class SideNav extends Component {
 }
 
 SideNav.propTypes = {
-  user: PropTypes.object.isRequired
-};
+  user: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+}
 
-export default SideNav;
+export default withRouter(SideNav);

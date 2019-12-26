@@ -183,7 +183,7 @@ class InstructorDetailsModal extends React.Component {
                       <div className="col s9">
                         <div className="user-block">
                           <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                            <img src="images/img-owner01.jpg" alt="" />
+                            <img src="./static/images/img-owner01.jpg" alt="" />
                           </div>
                           <div className="user-text" style={{ color: '#fff' }}>
                             {this.renderModalHeader()}
