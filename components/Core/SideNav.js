@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router'
 import Link from 'next/link';
 import $ from 'jquery';
 
@@ -68,7 +69,7 @@ class SideNav extends Component {
     super(props);
     this.props = props;
     this.state = {
-      active: '',
+      active: this.props.router.pathname.substr(1),
     };
   }
 
@@ -121,6 +122,7 @@ class SideNav extends Component {
 
 SideNav.propTypes = {
   user: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
 }
 
-export default SideNav;
+export default withRouter(SideNav);

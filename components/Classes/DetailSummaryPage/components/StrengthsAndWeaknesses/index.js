@@ -61,7 +61,7 @@ class StrengthsAndWeaknesses extends React.Component {
                 <div className="row mb-0">
                   <div className="col s12 l5 xl4 chart-column">
                     <div className="chart-block chart-block-large">
-                      <div className="js-donut-chart js-donut-large" data-stroke-width="32" data-source='./inc/score-data-reading.json'></div>
+                      <div className="js-donut-chart js-donut-large" strokeWidth="32" data-source='./inc/score-data-reading.json'></div>
                       <div className="chart-text">
                         <span className="title">Reading</span>
                         <span className="value">{reading.correctAnswers}</span>

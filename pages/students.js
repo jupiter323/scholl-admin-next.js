@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { StickyContainer, Sticky } from 'react-sticky';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import {deleteStudent} from '../components/Student/index/actions';
 import StudentCard from '../components/Student/components/StudentCard';
   import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
@@ -42,6 +47,7 @@ class Students extends Component {
      },
     }
   }
+
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
   onOpenLocationModal = () => this.setState({locationModalOpen: true});
@@ -56,7 +62,35 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: '' });
 
  // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = () => {
+  onSaveNewStudent = async () => {
+    const {newStudent: previousStudentState} = this.state;
+    // Replace code below with action dispatch
+    // await addNewStudentApi(previousStudentState)
+    const newStudent = update(previousStudentState, {
+      $set:
+       { active: false,
+        studentInformation: {
+          firstName: '',
+          lastName: '',
+          gender: '',
+        },
+        contactInformation: {
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          zipCode: '',
+        },
+        emailAddress: {
+          email: '',
+        },
+        location: {
+          locations: [],
+        },
+    }}
+    );
+    this.setState({newStudent})
     // eslint-disable-next-line no-console
     console.warn('do something with the new student info');
     this.onCloseStudentModal();
@@ -124,8 +158,11 @@ class Students extends Component {
   };
 
   onDeleteStudent = (index) => {
+    const {onDeleteStudent} = this.props;
     const { students } = this.state;
-    const newStudentArray = this.arrayItemRemover(students, students[index]);
+    // Dispatch deleteStudent
+    onDeleteStudent(students[index].id);
+    const newStudentArray = this.arrayItemRemover(students, students[index])
     this.setState({students: newStudentArray})
   };
 
@@ -223,4 +260,16 @@ class Students extends Component {
   }
 }
 
-export default Students;
+Students.propTypes = {
+  onDeleteStudent: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({});
+
+const mapDispatchToProps = (dispatch) => ({
+  onDeleteStudent: (id) => dispatch(deleteStudent(id)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(Students);

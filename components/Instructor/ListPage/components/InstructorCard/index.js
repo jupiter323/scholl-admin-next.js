@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
-
 import InstructorDetailsModal from '../InstructorDetailsModal';
 
 import Modal from '../../../../Modal';
 
-const data = (total, current) => ({
+const data = (value, total) => ({
   datasets: [{
-    data: [current, total-current],
+    data: [ value, total-value ],
     backgroundColor: [
-      'rgb(49, 131, 122)',
+      '#62b771',
       '#eaeaea',
     ],
   }],
@@ -59,7 +58,7 @@ class InstructorCard extends React.Component {
       dropdownIsOpen, dropdownIndex, index, instructor, onSaveInstructorChanges } = this.props;
     const {
       accountInfo: { lastName, firstName, email } = {},
-      basicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore, studentsAchievingTargetScore } = {},
+      basicInfo: { activeStudents, pastStudents, unactivatedStudents, averageImprovement, averageInitialScore, averageFinalScore,studentsAchievingTargetScore } = {},
     } = instructor;
     return (
       <React.Fragment>
@@ -155,19 +154,19 @@ class InstructorCard extends React.Component {
                   <div className="chart-container">
                     <div className="chart-holder">
                       <Doughnut
-                        data={() => data(activeStudents, studentsAchievingTargetScore)}
-                        height={110}
-                        width={110}
-                        options={{
-                          circumference: 4,
-                          rotation: -3.58,
-                          cutoutPercentage: 50,
-                          tooltips: false,
-                        }}
+                          data={() => data(activeStudents, activeStudents-10)}
+                          height={110}
+                          width={110}
+                          options={{
+                            circumference: 1.45 * Math.PI,
+                                rotation: -3.85,
+                                cutoutPercentage: 55,
+                                tooltips: false,
+                          }}
                         />
-                      <span className="chart-value" style={{ backgroundColor: '#31837a', bottom: '-22px' }}><span data-count-up data-start-val="0" data-end-val="71" data-duration="1"></span>{Math.floor((studentsAchievingTargetScore / activeStudents) * 100)}%</span>
+                      <span className="chart-value" style={{ backgroundColor: '#31837a',marginBottom: '-15px' }}>{Math.floor(studentsAchievingTargetScore / activeStudents * 100)}%</span>
                     </div>
-                    <div className="chart-description" style={{ color: '#31837a', marginTop: '36px' }}>Students Who Achieved Target Score</div>
+                    <div className="chart-description" style={{ color: '#31837a',marginTop: '45px' }}>Students Who Achieved Target Score</div>
                   </div>
                 </div>
                 <div className="col s12 m7">
