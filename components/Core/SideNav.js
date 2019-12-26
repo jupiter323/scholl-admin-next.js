@@ -6,62 +6,57 @@ import { withRouter } from 'next/router'
 import Link from 'next/link';
 import $ from 'jquery';
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.$ = $;
   window.jQuery = $;
   // eslint-disable-next-line global-require
-  require('materialize-css');
+  require("materialize-css");
 }
-
 
 const menuItems = [
   {
-    key: 'dashboard',
-    page: 'dashboard',
+    key: "dashboard",
+    page: "dashboard",
   },
   {
-    key: 'students',
-    page: 'students',
+    key: "students",
+    page: "students",
   },
   {
-
-    key: 'instructors',
-    page: 'all-instructors',
+    key: "instructors",
+    page: "all-instructors",
   },
   {
-
-    key: 'classes',
-    page: 'classes',
+    key: "classes",
+    page: "classes",
   },
   {
-
-    key: 'locations',
-    page: 'all-locations',
+    key: "locations",
+    page: "all-locations",
   },
   {
-
-    key: 'worksheets',
-    page: 'worksheets',
+    key: "worksheets",
+    page: "worksheets",
   },
   {
-    key: 'course templates',
-    page: 'courseTemplates',
+    key: "course templates",
+    page: "courseTemplates",
   },
   {
-    key: 'help',
-    page: 'help',
+    key: "help",
+    page: "help",
   },
 ];
 
 const menuIconMap = {
-  'dashboard': 'icon-speed',
-  'students': 'icon-student',
-  'instructors': 'icon-instructors',
-  'classes': 'icon-members',
-  'locations': 'icon-location',
-  'worksheets': 'icon-sheets-w',
-  'course templates': 'icon-module',
-  'help': 'icon-help',
+  dashboard: "icon-speed",
+  students: "icon-student",
+  instructors: "icon-instructors",
+  classes: "icon-members",
+  locations: "icon-location",
+  worksheets: "icon-sheets-w",
+  "course templates": "icon-module",
+  help: "icon-help",
 };
 
 class SideNav extends Component {
@@ -74,44 +69,51 @@ class SideNav extends Component {
   }
 
   componentDidMount() {
-    $('.sidenav').sidenav();
-  }
-
-  handleClick(menuItem) {
-    this.setState({ active: menuItem });
+    $(".sidenav").sidenav();
   }
 
   render() {
-    const { firstName, lastName } = this.props.user
+    const { firstName, lastName } = this.props.user;
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
-          <h1 className="white-text"><img src="/static/images/logo.jpg" alt="image description" /></h1>
+          <h1 className="white-text">
+            <img src="/static/images/logo.jpg" alt="image description" />
+          </h1>
           <ul>
             {menuItems.map(menuItem => (
-              <li
-                className={this.state.active === menuItem.key ? "active" : ''}
-                onClick={() => this.handleClick(menuItem.key)}
+              <Link
+                href={`/${menuItem.page}`}
                 key={menuItem.key}
+                activeClassName="active"
               >
-                <Link href={`/${menuItem.page}`} >
+                <li
+                   key={menuItem.key}
+                   style={{ cursor: "pointer" }}
+                >
                   <a>
                     <i className={menuIconMap[menuItem.key]}></i>
-                    {
-                      menuItem.key.charAt(0).toUpperCase() + menuItem.key.slice(1)
-                    }
+                    {menuItem.key.charAt(0).toUpperCase() +
+                      menuItem.key.slice(1)}
                   </a>
-                </Link>
-              </li>
+                </li>
+              </Link>
             ))}
           </ul>
-          <div className="log-block white-text">
+            <div className="log-block white-text" style = {{cursor:"hand"}}>
             <div className="text">
-              <a href="#"><div className="block white-text">Log Out</div></a>
-              <Link href="/account">
-                <a><div className="block white-text">{firstName} {lastName}</div></a>
+            <Link href="/login">
+              <a href="#">
+                <div className="block white-text">Log Out</div>
+              </a>
               </Link>
-
+              <Link href="/account">
+                <a>
+                  <div className="block white-text">
+                    {firstName} {lastName}
+                  </div>
+                </a>
+              </Link>
             </div>
           </div>
         </div>

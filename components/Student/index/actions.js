@@ -1,10 +1,11 @@
 import {
-    FETCH_STUDENTS, 
-    SET_STUDENTS, 
+    FETCH_STUDENTS,
+    SET_STUDENTS,
     ADD_STUDENT,
+    DELETE_STUDENT,
     SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
     SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
-    SET_STUDENTS_CALENDAR_CALENDAR_ROWS
+    SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
 } from './constants';
 
 export function fetchStudents() {
@@ -27,23 +28,30 @@ export function addNewStudent(student) {
     }
 }
 
+export function deleteStudent(id) {
+    return {
+        type: DELETE_STUDENT,
+        id,
+    }
+}
+
 export function setAssignLessonsModalOpen(value){
     return {
         type:SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
-        value
+        value,
     }
 }
 
 export function setAssignWorksheetModalOpen(value){
     return {
         type:SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
-        value
+        value,
     }
 }
 
 export function setCalendarRows(rows){
     return {
         type:SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
-        rows
+        rows,
     }
 }

@@ -1,15 +1,19 @@
 import { take, call, put, all } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
+  SET_STUDENTS,
   ADD_STUDENT,
+  DELETE_STUDENT,
 } from "./components/Student/index/constants";
 import {
+  fetchStudents,
   setStudents,
+  addStudent,
 } from "./components/Student/index/actions";
 import { studentApi } from "./api";
 const {fetchStudentsApi, addNewStudentApi} = studentApi;
 
-/********************************************    STUDENTS    ********************************************/
+/** ******************************************    STUDENTS    ********************************************/
 export function* watchForFetchStudents() {
   while (true) {
     yield take(FETCH_STUDENTS);
@@ -17,18 +21,7 @@ export function* watchForFetchStudents() {
   }
 }
 
-export function* fetchStudents() {
-  try {
-    const students = yield call(fetchStudentsApi)
-    if (students instanceof Array) {
-      yield put(setStudents(students));
-    }
-  } catch (err) {
-    console.warn('Error occurred in the watchForFetchLessons saga', err);
-  }
-}
-
-export function* watchForAddNewStudent() {
+export function* watchForAddStudent() {
   while (true) {
     try {
       const { student } = yield take(ADD_STUDENT);
@@ -42,10 +35,27 @@ export function* watchForAddNewStudent() {
     }
   }
 }
+const {deleteStudentApi} = studentApi;
+
+export function* watchForDeleteStudent() {
+  while (true) {
+    try {
+      const { id } = yield take(DELETE_STUDENT);
+      const response = yield call(deleteStudentApi, id);
+      if (response && response.message) {
+        return console.warn("Something went wrong with deleting a student.");
+      }
+      yield call(fetchStudents);
+    } catch (err) {
+      console.warn("Error occured in watchForDeleteStudent", err);
+    }
+  }
+}
 
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
     watchForAddStudent(),
+    watchForDeleteStudent(),
   ]);
 }

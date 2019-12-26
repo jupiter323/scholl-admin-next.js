@@ -55,3 +55,15 @@ export const addNewStudentApi = student => {
     .then(res => res.json())
     .catch(err => err);
 };
+
+export const deleteStudentApi = id =>
+  fetch(`${API_URL}/api/commands/delete-student`, {
+    method: "DELETE",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ student_id: id }),
+  })
+    .then(res => res.json())
+    .catch(err => err);
