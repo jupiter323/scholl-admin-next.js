@@ -13,7 +13,6 @@ import {
 import { studentApi } from "./api";
 const {deleteStudentApi} = studentApi;
 
-/********************************************    STUDENTS    ********************************************/
 export function* watchForDeleteStudent() {
   while (true) {
     try {

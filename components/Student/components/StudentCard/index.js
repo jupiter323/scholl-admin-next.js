@@ -81,7 +81,7 @@ class StudentCard extends React.Component {
                   </li>
                   <li><a href="#!" onClick={() => onCloneStudent(index)}>Clone</a></li>
                   <li><a href="#!">Show Owner</a></li>
-                  <li><a href="#!" onClick={() => onDeleteStudent(index, id)}>Delete</a></li>
+                  <li><a href="#!" onClick={() => onDeleteStudent(index)}>Delete</a></li>
                 </ul>
                 </If>
               </div>
