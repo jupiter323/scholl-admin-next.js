@@ -69,7 +69,7 @@ class InstructorListPage extends React.Component {
       averageImprovement: 185,
       averageInitialScore: 1037,
       averageFinalScore: 1218,
-      studentsAchievingTargetScore: 12
+      studentsAchievingTargetScore: 12,
     }
     const formattedNewInstructor = update(newInstructor,{basicInfo:{$set:tempBasicInfo}});
     const updatedInstructors = update(instructors,{$push:[formattedNewInstructor]});
@@ -104,14 +104,14 @@ class InstructorListPage extends React.Component {
         id:newId,
         first_name: firstName,
         last_name: lastName,
-        email: email,
-        gender: gender,
-        state: state,
+        email,
+        gender,
+        state,
         locations: [],
-        phone: phone,
+        phone,
         address: streetAddress,
-        city: city,
-        zip: zip
+        city,
+        zip,
       };
     await createNewInstructorApi(formattedBody);
   }
@@ -201,7 +201,7 @@ class InstructorListPage extends React.Component {
     if (sort) {
       return this.onSortInstructors(instructors);
     }
-    return instructors;
+    return instructors || [];
   }
 
   checkForFilteredState = () => {

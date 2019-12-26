@@ -7,6 +7,9 @@ const makeSelectStudentPageState = () => createSelector(
     (substate) => substate?substate.toJS():{}
 );
 
+const makeSelectStudents = () =>
+  createSelector(makeSelectStudentPageState(), substate => substate.students);
+
 const makeSelectAssignLessonsModalOpen = () => createSelector(
     makeSelectStudentPageState(),
     (substate) =>substate.assignLessonsModalOpen
@@ -28,4 +31,5 @@ export {
     makeSelectAssignLessonsModalOpen,
     makeSelectAssignWorkSheetsModalOpen,
     makeSelectCalendarRows,
+    makeSelectStudents,
 }

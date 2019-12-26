@@ -68,16 +68,6 @@ export const addNewStudentApi = student => {
     .catch(err => err);
 };
 
-export const deleteStudentApi = (body) =>
-  fetch (`${API_URL}/api/commands/delete-student`,{
-    method:'DELETE',
-    headers:{
-      'Access-Control-Allow-Origin':'*',
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(body)
-  })
-
 export const updateStudentActivationApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-activation`, {
     method: 'PATCH',
@@ -186,7 +176,20 @@ export const updateStudentActivationApi = (body) =>
     .then ( res => res.json())
     .catch( err => err);
 
-    export default [
+  export const deleteStudentApi = id =>
+    fetch(`${API_URL}/api/commands/delete-student`, {
+        method: "DELETE",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ student_id: id }),
+    })
+        .then(res => res.json())
+        .catch(err => err);
+
+
+export default [
       fetchStudentsApi,
       addNewStudentApi,
       deleteStudentApi,
@@ -200,3 +203,4 @@ export const updateStudentActivationApi = (body) =>
       updateStudentStateApi,
       updateStudentZipApi,
     ];
+
