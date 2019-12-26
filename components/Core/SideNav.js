@@ -16,36 +16,36 @@ if (typeof window !== "undefined") {
 const menuItems = [
   {
     key: "dashboard",
-    page: "dashboard"
+    page: "dashboard",
   },
   {
     key: "students",
-    page: "students"
+    page: "students",
   },
   {
     key: "instructors",
-    page: "all-instructors"
+    page: "all-instructors",
   },
   {
     key: "classes",
-    page: "classes"
+    page: "classes",
   },
   {
     key: "locations",
-    page: "all-locations"
+    page: "all-locations",
   },
   {
     key: "worksheets",
-    page: "worksheets"
+    page: "worksheets",
   },
   {
     key: "course templates",
-    page: "courseTemplates"
+    page: "courseTemplates",
   },
   {
     key: "help",
-    page: "help"
-  }
+    page: "help",
+  },
 ];
 
 const menuIconMap = {
@@ -56,7 +56,7 @@ const menuIconMap = {
   locations: "icon-location",
   worksheets: "icon-sheets-w",
   "course templates": "icon-module",
-  help: "icon-help"
+  help: "icon-help",
 };
 
 class SideNav extends Component {

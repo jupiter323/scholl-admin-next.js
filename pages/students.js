@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import {deleteStudent} from '../components/Student/index/actions';
+import {fetchStudents, addNewStudent} from '../components/Student/index/actions';
+import {makeSelectStudents} from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
 import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
@@ -48,6 +50,11 @@ class Students extends Component {
     }
   }
 
+  componentDidMount = () => {
+    const {onFetchStudents} = this.props;
+    onFetchStudents();
+  }
+
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
   onOpenLocationModal = () => this.setState({locationModalOpen: true});
@@ -64,8 +71,11 @@ class Students extends Component {
  // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const {newStudent: previousStudentState} = this.state;
-    // Replace code below with action dispatch
-    // await addNewStudentApi(previousStudentState)
+
+    // dispatch add student action
+    const {onAddNewStudent} = this.props;
+    onAddNewStudent(previousStudentState);
+
     const newStudent = update(previousStudentState, {
       $set:
        { active: false,
@@ -262,13 +272,20 @@ class Students extends Component {
 }
 
 Students.propTypes = {
+  students: PropTypes.array.isRequired,
+  onFetchStudents: PropTypes.func.isRequired,
+  onAddNewStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+    students: makeSelectStudents(),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onDeleteStudent: (id) => dispatch(deleteStudent(id)),
+  onFetchStudents: () => dispatch(fetchStudents()),
+  onAddNewStudent: (student) => dispatch(addNewStudent(student)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
