@@ -15,6 +15,20 @@ import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
 
+import {
+  fetchStudentsApi,
+  deleteStudentApi,
+} from '../components/Student/index/api';
+
+
+const idGenerator = () => {
+  return subIdGenerator() + subIdGenerator() + '-' + subIdGenerator() + '-' + subIdGenerator() + '-' +
+  subIdGenerator() + '-' + subIdGenerator() + subIdGenerator() + subIdGenerator();
+}
+const subIdGenerator = () =>{
+  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+}
+
 class Students extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +37,8 @@ class Students extends Component {
       students: sampleStudentList,
       studentModalOpen: false,
       locationModalOpen: false,
+      dropdownIsOpen: false,
+      dropdownIndex: null,
       sort: "",
       filterName: "",
       newStudent: {
@@ -30,7 +46,6 @@ class Students extends Component {
         studentInformation: {
           firstName: '',
           lastName: '',
-          gender: '',
         },
         contactInformation: {
           phone: '',
@@ -173,13 +188,19 @@ class Students extends Component {
     // Dispatch deleteStudent
     onDeleteStudent(students[index].id);
     const newStudentArray = this.arrayItemRemover(students, students[index])
-    this.setState({students: newStudentArray})
+    this.setState({students: newStudentArray});
+    const student_id = students[index].id;
+    deleteStudentApi({student_id});
+    this.onCloseDropdown();
   }
 
   onCloneStudent = (index) => {
     const { students } = this.state;
+    const newStudent = update(students[index],{
+      id:{$set:idGenerator()}
+    })
     this.setState(prevState => {
-      prevState.students.push(students[index]);
+      prevState.students.push(newStudent);
       return { students: prevState.students}
     })
   }
@@ -193,6 +214,19 @@ class Students extends Component {
     this.setState({newStudent: updatedStudent})
 }
 
+  onSaveStudentChanges = (updatedStudent) => {
+    const { students: originalStudents } = this.state;
+    const {active,studentInformation, contactInformation, emailAddress, location } = updatedStudent;
+    const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
+    const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
+    const students = update(originalStudents, {
+      [updatedStudentIndex]:{$merge:{active:active,studentInformation:studentInformation,contactInformation:contactInformation,emailAddress:emailAddress,location:location}},
+    });
+    this.setState({ students });
+  }
+
+  onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
 
@@ -236,9 +270,14 @@ class Students extends Component {
                     index={index}
                     id={student.id}
                     key={student.id}
+                    dropdownIsOpen={this.state.dropdownIsOpen}
+                    dropdownIndex={this.state.dropdownIndex}
+                    onSetDropdown={this.onSetDropdown}
+                    onCloseDropdown={this.onCloseDropdown}
                     onHandleStudentCard={() => this.onHandleStudentCard(index)}
                     onDeleteStudent={() => this.onDeleteStudent(index)}
                     onCloneStudent={() => this.onCloneStudent(index, student.id)}
+                    onSaveStudentChanges = {this.onSaveStudentChanges}
                     />
                   ))}
                 </div>
