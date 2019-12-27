@@ -201,7 +201,7 @@ class InstructorListPage extends React.Component {
     if (sort) {
       return this.onSortInstructors(instructors);
     }
-    return instructors;
+    return instructors || [];
   }
 
   checkForFilteredState = () => {
