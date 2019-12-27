@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { DragDropContext } from 'react-beautiful-dnd';
 import {StickyContainer, Sticky} from 'react-sticky';
-import FilterSection from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/FilterSection';
-import CalendarHeader from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/CalendarHeader';
-import CalendarRow from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/CalendarRow';
+import FilterSection from '../components/Dashboard/components/FilterSection';
+import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
+import CalendarRow from '../components/Dashboard/components/CalendarRow';
 
-import AssignSessionModal from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/Modals/AssignSessionModal';
-import AssignLessonModal from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/Modals/AssignLessonModal';
-import AssignWorksheetModal from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/Modals/AssignWorksheetModal';
-import AssignTestSectionModal from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/Modals/AssignTestSectionModal';
-import AssignSimulatedSatModal from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/Modals/AssignSimulatedSATModal';
-import AssignTargetTestModal from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/components/Modals/AssignTargetTestModal';
+import AssignSessionModal from '../components/Dashboard/components/Modals/AssignSessionModal';
+import AssignLessonModal from '../components/Dashboard/components/Modals/AssignLessonModal';
+import AssignWorksheetModal from '../components/Dashboard/components/Modals/AssignWorksheetModal';
+import AssignTestSectionModal from '../components/Dashboard/components/Modals/AssignTestSectionModal';
+import AssignSimulatedSatModal from '../components/Dashboard/components/Modals/AssignSimulatedSATModal';
+import AssignTargetTestModal from '../components/Dashboard/components/Modals/AssignTargetTestModal';
 
-import { currentYear, getFirstDay, getDaysInActiveMonth, getDaysInPreviousMonth, getDayDate, getNextMonthAsCurrentMonth } from '../../../feature-create-instructors/clear-choice-admin/components/Dashboard/utils/dateAndCalendarUtils';
+import { currentYear, getFirstDay, getDaysInActiveMonth, getDaysInPreviousMonth, getDayDate, getNextMonthAsCurrentMonth } from '../components/Dashboard/utils/dateAndCalendarUtils';
 
 class Calendar extends Component {
   constructor(props) {
@@ -194,6 +194,7 @@ class Calendar extends Component {
   }
 
   onAssignTargetTest = (targetTestDate) => {
+    // eslint-disable-next-line no-throw-literal
     throw `pending decision of what test date assign ui looks like${  targetTestDate.toString()}`;
     // console.warn(, targetTestDate);
   }
