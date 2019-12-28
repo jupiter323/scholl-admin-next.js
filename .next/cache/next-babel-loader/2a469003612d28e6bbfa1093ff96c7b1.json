@@ -1,0 +1,1 @@
+{"ast":null,"code":"import styled from 'styled-components';\nconst ToastWrapper = styled.div.withConfig({\n  displayName: \"styles__ToastWrapper\",\n  componentId: \"f1vbvd-0\"\n})([\".update-success{background-color:#31837a;}.progress-bar-success{background-color:#fff;}\"]);\nexport default ToastWrapper;","map":null,"metadata":{},"sourceType":"module"}

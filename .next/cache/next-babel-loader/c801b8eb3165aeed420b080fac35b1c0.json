@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { fetchStudentsApi, addNewStudentApi, deleteStudentApi } from \"./components/Student/index/api\";\nexport var studentApi = {\n  fetchStudentsApi: fetchStudentsApi,\n  addNewStudentApi: addNewStudentApi,\n  deleteStudentApi: deleteStudentApi\n};","map":null,"metadata":{},"sourceType":"module"}
