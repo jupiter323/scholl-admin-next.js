@@ -1,5 +1,5 @@
 import React from "react";
-import App, { Container } from "next/app";
+import App from "next/app";
 import { Provider } from "react-redux";
 import "isomorphic-fetch";
 import Page from "../components/Page";
@@ -10,13 +10,11 @@ class ClearChoice extends App {
   render() {
     const { Component, pageProps, reduxStore } = this.props;
     return (
-      <Container>
-        <Provider store={reduxStore}>
-          <Page>
-            <Component {...pageProps} />
-          </Page>
-        </Provider>
-      </Container>
+      <Provider store={reduxStore}>
+        <Page>
+          <Component {...pageProps} />
+        </Page>
+      </Provider>
     );
   }
 }
