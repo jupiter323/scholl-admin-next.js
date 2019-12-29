@@ -11,7 +11,7 @@ class TestSections extends React.Component {
     super(props);
     this.state = {
       active: 'scores',
-    }
+    };
   }
 
   onSetActivePage = (active) => this.setState({ active });
@@ -23,30 +23,30 @@ class TestSections extends React.Component {
       return <DetailTestScorePage test={test} />;
     }
     if (active === 'answerSheet') {
-      return <DetailTestAnswerSheetComplete testScoreDetails={test.testScoreDetails}/>;
+      return <DetailTestAnswerSheetComplete testScoreDetails={test.testScoreDetails} />;
     }
     return null;
   }
 
-  render(){
+  render() {
     const { active } = this.state;
-    return(
+    return (
       <React.Fragment>
         <StickyContainer>
-       <TestScoreNavBar active={active} onSetActivePage={this.onSetActivePage}/>
-      <div className="content-section">
-        <div className="content-section-holder">
-          {this.renderCurrentPage()}
-        </div>
-      </div>
-      </StickyContainer>
+          <TestScoreNavBar active={active} onSetActivePage={this.onSetActivePage} />
+          <div className="content-section">
+            <div className="content-section-holder">
+              {this.renderCurrentPage()}
+            </div>
+          </div>
+        </StickyContainer>
       </React.Fragment>
-    )
+    );
   }
 }
 
 TestSections.propTypes = {
   test: PropTypes.object.isRequired,
-}
+};
 
-export default TestSections
+export default TestSections;
