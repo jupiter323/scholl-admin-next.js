@@ -35,11 +35,23 @@ export const fetchStudentsApi = () =>
     });
 
 export const searchStudentsApi = filters => {
-  let queryString = "";
-  if (filters.name) {
-    queryString += `search=${filters.name}`;
+  let queryString = `search=${filters.name}&location=${filters.location}`;
+  switch (filters.sort) {
+    case 'lastNameDescending':
+      queryString += 'sort_by_field=last_name'
+      break;
+    case 'firstNameDescending':
+      queryString += 'sort_by_field=first_name'
+      break;
+    case 'lastNameAscending':
+      queryString += 'sort_by_field=last_name&sort_by_asc=true'
+      break;
+    case 'firstNameAscending':
+      queryString += 'sort_by_field=first_name&sort_by_asc=true'
+      break;
+    default:
+      queryString += ''
   }
-  console.log(queryString);
   return fetch(`${API_URL}/api/students?${queryString}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -48,7 +60,6 @@ export const searchStudentsApi = filters => {
   })
     .then(res => res.json())
     .then(({ data }) => {
-      console.log(data);
       if (data.students.length < 1) {
         return []
       }

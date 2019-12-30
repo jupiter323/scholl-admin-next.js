@@ -62,10 +62,15 @@ class FilterSection extends React.Component {
       $merge: { [name]: value },
     });
     this.setState(updatedState, () => {
+      // Collect inputs and dispatch search
+      const {onSearchStudents} = this.props;
+      const {name, location, sort} = this.state;
       const filters = {
-        name: this.state.name,
+        name,
+        location,
+        sort,
       }
-      this.props.onSearchStudents(filters);
+      onSearchStudents(filters);
     });
     if (name === 'location') {
       if (event === '') {
