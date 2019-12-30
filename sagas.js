@@ -1,31 +1,40 @@
 import { take, call, put, all } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
-  SET_STUDENTS,
-  ADD_STUDENT,
+  CREATE_STUDENT,
   DELETE_STUDENT,
 } from "./components/Student/index/constants";
 import {
-  fetchStudents,
   setStudents,
-  addStudent,
+  createStudent,
 } from "./components/Student/index/actions";
 import { studentApi } from "./api";
-const {fetchStudentsApi, addNewStudentApi} = studentApi;
+const {fetchStudentsApi, createStudentApi, deleteStudentApi} = studentApi;
 
-/** ******************************************    STUDENTS    ********************************************/
+/** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
     yield take(FETCH_STUDENTS);
-    yield call(fetchStudents);
+    yield call(fetchStudents)
   }
 }
 
-export function* watchForAddStudent() {
+export function* fetchStudents() {
+  try {
+    const students = yield call(fetchStudentsApi);
+    if (students instanceof Array) {
+      yield put(setStudents(students));
+    }
+  } catch (err) {
+    console.warn('Error occurred when fetching students', err);
+  }
+}
+
+export function* watchForCreateStudent() {
   while (true) {
     try {
-      const { student } = yield take(ADD_STUDENT);
-      const response = yield call(addNewStudentApi, student);
+      const { student } = yield take(CREATE_STUDENT);
+      const response = yield call(createStudentApi, student);
       if (response && response.message) {
         return console.warn("Something went wrong with adding a new student!");
       }
@@ -35,7 +44,6 @@ export function* watchForAddStudent() {
     }
   }
 }
-const {deleteStudentApi} = studentApi;
 
 export function* watchForDeleteStudent() {
   while (true) {
@@ -55,7 +63,7 @@ export function* watchForDeleteStudent() {
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
-    watchForAddStudent(),
+    watchForCreateStudent(),
     watchForDeleteStudent(),
   ]);
 }

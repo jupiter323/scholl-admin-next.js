@@ -1,7 +1,7 @@
 import {
     FETCH_STUDENTS,
     SET_STUDENTS,
-    ADD_STUDENT,
+    CREATE_STUDENT,
     DELETE_STUDENT,
     SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
     SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
@@ -21,9 +21,9 @@ export function setStudents(students) {
     }
 }
 
-export function addNewStudent(student) {
+export function createStudent(student) {
     return {
-        type: ADD_STUDENT,
+        type: CREATE_STUDENT,
         student,
     }
 }

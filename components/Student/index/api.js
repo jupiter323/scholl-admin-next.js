@@ -47,7 +47,7 @@ export const fetchStudentsApi = () =>
       return formattedStudents;
     });
 
-export const addNewStudentApi = student => {
+export const createStudentApi = student => {
   const {
     firstName: first_name,
     lastName: last_name,
@@ -87,7 +87,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then(res => res.json())
     .catch(err => err);
@@ -99,7 +99,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -111,7 +111,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -123,7 +123,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -135,7 +135,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -147,7 +147,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -159,7 +159,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -171,7 +171,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -191,7 +191,7 @@ export const updateStudentActivationApi = (body) =>
 
 export default [
       fetchStudentsApi,
-      addNewStudentApi,
+      createStudentApi,
       deleteStudentApi,
       updateStudentActivationApi,
       updateStudentAddressApi,

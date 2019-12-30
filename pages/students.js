@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import {deleteStudent} from '../components/Student/index/actions';
-import {fetchStudents, addNewStudent} from '../components/Student/index/actions';
+import {fetchStudents, createStudent} from '../components/Student/index/actions';
 import {makeSelectStudents} from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
 import sampleStudentList from '../components/Student/utils/sampleStudentList';
@@ -21,13 +21,9 @@ import {
 } from '../components/Student/index/api';
 
 
-const idGenerator = () => {
-  return subIdGenerator() + subIdGenerator() + '-' + subIdGenerator() + '-' + subIdGenerator() + '-' +
-  subIdGenerator() + '-' + subIdGenerator() + subIdGenerator() + subIdGenerator();
-}
-const subIdGenerator = () =>{
-  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}
+const idGenerator = () => `${subIdGenerator() + subIdGenerator()  }-${  subIdGenerator()  }-${  subIdGenerator()  }-${
+  subIdGenerator()  }-${  subIdGenerator()  }${subIdGenerator()  }${subIdGenerator()}`
+const subIdGenerator = () =>Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
 
 class Students extends Component {
   constructor(props) {
@@ -88,8 +84,8 @@ class Students extends Component {
     const {newStudent: previousStudentState} = this.state;
 
     // dispatch add student action
-    const {onAddNewStudent} = this.props;
-    onAddNewStudent(previousStudentState);
+    const {onCreateStudent} = this.props;
+    onCreateStudent(previousStudentState);
 
     const newStudent = update(previousStudentState, {
       $set:
@@ -197,7 +193,7 @@ class Students extends Component {
   onCloneStudent = (index) => {
     const { students } = this.state;
     const newStudent = update(students[index],{
-      id:{$set:idGenerator()}
+      id:{$set:idGenerator()},
     })
     this.setState(prevState => {
       prevState.students.push(newStudent);
@@ -220,7 +216,7 @@ class Students extends Component {
     const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
     const students = update(originalStudents, {
-      [updatedStudentIndex]:{$merge:{active:active,studentInformation:studentInformation,contactInformation:contactInformation,emailAddress:emailAddress,location:location}},
+      [updatedStudentIndex]:{$merge:{active,studentInformation,contactInformation,emailAddress,location}},
     });
     this.setState({ students });
   }
@@ -313,7 +309,7 @@ class Students extends Component {
 Students.propTypes = {
   students: PropTypes.array.isRequired,
   onFetchStudents: PropTypes.func.isRequired,
-  onAddNewStudent: PropTypes.func.isRequired,
+  onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
 };
 
@@ -324,7 +320,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   onDeleteStudent: (id) => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
-  onAddNewStudent: (student) => dispatch(addNewStudent(student)),
+  onCreateStudent: (student) => dispatch(createStudent(student)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
