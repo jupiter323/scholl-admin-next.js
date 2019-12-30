@@ -3,13 +3,13 @@ import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
   DELETE_STUDENT,
+  SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
 import {
   setStudents,
-  createStudent,
 } from "./components/Student/index/actions";
 import { studentApi } from "./api";
-const {fetchStudentsApi, createStudentApi, deleteStudentApi} = studentApi;
+const {fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi} = studentApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -26,7 +26,29 @@ export function* fetchStudents() {
       yield put(setStudents(students));
     }
   } catch (err) {
-    console.warn('Error occurred when fetching students', err);
+    console.warn('Error occurred in fetchingStudents saga', err);
+  }
+}
+
+export function* watchForSearchStudents() {
+  console.log('hit');
+  while (true) {
+    const {filters} = yield take(SEARCH_STUDENTS);
+    yield call(searchStudents, filters);
+  }
+}
+
+export function* searchStudents(filters) {
+  try {
+    const students = yield call(searchStudentsApi, filters);
+    if (response && response.message) {
+      return console.warn("Something went wrong when searching students");
+    }
+    if (students instanceof Array) {
+      yield put(setStudents(students));
+    }
+  } catch (err) {
+    console.warn("Error occurred in searchStudents saga", err);
   }
 }
 

@@ -1,6 +1,7 @@
 import {
     FETCH_STUDENTS,
     SET_STUDENTS,
+    SEARCH_STUDENTS,
     CREATE_STUDENT,
     DELETE_STUDENT,
     SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
@@ -11,6 +12,12 @@ import {
 export function fetchStudents() {
     return {
         type: FETCH_STUDENTS,
+    }
+}
+
+export function searchStudents() {
+    return {
+        type: SEARCH_STUDENTS,
     }
 }
 

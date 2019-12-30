@@ -17,35 +17,61 @@ export const fetchStudentsApi = () =>
             lastName: student.last_name,
           },
           contactInformation: {
-            phone: '7865645859',
-            addressLine1: '1234 Test Lane',
+            phone: student.user_address.phone,
+            addressLine1: student.user_address.address,
             addressLine2: '',
-            city: 'Austin',
-            state: 'TX',
-            zipCode: '78757',
+            city: student.user_address.city,
+            state: student.user_address.state,
+            zipCode: student.user_address.zip,
           },
           emailAddress: {
             email: student.email,
           },
           location: {
-            locations: [
-              {
-                locationNickname: 'Disneyworld  Tutoring',
-                locationName: 'House Of Mouse',
-              },
-              {
-                locationNickname: 'TutorZone Austin',
-                locationName: 'We Teach Real Good',
-              },
-              {
-                locationNickname: 'TutorZone Miami',
-                locationName: 'We Teach Even Better',
-              },
-            ],
+            locations: student.user_locations,
           },
         }));
       return formattedStudents;
     });
+
+export const searchStudentsApi = filters => {
+  let queryString = "";
+  if (filters.name) {
+    queryString += `search=${filters.name}`;
+  }
+  fetch(`${API_URL}/api/students?${queryString}`, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      const formattedStudents = data.students.map(student => ({
+        id: student.id,
+        active: false,
+        studentInformation: {
+          firstName: student.first_name,
+          lastName: student.last_name,
+        },
+        contactInformation: {
+          phone: student.user_address.phone,
+          addressLine1: student.user_address.address,
+          addressLine2: '',
+          city: student.user_address.city,
+          state: student.user_address.state,
+          zipCode: student.user_address.zip,
+        },
+        emailAddress: {
+          email: student.email,
+        },
+        location: {
+          locations: student.user_locations,
+        },
+      }));
+    return formattedStudents;
+    });
+};
 
 export const createStudentApi = student => {
   const {
@@ -58,6 +84,7 @@ export const createStudentApi = student => {
   const { locations } = student.location;
   const studentPayload = { first_name, last_name, email, gender, state, locations, phone, address: `${addressLine1}\n${addressLine2}`, city, zip };
   fetch(`${API_URL}/api/commands/create-student`, {
+    method: 'POST',
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
@@ -191,6 +218,7 @@ export const updateStudentActivationApi = (body) =>
 
 export default [
       fetchStudentsApi,
+      searchStudentsApi,
       createStudentApi,
       deleteStudentApi,
       updateStudentActivationApi,

@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import locationOptions from '../../../../utils/locationOptions';
 import sortOptions from '../../../../utils/sortOptions';
-
+import {searchStudents} from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -67,8 +70,13 @@ class FilterSection extends React.Component {
     } else if (name === 'sort') {
       return onSetSort(event);
     }
+    const filters = {
+      name: this.state.name,
+    }
+    this.props.onSearchStudents(filters);
   }
   render() {
+    console.log(this.state);
     // eslint-disable-next-line no-unused-vars
     const { name, location, sort, open, activeFilters } = this.state;
     return(
@@ -369,6 +377,15 @@ onSetFilteredState: PropTypes.func.isRequired,
 onUnsetFilteredState: PropTypes.func.isRequired,
 onSetFilteredLocationState: PropTypes.func.isRequired,
 onUnsetFilteredLocationState: PropTypes.func.isRequired,
+onSearchStudents: PropTypes.func.isRequired,
 };
 
-export default FilterSection;
+const mapStateToProps = createStructuredSelector({});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSearchStudents: (filters) => dispatch(searchStudents(filters)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(FilterSection);
