@@ -31,7 +31,6 @@ export function* fetchStudents() {
 }
 
 export function* watchForSearchStudents() {
-  console.log('hit');
   while (true) {
     const {filters} = yield take(SEARCH_STUDENTS);
     yield call(searchStudents, filters);
@@ -41,9 +40,6 @@ export function* watchForSearchStudents() {
 export function* searchStudents(filters) {
   try {
     const students = yield call(searchStudentsApi, filters);
-    if (response && response.message) {
-      return console.warn("Something went wrong when searching students");
-    }
     if (students instanceof Array) {
       yield put(setStudents(students));
     }
@@ -85,6 +81,7 @@ export function* watchForDeleteStudent() {
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
+    watchForSearchStudents(),
     watchForCreateStudent(),
     watchForDeleteStudent(),
   ]);

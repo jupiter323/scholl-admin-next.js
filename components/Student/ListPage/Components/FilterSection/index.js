@@ -61,7 +61,12 @@ class FilterSection extends React.Component {
     const updatedState = update(this.state, {
       $merge: { [name]: value },
     });
-    this.setState(updatedState);
+    this.setState(updatedState, () => {
+      const filters = {
+        name: this.state.name,
+      }
+      this.props.onSearchStudents(filters);
+    });
     if (name === 'location') {
       if (event === '') {
         return onUnsetFilteredLocationState();
@@ -70,13 +75,8 @@ class FilterSection extends React.Component {
     } else if (name === 'sort') {
       return onSetSort(event);
     }
-    const filters = {
-      name: this.state.name,
-    }
-    this.props.onSearchStudents(filters);
   }
   render() {
-    console.log(this.state);
     // eslint-disable-next-line no-unused-vars
     const { name, location, sort, open, activeFilters } = this.state;
     return(

@@ -15,9 +15,10 @@ export function fetchStudents() {
     }
 }
 
-export function searchStudents() {
+export function searchStudents(filters) {
     return {
         type: SEARCH_STUDENTS,
+        filters,
     }
 }
 

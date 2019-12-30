@@ -39,7 +39,8 @@ export const searchStudentsApi = filters => {
   if (filters.name) {
     queryString += `search=${filters.name}`;
   }
-  fetch(`${API_URL}/api/students?${queryString}`, {
+  console.log(queryString);
+  return fetch(`${API_URL}/api/students?${queryString}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
@@ -47,6 +48,10 @@ export const searchStudentsApi = filters => {
   })
     .then(res => res.json())
     .then(({ data }) => {
+      console.log(data);
+      if (data.students.length < 1) {
+        return []
+      }
       const formattedStudents = data.students.map(student => ({
         id: student.id,
         active: false,
@@ -70,7 +75,7 @@ export const searchStudentsApi = filters => {
         },
       }));
     return formattedStudents;
-    });
+    }).catch(err => err);
 };
 
 export const createStudentApi = student => {
