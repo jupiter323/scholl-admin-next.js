@@ -30,6 +30,15 @@ export const fetchStudentsApi = () =>
           location: {
             locations: student.user_locations,
           },
+          stats: student.stats,
+          tutor: (!student.hasOwnProperty('tutor') ? '' : student.tutor),
+          testScores: {
+            initialScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.initialScore),
+            currentScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.currentScore),
+          },
+          courseContext: {
+            targetScore: (!student.hasOwnProperty('courseContext') ? '0' : student.courseContext.targetScore),
+          },
         }));
       return formattedStudents;
     });
@@ -83,6 +92,15 @@ export const searchStudentsApi = filters => {
         },
         location: {
           locations: student.user_locations,
+        },
+        stats: student.stats,
+        tutor: (!student.hasOwnProperty('tutor') ? '' : student.tutor),
+        testScores: {
+          initialScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.initialScore),
+          currentScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.currentScore),
+        },
+        courseContext: {
+          targetScore: (!student.hasOwnProperty('courseContext') ? '0' : student.courseContext.targetScore),
         },
       }));
     return formattedStudents;
