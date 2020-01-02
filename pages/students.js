@@ -8,7 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import { fetchStudents, addNewStudent, deleteStudent } from '../components/Student/index/actions';
 import { makeSelectStudents } from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
-import sampleStudentList from '../components/Student/utils/sampleStudentList';
+// import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
@@ -38,7 +38,7 @@ class Students extends Component {
     super(props);
     this.state = {
       selectedStudent: null,
-      students: sampleStudentList,
+      students: [],
       studentModalOpen: false,
       locationModalOpen: false,
       dropdownIsOpen: false,
@@ -73,6 +73,15 @@ class Students extends Component {
   componentDidMount = () => {
     const { onFetchStudents } = this.props;
     onFetchStudents();
+  }
+
+  componentDidUpdate() {
+    const { students: studentState } = this.state;
+    const { students } = this.props;
+    if (students.length && studentState.length === 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ students });
+    }
   }
 
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
@@ -232,16 +241,16 @@ class Students extends Component {
   onSortStudents = students => {
     const { sort } = this.state;
     switch (sort) {
-    case 'lastNameDescending':
-      return students.sort(studentLastNameDescending);
-    case 'lastNameAscending':
-      return students.sort(studentLastNameAscending);
-    case 'firstNameDescending':
-      return students.sort(studentFirstNameDescending);
-    case 'firstNameAscending':
-      return students.sort(studentFirstNameAscending);
-    default:
-      break;
+      case 'lastNameDescending':
+        return students.sort(studentLastNameDescending);
+      case 'lastNameAscending':
+        return students.sort(studentLastNameAscending);
+      case 'firstNameDescending':
+        return students.sort(studentFirstNameDescending);
+      case 'firstNameAscending':
+        return students.sort(studentFirstNameAscending);
+      default:
+        break;
     }
   }
 
@@ -384,7 +393,7 @@ class Students extends Component {
 }
 
 Students.propTypes = {
-  // students: PropTypes.array.isRequired,
+  students: PropTypes.array.isRequired,
   onFetchStudents: PropTypes.func.isRequired,
   onAddNewStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,

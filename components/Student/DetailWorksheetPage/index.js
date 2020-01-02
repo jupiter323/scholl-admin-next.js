@@ -127,9 +127,9 @@ class DetailWorksheetPage extends React.Component {
     const { currentView } = this.state;
     switch (currentView) {
       case 'list':
-        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
+        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />;
       case 'full':
-        return <FullView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
+        return <FullView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />;
       default:
         break;
     }

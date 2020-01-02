@@ -48,44 +48,44 @@ class DetailLessonList extends React.Component {
   onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch (sort) {
-    case 'subjectAscending':
-      return lessons.sort(subjectAscending);
-    case 'subjectDescending':
-      return lessons.sort(subjectDescending);
-    case 'passageAscending':
-      return lessons.sort(passageAscending);
-    case 'statusAscending':
-      return lessons.sort(statusAscending);
-    case 'passageDescending':
-      return lessons.sort(passageDescending);
-    case 'statusDescending':
-      return lessons.sort(statusDescending);
-    case 'availableDateAscending':
-      return lessons.sort(availableDateAscending);
-    case 'availableDateDescending':
-      return lessons.sort(availableDateDescending);
-    case 'dueDateDescending':
-      return lessons.sort(dueDate);
-    case 'dueDateAscending':
-      return lessons.sort(dueDateAscending);
-    case 'flagsAscending':
-      return lessons.sort(flagsAscending);
-    case 'flagsDescending':
-      return lessons.sort(flagsDescending);
-    case 'lessonNameAscending':
-      return lessons.sort(lessonNameAscending);
-    case 'lessonNameDescending':
-      return lessons.sort(lessonNameDescending);
-    case 'completionDateAscending':
-      return lessons.sort(completionDateAscending);
-    case 'completionDateDescending':
-      return lessons.sort(completionDateDescending);
-    case 'lessonTypeAscending':
-      return lessons.sort(lessonTypeAscending);
-    case 'lessonTypeDescending':
-      return lessons.sort(lessonTypeDescending);
-    default:
-      break;
+      case 'subjectAscending':
+        return lessons.sort(subjectAscending);
+      case 'subjectDescending':
+        return lessons.sort(subjectDescending);
+      case 'passageAscending':
+        return lessons.sort(passageAscending);
+      case 'statusAscending':
+        return lessons.sort(statusAscending);
+      case 'passageDescending':
+        return lessons.sort(passageDescending);
+      case 'statusDescending':
+        return lessons.sort(statusDescending);
+      case 'availableDateAscending':
+        return lessons.sort(availableDateAscending);
+      case 'availableDateDescending':
+        return lessons.sort(availableDateDescending);
+      case 'dueDateDescending':
+        return lessons.sort(dueDate);
+      case 'dueDateAscending':
+        return lessons.sort(dueDateAscending);
+      case 'flagsAscending':
+        return lessons.sort(flagsAscending);
+      case 'flagsDescending':
+        return lessons.sort(flagsDescending);
+      case 'lessonNameAscending':
+        return lessons.sort(lessonNameAscending);
+      case 'lessonNameDescending':
+        return lessons.sort(lessonNameDescending);
+      case 'completionDateAscending':
+        return lessons.sort(completionDateAscending);
+      case 'completionDateDescending':
+        return lessons.sort(completionDateDescending);
+      case 'lessonTypeAscending':
+        return lessons.sort(lessonTypeAscending);
+      case 'lessonTypeDescending':
+        return lessons.sort(lessonTypeDescending);
+      default:
+        break;
     }
   }
   onAddUpdatedLessons = (lessons) => this.setState({ updatedLessons: lessons })
@@ -190,32 +190,32 @@ class DetailLessonList extends React.Component {
     let modifiedFilterName;
     let modifiedFilterUpdatedState;
     switch (filterType) {
-    case 'subject':
-      modifiedFilterCurrentState = currentSubjectFilters;
-      modifiedFilterName = 'subjectFilters';
-      break;
-    case 'status':
-      modifiedFilterCurrentState = currentStatusFilters;
-      modifiedFilterName = 'statusFilters';
-      break;
-    case 'score':
-      modifiedFilterCurrentState = currentScoreStatusFilters;
-      modifiedFilterName = 'scoreStatusFilters';
-      break;
-    case 'flags':
-      modifiedFilterCurrentState = currentFlagFilters;
-      modifiedFilterName = 'flagFilters';
-      break;
-    case 'dueDate':
-      modifiedFilterCurrentState = currentDueDateFilters;
-      modifiedFilterName = 'dueDateFilters';
-      break;
-    case 'classType':
-      modifiedFilterCurrentState = currentClassTypeFilters;
-      modifiedFilterName = 'classTypeFilters';
-      break;
-    default:
-      break;
+      case 'subject':
+        modifiedFilterCurrentState = currentSubjectFilters;
+        modifiedFilterName = 'subjectFilters';
+        break;
+      case 'status':
+        modifiedFilterCurrentState = currentStatusFilters;
+        modifiedFilterName = 'statusFilters';
+        break;
+      case 'score':
+        modifiedFilterCurrentState = currentScoreStatusFilters;
+        modifiedFilterName = 'scoreStatusFilters';
+        break;
+      case 'flags':
+        modifiedFilterCurrentState = currentFlagFilters;
+        modifiedFilterName = 'flagFilters';
+        break;
+      case 'dueDate':
+        modifiedFilterCurrentState = currentDueDateFilters;
+        modifiedFilterName = 'dueDateFilters';
+        break;
+      case 'classType':
+        modifiedFilterCurrentState = currentClassTypeFilters;
+        modifiedFilterName = 'classTypeFilters';
+        break;
+      default:
+        break;
     }
     // Decide whether we're adding or removing the selected filter
     if (modifiedFilterCurrentState.indexOf(filter) === -1) {
