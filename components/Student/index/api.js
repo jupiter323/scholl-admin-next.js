@@ -35,9 +35,16 @@ export const fetchStudentsApi = () =>
         stats: {
           complete: student.stats.complete,
           overdue: student.stats.overdue,
-          pracitceTests: student.stats.practice_tests,
+          practiceTests: student.stats.practice_tests,
           sessionsComplete: student.stats.sessions_complete,
           totalSessions: student.stats.total_sessions,
+        },
+        testScores: {
+          initialScore: '',
+          currentScore: '',
+        },
+        courseContext: {
+          targetScore: '',
         },
       }));
       return students;

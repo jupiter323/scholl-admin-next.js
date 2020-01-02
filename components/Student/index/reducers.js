@@ -10,7 +10,7 @@ const initialState = fromJS({
   students: [],
   assignLessonsModalOpen:false,
   assignWorkSheetsModalOpen:false,
-  calendarRows:[],
+  calendarRows: [],
 });
 
 function studentReducer(state = initialState, action) {

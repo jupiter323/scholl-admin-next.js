@@ -12,10 +12,6 @@ module.exports = {
   "parserOptions": {
     "ecmaVersion": 7,
     "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    }
   },
   "rules": {
     "arrow-parens": 0,
@@ -46,7 +42,7 @@ module.exports = {
     "import/no-webpack-loader-syntax": 0,
     "import/prefer-default-export": 0,
     "indent": [
-      2,
+      1,
       2,
       {
         "SwitchCase": 1
@@ -66,6 +62,8 @@ module.exports = {
     "no-console": 1,
     "no-use-before-define": 0,
     "prefer-template": 2,
+    "react/jsx-indent": 0,
+    "react/sort-comp": 0,
     "react/forbid-prop-types": 0,
     "react/jsx-first-prop-new-line": [
       2,

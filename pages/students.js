@@ -14,6 +14,8 @@ import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
 
+import { studentFirstNameAscending, studentFirstNameDescending, studentLastNameAscending, studentLastNameDescending } from '../components/utils/sortFunctions';
+
 import {
   deleteStudentApi,
 } from '../components/Student/index/api';
@@ -23,6 +25,13 @@ const idGenerator = () => subIdGenerator() + subIdGenerator() + '-' + subIdGener
   subIdGenerator() + '-' + subIdGenerator() + subIdGenerator() + subIdGenerator();
 
 const subIdGenerator = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+
+const locationMap = {
+  Austin: 'Austin',
+  Miami: 'Miami',
+  option1: 'Option 1',
+  option2: 'Option 2',
+};
 
 class Students extends Component {
   constructor(props) {
@@ -34,8 +43,9 @@ class Students extends Component {
       locationModalOpen: false,
       dropdownIsOpen: false,
       dropdownIndex: null,
-      sort: "",
-      filterName: "",
+      sort: '',
+      nameFilter: '',
+      location: '',
       newStudent: {
         active: false,
         studentInformation: {
@@ -62,7 +72,6 @@ class Students extends Component {
 
   componentDidMount = () => {
     const { onFetchStudents } = this.props;
-    console.warn('should fetch2!')
     onFetchStudents();
   }
 
@@ -72,8 +81,8 @@ class Students extends Component {
   onCloseLocationModal = () => this.setState({ locationModalOpen: false });
 
   onSetSort = (sort) => this.setState({ sort });
-  onSetFilteredState = (filterName) => this.setState({ filterName });
-  onUnsetFilteredState = () => this.setState({ filterName: '' });
+  onSetFilteredState = (nameFilter) => this.setState({ nameFilter });
+  onUnsetFilteredState = () => this.setState({ nameFilter: '' });
 
   onSetFilteredLocationState = (location) => this.setState({ location });
   onUnsetFilteredLocationState = () => this.setState({ location: '' });
@@ -156,11 +165,11 @@ class Students extends Component {
   };
 
   onFilterByName = () => {
-    const { students, filterName } = this.state;
+    const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
       const { lastName, firstName } = currentStudent;
       const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
-      if (studentString.indexOf(filterName) !== -1 && finalArr.indexOf(currentStudent) === -1) {
+      if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
         finalArr.push(currentStudent);
       }
       return finalArr;
@@ -219,6 +228,68 @@ class Students extends Component {
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
+  // eslint-disable-next-line consistent-return
+  onSortStudents = students => {
+    const { sort } = this.state;
+    switch (sort) {
+    case 'lastNameDescending':
+      return students.sort(studentLastNameDescending);
+    case 'lastNameAscending':
+      return students.sort(studentLastNameAscending);
+    case 'firstNameDescending':
+      return students.sort(studentFirstNameDescending);
+    case 'firstNameAscending':
+      return students.sort(studentFirstNameAscending);
+    default:
+      break;
+    }
+  }
+
+  getMappableStudents = () => {
+    const { nameFilter, location, sort, students } = this.state;
+    let mappableStudents = students;
+    if (nameFilter.length) {
+      mappableStudents = this.onFilterByName();
+    }
+    if (location.length) {
+      mappableStudents = this.onFilterByLocation();
+    }
+    if (sort) {
+      return this.onSortStudents(mappableStudents);
+    }
+    return mappableStudents;
+  }
+
+  onFilterByLocation = () => {
+    const { location: locationFilter, students: allStudents } = this.state;
+    let students = allStudents;
+    students = students.filter(student => {
+      const locationNames = student.location.locations.reduce((finalArr, currentLocation) => {
+        finalArr.push(currentLocation.locationName);
+        return finalArr;
+      }, []);
+      if (locationNames.indexOf(locationMap[locationFilter]) !== -1) {
+        return true;
+      }
+      return false;
+    });
+    return students;
+  }
+
+  onFilterByName = () => {
+    const { students, nameFilter } = this.state;
+    return students.reduce((finalArr, currentStudent) => {
+      const { studentInformation: { firstName, lastName } } = currentStudent;
+      const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
+      if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
+        finalArr.push(currentStudent);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  arrayItemRemover = (array, value) => array.filter((student) => student !== value)
+
   handleChange = (event, name, section) => {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
@@ -228,10 +299,26 @@ class Students extends Component {
     this.setState({ newStudent: updatedStudent });
   };
 
-  arrayItemRemover = (array, value) => array.filter((student) => student !== value)
+  mapStudents = () => this.getMappableStudents().map((student, index) => (
+    <StudentCard
+      student={student}
+      index={index}
+      id={student.id}
+      key={student.id}
+      dropdownIsOpen={this.state.dropdownIsOpen}
+      dropdownIndex={this.state.dropdownIndex}
+      onSetDropdown={this.onSetDropdown}
+      onCloseDropdown={this.onCloseDropdown}
+      onHandleStudentCard={() => this.onHandleStudentCard(index)}
+      onDeleteStudent={() => this.onDeleteStudent(index)}
+      onCloneStudent={() => this.onCloneStudent(index, student.id)}
+      onSaveStudentChanges={this.onSaveStudentChanges}
+    />
+  ));
 
   render() {
-    const { studentModalOpen, students, selectedStudent } = this.state;
+    const { studentModalOpen, selectedStudent } = this.state;
+    // const { students: students2 } = this.props;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5">
@@ -265,22 +352,7 @@ class Students extends Component {
                 />
                 <div className="content-section">
                   <div className="row d-flex-content">
-                    {students.map((student, index) => (
-                      <StudentCard
-                        student={student}
-                        index={index}
-                        id={student.id}
-                        key={student.id}
-                        dropdownIsOpen={this.state.dropdownIsOpen}
-                        dropdownIndex={this.state.dropdownIndex}
-                        onSetDropdown={this.onSetDropdown}
-                        onCloseDropdown={this.onCloseDropdown}
-                        onHandleStudentCard={() => this.onHandleStudentCard(index)}
-                        onDeleteStudent={() => this.onDeleteStudent(index)}
-                        onCloneStudent={() => this.onCloneStudent(index, student.id)}
-                        onSaveStudentChanges={this.onSaveStudentChanges}
-                      />
-                    ))}
+                    {this.mapStudents()}
                   </div>
                 </div>
                 <a href="#" className="waves-effect waves-teal btn add-btn modal-trigger" onClick={this.onOpenStudentModal}><i className="material-icons">add</i>New Student</a>
@@ -312,7 +384,7 @@ class Students extends Component {
 }
 
 Students.propTypes = {
-  students: PropTypes.array.isRequired,
+  // students: PropTypes.array.isRequired,
   onFetchStudents: PropTypes.func.isRequired,
   onAddNewStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,

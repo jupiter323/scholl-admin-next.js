@@ -18,6 +18,26 @@ export const lastNameDescending = ({ accountInfo: { lastName: lastNameA } }, { a
   return 0;
 };
 
+export const studentFirstNameAscending = ({ studentInformation: { firstName: firstNameA } }, { studentInformation: { firstName: firstNameB } }) => {
+  if (firstNameA < firstNameB) { return -1; }
+  return 0;
+};
+
+export const studentFirstNameDescending = ({ studentInformation: { firstName: firstNameA } }, { studentInformation: { firstName: firstNameB } }) => {
+  if (firstNameA > firstNameB) { return -1; }
+  return 0;
+};
+
+export const studentLastNameAscending = ({ studentInformation: { lastName: lastNameA } }, { studentInformation: { lastName: lastNameB } }) => {
+  if (lastNameA < lastNameB) { return -1; }
+  return 0;
+};
+
+export const studentLastNameDescending = ({ studentInformation: { lastName: lastNameA } }, { studentInformation: { lastName: lastNameB } }) => {
+  if (lastNameA > lastNameB) { return -1; }
+  return 0;
+};
+
 export const dueDate = ({ dueDate: dueDateA }, { dueDate: dueDateB }) => {
   if (dueDateA > dueDateB) { return -1; }
   return 0;
