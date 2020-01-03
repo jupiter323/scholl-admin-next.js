@@ -154,6 +154,18 @@ export const updateInstructorAddressApi = body =>
     .then(res => res.json())
     .catch(err => err);
 
+export const updateInstructorPhoneApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-phone`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
 export const addInstructorToLocationApi = body =>
   fetch(`${API_URL}/api/commands/add-instructor-to-location`, {
     method: "PATCH",
@@ -176,5 +188,6 @@ export default [
   updateInstructorCityApi,
   updateInstructorZipApi,
   updateInstructorAddressApi,
+  updateInstructorPhoneApi,
   addInstructorToLocationApi,
 ];
