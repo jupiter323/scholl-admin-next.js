@@ -35,6 +35,63 @@ export function deleteStudent(id) {
     }
 }
 
+export function updateStudentAddress(address) {
+    return {
+        type: UPDATE_STUDENT_ADDRESS,
+        address,
+    }
+}
+
+export function updateStudentCity(city) {
+    return {
+        type: UPDATE_STUDENT_CITY,
+        city,
+    }
+}
+
+export function updateStudentEmail(email) {
+    return {
+        type: UPDATE_STUDENT_EMAIL,
+        email,
+    }
+}
+
+export function updateStudentFirstName(firstName) {
+    return {
+        type: UPDATE_STUDENT_FIRSTNAME,
+        firstName,
+    }
+}
+
+export function updateStudentLastName(lastName) {
+    return {
+        type: UPDATE_STUDENT_LASTNAME,
+        lastName,
+    }
+}
+
+export function updateStudentPhone(phone) {
+    return {
+        type: UPDATE_STUDENT_PHONE,
+        phone,
+    }
+}
+
+
+export function updateStudentState(state) {
+    return {
+        type: UPDATE_STUDENT_STATE,
+        state,
+    }
+}
+
+export function updateStudentZip(zip) {
+    return {
+        type: UPDATE_STUDENT_ZIP,
+        zip,
+    }
+}
+
 export function setAssignLessonsModalOpen(value){
     return {
         type:SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
