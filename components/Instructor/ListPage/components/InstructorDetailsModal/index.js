@@ -140,10 +140,7 @@ class InstructorDetailsModal extends React.Component {
     const {onUpdateInstructorFirstName, onUpdateInstructorLastName, onUpdateInstructorEmail, onUpdateInstructorState, onUpdateInstructorCity, onUpdateInstructorZip, onUpdateInstructorAddress, onUpdateInstructorPhone} = this.props;
     const { updatedInstructor: previousInstructorState } = this.state;
     const value = event.target ? event.target.value : event;
-    // Decide what instructor updates to dispatch
-    console.log(name);
-    console.log(value);
-    console.log(previousInstructorState);
+    // Dispatch which ever field name was changed
     const instructor_id = previousInstructorState.id;
     switch (name) {
       case "firstName":

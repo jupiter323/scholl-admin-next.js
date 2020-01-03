@@ -92,9 +92,7 @@ export function* watchForUpdateInstructorLastName() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_LASTNAME);
-      console.log(value);
       const response = yield call(updateInstructorLastNameApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorLastNameApi."
@@ -110,9 +108,7 @@ export function* watchForUpdateInstructorEmail() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_EMAIL);
-      console.log(value);
       const response = yield call(updateInstructorEmailApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorEmailApi."
@@ -128,9 +124,7 @@ export function* watchForUpdateInstructorState() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_STATE);
-      console.log(value);
       const response = yield call(updateInstructorStateApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorStateApi."
@@ -146,9 +140,7 @@ export function* watchForUpdateInstructorCity() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_CITY);
-      console.log(value);
       const response = yield call(updateInstructorCityApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorCityApi."
@@ -164,9 +156,7 @@ export function* watchForUpdateInstructorZip() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_ZIP);
-      console.log(value);
       const response = yield call(updateInstructorZipApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorZipApi."
@@ -182,9 +172,7 @@ export function* watchForUpdateInstructorAddress() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_ADDRESS);
-      console.log(value);
       const response = yield call(updateInstructorAddressApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorAddressApi."
@@ -200,9 +188,7 @@ export function* watchForUpdateInstructorPhone() {
   while (true) {
     try {
       const {value} = yield take(UPDATE_INSTRUCTOR_PHONE);
-      console.log(value);
       const response = yield call(updateInstructorPhoneApi, value);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateInstructorPhoneApi."
