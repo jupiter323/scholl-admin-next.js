@@ -9,8 +9,8 @@ export const fetchInstructorsApi = () =>
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const { students = [] } = data;
-      const formattedInstructors = students.reduce(
+      const { instructors = [] } = data;
+      const formattedInstructors = instructors.reduce(
         (finalArry, currentInstructor) => {
           const {
             id,

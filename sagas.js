@@ -10,10 +10,29 @@ import {
   setStudents,
   addStudent,
 } from "./components/Student/index/actions";
-import { studentApi } from "./api";
+import {
+  UPDATE_INSTRUCTOR_FIRSTNAME,
+    UPDATE_INSTRUCTOR_LASTNAME,
+    UPDATE_INSTRUCTOR_EMAIL,
+    UPDATE_INSTRUCTOR_STATE,
+    UPDATE_INSTRUCTOR_CITY,
+    UPDATE_INSTRUCTOR_ZIP,
+    UPDATE_INSTRUCTOR_ADDRESS,
+    UPDATE_INSTRUCTOR_PHONE,
+    ADD_INSTRUCTOR_LOCATION,
+} from './components/Instructor/index/constants';
+import { studentApi, instructorApi } from "./api";
 const {fetchStudentsApi, addNewStudentApi} = studentApi;
+const {updateInstructorFirstNameApi,
+  updateInstructorLastNameApi,
+  updateInstructorEmailApi,
+  updateInstructorStateApi,
+  updateInstructorCityApi,
+  updateInstructorZipApi,
+  updateInstructorAddressApi,
+  addInstructorToLocationApi} = instructorApi;
 
-/** ******************************************    STUDENTS    ********************************************/
+/** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
     yield take(FETCH_STUDENTS);
@@ -51,11 +70,28 @@ export function* watchForDeleteStudent() {
     }
   }
 }
+/** ******************************************    INSTRUCTORS    ******************************************* */
+export function* watchForUpdateInstructorFirstName() {
+  while (true) {
+    try {
+      const body = yield take(UPDATE_INSTRUCTOR_FIRSTNAME);
+      const response = yield call(updateInstructorFirstNameApi, body);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong when updating instructor first name api."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorFirstName saga", err);
+    }
+  }
+}
 
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
     watchForAddStudent(),
     watchForDeleteStudent(),
+    watchForUpdateInstructorFirstName(),
   ]);
 }
