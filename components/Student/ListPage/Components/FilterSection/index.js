@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import locationOptions from '../../../../utils/locationOptions';
 import sortOptions from '../../../../utils/sortOptions';
-
+import {searchStudents} from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -58,7 +61,17 @@ class FilterSection extends React.Component {
     const updatedState = update(this.state, {
       $merge: { [name]: value },
     });
-    this.setState(updatedState);
+    this.setState(updatedState, () => {
+      // Collect inputs and dispatch search
+      const {onSearchStudents} = this.props;
+      const {name, location, sort} = this.state;
+      const filters = {
+        name,
+        location,
+        sort,
+      }
+      onSearchStudents(filters);
+    });
     if (name === 'location') {
       if (event === '') {
         return onUnsetFilteredLocationState();
@@ -369,6 +382,15 @@ onSetFilteredState: PropTypes.func.isRequired,
 onUnsetFilteredState: PropTypes.func.isRequired,
 onSetFilteredLocationState: PropTypes.func.isRequired,
 onUnsetFilteredLocationState: PropTypes.func.isRequired,
+onSearchStudents: PropTypes.func.isRequired,
 };
 
-export default FilterSection;
+const mapStateToProps = createStructuredSelector({});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSearchStudents: (filters) => dispatch(searchStudents(filters)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(FilterSection);
