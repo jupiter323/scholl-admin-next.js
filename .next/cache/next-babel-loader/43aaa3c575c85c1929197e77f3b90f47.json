@@ -1,1 +1,0 @@
-{"ast":null,"code":"var __jsx = React.createElement;\nimport React from 'react';\nimport { components } from 'react-select';\nexport default (props => __jsx(\"div\", {\n  className: \"chip\"\n}, __jsx(components.MultiValueLabel, props)));","map":null,"metadata":{},"sourceType":"module"}

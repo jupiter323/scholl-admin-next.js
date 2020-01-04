@@ -1,1 +1,0 @@
-{"ast":null,"code":"var __jsx = React.createElement;\nimport React, { Component } from 'react'; // eslint-disable-next-line react/prefer-stateless-function\n\nclass Help extends Component {\n  render() {\n    return __jsx(\"h1\", null, \"Help\");\n  }\n\n}\n\nexport default Help;","map":null,"metadata":{},"sourceType":"module"}

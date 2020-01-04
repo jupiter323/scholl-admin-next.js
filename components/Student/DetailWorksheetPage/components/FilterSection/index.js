@@ -34,7 +34,7 @@ class FilterSection extends React.Component {
     } else {
       const filterIndex = currentActiveFilters.indexOf(filter);
       activeFilters = update(currentActiveFilters, {
-        $splice: [[ filterIndex, 1 ]],
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ activeFilters });
@@ -344,6 +344,6 @@ FilterSection.propTypes = {
   onUnsetFilteredTopicState: PropTypes.func.isRequired,
   onSetFilteredState: PropTypes.func.isRequired,
   onUnsetFilteredState: PropTypes.func.isRequired,
-}
+};
 
 export default FilterSection;

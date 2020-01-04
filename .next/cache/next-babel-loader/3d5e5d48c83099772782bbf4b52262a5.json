@@ -1,1 +1,0 @@
-{"ast":null,"code":"const genderOptions = [{\n  label: 'Male',\n  value: 'Male'\n}, {\n  label: 'Female',\n  value: 'Female'\n}];\nexport default genderOptions;","map":null,"metadata":{},"sourceType":"module"}

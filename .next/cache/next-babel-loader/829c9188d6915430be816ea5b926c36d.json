@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { SET_INSTRUCTORS } from './constants';\nexport function setInstructors(instructors) {\n  return {\n    type: SET_INSTRUCTORS,\n    instructors: instructors\n  };\n}","map":null,"metadata":{},"sourceType":"module"}
