@@ -4,6 +4,13 @@ const sampleStudentList = [
   {
     id: '1232',
     active: false,
+    stats: {
+      complete: 23,
+      overdue: 4,
+      practiceTests: 6,
+      sessionsComplete: 12,
+      totalSessions: 31,
+    },
     studentInformation: {
       firstName: 'Christian',
       lastName: 'Chavarro',
@@ -1040,6 +1047,13 @@ const sampleStudentList = [
   {
     id: '1233',
     active: true,
+    stats: {
+      complete: 23,
+      overdue: 4,
+      practiceTests: 6,
+      sessionsComplete: 12,
+      totalSessions: 31,
+    },
     studentInformation: {
       firstName: 'JJ',
       lastName: 'Abrams',
@@ -2077,6 +2091,13 @@ const sampleStudentList = [
   {
     id: '1234',
     active: false,
+    stats: {
+      complete: 23,
+      overdue: 4,
+      practiceTests: 6,
+      sessionsComplete: 12,
+      totalSessions: 31,
+    },
     studentInformation: {
       firstName: 'Caroline',
       lastName: 'Ingalls',
@@ -3113,6 +3134,13 @@ const sampleStudentList = [
   {
     id: '1236',
     active: true,
+    stats: {
+      complete: 23,
+      overdue: 4,
+      practiceTests: 6,
+      sessionsComplete: 12,
+      totalSessions: 31,
+    },
     studentInformation: {
       firstName: 'Bob',
       lastName: 'Ross',

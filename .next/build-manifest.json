@@ -1,79 +1,26 @@
 {
-  "devFiles": [],
+  "devFiles": [
+    "static/development/dll/dll_f630629620ab07978b67.js",
+    "static/development/dll/dll_f630629620ab07978b67.js.map"
+  ],
   "pages": {
     "/_app": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
     ],
     "/_error": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
     ],
-    "/account": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/all-instructors": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/all-locations": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/calendar": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/css/styles.470ae009.chunk.css",
-      "static/chunks/styles.47767970dd605646fb94.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/classes": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/courseTemplates": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/dashboard": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/help": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/instructors": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/locations": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
+    "/_polyfills": [
+      "static/runtime/polyfills.js",
+      "static/runtime/polyfills.js.map"
     ],
     "/students": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/css/styles.470ae009.chunk.css",
-      "static/chunks/styles.47767970dd605646fb94.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
-    ],
-    "/worksheets": [
-      "static/runtime/webpack-131274bb48ed2c2bbaa8.js",
-      "static/chunks/commons.4d2767e655c985b722d0.js",
-      "static/runtime/main-fe6863083930bff7807a.js"
+      "static/runtime/webpack.js",
+      "static/css/styles.chunk.css",
+      "static/chunks/styles.js",
+      "static/runtime/main.js"
     ]
   }
 }

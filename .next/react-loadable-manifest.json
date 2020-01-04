@@ -1,10 +1,18 @@
 {
   "../../../../FormComponents/DatePicker": [
     {
-      "id": "SdOD",
+      "id": "./components/FormComponents/DatePicker/index.js",
       "name": "./components/FormComponents/DatePicker/index.js",
-      "file": "static/chunks/3.1740e2561a3152ac8114.js",
-      "publicPath": "static/chunks/3.1740e2561a3152ac8114.js"
+      "file": "static/chunks/1.js",
+      "publicPath": "static/chunks/1.js"
+    }
+  ],
+  "./dev/noop": [
+    {
+      "id": "./node_modules/next/dist/client/dev/noop.js",
+      "name": "./node_modules/next/dist/client/dev/noop.js",
+      "file": "static/chunks/0.js",
+      "publicPath": "static/chunks/0.js"
     }
   ]
 }
