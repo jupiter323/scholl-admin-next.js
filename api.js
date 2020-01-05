@@ -7,6 +7,8 @@ import {
 
 import { createClassApi } from './components/Classes/index/api';
 
+import { fetchInstructorsApi } from './components/Instructor/index/api';
+
 export const classApi = {
   createClassApi,
 };
@@ -16,4 +18,8 @@ export const studentApi = {
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
+};
+
+export const instructorApi = {
+  fetchInstructorsApi,
 };
