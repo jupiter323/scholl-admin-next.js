@@ -6,13 +6,13 @@ import {
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
 import { CREATE_CLASS } from './components/Classes/index/constants';
-import { FETCH_INSTRUCTORS } from './components/Instructor/index/constants';
+import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS } from './components/Instructor/index/constants';
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
 const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi } = studentApi;
 const { createClassApi } = classApi;
-const { fetchInstructorsApi } = instructorApi;
+const { fetchInstructorsApi, searchInstructorsApi } = instructorApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -118,6 +118,24 @@ export function* fetchInstructors() {
   }
 }
 
+export function* watchForSearchInstructors() {
+  while (true) {
+    const { filters } = yield take(SEARCH_INSTRUCTORS);
+    yield call(searchInstructors, filters);
+  }
+}
+
+export function* searchInstructors(filters) {
+  try {
+    const instructors = yield call(searchInstructorsApi, filters);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn("Error occurred in searchInstructors saga", err);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -126,5 +144,6 @@ export default function* defaultSaga() {
     watchForDeleteStudent(),
     watchForCreateClass(),
     watchForFetchInstructors(),
+    watchForSearchInstructors(),
   ]);
 }
