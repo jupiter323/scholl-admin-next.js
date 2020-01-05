@@ -3,8 +3,6 @@ module.exports = {
   "extends": [
     "airbnb",
     "plugin:jsx-control-statements/recommended",
-    "prettier",
-    "prettier/react"
   ],
   "plugins": [
     "react",
@@ -14,10 +12,6 @@ module.exports = {
   "parserOptions": {
     "ecmaVersion": 7,
     "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    }
   },
   "rules": {
     "arrow-parens": 0,
@@ -40,6 +34,7 @@ module.exports = {
     "no-trailing-spaces": 2,
     "no-plusplus": 0,
     "import/imports-first": 0,
+    "no-prototype-builtins": 0,
     "import/newline-after-import": 0,
     "import/no-dynamic-require": 0,
     "import/no-extraneous-dependencies": 0,
@@ -47,13 +42,13 @@ module.exports = {
     "import/no-unresolved": 2,
     "import/no-webpack-loader-syntax": 0,
     "import/prefer-default-export": 0,
-    // "indent": [
-    //   2,
-    //   2,
-    //   {
-    //     "SwitchCase": 1
-    //   }
-    // ],
+    "indent": [
+      1,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
     "jsx-a11y/aria-props": 2,
     "jsx-a11y/anchor-has-content": 0,
     "jsx-a11y/heading-has-content": 0,
@@ -68,6 +63,8 @@ module.exports = {
     "no-console": 1,
     "no-use-before-define": 0,
     "prefer-template": 2,
+    "react/jsx-indent": 0,
+    "react/sort-comp": 0,
     "react/forbid-prop-types": 0,
     "react/jsx-first-prop-new-line": [
       2,

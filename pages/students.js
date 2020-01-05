@@ -5,19 +5,19 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import {fetchStudents, createStudent, deleteStudent} from '../components/Student/index/actions';
-import {makeSelectStudents} from '../components/Student/index/selectors';
+import { fetchStudents, createStudent, deleteStudent } from '../components/Student/index/actions';
+import { makeSelectStudents } from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
-import sampleStudentList from '../components/Student/utils/sampleStudentList';
+import { deleteStudentApi } from '../components/Student/index/api';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
 
 
-const idGenerator = () => `${subIdGenerator() + subIdGenerator()  }-${  subIdGenerator()  }-${  subIdGenerator()  }-${
-  subIdGenerator()  }-${  subIdGenerator()  }${subIdGenerator()  }${subIdGenerator()}`
-const subIdGenerator = () =>Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
+const idGenerator = () => `${subIdGenerator() + subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${
+  subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
+const subIdGenerator = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 
 class Students extends Component {
   constructor(props) {
@@ -197,6 +197,7 @@ class Students extends Component {
     onDeleteStudent(students[index].id);
     const newStudentArray = this.arrayItemRemover(students, students[index]);
     this.setState({ students: newStudentArray });
+    // eslint-disable-next-line camelcase
     const student_id = students[index].id;
     deleteStudentApi({ student_id });
     this.onCloseDropdown();
@@ -375,7 +376,7 @@ Students.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-    students: makeSelectStudents(),
+  students: makeSelectStudents(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

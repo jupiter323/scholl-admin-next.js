@@ -5,17 +5,19 @@ import {
   DELETE_STUDENT,
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
+import { CREATE_CLASS } from './components/Classes/index/constants';
 import {
   setStudents,
 } from "./components/Student/index/actions";
-import { studentApi } from "./api";
-const {fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi} = studentApi;
+import { studentApi, classApi } from "./api";
+const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi } = studentApi;
+const { createClassApi } = classApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
     yield take(FETCH_STUDENTS);
-    yield call(fetchStudents)
+    yield call(fetchStudents);
   }
 }
 
@@ -32,7 +34,7 @@ export function* fetchStudents() {
 
 export function* watchForSearchStudents() {
   while (true) {
-    const {filters} = yield take(SEARCH_STUDENTS);
+    const { filters } = yield take(SEARCH_STUDENTS);
     yield call(searchStudents, filters);
   }
 }
@@ -78,11 +80,31 @@ export function* watchForDeleteStudent() {
   }
 }
 
+export function* watchForCreateClass() {
+  while (true) {
+    const { newClass } = yield take(CREATE_CLASS);
+    console.warn('saga yaaay!', newClass);
+    yield call(createClass, newClass);
+  }
+}
+
+export function* createClass(newClass) {
+  try {
+    const response = yield call(createClassApi, newClass);
+    if (response.exception && response.exception.length) {
+      console.warn('Error occurred in createClass saga', response);
+    }
+  } catch (err) {
+    console.warn('Error occurred in createClass saga', err);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
     watchForSearchStudents(),
     watchForCreateStudent(),
     watchForDeleteStudent(),
+    watchForCreateClass(),
   ]);
 }
