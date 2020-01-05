@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable jsx-control-statements/jsx-jcs-no-undef */
 const API_URL = process.env.API_URL;
 
 export const fetchStudentsApi = () =>
@@ -237,17 +239,17 @@ export const updateStudentActivationApi = (body) =>
     .then ( res => res.json())
     .catch( err => err);
 
-  export const deleteStudentApi = id =>
-    fetch(`${API_URL}/api/commands/delete-student`, {
-        method: "DELETE",
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ student_id: id }),
-    })
-        .then(res => res.json())
-        .catch(err => err);
+export const deleteStudentApi = id =>
+  fetch(`${API_URL}/api/commands/delete-student`, {
+    method: "DELETE",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ student_id: id }),
+  })
+    .then(res => res.json())
+    .catch(err => err);
 
 
 export default [

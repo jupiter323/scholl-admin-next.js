@@ -20,7 +20,7 @@ class ClassCard extends React.Component {
   };
 
   onCloseClassDetailsModal = () => this.setState({ classDetailsModalOpen: false });
-  
+
   onCloneClass = () => this.props.onCloneClass(this.props.classroom)
 
   onOpenDeleteModal = () => this.setState({ deleteModalOpen: true });
@@ -45,7 +45,7 @@ class ClassCard extends React.Component {
   render() {
     const { dropdownIsOpen, dropdownIndex, index,classroom,onHandleClassCard,onCloneClass,onDeleteClass,onSaveClassChanges } = this.props;
     const { deleteModalOpen, classDetailsModalOpen } = this.state;
-    const {summary:{ 
+    const { summary: {
       amount_students,
       start_date,
       end_date,
@@ -56,7 +56,7 @@ class ClassCard extends React.Component {
       average_score,
       achieved_target_score,
       average_practice_tests_completed,
-      instruction}
+      instruction },
     } = classroom;
     return (
       <React.Fragment>

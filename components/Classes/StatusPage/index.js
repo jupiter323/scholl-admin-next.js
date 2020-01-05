@@ -17,7 +17,7 @@ class StatusPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: "summary"
+      active: "summary",
     };
   }
 

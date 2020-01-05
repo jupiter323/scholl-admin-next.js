@@ -14,23 +14,33 @@ import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
 import LocationModal from '../components/Location/components/LocationModal';
 
+import { studentFirstNameAscending, studentFirstNameDescending, studentLastNameAscending, studentLastNameDescending } from '../components/utils/sortFunctions';
 
+// eslint-disable-next-line prefer-template
 const idGenerator = () => `${subIdGenerator() + subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${
   subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+
+const locationMap = {
+  Austin: 'Austin',
+  Miami: 'Miami',
+  option1: 'Option 1',
+  option2: 'Option 2',
+};
 
 class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedStudent: null,
-      students: this.props.students,
+      students: [],
       studentModalOpen: false,
       locationModalOpen: false,
       dropdownIsOpen: false,
       dropdownIndex: null,
-      sort: "",
-      filterName: "",
+      sort: '',
+      filterName: '',
+      location: '',
       newStudent: {
         active: false,
         studentInformation: {
@@ -60,16 +70,13 @@ class Students extends Component {
     onFetchStudents();
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate() {
+    const { students: studentState } = this.state;
     const { students } = this.props;
-    const { students: prevStudents } = prevProps;
-    if (
-      (this.state.students.length === 0 && students.length > 0) ||
-      students.length !== prevStudents.length
-    ) {
+    if (studentState.length === 0 && students.length > 0 ) {
       this.setState({ students });
     }
-  };
+  }
 
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
@@ -166,19 +173,16 @@ class Students extends Component {
   };
 
   onFilterByName = () => {
-    const { students, filterName } = this.state;
+    const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
-      const { lastName, firstName } = currentStudent;
-      const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
-      if (
-        studentString.indexOf(filterName) !== -1 &&
-        finalArr.indexOf(currentStudent) === -1
-      ) {
+      const { studentInformation: { firstName, lastName } } = currentStudent;
+      const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
+      if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
         finalArr.push(currentStudent);
       }
       return finalArr;
     }, []);
-  };
+  }
 
   onHandleStudentCard = index => {
     const { students } = this.state;
@@ -255,11 +259,53 @@ class Students extends Component {
   onCloseDropdown = () =>
     this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
-  arrayItemRemover = (array, value) =>
-    array.filter(student => student !== value);
+  // eslint-disable-next-line consistent-return
+  onSortStudents = students => {
+    const { sort } = this.state;
+    switch (sort) {
+      case 'lastNameDescending':
+        return students.sort(studentLastNameDescending);
+      case 'lastNameAscending':
+        return students.sort(studentLastNameAscending);
+      case 'firstNameDescending':
+        return students.sort(studentFirstNameDescending);
+      case 'firstNameAscending':
+        return students.sort(studentFirstNameAscending);
+      default:
+        break;
+    }
+  }
+
+  getMappableStudents = () => {
+    const { sort, students } = this.state;
+    let mappableStudents = students;
+    if (sort) {
+      return this.onSortStudents(mappableStudents);
+    }
+    return mappableStudents;
+  }
+
+  arrayItemRemover = (array, value) => array.filter((student) => student !== value)
+
+  mapStudents = () => this.getMappableStudents().map((student, index) => (
+    <StudentCard
+      student={student}
+      index={index}
+      id={student.id}
+      key={student.id}
+      dropdownIsOpen={this.state.dropdownIsOpen}
+      dropdownIndex={this.state.dropdownIndex}
+      onSetDropdown={this.onSetDropdown}
+      onCloseDropdown={this.onCloseDropdown}
+      onHandleStudentCard={() => this.onHandleStudentCard(index)}
+      onDeleteStudent={() => this.onDeleteStudent(index)}
+      onCloneStudent={() => this.onCloneStudent(index, student.id)}
+      onSaveStudentChanges={this.onSaveStudentChanges}
+    />
+  ));
 
   render() {
-    const { studentModalOpen, students, selectedStudent } = this.state;
+    const { studentModalOpen, selectedStudent } = this.state;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5">
@@ -303,35 +349,10 @@ class Students extends Component {
                 />
                 <div className="content-section">
                   <div className="row d-flex-content">
-                    {students.map((student, index) => (
-                      <StudentCard
-                        student={student}
-                        index={index}
-                        id={student.id}
-                        key={student.id}
-                        dropdownIsOpen={this.state.dropdownIsOpen}
-                        dropdownIndex={this.state.dropdownIndex}
-                        onSetDropdown={this.onSetDropdown}
-                        onCloseDropdown={this.onCloseDropdown}
-                        onHandleStudentCard={() =>
-                          this.onHandleStudentCard(index)
-                        }
-                        onDeleteStudent={() => this.onDeleteStudent(index)}
-                        onCloneStudent={() =>
-                          this.onCloneStudent(index, student.id)
-                        }
-                        onSaveStudentChanges={this.onSaveStudentChanges}
-                      />
-                    ))}
+                    {this.mapStudents()}
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="waves-effect waves-teal btn add-btn modal-trigger"
-                  onClick={this.onOpenStudentModal}
-                >
-                  <i className="material-icons">add</i>New Student
-                </a>
+                <a href="#" className="waves-effect waves-teal btn add-btn modal-trigger" onClick={this.onOpenStudentModal}><i className="material-icons">add</i>New Student</a>
                 <StudentModal
                   open={studentModalOpen}
                   onClose={this.onCloseStudentModal}

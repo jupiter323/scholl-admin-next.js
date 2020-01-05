@@ -20,11 +20,11 @@ export const setToken = (access_token,refresh_token) => {
 export const getToken = () => {
 // Retrieves the user token from localStorage
   if (typeof window !== 'undefined') {
-    //Is running on the client
+    // Is running on the client
     return localStorage.getItem('access_token')
-  } else {
-    console.log('we are running on the server');
   }
+    console.log('we are running on the server');
+
 }
 
 export const logout = () => {
@@ -39,7 +39,7 @@ export const isTokenExpired = token => {
       if (decoded.exp < Date.now() / 1000) {
         // Checking if token is expired.
         return true;
-      } else return false;
+      } return false;
     } catch (err) {
       return false;
     }

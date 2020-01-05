@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { 
+import {
   SET_STUDENTS,
   SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
@@ -10,7 +10,7 @@ const initialState = fromJS({
   students: [],
   assignLessonsModalOpen:false,
   assignWorkSheetsModalOpen:false,
-  calendarRows:[],
+  calendarRows: [],
 });
 
 function studentReducer(state = initialState, action) {

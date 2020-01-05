@@ -18,14 +18,14 @@ const sampleClass = [
       lastName: 'manager',
       firstName: 'Company',
       email: 'test2@example.com',
-      gender: 'M'
+      gender: 'M',
     },
     contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
-      zip: '78751'
+      zip: '78751',
     },
   },
   {
@@ -47,16 +47,16 @@ const sampleClass = [
       lastName: 'Admin',
       firstName: 'Company',
       email: 'test2@example.com',
-      gender: 'M'
+      gender: 'M',
     },
     contactInfo: {
       phone: '1234567890',
       streetAddress: '1234 Test Road',
       city: 'Austin',
       state: 'TX',
-      zip: '78751'
+      zip: '78751',
     },
-  }
+  },
 ];
 
 export default sampleClass;

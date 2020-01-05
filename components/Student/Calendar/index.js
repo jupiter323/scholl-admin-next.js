@@ -23,7 +23,7 @@ import {
   getDaysInActiveMonth,
   getDaysInPreviousMonth,
   getDayDate,
-  getNextMonthAsCurrentMonth
+  getNextMonthAsCurrentMonth,
 } from "../../Dashboard/utils/dateAndCalendarUtils";
 
 
@@ -65,7 +65,7 @@ class Calendar extends Component {
     };
   }
 
-  
+
 
   // This is called onMount in CalendarHeader component to set the current month calendar rows, and every time the month changes afterward
   // IMPORTANT: activeMonthIndex is zero-based, meaning January is 0, February is 1, etc.
@@ -110,7 +110,7 @@ class Calendar extends Component {
             lessons: [],
             worksheets: [],
             testSections: [],
-            simulatedSat: []
+            simulatedSat: [],
           };
           // This if statement handles the case where the date spills over into the next month
           if (calDate === daysInActiveMonth) {
@@ -137,7 +137,7 @@ class Calendar extends Component {
             lessons: [],
             worksheets: [],
             testSections: [],
-            simulatedSat: []
+            simulatedSat: [],
           };
           // This if statement handles the case where the date spills over into the next month
           if (inMonth === false && calDate === daysInPreviousMonth) {
@@ -176,7 +176,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.sessions.push(session);
     const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     const { onSetCalendarRows } = this.props;
     onSetCalendarRows(updatedRows);
@@ -190,7 +190,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.lessons.push(...lessons);
     const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     const { onSetCalendarRows } = this.props;
     onSetCalendarRows(updatedRows);
@@ -212,7 +212,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.testSections.push(testSection);
     const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     const { onSetCalendarRows } = this.props;
     onSetCalendarRows(updatedRows);
@@ -227,7 +227,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.simulatedSat.push(simulatedSat);
     const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     const { onSetCalendarRows } = this.props;
     onSetCalendarRows(updatedRows);
@@ -246,7 +246,7 @@ class Calendar extends Component {
     this.setState(({ assignSessionModalOpen }) => ({
       assignSessionModalOpen: !assignSessionModalOpen,
       modalDate,
-      assignDropdownIsOpen: false
+      assignDropdownIsOpen: false,
     }));
   };
 
@@ -257,7 +257,7 @@ class Calendar extends Component {
     this.setState(({ assignTestSectionModalOpen }) => ({
       assignTestSectionModalOpen: !assignTestSectionModalOpen,
       modalDate,
-      assignDropdownIsOpen: false
+      assignDropdownIsOpen: false,
     }));
   };
 
@@ -268,7 +268,7 @@ class Calendar extends Component {
     this.setState(({ assignSimulatedSatModalOpen }) => ({
       assignSimulatedSatModalOpen: !assignSimulatedSatModalOpen,
       modalDate,
-      assignDropdownIsOpen: false
+      assignDropdownIsOpen: false,
     }));
   };
 
@@ -278,28 +278,28 @@ class Calendar extends Component {
     }
     this.setState(({ assignTargetTestDateModalOpen }) => ({
       assignTargetTestDateModalOpen: !assignTargetTestDateModalOpen,
-      assignDropdownIsOpen: false
+      assignDropdownIsOpen: false,
     }));
   };
 
   onToggleAddDropdown = () =>
     this.setState(({ addDropdownOpen }) => ({
       addDropdownOpen: !addDropdownOpen,
-      deleteDropdownOpen: false
+      deleteDropdownOpen: false,
     }));
   onToggleDeleteDropdown = () =>
     this.setState(({ deleteDropdownOpen }) => ({
       deleteDropdownOpen: !deleteDropdownOpen,
-      addDropdownOpen: false
+      addDropdownOpen: false,
     }));
 
   onToggleAssignDropdown = () =>
     this.setState(({ assignDropdownIsOpen }) => ({
-      assignDropdownIsOpen: !assignDropdownIsOpen
+      assignDropdownIsOpen: !assignDropdownIsOpen,
     }));
   onToggleHandleFilteredItemsDropdown = () =>
     this.setState(({ onToggleHandleFilteredItemsDropdown }) => ({
-      onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown
+      onToggleHandleFilteredItemsDropdown: !onToggleHandleFilteredItemsDropdown,
     }));
 
   onClearFilters = () => this.setState({ filters: [], eventFilters: [] });
@@ -341,8 +341,8 @@ class Calendar extends Component {
     const updatedRows = update(rows, {
       $splice: [+
         [sourceDateIndex, 1, sourceDate],
-        [destinationDateIndex, 1, destinationDate]
-      ]
+        [destinationDateIndex, 1, destinationDate],
+      ],
     });
     const { onSetCalendarRows } = this.props;
     onSetCalendarRows(updatedRows);
@@ -364,18 +364,18 @@ class Calendar extends Component {
     let updatedFilters;
     if (filters.indexOf(filter) === -1) {
       updatedFilters = update(filters, {
-        $push: [filter]
+        $push: [filter],
       });
     } else {
       const filterIndex = filters.indexOf(filter);
       updatedFilters = update(filters, {
-        $splice: [[filterIndex, 1]]
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ [filterName]: updatedFilters });
   };
 
-  
+
 
   onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
     if (event) {
@@ -392,14 +392,14 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.worksheets.push(...worksheets);
     const updatedRows = update(rows, {
-      $splice: [[updatedDateIndex, 1, updatedDate]]
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     const { onSetCalendarRows } = this.props;
     onSetCalendarRows(updatedRows);
     this.onToggleAssignWorksheetsModal();
   };
 
-  
+
 
   mapRows = () => {
     const {
@@ -408,10 +408,10 @@ class Calendar extends Component {
       activeDate,
       activeColumn,
       addDropdownOpen,
-      deleteDropdownOpen
+      deleteDropdownOpen,
     } = this.state;
     const {
-      rows
+      rows,
     } = this.props;
     let startIndex = -7;
     let endIndex = 0;
@@ -454,7 +454,7 @@ class Calendar extends Component {
       assignDropdownIsOpen,
       onToggleHandleFilteredItemsDropdown,
       filters,
-      eventFilters
+      eventFilters,
     } = this.state;
     const {
       assignLessonsModalOpen,
@@ -556,7 +556,7 @@ class Calendar extends Component {
                   className="dropdown-content"
                   style={{
                     display: assignDropdownIsOpen ? "block" : "none",
-                    opacity: assignDropdownIsOpen ? "100" : "0"
+                    opacity: assignDropdownIsOpen ? "100" : "0",
                   }}
                 >
                   <li>
@@ -637,7 +637,7 @@ class Calendar extends Component {
                     display: onToggleHandleFilteredItemsDropdown
                       ? "block"
                       : "none",
-                    opacity: onToggleHandleFilteredItemsDropdown ? "100" : "0"
+                    opacity: onToggleHandleFilteredItemsDropdown ? "100" : "0",
                   }}
                 >
                   <li className="dropdown-header">

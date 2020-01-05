@@ -112,7 +112,7 @@ class ClassModal extends React.Component {
         accountInfo,
         location,
         instructor,
-      }
+      },
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -180,9 +180,9 @@ class ClassModal extends React.Component {
                 </form>
               </div>
           </div>
-          <LocationModal 
-            open={locationModalOpen} 
-            onClose = {this.onCloseLocationModal} 
+          <LocationModal
+            open={locationModalOpen}
+            onClose = {this.onCloseLocationModal}
             handleLocationsChange ={(selectedLocations) => this.handleDetailsChange(selectedLocations, 'locations', 'location')}
         />
         <InstructorModal

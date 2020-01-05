@@ -96,7 +96,7 @@ class ClassDetailModal extends React.Component {
     const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = this.props;
     const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
     const { originalClassRoom: originalClassRoomState } = this.state;
-    const originalClassRoom = update(originalClassRoomState, {$merge: updatedClassRoom,});
+    const originalClassRoom = update(originalClassRoomState, {$merge: updatedClassRoom});
     this.setState({ originalClassRoom, updatedClassRoom }); // eslint-disable-line
   }
 
@@ -177,7 +177,7 @@ class ClassDetailModal extends React.Component {
   render() {
     const { open,onOpenDeleteModal,onDeleteClass, deleteModalOpen,index } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
-      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,},
+      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations},
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -203,7 +203,7 @@ class ClassDetailModal extends React.Component {
                             className="user-circle"
                             style={{
                               backgroundColor: "#0085ce",
-                              color: "#fff"
+                              color: "#fff",
                             }}
                           >
                             <img src="./static/images/img-owner01.jpg" alt="" />

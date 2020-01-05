@@ -79,11 +79,9 @@ class Classes extends React.Component {
 
   onCreateNewClassApi = (classroom) => {
     const { onCreateClass } = this.props;
-    const newId = this.state.classes.length + 1;
     // eslint-disable-next-line camelcase
     const { classInfo: { className }, accountInfo: { start_date, end_date, isExclude }, location: { locations }, instructor: { instructors } } = classroom;
     const formattedClassRoom = {
-      id: newId,
       name: className,
       start_date: Moment(start_date).format('YYYY-MM-DD'),
       end_date: Moment(end_date).format('YYYY-MM-DD'),

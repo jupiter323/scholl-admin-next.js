@@ -1,229 +1,173 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import moment from 'moment';
 
 import ScoredTestCard from './components/ScoredTestCard';
+import FilterSection from './components/FilterSection';
 
-const sampleTests = [
-  {
-    id: 1,
-    status: 'complete',
-    testType: 'real',
-    title: 'May 2019',
-    testDate: '05/12/2019',
-    dueDate: '',
-    completionDate: '',
-    completionTime: '',
-    disabled: false,
-    available: true,
-    weekNumber: '',
-    version: '',
-    initialScore: '1050',
-    targetScore: '1500',
-    currentScore: '1245',
-    totalGain: '132',
-    flags: ['', '', ''],
-    subjects: [
-      {
-        subject: 'Reading',
-        targetScore: '400',
-        currentScore: '376',
-        totalGain: '73',
-      },
-      {
-        subject: 'Writing',
-        targetScore: '400',
-        currentScore: '310',
-        totalGain: '73',
-      },
-      {
-        subject: 'Math',
-        targetScore: '800',
-        currentScore: '681',
-        totalGain: '101',
-      },
-    ],
-  },
-  {
-    id: 2,
-    status: 'complete',
-    testType: 'simulated',
-    title: '1st Simulated SAT',
-    testDate: '',
-    availableDate: '04/01/19',
-    dueDate: '05/05/2019',
-    completionDate: '05/07/19',
-    completionTime: '4:21 PM',
-    disabled: false,
-    available: true,
-    weekNumber: '3',
-    version: '2345',
-    initialScore: '1100',
-    targetScore: '1320',
-    currentScore: '1221',
-    totalGain: '98',
-    flags: [],
-    subjects: [
-      {
-        subject: 'Reading',
-        targetScore: '400',
-        currentScore: '332',
-        totalGain: '81',
-      },
-      {
-        subject: 'Writing',
-        targetScore: '400',
-        currentScore: '291',
-        totalGain: '65',
-      },
-      {
-        subject: 'Math',
-        targetScore: '800',
-        currentScore: '702',
-        totalGain: '98',
-      },
-    ],
-  },
-  {
-    id: 3,
-    status: 'complete',
-    testType: 'simulated',
-    title: '1st Simulated SAT',
-    testDate: '',
-    availableDate: '04/01/19',
-    dueDate: '05/05/2019',
-    completionDate: '05/07/19',
-    completionTime: '4:21 PM',
-    disabled: true,
-    available: true,
-    weekNumber: '3',
-    version: '2345',
-    initialScore: '1100',
-    targetScore: '1320',
-    currentScore: '1221',
-    totalGain: '98',
-    flags: [],
-    subjects: [
-      {
-        subject: 'Reading',
-        targetScore: '400',
-        currentScore: '332',
-        totalGain: '81',
-      },
-      {
-        subject: 'Writing',
-        targetScore: '400',
-        currentScore: '291',
-        totalGain: '65',
-      },
-      {
-        subject: 'Math',
-        targetScore: '800',
-        currentScore: '702',
-        totalGain: '98',
-      },
-    ],
-  },
-  {
-    id: 4,
-    status: 'complete',
-    testType: 'simulated',
-    title: '1st Simulated SAT',
-    testDate: '',
-    availableDate: '04/01/19',
-    dueDate: '05/05/2019',
-    completionDate: '05/07/19',
-    completionTime: '4:21 PM',
-    disabled: false,
-    available: false,
-    weekNumber: '3',
-    version: '2345',
-    initialScore: '1100',
-    targetScore: '1320',
-    currentScore: '1221',
-    totalGain: '98',
-    flags: [],
-    subjects: [
-      {
-        subject: 'Reading',
-        targetScore: '400',
-        currentScore: '332',
-        totalGain: '81',
-      },
-      {
-        subject: 'Writing',
-        targetScore: '400',
-        currentScore: '291',
-        totalGain: '65',
-      },
-      {
-        subject: 'Math',
-        targetScore: '800',
-        currentScore: '702',
-        totalGain: '98',
-      },
-    ],
-  },
-  {
-    id: 5,
-    status: 'complete',
-    testType: 'simulated',
-    title: '1st Simulated SAT',
-    testDate: '',
-    availableDate: '04/01/19',
-    dueDate: '05/05/2019',
-    completionDate: '05/07/19',
-    completionTime: '4:21 PM',
-    disabled: false,
-    available: true,
-    weekNumber: '3',
-    version: '2345',
-    initialScore: '1100',
-    targetScore: '1320',
-    currentScore: '',
-    totalGain: '',
-    flags: [],
-    subjects: [
-      {
-        subject: 'Reading',
-        targetScore: '400',
-        currentScore: '332',
-        totalGain: '81',
-      },
-      {
-        subject: 'Writing',
-        targetScore: '400',
-        currentScore: '291',
-        totalGain: '65',
-      },
-      {
-        subject: 'Math',
-        targetScore: '800',
-        currentScore: '',
-        totalGain: '',
-      },
-    ],
-  },
-];
+import { availableDateSort, dueDateSort, completionDateSort, flagsSort } from '../utils';
 
 class ScoredTestListPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scoredTests: sampleTests,
+      sort: '',
+      testVersionFilter: '',
+      availableDateFilters: [],
+      dueDateFilters: [],
+      flagFilter: false,
       dropdownIndex: null,
       dropdownIsOpen: false,
+      tests: this.props.user.scoredTests,
     };
   }
 
+  onSetSort = (sort) => this.setState({ sort })
+  onClearFilters = () => this.setState({ sort: '', testVersionFilter: '', flagFilter: false, availableDateFilters: [], dueDateFilters: [] })
+
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+
+  onSetFilteredState = (value) => this.setState({ testVersionFilter: value })
+  onUnsetFilteredState = () => this.setState({ testVersionFilter: '' })
 
   onEditTest = () => console.warn('Pending implementation edit test UI and functionality')
   onResetTest = () => console.warn('Pending implementation of reset UI and functionality')
   onDeleteTest = () => console.warn('Pending implementation of delete test UI and functionality')
   onDownloadReport = () => console.warn('Pending implementation of download report ui and functionality')
 
-  mapScoredTests = () => this.state.scoredTests.map((test, index) => (
+  // eslint-disable-next-line consistent-return
+  onSortTests = (testSections) => {
+    const { sort } = this.state;
+    switch (sort) {
+      case 'flags':
+        return testSections.sort(flagsSort);
+      case 'dueDate':
+        return testSections.sort(dueDateSort);
+      case 'availableDate':
+        return testSections.sort(availableDateSort);
+      case 'completionDate':
+        return testSections.sort(completionDateSort);
+      default:
+        break;
+    }
+  }
+
+  onFilterByTestVersion = () => {
+    const { tests, testVersionFilter } = this.state;
+    return tests.reduce((finalArr, currentTest) => {
+      const { version } = currentTest;
+      const testString = version.replace(/\s/g, "").toLowerCase();
+      if (testString.indexOf(testVersionFilter) !== -1 && finalArr.indexOf(currentTest) === -1) {
+        finalArr.push(currentTest);
+      }
+      return finalArr;
+    }, []);
+  }
+
+  onFilterByDate = (incomingTests, dateType) => {
+    const { dueDateFilters, availableDateFilters } = this.state;
+    let dateFilters;
+    let tests = incomingTests;
+
+    const currentDate = moment().format('MM/DD/YY');
+    const currentDateIndex = new Date().getDay();
+    const endOfWeekIndex = 6 - currentDateIndex;
+    const endOfWeekDate = moment().add(endOfWeekIndex, 'days').format('MM/DD/YY')
+    if (dateType === 'dueDate') {
+      dateFilters = dueDateFilters;
+      if (dateFilters.indexOf('dueToday') !== -1) {
+        tests = tests.filter(test => test.dueDate === currentDate);
+      }
+      if (dateFilters.indexOf('dueNextSession') !== -1) {
+        console.warn('Pending decision on how next session date is calculated');
+      }
+      if (dateFilters.indexOf('overdue') !== -1) {
+        tests = tests.filter(test => test.dueDate < currentDate);
+      }
+      if (dateFilters.indexOf('dueThisWeek') !== -1) {
+        tests = tests.filter(test => test.dueDate >= currentDate && test.dueDate <= endOfWeekDate);
+      }
+    } else {
+      dateFilters = availableDateFilters;
+      if (dateFilters.indexOf('future') !== -1) {
+        tests = tests.filter(test => test.availableDate > currentDate);
+      }
+      if (dateFilters.indexOf('available') !== -1) {
+        tests = tests.filter(test => test.availableDate <= currentDate);
+      }
+      if (dateFilters.indexOf('complete') !== -1) {
+        tests = tests.filter(test => test.completionDate.length);
+      }
+    }
+    return tests;
+  }
+
+  onFilterTests = () => {
+    const { dueDateFilters, availableDateFilters, flagFilter, tests: allTests } = this.state;
+    let tests = allTests;
+    if (dueDateFilters.length) {
+      tests = this.onFilterByDate(tests, 'dueDate');
+    }
+    if (availableDateFilters.length) {
+      tests = this.onFilterByDate(tests, 'availableDate');
+    }
+    if (flagFilter) {
+      tests = tests.filter(testSection => testSection.flags.length);
+    }
+    return tests;
+  }
+
+  getMappableTests = () => {
+    const { dueDateFilters, availableDateFilters, flagFilter, sort, testVersionFilter, tests } = this.state;
+    let mappableTests = tests;
+    if (testVersionFilter.length) {
+      mappableTests = this.onFilterByTestVersion();
+    }
+    if (dueDateFilters.length || availableDateFilters.length || flagFilter) {
+      mappableTests = this.onFilterTests();
+    }
+    if (sort) {
+      return this.onSortTests(mappableTests);
+    }
+    return mappableTests;
+  }
+
+  // eslint-disable-next-line consistent-return
+  handleFilterClick = (filterType, filter) => {
+    const { availableDateFilters: currentAvailableDateFilters, dueDateFilters: currentDueDateFilters, flagFilter } = this.state;
+    let modifiedFilterCurrentState;
+    let modifiedFilterName;
+    let modifiedFilterUpdatedState;
+    switch (filterType) {
+      case 'dueDate':
+        modifiedFilterCurrentState = currentDueDateFilters;
+        modifiedFilterName = 'dueDateFilters';
+        break;
+      case 'availableDate':
+        modifiedFilterCurrentState = currentAvailableDateFilters;
+        modifiedFilterName = 'availableDateFilters';
+        break;
+      case 'hasFlags':
+        return this.setState({ flagFilter: !flagFilter });
+      default:
+        break;
+    }
+    if (modifiedFilterCurrentState.indexOf(filter) === -1) {
+      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+        $push: [filter],
+      });
+    } else {
+      const filterIndex = modifiedFilterCurrentState.indexOf(filter);
+      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+        $splice: [[ filterIndex, 1 ]],
+      });
+    }
+    this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
+  }
+
+  mapScoredTests = () => this.getMappableTests().map((test, index) => (
     <ScoredTestCard
       test={test}
       index={index}
@@ -231,6 +175,8 @@ class ScoredTestListPage extends React.Component {
       onEditTest={this.onEditTest}
       onResetTest={this.onResetTest}
       onDeleteTest={this.onDeleteTest}
+      onSetDropdown={this.onSetDropdown}
+      onCloseDropdown={this.onCloseDropdown}
       onDownloadReport={this.onDownloadReport}
       dropdownIndex={this.state.dropdownIndex}
       dropdownIsOpen={this.state.dropdownIsOpen}
@@ -240,87 +186,17 @@ class ScoredTestListPage extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className="filter-form-holder">
-          <ul className="collapsible expandable">
-            <li>
-              <div className="collapsible-body">
-                <div className="filter-form_checkbox-list-holder justify-center">
-                  <ul className="filter-form_checkbox-list">
-                    <li>
-                      <input type="checkbox" id="future" />
-                      <label htmlFor="future">Future</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="available" />
-                      <label htmlFor="available">Available</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="complete" />
-                      <label htmlFor="complete">Complete</label>
-                    </li>
-                  </ul>
-                  <ul className="filter-form_checkbox-list">
-                    <li>
-                      <input type="checkbox" id="due_today" />
-                      <label htmlFor="due_today">Due Today</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="due_next_session" />
-                      <label htmlFor="due_next_session">Due By Next Session</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="due_week" />
-                      <label htmlFor="due_week">Due this Week</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="overdue" />
-                      <label htmlFor="overdue">Overdue</label>
-                    </li>
-                  </ul>
-                  <ul className="filter-form_checkbox-list">
-                    <li>
-                      <input type="checkbox" id="has_review_flags" />
-                      <label htmlFor="has_review_flags">Has Review Flags</label>
-                    </li>
-                  </ul>
-                </div>
-                <div className="d-flex row mb-0 justify-center">
-                  <div className="col s12 m3">
-                    <div className="search-field input-field">
-                      <input type="search" id="test_version_search" className="input-control  validate" />
-                      <button type="submit" className="search-button"><i className="icon-search"></i></button>
-                      <label className="label" htmlFor="test_version_search">Test Version</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row mb-0 d-flex align-items-center">
-                <div className="col s12 l4">
-                  <div className="row mb-0">
-                    <div className="col s12 xl7">
-                      <div className="input-field">
-                        <select id="sort_tests">
-                          <option>Date</option>
-                          <option>Page</option>
-                        </select>
-                        <label className="label" htmlFor="sort_tests">Sort By</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col s12 l4 hide-on-med-and-down show-on-large">&nbsp;</div>
-                <div className="col s12 l4">
-                  <div className="option-filters">
-                    <div className="option-item clear"><a href="#">Clear Filters</a></div>
-                    <div className="option-item">
-                      <span className="collapsible-header"><span className="hide-text">Hide</span> <span className="open-text">Open</span> Filters</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <FilterSection
+          sort={this.state.sort}
+          onSetSort={this.onSetSort}
+          flagFilter={this.state.flagFilter}
+          onClearFilters={this.onClearFilters}
+          handleFilterClick={this.handleFilterClick}
+          dueDateFilters={this.state.dueDateFilters}
+          availableDateFilters={this.state.availableDateFilters}
+          onSetFilteredState={this.onSetFilteredState}
+          onUnsetFilteredState={this.onUnsetFilteredState}
+        />
         <div className="content-section">
           <div className="row d-flex-content card-width-366">
             {this.mapScoredTests()}
@@ -330,5 +206,9 @@ class ScoredTestListPage extends React.Component {
     );
   }
 }
+
+ScoredTestListPage.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 export default ScoredTestListPage;

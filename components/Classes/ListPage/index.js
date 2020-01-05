@@ -198,12 +198,12 @@ class ListPage extends React.Component {
             <i className="material-icons">add</i> New Class
           </a>
         </div>
-        <ClassModal 
+        <ClassModal
           open={classModalOpen}
           onClose={this.onCloseClassModal}
           onSave = {onSaveNewClass}
         />
-        
+
       </div>
     );
   }

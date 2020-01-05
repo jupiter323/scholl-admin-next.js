@@ -103,7 +103,7 @@ class FilterSection extends React.Component {
                     <label htmlFor="session_today">Session Today</label>
                   </li>
                   <li>
-                    <input 
+                    <input
                         type="checkbox"
                         id="sessions_no"
                         checked={ activeFilters.indexOf("sessions_no") !== -1}
@@ -123,7 +123,7 @@ class FilterSection extends React.Component {
                     <label htmlFor="gain_no">No Gain</label>
                   </li>
                   <li>
-                    <input 
+                    <input
                         type="checkbox"
                         id="gain_0_49"
                         checked={ activeFilters.indexOf("gain_0_49") !== -1}
@@ -132,7 +132,7 @@ class FilterSection extends React.Component {
                     <label htmlFor="gain_0_49">Gain of 0-49</label>
                   </li>
                   <li>
-                    <input 
+                    <input
                         type="checkbox"
                         id="gain_50_100"
                         checked={ activeFilters.indexOf("gain_50_100") !== -1}
@@ -150,31 +150,31 @@ class FilterSection extends React.Component {
                     <label htmlFor="gain_100_199">Gain of 100-199</label>
                   </li>
                   <li>
-                    <input 
-                        type="checkbox" 
+                    <input
+                        type="checkbox"
                         id="gain_200"
                         checked={ activeFilters.indexOf("gain_200") !== -1}
-                        onChange={() => this.onHandleFilterClick("gain_200")} 
+                        onChange={() => this.onHandleFilterClick("gain_200")}
                     />
                     <label htmlFor="gain_200">Gain of 200+</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
                   <li>
-                    <input 
-                        type="checkbox" 
+                    <input
+                        type="checkbox"
                         id="current"
                         checked={ activeFilters.indexOf("current") !== -1}
-                        onChange={() => this.onHandleFilterClick("current")} 
+                        onChange={() => this.onHandleFilterClick("current")}
                     />
                     <label htmlFor="current">Current</label>
                   </li>
                   <li>
-                    <input 
-                        type="checkbox" 
+                    <input
+                        type="checkbox"
                         id="archived"
                         checked={ activeFilters.indexOf("archived") !== -1}
-                        onChange={() => this.onHandleFilterClick("archived")}  
+                        onChange={() => this.onHandleFilterClick("archived")}
                     />
                     <label htmlFor="archived">Archived</label>
                   </li>

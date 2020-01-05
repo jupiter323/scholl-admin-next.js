@@ -14,7 +14,7 @@ class InstructorCard extends React.Component {
         className="owner-box card-panel card-panel-panel card-panel-large"
         style={{
           backgroundColor: "#31837a",
-          color: "#fff"
+          color: "#fff",
         }}
       >
         <a href="#" className="close-link icon-close-thin" onClick = {onRemoveInstructor}/>
@@ -25,7 +25,7 @@ class InstructorCard extends React.Component {
                 className="user-circle"
                 style={{
                   backgroundColor: "#0085ce",
-                  color: "#fff"
+                  color: "#fff",
                 }}
               >
                 <img

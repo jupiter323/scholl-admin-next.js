@@ -85,7 +85,7 @@ class SideNav extends Component {
               <Link
                 href={`/${menuItem.page}`}
                 key={menuItem.key}
-                activeClassName="active"
+                // activeClassName="active"
               >
                 <li
                    key={menuItem.key}

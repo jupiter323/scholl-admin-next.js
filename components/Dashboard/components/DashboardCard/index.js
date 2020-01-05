@@ -76,8 +76,12 @@ className="collapsible-card owner-box card-panel"
                                     <h3 className="collapsible-title hidden-active">{ `${this.user.lastName  }, ${  this.user.firstName}` }</h3>
                                 </div>
                                 <div className="col s2 right-align">
-                                    <span className="badge-rounded-sm badge red darken-2 white-text"><b
-                                        className="badge-text">{this.sessionStats.numberOfFlags}</b> <i className="icon-flag"></i></span>
+                                    { this.sessionStats.numberOfFlags > 0 &&
+                                    <span className="badge-rounded-sm badge red darken-2 white-text">
+                                        <b className="badge-text">{this.sessionStats.numberOfFlags}</b>
+                                        <i className="icon-flag"></i>
+                                    </span>
+                                    }
                                 </div>
                                 <div className="col s2 right-align">
                                     <div className="row icons-row">

@@ -13,10 +13,10 @@ class RadailBar extends React.Component {
       strokeWidth,
       maxValue,
       currentValue,
-      strokeColor
+      strokeColor,
     } = this.props;
     return (
-      <svg width={svgWidth} height={svgHeight} viewBox={"0 0 "+svgWidth+""+svgHeight}>
+      <svg width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth}${svgHeight}`}>
         <circle
           cx={svgWidth/2}
           cy={svgHeight/2}

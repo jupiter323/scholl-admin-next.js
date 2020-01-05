@@ -4,26 +4,32 @@ import { Doughnut } from 'react-chartjs-2';
 import EditModal from './components/EditModal';
 const data = (current = 0, target = 0, initial = 0) => ({
   datasets: [{
-    data: [current-initial, (target-initial) - (current-initial) ],
+    data: [current - initial, (target - initial) - (current - initial)],
     backgroundColor: [
       '#0085ce',
       '#eaeaea',
     ],
   }],
-})
+});
 
 class StudentCard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            editModalOpen: false,
-            cloneModalOpen: false,
-            showOwnerModalOpen: false,
-            deleteModalOpen: false,
-            activateAccountModalOpen: false,
-            assignInstructorModalOpen: false,
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      editModalOpen: false,
+      cloneModalOpen: false,
+      showOwnerModalOpen: false,
+      deleteModalOpen: false,
+      activateAccountModalOpen: false,
+      assignInstructorModalOpen: false,
+    };
+  }
+
+    onOpenEditModal = () => {
+      this.props.onCloseDropdown();
+      this.setState({ editModalOpen: true });
     }
+    onCloseEditModal = () => this.setState({ editModalOpen: false })
 
     handleDropdownClick = (event) => {
       const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
@@ -33,12 +39,6 @@ class StudentCard extends React.Component {
       }
       return onSetDropdown(index);
     }
-
-    onOpenEditModal = () => {
-      this.props.onCloseDropdown();
-      this.setState({editModalOpen: true});
-    }
-    onCloseEditModal = () => this.setState({editModalOpen: false})
 
     render() {
     const { onHandleStudentCard,onSaveStudentChanges, onDeleteStudent, onCloneStudent, index, dropdownIndex,student, student: {id, active, tutor, testScores: { initialScore, currentScore }, courseContext: {targetScore}, studentInformation: { firstName, lastName },
@@ -250,17 +250,17 @@ class StudentCard extends React.Component {
       </React.Fragment>
     );}};
 
-  StudentCard.propTypes = {
-    student: PropTypes.object.isRequired,
-    onHandleStudentCard: PropTypes.func.isRequired,
-    dropdownIsOpen: PropTypes.bool.isRequired,
-    index: PropTypes.number.isRequired,
-    onDeleteStudent: PropTypes.func.isRequired,
-    onCloneStudent: PropTypes.func.isRequired,
-    onSetDropdown: PropTypes.func.isRequired,
-    onCloseDropdown: PropTypes.func.isRequired,
-    dropdownIndex: PropTypes.number,
-    onSaveStudentChanges:PropTypes.func.isRequired,
-  };
+StudentCard.propTypes = {
+  student: PropTypes.object.isRequired,
+  onHandleStudentCard: PropTypes.func.isRequired,
+  dropdownIsOpen: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  onDeleteStudent: PropTypes.func.isRequired,
+  onCloneStudent: PropTypes.func.isRequired,
+  onSetDropdown: PropTypes.func.isRequired,
+  onCloseDropdown: PropTypes.func.isRequired,
+  dropdownIndex: PropTypes.number,
+  onSaveStudentChanges: PropTypes.func.isRequired,
+};
 
 export default StudentCard;

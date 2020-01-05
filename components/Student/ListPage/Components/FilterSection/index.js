@@ -16,8 +16,8 @@ class FilterSection extends React.Component {
     super(props);
     this.state = {
       open: false,
-      name: '',
-      location: {},
+      nameFilter: '',
+      location: '',
       sort: {},
       activeFilters: [],
     };
@@ -46,11 +46,12 @@ class FilterSection extends React.Component {
 
   submitNameFilter = () => {
     const { onSetFilteredState, onUnsetFilteredState } = this.props;
-    const { name } = this.state;
-    if (name === '') {
+    const { nameFilter } = this.state;
+    if (nameFilter === '') {
       onUnsetFilteredState();
     }
-    const transformedName = name.replace(/\s/g, "").toLowerCase();
+    const transformedName = nameFilter.replace(/\s/g, "").toLowerCase();
+    console.warn('set this in pages!', transformedName);
     onSetFilteredState(transformedName);
   }
 
@@ -355,6 +356,17 @@ class FilterSection extends React.Component {
                         stateKey="sort"
                         dropdownKey="sort"
                       />
+                    </div>
+                  </div>
+                </div>
+                <div className="col s12 14">
+                  <div className="option-filters">
+                    <div className="option-item clear"><a href="#" onClick={this.onClearFilters}>Clear Filters</a></div>
+                    <div className="option-item">
+                      {/*  eslint-disable-next-line jsx-a11y/no-static-element-interactions  */}
+                      <span className="collapsible-header" onClick={this.onToggleShowFilters}>
+                        <span className="open-text">{open ? 'Hide Filters' : 'Open Filters'}</span>
+                      </span>
                     </div>
                   </div>
                 </div>
