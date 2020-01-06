@@ -14,7 +14,6 @@ const sampleStudentList = [
     studentInformation: {
       firstName: 'Christian',
       lastName: 'Chavarro',
-      gender: 'Male',
     },
     contactInformation: {
       phone: '7865645859',
@@ -1057,7 +1056,6 @@ const sampleStudentList = [
     studentInformation: {
       firstName: 'JJ',
       lastName: 'Abrams',
-      gender: 'Male',
     },
     contactInformation: {
       phone: '8888888888',
@@ -2101,7 +2099,6 @@ const sampleStudentList = [
     studentInformation: {
       firstName: 'Caroline',
       lastName: 'Ingalls',
-      gender: 'female',
     },
     contactInformation: {
       phone: '4448885598',
@@ -3144,7 +3141,6 @@ const sampleStudentList = [
     studentInformation: {
       firstName: 'Bob',
       lastName: 'Ross',
-      gender: 'Male',
     },
     contactInformation: {
       phone: '7865645859',
@@ -4174,6 +4170,6 @@ const sampleStudentList = [
       },
     ],
   },
-]
+];
 
 export default sampleStudentList;

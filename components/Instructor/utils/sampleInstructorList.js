@@ -5,7 +5,6 @@ export default [
       lastName: 'Bezos',
       firstName: 'Jeff',
       email: 'jeff-bezos@gmail.com',
-      gender: 'Male',
     },
     contactInfo: {
       phone: '1234567890',
@@ -30,7 +29,6 @@ export default [
       lastName: 'Chavarro',
       firstName: 'Christian',
       email: 'christian-chavarro@gmail.com',
-      gender: 'Male',
     },
     contactInfo: {
       phone: '1234567890',
@@ -55,7 +53,6 @@ export default [
       lastName: 'Chavis',
       firstName: 'Cellena',
       email: 'cellena-chavis@gmail.com',
-      gender: 'Male',
     },
     contactInfo: {
       phone: '1234567890',
@@ -80,7 +77,6 @@ export default [
       lastName: 'Smith',
       firstName: 'Will',
       email: 'will-smithgmail.com',
-      gender: 'Male',
     },
     contactInfo: {
       phone: '1234567890',
@@ -105,7 +101,6 @@ export default [
       lastName: 'Lumberjack',
       firstName: 'Arnold',
       email: 'arnold-lumberjack@gmail.com',
-      gender: 'Male',
     },
     contactInfo: {
       phone: '1234567890',
@@ -130,7 +125,6 @@ export default [
       lastName: 'Duck',
       firstName: 'Donald',
       email: 'donald-duck@gmail.com',
-      gender: 'Male',
     },
     contactInfo: {
       phone: '1234567890',

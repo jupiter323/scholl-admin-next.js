@@ -22,7 +22,6 @@ class NewLocationModal extends React.Component {
         firstName: '',
         lastName: '',
         email: '',
-        gender: '',
         phone: '',
         streetAddress: '',
         city: '',
@@ -63,7 +62,6 @@ class NewLocationModal extends React.Component {
           firstName: true,
           lastName: true,
           email: true,
-          gender: true,
         },
         locationEmailSettings: {
           automatedEmailOriginAddress: true,

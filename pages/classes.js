@@ -43,7 +43,6 @@ class Classes extends React.Component {
         lastName: 'Admin',
         firstName: 'Company',
         email: 'test2@example.com',
-        gender: 'M',
       },
       contactInfo: {
         phone: '1234567890',
