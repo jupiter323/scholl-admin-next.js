@@ -1,6 +1,7 @@
 import {
   fetchStudentsApi,
-  addNewStudentApi,
+  searchStudentsApi,
+  createStudentApi,
   deleteStudentApi,
 } from "./components/Student/index/api";
 
@@ -17,7 +18,8 @@ import {
 
 export const studentApi = {
   fetchStudentsApi,
-  addNewStudentApi,
+  searchStudentsApi,
+  createStudentApi,
   deleteStudentApi,
 };
 
