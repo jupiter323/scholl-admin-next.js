@@ -76,7 +76,6 @@ export function* watchForUpdateStudentFirstName() {
     try {
       const {firstName} = yield take(UPDATE_STUDENT_FIRSTNAME);
       const response = yield call(updateStudentFirstNameApi, firstName);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentFirstNameApi."
@@ -93,7 +92,6 @@ export function* watchForUpdateStudentLastName() {
     try {
       const {lastName} = yield take(UPDATE_STUDENT_LASTNAME);
       const response = yield call(updateStudentLastNameApi, lastName);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentLastNameApi."
@@ -110,7 +108,6 @@ export function* watchForUpdateStudentAddress() {
     try {
       const {address} = yield take(UPDATE_STUDENT_ADDRESS);
       const response = yield call(updateStudentAddressApi, address);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentAddressApi."
@@ -127,7 +124,6 @@ export function* watchForUpdateStudentCity() {
     try {
       const {city} = yield take(UPDATE_STUDENT_CITY);
       const response = yield call(updateStudentCityApi, city);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentCityApi."
@@ -144,7 +140,6 @@ export function* watchForUpdateStudentEmail() {
     try {
       const {email} = yield take(UPDATE_STUDENT_EMAIL);
       const response = yield call(updateStudentEmailApi, email);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentEmailApi."
@@ -161,7 +156,6 @@ export function* watchForUpdateStudentPhone() {
     try {
       const {phone} = yield take(UPDATE_STUDENT_PHONE);
       const response = yield call(updateStudentPhoneApi, phone);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentPhoneApi."
@@ -178,7 +172,6 @@ export function* watchForUpdateStudentState() {
     try {
       const {state} = yield take(UPDATE_STUDENT_STATE);
       const response = yield call(updateStudentStateApi, state);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentStateApi."
@@ -195,7 +188,6 @@ export function* watchForUpdateStudentZip() {
     try {
       const {zip} = yield take(UPDATE_STUDENT_ZIP);
       const response = yield call(updateStudentZipApi, zip);
-      console.log(response);
       if (response && response.message) {
         return console.warn(
           "Something went wrong in updateStudentZipApi."
