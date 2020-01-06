@@ -149,7 +149,6 @@ class EditModal extends React.Component {
     const {
       student: { id:student_id },
     } = this.props;
-    console.log(student_id);
     switch (name) {
       case "firstName":
         return onUpdateStudentFirstName({
