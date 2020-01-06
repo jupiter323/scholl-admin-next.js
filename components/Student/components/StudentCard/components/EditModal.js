@@ -21,18 +21,6 @@ import {
   updateStudentZip,
 } from "../../../index/actions";
 
-import {
-  updateStudentActivationApi,
-  updateStudentAddressApi,
-  updateStudentCityApi,
-  updateStudentEmailApi,
-  updateStudentFirstNameApi,
-  updateStudentLastNameApi,
-  updateStudentPhoneApi,
-  updateStudentStateApi,
-  updateStudentZipApi,
-} from "../../../index/api";
-
 class EditModal extends React.Component {
   constructor(props) {
     super(props);

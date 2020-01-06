@@ -194,7 +194,7 @@ export function* watchForUpdateStudentZip() {
   while (true) {
     try {
       const {zip} = yield take(UPDATE_STUDENT_ZIP);
-      const response = yield call(updateStudentStateApi, zip);
+      const response = yield call(updateStudentZipApi, zip);
       console.log(response);
       if (response && response.message) {
         return console.warn(
