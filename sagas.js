@@ -36,24 +36,24 @@ const {
 export function* watchForFetchStudents() {
   while (true) {
     yield take(FETCH_STUDENTS);
-    yield call(fetchStudents)
+    yield call(fetchStudents);
   }
 }
 
 export function* fetchStudents() {
   try {
     const students = yield call(fetchStudentsApi);
-    if (students instanceof Array) {
+    if (Array.isArray(students) || students instanceof Array) {
       yield put(setStudents(students));
     }
   } catch (err) {
-    console.warn('Error occurred in fetchingStudents saga', err);
+    console.warn("Error occurred in the fetchStudents saga", err);
   }
 }
 
 export function* watchForSearchStudents() {
   while (true) {
-    const {filters} = yield take(SEARCH_STUDENTS);
+    const { filters } = yield take(SEARCH_STUDENTS);
     yield call(searchStudents, filters);
   }
 }
@@ -102,7 +102,7 @@ export function* watchForDeleteStudent() {
 export function* watchForUpdateStudentFirstName() {
   while (true) {
     try {
-      const {firstName} = yield take(UPDATE_STUDENT_FIRSTNAME);
+      const { firstName } = yield take(UPDATE_STUDENT_FIRSTNAME);
       const response = yield call(updateStudentFirstNameApi, firstName);
       if (response && response.message) {
         return console.warn(
@@ -118,7 +118,7 @@ export function* watchForUpdateStudentFirstName() {
 export function* watchForUpdateStudentLastName() {
   while (true) {
     try {
-      const {lastName} = yield take(UPDATE_STUDENT_LASTNAME);
+      const { lastName } = yield take(UPDATE_STUDENT_LASTNAME);
       const response = yield call(updateStudentLastNameApi, lastName);
       if (response && response.message) {
         return console.warn(
@@ -134,7 +134,7 @@ export function* watchForUpdateStudentLastName() {
 export function* watchForUpdateStudentAddress() {
   while (true) {
     try {
-      const {address} = yield take(UPDATE_STUDENT_ADDRESS);
+      const { address } = yield take(UPDATE_STUDENT_ADDRESS);
       const response = yield call(updateStudentAddressApi, address);
       if (response && response.message) {
         return console.warn(
@@ -150,7 +150,7 @@ export function* watchForUpdateStudentAddress() {
 export function* watchForUpdateStudentCity() {
   while (true) {
     try {
-      const {city} = yield take(UPDATE_STUDENT_CITY);
+      const { city } = yield take(UPDATE_STUDENT_CITY);
       const response = yield call(updateStudentCityApi, city);
       if (response && response.message) {
         return console.warn(
@@ -166,7 +166,7 @@ export function* watchForUpdateStudentCity() {
 export function* watchForUpdateStudentEmail() {
   while (true) {
     try {
-      const {email} = yield take(UPDATE_STUDENT_EMAIL);
+      const { email } = yield take(UPDATE_STUDENT_EMAIL);
       const response = yield call(updateStudentEmailApi, email);
       if (response && response.message) {
         return console.warn(
@@ -182,7 +182,7 @@ export function* watchForUpdateStudentEmail() {
 export function* watchForUpdateStudentPhone() {
   while (true) {
     try {
-      const {phone} = yield take(UPDATE_STUDENT_PHONE);
+      const { phone } = yield take(UPDATE_STUDENT_PHONE);
       const response = yield call(updateStudentPhoneApi, phone);
       if (response && response.message) {
         return console.warn(
@@ -198,7 +198,7 @@ export function* watchForUpdateStudentPhone() {
 export function* watchForUpdateStudentState() {
   while (true) {
     try {
-      const {state} = yield take(UPDATE_STUDENT_STATE);
+      const { state } = yield take(UPDATE_STUDENT_STATE);
       const response = yield call(updateStudentStateApi, state);
       if (response && response.message) {
         return console.warn(
@@ -214,7 +214,7 @@ export function* watchForUpdateStudentState() {
 export function* watchForUpdateStudentZip() {
   while (true) {
     try {
-      const {zip} = yield take(UPDATE_STUDENT_ZIP);
+      const { zip } = yield take(UPDATE_STUDENT_ZIP);
       const response = yield call(updateStudentZipApi, zip);
       if (response && response.message) {
         return console.warn(

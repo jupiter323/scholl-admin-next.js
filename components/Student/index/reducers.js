@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { 
+import {
   SET_STUDENTS,
   SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
@@ -8,9 +8,9 @@ import {
 
 const initialState = fromJS({
   students: [],
-  assignLessonsModalOpen:false,
-  assignWorkSheetsModalOpen:false,
-  calendarRows:[],
+  assignLessonsModalOpen: false,
+  assignWorkSheetsModalOpen: false,
+  calendarRows: [],
 });
 
 function studentReducer(state = initialState, action) {
@@ -18,11 +18,11 @@ function studentReducer(state = initialState, action) {
     case SET_STUDENTS:
       return state.set('students', action.students);
     case SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN:
-      return state.set('assignLessonsModalOpen',action.value);
+      return state.set('assignLessonsModalOpen', action.value);
     case SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN:
-        return state.set('assignWorkSheetsModalOpen',action.value);
+      return state.set('assignWorkSheetsModalOpen', action.value);
     case SET_STUDENTS_CALENDAR_CALENDAR_ROWS:
-        return state.set('calendarRows',action.rows);
+      return state.set('calendarRows', action.rows);
     default:
       return state;
   }

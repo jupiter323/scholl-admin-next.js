@@ -1,10 +1,10 @@
 import {
-    SET_INSTRUCTORS,
+  SET_INSTRUCTORS,
 } from './constants';
 
-export function setInstructors(instructors){
-    return{
-        type:SET_INSTRUCTORS,
-        instructors
-    }
+export function setInstructors(instructors) {
+  return {
+    type: SET_INSTRUCTORS,
+    instructors,
+  };
 }

@@ -26,7 +26,7 @@ class DetailWorksheetPage extends React.Component {
 
   onToggleAssignWorksheetDropdown = (event) => {
     event.preventDefault();
-    this.setState(({ assignWorksheetDropdownOpen }) => ({ assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen }))
+    this.setState(({ assignWorksheetDropdownOpen }) => ({ assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen }));
   }
 
   onToggleDetailModalOpen = (worksheetIndex) => this.setState(({ detailModalOpen, worksheets }) => ({ detailModalOpen: !detailModalOpen, activeWorksheet: worksheets[worksheetIndex] }))
@@ -127,9 +127,9 @@ class DetailWorksheetPage extends React.Component {
     const { currentView } = this.state;
     switch (currentView) {
       case 'list':
-        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
+        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />;
       case 'full':
-        return <FullView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
+        return <FullView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />;
       default:
         break;
     }
@@ -164,15 +164,15 @@ class DetailWorksheetPage extends React.Component {
             <div className="add-btn-block">
               <a
                 href="#"
-                data-target='dropdown_assign_selected'
+                data-target="dropdown_assign_selected"
                 onClick={this.onToggleAssignWorksheetDropdown}
                 className="dropdown-trigger waves-effect waves-teal btn add-btn"
               >
                 <i className="material-icons">add</i> Assign Worksheet
               </a>
               <ul
-                id='dropdown_assign_selected'
-                className='dropdown-content dropdown-small'
+                id="dropdown_assign_selected"
+                className="dropdown-content dropdown-small"
                 style={{ display: assignWorksheetDropdownOpen ? 'block' : '0', opacity: assignWorksheetDropdownOpen ? '1' : '0' }}
               >
                 <li><a href="#" onClick={() => this.onAssignWorksheet('fromSaved')}>From Saved</a></li>
@@ -188,7 +188,6 @@ class DetailWorksheetPage extends React.Component {
 
 DetailWorksheetPage.propTypes = {
   user: PropTypes.object.isRequired,
-}
+};
 
 export default DetailWorksheetPage;
-

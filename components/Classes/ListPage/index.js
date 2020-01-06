@@ -6,7 +6,6 @@ import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDes
 import ClassModal from "../ClassModal";
 
 
-
 class ListPage extends React.Component {
   constructor(props) {
     super(props);
@@ -142,13 +141,13 @@ class ListPage extends React.Component {
         dropdownIsOpen={this.state.dropdownIsOpen}
         dropdownIndex={this.state.dropdownIndex}
         onHandleClassCard={() => this.props.onHandleClassCard(index)}
-        onSaveClassChanges = {this.props.onSaveClassChanges}
+        onSaveClassChanges={this.props.onSaveClassChanges}
       />
     ));
   };
 
   render() {
-    const { classModalOpen} = this.state;
+    const { classModalOpen } = this.state;
     const { onSaveNewClass } = this.props;
     return (
       <div>
@@ -198,12 +197,12 @@ class ListPage extends React.Component {
             <i className="material-icons">add</i> New Class
           </a>
         </div>
-        <ClassModal 
+        <ClassModal
           open={classModalOpen}
           onClose={this.onCloseClassModal}
-          onSave = {onSaveNewClass}
+          onSave={onSaveNewClass}
         />
-        
+
       </div>
     );
   }
@@ -215,7 +214,7 @@ ListPage.propTypes = {
   onCloneClass: PropTypes.func.isRequired,
   onDeleteClass: PropTypes.func.isRequired,
   onSaveNewClass: PropTypes.func.isRequired,
-  onSaveClassChanges:PropTypes.func.isRequired,
+  onSaveClassChanges: PropTypes.func.isRequired,
 };
 
 export default ListPage;

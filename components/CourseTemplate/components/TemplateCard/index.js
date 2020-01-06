@@ -1,6 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
+
+const data = (total) => ({
+  datasets: [{
+    data: [total, 0],
+    backgroundColor: [
+      '#3d8946',
+      'rgb(234, 234, 234)',
+    ],
+  }],
+});
 
 const formatEstimatedTotalCourseWork = (minutes) => Math.floor(minutes / 60);
 
@@ -61,16 +72,16 @@ class TemplateCard extends React.Component {
                     <div className="row icons-row">
                       <div className="dropdown-block col">
                         <a
-                          className='dropdown-trigger btn'
-                          href='#' data-target='dropdown02'
+                          className="dropdown-trigger btn"
+                          href="#" data-target="dropdown02"
                           onClick={this.handleDropdownClick}
                         >
                           <i className="material-icons dots-icon">more_vert</i>
                         </a>
                         <If condition={dropdownIsOpen && dropdownIndex === index}>
                           <ul
-                            id='dropdown02'
-                            className='dropdown-content dropdown-wide'
+                            id="dropdown02"
+                            className="dropdown-content dropdown-wide"
                             style={{ display: 'block', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
                           >
                             <li>
@@ -112,15 +123,24 @@ class TemplateCard extends React.Component {
                   </div>
                   <div className="col">
                     <div className="chart-block chart-block-140">
-                      <div className="js-donut-chart" data-stroke-width="42" data-source='./inc/score-data-multiline.json'></div>
+                      <Doughnut
+                        data={() => data(lessons)}
+                        height={140}
+                        width={140}
+                        options={{
+                          cutoutPercentage: 55,
+                          tooltips: false,
+                        }}
+                      />
                       <div className="chart-text">
-                        <span className="value">{lessons}</span>
-                        <span className="description">Lessons</span>
+                        <span className="value" style={{ color: '#3d8946' }}>{lessons}</span>
+                        <span className="title" style={{ color: '#3d8946' }}>Lessons</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
               <div
                 className="card-content collapsible-body"
                 style={{ display: expanded ? 'block' : 'none' }}

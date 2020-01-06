@@ -19,7 +19,7 @@ const Instructor = ({ state: { instructors }, onOpenInstructorModal, onRemoveIns
                 <div className="add-class-box"></div>
               )}
               {instructors.map((instructor, index) => (
-                <InstructorCard instructor={instructor} onRemoveInstructor={() => onRemoveInstructor(index, 'instructor', 'instructors')} />
+                <InstructorCard instructor={instructor} key={instructor.id} onRemoveInstructor={() => onRemoveInstructor(index, 'instructor', 'instructors')} />
               ))}
             </div>
           </div>
