@@ -17,37 +17,98 @@ export const fetchStudentsApi = () =>
             lastName: student.last_name,
           },
           contactInformation: {
-            phone: '7865645859',
-            addressLine1: '1234 Test Lane',
+            phone: student.user_address.phone,
+            addressLine1: student.user_address.address,
             addressLine2: '',
-            city: 'Austin',
-            state: 'TX',
-            zipCode: '78757',
+            city: student.user_address.city,
+            state: student.user_address.state,
+            zipCode: student.user_address.zip,
           },
           emailAddress: {
             email: student.email,
           },
           location: {
-            locations: [
-              {
-                locationNickname: 'Disneyworld  Tutoring',
-                locationName: 'House Of Mouse',
-              },
-              {
-                locationNickname: 'TutorZone Austin',
-                locationName: 'We Teach Real Good',
-              },
-              {
-                locationNickname: 'TutorZone Miami',
-                locationName: 'We Teach Even Better',
-              },
-            ],
+            locations: student.user_locations,
+          },
+          stats: student.stats,
+          tutor: (!student.hasOwnProperty('tutor') ? '' : student.tutor),
+          testScores: {
+            initialScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.initialScore),
+            currentScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.currentScore),
+          },
+          courseContext: {
+            targetScore: (!student.hasOwnProperty('courseContext') ? '0' : student.courseContext.targetScore),
           },
         }));
       return formattedStudents;
     });
 
-export const addNewStudentApi = student => {
+export const searchStudentsApi = filters => {
+  let queryString = `search=${filters.name}&location=${filters.location}`;
+  switch (filters.sort) {
+    case 'lastNameDescending':
+      queryString += 'sort_by_field=last_name'
+      break;
+    case 'firstNameDescending':
+      queryString += 'sort_by_field=first_name'
+      break;
+    case 'lastNameAscending':
+      queryString += 'sort_by_field=last_name&sort_by_asc=true'
+      break;
+    case 'firstNameAscending':
+      queryString += 'sort_by_field=first_name&sort_by_asc=true'
+      break;
+    default:
+      queryString += ''
+  }
+  return fetch(`${API_URL}/api/students?${queryString}`, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      if (data.students.length < 1) {
+        return []
+      }
+      console.log(data);
+      const formattedStudents = data.students.map(student => ({
+        id: student.id,
+        active: false,
+        studentInformation: {
+          firstName: student.first_name,
+          lastName: student.last_name,
+        },
+        contactInformation: {
+          phone: student.user_address.phone,
+          addressLine1: student.user_address.address,
+          addressLine2: '',
+          city: student.user_address.city,
+          state: student.user_address.state,
+          zipCode: student.user_address.zip,
+        },
+        emailAddress: {
+          email: student.email,
+        },
+        location: {
+          locations: student.user_locations,
+        },
+        stats: student.stats,
+        tutor: (!student.hasOwnProperty('tutor') ? '' : student.tutor),
+        testScores: {
+          initialScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.initialScore),
+          currentScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.currentScore),
+        },
+        courseContext: {
+          targetScore: (!student.hasOwnProperty('courseContext') ? '0' : student.courseContext.targetScore),
+        },
+      }));
+    return formattedStudents;
+    }).catch(err => err);
+};
+
+export const createStudentApi = student => {
   const {
     firstName: first_name,
     lastName: last_name,
@@ -58,6 +119,7 @@ export const addNewStudentApi = student => {
   const { locations } = student.location;
   const studentPayload = { first_name, last_name, email, gender, state, locations, phone, address: `${addressLine1}\n${addressLine2}`, city, zip };
   fetch(`${API_URL}/api/commands/create-student`, {
+    method: 'POST',
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
@@ -87,7 +149,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then(res => res.json())
     .catch(err => err);
@@ -99,7 +161,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -111,7 +173,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -123,7 +185,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -135,7 +197,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -147,7 +209,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -159,7 +221,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -171,7 +233,7 @@ export const updateStudentActivationApi = (body) =>
         Accept:"application/json",
         "Content-Type":"application/json",
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     })
     .then ( res => res.json())
     .catch( err => err);
@@ -191,7 +253,8 @@ export const updateStudentActivationApi = (body) =>
 
 export default [
       fetchStudentsApi,
-      addNewStudentApi,
+      searchStudentsApi,
+      createStudentApi,
       deleteStudentApi,
       updateStudentActivationApi,
       updateStudentAddressApi,
