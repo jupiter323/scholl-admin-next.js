@@ -156,6 +156,58 @@ export function* watchForUpdateStudentEmail() {
   }
 }
 
+export function* watchForUpdateStudentPhone() {
+  while (true) {
+    try {
+      const {phone} = yield take(UPDATE_STUDENT_PHONE);
+      const response = yield call(updateStudentPhoneApi, phone);
+      console.log(response);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentPhoneApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentPhone saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentState() {
+  while (true) {
+    try {
+      const {state} = yield take(UPDATE_STUDENT_STATE);
+      const response = yield call(updateStudentStateApi, state);
+      console.log(response);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentStateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentState saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentZip() {
+  while (true) {
+    try {
+      const {zip} = yield take(UPDATE_STUDENT_ZIP);
+      const response = yield call(updateStudentStateApi, zip);
+      console.log(response);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentZipApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentZip saga", err);
+    }
+  }
+}
+
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -166,5 +218,8 @@ export default function* defaultSaga() {
     watchForUpdateStudentAddress(),
     watchForUpdateStudentCity(),
     watchForUpdateStudentEmail(),
+    watchForUpdateStudentPhone(),
+    watchForUpdateStudentState(),
+    watchForUpdateStudentZip(),
   ]);
 }
