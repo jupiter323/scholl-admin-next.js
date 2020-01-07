@@ -1,5 +1,6 @@
 import {
     SET_INSTRUCTORS,
+    CREATE_INSTRUCTOR,
     UPDATE_INSTRUCTOR_FIRSTNAME,
     UPDATE_INSTRUCTOR_LASTNAME,
     UPDATE_INSTRUCTOR_EMAIL,
@@ -15,6 +16,13 @@ export function setInstructors(instructors){
     return{
         type:SET_INSTRUCTORS,
         instructors,
+    }
+}
+
+export function createInstructor(instructor){
+    return{
+        type: CREATE_INSTRUCTOR,
+        instructor,
     }
 }
 

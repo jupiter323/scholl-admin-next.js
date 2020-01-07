@@ -14,6 +14,7 @@ import {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
+  createNewInstructorApi,
 } from './components/Instructor/index/api';
 
 export const studentApi = {
@@ -24,6 +25,7 @@ export const studentApi = {
 };
 
 export const instructorApi = {
+  createNewInstructorApi,
   updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,

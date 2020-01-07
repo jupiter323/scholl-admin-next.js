@@ -9,7 +9,8 @@ import {
   setStudents,
 } from "./components/Student/index/actions";
 import {
-  UPDATE_INSTRUCTOR_FIRSTNAME,
+    CREATE_INSTRUCTOR,
+    UPDATE_INSTRUCTOR_FIRSTNAME,
     UPDATE_INSTRUCTOR_LASTNAME,
     UPDATE_INSTRUCTOR_EMAIL,
     UPDATE_INSTRUCTOR_STATE,
@@ -29,7 +30,9 @@ const {updateInstructorFirstNameApi,
   updateInstructorZipApi,
   updateInstructorAddressApi,
   updateInstructorPhoneApi,
-  addInstructorToLocationApi} = instructorApi;
+  addInstructorToLocationApi,
+  createNewInstructorApi,
+} = instructorApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -226,6 +229,21 @@ export function* watchForUpdateInstructorPhone() {
   }
 }
 
+export function* watchForCreateInstructor() {
+  while (true) {
+    try {
+      const { instructor } = yield take(CREATE_INSTRUCTOR);
+      const response = yield call(createNewInstructorApi, instructor);
+      if (response && response.message) {
+        return console.warn("Something went wrong in createNewInstructorApi.");
+      }
+      yield call(fetchInstructors);
+    } catch (err) {
+      console.warn("Error occured in watchForCreateInstructor saga", err);
+    }
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -240,5 +258,6 @@ export default function* defaultSaga() {
     watchForUpdateInstructorZip(),
     watchForUpdateInstructorAddress(),
     watchForUpdateInstructorPhone(),
+    watchForCreateInstructor(),
   ]);
 }

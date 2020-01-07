@@ -20,6 +20,7 @@ import {
 
 import {
   setInstructors,
+  createInstructor,
 } from '../index/actions';
 
 
@@ -286,6 +287,7 @@ class InstructorListPage extends React.Component {
 InstructorListPage.propTypes = {
   instructors:PropTypes.array.isRequired,
   onSetInstructors:PropTypes.func.isRequired,
+  onCreateInstructor:PropTypes.func.isRequired,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -295,6 +297,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch){
   return{
     onSetInstructors:instructors => dispatch(setInstructors(instructors)),
+    onCreateInstructor: instructor => dispatch(createInstructor(instructor)),
   }
 }
 
