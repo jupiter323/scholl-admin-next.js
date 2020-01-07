@@ -44,17 +44,6 @@ class FilterSection extends React.Component {
 
   onClearFilters = () => this.setState({ activeFilters: [] })
 
-  submitNameFilter = () => {
-    const { onSetFilteredState, onUnsetFilteredState } = this.props;
-    const { nameFilter } = this.state;
-    if (nameFilter === '') {
-      onUnsetFilteredState();
-    }
-    const transformedName = nameFilter.replace(/\s/g, "").toLowerCase();
-    console.warn('set this in pages!', transformedName);
-    onSetFilteredState(transformedName);
-  }
-
   // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
     const { onSetFilteredLocationState, onUnsetFilteredLocationState, onSetSort } = this.props;
@@ -63,10 +52,9 @@ class FilterSection extends React.Component {
       $merge: { [name]: value },
     });
     this.setState(updatedState, () => {
-      // Collect inputs and dispatch search
       const { onSearchStudents } = this.props;
       // eslint-disable-next-line no-shadow
-      const { name, location, sort } = this.state;
+      const { nameFilter: name, location, sort } = this.state;
       const filters = {
         name,
         location,
@@ -86,7 +74,7 @@ class FilterSection extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    const { name, location, sort, open, activeFilters } = this.state;
+    const { nameFilter, location, sort, open, activeFilters } = this.state;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -321,8 +309,8 @@ class FilterSection extends React.Component {
                         id="name_search"
                         className="input-control validate"
                         name="name"
-                        value={name}
-                        onChange={(event) => this.handleFilterChange(event, 'name')}
+                        value={nameFilter}
+                        onChange={(event) => this.handleFilterChange(event, 'nameFilter')}
                       />
                       <button
                         type="submit"
@@ -331,7 +319,7 @@ class FilterSection extends React.Component {
                       >
                         <i className="icon-search"></i>
                       </button>
-                      <label className={name.length ? 'label active' : 'label'} htmlFor="name_search">Search</label>
+                      <label className={nameFilter.length ? 'label active' : 'label'} htmlFor="name_search">Search</label>
                     </div>
                   </div>
                   <div className="col s12 m3">
@@ -370,17 +358,6 @@ class FilterSection extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="col s12 14">
-                  <div className="option-filters">
-                    <div className="option-item clear"><a href="#" onClick={this.onClearFilters}>Clear Filters</a></div>
-                    <div className="option-item">
-                      {/*  eslint-disable-next-line jsx-a11y/no-static-element-interactions  */}
-                      <span className="collapsible-header" onClick={this.onToggleShowFilters}>
-                        <span className="open-text">{open ? 'Hide Filters' : 'Open Filters'}</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </li>
@@ -392,8 +369,6 @@ class FilterSection extends React.Component {
 
 FilterSection.propTypes = {
   onSetSort: PropTypes.func.isRequired,
-  onSetFilteredState: PropTypes.func.isRequired,
-  onUnsetFilteredState: PropTypes.func.isRequired,
   onSetFilteredLocationState: PropTypes.func.isRequired,
   onUnsetFilteredLocationState: PropTypes.func.isRequired,
   onSearchStudents: PropTypes.func.isRequired,

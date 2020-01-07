@@ -6,12 +6,13 @@ import {
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
 import { CREATE_CLASS } from './components/Classes/index/constants';
-import {
-  setStudents,
-} from "./components/Student/index/actions";
-import { studentApi, classApi } from "./api";
+import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS } from './components/Instructor/index/constants';
+import { setStudents } from "./components/Student/index/actions";
+import { setInstructors } from './components/Instructor/index/actions';
+import { studentApi, classApi, instructorApi } from "./api";
 const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi } = studentApi;
 const { createClassApi } = classApi;
+const { fetchInstructorsApi, searchInstructorsApi } = instructorApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -99,6 +100,42 @@ export function* createClass(newClass) {
   }
 }
 
+export function* watchForFetchInstructors() {
+  while (true) {
+    yield take(FETCH_INSTRUCTORS);
+    yield call(fetchInstructors);
+  }
+}
+
+export function* fetchInstructors() {
+  try {
+    const instructors = yield call(fetchInstructorsApi);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn('Error occurred in fetchInstructors saga', err);
+  }
+}
+
+export function* watchForSearchInstructors() {
+  while (true) {
+    const { filters } = yield take(SEARCH_INSTRUCTORS);
+    yield call(searchInstructors, filters);
+  }
+}
+
+export function* searchInstructors(filters) {
+  try {
+    const instructors = yield call(searchInstructorsApi, filters);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn("Error occurred in searchInstructors saga", err);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -106,5 +143,7 @@ export default function* defaultSaga() {
     watchForCreateStudent(),
     watchForDeleteStudent(),
     watchForCreateClass(),
+    watchForFetchInstructors(),
+    watchForSearchInstructors(),
   ]);
 }
