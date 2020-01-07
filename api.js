@@ -7,7 +7,14 @@ import {
 
 import { createClassApi } from './components/Classes/index/api';
 
-import { fetchInstructorsApi, searchInstructorsApi } from './components/Instructor/index/api';
+import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
+  updateInstructorLastNameApi,
+  updateInstructorEmailApi,
+  updateInstructorStateApi,
+  updateInstructorCityApi,
+  updateInstructorZipApi,
+  updateInstructorAddressApi,
+  addInstructorToLocationApi } from './components/Instructor/index/api';
 
 export const classApi = {
   createClassApi,
@@ -23,4 +30,12 @@ export const studentApi = {
 export const instructorApi = {
   fetchInstructorsApi,
   searchInstructorsApi,
+  updateInstructorFirstNameApi,
+  updateInstructorLastNameApi,
+  updateInstructorEmailApi,
+  updateInstructorStateApi,
+  updateInstructorCityApi,
+  updateInstructorZipApi,
+  updateInstructorAddressApi,
+  addInstructorToLocationApi,
 };

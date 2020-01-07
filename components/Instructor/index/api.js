@@ -61,6 +61,114 @@ export const createNewInstructorApi = insturctor =>
     .then(res => res.json())
     .catch(err => err);
 
+export const updateInstructorFirstNameApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-first-name`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorLastNameApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-last-name`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorEmailApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-email`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorStateApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-state`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorCityApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-city`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorZipApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-zip`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorAddressApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-address`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateInstructorPhoneApi = body =>
+  fetch(`${API_URL}/api/commands/update-instructors-phone`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const addInstructorToLocationApi = body =>
+  fetch(`${API_URL}/api/commands/add-instructor-to-location`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
 export const searchInstructorsApi = filters => {
   const queryString = `search=${filters.name}&location=${filters.location}`;
   return fetch(`${API_URL}/api/instructors?${queryString}`, {
@@ -110,3 +218,17 @@ export const searchInstructorsApi = filters => {
     })
     .catch(err => err);
 };
+export default [
+  createNewInstructorApi,
+  fetchInstructorsApi,
+  searchInstructorsApi,
+  updateInstructorFirstNameApi,
+  updateInstructorLastNameApi,
+  updateInstructorEmailApi,
+  updateInstructorStateApi,
+  updateInstructorCityApi,
+  updateInstructorZipApi,
+  updateInstructorAddressApi,
+  updateInstructorPhoneApi,
+  addInstructorToLocationApi,
+];
