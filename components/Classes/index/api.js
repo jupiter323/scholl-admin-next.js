@@ -1,6 +1,6 @@
 const API_URL = process.env.API_URL;
 
-export const createNewClassRoomApi = (classroom) =>
+export const createClassApi = (classroom) =>
   fetch(`${API_URL}/api/commands/create-classroom`, {
     method: "POST",
     headers: {
@@ -12,4 +12,4 @@ export const createNewClassRoomApi = (classroom) =>
     .then(res => res.json())
     .catch(err => err);
 
-export default createNewClassRoomApi;
+export default createClassApi;

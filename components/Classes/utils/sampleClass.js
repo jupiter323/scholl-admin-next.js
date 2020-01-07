@@ -18,7 +18,6 @@ const sampleClass = [
       lastName: 'manager',
       firstName: 'Company',
       email: 'test2@example.com',
-      gender: 'M',
     },
     contactInfo: {
       phone: '1234567890',
@@ -47,7 +46,6 @@ const sampleClass = [
       lastName: 'Admin',
       firstName: 'Company',
       email: 'test2@example.com',
-      gender: 'M',
     },
     contactInfo: {
       phone: '1234567890',

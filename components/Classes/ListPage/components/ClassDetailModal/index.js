@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Portal from "../../../../Portal";
 import update from 'immutability-helper';
+import Portal from "../../../../Portal";
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 import AccountInfo from '../SharedModalComponents/AccountInfo';
@@ -9,7 +9,6 @@ import ContactInfo from '../SharedModalComponents/ContactInfo';
 import Locations from '../SharedModalComponents/Locations';
 
 import { nestedEditFieldValidation } from '../../../../utils/fieldValidation';
-
 
 class ClassDetailModal extends React.Component {
   constructor(props) {
@@ -40,7 +39,6 @@ class ClassDetailModal extends React.Component {
           firstName: '',
           lastName: '',
           email: '',
-          gender: '',
         },
         contactInfo: {
           phone: '',
@@ -69,7 +67,6 @@ class ClassDetailModal extends React.Component {
           firstName: '',
           lastName: '',
           email: '',
-          gender: '',
         },
         contactInfo: {
           phone: '',
@@ -85,7 +82,6 @@ class ClassDetailModal extends React.Component {
           firstName: true,
           lastName: true,
           email: true,
-          gender: true,
         },
       },
     };
@@ -151,6 +147,7 @@ class ClassDetailModal extends React.Component {
   onSetValidation = (validation, cb) => this.setState({ validation }, cb);
 
   // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
+  // eslint-disable-next-line consistent-return
   onSubmit = async (event) => {
     event.preventDefault();
     const { updatedClassRoom: { id, basicInfo, accountInfo, contactInfo, locations, summary } } = this.state;
@@ -159,8 +156,8 @@ class ClassDetailModal extends React.Component {
     // const valid = true;
     const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
     if (!valid) {
-      // return onSaveLocationError();
       console.warn('not valid');
+      return onSaveLocationError();
     }
     const postBody = { id, basicInfo, accountInfo, contactInfo, locations, summary };
     onSaveClassChanges(postBody);
@@ -174,7 +171,7 @@ class ClassDetailModal extends React.Component {
   }
 
   render() {
-    const { open, onOpenDeleteModal, onDeleteClass, deleteModalOpen, index } = this.props;
+    const { open, onDeleteClass, deleteModalOpen, index } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
       updatedClassRoom: { accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations },
     } = this.state;
@@ -328,9 +325,9 @@ ClassDetailModal.propTypes = {
   open: PropTypes.bool.isRequired,
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onOpenDeleteModal: PropTypes.func.isRequired,
   classroom: PropTypes.object.isRequired,
   onSaveClassChanges: PropTypes.func.isRequired,
+  onDeleteClass: PropTypes.func.isRequired,
 };
 
 export default ClassDetailModal;

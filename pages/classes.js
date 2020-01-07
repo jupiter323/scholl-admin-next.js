@@ -1,11 +1,13 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import Moment from 'moment';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import StatusPage from "../components/Classes/StatusPage";
 import ListPage from "../components/Classes/ListPage";
-import Moment from 'moment';
 import sampleClass from "../components/Classes/utils/sampleClass";
-import createNewClassRoomApi from '../components/Classes/index/api';
-
+import { createClass } from '../components/Classes/index/actions';
 
 class Classes extends React.Component {
   constructor(props) {
@@ -41,7 +43,6 @@ class Classes extends React.Component {
         lastName: 'Admin',
         firstName: 'Company',
         email: 'test2@example.com',
-        gender: 'M',
       },
       contactInfo: {
         phone: '1234567890',
@@ -75,11 +76,11 @@ class Classes extends React.Component {
     this.setState({ classes: newClassesArray });
   }
 
-  onCreateNewClassApi = async (classroom) => {
-    const newId = this.state.classes.length + 1;
+  onCreateNewClassApi = (classroom) => {
+    const { onCreateClass } = this.props;
+    // eslint-disable-next-line camelcase
     const { classInfo: { className }, accountInfo: { start_date, end_date, isExclude }, location: { locations }, instructor: { instructors } } = classroom;
     const formattedClassRoom = {
-      id: newId,
       name: className,
       start_date: Moment(start_date).format('YYYY-MM-DD'),
       end_date: Moment(end_date).format('YYYY-MM-DD'),
@@ -89,7 +90,7 @@ class Classes extends React.Component {
       instructors,
       students: "",
     };
-    await createNewClassRoomApi(formattedClassRoom);
+    onCreateClass(formattedClassRoom);
   }
 
   onSaveClassChanges = (updatedClasRoom) => {
@@ -127,4 +128,14 @@ class Classes extends React.Component {
   }
 }
 
-export default Classes;
+Classes.propTypes = {
+  onCreateClass: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  onCreateClass: (newClass) => dispatch(createClass(newClass)),
+});
+
+const withConnect = connect(null, mapDispatchToProps);
+
+export default compose(withConnect)(Classes);

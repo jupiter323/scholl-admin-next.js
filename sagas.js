@@ -13,12 +13,12 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
-import {
-  setStudents,
-} from "./components/Student/index/actions";
-import { studentApi } from "./api";
-const {
-  fetchStudentsApi,
+import { CREATE_CLASS } from './components/Classes/index/constants';
+import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS } from './components/Instructor/index/constants';
+import { setStudents } from "./components/Student/index/actions";
+import { setInstructors } from './components/Instructor/index/actions';
+import { studentApi, classApi, instructorApi } from "./api";
+const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi,  fetchStudentsApi,
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
@@ -29,8 +29,9 @@ const {
   updateStudentLastNameApi,
   updateStudentPhoneApi,
   updateStudentStateApi,
-  updateStudentZipApi,
-} = studentApi;
+  updateStudentZipApi, } = studentApi;
+const { createClassApi } = classApi;
+const { fetchInstructorsApi, searchInstructorsApi } = instructorApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -228,6 +229,61 @@ export function* watchForUpdateStudentZip() {
 }
 
 
+export function* watchForCreateClass() {
+  while (true) {
+    const { newClass } = yield take(CREATE_CLASS);
+    console.warn('saga yaaay!', newClass);
+    yield call(createClass, newClass);
+  }
+}
+
+export function* createClass(newClass) {
+  try {
+    const response = yield call(createClassApi, newClass);
+    if (response.exception && response.exception.length) {
+      console.warn('Error occurred in createClass saga', response);
+    }
+  } catch (err) {
+    console.warn('Error occurred in createClass saga', err);
+  }
+}
+
+export function* watchForFetchInstructors() {
+  while (true) {
+    yield take(FETCH_INSTRUCTORS);
+    yield call(fetchInstructors);
+  }
+}
+
+export function* fetchInstructors() {
+  try {
+    const instructors = yield call(fetchInstructorsApi);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn('Error occurred in fetchInstructors saga', err);
+  }
+}
+
+export function* watchForSearchInstructors() {
+  while (true) {
+    const { filters } = yield take(SEARCH_INSTRUCTORS);
+    yield call(searchInstructors, filters);
+  }
+}
+
+export function* searchInstructors(filters) {
+  try {
+    const instructors = yield call(searchInstructorsApi, filters);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn("Error occurred in searchInstructors saga", err);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -242,5 +298,8 @@ export default function* defaultSaga() {
     watchForUpdateStudentPhone(),
     watchForUpdateStudentState(),
     watchForUpdateStudentZip(),
+    watchForCreateClass(),
+    watchForFetchInstructors(),
+    watchForSearchInstructors(),
   ]);
 }

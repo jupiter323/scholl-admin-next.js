@@ -8,7 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import { fetchStudents, createStudent, deleteStudent } from '../components/Student/index/actions';
 import { makeSelectStudents } from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
-// import sampleStudentList from '../components/Student/utils/sampleStudentList';
+import { deleteStudentApi } from '../components/Student/index/api';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
@@ -17,30 +17,22 @@ import LocationModal from '../components/Location/components/LocationModal';
 import { studentFirstNameAscending, studentFirstNameDescending, studentLastNameAscending, studentLastNameDescending } from '../components/utils/sortFunctions';
 
 // eslint-disable-next-line prefer-template
-const idGenerator = () => subIdGenerator() + subIdGenerator() + '-' + subIdGenerator() + '-' + subIdGenerator() + '-' +
-  subIdGenerator() + '-' + subIdGenerator() + subIdGenerator() + subIdGenerator();
-
+const idGenerator = () => `${subIdGenerator() + subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${
+  subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-
-const locationMap = {
-  Austin: 'Austin',
-  Miami: 'Miami',
-  option1: 'Option 1',
-  option2: 'Option 2',
-};
 
 class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedStudent: null,
-      students: this.props.students,
+      students: [],
       studentModalOpen: false,
       locationModalOpen: false,
       dropdownIsOpen: false,
       dropdownIndex: null,
       sort: '',
-      nameFilter: '',
+      filterName: '',
       location: '',
       newStudent: {
         active: false,
@@ -71,21 +63,10 @@ class Students extends Component {
     onFetchStudents();
   };
 
-  componentDidUpdate = prevProps => {
-    const { students } = this.props;
-    const { students: prevStudents } = prevProps;
-    if (
-      (this.state.students.length === 0 && students.length > 0) ||
-      students.length !== prevStudents.length
-    ) {
-      this.setState({ students });
-    }
-  };
-
   componentDidUpdate() {
     const { students: studentState } = this.state;
     const { students } = this.props;
-    if (students.length && studentState.length === 0) {
+    if (studentState.length === 0 && students.length > 0) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ students });
     }
@@ -96,12 +77,12 @@ class Students extends Component {
   onOpenLocationModal = () => this.setState({ locationModalOpen: true });
   onCloseLocationModal = () => this.setState({ locationModalOpen: false });
 
-  onSetSort = (sort) => this.setState({ sort });
-  onSetFilteredState = (nameFilter) => this.setState({ nameFilter });
-  onUnsetFilteredState = () => this.setState({ nameFilter: '' });
+  onSetSort = sort => this.setState({ sort });
+  onSetFilteredState = filterName => this.setState({ filterName });
+  onUnsetFilteredState = () => this.setState({ filterName: "" });
 
-  onSetFilteredLocationState = (location) => this.setState({ location });
-  onUnsetFilteredLocationState = () => this.setState({ location: '' });
+  onSetFilteredLocationState = location => this.setState({ location });
+  onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
@@ -117,7 +98,6 @@ class Students extends Component {
         studentInformation: {
           firstName: "",
           lastName: "",
-          gender: "",
         },
         contactInformation: {
           phone: "",
@@ -144,36 +124,40 @@ class Students extends Component {
   onDeleteNewStudent = () => {
     const { newStudent: previousStudentState } = this.state;
     const newStudent = update(previousStudentState, {
-      $set:
-       { active: false,
-         studentInformation: {
-           firstName: '',
-           lastName: '',
-           gender: '',
-         },
-         contactInformation: {
-           phone: '',
-           addressLine1: '',
-           addressLine2: '',
-           city: '',
-           state: '',
-           zipCode: '',
-         },
-         emailAddress: {
-           email: '',
-         },
-         location: {
-           locations: [],
-         },
-       } }
-    );
+      $set: {
+        active: false,
+        studentInformation: {
+          firstName: "",
+          lastName: "",
+        },
+        contactInformation: {
+          phone: "",
+          addressLine1: "",
+          addressLine2: "",
+          city: "",
+          state: "",
+          zipCode: "",
+        },
+        emailAddress: {
+          email: "",
+        },
+        location: {
+          locations: [],
+        },
+      },
+    });
     this.setState({ newStudent });
   };
 
-  onRemoveLocation = (index) => {
+  onRemoveLocation = index => {
     const { newStudent: previousStudentState } = this.state;
-    const { location: { locations } } = this.state.newStudent;
-    const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
+    const {
+      location: { locations },
+    } = this.state.newStudent;
+    const newLocationsArray = this.arrayItemRemover(
+      locations,
+      locations[index]
+    );
     const newStudent = update(previousStudentState, {
       location: { $set: { locations: newLocationsArray } },
     });
@@ -183,14 +167,14 @@ class Students extends Component {
   onFilterByName = () => {
     const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
-      const { lastName, firstName } = currentStudent;
-      const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+      const { studentInformation: { firstName, lastName } } = currentStudent;
+      const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
       if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
         finalArr.push(currentStudent);
       }
       return finalArr;
     }, []);
-  };
+  }
 
   onHandleStudentCard = index => {
     const { students } = this.state;
@@ -224,15 +208,36 @@ class Students extends Component {
     });
   };
 
+  handleChange = (event, name, section) => {
+    const { newStudent: previousStudentState } = this.state;
+    const value = event.target ? event.target.value : event;
+    const updatedStudent = update(previousStudentState, {
+      [section]: { $merge: { [name]: value } },
+    });
+    this.setState({ newStudent: updatedStudent });
+  };
+
   onSaveStudentChanges = updatedStudent => {
     const { students: originalStudents } = this.state;
-    const { active, studentInformation, contactInformation, emailAddress, location } = updatedStudent;
-    const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
+    const {
+      active,
+      studentInformation,
+      contactInformation,
+      emailAddress,
+      location,
+    } = updatedStudent;
+    const studentToUpdate = originalStudents.filter(
+      student => student.id === updatedStudent.id
+    )[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
     const students = update(originalStudents, {
       [updatedStudentIndex]: {
         $merge: {
-          active, studentInformation, contactInformation, emailAddress, location,
+          active,
+          studentInformation,
+          contactInformation,
+          emailAddress,
+          location,
         },
       },
     });
@@ -262,58 +267,15 @@ class Students extends Component {
   }
 
   getMappableStudents = () => {
-    const { nameFilter, location, sort, students } = this.state;
-    let mappableStudents = students;
-    if (nameFilter.length) {
-      mappableStudents = this.onFilterByName();
-    }
-    if (location.length) {
-      mappableStudents = this.onFilterByLocation();
-    }
+    const { sort, students } = this.state;
+    const mappableStudents = students;
     if (sort) {
       return this.onSortStudents(mappableStudents);
     }
     return mappableStudents;
   }
 
-  onFilterByLocation = () => {
-    const { location: locationFilter, students: allStudents } = this.state;
-    let students = allStudents;
-    students = students.filter(student => {
-      const locationNames = student.location.locations.reduce((finalArr, currentLocation) => {
-        finalArr.push(currentLocation.locationName);
-        return finalArr;
-      }, []);
-      if (locationNames.indexOf(locationMap[locationFilter]) !== -1) {
-        return true;
-      }
-      return false;
-    });
-    return students;
-  }
-
-  onFilterByName = () => {
-    const { students, nameFilter } = this.state;
-    return students.reduce((finalArr, currentStudent) => {
-      const { studentInformation: { firstName, lastName } } = currentStudent;
-      const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
-      if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
-        finalArr.push(currentStudent);
-      }
-      return finalArr;
-    }, []);
-  }
-
   arrayItemRemover = (array, value) => array.filter((student) => student !== value)
-
-  handleChange = (event, name, section) => {
-    const { newStudent: previousStudentState } = this.state;
-    const value = event.target ? event.target.value : event;
-    const updatedStudent = update(previousStudentState, {
-      [section]: { $merge: { [name]: value } },
-    });
-    this.setState({ newStudent: updatedStudent });
-  };
 
   mapStudents = () => this.getMappableStudents().map((student, index) => (
     <StudentCard
@@ -334,7 +296,6 @@ class Students extends Component {
 
   render() {
     const { studentModalOpen, selectedStudent } = this.state;
-    // const { students: students2 } = this.props;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5">
@@ -343,14 +304,22 @@ class Students extends Component {
               <React.Fragment>
                 <Sticky>
                   {({ style }) => (
-
-                    <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
+                    <div
+                      className="title-row card-panel"
+                      style={{ ...style, zIndex: 1999 }}
+                    >
                       <div className="mobile-header">
-                        <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                        <a
+                          href="#"
+                          data-target="slide-out"
+                          className="sidenav-trigger"
+                        >
+                          <i className="material-icons">menu</i>
+                        </a>
                       </div>
                       <h2 className="h1 white-text">
                         <span className="heading-holder">
-                          <i className="icon-student" />
+                          <i className="icon-student"></i>
                           <span className="heading-block">Students</span>
                         </span>
                       </h2>
@@ -362,7 +331,9 @@ class Students extends Component {
                   onSetFilteredState={this.onSetFilteredState}
                   onUnsetFilteredState={this.onUnsetFilteredState}
                   onSetFilteredLocationState={this.onSetFilteredLocationState}
-                  onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
+                  onUnsetFilteredLocationState={
+                    this.onUnsetFilteredLocationState
+                  }
                   handleFilterClick={this.handleFilterClick}
                   onFilterByName={this.onFilterByName}
                 />
@@ -385,12 +356,21 @@ class Students extends Component {
                 <LocationModal
                   open={this.state.locationModalOpen}
                   onClose={this.onCloseLocationModal}
-                  handleLocationsChange={(selectedLocations) => this.handleChange(selectedLocations, 'locations', 'location')}
+                  handleLocationsChange={selectedLocations =>
+                    this.handleChange(
+                      selectedLocations,
+                      "locations",
+                      "location"
+                    )
+                  }
                 />
               </React.Fragment>
             )}
             {selectedStudent && (
-              <IndividualStudentPage student={selectedStudent} onRedirectToStudentPage={this.onRedirectToStudentPage} />
+              <IndividualStudentPage
+                student={selectedStudent}
+                onRedirectToStudentPage={this.onRedirectToStudentPage}
+              />
             )}
           </StickyContainer>
         </div>

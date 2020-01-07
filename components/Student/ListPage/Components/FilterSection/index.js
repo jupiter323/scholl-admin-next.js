@@ -44,17 +44,6 @@ class FilterSection extends React.Component {
 
   onClearFilters = () => this.setState({ activeFilters: [] })
 
-  submitNameFilter = () => {
-    const { onSetFilteredState, onUnsetFilteredState } = this.props;
-    const { nameFilter } = this.state;
-    if (nameFilter === '') {
-      onUnsetFilteredState();
-    }
-    const transformedName = nameFilter.replace(/\s/g, "").toLowerCase();
-    console.warn('set this in pages!', transformedName);
-    onSetFilteredState(transformedName);
-  }
-
   // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
     const { onSetFilteredLocationState, onUnsetFilteredLocationState, onSetSort } = this.props;
@@ -82,7 +71,9 @@ class FilterSection extends React.Component {
       return onSetSort(event);
     }
   }
+
   render() {
+    // eslint-disable-next-line no-unused-vars
     const { nameFilter, location, sort, open, activeFilters } = this.state;
     return (
       <div className="filter-form-holder">
@@ -324,7 +315,7 @@ class FilterSection extends React.Component {
                       <button
                         type="submit"
                         className="search-button"
-                        onClick={this.submitNameFilter}
+                        onClick={this.onFilterByName}
                       >
                         <i className="icon-search"></i>
                       </button>

@@ -11,9 +11,9 @@ export const fetchStudentsApi = () =>
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const students = data.students.map(student => ({
+      const formattedStudents = data.students.map(student => ({
         id: student.user_address.user_id,
-        active: student.active === 1,
+        active: false,
         studentInformation: {
           firstName: student.first_name,
           lastName: student.last_name,
@@ -32,22 +32,17 @@ export const fetchStudentsApi = () =>
         location: {
           locations: student.user_locations,
         },
-        stats: {
-          complete: student.stats.complete,
-          overdue: student.stats.overdue,
-          practiceTests: student.stats.practice_tests,
-          sessionsComplete: student.stats.sessions_complete,
-          totalSessions: student.stats.total_sessions,
-        },
+        stats: student.stats,
+        tutor: (!student.hasOwnProperty('tutor') ? '' : student.tutor),
         testScores: {
-          initialScore: '',
-          currentScore: '',
+          initialScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.initialScore),
+          currentScore: (!student.hasOwnProperty('testScores') ? '0' : student.testScores.currentScore),
         },
         courseContext: {
-          targetScore: '',
+          targetScore: (!student.hasOwnProperty('courseContext') ? '0' : student.courseContext.targetScore),
         },
       }));
-      return students;
+      return formattedStudents;
     });
 
 export const searchStudentsApi = filters => {
@@ -118,12 +113,11 @@ export const createStudentApi = student => {
   const {
     firstName: first_name,
     lastName: last_name,
-    gender,
   } = student.studentInformation;
   const { email } = student.emailAddress;
   const { state, addressLine1, addressLine2, city, phone, zipCode: zip } = student.contactInformation;
   const { locations } = student.location;
-  const studentPayload = { first_name, last_name, email, gender, state, locations, phone, address: `${addressLine1}\n${addressLine2}`, city, zip };
+  const studentPayload = { first_name, last_name, email, state, locations, phone, address: `${addressLine1}\n${addressLine2}`, city, zip };
   fetch(`${API_URL}/api/commands/create-student`, {
     method: 'POST',
     headers: {

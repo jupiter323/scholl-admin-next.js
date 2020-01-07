@@ -5,7 +5,6 @@ import FilterSection from "./components/FilterSection";
 import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 import ClassModal from "../ClassModal";
 
-
 class ListPage extends React.Component {
   constructor(props) {
     super(props);
@@ -131,7 +130,7 @@ class ListPage extends React.Component {
     const classes = this.getMappableClasses();
     return classes.map((item, index) => (
       <ClassCard
-        key={index}
+        key={index.toString()}
         index={index}
         classroom={item}
         onSetDropdown={this.onSetDropdown}
@@ -192,7 +191,7 @@ class ListPage extends React.Component {
           <a
             href="#modal_add_new_class"
             className="modal-trigger waves-effect waves-teal btn add-btn"
-            onClick={() => this.onOpenClassModal(event)}
+            onClick={this.onOpenClassModal}
           >
             <i className="material-icons">add</i> New Class
           </a>
@@ -202,7 +201,6 @@ class ListPage extends React.Component {
           onClose={this.onCloseClassModal}
           onSave={onSaveNewClass}
         />
-
       </div>
     );
   }

@@ -138,15 +138,15 @@ class LessonWorksheetTestSection extends React.Component {
                 <div className="col s2 m1 right-align position-mobile-right">
                   <div className="dropdown-block">
                     <a
-                      href='#'
-                      data-target='dropdown_top'
-                      className='dropdown-trigger btn'
+                      href="#"
+                      data-target="dropdown_top"
+                      className="dropdown-trigger btn"
                       onClick={this.handleDropdownClick}
                     >
                       <i className="material-icons dots-icon">more_vert</i>
                     </a>
                     <If condition={dropdownIsOpen}>
-                      <ul id='dropdown_top' className='dropdown-content dropdown-exwide' style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
+                      <ul id="dropdown_top" className="dropdown-content dropdown-exwide" style={{ display: 'block', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
                         <li><a href="#" className="modal-trigger" onClick={this.onToggleReassignModal}>Change Date</a></li>
                         <li><a href="#" className="modal-trigger" onClick={this.onToggleReassignModal}>Change Due Date</a></li>
                         <li><a href="#" className="modal-trigger" onClick={this.onToggleReassignModal}>Remove Due Date</a></li>
@@ -206,6 +206,6 @@ LessonWorksheetTestSection.propTypes = {
   user: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   worksheet: PropTypes.object.isRequired,
-}
+};
 
 export default LessonWorksheetTestSection;

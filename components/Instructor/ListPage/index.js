@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { createStructuredSelector} from 'reselect';
+import { createStructuredSelector } from 'reselect';
 import update from 'immutability-helper';
 import { Sticky, StickyContainer } from 'react-sticky';
 import InstructorCard from './components/InstructorCard';
@@ -12,21 +12,17 @@ import NewInstructorModal from './components/NewInstructorModal';
 // import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
 import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 
-import {
-  fetchInstructorsApi,
-  createNewInstructorApi,
-} from '../index/api';
-
+import { createNewInstructorApi } from '../index/api';
 
 import {
   setInstructors,
+  fetchInstructors,
 } from '../index/actions';
 
 
 import {
   makeSelectInstructors,
 } from '../index/selectors';
-
 
 class InstructorListPage extends React.Component {
   constructor(props) {
@@ -42,15 +38,9 @@ class InstructorListPage extends React.Component {
     };
   }
 
-  componentDidMount = async() => {
-    const {onSetInstructors,instructors} = this.props;
-    if(instructors.length === 0) {
-      const {formattedInstructors:instructors} = await fetchInstructorsApi();
-      this.setState({
-        instructors,
-      });
-      onSetInstructors(instructors);
-    }
+  componentDidMount = async () => {
+    const { onFetchInstructors } = this.props;
+    onFetchInstructors();
   }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIsOpen: true, dropdownIndex });
@@ -61,7 +51,7 @@ class InstructorListPage extends React.Component {
 
   onAddNewInstructor = (newInstructor) => {
     this.onCreateNewInstructorApi(newInstructor);
-    const { instructors,onSetInstructors } = this.props;
+    const { instructors, onSetInstructors } = this.props;
     const tempBasicInfo = {
       activeStudents: 15,
       pastStudents: 24,
@@ -70,9 +60,9 @@ class InstructorListPage extends React.Component {
       averageInitialScore: 1037,
       averageFinalScore: 1218,
       studentsAchievingTargetScore: 12,
-    }
-    const formattedNewInstructor = update(newInstructor,{basicInfo:{$set:tempBasicInfo}});
-    const updatedInstructors = update(instructors,{$push:[formattedNewInstructor]});
+    };
+    const formattedNewInstructor = update(newInstructor, { basicInfo: { $set: tempBasicInfo } });
+    const updatedInstructors = update(instructors, { $push: [formattedNewInstructor] });
     onSetInstructors(updatedInstructors);
   }
 
@@ -87,7 +77,7 @@ class InstructorListPage extends React.Component {
   onCloneInstructor = (instructor) => {
     const cloneIndex = this.props.instructors.indexOf(instructor);
     const newId = this.props.instructors.length + 1;
-    const updatedInstructor = update(instructor,{id:{$set:newId}})
+    const updatedInstructor = update(instructor, { id: { $set: newId } });
     const instructors = update(this.props.instructors, {
       $splice: [[cloneIndex, 0, updatedInstructor]],
     });
@@ -97,27 +87,26 @@ class InstructorListPage extends React.Component {
     this.onCreateNewInstructorApi(instructor);
   }
 
-  onCreateNewInstructorApi = async(instructor) => {
+  onCreateNewInstructorApi = async (instructor) => {
     const newId = this.props.instructors.length + 1;
-    const {accountInfo:{firstName,lastName,email,gender},contactInfo:{state,phone,streetAddress,city,zip}} = instructor;
+    const { accountInfo: { firstName, lastName, email }, contactInfo: { state, phone, streetAddress, city, zip } } = instructor;
     const formattedBody = {
-        id:newId,
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        gender,
-        state,
-        locations: [],
-        phone,
-        address: streetAddress,
-        city,
-        zip,
-      };
+      id: newId,
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      state,
+      locations: [],
+      phone,
+      address: streetAddress,
+      city,
+      zip,
+    };
     await createNewInstructorApi(formattedBody);
   }
 
   onSaveInstructorChanges = (updatedInstructor) => {
-    const { instructors: originalInstructors,onSetInstructors } = this.props;
+    const { instructors: originalInstructors, onSetInstructors } = this.props;
     const instructorToUpdate = originalInstructors.filter(instructor => instructor.id === updatedInstructor.id)[0];
     const updatedInstructorIndex = originalInstructors.indexOf(instructorToUpdate);
     const instructors = update(originalInstructors, {
@@ -240,33 +229,33 @@ class InstructorListPage extends React.Component {
         />
         <div className="main-holder grey lighten-5">
           <StickyContainer>
-          <Sticky>
-        {({ style }) => (
-          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
-            <div className="mobile-header">
-              <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+            <Sticky>
+              {({ style }) => (
+                <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
+                  <div className="mobile-header">
+                    <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                  </div>
+                  <h2 className="h1 white-text">
+                    <span className="heading-holder">
+                      <i className="icon-instructors"></i>
+                      <span className="heading-block">Instructors</span>
+                    </span>
+                  </h2>
+                </div>
+              )}
+            </Sticky>
+            <FilterSection
+              onSetSort={this.onSetSort}
+              onSetFilteredState={this.onSetFilteredState}
+              onUnsetFilteredState={this.onUnsetFilteredState}
+              onSetFilteredLocationState={this.onSetFilteredLocationState}
+              onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
+            />
+            <div className="content-section">
+              <div className="row d-flex-content">
+                {this.mapInstructors()}
+              </div>
             </div>
-            <h2 className="h1 white-text">
-              <span className="heading-holder">
-                <i className="icon-instructors"></i>
-                <span className="heading-block">Instructors</span>
-              </span>
-            </h2>
-          </div>
-        )}
-        </Sticky>
-          <FilterSection
-            onSetSort={this.onSetSort}
-            onSetFilteredState={this.onSetFilteredState}
-            onUnsetFilteredState={this.onUnsetFilteredState}
-            onSetFilteredLocationState={this.onSetFilteredLocationState}
-            onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
-          />
-          <div className="content-section">
-            <div className="row d-flex-content">
-              {this.mapInstructors()}
-            </div>
-          </div>
           </StickyContainer>
         </div>
         <a
@@ -284,23 +273,24 @@ class InstructorListPage extends React.Component {
 
 
 InstructorListPage.propTypes = {
-  instructors:PropTypes.array.isRequired,
-  onSetInstructors:PropTypes.func.isRequired,
-}
+  instructors: PropTypes.array.isRequired,
+  onSetInstructors: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
-  instructors:makeSelectInstructors(),
-})
+  instructors: makeSelectInstructors(),
+});
 
-function mapDispatchToProps(dispatch){
-  return{
-    onSetInstructors:instructors => dispatch(setInstructors(instructors)),
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetInstructors: instructors => dispatch(setInstructors(instructors)),
+    onFetchInstructors: () => dispatch(fetchInstructors()),
+  };
 }
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps
-)
+);
 
 export default compose(withConnect)(InstructorListPage);
