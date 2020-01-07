@@ -5,8 +5,9 @@ import {
   deleteStudentApi,
 } from "./components/Student/index/api";
 
-import {
-  updateInstructorFirstNameApi,
+import { createClassApi } from './components/Classes/index/api';
+
+import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
@@ -17,6 +18,10 @@ import {
   createNewInstructorApi,
 } from './components/Instructor/index/api';
 
+export const classApi = {
+  createClassApi,
+};
+
 export const studentApi = {
   fetchStudentsApi,
   searchStudentsApi,
@@ -26,6 +31,8 @@ export const studentApi = {
 
 export const instructorApi = {
   createNewInstructorApi,
+  fetchInstructorsApi,
+  searchInstructorsApi,
   updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
@@ -34,4 +41,4 @@ export const instructorApi = {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
-}
+};

@@ -30,7 +30,6 @@ class NewInstructorModal extends React.Component {
         firstName: '',
         lastName: '',
         email: '',
-        gender: {},
       },
       contactInfo: {
         phone: '',
@@ -45,7 +44,6 @@ class NewInstructorModal extends React.Component {
           firstName: true,
           lastName: true,
           email: true,
-          gender: true,
         },
       },
     };

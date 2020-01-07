@@ -11,7 +11,7 @@ class Instructors extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: "account"
+      active: "account",
     };
   }
 

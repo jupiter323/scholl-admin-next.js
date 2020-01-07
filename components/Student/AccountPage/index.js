@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
@@ -36,7 +35,6 @@ class AccountPage extends React.Component {
         studentInformation: {
           firstName: '',
           lastName: '',
-          gender: '',
         },
         contactInformation: {
           phone: '',
@@ -82,7 +80,6 @@ class AccountPage extends React.Component {
         studentInformation: {
           firstName: '',
           lastName: '',
-          gender: '',
         },
         contactInformation: {
           phone: '',
@@ -134,7 +131,6 @@ class AccountPage extends React.Component {
         studentInformation: {
           firstName: true,
           lastName: true,
-          gender: true,
         },
         emailAddress: {
           email: true,
@@ -330,7 +326,7 @@ class AccountPage extends React.Component {
                 <Class
                   state={this.initialUserMount() ? course : updatedClasses}
                   onOpenClassModal={this.onOpenClassModal}
-                  onRemoveInstructor={this.onRemoveOption}
+                  onRemoveClass={this.onRemoveOption}
                 />
               </div>
             </div>

@@ -8,21 +8,23 @@ import {
 import {
   setStudents,
 } from "./components/Student/index/actions";
-import {
-    CREATE_INSTRUCTOR,
-    UPDATE_INSTRUCTOR_FIRSTNAME,
-    UPDATE_INSTRUCTOR_LASTNAME,
-    UPDATE_INSTRUCTOR_EMAIL,
-    UPDATE_INSTRUCTOR_STATE,
-    UPDATE_INSTRUCTOR_CITY,
-    UPDATE_INSTRUCTOR_ZIP,
-    UPDATE_INSTRUCTOR_ADDRESS,
-    UPDATE_INSTRUCTOR_PHONE,
-    ADD_INSTRUCTOR_LOCATION,
-} from './components/Instructor/index/constants';
-import { studentApi, instructorApi } from "./api";
-const {fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi} = studentApi;
-const {updateInstructorFirstNameApi,
+import { CREATE_CLASS } from './components/Classes/index/constants';
+import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
+  CREATE_INSTRUCTOR,
+  UPDATE_INSTRUCTOR_LASTNAME,
+  UPDATE_INSTRUCTOR_EMAIL,
+  UPDATE_INSTRUCTOR_STATE,
+  UPDATE_INSTRUCTOR_CITY,
+  UPDATE_INSTRUCTOR_ZIP,
+  UPDATE_INSTRUCTOR_ADDRESS,
+  UPDATE_INSTRUCTOR_PHONE,
+  ADD_INSTRUCTOR_LOCATION } from './components/Instructor/index/constants';
+import { setStudents } from "./components/Student/index/actions";
+import { setInstructors } from './components/Instructor/index/actions';
+import { studentApi, classApi, instructorApi } from "./api";
+const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi } = studentApi;
+const { createClassApi } = classApi;
+const { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
@@ -38,7 +40,7 @@ const {updateInstructorFirstNameApi,
 export function* watchForFetchStudents() {
   while (true) {
     yield take(FETCH_STUDENTS);
-    yield call(fetchStudents)
+    yield call(fetchStudents);
   }
 }
 
@@ -55,7 +57,7 @@ export function* fetchStudents() {
 
 export function* watchForSearchStudents() {
   while (true) {
-    const {filters} = yield take(SEARCH_STUDENTS);
+    const { filters } = yield take(SEARCH_STUDENTS);
     yield call(searchStudents, filters);
   }
 }
@@ -104,7 +106,7 @@ export function* watchForDeleteStudent() {
 export function* watchForUpdateInstructorFirstName() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_FIRSTNAME);
+      const { value } = yield take(UPDATE_INSTRUCTOR_FIRSTNAME);
       const response = yield call(updateInstructorFirstNameApi, value);
       if (response && response.message) {
         return console.warn(
@@ -120,7 +122,7 @@ export function* watchForUpdateInstructorFirstName() {
 export function* watchForUpdateInstructorLastName() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_LASTNAME);
+      const { value } = yield take(UPDATE_INSTRUCTOR_LASTNAME);
       const response = yield call(updateInstructorLastNameApi, value);
       if (response && response.message) {
         return console.warn(
@@ -136,7 +138,7 @@ export function* watchForUpdateInstructorLastName() {
 export function* watchForUpdateInstructorEmail() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_EMAIL);
+      const { value } = yield take(UPDATE_INSTRUCTOR_EMAIL);
       const response = yield call(updateInstructorEmailApi, value);
       if (response && response.message) {
         return console.warn(
@@ -152,7 +154,7 @@ export function* watchForUpdateInstructorEmail() {
 export function* watchForUpdateInstructorState() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_STATE);
+      const { value } = yield take(UPDATE_INSTRUCTOR_STATE);
       const response = yield call(updateInstructorStateApi, value);
       if (response && response.message) {
         return console.warn(
@@ -168,7 +170,7 @@ export function* watchForUpdateInstructorState() {
 export function* watchForUpdateInstructorCity() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_CITY);
+      const { value } = yield take(UPDATE_INSTRUCTOR_CITY);
       const response = yield call(updateInstructorCityApi, value);
       if (response && response.message) {
         return console.warn(
@@ -184,7 +186,7 @@ export function* watchForUpdateInstructorCity() {
 export function* watchForUpdateInstructorZip() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_ZIP);
+      const { value } = yield take(UPDATE_INSTRUCTOR_ZIP);
       const response = yield call(updateInstructorZipApi, value);
       if (response && response.message) {
         return console.warn(
@@ -200,7 +202,7 @@ export function* watchForUpdateInstructorZip() {
 export function* watchForUpdateInstructorAddress() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_ADDRESS);
+      const { value } = yield take(UPDATE_INSTRUCTOR_ADDRESS);
       const response = yield call(updateInstructorAddressApi, value);
       if (response && response.message) {
         return console.warn(
@@ -216,7 +218,7 @@ export function* watchForUpdateInstructorAddress() {
 export function* watchForUpdateInstructorPhone() {
   while (true) {
     try {
-      const {value} = yield take(UPDATE_INSTRUCTOR_PHONE);
+      const { value } = yield take(UPDATE_INSTRUCTOR_PHONE);
       const response = yield call(updateInstructorPhoneApi, value);
       if (response && response.message) {
         return console.warn(
@@ -240,8 +242,62 @@ export function* watchForCreateInstructor() {
       }
       yield call(fetchInstructors);
     } catch (err) {
-      console.warn("Error occured in watchForCreateInstructor saga", err);
+    console.warn("Error occured in watchForCreateInstructor saga", err);
+  }
+}
+
+export function* watchForCreateClass() {
+  while (true) {
+    const { newClass } = yield take(CREATE_CLASS);
+    console.warn('saga yaaay!', newClass);
+    yield call(createClass, newClass);
+  }
+}
+
+export function* createClass(newClass) {
+  try {
+    const response = yield call(createClassApi, newClass);
+    if (response.exception && response.exception.length) {
+      console.warn('Error occurred in createClass saga', response);
     }
+  } catch (err) {
+    console.warn('Error occurred in createClass saga', err);
+  }
+}
+
+export function* watchForFetchInstructors() {
+  while (true) {
+    yield take(FETCH_INSTRUCTORS);
+    yield call(fetchInstructors);
+  }
+}
+
+export function* fetchInstructors() {
+  try {
+    const instructors = yield call(fetchInstructorsApi);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn('Error occurred in fetchInstructors saga', err);
+  }
+}
+
+export function* watchForSearchInstructors() {
+  while (true) {
+    const { filters } = yield take(SEARCH_INSTRUCTORS);
+    yield call(searchInstructors, filters);
+  }
+}
+
+export function* searchInstructors(filters) {
+  try {
+    const instructors = yield call(searchInstructorsApi, filters);
+    if (instructors instanceof Array) {
+      yield put(setInstructors(instructors));
+    }
+  } catch (err) {
+    console.warn("Error occurred in searchInstructors saga", err);
   }
 }
 
@@ -251,6 +307,9 @@ export default function* defaultSaga() {
     watchForSearchStudents(),
     watchForCreateStudent(),
     watchForDeleteStudent(),
+    watchForCreateClass(),
+    watchForFetchInstructors(),
+    watchForSearchInstructors(),
     watchForUpdateInstructorFirstName(),
     watchForUpdateInstructorLastName(),
     watchForUpdateInstructorEmail(),
