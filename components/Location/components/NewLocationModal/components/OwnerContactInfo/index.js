@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import Dropdown from '../../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../../utils/getValueFromState';
 import stateOptions from '../../../../../utils/stateOptions';
-import genderOptions from '../../../../../utils/genderOptions';
 
-const OwnerContactInfo = ({ state: { firstName, lastName, email, gender, phone, streetAddress, city, state, zip }, handleDetailsChange }) => (
+const OwnerContactInfo = ({ state: { firstName, lastName, email, phone, streetAddress, city, state, zip }, handleDetailsChange }) => (
   <div className="col s12 l6">
     <div className="card-block">
       <h3>Owner Contact Info</h3>
@@ -46,18 +45,6 @@ const OwnerContactInfo = ({ state: { firstName, lastName, email, gender, phone, 
                 onChange={(event) => handleDetailsChange(event, 'email', 'ownerContactInfo')}
               />
               <label className="label" htmlFor="email">Email Address*</label>
-            </div>
-          </div>
-          <div className="row mb-0">
-            <div className="input-field col s12 l7">
-              <Dropdown
-                value={getValueFromState(gender, genderOptions)}
-                onChange={(event) => handleDetailsChange(event, 'gender', 'ownerContactInfo')}
-                options={genderOptions}
-                label="Gender*"
-                stateKey="gender"
-                dropdownKey="gender"
-              />
             </div>
           </div>
           <div className="row mb-0">

@@ -20,7 +20,6 @@ class StudentListPage extends React.Component {
         active: false,
         firstName: {},
         lastName: {},
-        gender: {},
         phone: {},
         address: {},
         city: {},

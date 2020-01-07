@@ -21,13 +21,6 @@ const idGenerator = () => `${subIdGenerator() + subIdGenerator()}-${subIdGenerat
   subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 
-const locationMap = {
-  Austin: 'Austin',
-  Miami: 'Miami',
-  option1: 'Option 1',
-  option2: 'Option 2',
-};
-
 class Students extends Component {
   constructor(props) {
     super(props);
@@ -73,7 +66,8 @@ class Students extends Component {
   componentDidUpdate() {
     const { students: studentState } = this.state;
     const { students } = this.props;
-    if (studentState.length === 0 && students.length > 0 ) {
+    if (studentState.length === 0 && students.length > 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ students });
     }
   }
@@ -104,7 +98,6 @@ class Students extends Component {
         studentInformation: {
           firstName: "",
           lastName: "",
-          gender: "",
         },
         contactInformation: {
           phone: "",
@@ -136,7 +129,6 @@ class Students extends Component {
         studentInformation: {
           firstName: "",
           lastName: "",
-          gender: "",
         },
         contactInformation: {
           phone: "",
@@ -278,7 +270,7 @@ class Students extends Component {
 
   getMappableStudents = () => {
     const { sort, students } = this.state;
-    let mappableStudents = students;
+    const mappableStudents = students;
     if (sort) {
       return this.onSortStudents(mappableStudents);
     }

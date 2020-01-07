@@ -6,7 +6,6 @@ const updatedUser = {
   studentInformation: {
     firstName: 'Christian',
     lastName: 'Chavarro',
-    gender: 'Male',
   },
   contactInformation: {
     phone: '7865645859',
@@ -444,7 +443,7 @@ const updatedUser = {
           flagged: false,
           reviewed: false,
           tutorNotes: "work and study hard",
-        },{
+        }, {
           id: 21,
           numeric: false,
 
