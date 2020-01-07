@@ -34,6 +34,7 @@ module.exports = {
     "no-trailing-spaces": 2,
     "no-plusplus": 0,
     "import/imports-first": 0,
+    "no-prototype-builtins": 0,
     "import/newline-after-import": 0,
     "import/no-dynamic-require": 0,
     "import/no-extraneous-dependencies": 0,
