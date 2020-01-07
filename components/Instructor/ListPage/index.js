@@ -14,7 +14,6 @@ import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDes
 
 import {
   fetchInstructorsApi,
-  createNewInstructorApi,
 } from '../index/api';
 
 
@@ -99,14 +98,13 @@ class InstructorListPage extends React.Component {
   }
 
   onCreateNewInstructorApi = async(instructor) => {
+    const {onCreateInstructor} = this.props;
     const newId = this.props.instructors.length + 1;
     const {accountInfo:{firstName,lastName,email,gender},contactInfo:{state,phone,streetAddress,city,zip}} = instructor;
     const formattedBody = {
-        id:newId,
         first_name: firstName,
         last_name: lastName,
         email,
-        gender,
         state,
         locations: [],
         phone,
@@ -114,7 +112,8 @@ class InstructorListPage extends React.Component {
         city,
         zip,
       };
-    await createNewInstructorApi(formattedBody);
+      // Dispatch create instructor
+      onCreateInstructor(formattedBody)
   }
 
   onSaveInstructorChanges = (updatedInstructor) => {

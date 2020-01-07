@@ -233,6 +233,7 @@ export function* watchForCreateInstructor() {
   while (true) {
     try {
       const { instructor } = yield take(CREATE_INSTRUCTOR);
+      console.log(instructor);
       const response = yield call(createNewInstructorApi, instructor);
       if (response && response.message) {
         return console.warn("Something went wrong in createNewInstructorApi.");
