@@ -15,6 +15,7 @@ import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDes
 import {
   setInstructors,
   fetchInstructors,
+  createInstructor,
 } from '../index/actions';
 
 

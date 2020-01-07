@@ -5,9 +5,6 @@ import {
   DELETE_STUDENT,
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
-import {
-  setStudents,
-} from "./components/Student/index/actions";
 import { CREATE_CLASS } from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   CREATE_INSTRUCTOR,
@@ -242,7 +239,8 @@ export function* watchForCreateInstructor() {
       }
       yield call(fetchInstructors);
     } catch (err) {
-    console.warn("Error occured in watchForCreateInstructor saga", err);
+      console.warn("Error occured in watchForCreateInstructor saga", err);
+    }
   }
 }
 
