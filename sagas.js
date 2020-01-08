@@ -15,6 +15,7 @@ import {
 } from "./components/Student/index/constants";
 import { CREATE_CLASS } from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
+  CREATE_INSTRUCTOR,
   UPDATE_INSTRUCTOR_LASTNAME,
   UPDATE_INSTRUCTOR_EMAIL,
   UPDATE_INSTRUCTOR_STATE,
@@ -26,7 +27,7 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
-const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi,  fetchStudentsApi,
+const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi, fetchStudentsApi,
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
@@ -37,7 +38,7 @@ const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi,
   updateStudentLastNameApi,
   updateStudentPhoneApi,
   updateStudentStateApi,
-  updateStudentZipApi, } = studentApi;
+  updateStudentZipApi } = studentApi;
 const { createClassApi } = classApi;
 const { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
@@ -47,7 +48,9 @@ const { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorZipApi,
   updateInstructorAddressApi,
   updateInstructorPhoneApi,
-  addInstructorToLocationApi } = instructorApi;
+  addInstructorToLocationApi,
+  createNewInstructorApi,
+} = instructorApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -112,134 +115,6 @@ export function* watchForDeleteStudent() {
       yield call(fetchStudents);
     } catch (err) {
       console.warn("Error occured in watchForDeleteStudent", err);
-    }
-  }
-}
-/** ******************************************    INSTRUCTORS    ******************************************* */
-export function* watchForUpdateInstructorFirstName() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_FIRSTNAME);
-      const response = yield call(updateInstructorFirstNameApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorFirstNameApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorFirstName saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorLastName() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_LASTNAME);
-      const response = yield call(updateInstructorLastNameApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorLastNameApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorLastName saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorEmail() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_EMAIL);
-      const response = yield call(updateInstructorEmailApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorEmailApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorEmail saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorState() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_STATE);
-      const response = yield call(updateInstructorStateApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorStateApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorState saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorCity() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_CITY);
-      const response = yield call(updateInstructorCityApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorCityApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorCity saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorZip() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_ZIP);
-      const response = yield call(updateInstructorZipApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorZipApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorZip saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorAddress() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_ADDRESS);
-      const response = yield call(updateInstructorAddressApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorAddressApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorAddress saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateInstructorPhone() {
-  while (true) {
-    try {
-      const { value } = yield take(UPDATE_INSTRUCTOR_PHONE);
-      const response = yield call(updateInstructorPhoneApi, value);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateInstructorPhoneApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateInstructorPhone saga", err);
     }
   }
 }
@@ -372,6 +247,150 @@ export function* watchForUpdateStudentZip() {
   }
 }
 
+/** ******************************************    INSTRUCTORS    ******************************************* */
+export function* watchForUpdateInstructorFirstName() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_FIRSTNAME);
+      const response = yield call(updateInstructorFirstNameApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorFirstNameApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorFirstName saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorLastName() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_LASTNAME);
+      const response = yield call(updateInstructorLastNameApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorLastNameApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorLastName saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorEmail() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_EMAIL);
+      const response = yield call(updateInstructorEmailApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorEmailApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorEmail saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorState() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_STATE);
+      const response = yield call(updateInstructorStateApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorStateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorState saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorCity() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_CITY);
+      const response = yield call(updateInstructorCityApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorCityApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorCity saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorZip() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_ZIP);
+      const response = yield call(updateInstructorZipApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorZipApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorZip saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorAddress() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_ADDRESS);
+      const response = yield call(updateInstructorAddressApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorAddressApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorAddress saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateInstructorPhone() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_INSTRUCTOR_PHONE);
+      const response = yield call(updateInstructorPhoneApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateInstructorPhoneApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateInstructorPhone saga", err);
+    }
+  }
+}
+
+export function* watchForCreateInstructor() {
+  while (true) {
+    try {
+      const { instructor } = yield take(CREATE_INSTRUCTOR);
+      console.log(instructor);
+      const response = yield call(createNewInstructorApi, instructor);
+      if (response && response.message) {
+        return console.warn("Something went wrong in createNewInstructorApi.");
+      }
+      yield call(fetchInstructors);
+    } catch (err) {
+      console.warn("Error occured in watchForCreateInstructor saga", err);
+    }
+  }
+}
 
 export function* watchForCreateClass() {
   while (true) {
@@ -453,5 +472,6 @@ export default function* defaultSaga() {
     watchForUpdateInstructorZip(),
     watchForUpdateInstructorAddress(),
     watchForUpdateInstructorPhone(),
+    watchForCreateInstructor(),
   ]);
 }

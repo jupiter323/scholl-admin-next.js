@@ -12,11 +12,10 @@ import NewInstructorModal from './components/NewInstructorModal';
 // import { saveNewSuccess as savePracticeTestSuccess, saveChangesSuccess, saveNewError as savePracticeTestError } from '../../utils/fieldValidation';
 import { firstNameAscending, firstNameDescending, lastNameAscending, lastNameDescending } from '../../utils/sortFunctions';
 
-import { createNewInstructorApi } from '../index/api';
-
 import {
   setInstructors,
   fetchInstructors,
+  createInstructor,
 } from '../index/actions';
 
 
@@ -88,10 +87,10 @@ class InstructorListPage extends React.Component {
   }
 
   onCreateNewInstructorApi = async (instructor) => {
+    const { onCreateInstructor } = this.props;
     const newId = this.props.instructors.length + 1;
     const { accountInfo: { firstName, lastName, email }, contactInfo: { state, phone, streetAddress, city, zip } } = instructor;
     const formattedBody = {
-      id: newId,
       first_name: firstName,
       last_name: lastName,
       email,
@@ -102,7 +101,8 @@ class InstructorListPage extends React.Component {
       city,
       zip,
     };
-    await createNewInstructorApi(formattedBody);
+      // Dispatch create instructor
+    onCreateInstructor(formattedBody);
   }
 
   onSaveInstructorChanges = (updatedInstructor) => {
@@ -275,6 +275,7 @@ class InstructorListPage extends React.Component {
 InstructorListPage.propTypes = {
   instructors: PropTypes.array.isRequired,
   onSetInstructors: PropTypes.func.isRequired,
+  onCreateInstructor: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -284,6 +285,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onSetInstructors: instructors => dispatch(setInstructors(instructors)),
+    onCreateInstructor: instructor => dispatch(createInstructor(instructor)),
     onFetchInstructors: () => dispatch(fetchInstructors()),
   };
 }

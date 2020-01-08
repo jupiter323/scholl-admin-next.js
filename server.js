@@ -14,7 +14,7 @@ app.prepare().then(() => {
     // eslint-disable-next-line no-unused-vars
     const { pathname, query } = parsedUrl;
 
-    if (pathname === '/' || pathname === '/locations' || pathname === '/all-locations' ) {
+    if (pathname === '/' || pathname === '/locations' || pathname === '/all-locations') {
       app.render(request, response, '/dashboard');
     } else {
       handle(request, response, parsedUrl);

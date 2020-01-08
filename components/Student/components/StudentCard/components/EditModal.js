@@ -3,7 +3,7 @@ import update from 'immutability-helper';
 import PropTypes from "prop-types";
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { connect} from 'react-redux'
+import { connect } from 'react-redux';
 
 import Portal from "../../../../Portal";
 import ClickOffComponentWrapper from "../.././../../ClickOffComponentWrapper";
@@ -25,8 +25,8 @@ class EditModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      originalStudent:{
-        id:"",
+      originalStudent: {
+        id: "",
         active: false,
         studentInformation: {
           firstName: '',
@@ -60,8 +60,8 @@ class EditModal extends React.Component {
           ],
         },
       },
-      updatedStudent:{
-        id:"",
+      updatedStudent: {
+        id: "",
         active: false,
         studentInformation: {
           firstName: '',
@@ -99,8 +99,8 @@ class EditModal extends React.Component {
   }
 
   componentDidMount() {
-    const { student: { id, active,studentInformation, contactInformation, emailAddress, location } = {} } = this.props;
-    const updatedStudent = { id, active,studentInformation, contactInformation, emailAddress, location };
+    const { student: { id, active, studentInformation, contactInformation, emailAddress, location } = {} } = this.props;
+    const updatedStudent = { id, active, studentInformation, contactInformation, emailAddress, location };
     const { originalStudent: originalStudentState } = this.state;
     const originalStudent = update(originalStudentState, {
       $merge: updatedStudent,
@@ -111,8 +111,8 @@ class EditModal extends React.Component {
   // This resets the component state to reflect the details of the next student the user clicks on
   componentWillReceiveProps = (nextProps) => {
     if ((!this.state.originalStudent || nextProps.student.id !== this.state.originalStudent.id)) {
-      const { student: { id, active,studentInformation, contactInformation, emailAddress, location} = {} } = nextProps;
-      const updatedStudent = { id, active,studentInformation, contactInformation, emailAddress, location };
+      const { student: { id, active, studentInformation, contactInformation, emailAddress, location } = {} } = nextProps;
+      const updatedStudent = { id, active, studentInformation, contactInformation, emailAddress, location };
       const { originalStudent: originalStudentState } = this.state;
       const originalStudent = update(originalStudentState, {
         $merge: nextProps.student,
@@ -123,7 +123,7 @@ class EditModal extends React.Component {
 
   initialStudentMount = () => this.state.originalStudent.id !== this.props.student.id;
 
-  handleDetailsChange = (event, name,section) => {
+  handleDetailsChange = (event, name, section) => {
     const { updatedStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
@@ -147,7 +147,7 @@ class EditModal extends React.Component {
       onUpdateStudentZip,
     } = this.props;
     const {
-      student: { id:student_id },
+      student: { id: student_id },
     } = this.props;
     switch (name) {
       case "firstName":
@@ -177,18 +177,18 @@ class EditModal extends React.Component {
 
   onSubmit = async (event) => {
     event.preventDefault();
-    const { updatedStudent: { id, active,studentInformation, contactInformation, emailAddress, location }} = this.state;
+    const { updatedStudent: { id, active, studentInformation, contactInformation, emailAddress, location } } = this.state;
     const { onSaveStudentChanges, onCloseEditModal } = this.props;
-    const postBody = { id, active,studentInformation, contactInformation, emailAddress, location };
+    const postBody = { id, active, studentInformation, contactInformation, emailAddress, location };
     onSaveStudentChanges(postBody);
     onCloseEditModal();
   }
 
   render() {
-    const { open, onCloseEditModal, student:{id,active,studentInformation, contactInformation, emailAddress, location} } = this.props;
+    const { open, onCloseEditModal, student: { id, active, studentInformation, contactInformation, emailAddress, location } } = this.props;
     const {
       updatedStudent: {
-        active:updatedActive,studentInformation:updatedStudentInformation, contactInformation:updatedContactInformation, emailAddress:updatedEmailAddress, location:updatedLocation,
+        active: updatedActive, studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
       },
     } = this.state;
 
@@ -258,8 +258,8 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="firstName"
                                           name="firstName"
-                                          value = {this.initialStudentMount() ? studentInformation.firstName : updatedStudentInformation.firstName}
-                                          onChange={event => this.handleDetailsChange(event,"firstName","studentInformation")}
+                                          value={this.initialStudentMount() ? studentInformation.firstName : updatedStudentInformation.firstName}
+                                          onChange={event => this.handleDetailsChange(event, "firstName", "studentInformation")}
                                         />
                                         <label
                                           className={studentInformation.firstName ? 'label active' : 'label'}
@@ -275,8 +275,8 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="lastName"
                                           name="lastName"
-                                          value = {this.initialStudentMount() ? studentInformation.lastName : updatedStudentInformation.lastName}
-                                          onChange={event => this.handleDetailsChange(event,"lastName","studentInformation")}
+                                          value={this.initialStudentMount() ? studentInformation.lastName : updatedStudentInformation.lastName}
+                                          onChange={event => this.handleDetailsChange(event, "lastName", "studentInformation")}
                                         />
                                         <label
                                           className={studentInformation.lastName ? 'label active' : 'label'}
@@ -292,8 +292,8 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="email"
                                           name="email"
-                                          value = {this.initialStudentMount() ? emailAddress.email : updatedEmailAddress.email}
-                                          onChange={event => this.handleDetailsChange(event,"email","emailAddress")}
+                                          value={this.initialStudentMount() ? emailAddress.email : updatedEmailAddress.email}
+                                          onChange={event => this.handleDetailsChange(event, "email", "emailAddress")}
                                         />
                                         <label
                                           className={emailAddress.email ? 'label active' : 'label'}
@@ -317,8 +317,8 @@ class EditModal extends React.Component {
                                           type="tel"
                                           id="phone"
                                           name="phone"
-                                          value = {this.initialStudentMount() ? contactInformation.phone : updatedContactInformation.phone}
-                                          onChange={event => this.handleDetailsChange(event,"phone","contactInformation")}
+                                          value={this.initialStudentMount() ? contactInformation.phone : updatedContactInformation.phone}
+                                          onChange={event => this.handleDetailsChange(event, "phone", "contactInformation")}
                                         />
                                         <label
                                           className={contactInformation.phone ? 'label active' : 'label'}
@@ -334,8 +334,8 @@ class EditModal extends React.Component {
                                           type="text"
                                           id="address"
                                           name="address"
-                                          value = {this.initialStudentMount() ? contactInformation.addressLine1 : updatedContactInformation.addressLine1}
-                                          onChange={event => this.handleDetailsChange(event,"addressLine1","contactInformation")}
+                                          value={this.initialStudentMount() ? contactInformation.addressLine1 : updatedContactInformation.addressLine1}
+                                          onChange={event => this.handleDetailsChange(event, "addressLine1", "contactInformation")}
                                         />
                                         <label
                                           className={contactInformation.addressLine1 ? 'label active' : 'label'}
@@ -351,9 +351,9 @@ class EditModal extends React.Component {
                                         <input
                                           type="text"
                                           id="city"
-                                          value = {this.initialStudentMount() ? contactInformation.city : updatedContactInformation.city}
+                                          value={this.initialStudentMount() ? contactInformation.city : updatedContactInformation.city}
                                           name="city"
-                                          onChange={event => this.handleDetailsChange(event,"city","contactInformation")}
+                                          onChange={event => this.handleDetailsChange(event, "city", "contactInformation")}
                                         />
                                         <label className={contactInformation.city ? 'label active' : 'label'} htmlFor="city">
                                           City
@@ -365,9 +365,9 @@ class EditModal extends React.Component {
                                       <div className="col s12 m6 l5">
                                         <div className="input-field">
                                           <Dropdown
-                                            value={this.initialStudentMount() ?getValueFromState(contactInformation.state, stateOptions):getValueFromState(updatedContactInformation.state, stateOptions)}
+                                            value={this.initialStudentMount() ? getValueFromState(contactInformation.state, stateOptions) : getValueFromState(updatedContactInformation.state, stateOptions)}
                                             name="state"
-                                            onChange={event => this.handleDetailsChange(event,"state","contactInformation")}
+                                            onChange={event => this.handleDetailsChange(event, "state", "contactInformation")}
                                             options={stateOptions}
                                             label="State"
                                             stateKey="state"
@@ -381,8 +381,8 @@ class EditModal extends React.Component {
                                             type="tel"
                                             id="zipCode"
                                             name="zipCode"
-                                            value = {this.initialStudentMount() ? contactInformation.zipCode : updatedContactInformation.zipCode}
-                                            onChange={event => this.handleDetailsChange(event,"zipCode","contactInformation")}
+                                            value={this.initialStudentMount() ? contactInformation.zipCode : updatedContactInformation.zipCode}
+                                            onChange={event => this.handleDetailsChange(event, "zipCode", "contactInformation")}
                                           />
                                           <label
                                             className={contactInformation.zipCode ? 'label active' : 'label'}
@@ -403,7 +403,7 @@ class EditModal extends React.Component {
                                 <h3>Location(s)</h3>
                                 <div className="card-main card-location card card-large">
                                   <div
-className="card-panel card-panel-location"
+                                    className="card-panel card-panel-location"
                                     style={{
                                       backgroundColor: "#62b771",
                                       color: "#fff",
@@ -458,7 +458,7 @@ className="card-panel card-panel-location"
                                 </div>
                                 <div className="card-main card-location card card-large">
                                   <div
-className="card-panel card-panel-location"
+                                    className="card-panel card-panel-location"
                                     style={{
                                       backgroundColor: "#62b771",
                                       color: "#fff",
@@ -589,35 +589,35 @@ EditModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onCloseEditModal: PropTypes.func.isRequired,
   student: PropTypes.object.isRequired,
-  onSaveStudentChanges:PropTypes.func.isRequired,
-  onUpdateStudentFirstName:PropTypes.func.isRequired,
-  onUpdateStudentLastName:PropTypes.func.isRequired,
-  onUpdateStudentAddress:PropTypes.func.isRequired,
-  onUpdateStudentCity:PropTypes.func.isRequired,
-  onUpdateStudentEmail:PropTypes.func.isRequired,
-  onUpdateStudentPhone:PropTypes.func.isRequired,
-  onUpdateStudentState:PropTypes.func.isRequired,
-  onUpdateStudentZip:PropTypes.func.isRequired,
+  onSaveStudentChanges: PropTypes.func.isRequired,
+  onUpdateStudentFirstName: PropTypes.func.isRequired,
+  onUpdateStudentLastName: PropTypes.func.isRequired,
+  onUpdateStudentAddress: PropTypes.func.isRequired,
+  onUpdateStudentCity: PropTypes.func.isRequired,
+  onUpdateStudentEmail: PropTypes.func.isRequired,
+  onUpdateStudentPhone: PropTypes.func.isRequired,
+  onUpdateStudentState: PropTypes.func.isRequired,
+  onUpdateStudentZip: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({})
+const mapStateToProps = createStructuredSelector({});
 
-function mapDispatchToProps(dispatch){
-  return{
-    onUpdateStudentFirstName:(value) => dispatch(updateStudentFirstName(value)),
-    onUpdateStudentLastName:(value) => dispatch(updateStudentLastName(value)),
-    onUpdateStudentAddress:(value) => dispatch(updateStudentAddress(value)),
-    onUpdateStudentCity:(value) => dispatch(updateStudentCity(value)),
-    onUpdateStudentEmail:(value) => dispatch(updateStudentEmail(value)),
-    onUpdateStudentPhone:(value) => dispatch(updateStudentPhone(value)),
-    onUpdateStudentState:(value) => dispatch(updateStudentState(value)),
-    onUpdateStudentZip:(value) => dispatch(updateStudentZip(value)),
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    onUpdateStudentFirstName: (value) => dispatch(updateStudentFirstName(value)),
+    onUpdateStudentLastName: (value) => dispatch(updateStudentLastName(value)),
+    onUpdateStudentAddress: (value) => dispatch(updateStudentAddress(value)),
+    onUpdateStudentCity: (value) => dispatch(updateStudentCity(value)),
+    onUpdateStudentEmail: (value) => dispatch(updateStudentEmail(value)),
+    onUpdateStudentPhone: (value) => dispatch(updateStudentPhone(value)),
+    onUpdateStudentState: (value) => dispatch(updateStudentState(value)),
+    onUpdateStudentZip: (value) => dispatch(updateStudentZip(value)),
+  };
 }
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps
-)
+);
 
 export default compose(withConnect)(EditModal);

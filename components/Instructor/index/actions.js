@@ -1,6 +1,7 @@
 import {
   SET_INSTRUCTORS,
   FETCH_INSTRUCTORS,
+  CREATE_INSTRUCTOR,
   SEARCH_INSTRUCTORS,
   UPDATE_INSTRUCTOR_FIRSTNAME,
   UPDATE_INSTRUCTOR_LASTNAME,
@@ -30,6 +31,13 @@ export function searchInstructors(filters) {
   return {
     type: SEARCH_INSTRUCTORS,
     filters,
+  };
+}
+
+export function createInstructor(instructor) {
+  return {
+    type: CREATE_INSTRUCTOR,
+    instructor,
   };
 }
 

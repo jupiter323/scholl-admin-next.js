@@ -22,7 +22,9 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
   updateInstructorCityApi,
   updateInstructorZipApi,
   updateInstructorAddressApi,
-  addInstructorToLocationApi } from './components/Instructor/index/api';
+  addInstructorToLocationApi,
+  createNewInstructorApi,
+} from './components/Instructor/index/api';
 
 export const classApi = {
   createClassApi,
@@ -44,6 +46,7 @@ export const studentApi = {
 };
 
 export const instructorApi = {
+  createNewInstructorApi,
   fetchInstructorsApi,
   searchInstructorsApi,
   updateInstructorFirstNameApi,
