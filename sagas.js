@@ -27,10 +27,7 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
-const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi, fetchStudentsApi,
-  searchStudentsApi,
-  createStudentApi,
-  deleteStudentApi,
+const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
   updateStudentEmailApi,
@@ -380,7 +377,6 @@ export function* watchForCreateInstructor() {
   while (true) {
     try {
       const { instructor } = yield take(CREATE_INSTRUCTOR);
-      console.log(instructor);
       const response = yield call(createNewInstructorApi, instructor);
       if (response && response.message) {
         return console.warn("Something went wrong in createNewInstructorApi.");
@@ -420,9 +416,9 @@ export function* watchForFetchInstructors() {
 
 export function* fetchInstructors() {
   try {
-    const instructors = yield call(fetchInstructorsApi);
-    if (instructors instanceof Array) {
-      yield put(setInstructors(instructors));
+    const {formattedInstructors} = yield call(fetchInstructorsApi);
+    if (formattedInstructors instanceof Array) {
+      yield put(setInstructors(formattedInstructors));
     }
   } catch (err) {
     console.warn('Error occurred in fetchInstructors saga', err);
