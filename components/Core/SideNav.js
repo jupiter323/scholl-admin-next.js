@@ -30,10 +30,11 @@ const menuItems = [
     key: "classes",
     page: "classes",
   },
-  {
-    key: "locations",
-    page: "all-locations",
-  },
+  // hiding Locations menu from instructor view
+  // {
+  //   key: "locations",
+  //   page: "all-locations",
+  // },
   {
     key: "worksheets",
     page: "worksheets",
