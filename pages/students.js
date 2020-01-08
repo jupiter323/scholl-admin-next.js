@@ -190,12 +190,10 @@ class Students extends Component {
     const { onDeleteStudent } = this.props;
     const { students } = this.state;
     // Dispatch deleteStudent
-    onDeleteStudent(students[index].id);
+    const student_id = students[index].id;
+    onDeleteStudent(student_id);
     const newStudentArray = this.arrayItemRemover(students, students[index]);
     this.setState({ students: newStudentArray });
-    // eslint-disable-next-line camelcase
-    const student_id = students[index].id;
-    deleteStudentApi({ student_id });
     this.onCloseDropdown();
   };
 

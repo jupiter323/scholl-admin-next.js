@@ -52,9 +52,9 @@ class FilterSection extends React.Component {
       $merge: { [name]: value },
     });
     this.setState(updatedState, () => {
+      // Collect inputs and dispatch search
       const { onSearchStudents } = this.props;
-      // eslint-disable-next-line no-shadow
-      const { nameFilter: name, location, sort } = this.state;
+      const { name, location, sort } = this.state;
       const filters = {
         name,
         location,
@@ -308,7 +308,7 @@ class FilterSection extends React.Component {
                         type="search"
                         id="name_search"
                         className="input-control validate"
-                        name="name"
+                        name="nameFilter"
                         value={nameFilter}
                         onChange={(event) => this.handleFilterChange(event, 'nameFilter')}
                       />
@@ -369,6 +369,8 @@ class FilterSection extends React.Component {
 
 FilterSection.propTypes = {
   onSetSort: PropTypes.func.isRequired,
+  onSetFilteredState: PropTypes.func.isRequired,
+  onUnsetFilteredState: PropTypes.func.isRequired,
   onSetFilteredLocationState: PropTypes.func.isRequired,
   onUnsetFilteredLocationState: PropTypes.func.isRequired,
   onSearchStudents: PropTypes.func.isRequired,

@@ -3,6 +3,14 @@ import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
   DELETE_STUDENT,
+  UPDATE_STUDENT_ADDRESS,
+  UPDATE_STUDENT_CITY,
+  UPDATE_STUDENT_EMAIL,
+  UPDATE_STUDENT_FIRSTNAME,
+  UPDATE_STUDENT_LASTNAME,
+  UPDATE_STUDENT_PHONE,
+  UPDATE_STUDENT_STATE,
+  UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
 import { CREATE_CLASS } from './components/Classes/index/constants';
@@ -19,7 +27,18 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
-const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi } = studentApi;
+const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi, fetchStudentsApi,
+  searchStudentsApi,
+  createStudentApi,
+  deleteStudentApi,
+  updateStudentAddressApi,
+  updateStudentCityApi,
+  updateStudentEmailApi,
+  updateStudentFirstNameApi,
+  updateStudentLastNameApi,
+  updateStudentPhoneApi,
+  updateStudentStateApi,
+  updateStudentZipApi } = studentApi;
 const { createClassApi } = classApi;
 const { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
@@ -44,11 +63,11 @@ export function* watchForFetchStudents() {
 export function* fetchStudents() {
   try {
     const students = yield call(fetchStudentsApi);
-    if (students instanceof Array) {
+    if (Array.isArray(students) || students instanceof Array) {
       yield put(setStudents(students));
     }
   } catch (err) {
-    console.warn('Error occurred in fetchingStudents saga', err);
+    console.warn("Error occurred in the fetchStudents saga", err);
   }
 }
 
@@ -99,6 +118,135 @@ export function* watchForDeleteStudent() {
     }
   }
 }
+
+export function* watchForUpdateStudentFirstName() {
+  while (true) {
+    try {
+      const { firstName } = yield take(UPDATE_STUDENT_FIRSTNAME);
+      const response = yield call(updateStudentFirstNameApi, firstName);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentFirstNameApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentFirstName saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentLastName() {
+  while (true) {
+    try {
+      const { lastName } = yield take(UPDATE_STUDENT_LASTNAME);
+      const response = yield call(updateStudentLastNameApi, lastName);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentLastNameApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentLastName saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentAddress() {
+  while (true) {
+    try {
+      const { address } = yield take(UPDATE_STUDENT_ADDRESS);
+      const response = yield call(updateStudentAddressApi, address);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentAddressApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentAddress saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentCity() {
+  while (true) {
+    try {
+      const { city } = yield take(UPDATE_STUDENT_CITY);
+      const response = yield call(updateStudentCityApi, city);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentCityApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentCity saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentEmail() {
+  while (true) {
+    try {
+      const { email } = yield take(UPDATE_STUDENT_EMAIL);
+      const response = yield call(updateStudentEmailApi, email);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentEmailApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentEmail saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentPhone() {
+  while (true) {
+    try {
+      const { phone } = yield take(UPDATE_STUDENT_PHONE);
+      const response = yield call(updateStudentPhoneApi, phone);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentPhoneApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentPhone saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentState() {
+  while (true) {
+    try {
+      const { state } = yield take(UPDATE_STUDENT_STATE);
+      const response = yield call(updateStudentStateApi, state);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentStateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentState saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateStudentZip() {
+  while (true) {
+    try {
+      const { zip } = yield take(UPDATE_STUDENT_ZIP);
+      const response = yield call(updateStudentZipApi, zip);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateStudentZipApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateStudentZip saga", err);
+    }
+  }
+}
+
 /** ******************************************    INSTRUCTORS    ******************************************* */
 export function* watchForUpdateInstructorFirstName() {
   while (true) {
@@ -305,6 +453,14 @@ export default function* defaultSaga() {
     watchForSearchStudents(),
     watchForCreateStudent(),
     watchForDeleteStudent(),
+    watchForUpdateStudentFirstName(),
+    watchForUpdateStudentLastName(),
+    watchForUpdateStudentAddress(),
+    watchForUpdateStudentCity(),
+    watchForUpdateStudentEmail(),
+    watchForUpdateStudentPhone(),
+    watchForUpdateStudentState(),
+    watchForUpdateStudentZip(),
     watchForCreateClass(),
     watchForFetchInstructors(),
     watchForSearchInstructors(),

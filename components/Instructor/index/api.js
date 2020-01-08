@@ -45,7 +45,7 @@ export const fetchInstructorsApi = () =>
         finalArry.push(newInstructor);
         return finalArry;
       }, []);
-      return formattedInstructors;
+      return { formattedInstructors };
     })
     .catch(err => err);
 
