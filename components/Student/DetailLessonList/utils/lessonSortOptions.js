@@ -19,4 +19,4 @@ export default [
     label: "Flag Count",
     value: "alertsAscending",
   },
-]
+];

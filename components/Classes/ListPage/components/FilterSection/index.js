@@ -28,7 +28,7 @@ class FilterSection extends React.Component {
     } else {
       const filterIndex = currentActiveFilters.indexOf(filter);
       activeFilters = update(currentActiveFilters, {
-        $splice: [[ filterIndex, 1 ]],
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ activeFilters });
@@ -38,7 +38,7 @@ class FilterSection extends React.Component {
   // If either location or sort filters are changed, we dispatch the appropriate action in ListPage to ensure the rendered instructors are filtered/sorted appropriately
   // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
-    const { onSetFilteredLocationState, onUnsetFilteredLocationState,onSetSort } = this.props;
+    const { onSetFilteredLocationState, onUnsetFilteredLocationState, onSetSort } = this.props;
     const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
       $merge: { [name]: value },
@@ -49,7 +49,7 @@ class FilterSection extends React.Component {
         return onUnsetFilteredLocationState();
       }
       return onSetFilteredLocationState(event);
-    }else if (name === 'sort') {
+    } else if (name === 'sort') {
       return onSetSort(event);
     }
   }
@@ -71,7 +71,7 @@ class FilterSection extends React.Component {
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }));
 
   render() {
-    const { open, activeFilters,location,sort } = this.state;
+    const { open, activeFilters, location, sort } = this.state;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -84,10 +84,10 @@ class FilterSection extends React.Component {
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
-                        type="checkbox"
-                        id="sessions_this_week"
-                        checked={ activeFilters.indexOf("sessions_this_week") !== -1}
-                        onChange={() => this.onHandleFilterClick("sessions_this_week")}
+                      type="checkbox"
+                      id="sessions_this_week"
+                      checked={activeFilters.indexOf("sessions_this_week") !== -1}
+                      onChange={() => this.onHandleFilterClick("sessions_this_week")}
                     />
                     <label htmlFor="sessions_this_week">
                       Sessions This Week
@@ -95,19 +95,19 @@ class FilterSection extends React.Component {
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="session_today"
-                        checked={ activeFilters.indexOf("session_today") !== -1}
-                        onChange={() => this.onHandleFilterClick("session_today")}
+                      type="checkbox"
+                      id="session_today"
+                      checked={activeFilters.indexOf("session_today") !== -1}
+                      onChange={() => this.onHandleFilterClick("session_today")}
                     />
                     <label htmlFor="session_today">Session Today</label>
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="sessions_no"
-                        checked={ activeFilters.indexOf("sessions_no") !== -1}
-                        onChange={() => this.onHandleFilterClick("sessions_no")}
+                      type="checkbox"
+                      id="sessions_no"
+                      checked={activeFilters.indexOf("sessions_no") !== -1}
+                      onChange={() => this.onHandleFilterClick("sessions_no")}
                     />
                     <label htmlFor="sessions_no">No Sessions Scheduled</label>
                   </li>
@@ -115,46 +115,46 @@ class FilterSection extends React.Component {
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
-                        type="checkbox"
-                        id="gain_no"
-                        checked={ activeFilters.indexOf("gain_no") !== -1}
-                        onChange={() => this.onHandleFilterClick("gain_no")}
+                      type="checkbox"
+                      id="gain_no"
+                      checked={activeFilters.indexOf("gain_no") !== -1}
+                      onChange={() => this.onHandleFilterClick("gain_no")}
                     />
                     <label htmlFor="gain_no">No Gain</label>
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="gain_0_49"
-                        checked={ activeFilters.indexOf("gain_0_49") !== -1}
-                        onChange={() => this.onHandleFilterClick("gain_0_49")}
+                      type="checkbox"
+                      id="gain_0_49"
+                      checked={activeFilters.indexOf("gain_0_49") !== -1}
+                      onChange={() => this.onHandleFilterClick("gain_0_49")}
                     />
                     <label htmlFor="gain_0_49">Gain of 0-49</label>
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="gain_50_100"
-                        checked={ activeFilters.indexOf("gain_50_100") !== -1}
-                        onChange={() => this.onHandleFilterClick("gain_50_100")}
+                      type="checkbox"
+                      id="gain_50_100"
+                      checked={activeFilters.indexOf("gain_50_100") !== -1}
+                      onChange={() => this.onHandleFilterClick("gain_50_100")}
                     />
                     <label htmlFor="gain_50_100">Gain of 50-100</label>
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="gain_100_199"
-                        checked={ activeFilters.indexOf("gain_100_199") !== -1}
-                        onChange={() => this.onHandleFilterClick("gain_100_199")}
+                      type="checkbox"
+                      id="gain_100_199"
+                      checked={activeFilters.indexOf("gain_100_199") !== -1}
+                      onChange={() => this.onHandleFilterClick("gain_100_199")}
                     />
                     <label htmlFor="gain_100_199">Gain of 100-199</label>
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="gain_200"
-                        checked={ activeFilters.indexOf("gain_200") !== -1}
-                        onChange={() => this.onHandleFilterClick("gain_200")}
+                      type="checkbox"
+                      id="gain_200"
+                      checked={activeFilters.indexOf("gain_200") !== -1}
+                      onChange={() => this.onHandleFilterClick("gain_200")}
                     />
                     <label htmlFor="gain_200">Gain of 200+</label>
                   </li>
@@ -162,19 +162,19 @@ class FilterSection extends React.Component {
                 <ul className="filter-form_checkbox-list">
                   <li>
                     <input
-                        type="checkbox"
-                        id="current"
-                        checked={ activeFilters.indexOf("current") !== -1}
-                        onChange={() => this.onHandleFilterClick("current")}
+                      type="checkbox"
+                      id="current"
+                      checked={activeFilters.indexOf("current") !== -1}
+                      onChange={() => this.onHandleFilterClick("current")}
                     />
                     <label htmlFor="current">Current</label>
                   </li>
                   <li>
                     <input
-                        type="checkbox"
-                        id="archived"
-                        checked={ activeFilters.indexOf("archived") !== -1}
-                        onChange={() => this.onHandleFilterClick("archived")}
+                      type="checkbox"
+                      id="archived"
+                      checked={activeFilters.indexOf("archived") !== -1}
+                      onChange={() => this.onHandleFilterClick("archived")}
                     />
                     <label htmlFor="archived">Archived</label>
                   </li>
@@ -184,17 +184,17 @@ class FilterSection extends React.Component {
                 <div className="col s12 m3">
                   <div className="input-field">
                     <Dropdown
-                        value={getValueFromState(location, locationOptions)}
-                        onChange={(event) => this.handleFilterChange(event, 'location')}
-                        options={locationOptions}
-                        label="Location"
-                        stateKey="location"
-                        dropdownKey="location"
+                      value={getValueFromState(location, locationOptions)}
+                      onChange={(event) => this.handleFilterChange(event, 'location')}
+                      options={locationOptions}
+                      label="Location"
+                      stateKey="location"
+                      dropdownKey="location"
                     />
                   </div>
                 </div>
                 <div className="col s12 m3">
-                  <div className="search-field input-field" style  = {{marginTop:"50px"}}>
+                  <div className="search-field input-field" style={{ marginTop: "50px" }}>
                     <input
                       type="search"
                       id="name_search"
@@ -231,7 +231,7 @@ class FilterSection extends React.Component {
                 &nbsp;
               </div>
               <div className="col s12 l4">
-                <div className="option-filters" style = {{marginTop:"50px"}}>
+                <div className="option-filters" style={{ marginTop: "50px" }}>
                   <div className="option-item clear">
                     <a href="#" onClick={this.onClearFilters}>Clear Filters</a>
                   </div>
@@ -256,11 +256,11 @@ class FilterSection extends React.Component {
 }
 
 FilterSection.propTyes = {
-    onSetSort:PropTypes.func.isRequired,
-    onSetFilteredState:PropTypes.func.isRequired,
-    onUnsetFilteredState:PropTypes.func.isRequired,
-    onSetFilteredLocationState: PropTypes.func.isRequired,
-    onUnsetFilteredLocationState: PropTypes.func.isRequired,
-}
+  onSetSort: PropTypes.func.isRequired,
+  onSetFilteredState: PropTypes.func.isRequired,
+  onUnsetFilteredState: PropTypes.func.isRequired,
+  onSetFilteredLocationState: PropTypes.func.isRequired,
+  onUnsetFilteredLocationState: PropTypes.func.isRequired,
+};
 
 export default FilterSection;

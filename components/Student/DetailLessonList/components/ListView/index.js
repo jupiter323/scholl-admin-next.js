@@ -9,7 +9,7 @@ class ListView extends React.Component {
     this.state = {
       dropdownIsOpen: false,
       dropdownIndex: null,
-      }
+    };
   }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
@@ -17,14 +17,13 @@ class ListView extends React.Component {
 
   setSortType = (name) => {
     const { onSetSort, sort } = this.props;
-    if (sort !== `${name}Ascending` && sort !== `${name}Descending`){
-      onSetSort(`${name}Ascending`)
+    if (sort !== `${name}Ascending` && sort !== `${name}Descending`) {
+      onSetSort(`${name}Ascending`);
     }
-    if (sort === `${name}Descending` ) {
-      onSetSort(`${name}Ascending`)
-    }
-    else {
-      onSetSort(`${name}Descending`)
+    if (sort === `${name}Descending`) {
+      onSetSort(`${name}Ascending`);
+    } else {
+      onSetSort(`${name}Descending`);
     }
   }
 
@@ -47,8 +46,9 @@ class ListView extends React.Component {
         index={index}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        handleDropdownClick={this.handleDropdownClick}/>
-    ))
+        handleDropdownClick={this.handleDropdownClick}
+      />
+    ));
   }
 
   // eslint-disable-next-line consistent-return
@@ -74,79 +74,79 @@ class ListView extends React.Component {
             <div className="result-row center-align">
               <b className="result"> - {lessons.length} results -</b>
             </div>
-            <div className="list-view-section" style={{margin: '0 -160px'}}>
+            <div className="list-view-section" style={{ margin: '0 -160px' }}>
               <div className="list-table">
-              <div className="list-table-header">
-                <div className="list-table-row">
-                  <div className="list-table-cell icon-cell">&nbsp;</div>
-                  <div className="list-table-cell name-cell" style={{marginRight: '55px'}} value="lessonName">
-                    <a
-                    href="#"
-                    onClick={() => this.setSortType("lessonName")}
-                    >
-                      <b>Lesson</b>
+                <div className="list-table-header">
+                  <div className="list-table-row">
+                    <div className="list-table-cell icon-cell">&nbsp;</div>
+                    <div className="list-table-cell name-cell" style={{ marginRight: '55px' }} value="lessonName">
+                      <a
+                        href="#"
+                        onClick={() => this.setSortType("lessonName")}
+                      >
+                        <b>Lesson</b>
                       </a>
-                      </div>
-                  {/* <div className="list-table-cell drop-cell">&nbsp;</div> */}
-                  <div className="list-table-cell completed-cell"><a
-                    href="#"
-                    onClick={() => this.setSortType("status")}
+                    </div>
+                    {/* <div className="list-table-cell drop-cell">&nbsp;</div> */}
+                    <div className="list-table-cell completed-cell"><a
+                      href="#"
+                      onClick={() => this.setSortType("status")}
                     >
                       <b>Status</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell completed-cell" style={{marginLeft: '5px'}}><a
-                    href="#"
-                    onClick={() => this.setSortType("subject")}
+                    </a>
+                    </div>
+                    <div className="list-table-cell completed-cell" style={{ marginLeft: '5px' }}><a
+                      href="#"
+                      onClick={() => this.setSortType("subject")}
                     >
                       <b>Subject</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell page-cell" style={{paddingRight: '82px  '}}>
-                  <a
-                    href="#"
-                    onClick={() => this.setSortType("passage")}
-                    ><b>Page</b>
-                    </a></div>
-                  <div className="list-table-cell date-cell" style={{marginLeft: '-53px'}}><a
-                    href="#"
-                    onClick={() => this.setSortType("availableDate")}
+                    </a>
+                    </div>
+                    <div className="list-table-cell page-cell" style={{ paddingRight: '82px  ' }}>
+                      <a
+                        href="#"
+                        onClick={() => this.setSortType("passage")}
+                      ><b>Page</b>
+                      </a></div>
+                    <div className="list-table-cell date-cell" style={{ marginLeft: '-53px' }}><a
+                      href="#"
+                      onClick={() => this.setSortType("availableDate")}
                     >
                       <b>Date</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell dueDate-cell" style={{marginLeft: '13px', paddingLeft: '-1px'}}><a
-                    href="#"
-                    onClick={() => this.setSortType("dueDate")}
+                    </a>
+                    </div>
+                    <div className="list-table-cell dueDate-cell" style={{ marginLeft: '13px', paddingLeft: '-1px' }}><a
+                      href="#"
+                      onClick={() => this.setSortType("dueDate")}
                     >
                       <b>Due Date</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell completed-cell"><a
-                    href="#"
-                    onClick={() => this.setSortType("completionDate")}
+                    </a>
+                    </div>
+                    <div className="list-table-cell completed-cell"><a
+                      href="#"
+                      onClick={() => this.setSortType("completionDate")}
                     >
                       <b>Complete</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell completed-cell"><a
-                    href="#"
-                    onClick={() => this.setSortType("lessonType")}
+                    </a>
+                    </div>
+                    <div className="list-table-cell completed-cell"><a
+                      href="#"
+                      onClick={() => this.setSortType("lessonType")}
                     >
                       <b>Type</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell flags-cell"><b>&nbsp;</b></div>
-                  <div className="list-table-cell flags-cell"><a
-                    href="#"
-                    onClick={() => this.setSortType("flags")}
+                    </a>
+                    </div>
+                    <div className="list-table-cell flags-cell"><b>&nbsp;</b></div>
+                    <div className="list-table-cell flags-cell"><a
+                      href="#"
+                      onClick={() => this.setSortType("flags")}
                     >
                       <b>Flags</b>
-                      </a>
-                      </div>
-                  <div className="list-table-cell drop-cell">&nbsp;</div>
+                    </a>
+                    </div>
+                    <div className="list-table-cell drop-cell">&nbsp;</div>
+                  </div>
                 </div>
-              </div>
                 <div className="list-table-body">
                   {this.mapLessonRows()}
                 </div>
@@ -162,7 +162,7 @@ class ListView extends React.Component {
            .list-table .list-table-cell.type-cell {
              max-width: 12%
            }`}
-           </style>
+        </style>
       </React.Fragment>
 
     );
@@ -175,6 +175,6 @@ ListView.propTypes = {
   sort: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
 
-}
+};
 
 export default ListView;

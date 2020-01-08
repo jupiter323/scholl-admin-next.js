@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { connect} from 'react-redux'
+import { connect } from 'react-redux';
 import update from "immutability-helper";
 import { DragDropContext } from "react-beautiful-dnd";
 import { StickyContainer } from "react-sticky";
@@ -64,7 +64,6 @@ class Calendar extends Component {
       licenseCode: '',
     };
   }
-
 
 
   // This is called onMount in CalendarHeader component to set the current month calendar rows, and every time the month changes afterward
@@ -160,7 +159,7 @@ class Calendar extends Component {
       rows.push(...rowArr);
     }
     this.setState({ activeMonth: activeMonthIndex });
-    if(this.props.rows.length === 0){
+    if (this.props.rows.length === 0) {
       const { onSetCalendarRows } = this.props;
       onSetCalendarRows(rows);
     }
@@ -201,14 +200,14 @@ class Calendar extends Component {
     if (event) {
       event.preventDefault();
     }
-    const { onSetAssignLessonsModalOpen,assignLessonsModalOpen } = this.props;
-    onSetAssignLessonsModalOpen(!assignLessonsModalOpen)
-    this.setState({ modalDate,assignDropdownIsOpen: false});
+    const { onSetAssignLessonsModalOpen, assignLessonsModalOpen } = this.props;
+    onSetAssignLessonsModalOpen(!assignLessonsModalOpen);
+    this.setState({ modalDate, assignDropdownIsOpen: false });
   };
 
   onAssignTestSection = testSection => {
     const { rows } = this.props;
-    const updatedDate = rows.filter( row => row.date === testSection.assignDate)[0];
+    const updatedDate = rows.filter(row => row.date === testSection.assignDate)[0];
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.testSections.push(testSection);
     const updatedRows = update(rows, {
@@ -339,8 +338,7 @@ class Calendar extends Component {
     sourceDate[draggableType].splice(draggableIndex, 1);
     destinationDate[draggableType].push(movedEvent);
     const updatedRows = update(rows, {
-      $splice: [+
-        [sourceDateIndex, 1, sourceDate],
+      $splice: [+[sourceDateIndex, 1, sourceDate],
         [destinationDateIndex, 1, destinationDate],
       ],
     });
@@ -376,13 +374,12 @@ class Calendar extends Component {
   };
 
 
-
   onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
     }
-    this.setState({ modalDate,assignDropdownIsOpen: false });
-    const { onSetAssignWorksheetModalOpen,assignWorkSheetsModalOpen } = this.props;
+    this.setState({ modalDate, assignDropdownIsOpen: false });
+    const { onSetAssignWorksheetModalOpen, assignWorkSheetsModalOpen } = this.props;
     onSetAssignWorksheetModalOpen(!assignWorkSheetsModalOpen);
   };
 
@@ -398,7 +395,6 @@ class Calendar extends Component {
     onSetCalendarRows(updatedRows);
     this.onToggleAssignWorksheetsModal();
   };
-
 
 
   mapRows = () => {
@@ -421,22 +417,22 @@ class Calendar extends Component {
       endIndex += 7;
       rowArray.push(
         <CalendarRow
-        key={i}
-        rows={rows.slice(startIndex, endIndex)}
-        filters={filters}
-        eventFilters={eventFilters}
-        activeDate={activeDate}
-        activeColumn={activeColumn}
-        addDropdownOpen={addDropdownOpen}
-        deleteDropdownOpen={deleteDropdownOpen}
-        onSetActiveDate={this.onSetActiveDate}
-        onToggleAddDropdown={this.onToggleAddDropdown}
-        onToggleDeleteDropdown={this.onToggleDeleteDropdown}
-        onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
-        onToggleAssignSessionModal={this.onToggleAssignSessionModal}
-        onToggleAssignWorksheetsModal={this.onToggleAssignWorksheetsModal}
-        onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
-        onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
+          key={i}
+          rows={rows.slice(startIndex, endIndex)}
+          filters={filters}
+          eventFilters={eventFilters}
+          activeDate={activeDate}
+          activeColumn={activeColumn}
+          addDropdownOpen={addDropdownOpen}
+          deleteDropdownOpen={deleteDropdownOpen}
+          onSetActiveDate={this.onSetActiveDate}
+          onToggleAddDropdown={this.onToggleAddDropdown}
+          onToggleDeleteDropdown={this.onToggleDeleteDropdown}
+          onToggleAssignLessonsModal={this.onToggleAssignLessonsModal}
+          onToggleAssignSessionModal={this.onToggleAssignSessionModal}
+          onToggleAssignWorksheetsModal={this.onToggleAssignWorksheetsModal}
+          onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
+          onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
         />
       );
     }
@@ -463,207 +459,207 @@ class Calendar extends Component {
     return (
       <React.Fragment>
         <Choose>
-        <When condition = {assignLessonsModalOpen}>
-        <AssignLessonModal
-            modalDate={modalDate}
-            open={assignLessonsModalOpen}
-            onClose={this.onToggleAssignLessonsModal}
-            onAssignLessons={this.onAssignLessons}
-          />
-        </When>
-        <When condition = {assignWorkSheetsModalOpen}>
-          <AssignWorksheetModal
-            modalDate={modalDate}
-            open={assignWorkSheetsModalOpen}
-            onClose={this.onToggleAssignWorksheetsModal}
-            onAssignWorksheets={this.onAssignWorksheets}
+          <When condition={assignLessonsModalOpen}>
+            <AssignLessonModal
+              modalDate={modalDate}
+              open={assignLessonsModalOpen}
+              onClose={this.onToggleAssignLessonsModal}
+              onAssignLessons={this.onAssignLessons}
             />
-        </When>
-        <Otherwise>
-        <AssignSessionModal
-          modalDate={modalDate}
-          open={assignSessionModalOpen}
-          onClose={this.onToggleAssignSessionModal}
-          onAssignSession={this.onAssignSession}
-        />
-        <AssignTestSectionModal
-          modalDate={modalDate}
-          open={assignTestSectionModalOpen}
-          onClose={this.onToggleAssignTestSectionModal}
-          onAssignTestSection={this.onAssignTestSection}
-        />
-        <AssignSimulatedSatModal
-          modalDate={modalDate}
-          open={assignSimulatedSatModalOpen}
-          onClose={this.onToggleAssignSimulatedSatModal}
-          onAssignSimulatedSat={this.onAssignSimulatedSat}
-        />
-        <AssignTargetTestModal
-          open={assignTargetTestDateModalOpen}
-          onClose={this.onToggleAssignTargetTestModal}
-          onAssignTargetTest={this.onAssignTargetTest}
-        />
-        <StickyContainer>
-          <FilterSection
-            filters={filters}
-            eventFilters={eventFilters}
-            onClearFilters={this.onClearFilters}
-            handleFilterClick={this.handleFilterClick}
-          />
-          <div className="calendar-section view-month">
-            <div className="calendar-slider">
-              <CalendarHeader
-                activeMonth={Number(activeMonth)}
-                onSetActiveMonth={this.onSetActiveMonth}
+          </When>
+          <When condition={assignWorkSheetsModalOpen}>
+            <AssignWorksheetModal
+              modalDate={modalDate}
+              open={assignWorkSheetsModalOpen}
+              onClose={this.onToggleAssignWorksheetsModal}
+              onAssignWorksheets={this.onAssignWorksheets}
+            />
+          </When>
+          <Otherwise>
+            <AssignSessionModal
+              modalDate={modalDate}
+              open={assignSessionModalOpen}
+              onClose={this.onToggleAssignSessionModal}
+              onAssignSession={this.onAssignSession}
+            />
+            <AssignTestSectionModal
+              modalDate={modalDate}
+              open={assignTestSectionModalOpen}
+              onClose={this.onToggleAssignTestSectionModal}
+              onAssignTestSection={this.onAssignTestSection}
+            />
+            <AssignSimulatedSatModal
+              modalDate={modalDate}
+              open={assignSimulatedSatModalOpen}
+              onClose={this.onToggleAssignSimulatedSatModal}
+              onAssignSimulatedSat={this.onAssignSimulatedSat}
+            />
+            <AssignTargetTestModal
+              open={assignTargetTestDateModalOpen}
+              onClose={this.onToggleAssignTargetTestModal}
+              onAssignTargetTest={this.onAssignTargetTest}
+            />
+            <StickyContainer>
+              <FilterSection
+                filters={filters}
+                eventFilters={eventFilters}
+                onClearFilters={this.onClearFilters}
+                handleFilterClick={this.handleFilterClick}
               />
-              <div
-                id="calendar"
-                className="main-slick-calendar cal-context"
-                style={{ width: "100%" }}
-              >
-                <div className="slide">
-                  <table className="calendar-table cal-month-box">
-                    <thead>
-                      <tr className="calendar-head-row">
-                        <th>Su</th>
-                        <th>M</th>
-                        <th>Tu</th>
-                        <th>W</th>
-                        <th>Th</th>
-                        <th>F</th>
-                        <th>Sa</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <DragDropContext onDragEnd={this.onDragEnd}>
-                        {this.mapRows()}
-                      </DragDropContext>
-                    </tbody>
-                  </table>
+              <div className="calendar-section view-month">
+                <div className="calendar-slider">
+                  <CalendarHeader
+                    activeMonth={Number(activeMonth)}
+                    onSetActiveMonth={this.onSetActiveMonth}
+                  />
+                  <div
+                    id="calendar"
+                    className="main-slick-calendar cal-context"
+                    style={{ width: "100%" }}
+                  >
+                    <div className="slide">
+                      <table className="calendar-table cal-month-box">
+                        <thead>
+                          <tr className="calendar-head-row">
+                            <th>Su</th>
+                            <th>M</th>
+                            <th>Tu</th>
+                            <th>W</th>
+                            <th>Th</th>
+                            <th>F</th>
+                            <th>Sa</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <DragDropContext onDragEnd={this.onDragEnd}>
+                            {this.mapRows()}
+                          </DragDropContext>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="add-btn-block">
+                    <a
+                      href="#"
+                      data-target="dropdown_assign"
+                      onClick={this.onToggleAssignDropdown}
+                      className="dropdown-trigger waves-effect waves-teal btn add-btn"
+                    >
+                  Assign...
+                    </a>
+                    <ul
+                      id="dropdown_assign"
+                      className="dropdown-content"
+                      style={{
+                        display: assignDropdownIsOpen ? "block" : "none",
+                        opacity: assignDropdownIsOpen ? "100" : "0",
+                      }}
+                    >
+                      <li>
+                        <a
+                          href="#"
+                          onClick={this.onToggleAssignSessionModal}
+                          className="modal-trigger"
+                        >
+                      Session
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={this.onToggleAssignLessonsModal}
+                          className="modal-trigger"
+                        >
+                      Lesson
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={this.onToggleAssignWorksheetsModal}
+                          className="modal-trigger"
+                        >
+                      Worksheet
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={this.onToggleAssignTestSectionModal}
+                          className="modal-trigger"
+                        >
+                      Test Section
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={this.onToggleAssignSimulatedSatModal}
+                          className="modal-trigger"
+                        >
+                      Simulated SAT
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={this.onToggleAssignTargetTestModal}
+                          className="modal-trigger"
+                        >
+                      Target Test
+                        </a>
+                      </li>
+                      <li className="divider" tabIndex="-1"></li>
+                      <li className="dropdown-footer">
+                        <a href="#" className="modal-trigger">
+                      Apply Course Template
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="add-btn-block btn-block-right">
+                    <a
+                      href="#"
+                      data-target="dropdown_other"
+                      onClick={this.onToggleHandleFilteredItemsDropdown}
+                      className="dropdown-trigger waves-effect waves-teal btn add-btn-circle"
+                    >
+                      <i className="icon-dots"></i>
+                    </a>
+                    <ul
+                      id="dropdown_other"
+                      className="dropdown-content"
+                      style={{
+                        display: onToggleHandleFilteredItemsDropdown
+                          ? "block"
+                          : "none",
+                        opacity: onToggleHandleFilteredItemsDropdown ? "100" : "0",
+                      }}
+                    >
+                      <li className="dropdown-header">
+                        <b>With Filtered Items... </b>
+                        <b className="small">
+                      (items currently visible on calendar)
+                        </b>
+                      </li>
+                      <li className="divider"></li>
+                      <li>
+                        <a href="#" className="modal-trigger">
+                      Save Course as Template
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">Reset All</a>
+                      </li>
+                      <li>
+                        <a href="#">Delete All</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <div className="add-btn-block">
-                <a
-                  href="#"
-                  data-target="dropdown_assign"
-                  onClick={this.onToggleAssignDropdown}
-                  className="dropdown-trigger waves-effect waves-teal btn add-btn"
-                >
-                  Assign...
-                </a>
-                <ul
-                  id="dropdown_assign"
-                  className="dropdown-content"
-                  style={{
-                    display: assignDropdownIsOpen ? "block" : "none",
-                    opacity: assignDropdownIsOpen ? "100" : "0",
-                  }}
-                >
-                  <li>
-                    <a
-                      href="#"
-                      onClick={this.onToggleAssignSessionModal}
-                      className="modal-trigger"
-                    >
-                      Session
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      onClick={this.onToggleAssignLessonsModal}
-                      className="modal-trigger"
-                    >
-                      Lesson
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      onClick={this.onToggleAssignWorksheetsModal}
-                      className="modal-trigger"
-                    >
-                      Worksheet
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      onClick={this.onToggleAssignTestSectionModal}
-                      className="modal-trigger"
-                    >
-                      Test Section
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      onClick={this.onToggleAssignSimulatedSatModal}
-                      className="modal-trigger"
-                    >
-                      Simulated SAT
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      onClick={this.onToggleAssignTargetTestModal}
-                      className="modal-trigger"
-                    >
-                      Target Test
-                    </a>
-                  </li>
-                  <li className="divider" tabIndex="-1"></li>
-                  <li className="dropdown-footer">
-                    <a href="#" className="modal-trigger">
-                      Apply Course Template
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="add-btn-block btn-block-right">
-                <a
-                  href="#"
-                  data-target="dropdown_other"
-                  onClick={this.onToggleHandleFilteredItemsDropdown}
-                  className="dropdown-trigger waves-effect waves-teal btn add-btn-circle"
-                >
-                  <i className="icon-dots"></i>
-                </a>
-                <ul
-                  id="dropdown_other"
-                  className="dropdown-content"
-                  style={{
-                    display: onToggleHandleFilteredItemsDropdown
-                      ? "block"
-                      : "none",
-                    opacity: onToggleHandleFilteredItemsDropdown ? "100" : "0",
-                  }}
-                >
-                  <li className="dropdown-header">
-                    <b>With Filtered Items... </b>
-                    <b className="small">
-                      (items currently visible on calendar)
-                    </b>
-                  </li>
-                  <li className="divider"></li>
-                  <li>
-                    <a href="#" className="modal-trigger">
-                      Save Course as Template
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">Reset All</a>
-                  </li>
-                  <li>
-                    <a href="#">Delete All</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </StickyContainer>
-        </Otherwise>
+            </StickyContainer>
+          </Otherwise>
         </Choose>
       </React.Fragment>
     );
@@ -671,34 +667,33 @@ class Calendar extends Component {
 }
 
 
-
 Calendar.propTypes = {
-  assignLessonsModalOpen:PropTypes.bool.isRequired,
-  assignWorkSheetsModalOpen:PropTypes.bool.isRequired,
-  onSetAssignLessonsModalOpen:PropTypes.func.isRequired,
-  onSetAssignWorksheetModalOpen:PropTypes.func.isRequired,
-  onSetCalendarRows:PropTypes.func.isRequired,
-  rows:PropTypes.array.isRequired,
-}
+  assignLessonsModalOpen: PropTypes.bool.isRequired,
+  assignWorkSheetsModalOpen: PropTypes.bool.isRequired,
+  onSetAssignLessonsModalOpen: PropTypes.func.isRequired,
+  onSetAssignWorksheetModalOpen: PropTypes.func.isRequired,
+  onSetCalendarRows: PropTypes.func.isRequired,
+  rows: PropTypes.array.isRequired,
+};
 
 
 const mapStateToProps = createStructuredSelector({
-  assignLessonsModalOpen:makeSelectAssignLessonsModalOpen(),
-  assignWorkSheetsModalOpen:makeSelectAssignWorkSheetsModalOpen(),
-  rows:makeSelectCalendarRows(),
-})
+  assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
+  assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen(),
+  rows: makeSelectCalendarRows(),
+});
 
-function mapDispatchToProps(dispatch){
-  return{
-    onSetAssignLessonsModalOpen:(value) => dispatch(setAssignLessonsModalOpen(value)),
-    onSetAssignWorksheetModalOpen:(value) => dispatch(setAssignWorksheetModalOpen(value)),
-    onSetCalendarRows:(rows) =>dispatch(setCalendarRows(rows)),
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetAssignLessonsModalOpen: (value) => dispatch(setAssignLessonsModalOpen(value)),
+    onSetAssignWorksheetModalOpen: (value) => dispatch(setAssignWorksheetModalOpen(value)),
+    onSetCalendarRows: (rows) => dispatch(setCalendarRows(rows)),
+  };
 }
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps
-)
+);
 
 export default compose(withConnect)(Calendar);

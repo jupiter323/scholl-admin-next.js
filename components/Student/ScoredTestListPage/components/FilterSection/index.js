@@ -23,7 +23,7 @@ class FilterSection extends React.Component {
 
   submitSearchFilter = () => {
     const { onSetFilteredState, onUnsetFilteredState } = this.props;
-    const { testVersionFilter } =  this.state;
+    const { testVersionFilter } = this.state;
     if (testVersionFilter === '') {
       onUnsetFilteredState();
     }
@@ -169,7 +169,7 @@ class FilterSection extends React.Component {
                       className="collapsible-header"
                       onClick={this.onToggleShowFilters}
                     >
-                    <span className="open-text">{open ? 'Hide Filters' : 'Open Filters'}</span>
+                      <span className="open-text">{open ? 'Hide Filters' : 'Open Filters'}</span>
                     </span>
                   </div>
                 </div>
@@ -192,6 +192,6 @@ FilterSection.propTypes = {
   onSetFilteredState: PropTypes.func.isRequired,
   onUnsetFilteredState: PropTypes.func.isRequired,
   availableDateFilters: PropTypes.array.isRequired,
-}
+};
 
 export default FilterSection;

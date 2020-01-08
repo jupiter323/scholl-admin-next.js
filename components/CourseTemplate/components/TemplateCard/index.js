@@ -11,7 +11,7 @@ const data = (total) => ({
       'rgb(234, 234, 234)',
     ],
   }],
-})
+});
 
 const formatEstimatedTotalCourseWork = (minutes) => Math.floor(minutes / 60);
 
@@ -72,16 +72,16 @@ class TemplateCard extends React.Component {
                     <div className="row icons-row">
                       <div className="dropdown-block col">
                         <a
-                          className='dropdown-trigger btn'
-                          href='#' data-target='dropdown02'
+                          className="dropdown-trigger btn"
+                          href="#" data-target="dropdown02"
                           onClick={this.handleDropdownClick}
                         >
                           <i className="material-icons dots-icon">more_vert</i>
                         </a>
                         <If condition={dropdownIsOpen && dropdownIndex === index}>
                           <ul
-                            id='dropdown02'
-                            className='dropdown-content dropdown-wide'
+                            id="dropdown02"
+                            className="dropdown-content dropdown-wide"
                             style={{ display: 'block', transformOrigin: '0px 0px 0px', opacity: '1', transform: 'scaleX(1) scaleY(1)' }}
                           >
                             <li>
@@ -131,15 +131,15 @@ class TemplateCard extends React.Component {
                           cutoutPercentage: 55,
                           tooltips: false,
                         }}
-                        />
+                      />
                       <div className="chart-text">
-                        <span className="value" style={{color:  '#3d8946'}}>{lessons}</span>
-                        <span className="title" style={{color:  '#3d8946'}}>Lessons</span>
-                      </div>
+                        <span className="value" style={{ color: '#3d8946' }}>{lessons}</span>
+                        <span className="title" style={{ color: '#3d8946' }}>Lessons</span>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
               <div
                 className="card-content collapsible-body"

@@ -18,6 +18,6 @@ export const chartColorMap = {
   Beginning: '#ed1c24',
   Exemplary: 'rgb(0, 100, 244)',
   Developing: '#c10078',
-}
+};
 
 export default statusColorMap;

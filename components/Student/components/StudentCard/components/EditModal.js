@@ -1,23 +1,25 @@
 import React from "react";
 import update from 'immutability-helper';
 import PropTypes from "prop-types";
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { connect} from 'react-redux'
+
 import Portal from "../../../../Portal";
 import ClickOffComponentWrapper from "../.././../../ClickOffComponentWrapper";
 import Dropdown from "../../../../FormComponents/Dropdown";
 import stateOptions from "../../../../utils/stateOptions";
 import getValueFromState from '../../../../utils/getValueFromState';
-
 import {
-  updateStudentActivationApi,
-  updateStudentAddressApi,
-  updateStudentCityApi,
-  updateStudentEmailApi,
-  updateStudentFirstNameApi,
-  updateStudentLastNameApi,
-  updateStudentPhoneApi,
-  updateStudentStateApi,
-  updateStudentZipApi
-} from "../../../index/api";
+  updateStudentFirstName,
+  updateStudentLastName,
+  updateStudentAddress,
+  updateStudentCity,
+  updateStudentEmail,
+  updateStudentPhone,
+  updateStudentState,
+  updateStudentZip,
+} from "../../../index/actions";
 
 class EditModal extends React.Component {
   constructor(props) {
@@ -135,28 +137,38 @@ class EditModal extends React.Component {
   // eslint-disable-next-line consistent-return
   handleUnitApiUpdate = async (name, value) => {
     const {
+      onUpdateStudentFirstName,
+      onUpdateStudentLastName,
+      onUpdateStudentAddress,
+      onUpdateStudentCity,
+      onUpdateStudentEmail,
+      onUpdateStudentPhone,
+      onUpdateStudentState,
+      onUpdateStudentZip,
+    } = this.props;
+    const {
       student: { id:student_id },
     } = this.props;
     switch (name) {
       case "firstName":
-        return await updateStudentFirstNameApi({
+        return onUpdateStudentFirstName({
           student_id,
-          first_name: value
+          first_name: value,
         });
       case "lastName":
-        return await updateStudentLastNameApi({ student_id, last_name: value });
+        return onUpdateStudentLastName({ student_id, last_name: value });
       case "email":
-        return await updateStudentEmailApi({ student_id, email: value });
+        return onUpdateStudentEmail({ student_id, email: value });
       case "phone":
-        return await updateStudentPhoneApi({ student_id, phone: value });
+        return onUpdateStudentPhone({ student_id, phone: value });
       case "addressLine1":
-        return await updateStudentAddressApi({ student_id, address: value });
+        return onUpdateStudentAddress({ student_id, address: value });
       case "city":
-        return await updateStudentCityApi({ student_id, city: value });
+        return onUpdateStudentCity({ student_id, city: value });
       case "state":
-        return await updateStudentStateApi({ student_id, state: value });
+        return onUpdateStudentState({ student_id, state: value });
       case "zipCode":
-        return await updateStudentZipApi({ student_id, zip: value });
+        return onUpdateStudentZip({ student_id, zip: value });
       default:
         break;
     }
@@ -203,7 +215,7 @@ class EditModal extends React.Component {
                                 className="user-circle"
                                 style={{
                                   backgroundColor: "#0085ce",
-                                  color: "#fff"
+                                  color: "#fff",
                                 }}
                               >
                                 <img
@@ -390,10 +402,11 @@ class EditModal extends React.Component {
                               <div className="card-block">
                                 <h3>Location(s)</h3>
                                 <div className="card-main card-location card card-large">
-                                  <div className="card-panel card-panel-location"
+                                  <div
+className="card-panel card-panel-location"
                                     style={{
                                       backgroundColor: "#62b771",
-                                      color: "#fff"
+                                      color: "#fff",
                                     }}
                                   >
                                     <div className="card-panel-row row">
@@ -444,10 +457,11 @@ class EditModal extends React.Component {
                                   </div>
                                 </div>
                                 <div className="card-main card-location card card-large">
-                                  <div className="card-panel card-panel-location"
+                                  <div
+className="card-panel card-panel-location"
                                     style={{
                                       backgroundColor: "#62b771",
-                                      color: "#fff"
+                                      color: "#fff",
                                     }}
                                   >
                                     <div className="card-panel-row row">
@@ -576,5 +590,34 @@ EditModal.propTypes = {
   onCloseEditModal: PropTypes.func.isRequired,
   student: PropTypes.object.isRequired,
   onSaveStudentChanges:PropTypes.func.isRequired,
+  onUpdateStudentFirstName:PropTypes.func.isRequired,
+  onUpdateStudentLastName:PropTypes.func.isRequired,
+  onUpdateStudentAddress:PropTypes.func.isRequired,
+  onUpdateStudentCity:PropTypes.func.isRequired,
+  onUpdateStudentEmail:PropTypes.func.isRequired,
+  onUpdateStudentPhone:PropTypes.func.isRequired,
+  onUpdateStudentState:PropTypes.func.isRequired,
+  onUpdateStudentZip:PropTypes.func.isRequired,
 };
-export default EditModal;
+
+const mapStateToProps = createStructuredSelector({})
+
+function mapDispatchToProps(dispatch){
+  return{
+    onUpdateStudentFirstName:(value) => dispatch(updateStudentFirstName(value)),
+    onUpdateStudentLastName:(value) => dispatch(updateStudentLastName(value)),
+    onUpdateStudentAddress:(value) => dispatch(updateStudentAddress(value)),
+    onUpdateStudentCity:(value) => dispatch(updateStudentCity(value)),
+    onUpdateStudentEmail:(value) => dispatch(updateStudentEmail(value)),
+    onUpdateStudentPhone:(value) => dispatch(updateStudentPhone(value)),
+    onUpdateStudentState:(value) => dispatch(updateStudentState(value)),
+    onUpdateStudentZip:(value) => dispatch(updateStudentZip(value)),
+  }
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(EditModal);

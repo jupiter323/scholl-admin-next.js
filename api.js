@@ -3,6 +3,14 @@ import {
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
+  updateStudentAddressApi,
+  updateStudentCityApi,
+  updateStudentEmailApi,
+  updateStudentFirstNameApi,
+  updateStudentLastNameApi,
+  updateStudentPhoneApi,
+  updateStudentStateApi,
+  updateStudentZipApi,
 } from "./components/Student/index/api";
 
 import { createClassApi } from './components/Classes/index/api';
@@ -25,6 +33,14 @@ export const studentApi = {
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
+  updateStudentAddressApi,
+  updateStudentCityApi,
+  updateStudentEmailApi,
+  updateStudentFirstNameApi,
+  updateStudentLastNameApi,
+  updateStudentPhoneApi,
+  updateStudentStateApi,
+  updateStudentZipApi,
 };
 
 export const instructorApi = {

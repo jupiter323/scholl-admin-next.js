@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 
@@ -11,7 +11,7 @@ const data = (current, target) => ({
     ],
   }],
 }
-)
+);
 
 class ClassCard extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class ClassCard extends React.Component {
     this.state = {
       dropdownIsOpen: false,
       editModalOpen: false,
-    }
+    };
   }
   onSetDropdown = (event, dropdownIsOpen) => {
     event.preventDefault();
@@ -61,15 +61,15 @@ class ClassCard extends React.Component {
                   </div>
                   <div className="dropdown-block col">
                     <a
-                      className='dropdown-trigger btn'
-                      href='#'
-                      data-target='dropdown01'
+                      className="dropdown-trigger btn"
+                      href="#"
+                      data-target="dropdown01"
                       onClick={(event) => this.onSetDropdown(event, dropdownIsOpen)}
                     >
                       <i className="material-icons dots-icon">more_vert</i>
                     </a>
                     <If condition={dropdownIsOpen}>
-                      <ul id='dropdown01' className='dropdown-content dropdown-wide' style={{ display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
+                      <ul id="dropdown01" className="dropdown-content dropdown-wide" style={{ display: "block", opacity: '1', transform: 'scaleX(1) scaleY(1)' }}>
                         <li>
                           <a href="#modal_user_edit" className="modal-trigger link-block" onClick={this.OpenEditModal}>Edit</a>
                         </li>
@@ -104,7 +104,7 @@ class ClassCard extends React.Component {
                           cutoutPercentage: 80,
                         }}
                       />
-                      <div className="chart-text" style={{bottom: '6px'}}>
+                      <div className="chart-text" style={{ bottom: '6px' }}>
                         <span className="title">Instruction</span>
                         <span className="value">{completedInstruction}%</span>
                         <span className="description">vs scheduled instruction</span>
@@ -158,7 +158,7 @@ class ClassCard extends React.Component {
       </div>
 
 
-    )
+    );
   }
 }
 
@@ -168,5 +168,5 @@ ClassCard.propTypes = {
   onCloneClass: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   onRedirect: PropTypes.func.isRequired,
-}
+};
 export default ClassCard;

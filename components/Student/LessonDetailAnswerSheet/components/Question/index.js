@@ -36,7 +36,7 @@ class Question extends React.Component {
             </li>
           ))}
         </ul>
-      )
+      );
     }
     if (answerType === 'letter') {
       return (
@@ -67,7 +67,7 @@ class Question extends React.Component {
           </li>
         ))}
       </ul>
-    )
+    );
   }
 
   render() {
@@ -87,8 +87,8 @@ class Question extends React.Component {
               <span className="play-progress" data-video-id="video001">
                 <span className="play"></span>
                 <svg viewBox="0 0 50 50" width="50" height="50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <circle className="circle-static" cx="25.8" cy="24.3" r="22.8" style={{ strokeWidth: '3', fill: 'rgba(0,0,0,0)' }}/>
-                  <circle className="circle-progress" cx="25.8" cy="24.3" r="22.8" style={{ stroke: 'none', strokeWidth: '3', fill: 'rgba(0,0,0,0)' }}/>
+                  <circle className="circle-static" cx="25.8" cy="24.3" r="22.8" style={{ strokeWidth: '3', fill: 'rgba(0,0,0,0)' }} />
+                  <circle className="circle-progress" cx="25.8" cy="24.3" r="22.8" style={{ stroke: 'none', strokeWidth: '3', fill: 'rgba(0,0,0,0)' }} />
                 </svg>
               </span>
             </div>
@@ -101,7 +101,7 @@ class Question extends React.Component {
             </If>
           </div>
           <div className="dropdown-block col col-35">
-            <a className='modal-trigger' onClick={() => onOpenQuestionModal(question)} href="#"><i className="material-icons dots-icon">more_vert</i></a>
+            <a className="modal-trigger" onClick={() => onOpenQuestionModal(question)} href="#"><i className="material-icons dots-icon">more_vert</i></a>
           </div>
         </div>
         <If condition={answerSheetComplete && studentNotes}>
@@ -112,7 +112,7 @@ class Question extends React.Component {
       </li>
     );
   }
-};
+}
 
 Question.propTypes = {
   question: PropTypes.object.isRequired,

@@ -95,4 +95,4 @@ export default [
     label: '11:00 pm',
     value: "11:00 pm",
   },
-]
+];

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { DragDropContext } from 'react-beautiful-dnd';
-import {StickyContainer, Sticky} from 'react-sticky';
+import { StickyContainer, Sticky } from 'react-sticky';
 import FilterSection from '../components/Dashboard/components/FilterSection';
 import CalendarHeader from '../components/Dashboard/components/CalendarHeader';
 import CalendarRow from '../components/Dashboard/components/CalendarRow';
@@ -117,20 +117,19 @@ class Calendar extends Component {
             currentMonth = activeMonthIndex > 9 ? activeMonthIndex + 2 : `0${activeMonthIndex + 2}`;
             calDate = 1;
             inMonth = false;
-          }
-          else {
+          } else {
             calDate += 1;
           }
           rowArr.push(dateCell);
         }
-      };
+      }
       rows.push(...rowArr);
-    };
-    this.setState({ activeMonth: activeMonthIndex, rows })
+    }
+    this.setState({ activeMonth: activeMonthIndex, rows });
   }
 
   onSetActiveDate = (incomingDate) => {
-    this.setState({ activeDate: incomingDate, activeColumn: incomingDate[13] })
+    this.setState({ activeDate: incomingDate, activeColumn: incomingDate[13] });
   }
 
   onAssignSession = (session) => {
@@ -139,7 +138,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.sessions.push(session);
     const updatedRows = update(rows, {
-      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignSessionModal();
@@ -151,7 +150,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.lessons.push(...lessons);
     const updatedRows = update(rows, {
-      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignLessonsModal();
@@ -163,7 +162,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.worksheets.push(...worksheets);
     const updatedRows = update(rows, {
-      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignWorksheetsModal();
@@ -175,7 +174,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.testSections.push(testSection);
     const updatedRows = update(rows, {
-      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignTestSectionModal();
@@ -187,7 +186,7 @@ class Calendar extends Component {
     const updatedDateIndex = rows.indexOf(updatedDate);
     updatedDate.simulatedSat.push(simulatedSat);
     const updatedRows = update(rows, {
-      $splice: [[ updatedDateIndex, 1, updatedDate ]],
+      $splice: [[updatedDateIndex, 1, updatedDate]],
     });
     this.setState({ rows: updatedRows });
     this.onToggleAssignSimulatedSatModal();
@@ -195,7 +194,7 @@ class Calendar extends Component {
 
   onAssignTargetTest = (targetTestDate) => {
     // eslint-disable-next-line no-throw-literal
-    throw `pending decision of what test date assign ui looks like${  targetTestDate.toString()}`;
+    throw `pending decision of what test date assign ui looks like${targetTestDate.toString()}`;
     // console.warn(, targetTestDate);
   }
 
@@ -203,42 +202,42 @@ class Calendar extends Component {
     if (event) {
       event.preventDefault();
     }
-    this.setState(({ assignSessionModalOpen }) => ({ assignSessionModalOpen: !assignSessionModalOpen, modalDate, assignDropdownIsOpen: false }))
+    this.setState(({ assignSessionModalOpen }) => ({ assignSessionModalOpen: !assignSessionModalOpen, modalDate, assignDropdownIsOpen: false }));
   }
 
   onToggleAssignLessonsModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
     }
-    this.setState(({ assignLessonsModalOpen }) => ({ assignLessonsModalOpen: !assignLessonsModalOpen, modalDate, assignDropdownIsOpen: false }))
+    this.setState(({ assignLessonsModalOpen }) => ({ assignLessonsModalOpen: !assignLessonsModalOpen, modalDate, assignDropdownIsOpen: false }));
   }
 
   onToggleAssignWorksheetsModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
     }
-    this.setState(({ assignWorksheetsModalOpen }) => ({ assignWorksheetsModalOpen: !assignWorksheetsModalOpen, modalDate, assignDropdownIsOpen: false }))
+    this.setState(({ assignWorksheetsModalOpen }) => ({ assignWorksheetsModalOpen: !assignWorksheetsModalOpen, modalDate, assignDropdownIsOpen: false }));
   }
 
   onToggleAssignTestSectionModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
     }
-    this.setState(({ assignTestSectionModalOpen }) => ({ assignTestSectionModalOpen: !assignTestSectionModalOpen, modalDate, assignDropdownIsOpen: false }))
+    this.setState(({ assignTestSectionModalOpen }) => ({ assignTestSectionModalOpen: !assignTestSectionModalOpen, modalDate, assignDropdownIsOpen: false }));
   }
 
   onToggleAssignSimulatedSatModal = (event = null, modalDate = null) => {
     if (event) {
       event.preventDefault();
     }
-    this.setState(({ assignSimulatedSatModalOpen }) => ({ assignSimulatedSatModalOpen: !assignSimulatedSatModalOpen, modalDate, assignDropdownIsOpen: false }))
+    this.setState(({ assignSimulatedSatModalOpen }) => ({ assignSimulatedSatModalOpen: !assignSimulatedSatModalOpen, modalDate, assignDropdownIsOpen: false }));
   }
 
   onToggleAssignTargetTestModal = (event = null) => {
     if (event) {
       event.preventDefault();
     }
-    this.setState(({ assignTargetTestDateModalOpen }) => ({ assignTargetTestDateModalOpen: !assignTargetTestDateModalOpen, assignDropdownIsOpen: false }))
+    this.setState(({ assignTargetTestDateModalOpen }) => ({ assignTargetTestDateModalOpen: !assignTargetTestDateModalOpen, assignDropdownIsOpen: false }));
   }
 
   onToggleAddDropdown = () => this.setState(({ addDropdownOpen }) => ({ addDropdownOpen: !addDropdownOpen, deleteDropdownOpen: false }))
@@ -281,7 +280,7 @@ class Calendar extends Component {
     sourceDate[draggableType].splice(draggableIndex, 1);
     destinationDate[draggableType].push(movedEvent);
     const updatedRows = update(rows, {
-      $splice: [[ sourceDateIndex, 1, sourceDate ], [ destinationDateIndex, 1, destinationDate ]],
+      $splice: [[sourceDateIndex, 1, sourceDate], [destinationDateIndex, 1, destinationDate]],
     });
     this.setState({ rows: updatedRows });
   }
@@ -307,7 +306,7 @@ class Calendar extends Component {
     } else {
       const filterIndex = filters.indexOf(filter);
       updatedFilters = update(filters, {
-        $splice: [[ filterIndex, 1 ]],
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ [filterName]: updatedFilters });
@@ -340,7 +339,7 @@ class Calendar extends Component {
           onToggleAssignTestSectionModal={this.onToggleAssignTestSectionModal}
           onToggleAssignSimulatedSatModal={this.onToggleAssignSimulatedSatModal}
         />
-      )
+      );
     }
     return rowArray;
   }
@@ -391,160 +390,160 @@ class Calendar extends Component {
         <main id="main" role="main">
           <div className="main-holder grey lighten-3">
             <StickyContainer>
-            <Sticky>
-        {({ style }) => (
-          <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
-              <div className="mobile-header">
-                <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
-              </div>
-              <nav className="breadcrumb-holder">
-                <div className="nav-wrapper ">
-                  <a href="#" className="breadcrumb">&lt; Classes</a>
-                </div>
-              </nav>
-              <h2 className="h1 white-text">
-                <span className="heading-holder">
-                  <i className="icon-members"></i>
-                  <span className="heading-block">Some Class in June</span>
-                </span>
-              </h2>
-              <nav className="nav-additional">
-                <ul className="menu-additional">
-                  <li><a href="#">Summary</a></li>
-                  <li><a className="active" href="#">Calendar</a></li>
-                  <li><a href="#">Lessons</a></li>
-                  <li><a href="#">Tests</a></li>
-                  <li><a href="#">Account</a></li>
-                </ul>
-              </nav>
-              <div className="activate-block">
-                <Choose>
-                  <When condition={accountActivated}>
-                    <a
-                      href="#"
-                      className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"
-                    >
-                      <b className="btn-text visible-lg">Account Activated</b> <i className="icon-unlock"></i>
-                    </a>
-                  </When>
-                  <Otherwise>
-                    <a
-                      href="#"
-                      onClick={this.onToggleActivationDropdown}
-                      className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger"
-                      data-target="dropdown_activate"
-                    >
-                      <b className="btn-text visible-lg">Activate Account</b> <i className="icon-key"></i>
-                    </a>
-                  </Otherwise>
-                </Choose>
-                <div id="dropdown_activate" className="dropdown-content" style={activationDropdownOpen ? { display: 'block', opacity: '1' } : {}}>
-                  <div className="card-panel">
-                    <div className="title-block">
-                      <div className="h3">Ready to begin your course?</div>
-                      <div className="subtitle">Please enter a valid license code below.</div>
+              <Sticky>
+                {({ style }) => (
+                  <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
+                    <div className="mobile-header">
+                      <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
                     </div>
-                    <div className="input-field">
-                      <input
-                        type="text"
-                        value={licenseCode}
-                        id="license-code"
-                        onChange={(event) => this.onHandleDetailsChange('licenseCode', event)}
-                      />
-                      <label className="label" htmlFor="license_code">License Code</label>
-                    </div>
-                    <div className="btn-holder center-align">
-                      <button className="btn btn-blue" type="submit">Activate</button>
-                    </div>
-                    <div className="text-block center-align">
-                      <p>If you need license codes, you can get them here: <a href="#" className="waves-effect waves-light btn-small btn-blue">Purchase Licenses</a></p>
-                    </div>
-                    <div className="text-block">
-                      <p>*Note: </p>
-                      <p>We oﬀer discounted account licenses for students enrolled in courses with 5 or more students in a class or group format (as opposed to individual instruction). These licenses provide the features necessary to conduct a customized course for the class as a whole, rather than for individual students.</p>
+                    <nav className="breadcrumb-holder">
+                      <div className="nav-wrapper ">
+                        <a href="#" className="breadcrumb">&lt; Classes</a>
+                      </div>
+                    </nav>
+                    <h2 className="h1 white-text">
+                      <span className="heading-holder">
+                        <i className="icon-members"></i>
+                        <span className="heading-block">Some Class in June</span>
+                      </span>
+                    </h2>
+                    <nav className="nav-additional">
+                      <ul className="menu-additional">
+                        <li><a href="#">Summary</a></li>
+                        <li><a className="active" href="#">Calendar</a></li>
+                        <li><a href="#">Lessons</a></li>
+                        <li><a href="#">Tests</a></li>
+                        <li><a href="#">Account</a></li>
+                      </ul>
+                    </nav>
+                    <div className="activate-block">
+                      <Choose>
+                        <When condition={accountActivated}>
+                          <a
+                            href="#"
+                            className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"
+                          >
+                            <b className="btn-text visible-lg">Account Activated</b> <i className="icon-unlock"></i>
+                          </a>
+                        </When>
+                        <Otherwise>
+                          <a
+                            href="#"
+                            onClick={this.onToggleActivationDropdown}
+                            className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger"
+                            data-target="dropdown_activate"
+                          >
+                            <b className="btn-text visible-lg">Activate Account</b> <i className="icon-key"></i>
+                          </a>
+                        </Otherwise>
+                      </Choose>
+                      <div id="dropdown_activate" className="dropdown-content" style={activationDropdownOpen ? { display: 'block', opacity: '1' } : {}}>
+                        <div className="card-panel">
+                          <div className="title-block">
+                            <div className="h3">Ready to begin your course?</div>
+                            <div className="subtitle">Please enter a valid license code below.</div>
+                          </div>
+                          <div className="input-field">
+                            <input
+                              type="text"
+                              value={licenseCode}
+                              id="license-code"
+                              onChange={(event) => this.onHandleDetailsChange('licenseCode', event)}
+                            />
+                            <label className="label" htmlFor="license_code">License Code</label>
+                          </div>
+                          <div className="btn-holder center-align">
+                            <button className="btn btn-blue" type="submit">Activate</button>
+                          </div>
+                          <div className="text-block center-align">
+                            <p>If you need license codes, you can get them here: <a href="#" className="waves-effect waves-light btn-small btn-blue">Purchase Licenses</a></p>
+                          </div>
+                          <div className="text-block">
+                            <p>*Note: </p>
+                            <p>We oﬀer discounted account licenses for students enrolled in courses with 5 or more students in a class or group format (as opposed to individual instruction). These licenses provide the features necessary to conduct a customized course for the class as a whole, rather than for individual students.</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            )}
-            </Sticky>
-            <FilterSection
-              filters={filters}
-              eventFilters={eventFilters}
-              onClearFilters={this.onClearFilters}
-              handleFilterClick={this.handleFilterClick}
-            />
-            <div className="calendar-section view-month">
-              <div className="calendar-slider">
-                <CalendarHeader
-                  activeMonth={Number(activeMonth)}
-                  onSetActiveMonth={this.onSetActiveMonth}
-                />
-                <div id="calendar" className="main-slick-calendar cal-context" style={{ width: '100%' }}>
-                  <div className="slide">
-                    <table className="calendar-table cal-month-box">
-                      <thead>
-                        <tr className="calendar-head-row">
-                          <th>Su</th>
-                          <th>M</th>
-                          <th>Tu</th>
-                          <th>W</th>
-                          <th>Th</th>
-                          <th>F</th>
-                          <th>Sa</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <DragDropContext onDragEnd={this.onDragEnd}>
-                          {this.mapRows()}
-                        </DragDropContext>
-                      </tbody>
-                    </table>
+                )}
+              </Sticky>
+              <FilterSection
+                filters={filters}
+                eventFilters={eventFilters}
+                onClearFilters={this.onClearFilters}
+                handleFilterClick={this.handleFilterClick}
+              />
+              <div className="calendar-section view-month">
+                <div className="calendar-slider">
+                  <CalendarHeader
+                    activeMonth={Number(activeMonth)}
+                    onSetActiveMonth={this.onSetActiveMonth}
+                  />
+                  <div id="calendar" className="main-slick-calendar cal-context" style={{ width: '100%' }}>
+                    <div className="slide">
+                      <table className="calendar-table cal-month-box">
+                        <thead>
+                          <tr className="calendar-head-row">
+                            <th>Su</th>
+                            <th>M</th>
+                            <th>Tu</th>
+                            <th>W</th>
+                            <th>Th</th>
+                            <th>F</th>
+                            <th>Sa</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <DragDropContext onDragEnd={this.onDragEnd}>
+                            {this.mapRows()}
+                          </DragDropContext>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                </div>
-                <div className="add-btn-block">
-                  <a
-                    href="#"
-                    data-target='dropdown_assign'
-                    onClick={this.onToggleAssignDropdown}
-                    className="dropdown-trigger waves-effect waves-teal btn add-btn"
-                  >
+                  <div className="add-btn-block">
+                    <a
+                      href="#"
+                      data-target="dropdown_assign"
+                      onClick={this.onToggleAssignDropdown}
+                      className="dropdown-trigger waves-effect waves-teal btn add-btn"
+                    >
                     Assign...
-                  </a>
-                  <ul id='dropdown_assign' className='dropdown-content' style={{ display: assignDropdownIsOpen ? 'block' : 'none', opacity: assignDropdownIsOpen ? '100' : '0' }}>
-                    <li><a href="#" onClick={this.onToggleAssignSessionModal} className="modal-trigger">Session</a></li>
-                    <li><a href="#" onClick={this.onToggleAssignLessonsModal} className="modal-trigger">Lesson</a></li>
-                    <li><a href="#" onClick={this.onToggleAssignWorksheetsModal} className="modal-trigger">Worksheet</a></li>
-                    <li><a href="#" onClick={this.onToggleAssignTestSectionModal} className="modal-trigger">Test Section</a></li>
-                    <li><a href="#" onClick={this.onToggleAssignSimulatedSatModal} className="modal-trigger">Simulated SAT</a></li>
-                    <li><a href="#" onClick={this.onToggleAssignTargetTestModal} className="modal-trigger">Target Test</a></li>
-                    <li className="divider" tabIndex="-1"></li>
-                    <li className="dropdown-footer"><a href="#" className="modal-trigger">Apply Course Template</a></li>
-                  </ul>
-                </div>
-                <div className="add-btn-block btn-block-right">
-                  <a
-                    href="#"
-                    data-target='dropdown_other'
-                    onClick={this.onToggleHandleFilteredItemsDropdown}
-                    className="dropdown-trigger waves-effect waves-teal btn add-btn-circle"
-                  >
-                    <i className="icon-dots"></i>
-                  </a>
-                  <ul id='dropdown_other' className='dropdown-content' style={{ display: onToggleHandleFilteredItemsDropdown ? 'block' : 'none', opacity: onToggleHandleFilteredItemsDropdown ? '100' : '0' }}>
-                    <li className="dropdown-header">
-                      <b>With Filtered Items... </b>
-                      <b className="small">(items currently visible on calendar)</b>
-                    </li>
-                    <li className="divider"></li>
-                    <li><a href="#" className="modal-trigger">Save Course as Template</a></li>
-                    <li><a href="#">Reset All</a></li>
-                    <li><a href="#">Delete All</a></li>
-                  </ul>
+                    </a>
+                    <ul id="dropdown_assign" className="dropdown-content" style={{ display: assignDropdownIsOpen ? 'block' : 'none', opacity: assignDropdownIsOpen ? '100' : '0' }}>
+                      <li><a href="#" onClick={this.onToggleAssignSessionModal} className="modal-trigger">Session</a></li>
+                      <li><a href="#" onClick={this.onToggleAssignLessonsModal} className="modal-trigger">Lesson</a></li>
+                      <li><a href="#" onClick={this.onToggleAssignWorksheetsModal} className="modal-trigger">Worksheet</a></li>
+                      <li><a href="#" onClick={this.onToggleAssignTestSectionModal} className="modal-trigger">Test Section</a></li>
+                      <li><a href="#" onClick={this.onToggleAssignSimulatedSatModal} className="modal-trigger">Simulated SAT</a></li>
+                      <li><a href="#" onClick={this.onToggleAssignTargetTestModal} className="modal-trigger">Target Test</a></li>
+                      <li className="divider" tabIndex="-1"></li>
+                      <li className="dropdown-footer"><a href="#" className="modal-trigger">Apply Course Template</a></li>
+                    </ul>
+                  </div>
+                  <div className="add-btn-block btn-block-right">
+                    <a
+                      href="#"
+                      data-target="dropdown_other"
+                      onClick={this.onToggleHandleFilteredItemsDropdown}
+                      className="dropdown-trigger waves-effect waves-teal btn add-btn-circle"
+                    >
+                      <i className="icon-dots"></i>
+                    </a>
+                    <ul id="dropdown_other" className="dropdown-content" style={{ display: onToggleHandleFilteredItemsDropdown ? 'block' : 'none', opacity: onToggleHandleFilteredItemsDropdown ? '100' : '0' }}>
+                      <li className="dropdown-header">
+                        <b>With Filtered Items... </b>
+                        <b className="small">(items currently visible on calendar)</b>
+                      </li>
+                      <li className="divider"></li>
+                      <li><a href="#" className="modal-trigger">Save Course as Template</a></li>
+                      <li><a href="#">Reset All</a></li>
+                      <li><a href="#">Delete All</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
             </StickyContainer>
           </div>
         </main>

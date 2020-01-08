@@ -16,13 +16,13 @@ class ModalFilterSection extends React.Component {
       sort: {},
       nameFilter: "",
       unitFilter: "",
-    }
+    };
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
   handleSortChange = (event) => {
-    const {onSetSort} = this.props;
-    this.setState({sort: event});
+    const { onSetSort } = this.props;
+    this.setState({ sort: event });
     onSetSort(event);
   }
 
@@ -38,17 +38,17 @@ class ModalFilterSection extends React.Component {
 
   handleUnitChange = (event) => {
     const { onSetUnitFilter } = this.props;
-    this.setState({unitFilter: event});
+    this.setState({ unitFilter: event });
     onSetUnitFilter(event);
   }
 
   clearAllFilters = () => {
     const { onClearFilters } = this.props;
-    this.setState({sort: {}, nameFilter: "", unitFilter: ""})
-    onClearFilters()
+    this.setState({ sort: {}, nameFilter: "", unitFilter: "" });
+    onClearFilters();
   }
   handleFilterChange = (event, name) => {
-    const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter} = this.props;
+    const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter } = this.props;
     const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
       $merge: { [name]: value },
@@ -76,8 +76,8 @@ class ModalFilterSection extends React.Component {
           <li>
             <div className="collapsible-body" style={open ? { display: 'block' } : { display: 'none' }}>
               <div className="filter-form_checkbox-list-holder justify-center">
-              <ul className="filter-form_checkbox-list">
-              <li>
+                <ul className="filter-form_checkbox-list">
+                  <li>
                     <input
                       type="checkbox"
                       id="assignedModal"
@@ -96,7 +96,7 @@ class ModalFilterSection extends React.Component {
                     <label htmlFor="unassigned">Unassigned</label>
                   </li>
                 </ul>
-                <ul className='filter-form_checkbox-list'>
+                <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
@@ -156,38 +156,39 @@ class ModalFilterSection extends React.Component {
 
                 </ul>
               </div>
-            <div className="d-flex row mb-0 justify-center">
-              <div className="col s12 m3">
-                    <div className="search-field input-field" style={{marginTop: '30px'}}>
-                      <input
+              <div className="d-flex row mb-0 justify-center">
+                <div className="col s12 m3">
+                  <div className="search-field input-field" style={{ marginTop: '30px' }}>
+                    <input
                       type="search"
                       id="name_search"
                       className="input-control  validate"
                       name="nameFilter"
                       value={nameFilter}
-                      onChange={(event) =>  this.handleFilterChange(event, 'nameFilter')}
-                      />
-                      <button
+                      onChange={(event) => this.handleFilterChange(event, 'nameFilter')}
+                    />
+                    <button
                       type="submit"
                       className="search-button"
-                      onClick={this.submitNameFilter}><i className="icon-search"></i></button>
-                      <label className={nameFilter.length ? "label active" : "label"} htmlFor="name_search">Search</label>
-                    </div>
-              </div>
-            <div className="col s12 m3">
-              <div className="input-field" style={{marginTop: '-7px'}}>
-                <Dropdown
-                value={getValueFromState(unitFilter, unitOptions)}
-                onChange={(event) => this.handleUnitChange(event)}
-                options={unitOptions}
-                label="Unit Number"
-                stateKey="unit"
-                dropdownKey="unit"
-                />
-              </div>
-            </div>
+                      onClick={this.submitNameFilter}
+                    ><i className="icon-search"></i></button>
+                    <label className={nameFilter.length ? "label active" : "label"} htmlFor="name_search">Search</label>
+                  </div>
+                </div>
+                <div className="col s12 m3">
+                  <div className="input-field" style={{ marginTop: '-7px' }}>
+                    <Dropdown
+                      value={getValueFromState(unitFilter, unitOptions)}
+                      onChange={(event) => this.handleUnitChange(event)}
+                      options={unitOptions}
+                      label="Unit Number"
+                      stateKey="unit"
+                      dropdownKey="unit"
+                    />
+                  </div>
+                </div>
 
-            </div>
+              </div>
             </div>
 
             <div className="row mb-0 d-flex align-items-center">
@@ -195,7 +196,7 @@ class ModalFilterSection extends React.Component {
                 <div className="row mb-0">
 
                   <div className="col s12 14">
-                   <div className="input-field"  >
+                    <div className="input-field" >
                       <Dropdown
                         value={getValueFromState(sort, modalSortOptions)}
                         onChange={(event) => this.handleSortChange(event)}
@@ -203,7 +204,7 @@ class ModalFilterSection extends React.Component {
                         label="Sort by"
                         stateKey="sort"
                         dropdownKey="sort"
-                        />
+                      />
                     </div>
                   </div>
                 </div>
@@ -225,7 +226,7 @@ class ModalFilterSection extends React.Component {
           </li>
         </ul>
       </div>
-    )
+    );
   }
 }
 
@@ -239,5 +240,5 @@ ModalFilterSection.propTypes = {
   statusFilters: PropTypes.array.isRequired,
   lessonTypeFilters: PropTypes.array.isRequired,
   onSetUnitFilter: PropTypes.func.isRequired,
-}
+};
 export default ModalFilterSection;

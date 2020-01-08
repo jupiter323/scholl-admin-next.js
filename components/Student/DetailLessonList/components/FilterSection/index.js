@@ -15,13 +15,13 @@ class FilterSection extends React.Component {
       sort: {},
       nameFilter: "",
       unitFilter: "",
-    }
+    };
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
   handleSortChange = (event) => {
-    const {onSetSort} = this.props;
-    this.setState({sort: event});
+    const { onSetSort } = this.props;
+    this.setState({ sort: event });
     onSetSort(event);
   }
 
@@ -37,18 +37,18 @@ class FilterSection extends React.Component {
 
   handleUnitChange = (event) => {
     const { onSetUnitFilter } = this.props;
-    this.setState({unitFilter: event});
+    this.setState({ unitFilter: event });
     onSetUnitFilter(event);
   }
 
   clearAllFilters = () => {
     const { onClearFilters } = this.props;
-    this.setState({sort: {}, nameFilter: "", unitFilter: ""})
-    onClearFilters()
+    this.setState({ sort: {}, nameFilter: "", unitFilter: "" });
+    onClearFilters();
   }
   // eslint-disable-next-line consistent-return
   handleFilterChange = (event, name) => {
-    const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter} = this.props;
+    const { onUnsetFilteredState, onSetFilteredState, onSetUnitFilter } = this.props;
     const value = event.target ? event.target.value : event;
     const updatedState = update(this.state, {
       $merge: { [name]: value },
@@ -77,7 +77,7 @@ class FilterSection extends React.Component {
             <div className="collapsible-body" style={open ? { display: 'block' } : { display: 'none' }}>
               <div className="filter-form_checkbox-list-holder justify-center">
                 <ul className="filter-form_checkbox-list">
-                <li>
+                  <li>
                     <input
                       type="checkbox"
                       id="reading"
@@ -251,37 +251,38 @@ class FilterSection extends React.Component {
                   </li>
                 </ul>
               </div>
-            <div className="d-flex row mb-0 justify-center">
-              <div className="col s12 m3">
-                    <div className="search-field input-field" style={{marginTop: '30px'}}>
-                      <input
+              <div className="d-flex row mb-0 justify-center">
+                <div className="col s12 m3">
+                  <div className="search-field input-field" style={{ marginTop: '30px' }}>
+                    <input
                       type="search"
                       id="name_search"
                       className="input-control  validate"
                       name="nameFilter"
                       value={nameFilter}
-                      onChange={(event) =>  this.handleFilterChange(event, 'nameFilter')}
-                      />
-                      <button
+                      onChange={(event) => this.handleFilterChange(event, 'nameFilter')}
+                    />
+                    <button
                       type="submit"
                       className="search-button"
-                      onClick={this.submitNameFilter}><i className="icon-search"></i></button>
-                      <label className={nameFilter.length ? "label active" : "label"} htmlFor="name_search">Search</label>
-                    </div>
+                      onClick={this.submitNameFilter}
+                    ><i className="icon-search"></i></button>
+                    <label className={nameFilter.length ? "label active" : "label"} htmlFor="name_search">Search</label>
+                  </div>
+                </div>
+                <div className="col s12 m3">
+                  <div className="input-field" style={{ marginTop: '-7px' }}>
+                    <Dropdown
+                      value={getValueFromState(unitFilter, unitOptions)}
+                      onChange={(event) => this.handleUnitChange(event)}
+                      options={unitOptions}
+                      label="Unit Number"
+                      stateKey="unit"
+                      dropdownKey="unit"
+                    />
+                  </div>
+                </div>
               </div>
-            <div className="col s12 m3">
-              <div className="input-field" style={{marginTop: '-7px'}}>
-                <Dropdown
-                value={getValueFromState(unitFilter, unitOptions)}
-                onChange={(event) => this.handleUnitChange(event)}
-                options={unitOptions}
-                label="Unit Number"
-                stateKey="unit"
-                dropdownKey="unit"
-                />
-              </div>
-            </div>
-            </div>
             </div>
 
             <div className="row mb-0 d-flex align-items-center">
@@ -289,7 +290,7 @@ class FilterSection extends React.Component {
                 <div className="row mb-0">
 
                   <div className="col s12 x17">
-                   <div className="input-field">
+                    <div className="input-field">
                       <Dropdown
                         value={getValueFromState(sort, lessonSortOptions)}
                         onChange={(event) => this.handleSortChange(event)}
@@ -297,29 +298,29 @@ class FilterSection extends React.Component {
                         label="Sort by"
                         stateKey="sort"
                         dropdownKey="sort"
-                        />
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="switcher-block col s12 l4" style={{marginTop: '14px'}}>
-              <div className="view-switcher">
-                <ul className="switcher center-align">
-                  <li
-                  data-view="view-full"
-                  className={currentView === 'full' ? 'active' : ""}
-                  >
-                    <a href="#" onClick={() => onChangeView('full')}>Full View</a>
-                  </li>
-                  <li
+              <div className="switcher-block col s12 l4" style={{ marginTop: '14px' }}>
+                <div className="view-switcher">
+                  <ul className="switcher center-align">
+                    <li
+                      data-view="view-full"
+                      className={currentView === 'full' ? 'active' : ""}
+                    >
+                      <a href="#" onClick={() => onChangeView('full')}>Full View</a>
+                    </li>
+                    <li
                       data-view="view-list"
                       className={currentView === 'list' ? 'active' : ''}
                     >
                       <a href="#" onClick={() => onChangeView('list')}>List View</a>
                     </li>
                   </ul>
+                </div>
               </div>
-            </div>
               <div className="col s12 l4">
                 <div className="option-filters">
                   <div className="option-item clear"><a href="#" onClick={this.clearAllFilters}>Clear Filters</a></div>
@@ -337,7 +338,7 @@ class FilterSection extends React.Component {
           </li>
         </ul>
       </div>
-    )
+    );
   }
 }
 
@@ -356,5 +357,5 @@ FilterSection.propTypes = {
   dueDateFilters: PropTypes.array.isRequired,
   classTypeFilters: PropTypes.array.isRequired,
   onSetUnitFilter: PropTypes.func.isRequired,
-}
+};
 export default FilterSection;

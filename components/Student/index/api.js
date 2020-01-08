@@ -12,7 +12,7 @@ export const fetchStudentsApi = () =>
     .then(res => res.json())
     .then(({ data }) => {
       const formattedStudents = data.students.map(student => ({
-        id: student.id,
+        id: student.user_address.user_id,
         active: false,
         studentInformation: {
           firstName: student.first_name,
@@ -75,7 +75,7 @@ export const searchStudentsApi = filters => {
         return [];
       }
       const formattedStudents = data.students.map(student => ({
-        id: student.id,
+        id: student.user_address.user_id,
         active: false,
         studentInformation: {
           firstName: student.first_name,

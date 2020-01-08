@@ -8,7 +8,7 @@ class InstructorCard extends React.Component {
   }
 
   render() {
-      const {instructor:{firstName,lastName,email},onRemoveInstructor} = this.props;
+    const { instructor: { firstName, lastName, email }, onRemoveInstructor } = this.props;
     return (
       <div
         className="owner-box card-panel card-panel-panel card-panel-large"
@@ -17,7 +17,7 @@ class InstructorCard extends React.Component {
           color: "#fff",
         }}
       >
-        <a href="#" className="close-link icon-close-thin" onClick = {onRemoveInstructor}/>
+        <a href="#" className="close-link icon-close-thin" onClick={onRemoveInstructor} />
         <div className="card-panel-row row">
           <div className="col s10">
             <div className="user-block">
@@ -52,8 +52,8 @@ class InstructorCard extends React.Component {
 }
 
 InstructorCard.propTypes = {
-  instructor:PropTypes.object.isRequired,
-  onRemoveInstructor:PropTypes.func.isRequired,
-}
+  instructor: PropTypes.object.isRequired,
+  onRemoveInstructor: PropTypes.func.isRequired,
+};
 
 export default InstructorCard;

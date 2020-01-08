@@ -43,29 +43,29 @@ class NewClassModal extends React.Component {
       [event.target.name]: {
         $set: !this.state[event.target.name],
       },
-    })
-    this.setState({ newClass })
+    });
+    this.setState({ newClass });
   }
 
   onResetForm = (array, sampleList) => {
     this.setState({
       [array]: [sampleList],
-    })
+    });
   }
   onRemoveLocation = (index) => {
     const { locations } = this.state;
-    const newArray = this.arrayItemRemover(locations, locations[index])
+    const newArray = this.arrayItemRemover(locations, locations[index]);
     this.setState({ locations: newArray }, () => {
-      this.handleOptionsChange(newArray, 'locations')
-    })
+      this.handleOptionsChange(newArray, 'locations');
+    });
   }
 
   onRemoveInstructor = (index) => {
     const { instructors } = this.state;
-    const newArray = this.arrayItemRemover(instructors, instructors[index])
+    const newArray = this.arrayItemRemover(instructors, instructors[index]);
     this.setState({ instructors: newArray }, () => {
-      this.handleOptionsChange(newArray, 'instructors')
-    })
+      this.handleOptionsChange(newArray, 'instructors');
+    });
   }
 
   handleOptionsChange = (selectedOptions, array) => {
@@ -91,7 +91,7 @@ class NewClassModal extends React.Component {
   render() {
     const { open, onAddNewClass, onCloseNewClassModal } = this.props;
     const { locationModalOpen, instructorModalOpen, newClass } = this.state;
-    const { locations, instructors, excludeStats, active, endDate, startDate } = newClass
+    const { locations, instructors, excludeStats, active, endDate, startDate } = newClass;
     return (
       <Portal selector="#modal">
         {open && (
@@ -127,7 +127,8 @@ class NewClassModal extends React.Component {
                                   <input
                                     type="text"
                                     id="name"
-                                    onChange={this.handleChange} />
+                                    onChange={this.handleChange}
+                                  />
                                   <label className="label" htmlFor="name">Class Name</label>
                                 </div>
                               </div>
@@ -145,7 +146,8 @@ class NewClassModal extends React.Component {
                                     <DatePicker
                                       id="startDate"
                                       selected={startDate}
-                                      onChange={this.handleChange} />
+                                      onChange={this.handleChange}
+                                    />
                                     <label className="label" htmlFor="startDate">Course Start Date</label>
                                   </div>
                                 </div>
@@ -236,7 +238,8 @@ class NewClassModal extends React.Component {
                                   <a
                                     href="#modal_Location1"
                                     className="modal-trigger link-block"
-                                    onClick={this.onOpenLocationModal}>Add Location</a>
+                                    onClick={this.onOpenLocationModal}
+                                  >Add Location</a>
                                 </div>
                                 <LocationModal
                                   open={locationModalOpen}
@@ -274,7 +277,8 @@ class NewClassModal extends React.Component {
                                   <a
                                     href="#modal_Instructor1"
                                     className="modal-trigger link-block"
-                                    onClick={this.onOpenInstructorModal}>
+                                    onClick={this.onOpenInstructorModal}
+                                  >
                                     Add Instructor</a>
                                 </div>
                                 <InstructorModal open={instructorModalOpen} onClose={this.onCloseInstrucorModal} handleInstructorsChange={(selectedInstructors) => this.handleOptionsChange(selectedInstructors, 'instructors')} />
@@ -332,7 +336,7 @@ class NewClassModal extends React.Component {
         </style>
       </Portal>
 
-    )
+    );
   }
 }
 
@@ -341,7 +345,7 @@ NewClassModal.propTypes = {
   onCloseNewClassModal: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onAddNewClass: PropTypes.func.isRequired,
-}
+};
 
 
 export default NewClassModal;

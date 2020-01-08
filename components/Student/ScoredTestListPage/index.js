@@ -74,7 +74,7 @@ class ScoredTestListPage extends React.Component {
     const currentDate = moment().format('MM/DD/YY');
     const currentDateIndex = new Date().getDay();
     const endOfWeekIndex = 6 - currentDateIndex;
-    const endOfWeekDate = moment().add(endOfWeekIndex, 'days').format('MM/DD/YY')
+    const endOfWeekDate = moment().add(endOfWeekIndex, 'days').format('MM/DD/YY');
     if (dateType === 'dueDate') {
       dateFilters = dueDateFilters;
       if (dateFilters.indexOf('dueToday') !== -1) {
@@ -161,7 +161,7 @@ class ScoredTestListPage extends React.Component {
     } else {
       const filterIndex = modifiedFilterCurrentState.indexOf(filter);
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
-        $splice: [[ filterIndex, 1 ]],
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });

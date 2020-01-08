@@ -9,12 +9,12 @@ export default [
   },
 ];
 
-export const classNameDescending = ({name: nameA}, {name: nameB}) => {
+export const classNameDescending = ({ name: nameA }, { name: nameB }) => {
   if (nameA > nameB) { return -1; }
   return 0;
-}
+};
 
-export const classNameAscending = ({name: nameA}, {name: nameB}) => {
+export const classNameAscending = ({ name: nameA }, { name: nameB }) => {
   if (nameA < nameB) { return -1; }
   return 0;
-}
+};

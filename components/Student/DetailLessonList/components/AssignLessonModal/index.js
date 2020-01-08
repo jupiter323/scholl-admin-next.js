@@ -22,11 +22,11 @@ class AssignLessonModal extends React.Component {
       checked: false,
       checkedLessons: [],
       datesModalOpen: false,
-    }
+    };
   }
 
-  onOpenDatesModal = () => this.setState({datesModalOpen: true})
-  onCloseDatesModal = () => this.setState({datesModalOpen: false})
+  onOpenDatesModal = () => this.setState({ datesModalOpen: true })
+  onCloseDatesModal = () => this.setState({ datesModalOpen: false })
   onToggleChecked = () => {
     this.setState({ checked: !this.state.checked }, () => this.onChecked());
   }
@@ -36,23 +36,24 @@ class AssignLessonModal extends React.Component {
   onUnsetFilteredState = (filter) => this.setState({ [filter]: "" })
   onSetUnitFilter = (unit) => this.setState({ unitFilter: unit })
 
-// checks if SelectAll checkbox is checked and adds lessons or empties checkedLessons array on uncheck
+  // checks if SelectAll checkbox is checked and adds lessons or empties checkedLessons array on uncheck
   onChecked = () => {
     const { checkedLessons, checked } = this.state;
-    if ( checked) {
+    if (checked) {
       let mappedLessons = this.getMappableLessons();
-      for (let i = 0; i < mappedLessons.length; i++ ){
+      for (let i = 0; i < mappedLessons.length; i++) {
         if (checkedLessons.indexOf(mappedLessons[i]) > -1) {
-          mappedLessons = mappedLessons.filter(lesson => checkedLessons.indexOf(lesson) === -1 )
+          mappedLessons = mappedLessons.filter(lesson => checkedLessons.indexOf(lesson) === -1);
         }
       }
       this.setState(prevState => {
-        prevState.checkedLessons.push(...mappedLessons)
-    })
-  }
-    else (
-      this.setState({checkedLessons: []})
-    )
+        prevState.checkedLessons.push(...mappedLessons);
+      });
+    } else {
+      (
+        this.setState({ checkedLessons: [] })
+      );
+    }
   }
 
   // eslint-disable-next-line consistent-return
@@ -113,58 +114,55 @@ class AssignLessonModal extends React.Component {
     let lessons = allLessons;
     if (statusFilters.length && statusFilters.indexOf('all') === -1) {
       if (statusFilters.indexOf("Unassigned") !== -1) {
-        lessons = lessons.filter(lesson => statusFilters.indexOf(lesson.status) !== -1)
-      } else
-        lessons = lessons.filter(lesson => lesson.assigned === true)
-
+        lessons = lessons.filter(lesson => statusFilters.indexOf(lesson.status) !== -1);
+      } else { lessons = lessons.filter(lesson => lesson.assigned === true); }
     }
     if (subjectFilters.length && subjectFilters.indexOf('all') === -1) {
-      lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1)
+      lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1);
     }
     if (lessonTypeFilters.length && lessonTypeFilters.indexOf('all') === -1) {
-      lessons = lessons.filter(lesson => lessonTypeFilters.indexOf(lesson.type) !== -1)
+      lessons = lessons.filter(lesson => lessonTypeFilters.indexOf(lesson.type) !== -1);
     }
     if (unitFilter.length && unitFilter.indexOf('all') === -1) {
-      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unitNumber) !== -1)
+      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unitNumber) !== -1);
     }
     return lessons;
   }
 
   // TODO: add toast verifying lessons were assigned
-// takes input from the assign selected lessons modal and updates the updatedLessons array in parent
+  // takes input from the assign selected lessons modal and updates the updatedLessons array in parent
   // eslint-disable-next-line consistent-return
   onHandleDates = (assignDate, assignTime, dueDate, dueTime) => {
     const { onAddUpdatedLessons } = this.props;
     const updatedLessons = [];
     const { checkedLessons: previousCheckedLessons } = this.state;
-    for (let i = 0; i < previousCheckedLessons.length; i++){
+    for (let i = 0; i < previousCheckedLessons.length; i++) {
       const updatedCheckedLessons = update(previousCheckedLessons[i], {
         $merge: {
-            assigned: true,
-            dueDate: moment(dueDate).format('DD/MM/YYYY'),
-            dueTime,
-            availableDate: moment(assignDate).format("DD/MM/YYYY"),
-            status: "Scheduled",
-            assignTime,
+          assigned: true,
+          dueDate: moment(dueDate).format('DD/MM/YYYY'),
+          dueTime,
+          availableDate: moment(assignDate).format("DD/MM/YYYY"),
+          status: "Scheduled",
+          assignTime,
         },
       },
-      )
-      updatedLessons.push(updatedCheckedLessons)
+      );
+      updatedLessons.push(updatedCheckedLessons);
     }
     onAddUpdatedLessons(updatedLessons);
     this.props.onCloseModal();
-    };
+  };
 
   setSortType = (name) => {
     const { sort } = this.state;
     if (sort !== `${name}Ascending` && sort !== `${name}Descending`) {
-      this.onSetSort(`${name}Ascending`)
+      this.onSetSort(`${name}Ascending`);
     }
     if (sort === `${name}Descending`) {
-      this.onSetSort(`${name}Ascending`)
-    }
-    else {
-      this.onSetSort(`${name}Descending`)
+      this.onSetSort(`${name}Ascending`);
+    } else {
+      this.onSetSort(`${name}Descending`);
     }
   }
 
@@ -178,22 +176,21 @@ class AssignLessonModal extends React.Component {
       mappableLessons = this.onFilterLessons();
     }
     if (sort) {
-      return this.onSortLessons(mappableLessons)
+      return this.onSortLessons(mappableLessons);
     }
-    return mappableLessons
+    return mappableLessons;
   }
 
 
   handleCheckbox = (selectedLesson) => {
     const { checkedLessons } = this.state;
     let updatedLessonArray;
-    if (checkedLessons.indexOf(selectedLesson) > -1){
-      updatedLessonArray = checkedLessons.filter(lesson => lesson !== selectedLesson )
+    if (checkedLessons.indexOf(selectedLesson) > -1) {
+      updatedLessonArray = checkedLessons.filter(lesson => lesson !== selectedLesson);
+    } else {
+      updatedLessonArray = [...checkedLessons, selectedLesson];
     }
-    else {
-      updatedLessonArray = [...checkedLessons, selectedLesson]
-    }
-    this.setState({checkedLessons: updatedLessonArray})
+    this.setState({ checkedLessons: updatedLessonArray });
   }
 
 
@@ -233,16 +230,17 @@ class AssignLessonModal extends React.Component {
   }
 
   mapLessonListItem = () => this.getMappableLessons().map((lesson, index) =>
-      <LessonListItem
-        lesson={lesson}
-        index={index}
-        selectAll={this.state.checked}
-        key={lesson.id}
-        onSelectLesson={this.onSelectLesson}
-        renderLessonIcon={this.renderLessonIcon}
-        checkedLessons={this.state.checkedLessons}
-        handleCheckbox={this.handleCheckbox}/>
-    )
+    (<LessonListItem
+      lesson={lesson}
+      index={index}
+      selectAll={this.state.checked}
+      key={lesson.id}
+      onSelectLesson={this.onSelectLesson}
+      renderLessonIcon={this.renderLessonIcon}
+      checkedLessons={this.state.checkedLessons}
+      handleCheckbox={this.handleCheckbox}
+    />)
+  )
 
   renderTableHeader = () => (
     <div className="list-table-row">
@@ -318,19 +316,19 @@ class AssignLessonModal extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="content-section" style={{backgroundColor: '#f2f2f2'}}>
-              <ModalFilterSection
-                handleFilterClick={this.handleFilterClick}
-                subjectFilters={subjectFilters}
-                statusFilters={statusFilters}
-                lessonTypeFilters={lessonTypeFilters}
-                onClearFilters={this.onClearFilters}
-                onSetFilteredState={this.onSetFilteredState}
-                onUnsetFilteredState={this.onUnsetFilteredState}
-                onSetSort={this.onSetSort}
-                onSetUnitFilter={this.onSetUnitFilter}
-              />
-                <div className="container-md" style={{marginTop: '50px'}}>
+              <div className="content-section" style={{ backgroundColor: '#f2f2f2' }}>
+                <ModalFilterSection
+                  handleFilterClick={this.handleFilterClick}
+                  subjectFilters={subjectFilters}
+                  statusFilters={statusFilters}
+                  lessonTypeFilters={lessonTypeFilters}
+                  onClearFilters={this.onClearFilters}
+                  onSetFilteredState={this.onSetFilteredState}
+                  onUnsetFilteredState={this.onUnsetFilteredState}
+                  onSetSort={this.onSetSort}
+                  onSetUnitFilter={this.onSetUnitFilter}
+                />
+                <div className="container-md" style={{ marginTop: '50px' }}>
                   <div className="result-row center-align">
                     <b className="result"> - {lessons.length} Lessons</b>
                   </div>
@@ -395,7 +393,7 @@ class AssignLessonModal extends React.Component {
           `}
         </style>
       </Portal>
-    )
+    );
   }
 }
 
@@ -404,5 +402,5 @@ AssignLessonModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onAddUpdatedLessons: PropTypes.func.isRequired,
-}
-export default AssignLessonModal
+};
+export default AssignLessonModal;

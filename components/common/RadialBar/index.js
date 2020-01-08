@@ -18,22 +18,22 @@ class RadailBar extends React.Component {
     return (
       <svg width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth}${svgHeight}`}>
         <circle
-          cx={svgWidth/2}
-          cy={svgHeight/2}
+          cx={svgWidth / 2}
+          cy={svgHeight / 2}
           r={getRadius(svgWidth, strokeWidth)}
           fill="transparent"
           stroke="#e6e6e6"
           strokeWidth={strokeWidth}
         />
         <circle
-         cx={svgWidth/2}
-         cy={svgHeight/2}
+          cx={svgWidth / 2}
+          cy={svgHeight / 2}
           r={getRadius(svgWidth, strokeWidth)}
           fill="transparent"
           stroke={strokeColor}
-          strokeWidth ={strokeWidth}
+          strokeWidth={strokeWidth}
           strokeDasharray={getDashArray(svgWidth, strokeWidth)}
-          strokeDashoffset={getDashoffset( svgWidth,strokeWidth,maxValue,currentValue)}
+          strokeDashoffset={getDashoffset(svgWidth, strokeWidth, maxValue, currentValue)}
         />
       </svg>
     );
@@ -46,7 +46,7 @@ RadailBar.propTypes = {
   strokeWidth: PropTypes.number,
   maxValue: PropTypes.number,
   currentValue: PropTypes.number,
-  strokeColor:PropTypes.string,
+  strokeColor: PropTypes.string,
 };
 
 export default RadailBar;

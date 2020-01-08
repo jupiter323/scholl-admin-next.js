@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router'
+import { withRouter } from 'next/router';
 import Link from 'next/link';
 import $ from 'jquery';
 
@@ -88,8 +88,8 @@ class SideNav extends Component {
                 // activeClassName="active"
               >
                 <li
-                   key={menuItem.key}
-                   style={{ cursor: "pointer" }}
+                  key={menuItem.key}
+                  style={{ cursor: "pointer" }}
                 >
                   <a>
                     <i className={menuIconMap[menuItem.key]}></i>
@@ -100,12 +100,12 @@ class SideNav extends Component {
               </Link>
             ))}
           </ul>
-            <div className="log-block white-text" style = {{cursor:"hand"}}>
+          <div className="log-block white-text" style={{ cursor: "hand" }}>
             <div className="text">
-            <Link href="/login">
-              <a href="#">
-                <div className="block white-text">Log Out</div>
-              </a>
+              <Link href="/login">
+                <a href="#">
+                  <div className="block white-text">Log Out</div>
+                </a>
               </Link>
               <Link href="/account">
                 <a>
@@ -125,6 +125,6 @@ class SideNav extends Component {
 SideNav.propTypes = {
   user: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
-}
+};
 
 export default withRouter(SideNav);
