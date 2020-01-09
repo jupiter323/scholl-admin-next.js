@@ -405,25 +405,6 @@ export function* watchForCreateInstructor() {
   }
 }
 
-export function* watchForCreateClass() {
-  while (true) {
-    const { newClass } = yield take(CREATE_CLASS);
-    console.warn('saga yaaay!', newClass);
-    yield call(createClass, newClass);
-  }
-}
-
-export function* createClass(newClass) {
-  try {
-    const response = yield call(createClassApi, newClass);
-    if (response.exception && response.exception.length) {
-      console.warn('Error occurred in createClass saga', response);
-    }
-  } catch (err) {
-    console.warn('Error occurred in createClass saga', err);
-  }
-}
-
 export function* watchForFetchInstructors() {
   while (true) {
     yield take(FETCH_INSTRUCTORS);
@@ -461,6 +442,71 @@ export function* searchInstructors(filters) {
 }
 
 /** ******************************************    CLASSES    ******************************************* */
+export function* watchForCreateClass() {
+  while (true) {
+    const { newClass } = yield take(CREATE_CLASS);
+    console.warn('saga yaaay!', newClass);
+    yield call(createClass, newClass);
+  }
+}
+
+export function* createClass(newClass) {
+  try {
+    const response = yield call(createClassApi, newClass);
+    if (response.exception && response.exception.length) {
+      console.warn('Error occurred in createClass saga', response);
+    }
+  } catch (err) {
+    console.warn('Error occurred in createClass saga', err);
+  }
+}
+
+export function* watchForUpdateClassStartDate() {
+  while (true) {
+    try {
+      const { date } = yield take(UPDATE_CLASS_START_DATE);
+      const response = yield call(updateClassStartDateApi, date);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassStartDateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassStartDate saga", err);
+    }
+  }
+}
+export function* watchForUpdateClassEndDate() {
+  while (true) {
+    try {
+      const { date } = yield take(UPDATE_CLASS_END_DATE);
+      const response = yield call(updateClassEndDateApi, date);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassEndDateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassEndDate saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateClassExcludeFromStatistics() {
+  while (true) {
+    try {
+      const { date } = yield take(UPDATE_EXCLUDE_FROM_STATISTICS);
+      const response = yield call(updateClassExcludeFromStatisticsApi, date);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassExcludeFromStatisticsApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassExcludeFromStatistics saga", err);
+    }
+  }
+}
 
 
 export default function* defaultSaga() {
@@ -489,5 +535,8 @@ export default function* defaultSaga() {
     watchForUpdateInstructorAddress(),
     watchForUpdateInstructorPhone(),
     watchForCreateInstructor(),
+    watchForUpdateClassStartDate(),
+    watchForUpdateClassEndDate(),
+    watchForUpdateClassExcludeFromStatistics(),
   ]);
 }
