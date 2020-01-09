@@ -150,17 +150,17 @@ const data = (percentage, color) => ({
               <div className="chart-block">
               <Choose>
                 <When condition={active}>
-                <Doughnut
-                  data={() => data(practiceTests, 'blue')}
-                  width={156}
-                  height={156}
-                  options={{
-                    cutoutPercentage: 75,
-                  }}
-                />
+                  <Doughnut
+                    data={() => data(practiceTests, 'blue')}
+                    width={156}
+                    height={156}
+                    options={{
+                      cutoutPercentage: 75,
+                    }}
+                  />
                 </When>
                 <Otherwise>
-                <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
+                  <div className="js-donut-chart js-donut-middle" data-stroke-width="20" data-source='./inc/score-data-improvement.json'></div>
                 </Otherwise>
               </Choose>
                  <div className="chart-text">

@@ -110,10 +110,10 @@ class QuestionModal extends React.Component {
               right: 0;
               bottom: 0;
               left: 0;
-              z-index: 999;
+              z-index: 1999;
             }
             #modal_video001 {
-              z-index: 1003;
+              z-index: 2003;
               opacity: 1;
               transform: scaleX(1) scaleY(1);
             }

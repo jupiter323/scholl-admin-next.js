@@ -1,3 +1,12 @@
+.react-datepicker__portal {
+	width: 100%!important;
+	height: 100%!important;
+}
+
+/* .react-datepicker {
+	margin-top: 65px!important;
+} */
+
 .slick-prev:before {
 	content: none!important;
 }
@@ -24889,7 +24898,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
 }
 
 .sidenav {
-	background: #4b5667 url(../images/bg-sidebar.jpg) no-repeat;
+	background: #4b5667 url(../images/bg-sidebar03.jpg) no-repeat;
 	background-size: cover;
 	height: 100%;
 	min-height: 100vh;
@@ -24897,7 +24906,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
 	padding: 0;
 }
 
-.sidenav h1,
+/*.sidenav h1,*/
 .sidenav .h1 {
 	padding-left: 30px;
 }
@@ -24923,7 +24932,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
 .sidenav .sidenav-holder {
 	position: relative;
 	min-height: 100vh;
-	padding: 15px 0 150px;
+	/*padding: 15px 0 150px;*/
 }
 
 .sidenav .log-block {
@@ -28590,7 +28599,7 @@ span.badge {
 }
 
 .instructor-page .sidenav {
-	background-image: url(../images/bg-sidebar02.jpg);
+	background-image: url(../images/bg-sidebar03.jpg);
 	width: 204px;
 	overflow-x: hidden;
 }
@@ -28607,7 +28616,7 @@ span.badge {
 }
 
 .instructor-page .sidenav .sidenav-holder {
-	padding-top: 23px;
+	/*padding-top: 23px;*/
 }
 
 .instructor-page .sidenav img {
@@ -28616,8 +28625,9 @@ span.badge {
 }
 
 .instructor-page .sidenav h1 {
-	padding: 0 21px;
+	/*padding: 0 21px;*/
 	min-height: 65px;
+	background-color: white;
 }
 
 .instructor-page .sidenav li.active {
@@ -28631,7 +28641,7 @@ span.badge {
 }
 
 .instructor-page .sidenav li > a:hover {
-	background-color: #18b5e9;
+	background-color: #e74021;
 }
 
 .instructor-page .sidenav li > a > i {
@@ -28674,8 +28684,8 @@ span.badge {
 }
 
 .instructor-page .title-row.card-panel {
-	background: #ec693d -webkit-linear-gradient(left, #ec693d 0%, #649aab 61%, #30add6 87%, #18b5e9 100%) !important;
-	background: #ec693d linear-gradient(to right, #ec693d 0%, #649aab 61%, #30add6 87%, #18b5e9 100%) !important;
+	background: #ec693d -webkit-linear-gradient(left, #e74021 0%, #390903 61%, #390903 87%, #390903 100%) !important;
+	background: #ec693d linear-gradient(to right, #e74021 0%, #390903 61%, #390903 87%, #390903 100%) !important;
 }
 
 .instructor-page .title-row h1,
@@ -28974,7 +28984,7 @@ nav.breadcrumb-header {
 	font-weight: 500;
 	line-height: 47px;
 	letter-spacing: 0;
-	background-color: #ec693c;
+	background-color: #e74021;
 }
 
 .add-btn:hover,

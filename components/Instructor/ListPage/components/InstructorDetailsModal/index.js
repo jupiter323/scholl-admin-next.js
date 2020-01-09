@@ -2,6 +2,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import { compose } from 'redux';
+import { connect} from 'react-redux'
+import { createStructuredSelector } from 'reselect';
 
 import Portal from '../../../../Portal';
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
@@ -11,6 +14,7 @@ import ContactInfo from '../SharedModalComponents/ContactInfo';
 import Locations from '../SharedModalComponents/Locations';
 
 import { nestedEditFieldValidation } from '../../../../utils/fieldValidation';
+import { updateInstructorFirstName, updateInstructorLastName, updateInstructorEmail, updateInstructorState, updateInstructorCity, updateInstructorZip, updateInstructorAddress, updateInstructorPhone } from '../../../index/actions';
 
 class InstructorDetailsModal extends React.Component {
   constructor(props) {
@@ -133,8 +137,31 @@ class InstructorDetailsModal extends React.Component {
 
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section) => {
+    const {onUpdateInstructorFirstName, onUpdateInstructorLastName, onUpdateInstructorEmail, onUpdateInstructorState, onUpdateInstructorCity, onUpdateInstructorZip, onUpdateInstructorAddress, onUpdateInstructorPhone} = this.props;
     const { updatedInstructor: previousInstructorState } = this.state;
     const value = event.target ? event.target.value : event;
+    // Dispatch which ever field name was changed
+    const instructor_id = previousInstructorState.id;
+    switch (name) {
+      case "firstName":
+        onUpdateInstructorFirstName({ instructor_id, first_name: value });
+      case "lastName":
+        onUpdateInstructorLastName({ instructor_id, last_name: value });
+      case "email":
+        onUpdateInstructorEmail({ instructor_id, email: value });
+      case "state":
+        onUpdateInstructorState({ instructor_id, state: value });
+      case "city":
+        onUpdateInstructorCity({ instructor_id, city: value });
+      case "zip":
+        onUpdateInstructorZip({ instructor_id, zip: value });
+      case "streetAddress":
+        onUpdateInstructorAddress({ instructor_id, address: value });
+      case "phone":
+        onUpdateInstructorPhone({ instructor_id, phone: value });
+      default:
+        break;
+    }
     const updatedInstructor = update(previousInstructorState, {
       [section]: { $merge: { [name]: value } },
     });
@@ -183,7 +210,7 @@ class InstructorDetailsModal extends React.Component {
                       <div className="col s9">
                         <div className="user-block">
                           <div className="user-circle" style={{ backgroundColor: '#0085ce', color: '#fff' }}>
-                            <img src="images/img-owner01.jpg" alt="" />
+                            <img src="./static/images/img-owner01.jpg" alt="" />
                           </div>
                           <div className="user-text" style={{ color: '#fff' }}>
                             {this.renderModalHeader()}
@@ -273,7 +300,7 @@ class InstructorDetailsModal extends React.Component {
                 right: 0;
                 bottom: 0;
                 left: 0;
-                z-index: 999;
+                z-index: 1999;
               }
               .card-modal {
                 margin: 0;
@@ -308,6 +335,34 @@ InstructorDetailsModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
   instructor: PropTypes.object.isRequired,
+  onUpdateInstructorFirstName: PropTypes.func.isRequired,
+  onUpdateInstructorLastName: PropTypes.func.isRequired,
+  onUpdateInstructorEmail: PropTypes.func.isRequired,
+  onUpdateInstructorState: PropTypes.func.isRequired,
+  onUpdateInstructorCity: PropTypes.func.isRequired,
+  onUpdateInstructorZip: PropTypes.func.isRequired,
+  onUpdateInstructorAddress: PropTypes.func.isRequired,
+  onUpdateInstructorPhone: PropTypes.func.isRequired,
 };
 
-export default InstructorDetailsModal;
+const mapStateToProps = createStructuredSelector({})
+
+function mapDispatchToProps(dispatch){
+  return{
+    onUpdateInstructorFirstName:(value) => dispatch(updateInstructorFirstName(value)),
+    onUpdateInstructorLastName:(value) => dispatch(updateInstructorLastName(value)),
+    onUpdateInstructorEmail:(value) => dispatch(updateInstructorEmail(value)),
+    onUpdateInstructorState:(value) => dispatch(updateInstructorState(value)),
+    onUpdateInstructorCity:(value) => dispatch(updateInstructorCity(value)),
+    onUpdateInstructorZip:(value) => dispatch(updateInstructorZip(value)),
+    onUpdateInstructorAddress:(value) => dispatch(updateInstructorAddress(value)),
+    onUpdateInstructorPhone:(value) => dispatch(updateInstructorPhone(value)),
+  }
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(InstructorDetailsModal);

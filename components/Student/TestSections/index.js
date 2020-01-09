@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { StickyContainer } from 'react-sticky';
+
 import DetailTestScorePage from '../DetailTestScorePage';
 import TestScoreNavBar from '../DetailTestScorePage/components/TestScoreNavBar';
 import DetailTestAnswerSheetComplete from '../DetailTestAnswerSheetComplete';
@@ -16,12 +18,12 @@ class TestSections extends React.Component {
 
   renderCurrentPage = () => {
     const { active } = this.state;
-    const { user, user: { testScores} } = this.props;
+    const { test } = this.props;
     if (active === 'scores') {
-      return <DetailTestScorePage testScores={testScores} />;
+      return <DetailTestScorePage test={test} />;
     }
     if (active === 'answerSheet') {
-      return <DetailTestAnswerSheetComplete user={user}/>;
+      return <DetailTestAnswerSheetComplete testScoreDetails={test.testScoreDetails}/>;
     }
     return null;
   }
@@ -30,19 +32,21 @@ class TestSections extends React.Component {
     const { active } = this.state;
     return(
       <React.Fragment>
+        <StickyContainer>
        <TestScoreNavBar active={active} onSetActivePage={this.onSetActivePage}/>
       <div className="content-section">
         <div className="content-section-holder">
           {this.renderCurrentPage()}
         </div>
       </div>
+      </StickyContainer>
       </React.Fragment>
     )
   }
 }
 
 TestSections.propTypes = {
-  user: PropTypes.object.isRequired,
+  test: PropTypes.object.isRequired,
 }
 
 export default TestSections

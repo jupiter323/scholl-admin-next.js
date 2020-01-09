@@ -1,8 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Sticky} from 'react-sticky';
 
-const InstructorNavBar = ({ active, onSetActivePage }) => (
-  <div className="title-row card-panel">
+// eslint-disable-next-line react/prefer-stateless-function
+class InstructorNavBar extends React.Component {
+
+render() {
+  const {active, onSetActivePage} = this.props;
+  return (
+  <Sticky id="sticky">
+              {({style}) => (
+  <div className="title-row card-panel" style={{...style, zIndex: 999}}>
     <div className="mobile-header">
       <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
     </div>
@@ -49,11 +57,14 @@ const InstructorNavBar = ({ active, onSetActivePage }) => (
       </ul>
     </nav>
   </div>
-);
+      )}
+      </Sticky>
+)}};
 
 InstructorNavBar.propTypes = {
   active: PropTypes.string.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
+  style: PropTypes.object.isRequired,
 };
 
 export default InstructorNavBar;

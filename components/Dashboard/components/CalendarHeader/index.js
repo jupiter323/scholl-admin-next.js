@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 
+import CalendarArrow from './components/CalendarArrow';
+
 import { calendarMap, currentMonthIndex } from '../../utils/dateAndCalendarUtils';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -28,8 +30,8 @@ class CalendarHeader extends React.Component {
               initialSlide: currentMonthIndex,
               onInit: () => onSetActiveMonth(currentMonthIndex),
               afterChange: onSetActiveMonth,
-              nextArrow: <div>{calendarMap[activeMonth + 2]}</div>,
-              prevArrow: <div>{calendarMap[activeMonth]}</div>,
+              nextArrow: <CalendarArrow direction="next" calendarMap={calendarMap} activeMonth={activeMonth} />,
+              prevArrow: <CalendarArrow direction="previous" calendarMap={calendarMap} activeMonth={activeMonth} />,
             }
           }>
             <div className="slide">January</div>

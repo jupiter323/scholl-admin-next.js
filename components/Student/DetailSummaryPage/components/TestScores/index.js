@@ -65,7 +65,7 @@ class TestScores extends React.Component {
                   <span className="text-frame">Once this student has taken multiple tests, you can track the progress here. </span>
                 </div>
               </If>
-              <ul className="tabs" style={active ? {} : { filter: 'blur(3px)'}}>
+              <ul className="tabs" style={{ filter: !active ? 'blur(3px)': ""}}>
                 <li className="tab col s6 l6">
                   <a
                     href="#"

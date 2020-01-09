@@ -220,11 +220,10 @@ class AssignWorksheetModal extends React.Component {
     const { open } = this.props;
     const { assignSelectedDropdownOpen, typeFilters, sourceFilters, subjectFilters, difficultyFilters, sort } = this.state;
     return (
-      <Portal selector="#modal">
+      <div>
         {open && (
           <div className="wrapper">
-            <div id="modal_assign_worksheet" className="modal-page modal modal-custom" style={{ zIndex: '1003' }}>
-              <div className="card-modal card-main card switcher-section grey lighten-3">
+              <div className="card-modal card-main card switcher-section grey lighten-3" style = {{minWidth:"100%"}}>
                 <div className="header-row card-panel light-blue lighten-1 white-text">
                   <div className="card-panel-row row">
                     <div className="col s11">
@@ -285,7 +284,6 @@ class AssignWorksheetModal extends React.Component {
                   <li><a href="#" onClick={() => this.assignWorksheets('customDate')}>For Date...</a></li>
                 </ul>
               </div>
-            </div>
           </div>
         )}
         <style jsx>
@@ -306,7 +304,7 @@ class AssignWorksheetModal extends React.Component {
             }
           `}
         </style>
-      </Portal>
+      </div>
     );
   }
 }

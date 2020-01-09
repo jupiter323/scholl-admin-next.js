@@ -72,7 +72,6 @@ class DetailAccountPage extends React.Component {
     this.setState({ originalUser, updatedUser }); // eslint-disable-line
   }
 
-  // TODO: This seems to be working well - confirm that only one isntance of this edit modal is opening on the user edit page
   // This resets the component state to reflect the details of the next user the user clicks on
   componentWillReceiveProps = (nextProps) => {
     if ((!this.state.originalUser || nextProps.user.id !== this.state.originalUser.id)) {

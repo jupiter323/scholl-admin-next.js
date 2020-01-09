@@ -8,8 +8,6 @@ import Portal from '../../../../Portal';
 import FilterSection from './components/FilterSection';
 import TableHeader from './components/TableHeader';
 
-import sampleProblems from '../../../utils/sampleProblems';
-import samplePassages from '../../../utils/samplePassages';
 import { topicMap, workbookMap, subjectMap, difficultyMap, typeMap } from '../../../utils/worksheetFilterMap';
 import { subjectAscending, subjectDescending } from '../../../../utils/sortFunctions';
 
@@ -27,8 +25,22 @@ class ProblemBank extends React.Component {
       sort: '',
       selectedProblems: [],
       selectedPassages: [],
-      problems: sampleProblems,
-      passages: samplePassages,
+      problems: [],
+      passages: [],
+      worksheetId: null,
+    }
+  }
+
+  componentDidMount() {
+    const { problems, passages, worksheetId } = this.props;
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ problems, passages, worksheetId });
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if ((!this.props.worksheetId || nextProps.worksheetId !== this.state.worksheetId)) {
+      const { problems, passages, worksheetId } = nextProps;
+      this.setState({ problems, passages, worksheetId });
     }
   }
 
@@ -359,7 +371,7 @@ class ProblemBank extends React.Component {
   })
 
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose, problems } = this.props;
     const { openSection, subjectFilters, difficultyFilters, typeFilters, workbookFilters, addProblemsDropdownOpen } = this.state;
     return (
       <Portal selector="#modal">
@@ -391,8 +403,7 @@ class ProblemBank extends React.Component {
                     <div className="card-panel-description col s8 m3 l2">
                       <div className="card-panel-text">
                         <div className="col-row">
-                        {/* TODO: Figure out what this number is supposed to reflect */}
-                          <span className="value">24</span>
+                          <span className="value">{problems.length}</span>
                           <span className="value-text">worksheet <br />problems</span>
                         </div>
                       </div>
@@ -519,8 +530,11 @@ class ProblemBank extends React.Component {
 }
 
 ProblemBank.propTypes = {
+  worksheetId: PropTypes.number,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  problems: PropTypes.array.isRequired,
+  passages: PropTypes.array.isRequired,
   addSelectedProblems: PropTypes.func.isRequired,
 }
 

@@ -49,7 +49,7 @@ export const calendarMap = {
 export const currentMonthIndex = Number(moment().format('M')) - 1;
 export const currentYear = new Date().getFullYear().toString().substr(-2);
 
-export const getDayDate = (date) => moment(date).format('ddd, MMM Do');
+export const getDayDate = (date) => moment(new Date(date)).format('ddd, MMM Do');
 export const getFirstDay = (activeMonthIndex) => new Date(2019, activeMonthIndex).getDay();
 export const getDaysInActiveMonth = (activeMonthIndex) => 32 - new Date(2019, activeMonthIndex, 32).getDate();
 export const getDaysInPreviousMonth = (activeMonthIndex) => 32 - new Date(2019, activeMonthIndex - 1, 32).getDate();

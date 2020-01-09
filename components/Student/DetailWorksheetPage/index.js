@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FullView from './components/FullView';
 import ListView from './components/ListView';
@@ -6,6 +7,7 @@ import FilterSection from './components/FilterSection';
 
 import sampleWorksheets from './utils/sampleWorksheets';
 import { dueDate, assignDate, problems, completed, flags, score, timeEstimate } from '../../utils/sortFunctions';
+import LessonWorksheetTestSection from '../LessonWorksheetTestSection';
 
 class DetailWorksheetPage extends React.Component {
   constructor(props) {
@@ -17,13 +19,17 @@ class DetailWorksheetPage extends React.Component {
       currentView: 'full',
       assignWorksheetDropdownOpen: false,
       worksheets: sampleWorksheets,
+      detailModalOpen: false,
+      activeWorksheet: null,
     };
   }
 
   onToggleAssignWorksheetDropdown = (event) => {
     event.preventDefault();
     this.setState(({ assignWorksheetDropdownOpen }) => ({ assignWorksheetDropdownOpen: !assignWorksheetDropdownOpen }))
-}
+  }
+
+  onToggleDetailModalOpen = (worksheetIndex) => this.setState(({ detailModalOpen, worksheets }) => ({ detailModalOpen: !detailModalOpen, activeWorksheet: worksheets[worksheetIndex] }))
 
   onSetSort = (sort) => this.setState({ sort })
   onChangeView = (view) => this.setState({ currentView: view });
@@ -121,51 +127,67 @@ class DetailWorksheetPage extends React.Component {
     const { currentView } = this.state;
     switch (currentView) {
       case 'list':
-        return <ListView worksheets={this.getMappableWorksheets()} />
+        return <ListView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
       case 'full':
-        return <FullView worksheets={this.getMappableWorksheets()} />
+        return <FullView onToggleDetailModalOpen={this.onToggleDetailModalOpen} worksheets={this.getMappableWorksheets()} />
       default:
         break;
     }
   }
 
   render() {
-    const { currentView, assignWorksheetDropdownOpen } = this.state;
+    const { currentView, assignWorksheetDropdownOpen, detailModalOpen, activeWorksheet } = this.state;
+    const { user } = this.props;
     return (
       <React.Fragment>
-        <div className="main-holder grey lighten-5 switcher-section">
-          <FilterSection
-            currentView={currentView}
-            onChangeView={this.onChangeView}
-            onSetSort={this.onSetSort}
-            onSetFilteredState={this.onSetFilteredState}
-            onUnsetFilteredState={this.onUnsetFilteredState}
-            onSetFilteredTopicState={this.onSetFilteredTopicState}
-            onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
-          />
-          {this.renderWorksheetView()}
-        </div>
-        <div className="add-btn-block">
-          <a
-            href="#"
-            data-target='dropdown_assign_selected'
-            onClick={this.onToggleAssignWorksheetDropdown}
-            className="dropdown-trigger waves-effect waves-teal btn add-btn"
-          >
-            <i className="material-icons">add</i> Assign Worksheet
-          </a>
-          <ul
-            id='dropdown_assign_selected'
-            className='dropdown-content dropdown-small'
-            style={{ display: assignWorksheetDropdownOpen ? 'block' : '0', opacity: assignWorksheetDropdownOpen ? '1' : '0' }}
-          >
-            <li><a href="#" onClick={() => this.onAssignWorksheet('fromSaved')}>From Saved</a></li>
-            <li><a href="#" onClick={() => this.onAssignWorksheet('createNew')}>Create New</a></li>
-          </ul>
-        </div>
+        <Choose>
+          <When condition={detailModalOpen}>
+            <LessonWorksheetTestSection
+              onClose={this.onToggleDetailModalOpen}
+              worksheet={activeWorksheet}
+              user={user}
+            />
+          </When>
+          <Otherwise>
+            <div className="main-holder grey lighten-5 switcher-section">
+              <FilterSection
+                currentView={currentView}
+                onChangeView={this.onChangeView}
+                onSetSort={this.onSetSort}
+                onSetFilteredState={this.onSetFilteredState}
+                onUnsetFilteredState={this.onUnsetFilteredState}
+                onSetFilteredTopicState={this.onSetFilteredTopicState}
+                onUnsetFilteredTopicState={this.onUnsetFilteredTopicState}
+              />
+              {this.renderWorksheetView()}
+            </div>
+            <div className="add-btn-block">
+              <a
+                href="#"
+                data-target='dropdown_assign_selected'
+                onClick={this.onToggleAssignWorksheetDropdown}
+                className="dropdown-trigger waves-effect waves-teal btn add-btn"
+              >
+                <i className="material-icons">add</i> Assign Worksheet
+              </a>
+              <ul
+                id='dropdown_assign_selected'
+                className='dropdown-content dropdown-small'
+                style={{ display: assignWorksheetDropdownOpen ? 'block' : '0', opacity: assignWorksheetDropdownOpen ? '1' : '0' }}
+              >
+                <li><a href="#" onClick={() => this.onAssignWorksheet('fromSaved')}>From Saved</a></li>
+                <li><a href="#" onClick={() => this.onAssignWorksheet('createNew')}>Create New</a></li>
+              </ul>
+            </div>
+          </Otherwise>
+        </Choose>
       </React.Fragment>
     );
   }
+}
+
+DetailWorksheetPage.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 export default DetailWorksheetPage;
