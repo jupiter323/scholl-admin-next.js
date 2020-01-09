@@ -3,6 +3,7 @@ import {
   SET_ASSIGN_WORKSHEETS_MODAL_OPEN,
   SET_CALENDAR_ROWS,
   CREATE_CLASS,
+  FETCH_CLASSES,
 } from './constants';
 
 

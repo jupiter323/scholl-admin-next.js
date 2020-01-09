@@ -8,7 +8,7 @@ export const fetchClassesApi = () =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {})
+    .then(({ data }) => data)
     .catch(err => err);
 
 export const createClassApi = (classroom) =>

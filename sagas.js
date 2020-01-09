@@ -13,7 +13,10 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
-import { CREATE_CLASS } from './components/Classes/index/constants';
+import {
+  CREATE_CLASS,
+  FETCH_CLASSES,
+} from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   CREATE_INSTRUCTOR,
   UPDATE_INSTRUCTOR_LASTNAME,
@@ -26,6 +29,7 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   ADD_INSTRUCTOR_LOCATION } from './components/Instructor/index/constants';
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
+import { setClasses } from './components/Classes/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
 const {
   fetchStudentsApi,
@@ -40,7 +44,7 @@ const {
   updateStudentPhoneApi,
   updateStudentStateApi,
   updateStudentZipApi } = studentApi;
-const { createClassApi } = classApi;
+const { createClassApi, fetchClassesApi } = classApi;
 const { fetchInstructorsApi,
   searchInstructorsApi,
   updateInstructorFirstNameApi,
@@ -383,7 +387,6 @@ export function* watchForCreateInstructor() {
   while (true) {
     try {
       const { instructor } = yield take(CREATE_INSTRUCTOR);
-      console.log(instructor);
       const response = yield call(createNewInstructorApi, instructor);
       if (response && response.message) {
         return console.warn("Something went wrong in createNewInstructorApi.");
@@ -450,6 +453,24 @@ export function* searchInstructors(filters) {
   }
 }
 
+export function* watchForFetchClasses() {
+  while (true) {
+    yield take(FETCH_CLASSES);
+    yield call(fetchClasses);
+  }
+}
+
+export function* fetchClasses() {
+  try {
+    const { classes } = yield call(fetchClassesApi);
+    if (Array.isArray(classes) || classes instanceof Array) {
+      yield put(setStudents(classes));
+    }
+  } catch (err) {
+    console.warn("Error occurred in the fetchClasses saga", err);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -476,5 +497,6 @@ export default function* defaultSaga() {
     watchForUpdateInstructorAddress(),
     watchForUpdateInstructorPhone(),
     watchForCreateInstructor(),
+    watchForFetchClasses(),
   ]);
 }
