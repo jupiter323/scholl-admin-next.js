@@ -96,7 +96,7 @@ class Classes extends React.Component {
       exclude_from_statistics: isExclude,
       locations:formattedLocations,
       instructors,
-      students: {},
+      students: [],
     };
     await createNewClassRoomApi(formattedClassRoom);
   }
