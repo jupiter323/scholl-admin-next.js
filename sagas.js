@@ -27,7 +27,8 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
-const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi, fetchStudentsApi,
+const {
+  fetchStudentsApi,
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
@@ -40,7 +41,9 @@ const { fetchStudentsApi, searchStudentsApi, createStudentApi, deleteStudentApi,
   updateStudentStateApi,
   updateStudentZipApi } = studentApi;
 const { createClassApi } = classApi;
-const { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
+const { fetchInstructorsApi,
+  searchInstructorsApi,
+  updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
