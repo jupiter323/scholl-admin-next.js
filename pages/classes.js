@@ -6,7 +6,6 @@ import Moment from 'moment';
 import sampleClass from "../components/Classes/utils/sampleClass";
 import createNewClassRoomApi from '../components/Classes/index/api';
 
-
 class Classes extends React.Component {
   constructor(props) {
     super(props);
@@ -78,6 +77,18 @@ class Classes extends React.Component {
   onCreateNewClassApi = async(classroom) => {
     const newId = this.state.classes.length + 1;
     const {classInfo:{className},accountInfo:{start_date,end_date,isExclude},location:{locations},instructor:{instructors}} = classroom;
+    const formattedLocations = locations.reduce((finalArray,currentLocation) => {
+      const {locationId } = currentLocation;
+      const newLocation = locationId;
+      finalArray.push(newLocation);
+      return finalArray;
+    },[]);
+    const formattedInstructors = instructors.reduce((finalArray,currentInstructor) => {
+      const {id} = currentInstructor;
+      const newInstructor = id;
+      finalArray.push(newInstructor);
+      return finalArray;
+    },[]);
     const formattedClassRoom = {
       id:newId,
       name: className,
@@ -85,9 +96,9 @@ class Classes extends React.Component {
       end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
-      locations,
-      instructors,
-      students: "",
+      locations:formattedLocations,
+      instructors:formattedInstructors,
+      students: [],
     };
     await createNewClassRoomApi(formattedClassRoom);
   }

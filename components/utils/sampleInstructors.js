@@ -1,5 +1,7 @@
+const uuidv4 = require('uuid/v4');
 export default [
   {
+    id:uuidv4(),
     firstName: 'Bob',
     lastName: 'Smith',
     email: 'bob@smith.com',
@@ -11,6 +13,7 @@ export default [
     avatarURL: "https://ichef.bbci.co.uk/news/320/media/images/82399000/jpg/_82399978_75952740.jpg",
   },
   {
+    id:uuidv4(),
     firstName: 'Jeff',
     lastName: 'Bezos',
     email: 'jeff-bezos@email.com',
@@ -22,6 +25,7 @@ export default [
     avatarURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUGJC2sKaR6OTgnDzoPwpHdpmEMY2rM8CLT8DbStzvnwQPf51Z",
   },
   {
+    id:uuidv4(),
     firstName: 'Roger',
     lastName: 'Rabbit',
     email: 'roger-rabbit@email.com',
@@ -34,6 +38,7 @@ export default [
 
   },
   {
+    id:uuidv4(),
     firstName: 'Jack',
     lastName: 'InTheBox',
     email: 'jackinbox@email.com',
@@ -45,6 +50,7 @@ export default [
     avatarURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1vXjnr5RTywwY_6k8nOR7-Oz6B8ci4aNac-CGL9J3y3QRNLfo",
   },
   {
+    id:uuidv4(),
     firstName: 'John',
     lastName: 'Jackson',
     email: 'john-jackson@email.com',
@@ -56,6 +62,7 @@ export default [
     avatarURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6Mh-9HGP3BCegpacxN9MtJFDCtextZ6c9cVC4xdnsuA0WsJgp5A",
   },
   {
+    id:uuidv4(),
     firstName: 'Jennifer',
     lastName: 'Ownerson',
     email: 'jennifern@ownerson.com',
