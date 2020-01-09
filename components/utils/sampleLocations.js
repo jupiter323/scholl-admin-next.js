@@ -18,16 +18,16 @@ export default [
   {
     locationId:uuidv4(),
     locationNickname: 'Disneyworld  Tutoring2',
-    locationName: 'House Of Mouse',
+    locationName: 'House Of Goofy',
   },
   {
     locationId:uuidv4(),
     locationNickname: 'TutorZone Austin2',
-    locationName: 'We Teach Real Good',
+    locationName: 'We Teach Good',
   },
   {
     locationId:uuidv4(),
     locationNickname: 'TutorZone Miami2',
-    locationName: 'We Teach Even Better',
+    locationName: 'We Teach The Best',
   },
 ];

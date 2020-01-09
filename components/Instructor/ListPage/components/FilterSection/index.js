@@ -1,11 +1,15 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import locationOptions from '../../../../utils/locationOptions';
 import sortOptions from '../../../../utils/sortOptions';
+import { searchInstructors } from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -27,6 +31,17 @@ class FilterSection extends React.Component {
       $merge: { [name]: value },
     });
     this.setState(updatedState);
+    this.setState(updatedState, () => {
+      const { onSearchInstructors } = this.props;
+      // eslint-disable-next-line no-unused-vars
+      const { name, location, sort } = this.state;
+      const filters = {
+        name,
+        // location,
+        // sort,
+      };
+      onSearchInstructors(filters);
+    });
     if (name === 'location') {
       if (event === '') {
         return onUnsetFilteredLocationState();
@@ -110,6 +125,13 @@ FilterSection.propTypes = {
   onUnsetFilteredState: PropTypes.func.isRequired,
   onSetFilteredLocationState: PropTypes.func.isRequired,
   onUnsetFilteredLocationState: PropTypes.func.isRequired,
+  onSearchInstructors: PropTypes.func.isRequired,
 };
 
-export default FilterSection;
+const mapDispatchToProps = (dispatch) => ({
+  onSearchInstructors: (filters) => dispatch(searchInstructors(filters)),
+});
+
+const withConnect = connect(null, mapDispatchToProps);
+
+export default compose(withConnect)(FilterSection);

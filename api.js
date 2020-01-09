@@ -3,10 +3,19 @@ import {
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
+  updateStudentAddressApi,
+  updateStudentCityApi,
+  updateStudentEmailApi,
+  updateStudentFirstNameApi,
+  updateStudentLastNameApi,
+  updateStudentPhoneApi,
+  updateStudentStateApi,
+  updateStudentZipApi,
 } from "./components/Student/index/api";
 
-import {
-  updateInstructorFirstNameApi,
+import { createClassApi } from './components/Classes/index/api';
+
+import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
@@ -14,16 +23,32 @@ import {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
+  createNewInstructorApi,
 } from './components/Instructor/index/api';
+
+export const classApi = {
+  createClassApi,
+};
 
 export const studentApi = {
   fetchStudentsApi,
   searchStudentsApi,
   createStudentApi,
   deleteStudentApi,
+  updateStudentAddressApi,
+  updateStudentCityApi,
+  updateStudentEmailApi,
+  updateStudentFirstNameApi,
+  updateStudentLastNameApi,
+  updateStudentPhoneApi,
+  updateStudentStateApi,
+  updateStudentZipApi,
 };
 
 export const instructorApi = {
+  createNewInstructorApi,
+  fetchInstructorsApi,
+  searchInstructorsApi,
   updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
@@ -32,4 +57,4 @@ export const instructorApi = {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
-}
+};

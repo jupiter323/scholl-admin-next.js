@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import { compose } from 'redux';
-import { connect} from 'react-redux'
+import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import Portal from '../../../../Portal';
@@ -32,7 +32,6 @@ class InstructorDetailsModal extends React.Component {
           firstName: '',
           lastName: '',
           email: '',
-          gender: '',
         },
         contactInfo: {
           phone: '',
@@ -48,7 +47,6 @@ class InstructorDetailsModal extends React.Component {
           firstName: '',
           lastName: '',
           email: '',
-          gender: '',
         },
         contactInfo: {
           phone: '',
@@ -64,7 +62,6 @@ class InstructorDetailsModal extends React.Component {
           firstName: true,
           lastName: true,
           email: true,
-          gender: true,
         },
       },
     };
@@ -137,7 +134,7 @@ class InstructorDetailsModal extends React.Component {
 
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section) => {
-    const {onUpdateInstructorFirstName, onUpdateInstructorLastName, onUpdateInstructorEmail, onUpdateInstructorState, onUpdateInstructorCity, onUpdateInstructorZip, onUpdateInstructorAddress, onUpdateInstructorPhone} = this.props;
+    const { onUpdateInstructorFirstName, onUpdateInstructorLastName, onUpdateInstructorEmail, onUpdateInstructorState, onUpdateInstructorCity, onUpdateInstructorZip, onUpdateInstructorAddress, onUpdateInstructorPhone } = this.props;
     const { updatedInstructor: previousInstructorState } = this.state;
     const value = event.target ? event.target.value : event;
     // Dispatch which ever field name was changed
@@ -345,24 +342,24 @@ InstructorDetailsModal.propTypes = {
   onUpdateInstructorPhone: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({})
+const mapStateToProps = createStructuredSelector({});
 
-function mapDispatchToProps(dispatch){
-  return{
-    onUpdateInstructorFirstName:(value) => dispatch(updateInstructorFirstName(value)),
-    onUpdateInstructorLastName:(value) => dispatch(updateInstructorLastName(value)),
-    onUpdateInstructorEmail:(value) => dispatch(updateInstructorEmail(value)),
-    onUpdateInstructorState:(value) => dispatch(updateInstructorState(value)),
-    onUpdateInstructorCity:(value) => dispatch(updateInstructorCity(value)),
-    onUpdateInstructorZip:(value) => dispatch(updateInstructorZip(value)),
-    onUpdateInstructorAddress:(value) => dispatch(updateInstructorAddress(value)),
-    onUpdateInstructorPhone:(value) => dispatch(updateInstructorPhone(value)),
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    onUpdateInstructorFirstName: (value) => dispatch(updateInstructorFirstName(value)),
+    onUpdateInstructorLastName: (value) => dispatch(updateInstructorLastName(value)),
+    onUpdateInstructorEmail: (value) => dispatch(updateInstructorEmail(value)),
+    onUpdateInstructorState: (value) => dispatch(updateInstructorState(value)),
+    onUpdateInstructorCity: (value) => dispatch(updateInstructorCity(value)),
+    onUpdateInstructorZip: (value) => dispatch(updateInstructorZip(value)),
+    onUpdateInstructorAddress: (value) => dispatch(updateInstructorAddress(value)),
+    onUpdateInstructorPhone: (value) => dispatch(updateInstructorPhone(value)),
+  };
 }
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps
-)
+);
 
 export default compose(withConnect)(InstructorDetailsModal);
