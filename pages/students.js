@@ -8,7 +8,6 @@ import { createStructuredSelector } from 'reselect';
 import { fetchStudents, createStudent, deleteStudent } from '../components/Student/index/actions';
 import { makeSelectStudents } from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
-import { deleteStudentApi } from '../components/Student/index/api';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
@@ -85,11 +84,11 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = async () => {
+  onSaveNewStudent = () => {
     const { newStudent: previousStudentState } = this.state;
 
     // dispatch add student action
-    const { onCreateStudent } = this.props;
+    const { onCreateStudent, onFetchStudents } = this.props;
     onCreateStudent(previousStudentState);
 
     const newStudent = update(previousStudentState, {
@@ -116,8 +115,7 @@ class Students extends Component {
       },
     });
     this.setState({ newStudent });
-    // eslint-disable-next-line no-console
-    console.warn("do something with the new student info");
+    onFetchStudents();
     this.onCloseStudentModal();
   };
 
@@ -190,6 +188,7 @@ class Students extends Component {
     const { onDeleteStudent } = this.props;
     const { students } = this.state;
     // Dispatch deleteStudent
+    // eslint-disable-next-line camelcase
     const student_id = students[index].id;
     onDeleteStudent(student_id);
     const newStudentArray = this.arrayItemRemover(students, students[index]);
