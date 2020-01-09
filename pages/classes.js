@@ -77,7 +77,16 @@ class Classes extends React.Component {
   onCreateNewClassApi = async(classroom) => {
     const newId = this.state.classes.length + 1;
     const {classInfo:{className},accountInfo:{start_date,end_date,isExclude},location:{locations},instructor:{instructors}} = classroom;
-    
+    const formattedLocations = locations.reduce((finalArray,currentLocation) => {
+      const {
+        locationId,
+        locationNickname,
+        locationName,
+      } = currentLocation;
+      const newLocation = locationId;
+      finalArray.push(newLocation);
+      return finalArray;
+    },[]);
     const formattedClassRoom = {
       id:newId,
       name: className,
@@ -85,7 +94,7 @@ class Classes extends React.Component {
       end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
-      locations,
+      locations:formattedLocations,
       instructors,
       students: {},
     };
