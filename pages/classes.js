@@ -78,13 +78,15 @@ class Classes extends React.Component {
     const newId = this.state.classes.length + 1;
     const {classInfo:{className},accountInfo:{start_date,end_date,isExclude},location:{locations},instructor:{instructors}} = classroom;
     const formattedLocations = locations.reduce((finalArray,currentLocation) => {
-      const {
-        locationId,
-        locationNickname,
-        locationName,
-      } = currentLocation;
+      const {locationId } = currentLocation;
       const newLocation = locationId;
       finalArray.push(newLocation);
+      return finalArray;
+    },[]);
+    const formattedInstructors = instructors.reduce((finalArray,currentInstructor) => {
+      const {id} = currentInstructor;
+      const newInstructor = id;
+      finalArray.push(newInstructor);
       return finalArray;
     },[]);
     const formattedClassRoom = {
@@ -95,7 +97,7 @@ class Classes extends React.Component {
       duration: "string",
       exclude_from_statistics: isExclude,
       locations:formattedLocations,
-      instructors,
+      instructors:formattedInstructors,
       students: [],
     };
     await createNewClassRoomApi(formattedClassRoom);
