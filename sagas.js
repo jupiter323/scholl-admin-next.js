@@ -383,7 +383,6 @@ export function* watchForCreateInstructor() {
   while (true) {
     try {
       const { instructor } = yield take(CREATE_INSTRUCTOR);
-      console.log(instructor);
       const response = yield call(createNewInstructorApi, instructor);
       if (response && response.message) {
         return console.warn("Something went wrong in createNewInstructorApi.");
@@ -423,9 +422,9 @@ export function* watchForFetchInstructors() {
 
 export function* fetchInstructors() {
   try {
-    const instructors = yield call(fetchInstructorsApi);
-    if (instructors instanceof Array) {
-      yield put(setInstructors(instructors));
+    const { formattedInstructors } = yield call(fetchInstructorsApi);
+    if (formattedInstructors instanceof Array) {
+      yield put(setInstructors(formattedInstructors));
     }
   } catch (err) {
     console.warn('Error occurred in fetchInstructors saga', err);
