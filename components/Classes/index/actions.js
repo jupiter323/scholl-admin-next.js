@@ -33,3 +33,16 @@ export function createClass(newClass) {
     newClass,
   };
 }
+
+export function fetchClasses() {
+  return {
+    type: FETCH_CLASSES,
+  };
+}
+
+export function setClasses(classes) {
+  return {
+    type: SET_CLASSES,
+    classes,
+  };
+}
