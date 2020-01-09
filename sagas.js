@@ -13,7 +13,12 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
 } from "./components/Student/index/constants";
-import { CREATE_CLASS } from './components/Classes/index/constants';
+import {
+  CREATE_CLASS,
+  UPDATE_CLASS_START_DATE,
+  UPDATE_CLASS_END_DATE,
+  UPDATE_EXCLUDE_FROM_STATISTICS,
+} from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   CREATE_INSTRUCTOR,
   UPDATE_INSTRUCTOR_LASTNAME,
@@ -40,7 +45,12 @@ const {
   updateStudentPhoneApi,
   updateStudentStateApi,
   updateStudentZipApi } = studentApi;
-const { createClassApi } = classApi;
+const {
+  createClassApi,
+  updateClassStartDateApi,
+  updateClassEndDateApi,
+  updateClassExcludeFromStatisticsApi,
+} = classApi;
 const { fetchInstructorsApi,
   searchInstructorsApi,
   updateInstructorFirstNameApi,
@@ -449,6 +459,9 @@ export function* searchInstructors(filters) {
     console.warn("Error occurred in searchInstructors saga", err);
   }
 }
+
+/** ******************************************    CLASSES    ******************************************* */
+
 
 export default function* defaultSaga() {
   yield all([
