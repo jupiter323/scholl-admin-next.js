@@ -155,7 +155,7 @@ class ClassModal extends React.Component {
                             Cancel
                           </a>
                           <a href="#" className="btn" onClick={this.onSave}>
-                            Create Class
+                            {editModal ? "Save Class" : "Create Class"}
                           </a>
                         </div>
                       </div>

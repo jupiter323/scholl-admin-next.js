@@ -29,6 +29,7 @@ export const fetchClassesApi = () =>
           end_date: item.end_date,
           active: false,
           isExclude: item.exclude_from_statistics,
+          duration: item.duration,
         },
         classInfo: {
           className: item.name,
