@@ -86,9 +86,9 @@ class Classes extends React.Component {
       end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
-      locations,
-      instructors,
-      students: "",
+      locations:formattedLocations,
+      instructors:formattedInstructors,
+      students: [],
     };
     onCreateClass(formattedClassRoom);
   }
