@@ -72,6 +72,7 @@ class ClassCard extends React.Component {
           open={classModalOpen}
           onClose={this.onCloseClassModal}
           onSave={this.onSaveEditClass}
+          classroom={classroom}
         />
         <div className="card-main-col col s12 m8 l7 xl5">
           <div className="card-main card-class card card-large">

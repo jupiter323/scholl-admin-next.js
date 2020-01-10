@@ -24,12 +24,24 @@ export const fetchClassesApi = () =>
           average_practice_tests_completed: 1.8,
           instruction: 14,
         },
-        classInfo: {
-          name: item.name,
+        accountInfo: {
+          start_date: item.start_date,
+          end_date: item.end_date,
+          active: false,
+          isExclude: item.exclude_from_statistics,
         },
-        location: item.locations,
-        instructors: item.instructors,
-        students: item.students,
+        classInfo: {
+          className: item.name,
+        },
+        location: {
+          locations: item.locations,
+        },
+        instructor: {
+          instructors: item.instructors,
+        },
+        student: {
+          students: item.students,
+        },
       }));
       return classes;
     })
