@@ -15,8 +15,7 @@ import {
 
 import {
   createClassApi,
-  fetchClassesApi, 
-  createClassApi,
+  fetchClassesApi,
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassExcludeFromStatisticsApi,

@@ -15,13 +15,10 @@ import {
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
-<<<<<<< HEAD
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_EXCLUDE_FROM_STATISTICS,
-=======
   FETCH_CLASSES,
->>>>>>> feature/list-classroom
 } from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   CREATE_INSTRUCTOR,
@@ -50,16 +47,13 @@ const {
   updateStudentPhoneApi,
   updateStudentStateApi,
   updateStudentZipApi } = studentApi;
-<<<<<<< HEAD
 const {
+  fetchClassesApi,
   createClassApi,
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassExcludeFromStatisticsApi,
 } = classApi;
-=======
-const { createClassApi, fetchClassesApi } = classApi;
->>>>>>> feature/list-classroom
 const { fetchInstructorsApi,
   searchInstructorsApi,
   updateInstructorFirstNameApi,

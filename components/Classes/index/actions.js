@@ -57,6 +57,9 @@ export function updateClassExcludeFromStatistics(value) {
   return {
     type: UPDATE_EXCLUDE_FROM_STATISTICS,
     value,
+  };
+}
+
 export function fetchClasses() {
   return {
     type: FETCH_CLASSES,
