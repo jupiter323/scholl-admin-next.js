@@ -10,7 +10,6 @@ class AccountSettings extends React.Component {
   }
 
   render() {
-    console.log(this.props.state);
     const {
       state: { start_date, end_date, active, isExclude }, handleDetailsChange,
     } = this.props;
@@ -85,7 +84,7 @@ class AccountSettings extends React.Component {
                 <input
                   type="checkbox"
                   className="filled-in"
-                  checked={isExclude !== 0}
+                  checked={isExclude}
                   onChange={(event) => handleDetailsChange(event, 'isExclude', 'accountInfo', 'checkBox')}
                 />
                 <span>Exclude Class from Performance Statistics</span>
