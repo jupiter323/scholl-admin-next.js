@@ -62,10 +62,7 @@ class Students extends Component {
   componentDidUpdate = prevProps => {
     const { students } = this.props;
     const { students: prevStudents } = prevProps;
-    if (
-      (this.state.students.length === 0 && students.length > 0) ||
-      students.length !== prevStudents.length
-    ) {
+    if ((this.state.students.length === 0 && students.length > 0) ||students.length !== prevStudents.length) {
       this.setState({ students });
     }
   };
