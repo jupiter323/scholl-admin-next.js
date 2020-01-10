@@ -8,7 +8,6 @@ import { createStructuredSelector } from 'reselect';
 import {fetchStudents, createStudent, deleteStudent} from '../components/Student/index/actions';
 import {makeSelectStudents} from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
-import sampleStudentList from '../components/Student/utils/sampleStudentList';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
 import IndividualStudentPage from '../components/Student/IndividualStudentPage';
