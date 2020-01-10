@@ -6,6 +6,8 @@ import {
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_EXCLUDE_FROM_STATISTICS,
+  FETCH_CLASSES,
+  SET_CLASSES,
 } from './constants';
 
 
@@ -55,5 +57,15 @@ export function updateClassExcludeFromStatistics(value) {
   return {
     type: UPDATE_EXCLUDE_FROM_STATISTICS,
     value,
+export function fetchClasses() {
+  return {
+    type: FETCH_CLASSES,
+  };
+}
+
+export function setClasses(classes) {
+  return {
+    type: SET_CLASSES,
+    classes,
   };
 }

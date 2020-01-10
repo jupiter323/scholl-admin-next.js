@@ -15,9 +15,13 @@ import {
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
+<<<<<<< HEAD
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_EXCLUDE_FROM_STATISTICS,
+=======
+  FETCH_CLASSES,
+>>>>>>> feature/list-classroom
 } from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   CREATE_INSTRUCTOR,
@@ -31,6 +35,7 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   ADD_INSTRUCTOR_LOCATION } from './components/Instructor/index/constants';
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
+import { setClasses } from './components/Classes/index/actions';
 import { studentApi, classApi, instructorApi } from "./api";
 const {
   fetchStudentsApi,
@@ -45,12 +50,16 @@ const {
   updateStudentPhoneApi,
   updateStudentStateApi,
   updateStudentZipApi } = studentApi;
+<<<<<<< HEAD
 const {
   createClassApi,
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassExcludeFromStatisticsApi,
 } = classApi;
+=======
+const { createClassApi, fetchClassesApi } = classApi;
+>>>>>>> feature/list-classroom
 const { fetchInstructorsApi,
   searchInstructorsApi,
   updateInstructorFirstNameApi,
@@ -508,6 +517,24 @@ export function* watchForUpdateClassExcludeFromStatistics() {
 }
 
 
+export function* watchForFetchClasses() {
+  while (true) {
+    yield take(FETCH_CLASSES);
+    yield call(fetchClasses);
+  }
+}
+
+export function* fetchClasses() {
+  try {
+    const classes = yield call(fetchClassesApi);
+    if (Array.isArray(classes) || classes instanceof Array) {
+      yield put(setClasses(classes));
+    }
+  } catch (err) {
+    console.warn("Error occurred in the fetchClasses saga", err);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -537,5 +564,6 @@ export default function* defaultSaga() {
     watchForUpdateClassStartDate(),
     watchForUpdateClassEndDate(),
     watchForUpdateClassExcludeFromStatistics(),
+    watchForFetchClasses(),
   ]);
 }

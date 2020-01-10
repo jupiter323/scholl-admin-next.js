@@ -15,6 +15,8 @@ import {
 
 import {
   createClassApi,
+  fetchClassesApi, 
+  createClassApi,
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassExcludeFromStatisticsApi,
@@ -36,6 +38,7 @@ export const classApi = {
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassExcludeFromStatisticsApi,
+  fetchClassesApi,
 };
 
 export const studentApi = {
