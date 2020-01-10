@@ -16,23 +16,7 @@ class ClassModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      classroom: {
-        classInfo: {
-          className: "",
-        },
-        accountInfo: {
-          start_date: "",
-          end_date: "",
-          active: false,
-          isExclude: false,
-        },
-        location: {
-          locations: [],
-        },
-        instructor: {
-          instructors: [],
-        },
-      },
+      classroom: props.classroom,
       locationModalOpen: false,
       instructorModalOpen: false,
       pendingLocationDelete: {},
@@ -103,7 +87,7 @@ class ClassModal extends React.Component {
   }
 
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose, editModal } = this.props;
     const {
       locationModalOpen,
       instructorModalOpen,
@@ -129,7 +113,7 @@ class ClassModal extends React.Component {
                             <h2>
                               <span className="heading-holder">
                                 <i className="icon-members" />
-                                <span className="heading-block"> New Class </span>
+                                <span className="heading-block"> {editModal ? "Edit" : "Create"} Class </span>
                               </span>
                             </h2>
                           </div>
@@ -239,6 +223,28 @@ ClassModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  classroom: PropTypes.object.isRequired,
+};
+
+ClassModal.defaultProps = {
+  editModal: false,
+  classroom: {
+    classInfo: {
+      className: "",
+    },
+    accountInfo: {
+      start_date: "",
+      end_date: "",
+      active: false,
+      isExclude: false,
+    },
+    location: {
+      locations: [],
+    },
+    instructor: {
+      instructors: [],
+    },
+  },
 };
 
 export default ClassModal;
