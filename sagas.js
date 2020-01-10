@@ -16,6 +16,11 @@ import {
 import {
   CREATE_CLASS,
   FETCH_CLASSES,
+  UPDATE_CLASS_NAME,
+  UPDATE_CLASS_START_DATE,
+  UPDATE_CLASS_END_DATE,
+  UPDATE_CLASS_DURATION,
+  UPDATE_EXCLUDE_FROM_STATISTICS,
 } from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   CREATE_INSTRUCTOR,
@@ -47,6 +52,11 @@ const {
 const {
   fetchClassesApi,
   createClassApi,
+  updateClassNameApi,
+  updateClassStartDateApi,
+  updateClassEndDateApi,
+  updateClassDurationApi,
+  updateClassExcludeFromStatisticsApi,
 } = classApi;
 const { fetchInstructorsApi,
   searchInstructorsApi,
@@ -475,6 +485,86 @@ export function* fetchClasses() {
   }
 }
 
+export function* watchForUpdateClassName() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_CLASS_NAME);
+      const response = yield call(updateClassNameApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassNameApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassName saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateClassStartDate() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_CLASS_START_DATE);
+      const response = yield call(updateClassStartDateApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassStartDateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassStartDate saga", err);
+    }
+  }
+}
+export function* watchForUpdateClassEndDate() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_CLASS_END_DATE);
+      const response = yield call(updateClassEndDateApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassEndDateApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassEndDate saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateClassDuration() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_CLASS_DURATION);
+      const response = yield call(updateClassDurationApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassDurationApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassDuration saga", err);
+    }
+  }
+}
+
+export function* watchForUpdateClassExcludeFromStatistics() {
+  while (true) {
+    try {
+      const { value } = yield take(UPDATE_EXCLUDE_FROM_STATISTICS);
+      const response = yield call(updateClassExcludeFromStatisticsApi, value);
+      if (response && response.message) {
+        return console.warn(
+          "Something went wrong in updateClassExcludeFromStatisticsApi."
+        );
+      }
+    } catch (err) {
+      console.warn("Error occured in watchForUpdateClassExcludeFromStatistics saga", err);
+    }
+  }
+}
+
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -502,5 +592,10 @@ export default function* defaultSaga() {
     watchForUpdateInstructorPhone(),
     watchForCreateInstructor(),
     watchForFetchClasses(),
+    watchForUpdateClassStartDate(),
+    watchForUpdateClassEndDate(),
+    watchForUpdateClassExcludeFromStatistics(),
+    watchForUpdateClassName(),
+    watchForUpdateClassDuration(),
   ]);
 }

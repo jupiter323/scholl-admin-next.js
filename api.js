@@ -16,6 +16,11 @@ import {
 import {
   createClassApi,
   fetchClassesApi,
+  updateClassNameApi,
+  updateClassStartDateApi,
+  updateClassEndDateApi,
+  updateClassDurationApi,
+  updateClassExcludeFromStatisticsApi,
 } from './components/Classes/index/api';
 
 import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
@@ -32,6 +37,11 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
 export const classApi = {
   createClassApi,
   fetchClassesApi,
+  updateClassNameApi,
+  updateClassStartDateApi,
+  updateClassEndDateApi,
+  updateClassDurationApi,
+  updateClassExcludeFromStatisticsApi,
 };
 
 export const studentApi = {
