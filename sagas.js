@@ -15,9 +15,6 @@ import {
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
-  UPDATE_CLASS_START_DATE,
-  UPDATE_CLASS_END_DATE,
-  UPDATE_EXCLUDE_FROM_STATISTICS,
   FETCH_CLASSES,
 } from './components/Classes/index/constants';
 import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
@@ -50,9 +47,6 @@ const {
 const {
   fetchClassesApi,
   createClassApi,
-  updateClassStartDateApi,
-  updateClassEndDateApi,
-  updateClassExcludeFromStatisticsApi,
 } = classApi;
 const { fetchInstructorsApi,
   searchInstructorsApi,
@@ -463,54 +457,6 @@ export function* createClass(newClass) {
   }
 }
 
-export function* watchForUpdateClassStartDate() {
-  while (true) {
-    try {
-      const { date } = yield take(UPDATE_CLASS_START_DATE);
-      const response = yield call(updateClassStartDateApi, date);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateClassStartDateApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateClassStartDate saga", err);
-    }
-  }
-}
-export function* watchForUpdateClassEndDate() {
-  while (true) {
-    try {
-      const { date } = yield take(UPDATE_CLASS_END_DATE);
-      const response = yield call(updateClassEndDateApi, date);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateClassEndDateApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateClassEndDate saga", err);
-    }
-  }
-}
-
-export function* watchForUpdateClassExcludeFromStatistics() {
-  while (true) {
-    try {
-      const { date } = yield take(UPDATE_EXCLUDE_FROM_STATISTICS);
-      const response = yield call(updateClassExcludeFromStatisticsApi, date);
-      if (response && response.message) {
-        return console.warn(
-          "Something went wrong in updateClassExcludeFromStatisticsApi."
-        );
-      }
-    } catch (err) {
-      console.warn("Error occured in watchForUpdateClassExcludeFromStatistics saga", err);
-    }
-  }
-}
-
-
 export function* watchForFetchClasses() {
   while (true) {
     yield take(FETCH_CLASSES);
@@ -555,9 +501,6 @@ export default function* defaultSaga() {
     watchForUpdateInstructorAddress(),
     watchForUpdateInstructorPhone(),
     watchForCreateInstructor(),
-    watchForUpdateClassStartDate(),
-    watchForUpdateClassEndDate(),
-    watchForUpdateClassExcludeFromStatistics(),
     watchForFetchClasses(),
   ]);
 }
