@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ClassDetailModal from '../ClassDetailModal';
 import ClassModal from '../../../ClassModal/index';
 import RadialBar from "../../../../common/RadialBar";
 
@@ -19,11 +18,12 @@ class ClassCard extends React.Component {
   // new methods for new edit class modal
   onOpenClassModal = event => {
     event.preventDefault();
+    this.props.onCloseDropdown();
     this.setState({ classModalOpen: true });
   };
   onCloseClassModal = () => this.setState({ classModalOpen: false });
-  onSaveNewClass = (value) => {
-    console.log(value);
+  onSaveEditClass = (value) => {
+    // Updates to class will go here
   }
 
   onCloneClass = () => this.props.onCloneClass(this.props.classroom)
@@ -48,7 +48,6 @@ class ClassCard extends React.Component {
   }
 
   render() {
-    console.log(this.props.classroom);
     const { classModalOpen } = this.state;
     // const { onSaveNewClass } = this.props;
     const { dropdownIsOpen, dropdownIndex, index, classroom, onHandleClassCard, onCloneClass, onDeleteClass, onSaveClassChanges } = this.props;
@@ -72,8 +71,7 @@ class ClassCard extends React.Component {
           editModal
           open={classModalOpen}
           onClose={this.onCloseClassModal}
-          onSave={this.onSaveNewClass}
-          classroom={this.props.classroom}
+          onSave={this.onSaveEditClass}
         />
         <div className="card-main-col col s12 m8 l7 xl5">
           <div className="card-main card-class card card-large">
