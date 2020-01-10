@@ -4,6 +4,7 @@ import {
   SET_CALENDAR_ROWS,
   CREATE_CLASS,
   FETCH_CLASSES,
+  SET_CLASSES,
 } from './constants';
 
 

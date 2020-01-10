@@ -16,13 +16,22 @@ class Classes extends React.Component {
     super(props);
     this.state = {
       selectedClass: null,
-      classes: this.props.classes,
+      classes: [],
     };
   }
 
   componentDidMount = () => {
     const { onFetchClasses } = this.props;
     onFetchClasses();
+  }
+
+  componentDidUpdate() {
+    const { classes: classesState } = this.state;
+    const { classes } = this.props;
+    if (classesState.length === 0 && classes.length > 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ classes });
+    }
   }
 
   onHandleClassCard = (index) => {
@@ -93,8 +102,8 @@ class Classes extends React.Component {
       end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
-      locations:formattedLocations,
-      instructors:formattedInstructors,
+      locations: formattedLocations,
+      instructors: formattedInstructors,
       students: [],
     };
     onCreateClass(formattedClassRoom);
@@ -112,7 +121,6 @@ class Classes extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { selectedClass } = this.state;
     return (
       <React.Fragment>

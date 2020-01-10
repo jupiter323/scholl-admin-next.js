@@ -462,9 +462,9 @@ export function* watchForFetchClasses() {
 
 export function* fetchClasses() {
   try {
-    const { classes } = yield call(fetchClassesApi);
+    const classes = yield call(fetchClassesApi);
     if (Array.isArray(classes) || classes instanceof Array) {
-      yield put(setStudents(classes));
+      yield put(setClasses(classes));
     }
   } catch (err) {
     console.warn("Error occurred in the fetchClasses saga", err);

@@ -8,7 +8,31 @@ export const fetchClassesApi = () =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => data)
+    .then(({ data }) => {
+      const classes = data.classes.map(item => ({
+        id: item.id,
+        summary: {
+          amount_students: item.students.length,
+          start_date: item.start_date,
+          end_date: item.end_date,
+          improvement: 123,
+          coursework_assigned: 60,
+          coursework_completed: 90,
+          problems_flagged_review: 40,
+          average_score: 1256,
+          achieved_target_score: 85,
+          average_practice_tests_completed: 1.8,
+          instruction: 14,
+        },
+        classInfo: {
+          name: item.name,
+        },
+        location: item.locations,
+        instructors: item.instructors,
+        students: item.students,
+      }));
+      return classes;
+    })
     .catch(err => err);
 
 export const createClassApi = (classroom) =>
