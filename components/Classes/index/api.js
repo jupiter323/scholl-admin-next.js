@@ -29,6 +29,7 @@ export const fetchClassesApi = () =>
           end_date: item.end_date,
           active: false,
           isExclude: item.exclude_from_statistics,
+          duration: item.duration,
         },
         classInfo: {
           className: item.name,
@@ -58,5 +59,66 @@ export const createClassApi = (classroom) =>
   })
     .then(res => res.json())
     .catch(err => err);
+
+export const updateClassNameApi = body =>
+  fetch(`${API_URL}/api/commands/update-class-name`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateClassStartDateApi = body =>
+  fetch(`${API_URL}/api/commands/update-class-start-date`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateClassEndDateApi = body =>
+  fetch(`${API_URL}/api/commands/update-class-end-date`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateClassDurationApi = body =>
+  fetch(`${API_URL}/api/commands/update-class-duration`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateClassExcludeFromStatisticsApi = body =>
+  fetch(`${API_URL}/api/commands/update-class-exclude-from-statistics`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
 
 export default createClassApi;
