@@ -13,7 +13,10 @@ import {
   updateStudentZipApi,
 } from "./components/Student/index/api";
 
-import { createClassApi } from './components/Classes/index/api';
+import {
+  createClassApi,
+  fetchClassesApi,
+} from './components/Classes/index/api';
 
 import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
@@ -28,6 +31,7 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
 
 export const classApi = {
   createClassApi,
+  fetchClassesApi,
 };
 
 export const studentApi = {

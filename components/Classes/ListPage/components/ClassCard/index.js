@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ClassDetailModal from '../ClassDetailModal';
+import ClassModal from '../../../ClassModal/index';
 import RadialBar from "../../../../common/RadialBar";
 
 
@@ -10,16 +10,21 @@ class ClassCard extends React.Component {
     this.state = {
       classDetailsModalOpen: false,
       deleteModalOpen: false,
+      classModalOpen: false,
     };
   }
 
-  onOpenClassDetailsModal = (event) => {
+  // onOpenClassModal, onCloseClassModal, onSaveNewClass
+  // new methods for new edit class modal
+  onOpenClassModal = event => {
     event.preventDefault();
     this.props.onCloseDropdown();
-    this.setState({ classDetailsModalOpen: true });
+    this.setState({ classModalOpen: true });
   };
-
-  onCloseClassDetailsModal = () => this.setState({ classDetailsModalOpen: false });
+  onCloseClassModal = () => this.setState({ classModalOpen: false });
+  onSaveEditClass = (value) => {
+    // Updates to class will go here
+  }
 
   onCloneClass = () => this.props.onCloneClass(this.props.classroom)
 
@@ -43,6 +48,8 @@ class ClassCard extends React.Component {
   }
 
   render() {
+    const { classModalOpen } = this.state;
+    // const { onSaveNewClass } = this.props;
     const { dropdownIsOpen, dropdownIndex, index, classroom, onHandleClassCard, onCloneClass, onDeleteClass, onSaveClassChanges } = this.props;
     const { deleteModalOpen, classDetailsModalOpen } = this.state;
     const { summary: {
@@ -60,15 +67,12 @@ class ClassCard extends React.Component {
     } = classroom;
     return (
       <React.Fragment>
-        <ClassDetailModal
-          index={index}
+        <ClassModal
+          editModal
+          open={classModalOpen}
+          onClose={this.onCloseClassModal}
+          onSave={this.onSaveEditClass}
           classroom={classroom}
-          open={classDetailsModalOpen}
-          onClose={this.onCloseClassDetailsModal}
-          onOpenDeleteModal={this.onOpenDeleteModal}
-          deleteModalOpen={deleteModalOpen}
-          onSaveClassChanges={onSaveClassChanges}
-          onDeleteClass={onDeleteClass}
         />
         <div className="card-main-col col s12 m8 l7 xl5">
           <div className="card-main card-class card card-large">
@@ -112,7 +116,7 @@ class ClassCard extends React.Component {
                           <li>
                             <a
                               href="#modal_user_edit"
-                              onClick={this.onOpenClassDetailsModal}
+                              onClick={this.onOpenClassModal}
                               className="modal-trigger link-block"
                             >
                             Edit

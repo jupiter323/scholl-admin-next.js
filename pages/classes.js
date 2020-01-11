@@ -4,18 +4,34 @@ import update from 'immutability-helper';
 import Moment from 'moment';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import StatusPage from "../components/Classes/StatusPage";
 import ListPage from "../components/Classes/ListPage";
 import sampleClass from "../components/Classes/utils/sampleClass";
-import { createClass } from '../components/Classes/index/actions';
+import { createClass, fetchClasses } from '../components/Classes/index/actions';
+import { makeSelectClasses } from '../components/Classes/index/selectors';
 
 class Classes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedClass: null,
-      classes: sampleClass,
+      classes: [],
     };
+  }
+
+  componentDidMount = () => {
+    const { onFetchClasses } = this.props;
+    onFetchClasses();
+  }
+
+  componentDidUpdate() {
+    const { classes: classesState } = this.state;
+    const { classes } = this.props;
+    if (classesState.length === 0 && classes.length > 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ classes });
+    }
   }
 
   onHandleClassCard = (index) => {
@@ -86,8 +102,8 @@ class Classes extends React.Component {
       end_date: Moment(end_date).format('YYYY-MM-DD'),
       duration: "string",
       exclude_from_statistics: isExclude,
-      locations:formattedLocations,
-      instructors:formattedInstructors,
+      locations,
+      instructors,
       students: [],
     };
     onCreateClass(formattedClassRoom);
@@ -129,13 +145,20 @@ class Classes extends React.Component {
 }
 
 Classes.propTypes = {
+  onFetchClasses: PropTypes.func.isRequired,
   onCreateClass: PropTypes.func.isRequired,
+  classes: PropTypes.array.isRequired,
 };
+
+const mapStateToProps = createStructuredSelector({
+  classes: makeSelectClasses(),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onCreateClass: (newClass) => dispatch(createClass(newClass)),
+  onFetchClasses: () => dispatch(fetchClasses()),
 });
 
-const withConnect = connect(null, mapDispatchToProps);
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(Classes);
