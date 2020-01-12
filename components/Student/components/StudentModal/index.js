@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Portal from '../../../Portal';
 import Dropdown from '../../../FormComponents/Dropdown';
-import genderOptions from '../../../utils/genderOptions';
 import getValueFromState from '../../../utils/getValueFromState';
 import stateOptions from '../../../utils/stateOptions';
 import Location from './components/Location';
@@ -59,7 +58,8 @@ class StudentModal extends React.Component {
                                         id="firstName"
                                         name="firstName"
                                         value={state.studentInformation.firstName}
-                                        onChange={(event) => handleChange(event, 'firstName', 'studentInformation')} />
+                                        onChange={(event) => handleChange(event, 'firstName', 'studentInformation')}
+                                      />
                                       <label className="label" htmlFor="firstName">First Name*</label>
                                     </div>
                                   </div>
@@ -70,7 +70,8 @@ class StudentModal extends React.Component {
                                         id="lastName"
                                         name="lastName"
                                         value={state.studentInformation.lastName}
-                                        onChange={(event) => handleChange(event, 'lastName', 'studentInformation')} />
+                                        onChange={(event) => handleChange(event, 'lastName', 'studentInformation')}
+                                      />
                                       <label className="label" htmlFor="lastName">Last Name*</label>
                                     </div>
                                   </div>
@@ -81,22 +82,9 @@ class StudentModal extends React.Component {
                                         id="email"
                                         name="email"
                                         value={state.emailAddress.email}
-                                        onChange={(event) => handleChange(event, 'email', 'emailAddress')} />
+                                        onChange={(event) => handleChange(event, 'email', 'emailAddress')}
+                                      />
                                       <label className="label" htmlFor="email">Email Address*</label>
-                                    </div>
-                                  </div>
-                                  <div className="row mb-0">
-                                    <div className="">
-                                      <div className="input-field col s12 l7">
-                                        <Dropdown
-                                          value={getValueFromState(state.studentInformation.gender, genderOptions)}
-                                          onChange={(event) => handleChange(event, 'gender', 'studentInformation')}
-                                          options={genderOptions}
-                                          label="Gender"
-                                          stateKey="state"
-                                          dropdownKey="state"
-                                        />
-                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -114,7 +102,8 @@ class StudentModal extends React.Component {
                                         id="phone"
                                         name="phone"
                                         value={state.contactInformation.phone}
-                                        onChange={(event) => handleChange(event, 'phone', 'contactInformation')} />
+                                        onChange={(event) => handleChange(event, 'phone', 'contactInformation')}
+                                      />
                                       <label className="label" htmlFor="phone">Phone (optional)</label>
                                     </div>
                                   </div>
@@ -125,7 +114,8 @@ class StudentModal extends React.Component {
                                         id="address"
                                         name="address"
                                         value={state.contactInformation.addressLine1}
-                                        onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')} />
+                                        onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')}
+                                      />
                                       <label className="label" htmlFor="address">Street Address (optional)</label>
                                     </div>
                                   </div>
@@ -136,7 +126,8 @@ class StudentModal extends React.Component {
                                         id="city"
                                         name="city"
                                         value={state.contactInformation.city}
-                                        onChange={(event) => handleChange(event, 'city', 'contactInformation')} />
+                                        onChange={(event) => handleChange(event, 'city', 'contactInformation')}
+                                      />
                                       <label className="label" htmlFor="city">City (optional)</label>
                                     </div>
                                   </div>
@@ -160,7 +151,8 @@ class StudentModal extends React.Component {
                                           name="zipCode"
                                           id="zipCode"
                                           value={state.contactInformation.zipCode}
-                                          onChange={(event) => handleChange(event, 'zipCode', 'contactInformation')} />
+                                          onChange={(event) => handleChange(event, 'zipCode', 'contactInformation')}
+                                        />
                                         <label className="label" htmlFor="zipCode">Zip (optional)</label>
                                       </div>
                                     </div>
@@ -223,9 +215,9 @@ class StudentModal extends React.Component {
           `}
         </style>
       </Portal >
-    )
+    );
   }
-};
+}
 
 StudentModal.propTypes = {
   open: PropTypes.bool.isRequired,

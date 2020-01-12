@@ -4,7 +4,6 @@ const updatedUser = {
     firstName: 'Christian',
     lastName: 'Chavarro',
     email: 'christian-chavarro@email.com',
-    gender: 'Male',
   },
   contactInfo: {
     phone: '123-456-7890',

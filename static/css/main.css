@@ -6376,7 +6376,7 @@ input[type=range]::-ms-thumb {
 }
 
 .sidenav li.active {
-	background-color: rgba(0, 0, 0, .05);
+	background-color: #e74021;
 }
 
 .sidenav li > a {
@@ -11894,10 +11894,12 @@ input[type="submit"] {
 
 .card-main,
 .card-main-full {
-	box-shadow: 0 0 4px rgba(35, 31, 32, .7);
 	margin-top: 0;
 	margin-left: auto;
 	margin-right: auto;
+}
+.card-main:hover, .card-main-full:hover {
+	box-shadow: 0 0 4px rgba(35, 31, 32, .7);
 }
 
 .modal-custom-doubled .card-main,

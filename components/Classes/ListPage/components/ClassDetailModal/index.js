@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Portal from "../../../../Portal";
 import update from 'immutability-helper';
+import Portal from "../../../../Portal";
 import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 
 import AccountInfo from '../SharedModalComponents/AccountInfo';
@@ -9,8 +9,6 @@ import ContactInfo from '../SharedModalComponents/ContactInfo';
 import Locations from '../SharedModalComponents/Locations';
 
 import { nestedEditFieldValidation } from '../../../../utils/fieldValidation';
-
-
 
 class ClassDetailModal extends React.Component {
   constructor(props) {
@@ -24,24 +22,23 @@ class ClassDetailModal extends React.Component {
       dropdownIsOpen: false,
       dropdownIndex: null,
       originalClassRoom: {
-        summary:{
-          amount_students:'',
-          start_date:'',
-          end_date:'',
-          improvement:0,
-          coursework_assigned:0,
-          coursework_completed:0,
-          problems_flagged_review:0,
-          average_score:0,
-          achieved_target_score:0,
-          average_practice_tests_completed:0,
-          instruction:0,
+        summary: {
+          amount_students: '',
+          start_date: '',
+          end_date: '',
+          improvement: 0,
+          coursework_assigned: 0,
+          coursework_completed: 0,
+          problems_flagged_review: 0,
+          average_score: 0,
+          achieved_target_score: 0,
+          average_practice_tests_completed: 0,
+          instruction: 0,
         },
         accountInfo: {
           firstName: '',
           lastName: '',
           email: '',
-          gender: '',
         },
         contactInfo: {
           phone: '',
@@ -53,24 +50,23 @@ class ClassDetailModal extends React.Component {
         locations: [],
       },
       updatedClassRoom: {
-        summary:{
-          amount_students:'',
-          start_date:'',
-          end_date:'',
-          improvement:0,
-          coursework_assigned:0,
-          coursework_completed:0,
-          problems_flagged_review:0,
-          average_score:0,
-          achieved_target_score:0,
-          average_practice_tests_completed:0,
-          instruction:0,
+        summary: {
+          amount_students: '',
+          start_date: '',
+          end_date: '',
+          improvement: 0,
+          coursework_assigned: 0,
+          coursework_completed: 0,
+          problems_flagged_review: 0,
+          average_score: 0,
+          achieved_target_score: 0,
+          average_practice_tests_completed: 0,
+          instruction: 0,
         },
         accountInfo: {
           firstName: '',
           lastName: '',
           email: '',
-          gender: '',
         },
         contactInfo: {
           phone: '',
@@ -86,25 +82,24 @@ class ClassDetailModal extends React.Component {
           firstName: true,
           lastName: true,
           email: true,
-          gender: true,
         },
       },
-    }
+    };
   }
 
   componentDidMount() {
-    const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = this.props;
-    const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+    const { classroom: { id, basicInfo, accountInfo, contactInfo, locations, summary } = {} } = this.props;
+    const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations, summary };
     const { originalClassRoom: originalClassRoomState } = this.state;
-    const originalClassRoom = update(originalClassRoomState, {$merge: updatedClassRoom,});
+    const originalClassRoom = update(originalClassRoomState, { $merge: updatedClassRoom });
     this.setState({ originalClassRoom, updatedClassRoom }); // eslint-disable-line
   }
 
   // This resets the component state to reflect the details of the next classroom the user clicks on
   componentWillReceiveProps = (nextProps) => {
     if ((!this.state.originalClassRoom || nextProps.classroom.id !== this.state.originalClassRoom.id)) {
-      const { classroom: { id, basicInfo, accountInfo, contactInfo, locations,summary } = {} } = nextProps;
-      const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+      const { classroom: { id, basicInfo, accountInfo, contactInfo, locations, summary } = {} } = nextProps;
+      const updatedClassRoom = { id, basicInfo, accountInfo, contactInfo, locations, summary };
       const { originalClassRoom: originalClassRoomState } = this.state;
       const originalClassRoom = update(originalClassRoomState, {
         $merge: nextProps.classroom,
@@ -115,11 +110,11 @@ class ClassDetailModal extends React.Component {
 
   // We pull the value based on the field type then merge that updated key/value pair with the last version of component state
   handleDetailsChange = (event, name, section) => {
-      const value = event.target ? event.target.value : event;
-      const updatedClassRoom = update(this.state.updatedClassRoom, {
-        [section]: { $merge: { [name]: value } },
-      });
-      this.setState({updatedClassRoom});
+    const value = event.target ? event.target.value : event;
+    const updatedClassRoom = update(this.state.updatedClassRoom, {
+      [section]: { $merge: { [name]: value } },
+    });
+    this.setState({ updatedClassRoom });
   }
 
   initialClassRoomMount = () => this.state.originalClassRoom.id !== this.props.classroom.id;
@@ -152,18 +147,19 @@ class ClassDetailModal extends React.Component {
   onSetValidation = (validation, cb) => this.setState({ validation }, cb);
 
   // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
+  // eslint-disable-next-line consistent-return
   onSubmit = async (event) => {
     event.preventDefault();
-    const { updatedClassRoom: { id, basicInfo, accountInfo, contactInfo, locations,summary } } = this.state;
+    const { updatedClassRoom: { id, basicInfo, accountInfo, contactInfo, locations, summary } } = this.state;
     const { onSaveLocationError, onSaveClassChanges, onClose } = this.props;
     // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
     // const valid = true;
     const valid = await nestedEditFieldValidation(this.state, this.state.updatedClassRoom, this.onSetValidation, (validation) => console.warn('validation', validation));
     if (!valid) {
-      // return onSaveLocationError();
       console.warn('not valid');
+      return onSaveLocationError();
     }
-    const postBody = { id, basicInfo, accountInfo, contactInfo, locations,summary };
+    const postBody = { id, basicInfo, accountInfo, contactInfo, locations, summary };
     onSaveClassChanges(postBody);
     onClose();
   }
@@ -175,9 +171,9 @@ class ClassDetailModal extends React.Component {
   }
 
   render() {
-    const { open,onOpenDeleteModal,onDeleteClass, deleteModalOpen,index } = this.props;
+    const { open, onDeleteClass, deleteModalOpen, index } = this.props;
     const { dropdownIsOpen, dropdownIndex, activeLocation, deleteLocationModalOpen, pendingLocationDelete, newLocationModalOpen, editLocationModalOpen,
-      updatedClassRoom: {accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations,},
+      updatedClassRoom: { accountInfo: updatedAccountInfo, contactInfo: updatedContactInfo, locations: updatedLocations },
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -185,7 +181,7 @@ class ClassDetailModal extends React.Component {
           <div className="overlay">
             <ClickOffComponentWrapper
               onOuterClick={this.onCancelChanges}
-              nestedModals={ deleteModalOpen || deleteLocationModalOpen || editLocationModalOpen || newLocationModalOpen }
+              nestedModals={deleteModalOpen || deleteLocationModalOpen || editLocationModalOpen || newLocationModalOpen}
             >
               <div
                 id="modal_user_edit"
@@ -203,7 +199,7 @@ class ClassDetailModal extends React.Component {
                             className="user-circle"
                             style={{
                               backgroundColor: "#0085ce",
-                              color: "#fff"
+                              color: "#fff",
                             }}
                           >
                             <img src="./static/images/img-owner01.jpg" alt="" />
@@ -226,7 +222,7 @@ class ClassDetailModal extends React.Component {
                       <div className="row mb-0">
                         <div className="col s12 l6">
                           <AccountInfo
-                            state={ this.initialClassRoomMount()? accountInfo: updatedAccountInfo }
+                            state={this.initialClassRoomMount() ? accountInfo : updatedAccountInfo}
                             handleDetailsChange={this.handleDetailsChange}
                           />
                           <ContactInfo
@@ -240,7 +236,7 @@ class ClassDetailModal extends React.Component {
                         </div>
                         <div className="col s12 l6">
                           <Locations
-                            state={ this.initialClassRoomMount()? locations : updatedLocations }
+                            state={this.initialClassRoomMount() ? locations : updatedLocations}
                             handleDetailsChange={this.handleDetailsChange}
                             dropdownIsOpen={dropdownIsOpen}
                             dropdownIndex={dropdownIndex}
@@ -252,11 +248,11 @@ class ClassDetailModal extends React.Component {
                             onSetDropdown={this.onSetDropdown}
                             onCloseDropdown={this.onCloseDropdown}
                             onOpenNewLocationModal={this.onOpenNewLocationModal}
-                            onOpenEditLocationModal={ this.onOpenEditLocationModal }
-                            onCloseNewLocationModal={ this.onCloseNewLocationModal}
-                            onCloseEditLocationModal={ this.onCloseEditLocationModal}
-                            onOpenDeleteLocationModal={ this.onOpenDeleteLocationModal }
-                            onCloseDeleteLocationModal={ this.onCloseDeleteLocationModal}
+                            onOpenEditLocationModal={this.onOpenEditLocationModal}
+                            onCloseNewLocationModal={this.onCloseNewLocationModal}
+                            onCloseEditLocationModal={this.onCloseEditLocationModal}
+                            onOpenDeleteLocationModal={this.onOpenDeleteLocationModal}
+                            onCloseDeleteLocationModal={this.onCloseDeleteLocationModal}
                           />
                         </div>
                       </div>
@@ -325,13 +321,13 @@ class ClassDetailModal extends React.Component {
 }
 
 ClassDetailModal.propTypes = {
-  index:PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
   deleteModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onOpenDeleteModal: PropTypes.func.isRequired,
   classroom: PropTypes.object.isRequired,
-  onSaveClassChanges:PropTypes.func.isRequired,
+  onSaveClassChanges: PropTypes.func.isRequired,
+  onDeleteClass: PropTypes.func.isRequired,
 };
 
 export default ClassDetailModal;

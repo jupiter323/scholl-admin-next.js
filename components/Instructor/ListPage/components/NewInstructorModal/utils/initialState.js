@@ -3,7 +3,6 @@ export default {
     firstName: '',
     lastName: '',
     email: '',
-    gender: '',
   },
   contactInfo: {
     phone: '',
