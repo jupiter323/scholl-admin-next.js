@@ -2,12 +2,17 @@
 
 import React from 'react';
 import update from 'immutability-helper';
+import Router from 'next/router';
 import { StickyContainer, Sticky } from 'react-sticky';
 import Dropdown from '../components/FormComponents/Dropdown';
 import getValueFromState from '../components/utils/getValueFromState';
 import stateOptions from '../components/utils/stateOptions';
 import { nestedEditFieldValidation } from '../components/utils/fieldValidation';
 import sampleInstructors from "../components/utils/sampleInstructors";
+
+import {
+  loggedIn,
+} from "../utils/AuthService";
 
 const timeZoneOptions = [
   {
@@ -86,13 +91,17 @@ class Account extends React.Component {
 
 
   componentDidMount() {
-    const { firstName, lastName, avatarURL, addressLine1, city, state, zipCode, timeZone, email = {} } = sampleInstructors[0];
-    const updatedAccount = { firstName, lastName, avatarURL, addressLine1, city, state, zipCode, timeZone, email };
-    const { originalAccount: originalAccountState } = this.state;
-    const originalAccount = update(originalAccountState, {
-      $merge: updatedAccount,
-    });
-    this.setState({ originalAccount, updatedAccount }); // eslint-disable-line
+    if(!loggedIn()){
+      Router.push('/login')
+    }else{
+      const { firstName, lastName, avatarURL, addressLine1, city, state, zipCode, timeZone, email = {} } = sampleInstructors[0];
+      const updatedAccount = { firstName, lastName, avatarURL, addressLine1, city, state, zipCode, timeZone, email };
+      const { originalAccount: originalAccountState } = this.state;
+      const originalAccount = update(originalAccountState, {
+        $merge: updatedAccount,
+      });
+      this.setState({ originalAccount, updatedAccount }); // eslint-disable-line
+    }
   }
 
   // This function is passed into nestedCreateFieldValidation, it takes the result of the validation check and a callback function

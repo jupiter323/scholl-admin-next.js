@@ -1,10 +1,16 @@
 import React from "react";
+import Router from 'next/router';
 import update from 'immutability-helper';
 import StatusPage from "../components/Classes/StatusPage";
 import ListPage from "../components/Classes/ListPage";
 import Moment from 'moment';
 import sampleClass from "../components/Classes/utils/sampleClass";
 import createNewClassRoomApi from '../components/Classes/index/api';
+
+
+import {
+  loggedIn,
+} from "../utils/AuthService";
 
 class Classes extends React.Component {
   constructor(props) {
@@ -13,6 +19,12 @@ class Classes extends React.Component {
       selectedClass: null,
       classes: sampleClass,
     };
+  }
+
+  componentDidMount() {
+    if(!loggedIn()){
+      Router.push('/login');
+    }
   }
 
   onHandleClassCard = (index) => {

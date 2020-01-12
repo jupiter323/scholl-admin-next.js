@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
+import Router from 'next/router';
 import { Sticky, StickyContainer } from 'react-sticky';
 import SessionList from "../components/Dashboard/components/SessionList";
 
+import {
+    loggedIn,
+} from "../utils/AuthService";
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Dashboard extends Component {
+    componentDidMount(){
+        if(!loggedIn()){
+            Router.push('/login')
+        }
+    }
     render() {
         return (
             <main id="main" role="main">
