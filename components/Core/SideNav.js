@@ -130,7 +130,6 @@ SideNav.propTypes = {
   isLogged:PropTypes.bool,
   onSetUserIsLogged:PropTypes.func,
   user: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
 }
 
 function mapDispatchToProps(dispatch){
