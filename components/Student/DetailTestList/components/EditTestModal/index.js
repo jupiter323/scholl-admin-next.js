@@ -136,8 +136,8 @@ class EditTestModal extends React.Component {
       settings: { testDate, dueDate, allowStudentToEnterAnswers, timed },
     } = this.state;
     return (
-      <Portal selector="#modal">
-        <div className="main-holder grey lighten-5 modal" style={{ zIndex: '1003', display: 'block', position: 'absolute', top: '0', width: '100%' }}>
+        <div className="wrapper">
+        <div className="card-modal card-main card switcher-section grey lighten-5 modal" style={{ zIndex: '1003', display: 'block', position: 'absolute', top: '0', minHeight:'100%',minWidth: '100%' }}>
           <div className="header-row card-panel light-blue lighten-1 white-text">
             <div className="card-panel-row row">
               <div className="icon-col col s1">
@@ -221,7 +221,7 @@ class EditTestModal extends React.Component {
             </div>
           </div>
         </div>
-      </Portal>
+        </div>
     );
   }
 }

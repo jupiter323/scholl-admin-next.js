@@ -27,8 +27,7 @@ class DetailTestList extends React.Component {
   }
 
   onToggleEditTestModal = (activeTest = null) => {
-    const { onSetIsVisibleTopBar } = this.props;
-    onSetIsVisibleTopBar(false);
+    this.onSetIsVisibleTopBar(false);
     this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown);
   }
 
@@ -43,10 +42,17 @@ class DetailTestList extends React.Component {
   onEnterAnswers = () => console.warn('Pending implementation of enter answers UI and functionality')
   onEditTest = () => console.warn('Pending implementation edit test UI and functionality')
   onDownloadReport = () => console.warn('Pending implementation of download report ui and functionality')
-  onDeleteTest = () => this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
-
+  onDeleteTest = () =>{
+    this.onSetIsVisibleTopBar(true);
+    this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
+  } 
+  onSetIsVisibleTopBar = (value) =>{
+    const {onSetIsVisibleTopBar } = this.props;
+    onSetIsVisibleTopBar(value);
+  }
   onSaveTestChanges = (testVersion, settings) => {
     this.onToggleEditTestModal();
+    this.onSetIsVisibleTopBar(true);
     console.warn('Pending save test changes functionality', testVersion, settings);
   }
   openTestScores = (index) => {
@@ -148,7 +154,7 @@ DetailTestList.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
+    onSetIsVisibleTopBar:(value) => {console.log("current visible value:",value);dispatch(setIsVisibleTopBar(value))},
   }
 }
 

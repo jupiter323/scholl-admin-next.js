@@ -81,7 +81,6 @@ class IndividualStudentPage extends React.Component {
     } = this.props;
     const { activePage, activationDropdownOpen, licenseCode } = this.state;
     const { assignLessonsModalOpen, assignWorkSheetsModalOpen,isVisibleTopBar } = this.props;
-    console.log("isVisibleTopBar:",isVisibleTopBar)
     return (
       <React.Fragment>
         <Choose>
