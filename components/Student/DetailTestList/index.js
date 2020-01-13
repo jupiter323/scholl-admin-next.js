@@ -1,10 +1,17 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import TestCard from './components/TestCard';
 import TestSections from '../TestSections';
 import sampleTests from './utils/sampleTests';
 import EditTestModal from './components/EditTestModal';
+
+import {
+  setIsVisibleTopBar
+} from '../index/actions';
+
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -19,7 +26,11 @@ class DetailTestList extends React.Component {
     };
   }
 
-  onToggleEditTestModal = (activeTest = null) => this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown)
+  onToggleEditTestModal = (activeTest = null) => {
+    const { onSetIsVisibleTopBar } = this.props;
+    onSetIsVisibleTopBar(false);
+    this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown);
+  }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
@@ -132,6 +143,18 @@ class DetailTestList extends React.Component {
 
 DetailTestList.propTypes = {
   user: PropTypes.object.isRequired,
+  onSetIsVisibleTopBar:PropTypes.func.isRequired,
 };
 
-export default DetailTestList;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
+  }
+}
+
+const withConnect = connect(
+  null,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(DetailTestList);
