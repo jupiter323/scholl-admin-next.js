@@ -13,11 +13,12 @@ import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import StudentNavBar from "../components/StudentNavBar";
 import ScoredTestListPage from "../ScoredTestListPage";
 import SessionCalendar from "../Calendar";
-
 import {
   makeSelectAssignLessonsModalOpen,
   makeSelectAssignWorkSheetsModalOpen,
 } from "../index/selectors";
+
+import sampleSelectedStudent from '../../utils/sampleSelectedStudent';
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -40,7 +41,9 @@ class IndividualStudentPage extends React.Component {
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
-    const { student } = this.props;
+    //The api data is not enough for now,so we are using dummy data for selected student detail
+    // const { student } = this.props;
+    const student = sampleSelectedStudent;
     if (activePage === "summary") {
       return <DetailSummaryPage user={student} />;
     }
