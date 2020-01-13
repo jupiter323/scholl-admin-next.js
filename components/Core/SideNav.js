@@ -1,10 +1,17 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
-import Link from 'next/link';
-import $ from 'jquery';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import Link from "next/link";
+import ActiveLink from "../../utils/ActiveLink";
+import { makeSelectUserIsLogged } from "../User/index/selectors";
+import { loggedIn } from "../../utils/AuthService";
+
+import { setUserIsLogged } from "../User/index/actions";
+import $ from "jquery";
 
 if (typeof window !== "undefined") {
   window.$ = $;
@@ -16,37 +23,36 @@ if (typeof window !== "undefined") {
 const menuItems = [
   {
     key: "dashboard",
-    page: "dashboard",
+    page: "dashboard"
   },
   {
     key: "students",
-    page: "students",
+    page: "students"
   },
   {
     key: "instructors",
-    page: "all-instructors",
+    page: "all-instructors"
   },
   {
     key: "classes",
-    page: "classes",
+    page: "classes"
   },
-  // hiding Locations menu from instructor view
-  // {
-  //   key: "locations",
-  //   page: "all-locations",
-  // },
+  {
+    key: "locations",
+    page: "all-locations"
+  },
   {
     key: "worksheets",
-    page: "worksheets",
+    page: "worksheets"
   },
   {
     key: "course templates",
-    page: "courseTemplates",
+    page: "courseTemplates"
   },
   {
     key: "help",
-    page: "help",
-  },
+    page: "help"
+  }
 ];
 
 const menuIconMap = {
@@ -57,19 +63,18 @@ const menuIconMap = {
   locations: "icon-location",
   worksheets: "icon-sheets-w",
   "course templates": "icon-module",
-  help: "icon-help",
+  help: "icon-help"
 };
 
 class SideNav extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
-    this.state = {
-      active: this.props.router.pathname.substr(1),
-    };
   }
 
   componentDidMount() {
+    const isLogged = loggedIn();
+    const { onSetUserIsLogged } = this.props;
+    onSetUserIsLogged(isLogged);
     $(".sidenav").sidenav();
   }
 
@@ -83,22 +88,20 @@ class SideNav extends Component {
           </h1>
           <ul>
             {menuItems.map(menuItem => (
-              <Link
+              <ActiveLink
                 href={`/${menuItem.page}`}
                 key={menuItem.key}
-                // activeClassName="active"
+                activeClassName="active"
+                scroll
               >
-                <li
-                  key={menuItem.key}
-                  style={{ cursor: "pointer" }}
-                >
+                <li key={menuItem.key} style={{ cursor: "pointer" }}>
                   <a>
                     <i className={menuIconMap[menuItem.key]}></i>
                     {menuItem.key.charAt(0).toUpperCase() +
                       menuItem.key.slice(1)}
                   </a>
                 </li>
-              </Link>
+              </ActiveLink>
             ))}
           </ul>
           <div className="log-block white-text" style={{ cursor: "hand" }}>
@@ -124,8 +127,26 @@ class SideNav extends Component {
 }
 
 SideNav.propTypes = {
+  isLogged:PropTypes.bool,
+  onSetUserIsLogged:PropTypes.func,
   user: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-};
+}
 
-export default withRouter(SideNav);
+function mapDispatchToProps(dispatch){
+  return {
+    onSetUserIsLogged:(value) => dispatch(setUserIsLogged(value)),
+  }
+}
+
+const mapStateToProps = createStructuredSelector({
+  isLogged:makeSelectUserIsLogged(),
+})
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  {pure:false}
+)
+
+export default compose(withConnect)(SideNav);

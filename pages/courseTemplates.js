@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import update from 'immutability-helper';
 import {StickyContainer, Sticky} from 'react-sticky';
 import FilterSection from '../components/CourseTemplate/components/FilterSection';
@@ -6,6 +7,10 @@ import TemplateCard from '../components/CourseTemplate/components/TemplateCard';
 
 import sampleTemplates from '../components/CourseTemplate/utils/sampleTemplate';
 import { sessionSort, lessonSort, estimatedTotalCourseWorkSort } from '../components/CourseTemplate/utils/sortOptions';
+
+import {
+  loggedIn,
+} from "../utils/AuthService";
 
 class CourseTemplates extends React.Component {
   constructor(props) {
@@ -20,6 +25,12 @@ class CourseTemplates extends React.Component {
       titleFilter: '',
       sort: '',
     };
+  }
+
+  componentDidMount () {
+    if(!loggedIn()){
+      Router.push('/login');
+    }
   }
 
   onClearFilters = () => this.setState({ subjectFilters: [], sourceFilters: [], titleFilter: '', sort: '' })

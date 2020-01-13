@@ -1,4 +1,5 @@
 import React from "react";
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import Moment from 'moment';
@@ -11,6 +12,11 @@ import sampleClass from "../components/Classes/utils/sampleClass";
 import { createClass, fetchClasses } from '../components/Classes/index/actions';
 import { makeSelectClasses } from '../components/Classes/index/selectors';
 
+
+import {
+  loggedIn,
+} from "../utils/AuthService";
+
 class Classes extends React.Component {
   constructor(props) {
     super(props);
@@ -20,9 +26,14 @@ class Classes extends React.Component {
     };
   }
 
-  componentDidMount = () => {
-    const { onFetchClasses } = this.props;
-    onFetchClasses();
+  componentDidMount() {
+    if(!loggedIn()){
+      Router.push('/login');
+    }else{
+      const { onFetchClasses } = this.props;
+      onFetchClasses();
+    }
+    
   }
 
   componentDidUpdate() {

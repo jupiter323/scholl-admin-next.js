@@ -1,8 +1,18 @@
 import React from 'react';
+import Router from 'next/router';
 import InstructorListPage from '../components/Instructor/ListPage';
+
+import {
+  loggedIn,
+} from "../utils/AuthService";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class InstructorList extends React.Component {
+  componentDidMount(){
+    if(!loggedIn()){
+      Router.push('/login')
+    }
+  }
   render() {
     return (
       <main id="main" role="main">

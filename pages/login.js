@@ -1,8 +1,59 @@
 import React, { Component } from "react";
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import PropTypes from "prop-types";
+import { logIn, loggedIn, logout, setToken } from "../utils/AuthService";
+import Router from "next/router";
+import { setUserIsLogged } from "../components/User/index/actions";
 
 class Login extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
+
+  componentDidMount() {
+    if (loggedIn()) {
+      logout();
+      const { onSetUserIsLogged } = this.props;
+      onSetUserIsLogged(false);
+    }
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault();
+    const grant_type = "password";
+    const client_id = "1";
+    const client_secret = "5eRIxuj2rWQDAWplsOK0PtgV8LW4wlLFsCc92ty4";
+    const username = "test1@example.com";
+    const password = "password";
+    const postBody = {
+      grant_type,
+      client_id,
+      client_secret,
+      username,
+      password
+    };
+    const data = await logIn(postBody);
+    if (data) {
+      setToken(data.access_token, data.refresh_token);
+      const { onSetUserIsLogged } = this.props;
+      onSetUserIsLogged(true);
+      Router.push("/dashboard");
+    }
+  };
+
+  handleChangeForm = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
   render() {
+    const { email, password } = this.state;
     return (
       <React.Fragment>
         <div className="wrapper forgot_account_number">
@@ -25,16 +76,28 @@ class Login extends Component {
                   <div className="formsec">
                     <ul className="clearfix">
                       <li>
-                        <input type="text" placeholder="email" />
+                        <input 
+                          type="text"
+                          name="email"
+                          placeholder="email" 
+                          value={email}
+                          onChange={this.handleChangeForm}
+                        />
                       </li>
                       <li>
-                        <input type="text" placeholder="password" />
+                        <input 
+                          type="text" 
+                          name="password"
+                          placeholder="password" 
+                          value={password}
+                          onChange={this.handleChangeForm}
+                        />
                       </li>
                       <li style = {{textAlign:"right"}}>
                         <a >Forgot Password</a>
                       </li>
                       <li>
-                        <button className="btn waves-effect read">LogIn</button>
+                        <button className="btn waves-effect read" onClick={this.handleSubmit}>LogIn</button>
                       </li>
                     </ul>
                   </div>
@@ -200,6 +263,16 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {};
+Login.propTypes = {
+  onSetUserIsLogged: PropTypes.func.isRequired,
+};
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetUserIsLogged: value => dispatch(setUserIsLogged(value))
+  };
+}
+
+const withConnect = connect(null, mapDispatchToProps);
+
+export default compose(withConnect)(Login);
