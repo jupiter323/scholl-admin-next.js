@@ -5,8 +5,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { fetchStudents, createStudent, deleteStudent } from '../components/Student/index/actions';
-import { makeSelectStudents } from '../components/Student/index/selectors';
+import {fetchStudents, createStudent, deleteStudent,setStudents} from '../components/Student/index/actions';
+import {makeSelectStudents} from '../components/Student/index/selectors';
 import StudentCard from '../components/Student/components/StudentCard';
 import FilterSection from '../components/Student/ListPage/Components/FilterSection';
 import StudentModal from '../components/Student/components/StudentModal';
@@ -25,7 +25,7 @@ class Students extends Component {
     super(props);
     this.state = {
       selectedStudent: null,
-      students: [],
+      students: this.props.students,
       studentModalOpen: false,
       locationModalOpen: false,
       dropdownIsOpen: false,
@@ -58,8 +58,10 @@ class Students extends Component {
   }
 
   componentDidMount = () => {
-    const { onFetchStudents } = this.props;
-    onFetchStudents();
+    const { onFetchStudents,students } = this.props;
+    if(students.length === 0){
+      onFetchStudents();
+    }
   };
 
   componentDidUpdate() {
@@ -241,6 +243,8 @@ class Students extends Component {
       },
     });
     this.setState({ students });
+    const { onSetStudents } = this.props;
+    onSetStudents(students);
   };
 
   onSetDropdown = dropdownIndex =>
@@ -383,6 +387,7 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
+  onSetStudents: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -392,6 +397,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   onDeleteStudent: (id) => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
+  onSetStudents:(students) => dispatch(setStudents(students)),
   onCreateStudent: (student) => dispatch(createStudent(student)),
 });
 

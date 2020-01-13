@@ -191,7 +191,6 @@ class EditModal extends React.Component {
         active: updatedActive, studentInformation: updatedStudentInformation, contactInformation: updatedContactInformation, emailAddress: updatedEmailAddress, location: updatedLocation,
       },
     } = this.state;
-
     return (
       <Portal selector="#modal">
         {open && (
