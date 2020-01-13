@@ -1,0 +1,7 @@
+commands:
+  01_npm_install:
+    command: npm install
+    cwd: var/app/current
+  02_npm_build:
+    command: npm run build
+    cwd: var/app/current

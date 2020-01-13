@@ -13,7 +13,7 @@ const AccountStatus = ({ state: { licenseCode, status, activationDate, expiratio
                 type="text"
                 id="license-code"
                 name="licenseCode"
-                value={licenseCode}
+                defaultValue={licenseCode}
                 readOnly=""
               />
               <label className="label active" htmlFor="code">License Code</label>
@@ -25,7 +25,7 @@ const AccountStatus = ({ state: { licenseCode, status, activationDate, expiratio
                 type="text"
                 id="status"
                 name="status"
-                value={status}
+                defaultValue={status}
                 readOnly=""
               />
               <label className="label active" htmlFor="status">Status</label>
@@ -37,7 +37,7 @@ const AccountStatus = ({ state: { licenseCode, status, activationDate, expiratio
                 type="text"
                 id="activation-date"
                 name="activationDate"
-                value={activationDate}
+                defaultValue={activationDate}
                 readOnly=""
               />
               <label className="label active" htmlFor="activation-date">Activation Date</label>
@@ -49,7 +49,7 @@ const AccountStatus = ({ state: { licenseCode, status, activationDate, expiratio
                 type="text"
                 id="expiration-date"
                 name="expirationDate"
-                value={expirationDate}
+                defaultValue={expirationDate}
                 readOnly=""
               />
               <label className="label active" htmlFor="expiration-date">Expiration Date</label>

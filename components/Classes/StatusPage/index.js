@@ -11,13 +11,13 @@ import DetailWorksheetPage from "../DetailWorksheetPage";
 import SessionCalendar from "../Calendar";
 import sampleClass from "../utils/sampleSummaryClass";
 
-import { makeSelectAssignLessonsModalOpen,makeSelectAssignWorkSheetsModalOpen } from "../index/selectors";
+import { makeSelectAssignLessonsModalOpen, makeSelectAssignWorkSheetsModalOpen } from "../index/selectors";
 
 class StatusPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: "summary"
+      active: "summary",
     };
   }
 
@@ -42,7 +42,7 @@ class StatusPage extends React.Component {
 
   render() {
     const { active } = this.state;
-    const { assignLessonsModalOpen,assignWorkSheetsModalOpen } = this.props;
+    const { assignLessonsModalOpen, assignWorkSheetsModalOpen } = this.props;
     return (
       <StickyContainer>
         <Choose>
@@ -92,12 +92,12 @@ class StatusPage extends React.Component {
 
 StatusPage.propTypes = {
   assignLessonsModalOpen: PropTypes.bool,
-  assignWorkSheetsModalOpen:PropTypes.bool,
+  assignWorkSheetsModalOpen: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
-  assignWorkSheetsModalOpen:makeSelectAssignWorkSheetsModalOpen(),
+  assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen(),
 });
 
 const withConnect = connect(mapStateToProps, null);

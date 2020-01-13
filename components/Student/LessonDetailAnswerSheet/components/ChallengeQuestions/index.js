@@ -32,7 +32,7 @@ class ChallengeQuestions extends React.Component {
 
 ChallengeQuestions.propTypes = {
   questions: PropTypes.array.isRequired,
-  answerSheetComplete: PropTypes.bool.isRequired,
+  answerSheetComplete: PropTypes.string.isRequired,
   onOpenQuestionModal: PropTypes.func.isRequired,
 };
 

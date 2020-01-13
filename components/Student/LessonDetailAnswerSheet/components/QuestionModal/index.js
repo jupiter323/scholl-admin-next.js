@@ -12,7 +12,7 @@ class QuestionModal extends React.Component {
     super(props);
     this.state = {
       reviewedWithStudent: false,
-    }
+    };
   }
 
   toggleReviewedStatus = () => this.setState(({ reviewedWithStudent }) => ({ reviewedWithStudent: !reviewedWithStudent }))
@@ -27,7 +27,7 @@ class QuestionModal extends React.Component {
             <span className="answer-text">{answer.answerText}</span>
           </div>
         </li>
-      ))
+      ));
     }
     return answerChoices.map(answer => (
       <li className="answer-block" key={answer.answerValue}>
@@ -35,7 +35,7 @@ class QuestionModal extends React.Component {
           <span className="answer-text" style={{ marginLeft: '30px' }}>{answer.answerValue}</span>
         </div>
       </li>
-    ))
+    ));
   }
 
   renderAnswerPercentageBreakdown = () => {
@@ -48,7 +48,7 @@ class QuestionModal extends React.Component {
           </div>
           <b className="informer-value">{answer.answerPercentage}%</b>
         </li>
-      ))
+      ));
     }
     return answerChoices.map(answer => (
       <li className="informer-block" key={answer.answerValue}>
@@ -57,7 +57,7 @@ class QuestionModal extends React.Component {
         </div>
         <b className="informer-value">{answer.answerPercentage}%</b>
       </li>
-    ))
+    ));
   }
 
   render() {
@@ -86,8 +86,8 @@ class QuestionModal extends React.Component {
                         <div className="card-panel">
                           <div className="video-frame">
                             <div className="embed-responsive embed-responsive-16by9">
-                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={videoThumbnail} preload="metadata" controls playsinline>
-                              <source type="video/mp4" src={videoSource} />
+                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={videoThumbnail} preload="metadata" controls playsInline>
+                                <source type="video/mp4" src={videoSource} />
                               </video>
                             </div>
                           </div>
@@ -104,8 +104,9 @@ class QuestionModal extends React.Component {
                               </div>
                             )}
                             <div className="col">
-                              <label>
+                              <label htmlFor="reviewedWithStudent">
                                 <input
+                                  id="reviewedWithStudent"
                                   type="checkbox"
                                   className="filled-in"
                                   checked={reviewedWithStudent}
@@ -182,6 +183,6 @@ QuestionModal.propTypes = {
   open: PropTypes.bool.isRequired,
   question: PropTypes.object.isRequired,
   onCloseModal: PropTypes.func.isRequired,
-}
+};
 
 export default QuestionModal;
