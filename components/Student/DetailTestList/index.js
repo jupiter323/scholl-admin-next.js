@@ -154,7 +154,7 @@ DetailTestList.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetIsVisibleTopBar:(value) => {console.log("current visible value:",value);dispatch(setIsVisibleTopBar(value))},
+    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
   }
 }
 
