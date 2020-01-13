@@ -15,6 +15,7 @@ import {
   SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
+  SET_IS_VISIBLE_TOP_BAR,
 } from './constants';
 
 export function fetchStudents() {
@@ -127,4 +128,12 @@ export function setCalendarRows(rows) {
     type: SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
     rows,
   };
+}
+
+
+export function setIsVisibleTopBar(value){
+  return {
+    type:SET_IS_VISIBLE_TOP_BAR,
+    value
+  }
 }
