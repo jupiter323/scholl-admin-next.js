@@ -71,6 +71,7 @@ class NewTestModal extends React.Component {
       isIncluded,
       isTimed
     } = this.state;
+    console.log("timeDueFor length:",timeDueFor)
     return (
       <Portal selector="#modal">
         {open && (
@@ -149,7 +150,7 @@ class NewTestModal extends React.Component {
                                   dateFormat="h:mm aa"
                                 />
                                 <label
-                                  className={ timeAssignedFor.length ? "label active" : "label"}
+                                  className={ timeAssignedFor !== "" ? "label active" : "label"}
                                   htmlFor="timeAssignedFor"
                                 >
                                   Time
@@ -182,7 +183,7 @@ class NewTestModal extends React.Component {
                                   dateFormat="h:mm aa"
                                 />
                                 <label
-                                  className={ timeDueFor.length ? "label active" : "label"}
+                                  className={ timeDueFor !== "" ? "label active" : "label"}
                                   htmlFor="timeDueFor"
                                 >
                                   Time
