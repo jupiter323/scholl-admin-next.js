@@ -118,10 +118,12 @@ class DetailTestList extends React.Component {
 
   onSaveNewTest = (test) => {
     this.onCloseTestModal();
+    const { tests:prevTestsState } = this.state;
+    const newId = prevTestsState.length + 1;
     const sampleNewTest = {
-      id: 6,
+      id: newId,
       status: 'future',
-      title: 'Practice Test 4',
+      title: 'Practice Test '+ newId,
       testDate: Moment(test.testDate).format('YYYY-MM-DD'),
       dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
       completionDate: '',
@@ -129,7 +131,6 @@ class DetailTestList extends React.Component {
       weekNumber: '3',
       subjects: [{},{}],
     };
-    const { tests:prevTestsState } = this.state;
     const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
     this.setState({tests:updatedTests});
   }
