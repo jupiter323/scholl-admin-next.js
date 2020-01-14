@@ -7,6 +7,8 @@ import TestCard from './components/TestCard';
 import TestSections from '../TestSections';
 import sampleTests from './utils/sampleTests';
 import EditTestModal from './components/EditTestModal';
+import NewTestModal from './components/TestModal';
+
 
 import {
   setIsVisibleTopBar
@@ -23,6 +25,7 @@ class DetailTestList extends React.Component {
       editTestModalOpen: false,
       activeTest: null,
       selectedTest: null,
+      createTestModalOpen:false,
     };
   }
 
@@ -36,6 +39,9 @@ class DetailTestList extends React.Component {
 
   onCreateTest = (event) => {
     event.preventDefault();
+    this.setState({
+      createTestModalOpen:true,
+    })
     console.warn('Pending implementation of create test UI and functionality');
   }
 
@@ -102,8 +108,14 @@ class DetailTestList extends React.Component {
     ))
   }
 
+  onCloseTestModal = () => {
+    this.setState({
+      createTestModalOpen:false,
+    })
+  }
+
   render() {
-    const { editTestModalOpen, activeTest, selectedTest} = this.state;
+    const { editTestModalOpen,createTestModalOpen, activeTest, selectedTest} = this.state;
     const {user} = this.props;
     return (
       <React.Fragment>
@@ -115,6 +127,12 @@ class DetailTestList extends React.Component {
               test={activeTest}
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
+            />
+          </When>
+          <When condition = {createTestModalOpen}>
+            <NewTestModal
+              open = {createTestModalOpen}
+              onClose = {this.onCloseTestModal}
             />
           </When>
           <Otherwise>
