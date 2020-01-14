@@ -11,12 +11,11 @@ class NewTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    
       version: "SAT Pratice Test #1",
       timeAssignedFor: "",
       timeDueFor: "",
-      dayAssignedFor: "",
-      dayDueFor: "",
+      testDate: "",
+      dueDate: "",
       reading: false,
       mathNoCalc: false,
       writing: false,
@@ -54,13 +53,19 @@ class NewTestModal extends React.Component {
     }
   };
 
+    onSave = () => {
+        const { onSave } = this.props;
+        onSave(this.state);
+    }    
+
+
   render() {
-    const { open, onClose,onSave } = this.props;
+    const { open, onClose } = this.props;
     const {
       versionOptions,
       version,
-      dayAssignedFor,
-      dayDueFor,
+      testDate,
+      dueDate,
       timeAssignedFor,
       timeDueFor,
       reading,
@@ -128,9 +133,9 @@ class NewTestModal extends React.Component {
                               <div className="datepicker-field input-field">
                                 <i className="icon-calendar" />
                                 <DatePicker
-                                  id="dayAssignedFor"
-                                  selected={ dayAssignedFor !== "" ? new Date() : dayAssignedFor }
-                                  onChange={date => this.handleDetailsChange( date,"dayAssignedFor")}
+                                  id="testDate"
+                                  selected={ testDate !== "" ? new Date() : testDate }
+                                  onChange={date => this.handleDetailsChange( date,"testDate")}
                                   placeholderText="AssignFor"
                                 />
                               </div>
@@ -162,9 +167,9 @@ class NewTestModal extends React.Component {
                               <div className="datepicker-field input-field">
                                 <i className="icon-calendar" />
                                 <DatePicker
-                                  id="dayDueFor"
-                                  selected={ dayDueFor !== "" ? new Date() : dayDueFor}
-                                  onChange={date => this.handleDetailsChange(date, "dayDueFor")}
+                                  id="dueDate"
+                                  selected={ dueDate !== "" ? new Date() : dueDate}
+                                  onChange={date => this.handleDetailsChange(date, "dueDate")}
                                   placeholderText="Due(optional)"
                                 />
                               </div>
@@ -309,7 +314,7 @@ class NewTestModal extends React.Component {
                           >
                             Cancel
                           </a>
-                          <a href="#" className="btn" onClick = {onSave}>
+                          <a href="#" className="btn" onClick = {this.onSave}>
                             Save
                           </a>
                         </div>

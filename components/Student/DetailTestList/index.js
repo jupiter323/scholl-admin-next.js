@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import Moment from 'moment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import TestCard from './components/TestCard';
@@ -116,7 +118,20 @@ class DetailTestList extends React.Component {
 
   onSaveNewTest = (test) => {
     this.onCloseTestModal();
-
+    const sampleNewTest = {
+      id: 6,
+      status: 'future',
+      title: 'Practice Test 4',
+      testDate: Moment(test.testDate).format('YYYY-MM-DD'),
+      dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
+      completionDate: '',
+      completionTime: '',
+      weekNumber: '3',
+      subjects: [{},{}],
+    };
+    const { tests:prevTestsState } = this.state;
+    const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
+    this.setState({tests:updatedTests});
   }
 
   render() {
