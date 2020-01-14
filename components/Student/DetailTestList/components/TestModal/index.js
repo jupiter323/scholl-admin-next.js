@@ -139,18 +139,15 @@ class NewTestModal extends React.Component {
                             <div className="col s6">
                               <div className="datepicker-field input-field">
                                 <i className="icon-clock2"></i>
-                                <input
-                                  type="text"
-                                  className="timepicker"
-                                  id="timeAssignedFor"
-                                  value={timeAssignedFor}
-                                  onChange={event =>
-                                    this.handleDetailsChange(
-                                      event,
-                                      "timeAssignedFor"
-                                    )
-                                  }
-                                />
+                                <DatePicker
+                                    selected={timeAssignedFor}
+                                    onChange={date => this.handleDetailsChange(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
+                                    />
                                 <label
                                   className={
                                     timeAssignedFor.length
@@ -183,18 +180,15 @@ class NewTestModal extends React.Component {
                             <div className="col s6">
                               <div className="datepicker-field input-field">
                                 <i className="icon-clock2"></i>
-                                <input
-                                  type="text"
-                                  className="timepicker"
-                                  id="timeDueFor"
-                                  value={timeDueFor}
-                                  onChange={event =>
-                                    this.handleDetailsChange(
-                                      event,
-                                      "timeDueFor"
-                                    )
-                                  }
-                                />
+                                <DatePicker
+                                    selected={timeDueFor}
+                                    onChange={date => this.handleDetailsChange(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
+                                    />
                                 <label
                                   className={
                                     timeDueFor.length ? "label active" : "label"
