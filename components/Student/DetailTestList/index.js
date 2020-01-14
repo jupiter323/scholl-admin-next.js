@@ -114,6 +114,11 @@ class DetailTestList extends React.Component {
     })
   }
 
+  onSaveNewTest = (test) => {
+    this.onCloseTestModal();
+
+  }
+
   render() {
     const { editTestModalOpen,createTestModalOpen, activeTest, selectedTest} = this.state;
     const {user} = this.props;
@@ -133,6 +138,7 @@ class DetailTestList extends React.Component {
             <NewTestModal
               open = {createTestModalOpen}
               onClose = {this.onCloseTestModal}
+              onSave = { this.onSaveNewTest}
             />
           </When>
           <Otherwise>

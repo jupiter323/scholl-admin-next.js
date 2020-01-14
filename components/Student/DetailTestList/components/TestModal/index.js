@@ -55,7 +55,7 @@ class NewTestModal extends React.Component {
   };
 
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose,onSave } = this.props;
     const {
       versionOptions,
       version,
@@ -71,7 +71,6 @@ class NewTestModal extends React.Component {
       isIncluded,
       isTimed
     } = this.state;
-    console.log("timeDueFor length:",timeDueFor)
     return (
       <Portal selector="#modal">
         {open && (
@@ -310,7 +309,7 @@ class NewTestModal extends React.Component {
                           >
                             Cancel
                           </a>
-                          <a href="#" className="btn">
+                          <a href="#" className="btn" onClick = {onSave}>
                             Save
                           </a>
                         </div>
@@ -367,7 +366,8 @@ class NewTestModal extends React.Component {
 
 NewTestModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  onSave:PropTypes.func.isRequired,
 };
 
 export default NewTestModal;
