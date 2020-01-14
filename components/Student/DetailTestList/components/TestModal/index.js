@@ -4,12 +4,22 @@ import Portal from "../../../../Portal";
 import getValueFromState from "../../../../utils/getValueFromState";
 import Dropdown from "../../../../FormComponents/Dropdown";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 class NewTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       version: "SAT Pratice Test #1",
-      timeAssignedFor: '',
+      timeAssignedFor: "",
+      timeDueFor: "",
+      dayAssignedFor: "",
+      dayDueFor: "",
+      reading: false,
+      mathNoCalc: false,
+      writing: false,
+      mathWithCalc: false,
       versionOptions: [
         {
           label: "SAT Pratice Test #1",
@@ -27,11 +37,24 @@ class NewTestModal extends React.Component {
     };
   }
 
-  handleDetailsChange = (event, name) => {};
+  handleDetailsChange = (event, name) => {
+
+  };
 
   render() {
     const { open, onClose } = this.props;
-    const { versionOptions, version,timeAssignedFor } = this.state;
+    const {
+      versionOptions,
+      version,
+      dayAssignedFor,
+      dayDueFor,
+      timeAssignedFor,
+      timeDueFor,
+      reading,
+      mathNoCalc,
+      writing,
+      mathWithCalc
+    } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
@@ -90,13 +113,30 @@ class NewTestModal extends React.Component {
                             </div>
                           </div>
                           <div className="row mb-0">
-                            <div className="col s12">
+                            <div className="col s6">
+                              <div className="datepicker-field input-field">
+                                <i className="icon-calendar" />
+                                <DatePicker
+                                  id="dayAssignedFor"
+                                  selected={
+                                    dayAssignedFor !== ""
+                                      ? new Date()
+                                      : dayAssignedFor
+                                  }
+                                  onChange={date =>
+                                    this.handleDetailsChange(date, "dayAssignedFor")
+                                  }
+                                  placeholderText="AssignFor"
+                                />
+                              </div>
+                            </div>
+                            <div className="col s6">
                               <div className="datepicker-field input-field">
                                 <i className="icon-clock2"></i>
                                 <input
                                   type="text"
                                   className="timepicker"
-                                  id="assignFor"
+                                  id="timeAssignedFor"
                                   value={timeAssignedFor}
                                   onChange={event =>
                                     this.handleDetailsChange(
@@ -111,10 +151,128 @@ class NewTestModal extends React.Component {
                                       ? "label active"
                                       : "label"
                                   }
-                                  htmlFor="detail_estimated_time"
+                                  htmlFor="timeAssignedFor"
                                 >
-                                  AssignFor
+                                  Time
                                 </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row mb-0">
+                            <div className="col s6">
+                              <div className="datepicker-field input-field">
+                                <i className="icon-calendar" />
+                                <DatePicker
+                                  id="dueFor"
+                                  selected={
+                                    dayDueFor !== "" ? new Date() : dayDueFor
+                                  }
+                                  onChange={date =>
+                                    this.handleDetailsChange(date, "dueFor")
+                                  }
+                                  placeholderText="Due(optional)"
+                                />
+                              </div>
+                            </div>
+                            <div className="col s6">
+                              <div className="datepicker-field input-field">
+                                <i className="icon-clock2"></i>
+                                <input
+                                  type="text"
+                                  className="timepicker"
+                                  id="timeDueFor"
+                                  value={timeDueFor}
+                                  onChange={event =>
+                                    this.handleDetailsChange(
+                                      event,
+                                      "timeDueFor"
+                                    )
+                                  }
+                                />
+                                <label
+                                  className={
+                                    timeDueFor.length ? "label active" : "label"
+                                  }
+                                  htmlFor="timeDueFor"
+                                >
+                                  Time
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="check-holder">
+                            <div className="row mb-0">
+                              <div className="col s6">
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="reading"
+                                      className="filled-in"
+                                      checked={reading}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "reding"
+                                        )
+                                      }
+                                    />
+                                    <span>Reading</span>
+                                  </label>
+                                </p>
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="mathNoCalc"
+                                      className="filled-in"
+                                      checked={mathNoCalc}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "mathNoCalc"
+                                        )
+                                      }
+                                    />
+                                    <span>Math(no calc)</span>
+                                  </label>
+                                </p>
+                              </div>
+                              <div className="col s6">
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="writing"
+                                      className="filled-in"
+                                      checked={writing}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "writing"
+                                        )
+                                      }
+                                    />
+                                    <span>Writing</span>
+                                  </label>
+                                </p>
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="mathWithCalc"
+                                      className="filled-in"
+                                      checked={mathWithCalc}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "mathWithCalc"
+                                        )
+                                      }
+                                    />
+                                    <span>Math(calculator)</span>
+                                  </label>
+                                </p>
                               </div>
                             </div>
                           </div>
