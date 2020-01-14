@@ -11,6 +11,7 @@ class NewTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+    
       version: "SAT Pratice Test #1",
       timeAssignedFor: "",
       timeDueFor: "",
@@ -20,9 +21,9 @@ class NewTestModal extends React.Component {
       mathNoCalc: false,
       writing: false,
       mathWithCalc: false,
-      isAllowed:false,
-      isIncluded:false,
-      isTimed:false,
+      isAllowed: false,
+      isIncluded: false,
+      isTimed: false,
       versionOptions: [
         {
           label: "SAT Pratice Test #1",
@@ -40,8 +41,17 @@ class NewTestModal extends React.Component {
     };
   }
 
-  handleDetailsChange = (event, name) => {
-
+  handleDetailsChange = (event, name, checkBox = false) => {
+    const value = event.target ? event.target.value : event;
+    if (checkBox) {
+      this.setState({
+        [name]: !this.state[name]
+      });
+    } else {
+      this.setState({
+        [name]: value
+      });
+    }
   };
 
   render() {
@@ -59,7 +69,7 @@ class NewTestModal extends React.Component {
       mathWithCalc,
       isAllowed,
       isIncluded,
-      isTimed,
+      isTimed
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -103,13 +113,8 @@ class NewTestModal extends React.Component {
                             <div className="col s12">
                               <div className="input-field">
                                 <Dropdown
-                                  value={getValueFromState(
-                                    version,
-                                    versionOptions
-                                  )}
-                                  onChange={event =>
-                                    this.handleDetailsChange(event, "version")
-                                  }
+                                  value={getValueFromState( version,versionOptions)}
+                                  onChange={event => this.handleDetailsChange(event, "version")}
                                   options={versionOptions}
                                   label="Version"
                                   stateKey="version"
@@ -124,14 +129,8 @@ class NewTestModal extends React.Component {
                                 <i className="icon-calendar" />
                                 <DatePicker
                                   id="dayAssignedFor"
-                                  selected={
-                                    dayAssignedFor !== ""
-                                      ? new Date()
-                                      : dayAssignedFor
-                                  }
-                                  onChange={date =>
-                                    this.handleDetailsChange(date, "dayAssignedFor")
-                                  }
+                                  selected={ dayAssignedFor !== "" ? new Date() : dayAssignedFor }
+                                  onChange={date => this.handleDetailsChange( date,"dayAssignedFor")}
                                   placeholderText="AssignFor"
                                 />
                               </div>
@@ -140,20 +139,17 @@ class NewTestModal extends React.Component {
                               <div className="datepicker-field input-field">
                                 <i className="icon-clock2"></i>
                                 <DatePicker
-                                    selected={timeAssignedFor}
-                                    onChange={date => this.handleDetailsChange(date)}
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                    />
+                                  id="timeAssignedFor"
+                                  selected={timeAssignedFor}
+                                  onChange={date => this.handleDetailsChange( date,"timeAssignedFor")}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                />
                                 <label
-                                  className={
-                                    timeAssignedFor.length
-                                      ? "label active"
-                                      : "label"
-                                  }
+                                  className={ timeAssignedFor.length ? "label active" : "label"}
                                   htmlFor="timeAssignedFor"
                                 >
                                   Time
@@ -166,13 +162,9 @@ class NewTestModal extends React.Component {
                               <div className="datepicker-field input-field">
                                 <i className="icon-calendar" />
                                 <DatePicker
-                                  id="dueFor"
-                                  selected={
-                                    dayDueFor !== "" ? new Date() : dayDueFor
-                                  }
-                                  onChange={date =>
-                                    this.handleDetailsChange(date, "dueFor")
-                                  }
+                                  id="dayDueFor"
+                                  selected={ dayDueFor !== "" ? new Date() : dayDueFor}
+                                  onChange={date => this.handleDetailsChange(date, "dayDueFor")}
                                   placeholderText="Due(optional)"
                                 />
                               </div>
@@ -181,18 +173,16 @@ class NewTestModal extends React.Component {
                               <div className="datepicker-field input-field">
                                 <i className="icon-clock2"></i>
                                 <DatePicker
-                                    selected={timeDueFor}
-                                    onChange={date => this.handleDetailsChange(date)}
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                    />
+                                  selected={timeDueFor}
+                                  onChange={date => this.handleDetailsChange(date, "timeDueFor")}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                />
                                 <label
-                                  className={
-                                    timeDueFor.length ? "label active" : "label"
-                                  }
+                                  className={ timeDueFor.length ? "label active" : "label"}
                                   htmlFor="timeDueFor"
                                 >
                                   Time
@@ -211,11 +201,7 @@ class NewTestModal extends React.Component {
                                       name="reading"
                                       className="filled-in"
                                       checked={reading}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "reding"
-                                        )
+                                      onChange={event => this.handleDetailsChange(event,"reading","checkBox")
                                       }
                                     />
                                     <span>Reading</span>
@@ -228,12 +214,7 @@ class NewTestModal extends React.Component {
                                       name="mathNoCalc"
                                       className="filled-in"
                                       checked={mathNoCalc}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "mathNoCalc"
-                                        )
-                                      }
+                                      onChange={event => this.handleDetailsChange( event, "mathNoCalc","checkbox")}
                                     />
                                     <span>Math(no calc)</span>
                                   </label>
@@ -247,12 +228,7 @@ class NewTestModal extends React.Component {
                                       name="writing"
                                       className="filled-in"
                                       checked={writing}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "writing"
-                                        )
-                                      }
+                                      onChange={event => this.handleDetailsChange( event, "writing","checkbox")}
                                     />
                                     <span>Writing</span>
                                   </label>
@@ -264,18 +240,16 @@ class NewTestModal extends React.Component {
                                       name="mathWithCalc"
                                       className="filled-in"
                                       checked={mathWithCalc}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "mathWithCalc"
-                                        )
-                                      }
+                                      onChange={event => this.handleDetailsChange(event,"mathWithCalc","checkbox")}
                                     />
                                     <span>Math(calculator)</span>
                                   </label>
                                 </p>
                               </div>
-                            <label>Note: scaled test scores may require combinations of sections</label>
+                              <label>
+                                Note: scaled test scores may require
+                                combinations of sections
+                              </label>
                             </div>
                           </div>
                           <div className="check-holder">
@@ -288,12 +262,7 @@ class NewTestModal extends React.Component {
                                       name="isAllowed"
                                       className="filled-in"
                                       checked={isAllowed}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "isAllowed"
-                                        )
-                                      }
+                                      onChange={event => this.handleDetailsChange( event,"isAllowed","checkbox")}
                                     />
                                     <span>Allow Student to Enter Answers</span>
                                   </label>
@@ -307,18 +276,15 @@ class NewTestModal extends React.Component {
                                       name="isIncluded"
                                       className="filled-in"
                                       checked={isIncluded}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "isIncluded"
-                                        )
-                                      }
+                                      onChange={event => this.handleDetailsChange( event,"isIncluded","checkbox")}
                                     />
-                                    <span>Include Score in Improvement Metrics</span>
+                                    <span>
+                                      Include Score in Improvement Metrics
+                                    </span>
                                   </label>
                                 </p>
-                                </div>
-                                <div className="col s12">
+                              </div>
+                              <div className="col s12">
                                 <p>
                                   <label>
                                     <input
@@ -326,12 +292,7 @@ class NewTestModal extends React.Component {
                                       name="isTimed"
                                       className="filled-in"
                                       checked={isTimed}
-                                      onChange={event =>
-                                        this.handleDetailsChange(
-                                          event,
-                                          "isTimed"
-                                        )
-                                      }
+                                      onChange={event => this.handleDetailsChange( event,"isTimed","checkbox")}
                                     />
                                     <span>Timed</span>
                                   </label>
