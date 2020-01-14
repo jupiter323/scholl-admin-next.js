@@ -20,6 +20,9 @@ class NewTestModal extends React.Component {
       mathNoCalc: false,
       writing: false,
       mathWithCalc: false,
+      isAllowed:false,
+      isIncluded:false,
+      isTimed:false,
       versionOptions: [
         {
           label: "SAT Pratice Test #1",
@@ -53,7 +56,10 @@ class NewTestModal extends React.Component {
       reading,
       mathNoCalc,
       writing,
-      mathWithCalc
+      mathWithCalc,
+      isAllowed,
+      isIncluded,
+      isTimed,
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -200,6 +206,7 @@ class NewTestModal extends React.Component {
                               </div>
                             </div>
                           </div>
+                          <label>Sections:</label>
                           <div className="check-holder">
                             <div className="row mb-0">
                               <div className="col s6">
@@ -271,6 +278,68 @@ class NewTestModal extends React.Component {
                                       }
                                     />
                                     <span>Math(calculator)</span>
+                                  </label>
+                                </p>
+                              </div>
+                            <label>Note: scaled test scores may require combinations of sections</label>
+                            </div>
+                          </div>
+                          <div className="check-holder">
+                            <div className="row mb-0">
+                              <div className="col s12">
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="isAllowed"
+                                      className="filled-in"
+                                      checked={isAllowed}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "isAllowed"
+                                        )
+                                      }
+                                    />
+                                    <span>Allow Student to Enter Answers</span>
+                                  </label>
+                                </p>
+                              </div>
+                              <div className="col s12">
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="isIncluded"
+                                      className="filled-in"
+                                      checked={isIncluded}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "isIncluded"
+                                        )
+                                      }
+                                    />
+                                    <span>Include Score in Improvement Metrics</span>
+                                  </label>
+                                </p>
+                                </div>
+                                <div className="col s12">
+                                <p>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      name="isTimed"
+                                      className="filled-in"
+                                      checked={isTimed}
+                                      onChange={event =>
+                                        this.handleDetailsChange(
+                                          event,
+                                          "isTimed"
+                                        )
+                                      }
+                                    />
+                                    <span>Timed</span>
                                   </label>
                                 </p>
                               </div>
