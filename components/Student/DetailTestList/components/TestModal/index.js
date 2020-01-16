@@ -12,8 +12,8 @@ class NewTestModal extends React.Component {
     super(props);
     this.state = {
       version: "SAT Pratice Test #1",
-      assignTime: "",
-      dueTime: "",
+      assignTime: new Date(),
+      dueTime: new Date(),
       assignDate: new Date(),
       dueDate: new Date(),
       reading: false,
