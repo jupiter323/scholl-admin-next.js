@@ -129,7 +129,7 @@ class DetailTestList extends React.Component {
       id: uuidGenerator(),
       status: 'future',
       title: 'Practice Test '+ newTestNumber,
-      testDate: Moment(test.testDate).format('YYYY-MM-DD'),
+      testDate: Moment(test.assignDate).format('YYYY-MM-DD'),
       dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
       completionDate: '',
       completionTime: '',
@@ -142,7 +142,7 @@ class DetailTestList extends React.Component {
     const postBody = {
       student_id:id,
       test_id: uuidGenerator(),
-      assignment_date:Moment(test.testDate).format('YYYY-MM-DD'),
+      assignment_date:Moment(test.assignDate).format('YYYY-MM-DD'),
       due_date: Moment(test.dueDate).format('YYYY-MM-DD')
     };
     assignTestToStudentApi(postBody)
