@@ -20,6 +20,8 @@ import {
   assignTestToStudentApi
 } from '../index/api';
 
+const uuidGenerator = require('uuid/v4');
+
 class DetailTestList extends React.Component {
   constructor(props) {
     super(props);
@@ -122,11 +124,11 @@ class DetailTestList extends React.Component {
   onSaveNewTest = (test) => {
     this.onCloseTestModal();
     const { tests:prevTestsState } = this.state;
-    const newId = prevTestsState.length + 1;
+    const newTestNumber = prevTestsState.length + 1;
     const sampleNewTest = {
-      id: newId,
+      id: uuidGenerator(),
       status: 'future',
-      title: 'Practice Test '+ newId,
+      title: 'Practice Test '+ newTestNumber,
       testDate: Moment(test.testDate).format('YYYY-MM-DD'),
       dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
       completionDate: '',
@@ -139,7 +141,7 @@ class DetailTestList extends React.Component {
     const {user:{id}} =  this.props;
     const postBody = {
       student_id:id,
-      test_id: "c3606646-c189-4830-83a7-b2fdaa11287b",
+      test_id: uuidGenerator(),
       assignment_date:Moment(test.testDate).format('YYYY-MM-DD'),
       due_date: Moment(test.dueDate).format('YYYY-MM-DD')
     };
