@@ -25,6 +25,11 @@ const makeSelectCalendarRows = () => createSelector(
     (substate) => substate.calendarRows
 )
 
+const makeSelectIsVisibleTopBar = () => createSelector(
+    makeSelectStudentPageState(),
+    (substate) => substate.isVisibleTopBar
+)
+
 export default selectStudentsDomain;
 export {
     makeSelectStudentPageState,
@@ -32,4 +37,5 @@ export {
     makeSelectAssignWorkSheetsModalOpen,
     makeSelectCalendarRows,
     makeSelectStudents,
+    makeSelectIsVisibleTopBar,
 }

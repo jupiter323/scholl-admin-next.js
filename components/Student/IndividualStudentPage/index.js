@@ -13,10 +13,16 @@ import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import StudentNavBar from "../components/StudentNavBar";
 import ScoredTestListPage from "../ScoredTestListPage";
 import SessionCalendar from "../Calendar";
+
 import {
   makeSelectAssignLessonsModalOpen,
   makeSelectAssignWorkSheetsModalOpen,
+  makeSelectIsVisibleTopBar,
 } from "../index/selectors";
+
+import {
+  setIsVisibleTopBar,
+} from '../index/actions';
 
 import sampleSelectedStudent from '../../utils/sampleSelectedStudent';
 
@@ -29,6 +35,14 @@ class IndividualStudentPage extends React.Component {
       licenseCode: "",
     };
   }
+
+  componentDidMount(){
+    const { onSetIsVisibleTopBar,isVisibleTopBar } = this.props;
+    if(!isVisibleTopBar){
+        onSetIsVisibleTopBar(true);
+    }
+  }
+
   onToggleActivationDropdown = () =>
     this.setState(({ activationDropdownOpen }) => ({
       activationDropdownOpen: !activationDropdownOpen,
@@ -79,12 +93,12 @@ class IndividualStudentPage extends React.Component {
       },
     } = this.props;
     const { activePage, activationDropdownOpen, licenseCode } = this.state;
-    const { assignLessonsModalOpen, assignWorkSheetsModalOpen } = this.props;
+    const { assignLessonsModalOpen, assignWorkSheetsModalOpen,isVisibleTopBar } = this.props;
     return (
       <React.Fragment>
         <Choose>
           <When
-            condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen}
+            condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen && isVisibleTopBar}
           >
             <Sticky>
               {({ style }) => (
@@ -225,13 +239,22 @@ class IndividualStudentPage extends React.Component {
 IndividualStudentPage.propTypes = {
   student: PropTypes.object.isRequired,
   onRedirectToStudentPage: PropTypes.func.isRequired,
+  isVisibleTopBar:PropTypes.bool,
+  onSetIsVisibleTopBar:PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
   assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen(),
+  isVisibleTopBar: makeSelectIsVisibleTopBar(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function maptDispatchToProps(dispatch){
+  return {
+    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
+  }
+}
+
+const withConnect = connect(mapStateToProps, maptDispatchToProps);
 
 export default compose(withConnect)(IndividualStudentPage);

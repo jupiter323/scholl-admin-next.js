@@ -1,10 +1,17 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import TestCard from './components/TestCard';
 import TestSections from '../TestSections';
 import sampleTests from './utils/sampleTests';
 import EditTestModal from './components/EditTestModal';
+
+import {
+  setIsVisibleTopBar
+} from '../index/actions';
+
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -19,7 +26,10 @@ class DetailTestList extends React.Component {
     };
   }
 
-  onToggleEditTestModal = (activeTest = null) => this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown)
+  onToggleEditTestModal = (activeTest = null) => {
+    this.onSetIsVisibleTopBar(false);
+    this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown);
+  }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
@@ -32,10 +42,17 @@ class DetailTestList extends React.Component {
   onEnterAnswers = () => console.warn('Pending implementation of enter answers UI and functionality')
   onEditTest = () => console.warn('Pending implementation edit test UI and functionality')
   onDownloadReport = () => console.warn('Pending implementation of download report ui and functionality')
-  onDeleteTest = () => this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
-
+  onDeleteTest = () =>{
+    this.onSetIsVisibleTopBar(true);
+    this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
+  } 
+  onSetIsVisibleTopBar = (value) =>{
+    const {onSetIsVisibleTopBar } = this.props;
+    onSetIsVisibleTopBar(value);
+  }
   onSaveTestChanges = (testVersion, settings) => {
     this.onToggleEditTestModal();
+    this.onSetIsVisibleTopBar(true);
     console.warn('Pending save test changes functionality', testVersion, settings);
   }
   openTestScores = (index) => {
@@ -132,6 +149,18 @@ class DetailTestList extends React.Component {
 
 DetailTestList.propTypes = {
   user: PropTypes.object.isRequired,
+  onSetIsVisibleTopBar:PropTypes.func.isRequired,
 };
 
-export default DetailTestList;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
+  }
+}
+
+const withConnect = connect(
+  null,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(DetailTestList);
