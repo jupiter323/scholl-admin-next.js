@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Portal from "../../../../Portal";
 import getValueFromState from "../../../../utils/getValueFromState";
 import Dropdown from "../../../../FormComponents/Dropdown";
-
+import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -80,6 +80,7 @@ class NewTestModal extends React.Component {
         {open && (
           <React.Fragment>
             <div className="overlay">
+            <ClickOffComponentWrapper onOuterClick={onClose}>
               <div
                 id="modal_add_new_class"
                 className="modal modal-custom modal-460"
@@ -385,6 +386,7 @@ class NewTestModal extends React.Component {
                   </fieldset>
                 </form>
               </div>
+              </ClickOffComponentWrapper>
             </div>
           </React.Fragment>
         )}

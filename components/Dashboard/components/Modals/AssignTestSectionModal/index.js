@@ -201,6 +201,7 @@ class AssignTestSectionModal extends React.Component {
                                   label="Version"
                                   stateKey="version"
                                   dropdownKey="version"
+                                  style = {{overflow:'visible'}}
                                 />
                               </div>
                             </div>
