@@ -16,6 +16,9 @@ import {
   setIsVisibleTopBar
 } from '../index/actions';
 
+import {
+  assignTestToStudentApi
+} from '../index/api';
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -133,6 +136,14 @@ class DetailTestList extends React.Component {
     };
     const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
     this.setState({tests:updatedTests});
+    const {user:{id}} =  this.props;
+    const postBody = {
+      student_id:id,
+      test_id: "c3606646-c189-4830-83a7-b2fdaa11287b",
+      assignment_date:Moment(test.testDate).format('YYYY-MM-DD'),
+      due_date: Moment(test.dueDate).format('YYYY-MM-DD')
+    };
+    assignTestToStudentApi(postBody)
   }
 
   render() {
