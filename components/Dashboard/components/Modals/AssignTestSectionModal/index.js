@@ -10,6 +10,10 @@ import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 
+import {
+  assignTestToStudentApi
+} from '../../../../student/index/api';
+
 const sampleVersions = [
   {
     label: 'SAT Practice Test #1',
@@ -43,6 +47,8 @@ const sampleSections = [
     value: 'Math (calculator)',
   },
 ];
+
+const uuidGenerator = require('uuid/v4');
 
 class AssignTestSectionModal extends React.Component {
   constructor(props) {
@@ -83,6 +89,14 @@ class AssignTestSectionModal extends React.Component {
     const dueTime = moment(unformattedDueTime).format('hh:mm');
     onAssignTestSection({ version, section, assignDate, assignTime, dueDate, dueTime, timed });
     this.onResetModal();
+    const {user:{id}} =  this.props;
+    const postBody = {
+      student_id:id,
+      test_id: uuidGenerator(),
+      assignment_date:moment(unformattedAssignDate).format('YYYY-MM-DD'),
+      due_date: moment(unformattedDueDate).format('YYYY-MM-DD')
+    };
+    assignTestToStudentApi(postBody)
   }
 
   handleDetailsChange = (event, name = null) => {
@@ -282,6 +296,7 @@ AssignTestSectionModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onAssignTestSection: PropTypes.func.isRequired,
+  user:PropTypes.object.isRequired,
 };
 
 export default AssignTestSectionModal;

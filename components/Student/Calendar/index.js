@@ -487,6 +487,7 @@ class Calendar extends Component {
               open={assignTestSectionModalOpen}
               onClose={this.onToggleAssignTestSectionModal}
               onAssignTestSection={this.onAssignTestSection}
+              user = {this.props.user}
             />
             <AssignSimulatedSatModal
               modalDate={modalDate}
@@ -674,6 +675,7 @@ Calendar.propTypes = {
   onSetAssignWorksheetModalOpen: PropTypes.func.isRequired,
   onSetCalendarRows: PropTypes.func.isRequired,
   rows: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 

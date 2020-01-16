@@ -80,7 +80,7 @@ class IndividualStudentPage extends React.Component {
       return <ScoredTestListPage />;
     }
     if (activePage === "calendar") {
-      return <SessionCalendar />;
+      return <SessionCalendar user = {student}/>;
     }
     return null;
   };
