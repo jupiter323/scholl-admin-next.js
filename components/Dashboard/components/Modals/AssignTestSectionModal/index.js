@@ -154,224 +154,212 @@ class AssignTestSectionModal extends React.Component {
                 id="modal_assign_test_section"
                 className="modal modal-custom modal-460"
               >
-                <form action="#" className="custom-form">
-                  <fieldset>
-                    <div className="card-modal card-main card">
-                      <div
-                        className="card-panel card-panel-title"
-                        style={{ backgroundColor: "#00638e", color: "#fff" }}
-                      >
-                        <div className="card-panel-row row">
-                          <div className="col">
-                            <h2 className="h3">
-                              <span className="heading-holder">
-                                <i className="icon-assign-section"></i>
-                                <span className="heading-block">
-                                  Assign Test Section (as coursework)
-                                </span>
-                              </span>
-                            </h2>
-                          </div>
-                          <div className="col right-align">
-                            <a
-                              href="#!"
-                              onClick={this.onCloseModal}
-                              className="panel-link close modal-close"
-                            >
-                              <i className="icon-close-thin"></i>
-                            </a>
+                <div className="card-modal card">
+                  <div
+                    className="card-panel card-panel-title"
+                    style={{ backgroundColor: "#00638e", color: "#fff" }}
+                  >
+                    <div className="card-panel-row row">
+                      <div className="col">
+                        <h2 className="h3">
+                          <span className="heading-holder">
+                            <i className="icon-assign-section"></i>
+                            <span className="heading-block">
+                              {" "}
+                              Assign Test Section (as coursework)
+                            </span>
+                          </span>
+                        </h2>
+                      </div>
+                      <div className="col right-align">
+                        <a
+                          href="#!"
+                          onClick={this.onCloseModal}
+                          className="panel-link close modal-close"
+                        >
+                          <i className="icon-close-thin"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-content">
+                    <div className="card-body">
+                      <div className="modal-filter-row row">
+                        <div className="col s12">
+                          <div
+                            className="input-field"
+                            style={{ marginBottom: "0", marginTop: "0" }}
+                          >
+                            <div className="select-wrapper" style = {{overflow:'visible'}}>
+                              <Dropdown
+                                value={getValueFromState(
+                                  version,
+                                  sampleVersions
+                                )}
+                                onChange={event =>
+                                  this.handleDetailsChange(event, "version")
+                                }
+                                options={sampleVersions}
+                                name="version"
+                                label="Version"
+                                stateKey="version"
+                                dropdownKey="version"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="card-content">
-                        <div className="card-body">
-                          <div className="row mb-0">
-                            <div className="col s12">
-                              <div className="input-field">
-                                <Dropdown
-                                  value={getValueFromState(
-                                    version,
-                                    sampleVersions
-                                  )}
-                                  onChange={event =>
-                                    this.handleDetailsChange(event, "version")
-                                  }
-                                  options={sampleVersions}
-                                  name="version"
-                                  label="Version"
-                                  stateKey="version"
-                                  dropdownKey="version"
-                                  style = {{overflow:'visible'}}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row mb-0">
-                            <div className="col s12">
-                              <div className="input-field">
-                                <Dropdown
-                                  value={getValueFromState(
-                                    section,
-                                    sampleSections
-                                  )}
-                                  onChange={event =>
-                                    this.handleDetailsChange(event, "section")
-                                  }
-                                  options={sampleSections}
-                                  name="section"
-                                  label="Section"
-                                  stateKey="section"
-                                  dropdownKey="section"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row mb-0">
-                            <div className="col s6">
-                              <div className="datepicker-field input-field">
-                                <i className="icon-calendar"></i>
-                                <DatePicker
-                                  selected={assignDate}
-                                  dateFormat="MM/dd/yy"
-                                  id="assignDate"
-                                  name="assignDate"
-                                  onChange={event =>
-                                    this.handleDatePickerChange(
-                                      "assignDate",
-                                      event
-                                    )
-                                  }
-                                />
-                                <label
-                                  className={
-                                    assignDate ? "label active" : "label"
-                                  }
-                                  htmlFor="new_test_section_assign_date"
-                                >
-                                  Assign For
-                                </label>
-                              </div>
-                            </div>
-                            <div className="col s6">
-                              <div className="datepicker-field input-field">
-                                <i className="icon-clock2"></i>
-                                <DatePicker
-                                  selected={assignTime}
-                                  showTimeSelect
-                                  showTimeSelectOnly
-                                  timeIntervals={15}
-                                  dateFormat="h:mm aa"
-                                  timeCaption="Time"
-                                  id="assignTime"
-                                  name="assignTime"
-                                  onChange={event =>
-                                    this.handleDatePickerChange(
-                                      "assignTime",
-                                      event
-                                    )
-                                  }
-                                />
-                                <label
-                                  className={
-                                    assignTime ? "label active" : "label"
-                                  }
-                                  htmlFor="assignTime"
-                                >
-                                  Time
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row mb-0">
-                            <div className="col s6">
-                              <div className="datepicker-field input-field">
-                                <i className="icon-calendar"></i>
-                                <DatePicker
-                                  selected={dueDate}
-                                  dateFormat="MM/dd/yy"
-                                  id="dueDate"
-                                  name="dueDate"
-                                  onChange={event =>
-                                    this.handleDatePickerChange(
-                                      "dueDate",
-                                      event
-                                    )
-                                  }
-                                />
-                                <label
-                                  className={dueDate ? "label active" : "label"}
-                                  htmlFor="dueDate"
-                                >
-                                  Due (optional)
-                                </label>
-                              </div>
-                            </div>
-                            <div className="col s6">
-                              <div className="datepicker-field input-field">
-                                <i className="icon-clock2"></i>
-                                <DatePicker
-                                  selected={dueTime}
-                                  showTimeSelect
-                                  showTimeSelectOnly
-                                  timeIntervals={15}
-                                  dateFormat="h:mm aa"
-                                  timeCaption="Time"
-                                  id="dueTime"
-                                  name="dueTime"
-                                  onChange={event =>
-                                    this.handleDatePickerChange(
-                                      "dueTime",
-                                      event
-                                    )
-                                  }
-                                />
-                                <label
-                                  className={dueTime ? "label active" : "label"}
-                                  htmlFor="dueTime"
-                                >
-                                  Time
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row mb-0">
-                            <div className="col s12">
-                              <p>
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    className="filled-in"
-                                    name="timed"
-                                    id="timed"
-                                    checked={timed}
-                                    onChange={this.handleDetailsChange}
-                                  />
-                                  <span>Timed</span>
-                                </label>
-                              </p>
+                      <div className="modal-filter-row row">
+                        <div className="col s12">
+                          <div
+                            className="input-field"
+                            style={{ marginBottom: "0", marginTop: "0" }}
+                          >
+                            <div className="select-wrapper">
+                              <Dropdown
+                                value={getValueFromState(
+                                  section,
+                                  sampleSections
+                                )}
+                                onChange={event =>
+                                  this.handleDetailsChange(event, "section")
+                                }
+                                options={sampleSections}
+                                name="section"
+                                label="Section"
+                                stateKey="section"
+                                dropdownKey="section"
+                              />
                             </div>
                           </div>
                         </div>
-                        <div className="modal-footer modal-footer-width">
-                          <a
-                            href="#"
-                            onClick={this.onCloseModal}
-                            className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
-                          >
-                            Cancel
-                          </a>
-                          <a
-                            href="#"
-                            onClick={this.assignTestSection}
-                            className="link-btn waves-effect waves-teal btn-flat"
-                          >
-                            Save
-                          </a>
+                        <div className="col s6">
+                          <div className="datepicker-field input-field">
+                            <i className="icon-calendar"></i>
+                            <DatePicker
+                              selected={assignDate}
+                              dateFormat="MM/dd/yy"
+                              id="assignDate"
+                              name="assignDate"
+                              onChange={event =>
+                                this.handleDatePickerChange("assignDate", event)
+                              }
+                            />
+                            <label
+                              className={assignDate ? "label active" : "label"}
+                              htmlFor="new_test_section_assign_date"
+                            >
+                              Assign For
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col s6">
+                          <div className="datepicker-field input-field">
+                            <i className="icon-clock2"></i>
+                            <DatePicker
+                              selected={assignTime}
+                              showTimeSelect
+                              showTimeSelectOnly
+                              timeIntervals={15}
+                              dateFormat="h:mm aa"
+                              timeCaption="Time"
+                              id="assignTime"
+                              name="assignTime"
+                              onChange={event =>
+                                this.handleDatePickerChange("assignTime", event)
+                              }
+                            />
+                            <label
+                              className={assignTime ? "label active" : "label"}
+                              htmlFor="assignTime"
+                            >
+                              Time
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="modal-row row">
+                        <div className="col s6">
+                          <div className="datepicker-field input-field">
+                            <i className="icon-calendar"></i>
+                            <DatePicker
+                              selected={dueDate}
+                              dateFormat="MM/dd/yy"
+                              id="dueDate"
+                              name="dueDate"
+                              onChange={event =>
+                                this.handleDatePickerChange("dueDate", event)
+                              }
+                            />
+                            <label
+                              className={dueDate ? "label active" : "label"}
+                              htmlFor="dueDate"
+                            >
+                              Due (optional)
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col s6">
+                          <div className="datepicker-field input-field">
+                            <i className="icon-clock2"></i>
+                            <DatePicker
+                              selected={dueTime}
+                              showTimeSelect
+                              showTimeSelectOnly
+                              timeIntervals={15}
+                              dateFormat="h:mm aa"
+                              timeCaption="Time"
+                              id="dueTime"
+                              name="dueTime"
+                              onChange={event =>
+                                this.handleDatePickerChange("dueTime", event)
+                              }
+                            />
+                            <label
+                              className={dueTime ? "label active" : "label"}
+                              htmlFor="dueTime"
+                            >
+                              Time
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="modal-row row">
+                        <div className="col s12">
+                          <p>
+                            <label>
+                              <input
+                                type="checkbox"
+                                className="filled-in"
+                                name="timed"
+                                id="timed"
+                                checked={timed}
+                                onChange={this.handleDetailsChange}
+                              />
+                              <span>Timed</span>
+                            </label>
+                          </p>
                         </div>
                       </div>
                     </div>
-                  </fieldset>
-                </form>
+                    <div className="modal-footer modal-footer-width">
+                      <a
+                        href="#"
+                        onClick={this.onCloseModal}
+                        className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+                      >
+                        Cancel
+                      </a>
+                      <a
+                        href="#"
+                        onClick={this.assignTestSection}
+                        className="link-btn waves-effect waves-teal btn-flat"
+                      >
+                        Save
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ClickOffComponentWrapper>
           </div>
@@ -391,9 +379,6 @@ class AssignTestSectionModal extends React.Component {
               margin: 0;
               border-radius: 6px;
             }
-            #modal_Location1 {
-              border-radius: 6px;
-            }
             .modal {
               display: block;
               background-color: white;
@@ -408,9 +393,6 @@ class AssignTestSectionModal extends React.Component {
             .modal-custom {
               opacity: 1;
               visibility: visible;
-            }
-            .modal-footer {
-              background-color: white;
             }
           `}
         </style>
