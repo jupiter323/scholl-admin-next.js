@@ -23,7 +23,7 @@ if (typeof window !== "undefined") {
 const menuItems = [
   {
     key: "dashboard",
-    page: "",
+    page: "dashboard",
   },
   {
     key: "students",
