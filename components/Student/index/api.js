@@ -250,6 +250,19 @@ export const deleteStudentApi = id =>
     .then(res => res.json())
     .catch(err => err);
 
+  export const assignTestToStudentApi = test => {
+    
+    fetch(`${API_URL}/api/commands/assign-test-to-student`, {
+      method: 'POST',
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(test),
+    })
+      .then(res => res.json())
+      .catch(err => err);
+  }; 
 
 export default [
   fetchStudentsApi,
@@ -265,5 +278,6 @@ export default [
   updateStudentPhoneApi,
   updateStudentStateApi,
   updateStudentZipApi,
+  assignTestToStudentApi,
 ];
 

@@ -16,6 +16,11 @@ import {
   setIsVisibleTopBar
 } from '../index/actions';
 
+import {
+  assignTestToStudentApi
+} from '../index/api';
+
+const uuidGenerator = require('uuid/v4');
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -119,12 +124,12 @@ class DetailTestList extends React.Component {
   onSaveNewTest = (test) => {
     this.onCloseTestModal();
     const { tests:prevTestsState } = this.state;
-    const newId = prevTestsState.length + 1;
+    const newTestNumber = prevTestsState.length + 1;
     const sampleNewTest = {
-      id: newId,
+      id: uuidGenerator(),
       status: 'future',
-      title: 'Practice Test '+ newId,
-      testDate: Moment(test.testDate).format('YYYY-MM-DD'),
+      title: 'Practice Test '+ newTestNumber,
+      testDate: Moment(test.assignDate).format('YYYY-MM-DD'),
       dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
       completionDate: '',
       completionTime: '',
@@ -133,6 +138,14 @@ class DetailTestList extends React.Component {
     };
     const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
     this.setState({tests:updatedTests});
+    const {user:{id}} =  this.props;
+    const postBody = {
+      student_id:id,
+      test_id: uuidGenerator(),
+      assignment_date:Moment(test.assignDate).format('YYYY-MM-DD'),
+      due_date: Moment(test.dueDate).format('YYYY-MM-DD')
+    };
+    assignTestToStudentApi(postBody)
   }
 
   render() {
