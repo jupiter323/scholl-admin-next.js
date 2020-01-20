@@ -1,12 +1,16 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import Moment from 'moment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import TestCard from './components/TestCard';
 import TestSections from '../TestSections';
 import sampleTests from './utils/sampleTests';
 import EditTestModal from './components/EditTestModal';
+import NewTestModal from './components/TestModal';
+
 
 import {
   setIsVisibleTopBar
@@ -23,6 +27,7 @@ class DetailTestList extends React.Component {
       editTestModalOpen: false,
       activeTest: null,
       selectedTest: null,
+      createTestModalOpen:false,
     };
   }
 
@@ -36,6 +41,9 @@ class DetailTestList extends React.Component {
 
   onCreateTest = (event) => {
     event.preventDefault();
+    this.setState({
+      createTestModalOpen:true,
+    })
     console.warn('Pending implementation of create test UI and functionality');
   }
 
@@ -102,8 +110,33 @@ class DetailTestList extends React.Component {
     ))
   }
 
+  onCloseTestModal = () => {
+    this.setState({
+      createTestModalOpen:false,
+    })
+  }
+
+  onSaveNewTest = (test) => {
+    this.onCloseTestModal();
+    const { tests:prevTestsState } = this.state;
+    const newId = prevTestsState.length + 1;
+    const sampleNewTest = {
+      id: newId,
+      status: 'future',
+      title: 'Practice Test '+ newId,
+      testDate: Moment(test.testDate).format('YYYY-MM-DD'),
+      dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
+      completionDate: '',
+      completionTime: '',
+      weekNumber: '3',
+      subjects: [{},{}],
+    };
+    const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
+    this.setState({tests:updatedTests});
+  }
+
   render() {
-    const { editTestModalOpen, activeTest, selectedTest} = this.state;
+    const { editTestModalOpen,createTestModalOpen, activeTest, selectedTest} = this.state;
     const {user} = this.props;
     return (
       <React.Fragment>
@@ -115,6 +148,13 @@ class DetailTestList extends React.Component {
               test={activeTest}
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
+            />
+          </When>
+          <When condition = {createTestModalOpen}>
+            <NewTestModal
+              open = {createTestModalOpen}
+              onClose = {this.onCloseTestModal}
+              onSave = { this.onSaveNewTest}
             />
           </When>
           <Otherwise>
