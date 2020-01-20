@@ -263,21 +263,3 @@ export const deleteStudentApi = id =>
       .then(res => res.json())
       .catch(err => err);
   }; 
-
-export default [
-  fetchStudentsApi,
-  searchStudentsApi,
-  createStudentApi,
-  deleteStudentApi,
-  updateStudentActivationApi,
-  updateStudentAddressApi,
-  updateStudentCityApi,
-  updateStudentEmailApi,
-  updateStudentFirstNameApi,
-  updateStudentLastNameApi,
-  updateStudentPhoneApi,
-  updateStudentStateApi,
-  updateStudentZipApi,
-  assignTestToStudentApi,
-];
-
