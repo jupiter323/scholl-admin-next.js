@@ -7,7 +7,6 @@ class SessionList extends Component {
   render() {
     return (<div className="dashboard-card card">
       { sampleSessions.sessions.map((element, key) => {
-        console.log(element);
         return (
           <div className="card-content" key={element.key}>
             <h2 className="dashboard-title">
