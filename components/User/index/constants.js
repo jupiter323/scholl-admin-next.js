@@ -1,0 +1,1 @@
+export const SET_USER_IS_LOGGED = 'SET_USER_IS_LOGGED';

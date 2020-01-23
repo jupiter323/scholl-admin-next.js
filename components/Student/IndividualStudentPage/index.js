@@ -16,8 +16,15 @@ import SessionCalendar from "../Calendar";
 
 import {
   makeSelectAssignLessonsModalOpen,
-  makeSelectAssignWorkSheetsModalOpen
+  makeSelectAssignWorkSheetsModalOpen,
+  makeSelectIsVisibleTopBar,
 } from "../index/selectors";
+
+import {
+  setIsVisibleTopBar,
+} from '../index/actions';
+
+import sampleSelectedStudent from '../../utils/sampleSelectedStudent';
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -25,12 +32,20 @@ class IndividualStudentPage extends React.Component {
     this.state = {
       activePage: "summary",
       activationDropdownOpen: false,
-      licenseCode: ""
+      licenseCode: "",
     };
   }
+
+  componentDidMount(){
+    const { onSetIsVisibleTopBar,isVisibleTopBar } = this.props;
+    if(!isVisibleTopBar){
+        onSetIsVisibleTopBar(true);
+    }
+  }
+
   onToggleActivationDropdown = () =>
     this.setState(({ activationDropdownOpen }) => ({
-      activationDropdownOpen: !activationDropdownOpen
+      activationDropdownOpen: !activationDropdownOpen,
     }));
 
   onSetActivePage = activePage => this.setState({ activePage });
@@ -40,7 +55,9 @@ class IndividualStudentPage extends React.Component {
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
-    const { student } = this.props;
+    //The api data is not enough for now,so we are using dummy data for selected student detail
+    // const { student } = this.props;
+    const student = sampleSelectedStudent;
     if (activePage === "summary") {
       return <DetailSummaryPage user={student} />;
     }
@@ -63,7 +80,7 @@ class IndividualStudentPage extends React.Component {
       return <ScoredTestListPage />;
     }
     if (activePage === "calendar") {
-      return <SessionCalendar />;
+      return <SessionCalendar user = {student}/>;
     }
     return null;
   };
@@ -72,16 +89,16 @@ class IndividualStudentPage extends React.Component {
       onRedirectToStudentPage,
       student: {
         active,
-        studentInformation: { firstName, lastName }
-      }
+        studentInformation: { firstName, lastName },
+      },
     } = this.props;
     const { activePage, activationDropdownOpen, licenseCode } = this.state;
-    const { assignLessonsModalOpen, assignWorkSheetsModalOpen } = this.props;
+    const { assignLessonsModalOpen, assignWorkSheetsModalOpen,isVisibleTopBar } = this.props;
     return (
       <React.Fragment>
         <Choose>
           <When
-            condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen}
+            condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen && isVisibleTopBar}
           >
             <Sticky>
               {({ style }) => (
@@ -221,14 +238,23 @@ class IndividualStudentPage extends React.Component {
 
 IndividualStudentPage.propTypes = {
   student: PropTypes.object.isRequired,
-  onRedirectToStudentPage: PropTypes.func.isRequired
+  onRedirectToStudentPage: PropTypes.func.isRequired,
+  isVisibleTopBar:PropTypes.bool,
+  onSetIsVisibleTopBar:PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
-  assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen()
+  assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen(),
+  isVisibleTopBar: makeSelectIsVisibleTopBar(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function maptDispatchToProps(dispatch){
+  return {
+    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
+  }
+}
+
+const withConnect = connect(mapStateToProps, maptDispatchToProps);
 
 export default compose(withConnect)(IndividualStudentPage);

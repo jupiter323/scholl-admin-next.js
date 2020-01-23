@@ -1,89 +1,128 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
+import React from "react";
+import PropTypes from "prop-types";
+import moment from "moment";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
-import Portal from '../../../../Portal';
-import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
-import Dropdown from '../../../../FormComponents/Dropdown';
-import getValueFromState from '../../../../utils/getValueFromState';
+import Portal from "../../../../Portal";
+import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
+import Dropdown from "../../../../FormComponents/Dropdown";
+import getValueFromState from "../../../../utils/getValueFromState";
+
+import { assignTestToStudentApi } from "../../../../Student/index/api";
 
 const sampleVersions = [
   {
-    label: 'SAT Practice Test #1',
-    value: 'SAT Practice Test #1',
+    label: "SAT Practice Test #1",
+    value: "SAT Practice Test #1"
   },
   {
-    label: 'SAT Practice Test #2',
-    value: 'SAT Practice Test #2',
+    label: "SAT Practice Test #2",
+    value: "SAT Practice Test #2"
   },
   {
-    label: 'SAT Practice Test #3',
-    value: 'SAT Practice Test #3',
-  },
+    label: "SAT Practice Test #3",
+    value: "SAT Practice Test #3"
+  }
 ];
 
 const sampleSections = [
   {
-    label: 'Math (no calc)',
-    value: 'Math (no calc)',
+    label: "Math (no calc)",
+    value: "Math (no calc)"
   },
   {
-    label: 'Reading',
-    value: 'Reading',
+    label: "Reading",
+    value: "Reading"
   },
   {
-    label: 'Writing',
-    value: 'Writing',
+    label: "Writing",
+    value: "Writing"
   },
   {
-    label: 'Math (calculator)',
-    value: 'Math (calculator)',
-  },
+    label: "Math (calculator)",
+    value: "Math (calculator)"
+  }
 ];
+
+const uuidGenerator = require("uuid/v4");
 
 class AssignTestSectionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      version: '',
-      section: '',
-      assignDate: '',
-      assignTime: '',
-      dueDate: '',
-      dueTime: '',
-      timed: false,
+      version: "",
+      section: "",
+      assignDate: "",
+      assignTime: "",
+      dueDate: "",
+      dueTime: "",
+      timed: false
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { modalDate } = this.props;
-    if (prevState.assignDate === '' && modalDate) {
+    if (prevState.assignDate === "" && modalDate) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ assignDate: new Date(modalDate) });
     }
   }
 
-  onResetModal = () => this.setState({ version: '', section: '', assignDate: '', assignTime: '', dueDate: '', dueTime: '', timed: false })
+  onResetModal = () =>
+    this.setState({
+      version: "",
+      section: "",
+      assignDate: "",
+      assignTime: "",
+      dueDate: "",
+      dueTime: "",
+      timed: false
+    });
 
   onCloseModal = () => {
     const { onClose } = this.props;
     onClose();
     this.onResetModal();
-  }
+  };
 
   assignTestSection = () => {
     const { onAssignTestSection } = this.props;
-    const { version, section, assignDate: unformattedAssignDate, assignTime: unformattedAssignTime, dueDate: unformattedDueDate, dueTime: unformattedDueTime, timed } = this.state;
-    const assignDate = moment(unformattedAssignDate).format('MM/DD/YY');
-    const assignTime = moment(unformattedAssignTime).format('hh:mm');
-    const dueDate = moment(unformattedDueDate).format('MM/DD/YY');
-    const dueTime = moment(unformattedDueTime).format('hh:mm');
-    onAssignTestSection({ version, section, assignDate, assignTime, dueDate, dueTime, timed });
+    const {
+      version,
+      section,
+      assignDate: unformattedAssignDate,
+      assignTime: unformattedAssignTime,
+      dueDate: unformattedDueDate,
+      dueTime: unformattedDueTime,
+      timed
+    } = this.state;
+    const assignDate = moment(unformattedAssignDate).format("MM/DD/YY");
+    const assignTime = moment(unformattedAssignTime).format("hh:mm");
+    const dueDate = moment(unformattedDueDate).format("MM/DD/YY");
+    const dueTime = moment(unformattedDueTime).format("hh:mm");
+    onAssignTestSection({
+      version,
+      section,
+      assignDate,
+      assignTime,
+      dueDate,
+      dueTime,
+      timed
+    });
     this.onResetModal();
-  }
+    const {
+      user: { id }
+    } = this.props;
+    const postBody = {
+      student_id: id,
+      test_id: uuidGenerator(),
+      assignment_date: moment(unformattedAssignDate).format("YYYY-MM-DD"),
+      due_date: moment(unformattedDueDate).format("YYYY-MM-DD")
+    };
+    assignTestToStudentApi(postBody);
+  };
 
   handleDetailsChange = (event, name = null) => {
     if (event.target) {
@@ -91,66 +130,109 @@ class AssignTestSectionModal extends React.Component {
     } else {
       this.setState({ [name]: event });
     }
-  }
+  };
 
-  handleDatePickerChange = (field, value) => this.setState({ [field]: value })
+  handleDatePickerChange = (field, value) => this.setState({ [field]: value });
 
   render() {
     const { open } = this.props;
-    const { version, section, assignDate, assignTime, dueDate, dueTime, timed } = this.state;
+    const {
+      version,
+      section,
+      assignDate,
+      assignTime,
+      dueDate,
+      dueTime,
+      timed
+    } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
             <ClickOffComponentWrapper onOuterClick={this.onCloseModal}>
-              <div id="modal_assign_test_section" className="modal modal-custom modal-calendar">
+              <div
+                id="modal_assign_test_section"
+                className="modal modal-custom modal-460"
+              >
                 <div className="card-modal card">
-                  <div className="card-panel card-panel-title" style={{ backgroundColor: '#00638e', color: '#fff' }}>
+                  <div
+                    className="card-panel card-panel-title"
+                    style={{ backgroundColor: "#00638e", color: "#fff" }}
+                  >
                     <div className="card-panel-row row">
                       <div className="col">
                         <h2 className="h3">
                           <span className="heading-holder">
                             <i className="icon-assign-section"></i>
-                            <span className="heading-block"> Assign Test Section (as coursework)</span>
+                            <span className="heading-block">
+                              {" "}
+                              Assign Test Section (as coursework)
+                            </span>
                           </span>
                         </h2>
                       </div>
                       <div className="col right-align">
-                        <a href="#!" onClick={this.onCloseModal} className="panel-link close modal-close"><i className="icon-close-thin"></i></a>
+                        <a
+                          href="#!"
+                          onClick={this.onCloseModal}
+                          className="panel-link close modal-close"
+                        >
+                          <i className="icon-close-thin"></i>
+                        </a>
                       </div>
                     </div>
                   </div>
                   <div className="card-content">
                     <div className="card-body">
-                      <div className="modal-row row">
+                      <div className="modal-filter-row row">
                         <div className="col s12">
-                          <div className="input-field" style={{ marginBottom: '0', marginTop: '0' }}>
-                            <Dropdown
-                              value={getValueFromState(version, sampleVersions)}
-                              onChange={(event) => this.handleDetailsChange(event, 'version')}
-                              options={sampleVersions}
-                              name="version"
-                              label="Version"
-                              stateKey="version"
-                              dropdownKey="version"
-                            />
-                          </div>
-                        </div>
-                        <div className="col s12">
-                          <div className="input-field" style={{ marginBottom: '0', marginTop: '0' }}>
-                            <Dropdown
-                              value={getValueFromState(section, sampleSections)}
-                              onChange={(event) => this.handleDetailsChange(event, 'section')}
-                              options={sampleSections}
-                              name="section"
-                              label="Section"
-                              stateKey="section"
-                              dropdownKey="section"
-                            />
+                          <div
+                            className="input-field"
+                            style={{ marginBottom: "0", marginTop: "0" }}
+                          >
+                            <div className="select-wrapper" style = {{overflow:'visible'}}>
+                              <Dropdown
+                                value={getValueFromState(
+                                  version,
+                                  sampleVersions
+                                )}
+                                onChange={event =>
+                                  this.handleDetailsChange(event, "version")
+                                }
+                                options={sampleVersions}
+                                name="version"
+                                label="Version"
+                                stateKey="version"
+                                dropdownKey="version"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="modal-row row">
+                      <div className="modal-filter-row row">
+                        <div className="col s12">
+                          <div
+                            className="input-field"
+                            style={{ marginBottom: "0", marginTop: "0" }}
+                          >
+                            <div className="select-wrapper">
+                              <Dropdown
+                                value={getValueFromState(
+                                  section,
+                                  sampleSections
+                                )}
+                                onChange={event =>
+                                  this.handleDetailsChange(event, "section")
+                                }
+                                options={sampleSections}
+                                name="section"
+                                label="Section"
+                                stateKey="section"
+                                dropdownKey="section"
+                              />
+                            </div>
+                          </div>
+                        </div>
                         <div className="col s6">
                           <div className="datepicker-field input-field">
                             <i className="icon-calendar"></i>
@@ -159,9 +241,16 @@ class AssignTestSectionModal extends React.Component {
                               dateFormat="MM/dd/yy"
                               id="assignDate"
                               name="assignDate"
-                              onChange={(event) => this.handleDatePickerChange('assignDate', event)}
+                              onChange={event =>
+                                this.handleDatePickerChange("assignDate", event)
+                              }
                             />
-                            <label className={assignDate ? 'label active' : 'label'} htmlFor="new_test_section_assign_date">Assign For</label>
+                            <label
+                              className={assignDate ? "label active" : "label"}
+                              htmlFor="new_test_section_assign_date"
+                            >
+                              Assign For
+                            </label>
                           </div>
                         </div>
                         <div className="col s6">
@@ -176,9 +265,16 @@ class AssignTestSectionModal extends React.Component {
                               timeCaption="Time"
                               id="assignTime"
                               name="assignTime"
-                              onChange={(event) => this.handleDatePickerChange('assignTime', event)}
+                              onChange={event =>
+                                this.handleDatePickerChange("assignTime", event)
+                              }
                             />
-                            <label className={assignTime ? 'label active' : 'label'} htmlFor="assignTime">Time</label>
+                            <label
+                              className={assignTime ? "label active" : "label"}
+                              htmlFor="assignTime"
+                            >
+                              Time
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -191,9 +287,16 @@ class AssignTestSectionModal extends React.Component {
                               dateFormat="MM/dd/yy"
                               id="dueDate"
                               name="dueDate"
-                              onChange={(event) => this.handleDatePickerChange('dueDate', event)}
+                              onChange={event =>
+                                this.handleDatePickerChange("dueDate", event)
+                              }
                             />
-                            <label className={dueDate ? 'label active' : 'label'} htmlFor="dueDate">Due (optional)</label>
+                            <label
+                              className={dueDate ? "label active" : "label"}
+                              htmlFor="dueDate"
+                            >
+                              Due (optional)
+                            </label>
                           </div>
                         </div>
                         <div className="col s6">
@@ -208,9 +311,16 @@ class AssignTestSectionModal extends React.Component {
                               timeCaption="Time"
                               id="dueTime"
                               name="dueTime"
-                              onChange={(event) => this.handleDatePickerChange('dueTime', event)}
+                              onChange={event =>
+                                this.handleDatePickerChange("dueTime", event)
+                              }
                             />
-                            <label className={dueTime ? 'label active' : 'label'} htmlFor="dueTime">Time</label>
+                            <label
+                              className={dueTime ? "label active" : "label"}
+                              htmlFor="dueTime"
+                            >
+                              Time
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -233,8 +343,20 @@ class AssignTestSectionModal extends React.Component {
                       </div>
                     </div>
                     <div className="modal-footer modal-footer-width">
-                      <a href="#" onClick={this.onCloseModal} className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1">Cancel</a>
-                      <a href="#" onClick={this.assignTestSection} className="link-btn waves-effect waves-teal btn-flat">Save</a>
+                      <a
+                        href="#"
+                        onClick={this.onCloseModal}
+                        className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
+                      >
+                        Cancel
+                      </a>
+                      <a
+                        href="#"
+                        onClick={this.assignTestSection}
+                        className="link-btn waves-effect waves-teal btn-flat"
+                      >
+                        Save
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -243,34 +365,36 @@ class AssignTestSectionModal extends React.Component {
           </div>
         )}
         <style jsx>
-        {`
-          .overlay {
-            position: fixed;
-            background-color: rgba(0, 0, 0, 0.7);
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 1999;
-          }
-          .card-modal {
-            margin: 0;
-            border-radius: 6px;
-          }
-          .modal {
-            display: block;
-            background-color: white;
-            position: absolute;
-            top: 10%;
-            right: 10%;
-            left: 10%;
-            box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
-          }
-          .modal-custom {
-            opacity: 1;
-            visibility: visible;
-          }
-        `}
+          {`
+            .overlay {
+              position: fixed;
+              background-color: rgba(0, 0, 0, 0.7);
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              z-index: 1999;
+            }
+            .card-modal {
+              margin: 0;
+              border-radius: 6px;
+            }
+            .modal {
+              display: block;
+              background-color: white;
+              position: absolute;
+              top: 10%;
+              right: 10%;
+              left: 10%;
+              box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+                0 9px 46px 8px rgba(0, 0, 0, 0.12),
+                0 11px 15px -7px rgba(0, 0, 0, 0.2);
+            }
+            .modal-custom {
+              opacity: 1;
+              visibility: visible;
+            }
+          `}
         </style>
       </Portal>
     );
@@ -282,6 +406,7 @@ AssignTestSectionModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onAssignTestSection: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 export default AssignTestSectionModal;

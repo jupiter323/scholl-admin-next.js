@@ -32,7 +32,7 @@ class PracticeQuestions extends React.Component {
 
 PracticeQuestions.propTypes = {
   questions: PropTypes.array.isRequired,
-  answerSheetComplete: PropTypes.bool.isRequired,
+  answerSheetComplete: PropTypes.string.isRequired,
   onOpenQuestionModal: PropTypes.func.isRequired,
 };
 

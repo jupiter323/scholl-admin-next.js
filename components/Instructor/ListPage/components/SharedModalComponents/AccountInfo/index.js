@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dropdown from '../../../../../FormComponents/Dropdown';
-import getValueFromState from '../../../../../utils/getValueFromState';
-import genderOptions from '../../../../../utils/genderOptions';
-
-const AccountInfo = ({ state: { firstName, lastName, email, gender }, handleDetailsChange }) => (
+const AccountInfo = ({ state: { firstName, lastName, email }, handleDetailsChange }) => (
   <div className="card-block">
     <h3>Account Info</h3>
     <div className="card-main card">
@@ -44,20 +40,6 @@ const AccountInfo = ({ state: { firstName, lastName, email, gender }, handleDeta
               onChange={(event) => handleDetailsChange(event, 'email', 'accountInfo')}
             />
             <label className={email.length ? 'label active' : 'label'} htmlFor="account_email_edit">Email Address*</label>
-          </div>
-        </div>
-        <div className="row mb-0">
-          <div className="">
-            <div className="input-field col s12 l7">
-              <Dropdown
-                value={getValueFromState(gender, genderOptions)}
-                onChange={(event) => handleDetailsChange(event, 'gender', 'accountInfo')}
-                options={genderOptions}
-                label="Gender*"
-                stateKey="gender"
-                dropdownKey="gender"
-              />
-            </div>
           </div>
         </div>
       </div>

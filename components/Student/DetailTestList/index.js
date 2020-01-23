@@ -1,10 +1,26 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import Moment from 'moment';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import TestCard from './components/TestCard';
 import TestSections from '../TestSections';
 import sampleTests from './utils/sampleTests';
 import EditTestModal from './components/EditTestModal';
+import NewTestModal from './components/TestModal';
+
+
+import {
+  setIsVisibleTopBar
+} from '../index/actions';
+
+import {
+  assignTestToStudentApi
+} from '../index/api';
+
+const uuidGenerator = require('uuid/v4');
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -16,26 +32,40 @@ class DetailTestList extends React.Component {
       editTestModalOpen: false,
       activeTest: null,
       selectedTest: null,
+      createTestModalOpen:false,
     };
   }
 
-  onToggleEditTestModal = (activeTest = null) => this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown)
+  onToggleEditTestModal = (activeTest = null) => {
+    this.onSetIsVisibleTopBar(false);
+    this.setState(({ editTestModalOpen }) => ({ editTestModalOpen: !editTestModalOpen, activeTest }), this.onCloseDropdown);
+  }
 
   onSetDropdown = (dropdownIndex) => this.setState({ dropdownIndex, dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = (event) => {
     event.preventDefault();
+    this.setState({
+      createTestModalOpen:true,
+    })
     console.warn('Pending implementation of create test UI and functionality');
   }
 
   onEnterAnswers = () => console.warn('Pending implementation of enter answers UI and functionality')
   onEditTest = () => console.warn('Pending implementation edit test UI and functionality')
   onDownloadReport = () => console.warn('Pending implementation of download report ui and functionality')
-  onDeleteTest = () => this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
-
+  onDeleteTest = () =>{
+    this.onSetIsVisibleTopBar(true);
+    this.setState({ editTestModalOpen: false }, () => console.warn('Pending implementation of delete test UI and functionality'))
+  } 
+  onSetIsVisibleTopBar = (value) =>{
+    const {onSetIsVisibleTopBar } = this.props;
+    onSetIsVisibleTopBar(value);
+  }
   onSaveTestChanges = (testVersion, settings) => {
     this.onToggleEditTestModal();
+    this.onSetIsVisibleTopBar(true);
     console.warn('Pending save test changes functionality', testVersion, settings);
   }
   openTestScores = (index) => {
@@ -85,8 +115,41 @@ class DetailTestList extends React.Component {
     ))
   }
 
+  onCloseTestModal = () => {
+    this.setState({
+      createTestModalOpen:false,
+    })
+  }
+
+  onSaveNewTest = (test) => {
+    this.onCloseTestModal();
+    const { tests:prevTestsState } = this.state;
+    const newTestNumber = prevTestsState.length + 1;
+    const sampleNewTest = {
+      id: uuidGenerator(),
+      status: 'future',
+      title: 'Practice Test '+ newTestNumber,
+      testDate: Moment(test.assignDate).format('YYYY-MM-DD'),
+      dueDate: Moment(test.dueDate).format('YYYY-MM-DD'),
+      completionDate: '',
+      completionTime: '',
+      weekNumber: '3',
+      subjects: [{},{}],
+    };
+    const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
+    this.setState({tests:updatedTests});
+    const {user:{id}} =  this.props;
+    const postBody = {
+      student_id:id,
+      test_id: uuidGenerator(),
+      assignment_date:Moment(test.assignDate).format('YYYY-MM-DD'),
+      due_date: Moment(test.dueDate).format('YYYY-MM-DD')
+    };
+    assignTestToStudentApi(postBody)
+  }
+
   render() {
-    const { editTestModalOpen, activeTest, selectedTest} = this.state;
+    const { editTestModalOpen,createTestModalOpen, activeTest, selectedTest} = this.state;
     const {user} = this.props;
     return (
       <React.Fragment>
@@ -98,6 +161,13 @@ class DetailTestList extends React.Component {
               test={activeTest}
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
+            />
+          </When>
+          <When condition = {createTestModalOpen}>
+            <NewTestModal
+              open = {createTestModalOpen}
+              onClose = {this.onCloseTestModal}
+              onSave = { this.onSaveNewTest}
             />
           </When>
           <Otherwise>
@@ -132,6 +202,18 @@ class DetailTestList extends React.Component {
 
 DetailTestList.propTypes = {
   user: PropTypes.object.isRequired,
+  onSetIsVisibleTopBar:PropTypes.func.isRequired,
 };
 
-export default DetailTestList;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
+  }
+}
+
+const withConnect = connect(
+  null,
+  mapDispatchToProps
+)
+
+export default compose(withConnect)(DetailTestList);

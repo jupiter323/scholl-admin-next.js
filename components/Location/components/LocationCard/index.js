@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LcoationCard = ({ location: { locationNickname, locationName }, onRemoveLocation }) => (
+const LocationCard = ({ location: { locationNickname, locationName }, onRemoveLocation }) => (
   <div className="card-panel card-panel-panel card-panel-large" style={{ backgroundColor: '#62b771', color: '#fff' }}>
     <a
       href="#"
@@ -23,9 +23,9 @@ const LcoationCard = ({ location: { locationNickname, locationName }, onRemoveLo
   </div>
 );
 
-LcoationCard.propTypes = {
+LocationCard.propTypes = {
   location: PropTypes.object,
   onRemoveLocation: PropTypes.func.isRequired,
 };
 
-export default LcoationCard;
+export default LocationCard;

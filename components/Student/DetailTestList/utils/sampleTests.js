@@ -1,6 +1,7 @@
+const uuidv4 = require('uuid/v4');
 export default [
   {
-    id: 1,
+    id: uuidv4(),
     status: 'complete',
     title: 'Practice Test 1',
     testDate: '05/12/2019',
@@ -435,7 +436,7 @@ export default [
     },
     },
   {
-    id: 2,
+    id: uuidv4(),
     status: 'complete',
     title: 'Practice Test 2',
     testDate: '07/01/2019',
@@ -870,7 +871,7 @@ export default [
     },
   },
   {
-    id: 3,
+    id: uuidv4(),
     status: 'complete',
     title: 'Practice Test 3',
     testDate: '11/25/2019',
@@ -899,7 +900,7 @@ export default [
     ],
   },
   {
-    id: 4,
+    id: uuidv4(),
     status: 'future',
     title: 'Practice Test 4',
     testDate: '12/12/2019',
@@ -928,7 +929,7 @@ export default [
     ],
   },
   {
-    id: 5,
+    id: uuidv4(),
     status: 'future',
     title: 'Practice Test 5',
     testDate: '12/23/2019',

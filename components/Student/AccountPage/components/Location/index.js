@@ -18,7 +18,7 @@ const Location = ({ state: { locations }, onOpenLocationModal, onRemoveLocation 
                 <div className="add-class-box"></div>
               )}
               {locations.map((location, index) => (
-                <LocationCard location={location} onRemoveLocation={() => onRemoveLocation(index, 'location', 'locations')} />
+                <LocationCard location={location} key={location.id} onRemoveLocation={() => onRemoveLocation(index, 'location', 'locations')} />
               ))}
             </div>
           </div>

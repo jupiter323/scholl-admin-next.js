@@ -1,6 +1,6 @@
-// jshint esversion: 6
 import React, { Component } from "react";
 import update from "immutability-helper";
+import Router from "next/router";
 import { StickyContainer, Sticky } from "react-sticky";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -10,15 +10,23 @@ import {
   fetchStudents,
   createStudent,
   deleteStudent,
+  setStudents
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
-import sampleStudentList from "../components/Student/utils/sampleStudentList";
 import FilterSection from "../components/Student/ListPage/Components/FilterSection";
 import StudentModal from "../components/Student/components/StudentModal";
 import IndividualStudentPage from "../components/Student/IndividualStudentPage";
 import LocationModal from "../components/Location/components/LocationModal";
 
+import {
+  studentFirstNameAscending,
+  studentFirstNameDescending,
+  studentLastNameAscending,
+  studentLastNameDescending
+} from "../components/utils/sortFunctions";
+import { loggedIn } from "../utils/AuthService";
+// eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
     subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
@@ -39,6 +47,7 @@ class Students extends Component {
       dropdownIndex: null,
       sort: "",
       filterName: "",
+      location: "",
       newStudent: {
         active: false,
         studentInformation: {
@@ -64,20 +73,24 @@ class Students extends Component {
   }
 
   componentDidMount = () => {
-    const { onFetchStudents } = this.props;
-    onFetchStudents();
-  };
-
-  componentDidUpdate = prevProps => {
-    const { students } = this.props;
-    const { students: prevStudents } = prevProps;
-    if (
-      (this.state.students.length === 0 && students.length > 0) ||
-      students.length !== prevStudents.length
-    ) {
-      this.setState({ students });
+    if (!loggedIn()) {
+      Router.push("/login");
+    } else {
+      const { onFetchStudents, students } = this.props;
+      if (students.length === 0) {
+        onFetchStudents();
+      }
     }
   };
+
+  componentDidUpdate() {
+    const { students: studentState } = this.state;
+    const { students } = this.props;
+    if (studentState.length === 0 && students.length > 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ students });
+    }
+  }
 
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
@@ -92,11 +105,11 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = async () => {
+  onSaveNewStudent = () => {
     const { newStudent: previousStudentState } = this.state;
 
     // dispatch add student action
-    const { onCreateStudent } = this.props;
+    const { onCreateStudent, onFetchStudents } = this.props;
     onCreateStudent(previousStudentState);
 
     const newStudent = update(previousStudentState, {
@@ -104,8 +117,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: "",
-          gender: ""
+          lastName: ""
         },
         contactInformation: {
           phone: "",
@@ -124,8 +136,7 @@ class Students extends Component {
       }
     });
     this.setState({ newStudent });
-    // eslint-disable-next-line no-console
-    console.warn("do something with the new student info");
+    onFetchStudents();
     this.onCloseStudentModal();
   };
 
@@ -136,8 +147,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: "",
-          gender: ""
+          lastName: ""
         },
         contactInformation: {
           phone: "",
@@ -174,12 +184,16 @@ class Students extends Component {
   };
 
   onFilterByName = () => {
-    const { students, filterName } = this.state;
+    const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
-      const { lastName, firstName } = currentStudent;
-      const studentString = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+      const {
+        studentInformation: { firstName, lastName }
+      } = currentStudent;
+      const studentString = `${firstName}${lastName}`
+        .replace(/\s/g, "")
+        .toLowerCase();
       if (
-        studentString.indexOf(filterName) !== -1 &&
+        studentString.indexOf(nameFilter) !== -1 &&
         finalArr.indexOf(currentStudent) === -1
       ) {
         finalArr.push(currentStudent);
@@ -202,11 +216,11 @@ class Students extends Component {
     const { onDeleteStudent } = this.props;
     const { students } = this.state;
     // Dispatch deleteStudent
-    onDeleteStudent(students[index].id);
+    // eslint-disable-next-line camelcase
+    const student_id = students[index].id;
+    onDeleteStudent(student_id);
     const newStudentArray = this.arrayItemRemover(students, students[index]);
     this.setState({ students: newStudentArray });
-    const student_id = students[index].id;
-    deleteStudentApi({ student_id });
     this.onCloseDropdown();
   };
 
@@ -255,6 +269,8 @@ class Students extends Component {
       }
     });
     this.setState({ students });
+    const { onSetStudents } = this.props;
+    onSetStudents(students);
   };
 
   onSetDropdown = dropdownIndex =>
@@ -262,11 +278,55 @@ class Students extends Component {
   onCloseDropdown = () =>
     this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
+  // eslint-disable-next-line consistent-return
+  onSortStudents = students => {
+    const { sort } = this.state;
+    switch (sort) {
+      case "lastNameDescending":
+        return students.sort(studentLastNameDescending);
+      case "lastNameAscending":
+        return students.sort(studentLastNameAscending);
+      case "firstNameDescending":
+        return students.sort(studentFirstNameDescending);
+      case "firstNameAscending":
+        return students.sort(studentFirstNameAscending);
+      default:
+        break;
+    }
+  };
+
+  getMappableStudents = () => {
+    const { sort, students } = this.state;
+    const mappableStudents = students;
+    if (sort) {
+      return this.onSortStudents(mappableStudents);
+    }
+    return mappableStudents;
+  };
+
   arrayItemRemover = (array, value) =>
     array.filter(student => student !== value);
 
+  mapStudents = () =>
+    this.getMappableStudents().map((student, index) => (
+      <StudentCard
+        student={student}
+        index={index}
+        id={student.id}
+        key={student.id}
+        dropdownIsOpen={this.state.dropdownIsOpen}
+        dropdownIndex={this.state.dropdownIndex}
+        onSetDropdown={this.onSetDropdown}
+        onCloseDropdown={this.onCloseDropdown}
+        onHandleStudentCard={() => this.onHandleStudentCard(index)}
+        onDeleteStudent={() => this.onDeleteStudent(index)}
+        onCloneStudent={() => this.onCloneStudent(index, student.id)}
+        onSaveStudentChanges={this.onSaveStudentChanges}
+      />
+    ));
+
   render() {
-    const { studentModalOpen, students, selectedStudent } = this.state;
+    const { studentModalOpen, selectedStudent } = this.state;
     return (
       <main id="main" role="main">
         <div className="main-holder grey lighten-5">
@@ -309,28 +369,7 @@ class Students extends Component {
                   onFilterByName={this.onFilterByName}
                 />
                 <div className="content-section">
-                  <div className="row d-flex-content">
-                    {students.map((student, index) => (
-                      <StudentCard
-                        student={student}
-                        index={index}
-                        id={student.id}
-                        key={student.id}
-                        dropdownIsOpen={this.state.dropdownIsOpen}
-                        dropdownIndex={this.state.dropdownIndex}
-                        onSetDropdown={this.onSetDropdown}
-                        onCloseDropdown={this.onCloseDropdown}
-                        onHandleStudentCard={() =>
-                          this.onHandleStudentCard(index)
-                        }
-                        onDeleteStudent={() => this.onDeleteStudent(index)}
-                        onCloneStudent={() =>
-                          this.onCloneStudent(index, student.id)
-                        }
-                        onSaveStudentChanges={this.onSaveStudentChanges}
-                      />
-                    ))}
-                  </div>
+                  <div className="row d-flex-content">{this.mapStudents()}</div>
                 </div>
                 <a
                   href="#"
@@ -379,7 +418,8 @@ Students.propTypes = {
   students: PropTypes.array.isRequired,
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
-  onDeleteStudent: PropTypes.func.isRequired
+  onDeleteStudent: PropTypes.func.isRequired,
+  onSetStudents: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -389,6 +429,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
+  onSetStudents: students => dispatch(setStudents(students)),
   onCreateStudent: student => dispatch(createStudent(student))
 });
 

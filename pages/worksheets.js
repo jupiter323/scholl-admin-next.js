@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import Router from 'next/router';
 import { StickyContainer, Sticky } from 'react-sticky';
 import DetailPage from '../components/Worksheet/DetailPage';
 import ListPage from '../components/Worksheet/ListPage';
+
+import {
+  loggedIn,
+} from "../utils/AuthService";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Worksheets extends Component {
@@ -10,6 +15,12 @@ class Worksheets extends Component {
     this.state = {
       activeWorksheet: null,
     };
+  }
+
+  componentDidMount(){
+    if(!loggedIn()){
+        Router.push('/login')
+    }
   }
 
   onSetActiveWorksheet = (activeWorksheet) => this.setState({ activeWorksheet })
