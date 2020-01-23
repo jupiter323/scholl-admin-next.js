@@ -238,6 +238,30 @@ export const updateStudentZipApi = (body) =>
     .then(res => res.json())
     .catch(err => err);
 
+  export const updateStudentTestDueDate = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-test-due-date`,{
+    method:'PATCH',
+    headers:{
+      Accept:"application/json",
+      "Content-Type":"application/json",
+    },
+    body:JSON.stringify(body)
+  })
+  .then(res => res.json())
+  .catch(err => err);
+
+  export const updateStudentTestAssignmentDate = (body) => 
+  fetch(`${API_URL}/api/commands/update-student-test-assignment-date`,{
+    method:'PATCH',
+    headers:{
+      Accept:"application/json",
+      "Content-Type":"application/json",
+    },
+    body:JSON.stringify(body)
+  })
+  .then (res = res.json())
+  .catch(err => err);
+
 export const deleteStudentApi = id =>
   fetch(`${API_URL}/api/commands/delete-student`, {
     method: "DELETE",
