@@ -6,6 +6,11 @@ import TestVersionSettings from '../EditTestModal/components/TestVersionSettings
 import Settings from '../EditTestModal/components/Settings';
 
 
+import {
+  updateStudentTestDueDate,
+  updateStudentTestAssignmentDate,
+} from '../../../index/api'
+
 class TestVersion extends React.Component {
   constructor(props) {
     super(props);
@@ -108,7 +113,7 @@ class TestVersion extends React.Component {
         $set: value,
       },
     });
-    this.setState({ settings });
+    this.setState({ settings },()=>this.handleStudentTestApiUpdate(field,value));
   }
 
   saveTestChanges = () => {
@@ -118,6 +123,19 @@ class TestVersion extends React.Component {
     const dueDate = moment(unformattedDueDate).format('MM/DD/YY');
     onSaveTestChanges(testVersion, { testDate, dueDate, allowStudentToEnterAnswers, timed });
   }
+
+  handleStudentTestApiUpdate = async(name, value) => {
+    const {id} = this.props.test;
+    const postDate =  moment(value).format('MM/DD/YY');
+    switch (name) {
+      case "dueDate":
+        return updateStudentTestDueDate({student_test_id:id,due_date:postDate});
+      case "testDate":
+        return updateStudentTestAssignmentDate({student_test_id:id,assignment_date:postDate});
+      default:
+        break;
+    }
+  };
 
   render() {
     const { test, user, onDeleteTest } = this.props;
