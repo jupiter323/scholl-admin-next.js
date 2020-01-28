@@ -17,8 +17,10 @@ import {
 } from '../index/actions';
 
 import {
-  assignTestToStudentApi
+  assignTestToStudentApi,
+  fetchTestsByStudentIdApi
 } from '../index/api';
+
 
 const uuidGenerator = require('uuid/v4');
 
@@ -26,7 +28,7 @@ class DetailTestList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tests: sampleTests,
+      tests: [],
       dropdownIndex: null,
       dropdownIsOpen: false,
       editTestModalOpen: false,
@@ -34,6 +36,14 @@ class DetailTestList extends React.Component {
       selectedTest: null,
       createTestModalOpen:false,
     };
+  }
+
+  componentDidMount = async() =>{
+    if(this.state.tests.length === 0){
+      const {id} = this.props.user;
+      const {formattedStudentTests:tests} = await fetchTestsByStudentIdApi(id);
+      this.setState({tests})
+    }
   }
 
   onToggleEditTestModal = (activeTest = null) => {
