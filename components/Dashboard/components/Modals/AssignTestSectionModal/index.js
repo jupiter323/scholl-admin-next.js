@@ -10,7 +10,7 @@ import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import Dropdown from "../../../../FormComponents/Dropdown";
 import getValueFromState from "../../../../utils/getValueFromState";
 
-import { assignTestToStudentApi } from "../../../../student/index/api";
+import { assignTestToStudentApi } from "../../../../Student/index/api";
 
 const sampleVersions = [
   {
