@@ -63,9 +63,8 @@ class StudentAnswersModal extends React.Component {
     const {
       open,
       testSection: { problems },
-      onCloseStudentAnswerModal
+      // onCloseStudentAnswerModal
     } = this.props;
-    console.log("problems:", problems);
     return (
       <div>
         {open && (
@@ -122,7 +121,7 @@ StudentAnswersModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
   testSection: PropTypes.object.isRequired,
-  onCloseStudentAnswerModal: PropTypes.func.isRequired
+  // onCloseStudentAnswerModal: PropTypes.func.isRequired
 };
 
 export default StudentAnswersModal;
