@@ -38672,6 +38672,80 @@ a.cal-event-week {
 		padding-top: 25px;
 	}
 
+	.no-sidebar-page .content-section-holder, .answer-page .content-section-holder {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.student-app .section-holder, .student-app .content-section-holder {
+		max-width: 1125px;
+		height: 100%;
+	}
+
+	.section-holder, .content-section-holder {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 1383px;
+		padding: 21px 5px;
+	}
+
+	@media (min-width: 1200px){
+.content-section-simulated .timer-container + .card-full-height, .content-section-detail .timer-container + .card-full-height {
+    height: calc(100% - 105px - 85px);
+}}
+@media (min-width: 768px){
+.content-section-simulated .timer-container + .card-full-height, .content-section-detail .timer-container + .card-full-height {
+    height: calc(100% - 80px - 85px);
+}}
+@media (min-width: 1200px){
+.content-section-simulated .card-full-height, .content-section-detail .card-full-height {
+    height: calc(100% - 85px);
+}}
+@media (min-width: 768px){
+.content-section-simulated .card-full-height, .content-section-detail .card-full-height {
+    height: calc(100% - 75px);
+}}
+.content-section-simulated .card-full-height, .content-section-detail .card-full-height {
+    height: calc(100% - 65px);
+}
+.card-main, .card-main-full {
+    box-shadow: 0 0 4px rgba(35, 31, 32, .7);
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.card {
+    box-shadow: 0 0 2px rgba(35, 31, 32, .6);
+    border-radius: 5px;
+    color: #333;
+    margin-bottom: 1.25rem;
+}
+.card {
+    position: relative;
+    margin: .5rem 0 1rem 0;
+    background-color: #fff;
+    -webkit-transition: box-shadow .25s;
+    transition: box-shadow .25s;
+    border-radius: 2px;
+}
+@media (min-width: 768px){
+.answers-list.answers-list-columns .answers-list-holder {
+    -webkit-column-break-inside: avoid;
+    break-inside: avoid-column;
+}
+}
+.answers-list .answers-list-holder:first-child {
+    border-top: none;
+}
+.answers-list.answers-list-columns .answers-list-holder {
+    border: 0;
+    margin: 0 0 13px;
+    padding-left: 27px;
+}
+@media (min-width: 768px){
+.answers-list.answers-list-columns > li {
+    padding-right: 5px;
+}}
 	.header-box.card-panel,
 	.header-row.card-panel,
 	.header-modal-box.card-panel {

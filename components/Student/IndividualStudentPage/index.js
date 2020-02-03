@@ -25,6 +25,9 @@ import {
 } from '../index/actions';
 
 import sampleSelectedStudent from '../../utils/sampleSelectedStudent';
+import { fetchProblemsByStudentTestIdApi } from "../index/api";
+
+
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -33,14 +36,20 @@ class IndividualStudentPage extends React.Component {
       activePage: "summary",
       activationDropdownOpen: false,
       licenseCode: "",
+      currentTestSection: {},
     };
   }
 
-  componentDidMount(){
+  componentDidMount = async() =>{
     const { onSetIsVisibleTopBar,isVisibleTopBar } = this.props;
     if(!isVisibleTopBar){
         onSetIsVisibleTopBar(true);
     }
+    const student_test_id = "0a6bbcd5-fd77-4267-b58f-b441425faa21";
+    const { formattedData } = await fetchProblemsByStudentTestIdApi(student_test_id);
+    this.setState({
+      currentTestSection: formattedData.test.sections[0],
+    });
   }
 
   onToggleActivationDropdown = () =>
@@ -54,7 +63,7 @@ class IndividualStudentPage extends React.Component {
     this.setState({ [name]: event.target.value });
 
   renderCurrentPage = () => {
-    const { activePage } = this.state;
+    const { activePage,currentTestSection } = this.state;
     //The api data is not enough for now,so we are using dummy data for selected student detail
     // const { student } = this.props;
     const student = sampleSelectedStudent;
@@ -74,7 +83,7 @@ class IndividualStudentPage extends React.Component {
       return <LessonDetailAnswerSheet />;
     }
     if (activePage === "test") {
-      return <DetailTestList user={student} />;
+      return <DetailTestList user={student} currentTestSection = {currentTestSection} />;
     }
     if (activePage === "scored-tests") {
       return <ScoredTestListPage />;
