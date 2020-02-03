@@ -6,6 +6,7 @@ class ProblemRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selected: false,
       problemCells: [
         {
           id: 0,
@@ -32,19 +33,19 @@ class ProblemRow extends React.Component {
   }
 
   handleClickBadge = index => {
-    const {
-      onAddStudentAnswerToTest,
-      problem: { test_problem_id }
-    } = this.props;
-    const currentBadge = this.state.problemCells[index];
-    const updatedProblemCells = update(this.state.problemCells, {
-      [index]: { selected: { $set: !currentBadge.selected } }
-    });
-    this.setState({
-      problemCells: updatedProblemCells
-    });
-    const { label } = this.state.problemCells[index];
-    onAddStudentAnswerToTest(test_problem_id, label);
+    if (this.state.selected === false) {
+      const {
+        onAddStudentAnswerToTest,
+        problem: { test_problem_id }
+      } = this.props;
+      const currentBadge = this.state.problemCells[index];
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } }
+      });
+      this.setState({ problemCells: updatedProblemCells,selected:true });
+      const { label } = this.state.problemCells[index];
+      onAddStudentAnswerToTest(test_problem_id, label);
+    }
   };
 
   render() {
