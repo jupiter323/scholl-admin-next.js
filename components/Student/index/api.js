@@ -799,20 +799,24 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
 };
 
 export const fetchProblemsByStudentTestIdApi = student_test_id =>
-  fetch(`${API_URL}/studentTests/${student_test_id}/problems`, {
+  fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json"
     }
   })
     .then(res => res.json())
+    .then(({ data }) => {
+      const formattedData = data;
+      return { formattedData };
+    })
     .catch(err => err);
 
 export const addStudentAnswerToTestApi = answer =>
   fetch(`${API_URL}/api/commands/add-student-answer-to-test`, {
     method: "POST",
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      Accept: "application/json",
       "Content-Type": "application/json"
     },
     body: JSON.stringify(answer)
