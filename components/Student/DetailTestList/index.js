@@ -238,7 +238,7 @@ class DetailTestList extends React.Component {
             <When condition={createTestModalOpen}>
               <NewTestModal
                 open={createTestModalOpen}
-                // onClose={this.onCloseTestModal}
+                onClose={this.onCloseTestModal}
                 onSave={this.onSaveNewTest}
               />
             </When>
