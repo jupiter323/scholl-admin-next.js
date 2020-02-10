@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import update from 'immutability-helper';
 import moment from 'moment';
 import TestVersionSettings from '../EditTestModal/components/TestVersionSettings';
@@ -35,7 +34,7 @@ class TestVersion extends React.Component {
   }
 
   componentDidMount() {
-    const { test: { testDate: unformattedTestDate, dueDate: unformattedDueDate } } = this.props;
+    const { test: { assignment_date: unformattedTestDate, dueDate: unformattedDueDate } } = this.props;
     const testDate = new Date(unformattedTestDate);
     const dueDate = unformattedDueDate ? new Date(unformattedDueDate) : '';
     const settings = update(this.state.settings, {
@@ -125,13 +124,13 @@ class TestVersion extends React.Component {
   }
 
   handleStudentTestApiUpdate = async(name, value) => {
-    const {id} = this.props.test;
-    const postDate =  moment(value).format('MM/DD/YY');
+    const {student_test_id} = this.props.test;
+    const postDate =  moment(value).format('YYYY-MM-DD');
     switch (name) {
       case "dueDate":
-        return updateStudentTestDueDate({student_test_id:id,due_date:postDate});
+        return updateStudentTestDueDate({student_test_id:student_test_id,due_date:postDate});
       case "testDate":
-        return updateStudentTestAssignmentDate({student_test_id:id,assignment_date:postDate});
+        return updateStudentTestAssignmentDate({student_test_id:student_test_id,assignment_date:postDate});
       default:
         break;
     }
@@ -139,15 +138,9 @@ class TestVersion extends React.Component {
 
   render() {
     const { test, user, onDeleteTest } = this.props;
-    const { title, version: testVersion, completionDate, completionTime } = test;
+    const { completionDate, completionTime } = test;
     const { studentInformation: { firstName, lastName } } = user;
-    const {
-      testVersion: {
-        sections: {
-          reading, writing, math, essay,
-        },
-        version, includeScoreInImprovementMetrics,
-      },
+    const { testVersion: {sections: { reading, writing, math, essay },version, includeScoreInImprovementMetrics},
       settings: { testDate, dueDate, allowStudentToEnterAnswers, timed },
     } = this.state;
     return (
@@ -160,12 +153,8 @@ class TestVersion extends React.Component {
               writing={writing}
               math={math}
               essay={essay}
-              includeScoreInImprovementMetrics={
-                includeScoreInImprovementMetrics
-              }
-              handleTestVersionSettingsChange={
-                this.handleTestVersionSettingsChange
-              }
+              includeScoreInImprovementMetrics={ includeScoreInImprovementMetrics}
+              handleTestVersionSettingsChange={ this.handleTestVersionSettingsChange}
             />
             <Settings
               timed={timed}
