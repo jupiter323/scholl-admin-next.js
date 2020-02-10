@@ -36,9 +36,7 @@ class DetailTestList extends React.Component {
   componentDidMount = async () => {
     if (this.state.tests.length === 0) {
       const { id } = this.props.user;
-      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
-        id
-      );
+      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
       this.setState({ tests });
     }
   };
@@ -109,9 +107,7 @@ class DetailTestList extends React.Component {
 
   mapCompletedTests = () => {
     const { tests } = this.state;
-    return tests
-      .filter(test => test.status === "complete")
-      .map((test, index) => (
+    return tests.filter(test => test.status === "complete").map((test, index) => (
         <TestCard
           test={test}
           key={`completed-${test.id}`}
@@ -145,18 +141,13 @@ class DetailTestList extends React.Component {
           dropdownIndex={this.state.dropdownIndex}
           dropdownIsOpen={this.state.dropdownIsOpen}
           openTestScores={this.openTestScores}
-          index={
-            tests.filter(filterTest => filterTest.status === "complete")
-              .length + index
-          }
+          index={tests.filter(filterTest => filterTest.status === "complete").length + index}
         />
       ));
   };
 
   onCloseTestModal = () => {
-    this.setState({
-      createTestModalOpen: false
-    });
+    this.setState({createTestModalOpen: false});
   };
 
   onOpenStudentAnswerModal = () => this.setState({ StudentAnswersModalOpen: true});

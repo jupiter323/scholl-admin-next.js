@@ -326,26 +326,17 @@ export const fetchTestsByStudentIdApi = student_id =>
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedStudentTests = data.tests.reduce(
-        (finalArry, currentStudentTest) => {
-          const {
-            id,
-            student_id,
-            test_id,
-            assignment_date,
-            due_date,
-            created_at,
-            updated_at,
-            status
-          } = currentStudentTest;
+      const formattedStudentTests = data.tests.reduce((finalArry, currentStudentTest) => {
+          const { test_id,test_name,test_description,test_form,student_test_id,student_id,assignment_date,due_date,status} = currentStudentTest;
           const newStudentTest = {
-            id,
-            student_id,
             test_id,
-            status,
-            title: "Practice Test 1",
+            test_name,
+            test_description,
+            test_form,
+            student_test_id,
+            student_id,
             assignment_date,
-            testDate: "05/12/2019",
+            status,
             dueDate: due_date,
             completionDate: "05/12/2019",
             completionTime: "4:21 PM",

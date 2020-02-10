@@ -65,7 +65,7 @@ class TestCard extends React.Component {
 
   render() {
     const { test, futureTest = false, dropdownIndex, index, dropdownIsOpen, onEnterAnswers, onEditTest, onDownloadReport, onDeleteTest, openTestScores } = this.props;
-    const { title, version = '', testDate, weekNumber, initialScore, targetScore, currentScore } = test;
+    const { test_description, version = '', assignment_date, weekNumber, initialScore, targetScore, currentScore } = test;
     return (
       <div className="col s12 m8 l7 xl5">
         <div className="card-main-col">
@@ -74,9 +74,9 @@ class TestCard extends React.Component {
 
               <div className=" card-panel-row row mb-0">
                 <div className="col s7">
-                  <div className="card-title-block" style={{marginTop: !futureTest ? '-30px' : '-50px'  }}>
-                 <h4 className="h2" ><a href="#" onClick={() => openTestScores({index})}>{title}</a></h4>
-                    <time className="date" style={{marginBottom: futureTest ? '20px' : ''}}>{testDate} (week {weekNumber})</time>
+                  <div className="card-title-block" style={{marginTop: !futureTest ? '-30px' : '0px'  }}>
+                 <h4 className="h2" style = {{minWidth:'200px'}}><a href="#" onClick={() => openTestScores({index})}>{test_description}</a></h4>
+                    <time className="date" style={{marginBottom: futureTest ? '20px' : ''}}>{assignment_date} (week {weekNumber})</time>
                     <If condition={!futureTest}>
                       <p>Version {version}</p>
                     </If>
@@ -116,12 +116,7 @@ class TestCard extends React.Component {
                 <div className="col s5 right-align">
                 <div className="row icons-row" style={{marginBottom: '10px'}}>
                     <div className="dropdown-block col">
-                      <a
-                        href='#'
-                        data-target='dropdown01'
-                        className='dropdown-trigger btn'
-                        onClick={this.handleDropdownClick}
-                      >
+                      <a href='#' className='dropdown-trigger btn' onClick={this.handleDropdownClick}>
                         <i className="material-icons dots-icon">more_vert</i>
                       </a>
                       <If condition={dropdownIsOpen && dropdownIndex === index}>
