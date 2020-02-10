@@ -43,8 +43,7 @@ class DetailTestList extends React.Component {
 
   onToggleEditTestModal = (activeTest = null) => {
     this.onSetIsVisibleTopBar(false);
-    this.setState(
-      ({ editTestModalOpen }) => ({
+    this.setState(({ editTestModalOpen }) => ({
         editTestModalOpen: !editTestModalOpen,
         activeTest
       }),
@@ -110,7 +109,7 @@ class DetailTestList extends React.Component {
     return tests.filter(test => test.status === "complete").map((test, index) => (
         <TestCard
           test={test}
-          key={`completed-${test.id}`}
+          key={`completed-${test.test_id}`}
           index={index}
           onEditTest={() => this.onToggleEditTestModal(test)}
           onDeleteTest={this.onDeleteTest}
@@ -131,7 +130,7 @@ class DetailTestList extends React.Component {
         <TestCard
           futureTest
           test={test}
-          key={`future-${test.id}`}
+          key={`future-${test.test_id}`}
           onEditTest={() => this.onToggleEditTestModal(test)}
           onDeleteTest={this.onDeleteTest}
           onSetDropdown={this.onSetDropdown}

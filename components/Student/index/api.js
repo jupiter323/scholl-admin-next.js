@@ -277,7 +277,6 @@ export const updateStudentTestDueDate = body =>
     },
     body: JSON.stringify(body)
   })
-    .then(res => res.json())
     .catch(err => err);
 
 export const updateStudentTestAssignmentDate = body =>
@@ -289,7 +288,6 @@ export const updateStudentTestAssignmentDate = body =>
     },
     body: JSON.stringify(body)
   })
-    .then((res = res.json()))
     .catch(err => err);
 
 export const deleteStudentApi = id =>
