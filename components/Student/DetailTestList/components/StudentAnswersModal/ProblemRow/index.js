@@ -6,7 +6,7 @@ class ProblemRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: false,
+      selectedIndex: -1,
       problemCells: [
         {
           id: 0,
@@ -33,20 +33,31 @@ class ProblemRow extends React.Component {
   }
 
   handleClickBadge = index => {
-    if (this.state.selected === false) {
-      const {
-        onAddStudentAnswerToTest,
-        problem: { test_problem_id }
-      } = this.props;
-      const currentBadge = this.state.problemCells[index];
+    const currentBadge = this.state.problemCells[index];
+    const selectedIndex = this.state.selectedIndex;
+    if(selectedIndex === -1){
       const updatedProblemCells = update(this.state.problemCells, {
-        [index]: { selected: { $set: !currentBadge.selected } }
+        [index]: { selected: { $set: !currentBadge.selected } },
       });
-      this.setState({ problemCells: updatedProblemCells,selected:true });
-      const { label } = this.state.problemCells[index];
-      onAddStudentAnswerToTest(test_problem_id, label);
+      this.onSaveStudentAnswer(updatedProblemCells,index)
+    }else{
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+        [selectedIndex]: { selected: { $set: false } }
+      });
+      this.onSaveStudentAnswer(updatedProblemCells,index)
     }
   };
+
+  onSaveStudentAnswer = (updatedProblemCells,index) =>{
+    const {
+      onAddStudentAnswerToTest,
+      problem: { test_problem_id }
+    } = this.props;
+    this.setState({ problemCells: updatedProblemCells,selectedIndex: index});
+    const { label } = this.state.problemCells[index];
+    onAddStudentAnswerToTest(test_problem_id, label);
+  }
 
   render() {
     const { problemCells } = this.state;
