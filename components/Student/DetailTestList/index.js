@@ -51,10 +51,8 @@ class DetailTestList extends React.Component {
     );
   };
 
-  onSetDropdown = dropdownIndex =>
-    this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () =>
-    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = event => {
     event.preventDefault();
@@ -65,17 +63,13 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = () =>{
-    this.setState({
-      StudentAnswersModalOpen:true,
-    })
+    this.setState({ StudentAnswersModalOpen:true})
   }
     
   onEditTest = () =>
     console.warn("Pending implementation edit test UI and functionality");
   onDownloadReport = () =>
-    console.warn(
-      "Pending implementation of download report ui and functionality"
-    );
+    console.warn( "Pending implementation of download report ui and functionality");
   onDeleteTest = () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ editTestModalOpen: false }, () =>

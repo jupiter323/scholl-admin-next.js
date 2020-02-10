@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from "react";
 import PropTypes from "prop-types";
+import Moment from "moment";
 import { Doughnut } from "react-chartjs-2";
 
 // import { data, subjectMap, testSectionCardColorMap, graphColorMap } from '../../../utils/testSectionCardUtils';
@@ -105,7 +106,7 @@ class TestCard extends React.Component {
                       </a>
                     </h4>
                     <time className="date" style={{ marginBottom: futureTest ? "20px" : "" }} >
-                      {assignment_date} (week {weekNumber})
+                      {Moment(assignment_date).format("MM/DD/YY")} (week {weekNumber})
                     </time>
                     <If condition={!futureTest}>
                       <p>Version {version}</p>

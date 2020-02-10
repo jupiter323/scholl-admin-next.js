@@ -124,13 +124,13 @@ class TestVersion extends React.Component {
   }
 
   handleStudentTestApiUpdate = async(name, value) => {
-    const {test_id} = this.props.test;
-    const postDate =  moment(value).format('MM/DD/YY');
+    const {student_test_id} = this.props.test;
+    const postDate =  moment(value).format('YYYY-MM-DD');
     switch (name) {
       case "dueDate":
-        return updateStudentTestDueDate({student_test_id:test_id,due_date:postDate});
+        return updateStudentTestDueDate({student_test_id:student_test_id,due_date:postDate});
       case "testDate":
-        return updateStudentTestAssignmentDate({student_test_id:test_id,assignment_date:postDate});
+        return updateStudentTestAssignmentDate({student_test_id:student_test_id,assignment_date:postDate});
       default:
         break;
     }
