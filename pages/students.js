@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/* jshint esversion: 6 */
 import React, { Component } from "react";
 import update from "immutability-helper";
 import Router from "next/router";
@@ -11,7 +11,7 @@ import {
   fetchStudents,
   createStudent,
   deleteStudent,
-  setStudents
+  setStudents,
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -24,7 +24,7 @@ import {
   studentFirstNameAscending,
   studentFirstNameDescending,
   studentLastNameAscending,
-  studentLastNameDescending
+  studentLastNameDescending,
 } from "../components/utils/sortFunctions";
 import { loggedIn } from "../utils/AuthService";
 // eslint-disable-next-line prefer-template
@@ -53,7 +53,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
@@ -61,15 +61,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     };
   }
 
@@ -118,7 +118,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
@@ -126,15 +126,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     });
     this.setState({ newStudent });
     onFetchStudents();
@@ -148,7 +148,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
@@ -156,15 +156,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     });
     this.setState({ newStudent });
   };
@@ -172,14 +172,14 @@ class Students extends Component {
   onRemoveLocation = index => {
     const { newStudent: previousStudentState } = this.state;
     const {
-      location: { locations }
+      location: { locations },
     } = this.state.newStudent;
     const newLocationsArray = this.arrayItemRemover(
       locations,
       locations[index]
     );
     const newStudent = update(previousStudentState, {
-      location: { $set: { locations: newLocationsArray } }
+      location: { $set: { locations: newLocationsArray } },
     });
     this.setState({ newStudent });
   };
@@ -188,7 +188,7 @@ class Students extends Component {
     const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
       const {
-        studentInformation: { firstName, lastName }
+        studentInformation: { firstName, lastName },
       } = currentStudent;
       const studentString = `${firstName}${lastName}`
         .replace(/\s/g, "")
@@ -228,7 +228,7 @@ class Students extends Component {
   onCloneStudent = index => {
     const { students } = this.state;
     const newStudent = update(students[index], {
-      id: { $set: idGenerator() }
+      id: { $set: idGenerator() },
     });
     this.setState(prevState => {
       prevState.students.push(newStudent);
@@ -240,7 +240,7 @@ class Students extends Component {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
-      [section]: { $merge: { [name]: value } }
+      [section]: { $merge: { [name]: value } },
     });
     this.setState({ newStudent: updatedStudent });
   };
@@ -252,22 +252,13 @@ class Students extends Component {
       studentInformation,
       contactInformation,
       emailAddress,
-      location
+      location,
     } = updatedStudent;
-    const studentToUpdate = originalStudents.filter(
-      student => student.id === updatedStudent.id
-    )[0];
+    const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
-    const students = update(originalStudents, {
-      [updatedStudentIndex]: {
-        $merge: {
-          active,
-          studentInformation,
-          contactInformation,
-          emailAddress,
-          location
-        }
-      }
+    const students = update(originalStudents, { [updatedStudentIndex]: {
+      $merge: { active, studentInformation, contactInformation, emailAddress, location },
+    },
     });
     this.setState({ students });
     const { onSetStudents } = this.props;
@@ -420,18 +411,18 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
-  onSetStudents: PropTypes.func.isRequired
+  onSetStudents: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  students: makeSelectStudents()
+  students: makeSelectStudents(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student))
+  onCreateStudent: student => dispatch(createStudent(student)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
