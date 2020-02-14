@@ -155,7 +155,8 @@ class DetailTestList extends React.Component {
     this.setState({
       StudentAnswersModalOpen:false,
       activeCompletedTestCard:true,
-    })
+    });
+    this.onCloseDropdown()
   }
 
   onSaveNewTest = test => {
