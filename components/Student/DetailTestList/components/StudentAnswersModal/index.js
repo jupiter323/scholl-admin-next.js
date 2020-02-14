@@ -63,7 +63,7 @@ class StudentAnswersModal extends React.Component {
     const {
       open,
       testSection: { problems },
-      // onCloseStudentAnswerModal
+      onActiveCompletedTestCard,
     } = this.props;
     return (
       <div>
@@ -98,7 +98,7 @@ class StudentAnswersModal extends React.Component {
                             <a
                               href="#"
                               className="btn btn-xlarge waves-effect waves-light bg-blue"
-                              // onClick={onAddStudentAnswerToTest}
+                              onClick={onActiveCompletedTestCard}
                             >
                               I’m Done
                             </a>
@@ -121,7 +121,7 @@ StudentAnswersModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
   testSection: PropTypes.object.isRequired,
-  // onCloseStudentAnswerModal: PropTypes.func.isRequired
+  onActiveCompletedTestCard:PropTypes.func.isRequired,
 };
 
 export default StudentAnswersModal;

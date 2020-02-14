@@ -25,7 +25,7 @@ import {
 } from '../index/actions';
 
 import sampleSelectedStudent from '../../utils/sampleSelectedStudent';
-import { fetchProblemsByStudentTestIdApi } from "../index/api";
+import { fetchProblemsByStudentTestIdApi,fetchStudentsApi } from "../index/api";
 
 
 
@@ -41,11 +41,11 @@ class IndividualStudentPage extends React.Component {
   }
 
   componentDidMount = async() =>{
-    const { onSetIsVisibleTopBar,isVisibleTopBar } = this.props;
+    const { onSetIsVisibleTopBar,isVisibleTopBar,student } = this.props;
     if(!isVisibleTopBar){
         onSetIsVisibleTopBar(true);
     }
-    const student_test_id = "0a6bbcd5-fd77-4267-b58f-b441425faa21";
+    const student_test_id = "73a6f906-fab9-40b5-bb2c-5c2d595133d4";
     const { formattedData } = await fetchProblemsByStudentTestIdApi(student_test_id);
     this.setState({
       currentTestSection: formattedData.test.sections[0],
@@ -65,8 +65,8 @@ class IndividualStudentPage extends React.Component {
   renderCurrentPage = () => {
     const { activePage,currentTestSection } = this.state;
     //The api data is not enough for now,so we are using dummy data for selected student detail
-    // const { student } = this.props;
-    const student = sampleSelectedStudent;
+    const { student } = this.props;
+    // const student = sampleSelectedStudent;
     if (activePage === "summary") {
       return <DetailSummaryPage user={student} />;
     }

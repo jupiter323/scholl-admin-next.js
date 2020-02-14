@@ -42,11 +42,75 @@ export const fetchStudentsApi = () =>
             ? "0"
             : student.testScores.currentScore
         },
+        // courseContext: {
+        //   targetScore: !student.hasOwnProperty("courseContext")
+        //     ? "0"
+        //     : student.courseContext.targetScore
+        // }
         courseContext: {
-          targetScore: !student.hasOwnProperty("courseContext")
-            ? "0"
-            : student.courseContext.targetScore
-        }
+          courseStartDateOption: "secondOption",
+          courseStartDate: "",
+          courseEndDateOption: "secondOption",
+          courseEndDate: "",
+          targetTestDate: "12/12/2019",
+          targetScore: "1400",
+          highSchool: "Everglades High",
+          graduationYear: "2018"
+        },
+        courseProgress: {
+          startDate: "6/03/18",
+          testDate: "10/14/18",
+          progress: "77",
+          improvement: "82",
+          lessons: "73",
+          instruction: "68",
+          practiceTests: "47"
+        },
+        overdueWork: {
+          lessons: "12",
+          worksheets: "3",
+          quizzes: "1",
+          practiceTests: "5"
+        },
+        summary: {
+          questionsAnswered: "791",
+          videoWatched: "416",
+          notesTaken: "52",
+          totalTimeLoggedIn: "220",
+          lastLogIn: "3:12",
+          loginTimeCode: "pm",
+          onTimePercentage: "77"
+        },
+        testScores: {
+          initialScore: "1040",
+          currentScore: "1300",
+          compositeScore: {
+            reading: "83",
+            writing: "31",
+            math: "105",
+            composite: "218"
+          },
+          subjectScores: {
+            reading: "58",
+            writing: "44",
+            math: "91",
+            composite: "195"
+          }
+        },
+        strengthsAndWeaknesses: {
+          reading: {
+            correctAnswers: '32',
+            totalAnswers: '52',
+          },
+          writing: {
+            correctAnswers: '35',
+            totalAnswers: '52',
+          },
+          math: {
+            correctAnswers: '37',
+            totalAnswers: '52',
+          },
+        },
       }));
       return formattedStudents;
     });
@@ -276,8 +340,7 @@ export const updateStudentTestDueDate = body =>
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body)
-  })
-    .catch(err => err);
+  }).catch(err => err);
 
 export const updateStudentTestAssignmentDate = body =>
   fetch(`${API_URL}/api/commands/update-student-test-assignment-date`, {
@@ -287,8 +350,7 @@ export const updateStudentTestAssignmentDate = body =>
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body)
-  })
-    .catch(err => err);
+  }).catch(err => err);
 
 export const deleteStudentApi = id =>
   fetch(`${API_URL}/api/commands/delete-student`, {
@@ -324,8 +386,19 @@ export const fetchTestsByStudentIdApi = student_id =>
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedStudentTests = data.tests.reduce((finalArry, currentStudentTest) => {
-          const { test_id,test_name,test_description,test_form,student_test_id,student_id,assignment_date,due_date,status} = currentStudentTest;
+      const formattedStudentTests = data.tests.reduce(
+        (finalArry, currentStudentTest) => {
+          const {
+            test_id,
+            test_name,
+            test_description,
+            test_form,
+            student_test_id,
+            student_id,
+            assignment_date,
+            due_date,
+            status
+          } = currentStudentTest;
           const newStudentTest = {
             test_id,
             test_name,

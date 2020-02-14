@@ -15,7 +15,7 @@ export const data = percentage => ({
   ]
 });
 
-class TestCard extends React.Component {
+class FutureTestCard extends React.Component {
   handleDropdownClick = event => {
     const {
       onSetDropdown,
@@ -220,7 +220,7 @@ class TestCard extends React.Component {
   }
 }
 
-TestCard.propTypes = {
+FutureTestCard.propTypes = {
   index: PropTypes.number,
   futureTest: PropTypes.bool,
   dropdownIndex: PropTypes.number,
@@ -235,4 +235,4 @@ TestCard.propTypes = {
   openTestScores: PropTypes.func.isRequired
 };
 
-export default TestCard;
+export default FutureTestCard;

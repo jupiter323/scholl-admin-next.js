@@ -5,7 +5,8 @@ import update from "immutability-helper";
 import Moment from "moment";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import TestCard from "./components/TestCard";
+import FutureTestCard from "./components/FutureTestCard";
+import CompletedTestCard from "./components/CompletedTestCard";
 import TestSections from "../TestSections";
 import sampleTests from "./utils/sampleTests";
 import EditTestModal from "./components/EditTestModal";
@@ -26,6 +27,7 @@ class DetailTestList extends React.Component {
       dropdownIndex: null,
       dropdownIsOpen: false,
       editTestModalOpen: false,
+      activeCompletedTestCard:false,
       StudentAnswersModalOpen: false,
       activeTest: null,
       selectedTest: null,
@@ -36,9 +38,11 @@ class DetailTestList extends React.Component {
   componentDidMount = async () => {
     if (this.state.tests.length === 0) {
       const { id } = this.props.user;
+      console.log("Studentid:",id)
       const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
       this.setState({ tests });
     }
+    console.log("tests:",this.state.tests)
   };
 
   onToggleEditTestModal = (activeTest = null) => {
@@ -99,29 +103,31 @@ class DetailTestList extends React.Component {
   };
 
   mapCompletedTests = () => {
-    const { tests } = this.state;
-    return tests.filter(test => test.status === "complete").map((test, index) => (
-        <TestCard
-          test={test}
-          key={`completed-${test.test_id}`}
-          index={index}
-          onEditTest={() => this.onToggleEditTestModal(test)}
-          onDeleteTest={this.onDeleteTest}
-          onSetDropdown={this.onSetDropdown}
-          onEnterAnswers={this.onEnterAnswers}
-          onCloseDropdown={this.onCloseDropdown}
-          onDownloadReport={this.onDownloadReport}
-          dropdownIndex={this.state.dropdownIndex}
-          dropdownIsOpen={this.state.dropdownIsOpen}
-          openTestScores={this.openTestScores}
-        />
-      ));
+    const { tests,activeCompletedTestCard } = this.state;
+    return <CompletedTestCard show = {activeCompletedTestCard}/>
+    //we not using completed test state from api for now.
+    // return tests.filter(test => test.status !== "ASSIGNED").map((test, index) => (
+        // <FutureTestCard
+        //   test={test}
+        //   key={`completed-${test.test_id}`}
+        //   index={index}
+        //   onEditTest={() => this.onToggleEditTestModal(test)}
+        //   onDeleteTest={this.onDeleteTest}
+        //   onSetDropdown={this.onSetDropdown}
+        //   onEnterAnswers={this.onEnterAnswers}
+        //   onCloseDropdown={this.onCloseDropdown}
+        //   onDownloadReport={this.onDownloadReport}
+        //   dropdownIndex={this.state.dropdownIndex}
+        //   dropdownIsOpen={this.state.dropdownIsOpen}
+        //   openTestScores={this.openTestScores}
+        // />
+      // ));
   };
 
   mapFutureTests = () => {
     const { tests } = this.state;
-    return tests.filter(test => test.status !== "complete").map((test, index) => (
-        <TestCard
+    return tests.filter(test => test.status === "ASSIGNED").map((test, index) => (
+        <FutureTestCard
           futureTest
           test={test}
           key={`future-${test.test_id}`}
@@ -134,7 +140,7 @@ class DetailTestList extends React.Component {
           dropdownIndex={this.state.dropdownIndex}
           dropdownIsOpen={this.state.dropdownIsOpen}
           openTestScores={this.openTestScores}
-          index={tests.filter(filterTest => filterTest.status === "complete").length + index}
+          index={tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
         />
       ));
   };
@@ -144,9 +150,11 @@ class DetailTestList extends React.Component {
   };
 
   onOpenStudentAnswerModal = () => this.setState({ StudentAnswersModalOpen: true});
-  onCloseStudentAnswerModal = () => {
+
+  onActiveCompletedTestCard = () => {
     this.setState({
       StudentAnswersModalOpen:false,
+      activeCompletedTestCard:true,
     })
   }
 
@@ -214,7 +222,7 @@ class DetailTestList extends React.Component {
             <When condition = {StudentAnswersModalOpen}>
               <StudentAnswersModal
                 open={StudentAnswersModalOpen}
-                // onCloseStudentAnswerModal = {this.onCloseStudentAnswerModal}
+                onActiveCompletedTestCard = {this.onActiveCompletedTestCard}
                 onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
                 testSection={currentTestSection}
               />
