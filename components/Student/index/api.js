@@ -99,18 +99,18 @@ export const fetchStudentsApi = () =>
         },
         strengthsAndWeaknesses: {
           reading: {
-            correctAnswers: '32',
-            totalAnswers: '52',
+            correctAnswers: "32",
+            totalAnswers: "52"
           },
           writing: {
-            correctAnswers: '35',
-            totalAnswers: '52',
+            correctAnswers: "35",
+            totalAnswers: "52"
           },
           math: {
-            correctAnswers: '37',
-            totalAnswers: '52',
-          },
-        },
+            correctAnswers: "37",
+            totalAnswers: "52"
+          }
+        }
       }));
       return formattedStudents;
     });
@@ -896,4 +896,18 @@ export const addStudentTestQuestionFlagApi = body =>
     body: JSON.stringify(body)
   })
     .then(res => res.json())
+    .catch(err => err);
+    
+export const fetchStudentTestScoreApi = student_test_id =>
+  fetch(`${API_URL}/api/studentTests/${student_test_id}/score`, {
+    headers: {
+      "Allow-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      const formattedTestScores = data;
+      return { formattedTestScores };
+    })
     .catch(err => err);

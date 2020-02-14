@@ -4,13 +4,12 @@ import PropTypes from "prop-types";
 class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dropdownIsOpen: false
-    };
   }
   render() {
-    const { show } = this.props;
-    const { dropdownIsOpen } = this.state;
+    const {
+      show,
+      score: { name, score }
+    } = this.props;
     return (
       <React.Fragment>
         {show && (
@@ -93,26 +92,39 @@ class CompletedTestCard extends React.Component {
                     n/a
                   </span>
                 </li>
-                <li>
-                  <span
-                    className="badge-circle"
-                    style={{
-                      backgroundColor: "#4785f4",
-                      borderColor: "#4785f4"
-                    }}
-                  >
-                    <span className="badge-text">
-                      <strong>
-                        <h2 style={{ marginBottom: "5px" }}>Math</h2>
-                      </strong>
-                      <h2 style={{ marginBottom: "5px" }}>
-                        540
-                        <br />
-                        +70
-                      </h2>
+                {name === "Math" ? (
+                  <li>
+                    <span
+                      className="badge-circle"
+                      style={{
+                        backgroundColor: "#4785f4",
+                        borderColor: "#4785f4"
+                      }}
+                    >
+                      <span className="badge-text">
+                        <strong>
+                          <h2 style={{ marginBottom: "5px" }}>Math</h2>
+                        </strong>
+                        <h2 style={{ marginBottom: "5px" }}>
+                          540
+                          <br />
+                          +70
+                        </h2>
+                      </span>
                     </span>
-                  </span>
-                </li>
+                  </li>
+                ) : (
+                  <li>
+                    <span className="badge-circle">
+                      <span className="badge-text">
+                        <strong>
+                          <h2 style={{ marginBottom: "10px" }}>Math</h2>
+                        </strong>
+                        <h2 style={{ marginBottom: "15px" }}>n/a</h2>
+                      </span>
+                    </span>
+                  </li>
+                )}
                 <li>
                   <span className="badge-circle">
                     <span
@@ -128,28 +140,51 @@ class CompletedTestCard extends React.Component {
                     </span>
                   </span>
                 </li>
-
-                <li className="style-blue-light">
-                  <span
-                    className="badge-circle"
-                    style={{
-                      backgroundColor: "#35a6af",
-                      borderColor: "#35a6af",
-                      width: "80px",
-                      height: "80px"
-                    }}
-                  >
-                    <span className="badge-text" style={{ fontSize: "16px" }}>
-                      Reading
-                      <br />
-                      <h4 style={{ marginTop: "10px" }}>
-                        300
+                {name === "Reading" ? (
+                  <li className="style-blue-light">
+                    <span
+                      className="badge-circle"
+                      style={{
+                        backgroundColor: "#35a6af",
+                        borderColor: "#35a6af",
+                        width: "80px",
+                        height: "80px"
+                      }}
+                    >
+                      <span className="badge-text" style={{ fontSize: "16px" }}>
+                        Reading
                         <br />
-                        +70
-                      </h4>
+                        <h4 style={{ marginTop: "10px" }}>
+                          {score}
+                          <br />
+                          +70
+                        </h4>
+                      </span>
                     </span>
-                  </span>
-                </li>
+                  </li>
+                ) : (
+                  <li>
+                    <span
+                      className="badge-circle"
+                      style={{
+                        backgroundColor: "#35a6af",
+                        borderColor: "#35a6af",
+                        width: "80px",
+                        height: "80px"
+                      }}
+                    >
+                      <span className="badge-text" style={{ fontSize: "16px" }}>
+                        Reading
+                        <br />
+                        <h4 style={{ marginTop: "10px" }}>
+                          {score}
+                          <br />
+                          +70
+                        </h4>
+                      </span>
+                    </span>
+                  </li>
+                )}
                 <li className="style-amber">
                   <span
                     className="badge-circle"
@@ -184,6 +219,7 @@ class CompletedTestCard extends React.Component {
 
 CompletedTestCard.propTypes = {
   show: PropTypes.bool.isRequired
+  //   scores:PropTypes
 };
 
 export default CompletedTestCard;
