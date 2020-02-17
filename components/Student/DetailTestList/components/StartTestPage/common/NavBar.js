@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -7,22 +7,20 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { onClose,onSetActivePage } = this.props;
+    const { onCloseStartTest, onSetActivePage, testDescription } = this.props;
     return (
       <React.Fragment>
         <div className="header-row card-panel light-blue lighten-1 white-text">
           <div className="card-panel-row row">
             <div className="col s10">
               <div className="card-panel-text">
-                <h1 className="text-large">
-                  <strong className="text-ico">2nd</strong> Simulated SAT
-                </h1>
+                <h1 className="text-large">{testDescription}</h1>
               </div>
             </div>
             <div className="col s2 right-align">
               <div className="close-block">
                 <a href="#" className="modal-close close">
-                  <i className="icon-close-thin" onClick={onClose} />
+                  <i className="icon-close-thin" onClick={onCloseStartTest} />
                 </a>
               </div>
             </div>
@@ -32,22 +30,25 @@ class NavBar extends React.Component {
           {/* tabs switcher */}
           <ul className="tabs tabs-flex">
             <li className="tab col s3">
-              <a className="active" onClick = {() => onSetActivePage('showReadingSection')}>
+              <a
+                className="active"
+                onClick={() => onSetActivePage("activeReadingSection")}
+              >
                 <b>Reading</b>
               </a>
             </li>
             <li className="tab col s3">
-              <a onClick = {() => onSetActivePage('showWritingSection')}>
+              <a onClick={() => onSetActivePage("activeWritingSection")}>
                 <b>Writing</b>
               </a>
             </li>
             <li className="tab col s3">
-              <a onClick = {() => onSetActivePage('showMathNoCalcSection')}>
+              <a onClick={() => onSetActivePage("activeMathNoCalcSection")}>
                 <b>Math (no calc)</b>
               </a>
             </li>
             <li className="tab col s3">
-              <a onClick = {() => onSetActivePage('showMathWithCalcSection')}>
+              <a onClick={() => onSetActivePage("activeMathWithCalcSection")}>
                 <b>Math (calculator)</b>
               </a>
             </li>
@@ -59,8 +60,9 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  onSetActivePage:PropTypes.func.isRequired,
+  onCloseStartTest: PropTypes.func.isRequired,
+  onSetActivePage: PropTypes.func.isRequired,
+  testDescription: PropTypes.string.isRequired
 };
 
 export default NavBar;

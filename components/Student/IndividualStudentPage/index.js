@@ -24,8 +24,6 @@ import {
   setIsVisibleTopBar,
 } from '../index/actions';
 
-import sampleSelectedStudent from '../../utils/sampleSelectedStudent';
-import { fetchProblemsByStudentTestIdApi } from "../index/api";
 
 
 
@@ -37,6 +35,7 @@ class IndividualStudentPage extends React.Component {
       activationDropdownOpen: false,
       licenseCode: "",
       currentTestSection: {},
+      tests:[],
     };
   }
 
@@ -45,11 +44,6 @@ class IndividualStudentPage extends React.Component {
     if(!isVisibleTopBar){
         onSetIsVisibleTopBar(true);
     }
-    const student_test_id = "0a6bbcd5-fd77-4267-b58f-b441425faa21";
-    const { formattedData } = await fetchProblemsByStudentTestIdApi(student_test_id);
-    this.setState({
-      currentTestSection: formattedData.test.sections[0],
-    });
   }
 
   onToggleActivationDropdown = () =>
@@ -63,10 +57,10 @@ class IndividualStudentPage extends React.Component {
     this.setState({ [name]: event.target.value });
 
   renderCurrentPage = () => {
-    const { activePage,currentTestSection } = this.state;
+    const { activePage } = this.state;
     //The api data is not enough for now,so we are using dummy data for selected student detail
-    // const { student } = this.props;
-    const student = sampleSelectedStudent;
+    const { student } = this.props;
+    // const student = sampleSelectedStudent;
     if (activePage === "summary") {
       return <DetailSummaryPage user={student} />;
     }
@@ -83,7 +77,7 @@ class IndividualStudentPage extends React.Component {
       return <LessonDetailAnswerSheet />;
     }
     if (activePage === "test") {
-      return <DetailTestList user={student} currentTestSection = {currentTestSection} />;
+      return <DetailTestList user={student}/>;
     }
     if (activePage === "scored-tests") {
       return <ScoredTestListPage />;
@@ -177,11 +171,7 @@ class IndividualStudentPage extends React.Component {
                     <div
                       id="dropdown_activate"
                       className="dropdown-content"
-                      style={
-                        activationDropdownOpen
-                          ? { display: "block", opacity: "1" }
-                          : {}
-                      }
+                      style={activationDropdownOpen? { display: "block", opacity: "1" }: {}}
                     >
                       <div className="card-panel">
                         <div className="title-block">
