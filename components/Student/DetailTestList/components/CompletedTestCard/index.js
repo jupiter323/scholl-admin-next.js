@@ -212,11 +212,11 @@ class CompletedTestCard extends React.Component {
                       <span className="badge-text" style={{ fontSize: "16px" }}>
                         Reading
                         <br />
-                        <h4 style={{ marginTop: "10px" }}>
+                        <h3>
                           {ReadingScore}
                           <br />
                           +70
-                        </h4>
+                        </h3>
                       </span>
                     </span>
                   </li>
@@ -232,7 +232,7 @@ class CompletedTestCard extends React.Component {
                       <span className="badge-text" style={{ fontSize: "16px" }}>
                         Reading
                         <br />
-                        <h4 style={{ marginTop: "10px" }}>n/a</h4>
+                        <h3 style={{ marginTop: "10px" }}>n/a</h3>
                       </span>
                     </span>
                   </li>
