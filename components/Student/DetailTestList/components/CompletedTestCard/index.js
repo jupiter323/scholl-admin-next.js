@@ -13,7 +13,7 @@ class CompletedTestCard extends React.Component {
     return (
       <React.Fragment>
         {show && (
-          <div className="card-full-width card-scored card">
+          <div className="card-full-width card-scored card" style = {{margin:'10px'}}>
             <div className="card-content">
               <div className=" card-panel-row row mb-0">
                 <div className="col s12 right-align">
@@ -167,8 +167,6 @@ class CompletedTestCard extends React.Component {
                     <span
                       className="badge-circle"
                       style={{
-                        backgroundColor: "#35a6af",
-                        borderColor: "#35a6af",
                         width: "80px",
                         height: "80px"
                       }}

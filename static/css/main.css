@@ -10321,7 +10321,47 @@ input[type="submit"] {
   font-size: 1.125rem;
 }
 
+/* Test  */
+
 /* Start Test Card */
+.starting-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  z-index: 5;
+}
+
+.starting-block .holder {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.starting-block .title {
+  display: block;
+  font-size: 21px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-align: center;
+  line-height: 1.43;
+  margin: 0 0 13px;
+}
+
+.starting .blured-effect {
+  filter: blur(4px);
+}
 .card-scored .card-meta-block {
   color: #989898;
   font-size: 14px;
@@ -25743,6 +25783,38 @@ a.collapsible-opener:hover {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+}
+
+@media (min-width: 1200px) {
+  .btn-xlarge {
+    font-size: 18px;
+    height: 55px;
+    line-height: 55px;
+  }
+}
+
+@media (min-width: 993px) {
+  .btn-xlarge {
+    font-size: 16px;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-xlarge {
+    font-size: 15px;
+    height: 45px;
+    line-height: 45px;
+    min-width: 200px;
+  }
+}
+
+.btn-xlarge {
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+  min-width: 175px;
 }
 
 .btn,

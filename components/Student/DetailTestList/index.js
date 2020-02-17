@@ -11,7 +11,7 @@ import TestSections from "../TestSections";
 // import sampleTests from "./utils/sampleTests";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
-import StudentAnswersModal from "./components/StudentAnswersModal";
+import StudentAnswersModal from "./components/StartTestPage";
 
 import { setIsVisibleTopBar } from "../index/actions";
 
@@ -45,9 +45,7 @@ class DetailTestList extends React.Component {
   componentDidMount = async () => {
     if (this.state.tests.length === 0) {
       const { id } = this.props.user;
-      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
-        id
-      );
+      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
       this.setState({ tests, student_test_id: tests[0].student_test_id });
     }
   };
@@ -63,10 +61,8 @@ class DetailTestList extends React.Component {
     );
   };
 
-  onSetDropdown = dropdownIndex =>
-    this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () =>
-    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = event => {
     event.preventDefault();
@@ -108,12 +104,11 @@ class DetailTestList extends React.Component {
     const newTestArray = tests.filter(test => test.status === "complete");
     this.setState(
       { selectedTest: newTestArray[index.index] },
-      console.log("clicked", index[0], newTestArray, newTestArray[{ index }])
     );
   };
 
   mapCompletedTests = () => {
-    const { tests, activeCompletedTestCard,scores} = this.state;
+    const { activeCompletedTestCard,scores} = this.state;
     return scores.map((score, index) => (<CompletedTestCard show={activeCompletedTestCard} score = {score}/>));
     //we not using completed test state from api for now.
     // return tests.filter(test => test.status !== "ASSIGNED").map((test, index) => (
@@ -136,9 +131,7 @@ class DetailTestList extends React.Component {
 
   mapFutureTests = () => {
     const { tests } = this.state;
-    return tests
-      .filter(test => test.status === "ASSIGNED")
-      .map((test, index) => (
+    return tests.filter(test => test.status === "ASSIGNED").map((test, index) => (
         <FutureTestCard
           futureTest
           test={test}
@@ -152,20 +145,14 @@ class DetailTestList extends React.Component {
           dropdownIndex={this.state.dropdownIndex}
           dropdownIsOpen={this.state.dropdownIsOpen}
           openTestScores={this.openTestScores}
-          index={
-            tests.filter(filterTest => filterTest.status === "ASSIGNED")
-              .length + index
-          }
+          index={ tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
         />
       ));
   };
 
-  onCloseTestModal = () => {
-    this.setState({ createTestModalOpen: false });
-  };
+  onCloseTestModal = () => this.setState({ createTestModalOpen: false });
 
-  onOpenStudentAnswerModal = () =>
-    this.setState({ StudentAnswersModalOpen: true });
+  onOpenStudentAnswerModal = () =>this.setState({ StudentAnswersModalOpen: true });
 
   onActiveCompletedTestCard = async() => {
     const { student_test_id } = this.state;
@@ -225,7 +212,18 @@ class DetailTestList extends React.Component {
       activeTest,
       selectedTest
     } = this.state;
-    const { user, currentTestSection } = this.props;
+    const currentTestSection = {
+      test_id: "51a6e1f0-2569-41c8-a8c8-6ae9a6c6b8f1",
+      test_name: "SAT Practice Test #1",
+      test_description: "SAT Practice Test #1",
+      test_form: "1",
+      student_test_id: "73a6f906-fab9-40b5-bb2c-5c2d595133d4",
+      student_id: "f65b0ce4-0937-49a4-b089-e447a4317f70",
+      assignment_date: "2020-02-11",
+      due_date: "2020-02-15",
+      status: "ASSIGNED"
+    };
+    const { user} = this.props;
     return (
       <React.Fragment>
         {!selectedTest && (
@@ -243,7 +241,7 @@ class DetailTestList extends React.Component {
                 open={StudentAnswersModalOpen}
                 onActiveCompletedTestCard={this.onActiveCompletedTestCard}
                 onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-                testSection={currentTestSection}
+                test ={currentTestSection}
               />
             </When>
             <When condition={createTestModalOpen}>
@@ -289,7 +287,6 @@ class DetailTestList extends React.Component {
 DetailTestList.propTypes = {
   user: PropTypes.object.isRequired,
   onSetIsVisibleTopBar: PropTypes.func.isRequired,
-  currentTestSection: PropTypes.object.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
