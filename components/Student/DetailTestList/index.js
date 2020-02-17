@@ -11,7 +11,7 @@ import TestSections from "../TestSections";
 // import sampleTests from "./utils/sampleTests";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
-import StudentAnswersModal from "./components/StartTestPage";
+import StartTestWrapper from "./components/StartTestPage";
 
 import { setIsVisibleTopBar } from "../index/actions";
 
@@ -29,13 +29,14 @@ class DetailTestList extends React.Component {
     super(props);
     this.state = {
       tests: [],
+      currentTestSection:{},
       student_test_id: "",
       scores:[],
       dropdownIndex: null,
       dropdownIsOpen: false,
       editTestModalOpen: false,
       activeCompletedTestCard: false,
-      StudentAnswersModalOpen: false,
+      StartTestWrapperOpen: false,
       activeTest: null,
       selectedTest: null,
       createTestModalOpen: false
@@ -52,8 +53,7 @@ class DetailTestList extends React.Component {
 
   onToggleEditTestModal = (activeTest = null) => {
     this.onSetIsVisibleTopBar(false);
-    this.setState(
-      ({ editTestModalOpen }) => ({
+    this.setState(({ editTestModalOpen }) => ({
         editTestModalOpen: !editTestModalOpen,
         activeTest
       }),
@@ -70,20 +70,16 @@ class DetailTestList extends React.Component {
     console.warn("Pending implementation of create test UI and functionality");
   };
 
-  onEnterAnswers = () => {
-    this.setState({ StudentAnswersModalOpen: true });
+  onEnterAnswers = (currentTestId) => {
+    const currentTestSection = this.state.tests.find(test => test.test_id === currentTestId);
+    this.setState({ StartTestWrapperOpen: true,currentTestSection });
   };
 
-  onEditTest = () =>
-    console.warn("Pending implementation edit test UI and functionality");
-  onDownloadReport = () =>
-    console.warn(
-      "Pending implementation of download report ui and functionality"
-    );
+  onEditTest = () => console.warn("Pending implementation edit test UI and functionality");
+  onDownloadReport = () =>console.warn( "Pending implementation of download report ui and functionality");
   onDeleteTest = () => {
     this.onSetIsVisibleTopBar(true);
-    this.setState({ editTestModalOpen: false }, () =>
-      console.warn("Pending implementation of delete test UI and functionality")
+    this.setState({ editTestModalOpen: false }, () => console.warn("Pending implementation of delete test UI and functionality")
     );
   };
   onSetIsVisibleTopBar = value => {
@@ -109,24 +105,7 @@ class DetailTestList extends React.Component {
 
   mapCompletedTests = () => {
     const { activeCompletedTestCard,scores} = this.state;
-    return scores.map((score, index) => (<CompletedTestCard show={activeCompletedTestCard} score = {score}/>));
-    //we not using completed test state from api for now.
-    // return tests.filter(test => test.status !== "ASSIGNED").map((test, index) => (
-    // <FutureTestCard
-    //   test={test}
-    //   key={`completed-${test.test_id}`}
-    //   index={index}
-    //   onEditTest={() => this.onToggleEditTestModal(test)}
-    //   onDeleteTest={this.onDeleteTest}
-    //   onSetDropdown={this.onSetDropdown}
-    //   onEnterAnswers={this.onEnterAnswers}
-    //   onCloseDropdown={this.onCloseDropdown}
-    //   onDownloadReport={this.onDownloadReport}
-    //   dropdownIndex={this.state.dropdownIndex}
-    //   dropdownIsOpen={this.state.dropdownIsOpen}
-    //   openTestScores={this.openTestScores}
-    // />
-    // ));
+    return <CompletedTestCard show={activeCompletedTestCard} scores = {scores}/>;
   };
 
   mapFutureTests = () => {
@@ -152,13 +131,13 @@ class DetailTestList extends React.Component {
 
   onCloseTestModal = () => this.setState({ createTestModalOpen: false });
 
-  onOpenStudentAnswerModal = () =>this.setState({ StudentAnswersModalOpen: true });
+  onOpenStudentAnswerModal = () =>this.setState({ StartTestWrapperOpen: true });
 
   onActiveCompletedTestCard = async() => {
     const { student_test_id } = this.state;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
     this.setState({
-      StudentAnswersModalOpen: false,
+      StartTestWrapperOpen: false,
       activeCompletedTestCard: true,
       scores:formattedTestScores.scores,
     });
@@ -208,21 +187,11 @@ class DetailTestList extends React.Component {
     const {
       editTestModalOpen,
       createTestModalOpen,
-      StudentAnswersModalOpen,
+      StartTestWrapperOpen,
       activeTest,
-      selectedTest
+      selectedTest,
+      currentTestSection
     } = this.state;
-    const currentTestSection = {
-      test_id: "51a6e1f0-2569-41c8-a8c8-6ae9a6c6b8f1",
-      test_name: "SAT Practice Test #1",
-      test_description: "SAT Practice Test #1",
-      test_form: "1",
-      student_test_id: "73a6f906-fab9-40b5-bb2c-5c2d595133d4",
-      student_id: "f65b0ce4-0937-49a4-b089-e447a4317f70",
-      assignment_date: "2020-02-11",
-      due_date: "2020-02-15",
-      status: "ASSIGNED"
-    };
     const { user} = this.props;
     return (
       <React.Fragment>
@@ -236,9 +205,9 @@ class DetailTestList extends React.Component {
                 onSaveTestChanges={this.onSaveTestChanges}
               />
             </When>
-            <When condition={StudentAnswersModalOpen}>
-              <StudentAnswersModal
-                open={StudentAnswersModalOpen}
+            <When condition={StartTestWrapperOpen}>
+              <StartTestWrapper
+                open={StartTestWrapperOpen}
                 onActiveCompletedTestCard={this.onActiveCompletedTestCard}
                 onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
                 test ={currentTestSection}

@@ -178,7 +178,7 @@ class FutureTestCard extends React.Component {
                           }}
                         >
                           <li>
-                            <a href="#" onClick={onEnterAnswers}>
+                            <a href="#" onClick={() =>onEnterAnswers(this.props.test.test_id)}>
                               Enter Answers
                             </a>
                           </li>
