@@ -26,10 +26,19 @@ module.exports = {
       2,
       "as-needed"
     ],
-    "class-methods-use-this": 0,
-    "comma-dangle": [
-      2,
-      "always-multiline"
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
     ],
     "no-trailing-spaces": 2,
     "no-plusplus": 0,
