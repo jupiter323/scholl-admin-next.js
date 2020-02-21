@@ -29,9 +29,9 @@ class DetailTestList extends React.Component {
     super(props);
     this.state = {
       tests: [],
-      currentTestSection:{},
+      currentTestSection: {},
       student_test_id: "",
-      scores:[],
+      scores: [],
       dropdownIndex: null,
       dropdownIsOpen: false,
       editTestModalOpen: false,
@@ -39,21 +39,24 @@ class DetailTestList extends React.Component {
       StartTestWrapperOpen: false,
       activeTest: null,
       selectedTest: null,
-      createTestModalOpen: false,
+      createTestModalOpen: false
     };
   }
 
   componentDidMount = async () => {
     if (this.state.tests.length === 0) {
       const { id } = this.props.user;
-      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
+      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
+        id
+      );
       this.setState({ tests, student_test_id: tests[0].student_test_id });
     }
   };
 
   onToggleEditTestModal = (activeTest = null) => {
     this.onSetIsVisibleTopBar(false);
-    this.setState(({ editTestModalOpen }) => ({
+    this.setState(
+      ({ editTestModalOpen }) => ({
         editTestModalOpen: !editTestModalOpen,
         activeTest
       }),
@@ -62,7 +65,8 @@ class DetailTestList extends React.Component {
   };
 
   onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onCloseDropdown = () =>
+    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = event => {
     event.preventDefault();
@@ -70,16 +74,23 @@ class DetailTestList extends React.Component {
     console.warn("Pending implementation of create test UI and functionality");
   };
 
-  onEnterAnswers = (currentTestId) => {
-    const currentTestSection = this.state.tests.find(test => test.test_id === currentTestId);
-    this.setState({ StartTestWrapperOpen: true,currentTestSection });
+  onEnterAnswers = currentTestId => {
+    const currentTestSection = this.state.tests.find(
+      test => test.test_id === currentTestId
+    );
+    this.setState({ StartTestWrapperOpen: true, currentTestSection });
   };
 
-  onEditTest = () => console.warn("Pending implementation edit test UI and functionality");
-  onDownloadReport = () =>console.warn( "Pending implementation of download report ui and functionality");
+  onEditTest = () =>
+    console.warn("Pending implementation edit test UI and functionality");
+  onDownloadReport = () =>
+    console.warn(
+      "Pending implementation of download report ui and functionality"
+    );
   onDeleteTest = () => {
     this.onSetIsVisibleTopBar(true);
-    this.setState({ editTestModalOpen: false }, () => console.warn("Pending implementation of delete test UI and functionality")
+    this.setState({ editTestModalOpen: false }, () =>
+      console.warn("Pending implementation of delete test UI and functionality")
     );
   };
   onSetIsVisibleTopBar = value => {
@@ -98,48 +109,66 @@ class DetailTestList extends React.Component {
   openTestScores = index => {
     const { tests } = this.state;
     const newTestArray = tests.filter(test => test.status === "complete");
-    this.setState(
-      { selectedTest: newTestArray[index.index] },
-    );
+    this.setState({ selectedTest: newTestArray[index.index] });
   };
 
   mapCompletedTests = () => {
-    const { activeCompletedTestCard,scores} = this.state;
-    return <CompletedTestCard show={activeCompletedTestCard} scores = {scores}/>;
-  };
-
-  mapFutureTests = () => {
-    const { tests } = this.state;
-    return tests.filter(test => test.status === "ASSIGNED").map((test, index) => (
-      <FutureTestCard
-        futureTest
-        test={test}
-        key={`future-${test.test_id}`}
-        onEditTest={() => this.onToggleEditTestModal(test)}
-        onDeleteTest={this.onDeleteTest}
+    const { activeCompletedTestCard, scores } = this.state;
+    //We are using 0 as index.In the future,The Completed Test Card should be mapping so that index should be unique
+    return (
+      <CompletedTestCard
+        show={activeCompletedTestCard}
+        scores={scores}
+        index={1119}
         onSetDropdown={this.onSetDropdown}
-        onEnterAnswers={this.onEnterAnswers}
         onCloseDropdown={this.onCloseDropdown}
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={this.state.dropdownIndex}
         dropdownIsOpen={this.state.dropdownIsOpen}
-        openTestScores={this.openTestScores}
-        index={ tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
       />
-    ));
+    );
+  };
+
+  mapFutureTests = () => {
+    const { tests } = this.state;
+    return tests
+      .filter(test => test.status === "STARTED")
+      .map((test, index) => (
+        <FutureTestCard
+          futureTest
+          test={test}
+          key={`future-${test.test_id}`}
+          onEditTest={() => this.onToggleEditTestModal(test)}
+          onDeleteTest={this.onDeleteTest}
+          onSetDropdown={this.onSetDropdown}
+          onEnterAnswers={this.onEnterAnswers}
+          onCloseDropdown={this.onCloseDropdown}
+          onDownloadReport={this.onDownloadReport}
+          dropdownIndex={this.state.dropdownIndex}
+          dropdownIsOpen={this.state.dropdownIsOpen}
+          openTestScores={this.openTestScores}
+          index={
+            tests.filter(filterTest => filterTest.status === "ASSIGNED")
+              .length + index
+          }
+        />
+      ));
   };
 
   onCloseTestModal = () => this.setState({ createTestModalOpen: false });
 
-  onOpenStudentAnswerModal = () =>this.setState({ StartTestWrapperOpen: true });
+  onOpenStudentAnswerModal = () =>
+    this.setState({ StartTestWrapperOpen: true });
 
-  onActiveCompletedTestCard = async() => {
+  onActiveCompletedTestCard = async () => {
     const { student_test_id } = this.state;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    const { formattedTestScores } = await fetchStudentTestScoreApi(
+      student_test_id
+    );
     this.setState({
       StartTestWrapperOpen: false,
       activeCompletedTestCard: true,
-      scores:formattedTestScores.scores,
+      scores: formattedTestScores.scores
     });
     this.onCloseDropdown();
   };
@@ -157,18 +186,18 @@ class DetailTestList extends React.Component {
       completionDate: "",
       completionTime: "",
       weekNumber: "3",
-      subjects: [{}, {}],
+      subjects: [{}, {}]
     };
     const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
     this.setState({ tests: updatedTests });
     const {
-      user: { id },
+      user: { id }
     } = this.props;
     const postBody = {
       student_id: id,
       test_id: uuidGenerator(),
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
-      due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
+      due_date: Moment(test.dueDate).format("YYYY-MM-DD")
     };
     assignTestToStudentApi(postBody);
   };
@@ -178,7 +207,7 @@ class DetailTestList extends React.Component {
     const postBody = {
       student_test_id,
       test_problem_id,
-      answer,
+      answer
     };
     await addStudentAnswerToTestApi(postBody);
   };
@@ -192,7 +221,7 @@ class DetailTestList extends React.Component {
       selectedTest,
       currentTestSection
     } = this.state;
-    const { user} = this.props;
+    const { user } = this.props;
     return (
       <React.Fragment>
         {!selectedTest && (
@@ -210,7 +239,7 @@ class DetailTestList extends React.Component {
                 open={StartTestWrapperOpen}
                 onActiveCompletedTestCard={this.onActiveCompletedTestCard}
                 onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-                test ={currentTestSection}
+                test={currentTestSection}
               />
             </When>
             <When condition={createTestModalOpen}>
@@ -255,12 +284,12 @@ class DetailTestList extends React.Component {
 
 DetailTestList.propTypes = {
   user: PropTypes.object.isRequired,
-  onSetIsVisibleTopBar: PropTypes.func.isRequired,
+  onSetIsVisibleTopBar: PropTypes.func.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
+    onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value))
   };
 }
 

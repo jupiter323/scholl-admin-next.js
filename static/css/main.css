@@ -26519,7 +26519,7 @@ a.collapsible-opener:hover {
 
 .dropdown-block .dropdown-content {
   border-radius: 2px;
-  width: 104px !important;
+  width: 104px;
   top: -8px !important;
   left: auto !important;
   right: 100%;
