@@ -12,8 +12,8 @@ const data = (totalScore, totalPossible) => ({
   }],
 })
 // eslint-disable-next-line react/prop-types
-const TotalScoreCard = ({ totalScore, totalPossible }) => (
-  <div className="col s12 l6 card-width-546">
+const TotalScoreCard = ({ userScoreRef,totalScore, totalPossible }) => (
+  <div className="col s12 l6 card-width-546" ref={userScoreRef}>
     <div className="card-block">
       <h2>Your Score <span className="separator">|</span> <span className="quantity">400 to 1600</span></h2>
       <div className="card-main-full card">

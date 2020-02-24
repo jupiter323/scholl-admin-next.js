@@ -53,6 +53,7 @@ class CompletedTestCard extends React.Component {
       dropdownIsOpen,
       onDownloadReport,
       onDeleteTest,
+      onDetailTest,
     } = this.props;
     const {
       ReadingScore,
@@ -101,6 +102,11 @@ class CompletedTestCard extends React.Component {
                           }}
                           className="dropdown-content"
                         >
+                          <li>
+                            <a href="#" onClick={onDetailTest}>
+                              Edit
+                            </a>
+                          </li>
                           <li>
                             <a
                               href="#"
@@ -354,7 +360,8 @@ CompletedTestCard.propTypes = {
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
-  onDownloadReport: PropTypes.func.isRequired
+  onDownloadReport: PropTypes.func.isRequired,
+  onDetailTest: PropTypes.func.isRequired,
 };
 
 export default CompletedTestCard;

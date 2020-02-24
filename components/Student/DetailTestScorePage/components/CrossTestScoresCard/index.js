@@ -1,7 +1,7 @@
 import React from 'react';
 
-const CrossTestScoresCard = () => (
-  <div className="col s12 l6 card-width-546">
+const CrossTestScoresCard = ({crossTestScoreRef}) => (
+  <div className="col s12 l6 card-width-546" ref = {crossTestScoreRef}>
     <div className="card-block">
       <h2>Cross-Test Scores <span className="separator">|</span> <span className="quantity">10 to 40</span></h2>
       <div className="card-main-full card">

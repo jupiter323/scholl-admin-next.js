@@ -12,8 +12,8 @@ const data = (totalScore, totalPossible) => ({
 });
 
 
-const SectionScoreCard = ({sectionScores: {readingAndWriting, math, totalPossible }}) => (
-  <div className="col s12 l6 card-width-546">
+const SectionScoreCard = ({sectionScoreRef,sectionScores: {readingAndWriting, math, totalPossible }}) => (
+  <div className="col s12 l6 card-width-546" ref = {sectionScoreRef}>
     <div className="card-block">
       <h2>Section Scores <span className="separator">|</span> <span className="quantity">200 to 800</span></h2>
       <div className="card-main-full card">

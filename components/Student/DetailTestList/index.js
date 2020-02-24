@@ -12,7 +12,7 @@ import TestSections from "../TestSections";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
 import StartTestWrapper from "./components/StartTestPage";
-
+import CompletedTestDetailView from "./components/CompletedTestDetailView";
 import { setIsVisibleTopBar } from "../index/actions";
 
 import {
@@ -35,6 +35,7 @@ class DetailTestList extends React.Component {
       dropdownIndex: null,
       dropdownIsOpen: false,
       editTestModalOpen: false,
+      testDetailViewOpen: false,
       activeCompletedTestCard: false,
       StartTestWrapperOpen: false,
       activeTest: null,
@@ -64,15 +65,35 @@ class DetailTestList extends React.Component {
     );
   };
 
+  onToggleCompleteTestDetailView = () => {
+    this.setState(
+      ({testDetailViewOpen}) => ({
+        testDetailViewOpen: !testDetailViewOpen
+      })
+    )
+  }
+
   onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () =>
-    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = event => {
     event.preventDefault();
     this.setState({ createTestModalOpen: true });
     console.warn("Pending implementation of create test UI and functionality");
   };
+
+  printDocument() {
+    const input = document.getElementById('divToPrint');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        // pdf.output('dataurlnewwindow');
+        pdf.save("download.pdf");
+      })
+    ;
+  }
 
   onEnterAnswers = currentTestId => {
     const currentTestSection = this.state.tests.find(
@@ -81,8 +102,7 @@ class DetailTestList extends React.Component {
     this.setState({ StartTestWrapperOpen: true, currentTestSection });
   };
 
-  onEditTest = () =>
-    console.warn("Pending implementation edit test UI and functionality");
+  onEditTest = () => console.warn("Pending implementation edit test UI and functionality");
   onDownloadReport = () =>
     console.warn(
       "Pending implementation of download report ui and functionality"
@@ -120,6 +140,7 @@ class DetailTestList extends React.Component {
         show={activeCompletedTestCard}
         scores={scores}
         index={1119}
+        onDetailTest={() => this.onToggleCompleteTestDetailView()}
         onSetDropdown={this.onSetDropdown}
         onCloseDropdown={this.onCloseDropdown}
         onDownloadReport={this.onDownloadReport}
@@ -131,9 +152,7 @@ class DetailTestList extends React.Component {
 
   mapFutureTests = () => {
     const { tests } = this.state;
-    return tests
-      .filter(test => test.status === "STARTED")
-      .map((test, index) => (
+    return tests.filter(test => test.status === "STARTED").map((test, index) => (
         <FutureTestCard
           futureTest
           test={test}
@@ -147,10 +166,7 @@ class DetailTestList extends React.Component {
           dropdownIndex={this.state.dropdownIndex}
           dropdownIsOpen={this.state.dropdownIsOpen}
           openTestScores={this.openTestScores}
-          index={
-            tests.filter(filterTest => filterTest.status === "ASSIGNED")
-              .length + index
-          }
+          index={ tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
         />
       ));
   };
@@ -219,15 +235,25 @@ class DetailTestList extends React.Component {
       StartTestWrapperOpen,
       activeTest,
       selectedTest,
-      currentTestSection
+      currentTestSection,
+      testDetailViewOpen
     } = this.state;
     const { user } = this.props;
+    // console.log("OMG:",activeTest)
     return (
       <React.Fragment>
         {!selectedTest && (
           <Choose>
             <When condition={editTestModalOpen}>
               <EditTestModal
+                user={user}
+                test={activeTest}
+                onDeleteTest={this.onDeleteTest}
+                onSaveTestChanges={this.onSaveTestChanges}
+              />
+            </When>
+            <When condition={testDetailViewOpen}>
+              <CompletedTestDetailView
                 user={user}
                 test={activeTest}
                 onDeleteTest={this.onDeleteTest}
