@@ -1,6 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import vfsFonts from "pdfmake/build/vfs_fonts";
-import Promise from "bluebird";
+
 export default imgDataLists => {
   const { vfs } = vfsFonts.pdfMake;
   pdfMake.vfs = vfs;
@@ -12,6 +12,7 @@ export default imgDataLists => {
   const documentDefinition = {
     pageSize: "A4",
     pageOrientation: "portrait",
+    pageMargins: [ 25, 20, 20, 25 ],
     header: function(currentPage, pageCount) {
       if (currentPage > 1) {
         return [
@@ -23,7 +24,7 @@ export default imgDataLists => {
           {
             text: headTitles[currentPage - 2],
             style: { fontSize: 28 },
-            absolutePosition: { x: 50, y: 0 }
+            // absolutePosition: { x: 50, y: 0 }
           }
         ];
       }

@@ -46,7 +46,7 @@ class EditTestModal extends React.Component {
           const imgData = canvas.toDataURL("image/png", 1.0);
           const userScoreImg = {
             image: imgData,
-            width: 250,
+            width: 270,
             margin: [0, 50, 0, 0]
           };
           return userScoreImg;
@@ -57,7 +57,7 @@ class EditTestModal extends React.Component {
           const imgData = canvas.toDataURL("image/png", 1.0);
           const sectionScoreImg = {
             image: imgData,
-            width: 250,
+            width: 270,
             margin: [0, 50, 0, 0]
           };
           return sectionScoreImg;
@@ -68,7 +68,7 @@ class EditTestModal extends React.Component {
           const imgData = canvas.toDataURL("image/png", 1.0);
           const crossScoreImg = {
             image: imgData,
-            width: 250
+            width: 350,
           };
           return crossScoreImg;
         }
@@ -77,7 +77,7 @@ class EditTestModal extends React.Component {
         const imgData = canvas.toDataURL("image/png", 1.0);
         const subScoreImg = {
           image: imgData,
-          width: 250
+          width: 350,
         };
         return subScoreImg;
       }),
@@ -86,7 +86,7 @@ class EditTestModal extends React.Component {
           const imgData = canvas.toDataURL("image/png", 1.0);
           const essayScoreImg = {
             image: imgData,
-            width: 160,
+            width: 180,
             rowSpan: 2,
             pageBreak: "after"
           };
@@ -103,16 +103,15 @@ class EditTestModal extends React.Component {
       ]) => {
         imgDataLists.push({ columns: [userScoreImg, sectionScoreImg] });
         imgDataLists.push({
-          layout: "lightHorizontalLines", // optional
+          layout: 'noBorders',
           table: {
-            widths: [330, 160],
+            widths: [350, 200],
             body: [
               [crossScoreImg, essayScoreImg],
               [subScoreImg, {}]
             ]
           }
         });
-        imgDataLists.push(essayScoreImg);
         return imgDataLists;
       }
     );
