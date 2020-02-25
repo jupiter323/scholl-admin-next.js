@@ -10,18 +10,172 @@ class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores"
+      activePage: "scores",
+      userScoreRef: null,
+      sectionScoreRef: null,
+      crossTestScoreRef: null,
+      subScoreRef: null,
+      essayScoreRef: null
     };
   }
+  componentDidMount = () => {
+    this.setState({
+      userScoreRef: this.userScoreRef,
+      sectionScoreRef: this.sectionScoreRef,
+      crossTestScoreRef: this.crossTestScoreRef,
+      subScoreRef: this.subScoreRef,
+      essayScoreRef: this.essayScoreRef
+    });
+  };
   onSetActivePage = activePage => this.setState({ activePage });
 
-  generateScoreReportPdf = () => {
-    pdfMakeReport(
-      this.userScoreRef,
-      this.sectionScoreRef,
-      this.crossTestScoreRef,
-      this.subScoreRef,
-      this.essayScoreRef
+  getScoresImgData = () => {
+    const imgDataLists = [];
+    const html2canvas = require("html2canvas");
+
+    const defaultCanvasSetting = {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "rgba(0,0,0,0)",
+      removeContainer: true
+    };
+    return Promise.all([
+      html2canvas(this.state.userScoreRef, defaultCanvasSetting).then(
+        canvas => {
+          const imgData = canvas.toDataURL("image/png", 1.0);
+          const userScoreImg = {
+            image: imgData,
+            width: 250,
+            margin: [0, 50, 0, 0]
+          };
+          return userScoreImg;
+        }
+      ),
+      html2canvas(this.state.sectionScoreRef, defaultCanvasSetting).then(
+        canvas => {
+          const imgData = canvas.toDataURL("image/png", 1.0);
+          const sectionScoreImg = {
+            image: imgData,
+            width: 250,
+            margin: [0, 50, 0, 0]
+          };
+          return sectionScoreImg;
+        }
+      ),
+      html2canvas(this.state.crossTestScoreRef, defaultCanvasSetting).then(
+        canvas => {
+          const imgData = canvas.toDataURL("image/png", 1.0);
+          const crossScoreImg = {
+            image: imgData,
+            width: 250
+          };
+          return crossScoreImg;
+        }
+      ),
+      html2canvas(this.state.subScoreRef, defaultCanvasSetting).then(canvas => {
+        const imgData = canvas.toDataURL("image/png", 1.0);
+        const subScoreImg = {
+          image: imgData,
+          width: 250
+        };
+        return subScoreImg;
+      }),
+      html2canvas(this.state.essayScoreRef, defaultCanvasSetting).then(
+        canvas => {
+          const imgData = canvas.toDataURL("image/png", 1.0);
+          const essayScoreImg = {
+            image: imgData,
+            width: 160,
+            rowSpan: 2,
+            pageBreak: "after"
+          };
+          return essayScoreImg;
+        }
+      )
+    ]).then(
+      ([
+        userScoreImg,
+        sectionScoreImg,
+        crossScoreImg,
+        subScoreImg,
+        essayScoreImg
+      ]) => {
+        imgDataLists.push({ columns: [userScoreImg, sectionScoreImg] });
+        imgDataLists.push({
+          layout: "lightHorizontalLines", // optional
+          table: {
+            widths: [330, 160],
+            body: [
+              [crossScoreImg, essayScoreImg],
+              [subScoreImg, {}]
+            ]
+          }
+        });
+        imgDataLists.push(essayScoreImg);
+        return imgDataLists;
+      }
+    );
+  };
+
+  generateScoreReportPdf = async () => {
+    const html2canvas = require("html2canvas");
+    const defaultCanvasSetting = {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "rgba(0,0,0,0)",
+      removeContainer: true
+    };
+    const imgDataLists = await this.getScoresImgData();
+
+    this.setState(
+      {
+        activePage: "answerSheet"
+      },
+      () => {
+        return Promise.all([
+          html2canvas(this.readingScoreRef, defaultCanvasSetting).then(
+            canvas => {
+              const imgData = canvas.toDataURL("image/png", 1.0);
+              const readingScoreImg = {
+                image: imgData,
+                width: 300
+              };
+              return readingScoreImg;
+            }
+          ),
+          html2canvas(this.readingTypeScoreRef, defaultCanvasSetting).then(
+            canvas => {
+              const imgData = canvas.toDataURL("image/png", 1.0);
+              const readingTypeScoreImg = {
+                image: imgData,
+                width: 500
+              };
+              return readingTypeScoreImg;
+            }
+          )
+          // html2canvas(this.readingAnswerSheetRef, defaultCanvasSetting).then(
+          //   canvas => {
+          //     const imgData = canvas.toDataURL("image/png", 1.0);
+          //     const readingAnswerSheetImg = {
+          //       image: imgData,
+          //       width: 500
+          //     };
+          //     return readingAnswerSheetImg;
+          //   }
+          // )
+        ])
+          .then(([readingScoreImg, readingTypeScoreImg]) => {
+            imgDataLists.push(readingScoreImg);
+            imgDataLists.push(readingTypeScoreImg);
+            // imgDataLists.push(readingAnswerSheetImg);
+            return imgDataLists;
+          })
+          .then(() => {
+            pdfMakeReport(imgDataLists);
+          });
+      }
     );
   };
 
@@ -40,6 +194,15 @@ class EditTestModal extends React.Component {
 
   setSubScoreRef = target => {
     this.subScoreRef = target;
+  };
+  setReadingScoreRef = target => {
+    this.readingScoreRef = target;
+  };
+  setReadingTypeScoreRef = target => {
+    this.readingTypeScoreRef = target;
+  };
+  setReadingAnswerSheetRef = target => {
+    this.readingAnswerSheetRef = target;
   };
 
   renderCurrentPage = () => {
@@ -73,6 +236,9 @@ class EditTestModal extends React.Component {
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test.testScoreDetails}
+          readingScoreRef={this.setReadingScoreRef}
+          readingTypeScoreRef={this.setReadingTypeScoreRef}
+          readingAnswerSheetRef={this.setReadingAnswerSheetRef}
         />
       );
     }

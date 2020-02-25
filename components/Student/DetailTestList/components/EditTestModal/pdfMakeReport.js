@@ -1,15 +1,14 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import vfsFonts from "pdfmake/build/vfs_fonts";
 import Promise from "bluebird";
-export default (
-  userScoreRef,
-  sectionScoreRef,
-  crossTestScoreRef,
-  subScoreRef,
-  essayScoreRef
-) => {
+export default imgDataLists => {
   const { vfs } = vfsFonts.pdfMake;
   pdfMake.vfs = vfs;
+  const headTitles = [
+    "Practice Test Scores",
+    "Reading Analysis",
+    "Reading Answer Sheet"
+  ];
   const documentDefinition = {
     pageSize: "A4",
     pageOrientation: "portrait",
@@ -19,13 +18,12 @@ export default (
           {
             image:
               "data:image/jpeg;base64,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",
-            height: 70
+            height: 50
           },
           {
-            text: "Practice Test Scores",
-            style:{fontSize:28},
-            absolutePosition: { x: 50, y: 0 },
-            margin:[0,200,0,0]
+            text: headTitles[currentPage - 2],
+            style: { fontSize: 28 },
+            absolutePosition: { x: 50, y: 0 }
           }
         ];
       }
@@ -102,7 +100,8 @@ export default (
         text: "Score Report",
         alignment: "center",
         margin: [0, 10, 0, 0],
-        style: { fontSize: 28 }
+        style: { fontSize: 28 },
+        pageBreak: "after"
       }
     ],
     defaultStyle: {
@@ -110,44 +109,9 @@ export default (
       color: "#FFFFFF"
     }
   };
-  const defaultCanvasSetting = {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: "rgba(0,0,0,0)",
-    removeContainer: true
-  };
-  const html2canvas = require("html2canvas");
-  return Promise.all([
-    html2canvas(userScoreRef, defaultCanvasSetting).then(canvas => {
-      const imgData = canvas.toDataURL("image/png", 1.0);
-      const userScoreImg = {
-        image: imgData,
-        width: 400,
-        margin: [0, 200, 0, 0]
-      };
-      return userScoreImg;
-    }),
-    html2canvas(sectionScoreRef, defaultCanvasSetting).then(canvas => {
-      const imgData = canvas.toDataURL("image/png", 1.0);
-      const sectionScoreImg = { image: imgData, width: 300 };
-      return sectionScoreImg;
-    }),
-    html2canvas(crossTestScoreRef, defaultCanvasSetting).then(canvas => {
-      const imgData = canvas.toDataURL("image/png", 1.0);
-      const crossScoreImg = {
-        image: imgData,
-        width: 600
-      };
-      return crossScoreImg;
-    })
-  ])
-    .then(([userScoreImg, sectionScoreImg, crossScoreImg]) => {
-      documentDefinition.content.push(userScoreImg);
-      documentDefinition.content.push(sectionScoreImg);
-      documentDefinition.content.push(crossScoreImg);
-    })
-    .then(() => {
-      pdfMake.createPdf(documentDefinition).download();
-    });
+  imgDataLists.map((imgData, index) => {
+    console.log("ImgData:",imgData);
+    documentDefinition.content.push(imgData);
+  });
+  pdfMake.createPdf(documentDefinition).download();
 };

@@ -11,8 +11,10 @@ class WritingPage extends React.Component {
   }
 
   render() {
+    const {readingAnswerSheetRef} = this.props;
     return (
-      <div className="slide">
+      <div className="slide" ref = {readingAnswerSheetRef}>
+       {/* <div className="slide"> */}
         <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}>
           <ol className="answers-list" >
             {this.mapSampleAnswers()}
