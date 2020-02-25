@@ -27,12 +27,20 @@ class EditTestModal extends React.Component {
       essayScoreRef: this.essayScoreRef
     });
   };
-  onSetActivePage = activePage => this.setState({ activePage });
 
-  getScoresImgData = () => {
-    const imgDataLists = [];
+  componentWillReceiveProps = nextProps => {
+    // console.log("OMG:", this.state);
+  };
+
+  onSetActivePage = activePage => {
+    console.log("OMG:", this.state);
+    this.setState({
+      activePage
+    });
+  };
+
+  getTargetImage = currentRef => {
     const html2canvas = require("html2canvas");
-
     const defaultCanvasSetting = {
       scale: 2,
       useCORS: true,
@@ -40,59 +48,23 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true
     };
-    return Promise.all([
-      html2canvas(this.state.userScoreRef, defaultCanvasSetting).then(
-        canvas => {
-          const imgData = canvas.toDataURL("image/png", 1.0);
-          const userScoreImg = {
-            image: imgData,
-            width: 270,
-            margin: [0, 50, 0, 0]
-          };
-          return userScoreImg;
-        }
-      ),
-      html2canvas(this.state.sectionScoreRef, defaultCanvasSetting).then(
-        canvas => {
-          const imgData = canvas.toDataURL("image/png", 1.0);
-          const sectionScoreImg = {
-            image: imgData,
-            width: 270,
-            margin: [0, 50, 0, 0]
-          };
-          return sectionScoreImg;
-        }
-      ),
-      html2canvas(this.state.crossTestScoreRef, defaultCanvasSetting).then(
-        canvas => {
-          const imgData = canvas.toDataURL("image/png", 1.0);
-          const crossScoreImg = {
-            image: imgData,
-            width: 350,
-          };
-          return crossScoreImg;
-        }
-      ),
-      html2canvas(this.state.subScoreRef, defaultCanvasSetting).then(canvas => {
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
+      canvas => {
         const imgData = canvas.toDataURL("image/png", 1.0);
-        const subScoreImg = {
-          image: imgData,
-          width: 350,
-        };
-        return subScoreImg;
-      }),
-      html2canvas(this.state.essayScoreRef, defaultCanvasSetting).then(
-        canvas => {
-          const imgData = canvas.toDataURL("image/png", 1.0);
-          const essayScoreImg = {
-            image: imgData,
-            width: 180,
-            rowSpan: 2,
-            pageBreak: "after"
-          };
-          return essayScoreImg;
-        }
-      )
+        return imgData;
+      }
+    );
+    return targetImg;
+  };
+
+  getScoresImgData = () => {
+    const imgDataLists = [];
+    return Promise.all([
+      this.getTargetImage(this.state.userScoreRef),
+      this.getTargetImage(this.state.sectionScoreRef),
+      this.getTargetImage(this.state.crossTestScoreRef),
+      this.getTargetImage(this.state.subScoreRef),
+      this.getTargetImage(this.state.essayScoreRef)
     ]).then(
       ([
         userScoreImg,
@@ -101,14 +73,44 @@ class EditTestModal extends React.Component {
         subScoreImg,
         essayScoreImg
       ]) => {
-        imgDataLists.push({ columns: [userScoreImg, sectionScoreImg] });
         imgDataLists.push({
-          layout: 'noBorders',
+          columns: [
+            {
+              image: userScoreImg,
+              width: 270,
+              margin: [0, 50, 0, 0]
+            },
+            {
+              image: sectionScoreImg,
+              width: 270,
+              margin: [0, 50, 0, 0]
+            }
+          ]
+        });
+        imgDataLists.push({
+          layout: "noBorders",
           table: {
             widths: [350, 200],
             body: [
-              [crossScoreImg, essayScoreImg],
-              [subScoreImg, {}]
+              [
+                {
+                  image: crossScoreImg,
+                  width: 350
+                },
+                {
+                  image: essayScoreImg,
+                  width: 180,
+                  rowSpan: 2,
+                  pageBreak: "after"
+                }
+              ],
+              [
+                {
+                  image: subScoreImg,
+                  width: 350
+                },
+                {}
+              ]
             ]
           }
         });
@@ -118,64 +120,23 @@ class EditTestModal extends React.Component {
   };
 
   generateScoreReportPdf = async () => {
-    const html2canvas = require("html2canvas");
-    const defaultCanvasSetting = {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: "rgba(0,0,0,0)",
-      removeContainer: true
-    };
     const imgDataLists = await this.getScoresImgData();
-
-    this.setState(
-      {
-        activePage: "answerSheet"
-      },
-      () => {
+    this.setState({ activePage: "answerSheet" }, () => {
+      setTimeout(() => {
         return Promise.all([
-          html2canvas(this.readingScoreRef, defaultCanvasSetting).then(
-            canvas => {
-              const imgData = canvas.toDataURL("image/png", 1.0);
-              const readingScoreImg = {
-                image: imgData,
-                width: 300
-              };
-              return readingScoreImg;
-            }
-          ),
-          html2canvas(this.readingTypeScoreRef, defaultCanvasSetting).then(
-            canvas => {
-              const imgData = canvas.toDataURL("image/png", 1.0);
-              const readingTypeScoreImg = {
-                image: imgData,
-                width: 500
-              };
-              return readingTypeScoreImg;
-            }
-          )
-          // html2canvas(this.readingAnswerSheetRef, defaultCanvasSetting).then(
-          //   canvas => {
-          //     const imgData = canvas.toDataURL("image/png", 1.0);
-          //     const readingAnswerSheetImg = {
-          //       image: imgData,
-          //       width: 500
-          //     };
-          //     return readingAnswerSheetImg;
-          //   }
-          // )
+          this.getTargetImage(this.readingScoreRef),
+          this.getTargetImage(this.readingTypeScoreRef)
         ])
           .then(([readingScoreImg, readingTypeScoreImg]) => {
-            imgDataLists.push(readingScoreImg);
-            imgDataLists.push(readingTypeScoreImg);
-            // imgDataLists.push(readingAnswerSheetImg);
+            imgDataLists.push({ image: readingScoreImg, width: 300 });
+            imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
             return imgDataLists;
           })
           .then(() => {
             pdfMakeReport(imgDataLists);
           });
-      }
-    );
+      }, 1000);
+    });
   };
 
   setUserScoreRef = target => {
@@ -337,19 +298,8 @@ class EditTestModal extends React.Component {
                 </li>
                 <li className="menu-special col s3">
                   <a href="#" onClick={() => this.generateScoreReportPdf()}>
-                    {/* <PDFDownloadLink
-                    document={<PdfDocument />}
-                    fileName="movielist.pdf"
-                  >
-                    {({ blob, url, loading, error }) =>
-                      loading ? "Loading document..." : "Download now!"
-                    } */}
-                    {/* <Pdf targetRef={this.userScoreRef} filename="code-example.pdf">
-        {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
-      </Pdf> */}
                     Download Score Report
                     <i className="icon-download-file"></i>
-                    {/* </PDFDownloadLink> */}
                   </a>
                 </li>
               </ul>

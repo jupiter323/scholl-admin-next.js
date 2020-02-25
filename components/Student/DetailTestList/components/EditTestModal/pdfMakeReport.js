@@ -12,7 +12,7 @@ export default imgDataLists => {
   const documentDefinition = {
     pageSize: "A4",
     pageOrientation: "portrait",
-    pageMargins: [ 25, 20, 20, 25 ],
+    pageMargins: [ 30, 50, 20, 25 ],
     header: function(currentPage, pageCount) {
       if (currentPage > 1) {
         return [
@@ -24,7 +24,7 @@ export default imgDataLists => {
           {
             text: headTitles[currentPage - 2],
             style: { fontSize: 28 },
-            // absolutePosition: { x: 50, y: 0 }
+            absolutePosition: { x: 50, y: 10 }
           }
         ];
       }
@@ -111,7 +111,6 @@ export default imgDataLists => {
     }
   };
   imgDataLists.map((imgData, index) => {
-    console.log("ImgData:",imgData);
     documentDefinition.content.push(imgData);
   });
   pdfMake.createPdf(documentDefinition).download();
