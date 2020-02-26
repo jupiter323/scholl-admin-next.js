@@ -28,12 +28,10 @@ class EditTestModal extends React.Component {
     });
   };
 
-  componentWillReceiveProps = nextProps => {
-    // console.log("OMG:", this.state);
-  };
+  componentWillReceiveProps = nextProps => {};
 
   onSetActivePage = activePage => {
-    console.log("OMG:", this.state);
+    // console.log("OMG:", this.state);
     this.setState({
       activePage
     });
@@ -57,7 +55,7 @@ class EditTestModal extends React.Component {
     return targetImg;
   };
 
-  getScoresImgData = () => {
+  getScoresImgData = async() => {
     const imgDataLists = [];
     return Promise.all([
       this.getTargetImage(this.state.userScoreRef),
@@ -65,14 +63,7 @@ class EditTestModal extends React.Component {
       this.getTargetImage(this.state.crossTestScoreRef),
       this.getTargetImage(this.state.subScoreRef),
       this.getTargetImage(this.state.essayScoreRef)
-    ]).then(
-      ([
-        userScoreImg,
-        sectionScoreImg,
-        crossScoreImg,
-        subScoreImg,
-        essayScoreImg
-      ]) => {
+    ]).then(([userScoreImg,sectionScoreImg,crossScoreImg,subScoreImg,essayScoreImg]) => {
         imgDataLists.push({
           columns: [
             {
@@ -119,10 +110,18 @@ class EditTestModal extends React.Component {
     );
   };
 
+  getTest = () => {
+      this.setState({ activePage: "scores" }, () => setTimeout(async() => {
+        const imgList = await this.getScoresImgData();
+      }),1000)
+  };
+
   generateScoreReportPdf = async () => {
+    // this.getTest();
     const imgDataLists = await this.getScoresImgData();
+    console.log("ImgDataLists:",imgDataLists);
     this.setState({ activePage: "answerSheet" }, () => {
-      setTimeout(() => {
+      setTimeout(async() => {
         return Promise.all([
           this.getTargetImage(this.readingScoreRef),
           this.getTargetImage(this.readingTypeScoreRef)
