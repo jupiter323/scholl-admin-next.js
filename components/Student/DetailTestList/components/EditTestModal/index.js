@@ -15,12 +15,8 @@ class EditTestModal extends React.Component {
     };
   }
   componentDidMount = () => {
-    this.setState({
-      scoresRef: this.scoresRef,
-    });
+    this.setState({scoresRef: this.scoresRef});
   };
-
-  componentWillReceiveProps = nextProps => {};
 
   onSetActivePage = activePage => {
     this.setState({
@@ -37,36 +33,41 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true
     };
-    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
+    let copyDom = currentRef.cloneNode(true);
+    document.body.appendChild(copyDom);
+    const targetImg = html2canvas(copyDom, defaultCanvasSetting).then(
       canvas => {
         const imgData = canvas.toDataURL("image/png", 1.0);
+        copyDom.remove();
         return imgData;
       }
+      
     );
     return targetImg;
   };
 
   getScoresImgData = async() => {
     const imgDataLists = [];
-    return Promise.all([
-      this.getTargetImage(this.state.scoresRef),
-    ]).then(([scoresImages]) => {
-        imgDataLists.push({image:scoresImages,width:550,margin:[0,50,0,0]});
+    return Promise.all([this.getTargetImage(this.state.scoresRef)])
+    .then(([scoresImages]) => {
+        imgDataLists.push({image:scoresImages,width:550,margin:[0,50,0,0],pageBreak: 'after'});
         return imgDataLists;
       }
     );
   };
 
-  getTest = () => {
-      this.setState({ activePage: "scores" }, () => setTimeout(async() => {
-        const imgList = await this.getScoresImgData();
-      }),1000)
-  };
-
   generateScoreReportPdf = async () => {
-    // this.getTest();
-    const imgDataLists = await this.getScoresImgData();
-    console.log("ImgDataLists:",imgDataLists);
+    let imgDataLists = null;
+    const {activePage} = this.state;
+    if(activePage === 'scores'){
+      imgDataLists = await this.getScoresImgData();
+    }else {
+      this.setState({ activePage: "scores" },()=>{
+        setTimeout(async() =>{
+          imgDataLists = await this.getScoresImgData();
+        },1000)
+      })
+    }
     this.setState({ activePage: "answerSheet" }, () => {
       setTimeout(async() => {
         return Promise.all([
@@ -75,6 +76,7 @@ class EditTestModal extends React.Component {
         ])
           .then(([readingScoreImg, readingTypeScoreImg]) => {
             imgDataLists.push({ image: readingScoreImg, width: 300 });
+            imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
             imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
             return imgDataLists;
           })
