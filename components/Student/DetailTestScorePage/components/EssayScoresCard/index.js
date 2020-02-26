@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const EssayScoresCard = ({ essayScoreRef,essayScores: { reading, analysis, writing } }) => (
-  <div className="col s12 l4 card-width-316" ref = {essayScoreRef}>
+const EssayScoresCard = ({ essayScores: { reading, analysis, writing } }) => (
+  <div className="col s12 l4 card-width-316">
     <div className="card-block">
       <h2>Essay Scores <span className="separator">|</span> <span className="quantity">2 to 8</span></h2>
       <div className="card-main-full card">

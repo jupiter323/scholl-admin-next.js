@@ -8,11 +8,7 @@ import CrossTestScoresCard from "./components/CrossTestScoresCard";
 import SubScoresCard from "./components/SubscoresCard";
 
 const DetailTestScorePage = ({
-  userScoreRef,
-  sectionScoreRef,
-  crossTestScoreRef,
-  essayScoreRef,
-  subScoreRef,
+  scoresRef,
   test: {
     subjectScores,
     totalScore,
@@ -23,31 +19,28 @@ const DetailTestScorePage = ({
     subScores
   }
 }) => (
-  <div className="container">
+  <div className="container" ref = {scoresRef}>
     <div className="cards-section">
       <div className="d-flex-content same-height justify-center row mb-0">
         <TotalScoreCard
           totalScore={totalScore}
           totalPossible={totalPossible}
-          userScoreRef={userScoreRef}
         />
         <SectionScoreCard
           sectionScores={sectionScores}
-          sectionScoreRef={sectionScoreRef}
         />
       </div>
       <div className="d-flex-content same-height justify-center row mb-0">
         <TestScoreCard subjectScores={subjectScores} />
         <EssayScoresCard
           essayScores={essayScores}
-          essayScoreRef={essayScoreRef}
         />
       </div>
       <div
         className="d-flex-content justify-center row mb-0"
       >
-        <CrossTestScoresCard crossTestScores={crossTestScores} crossTestScoreRef = {crossTestScoreRef} />
-        <SubScoresCard subScores={subScores} subScoreRef={subScoreRef} />
+        <CrossTestScoresCard crossTestScores={crossTestScores}/>
+        <SubScoresCard subScores={subScores} />
       </div>
     </div>
   </div>

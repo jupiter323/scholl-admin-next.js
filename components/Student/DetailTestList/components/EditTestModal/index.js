@@ -11,27 +11,18 @@ class EditTestModal extends React.Component {
     super(props);
     this.state = {
       activePage: "scores",
-      userScoreRef: null,
-      sectionScoreRef: null,
-      crossTestScoreRef: null,
-      subScoreRef: null,
-      essayScoreRef: null
+      scoresRef: null,
     };
   }
   componentDidMount = () => {
     this.setState({
-      userScoreRef: this.userScoreRef,
-      sectionScoreRef: this.sectionScoreRef,
-      crossTestScoreRef: this.crossTestScoreRef,
-      subScoreRef: this.subScoreRef,
-      essayScoreRef: this.essayScoreRef
+      scoresRef: this.scoresRef,
     });
   };
 
   componentWillReceiveProps = nextProps => {};
 
   onSetActivePage = activePage => {
-    // console.log("OMG:", this.state);
     this.setState({
       activePage
     });
@@ -58,53 +49,9 @@ class EditTestModal extends React.Component {
   getScoresImgData = async() => {
     const imgDataLists = [];
     return Promise.all([
-      this.getTargetImage(this.state.userScoreRef),
-      this.getTargetImage(this.state.sectionScoreRef),
-      this.getTargetImage(this.state.crossTestScoreRef),
-      this.getTargetImage(this.state.subScoreRef),
-      this.getTargetImage(this.state.essayScoreRef)
-    ]).then(([userScoreImg,sectionScoreImg,crossScoreImg,subScoreImg,essayScoreImg]) => {
-        imgDataLists.push({
-          columns: [
-            {
-              image: userScoreImg,
-              width: 270,
-              margin: [0, 50, 0, 0]
-            },
-            {
-              image: sectionScoreImg,
-              width: 270,
-              margin: [0, 50, 0, 0]
-            }
-          ]
-        });
-        imgDataLists.push({
-          layout: "noBorders",
-          table: {
-            widths: [350, 200],
-            body: [
-              [
-                {
-                  image: crossScoreImg,
-                  width: 350
-                },
-                {
-                  image: essayScoreImg,
-                  width: 180,
-                  rowSpan: 2,
-                  pageBreak: "after"
-                }
-              ],
-              [
-                {
-                  image: subScoreImg,
-                  width: 350
-                },
-                {}
-              ]
-            ]
-          }
-        });
+      this.getTargetImage(this.state.scoresRef),
+    ]).then(([scoresImages]) => {
+        imgDataLists.push({image:scoresImages,width:550,margin:[0,50,0,0]});
         return imgDataLists;
       }
     );
@@ -138,21 +85,8 @@ class EditTestModal extends React.Component {
     });
   };
 
-  setUserScoreRef = target => {
-    this.userScoreRef = target;
-  };
-  setSectionScoreRef = target => {
-    this.sectionScoreRef = target;
-  };
-  setCrossTestScoreRef = target => {
-    this.crossTestScoreRef = target;
-  };
-  setEssayScoreRef = target => {
-    this.essayScoreRef = target;
-  };
-
-  setSubScoreRef = target => {
-    this.subScoreRef = target;
+  setScoresRef = target => {
+    this.scoresRef = target;
   };
   setReadingScoreRef = target => {
     this.readingScoreRef = target;
@@ -163,6 +97,7 @@ class EditTestModal extends React.Component {
   setReadingAnswerSheetRef = target => {
     this.readingAnswerSheetRef = target;
   };
+  
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
@@ -182,11 +117,7 @@ class EditTestModal extends React.Component {
         <div id="wrapper">
           <DetailTestScorePage
             test={test}
-            userScoreRef={this.setUserScoreRef}
-            sectionScoreRef={this.setSectionScoreRef}
-            crossTestScoreRef={this.setCrossTestScoreRef}
-            essayScoreRef={this.setEssayScoreRef}
-            subScoreRef={this.setSubScoreRef}
+            scoresRef = {this.setScoresRef}
           />
         </div>
       );

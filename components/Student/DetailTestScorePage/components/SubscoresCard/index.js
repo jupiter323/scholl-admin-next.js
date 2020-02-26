@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SubScoresCard = ({
-  subScoreRef,
   subScores: {
     commandOfEvidence,
     wordsInContext,
@@ -13,7 +12,7 @@ const SubScoresCard = ({
     passportToAdvancedMath
   }
 }) => (
-  <div className="col s12 l6 card-width-546" ref={subScoreRef}>
+  <div className="col s12 l6 card-width-546">
     <div className="card-block">
       <h2>
         Subscores <span className="separator">|</span>{" "}
