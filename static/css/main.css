@@ -24139,7 +24139,7 @@ a.collapsible-opener:hover {
   height: 50px;
   border-left: 2px dashed rgba(151, 151, 151, 0.6);
   position: absolute;
-  left: 50%;
+  left: 3%;
   top: -28px;
   -webkit-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
@@ -24235,6 +24235,37 @@ a.collapsible-opener:hover {
 
 .graph-linear .part-red:after {
   left: 0;
+}
+
+.graph-linear-students {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	width: 90%;
+	max-width: 447px;
+	position: relative;
+}
+
+.graph-linear-students .graph-holder {
+	position: relative;
+	min-width: 22px;
+}
+
+.graph-linear-students .graph-admin {
+	border-radius: 11px;
+	height: 22px;
+	background: #c9e5c9;
+	overflow: hidden;
+	position: relative;
+	min-width: 22px;
+}
+
+.graph-linear-students .part-red {
+	background: #f37878;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
 }
 
 .graph-info {
