@@ -6,18 +6,14 @@ import TestVersionPage from "../TestVersionPage";
 import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
 import pdfMakeReport from "./pdfMakeReport";
+
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores",
-      scoresRef: null,
+      activePage: "scores"
     };
   }
-  componentDidMount = () => {
-    this.setState({scoresRef: this.scoresRef});
-  };
-
   onSetActivePage = activePage => {
     this.setState({
       activePage
@@ -33,73 +29,72 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true
     };
-    let copyDom = currentRef.cloneNode(true);
-    document.body.appendChild(copyDom);
-    const targetImg = html2canvas(copyDom, defaultCanvasSetting).then(
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
       canvas => {
         const imgData = canvas.toDataURL("image/png", 1.0);
-        copyDom.remove();
         return imgData;
       }
-      
     );
     return targetImg;
   };
 
-  getScoresImgData = async() => {
+  getScoresImgData = async () => {
     const imgDataLists = [];
-    return Promise.all([this.getTargetImage(this.state.scoresRef)])
-    .then(([scoresImages]) => {
-        imgDataLists.push({image:scoresImages,width:550,margin:[0,50,0,0],pageBreak: 'after'});
-        return imgDataLists;
-      }
-    );
+    const [scoresImages] = await Promise.all([
+      this.getTargetImage(document.getElementById("scoresRef"))
+    ]);
+    imgDataLists.push({
+      image: scoresImages,
+      width: 550,
+      margin: [0, 50, 0, 0],
+      pageBreak: "after"
+    });
+    return imgDataLists;
   };
 
   generateScoreReportPdf = async () => {
-    let imgDataLists = null;
-    const {activePage} = this.state;
-    if(activePage === 'scores'){
-      imgDataLists = await this.getScoresImgData();
-    }else {
-      this.setState({ activePage: "scores" },()=>{
-        setTimeout(async() =>{
-          imgDataLists = await this.getScoresImgData();
-        },1000)
-      })
-    }
-    this.setState({ activePage: "answerSheet" }, () => {
-      setTimeout(async() => {
-        return Promise.all([
-          this.getTargetImage(this.readingScoreRef),
-          this.getTargetImage(this.readingTypeScoreRef)
-        ])
-          .then(([readingScoreImg, readingTypeScoreImg]) => {
-            imgDataLists.push({ image: readingScoreImg, width: 300 });
-            imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
-            imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
-            return imgDataLists;
-          })
-          .then(() => {
-            pdfMakeReport(imgDataLists);
-          });
-      }, 1000);
+    let imgDataLists = [];
+    const { activePage } = this.state;
+    let myFirstPromise = new Promise(async (resolve, reject) => {
+      if (activePage === "scores") {
+        const scoresImages = await this.getScoresImgData();
+        imgDataLists.push(scoresImages);
+        resolve();
+      } else {
+        this.setState({ activePage: "scores" }, () => {
+          setTimeout(async () => {
+            const scoresImages = await this.getScoresImgData();
+            imgDataLists.push(scoresImages);
+            resolve();
+          }, 1000);
+        });
+      }
+    });
+
+    myFirstPromise.then(() => {
+      this.setState({ activePage: "answerSheet" }, () => {
+        setTimeout(async () => {
+          return Promise.all([
+            this.getTargetImage(document.getElementById("readingScoreRef")),
+            this.getTargetImage(document.getElementById("readingTypeScoreRef"))
+          ])
+            .then(([readingScoreImg, readingTypeScoreImg]) => {
+              imgDataLists.push({
+                image: readingScoreImg,
+                width: 300,
+                margin: [0, 20, 0, 0]
+              });
+              imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
+              imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
+              return imgDataLists;
+            })
+            .then(() => {
+              pdfMakeReport(imgDataLists);
+            });
+        }, 2000);
+      });
     });
   };
-
-  setScoresRef = target => {
-    this.scoresRef = target;
-  };
-  setReadingScoreRef = target => {
-    this.readingScoreRef = target;
-  };
-  setReadingTypeScoreRef = target => {
-    this.readingTypeScoreRef = target;
-  };
-  setReadingAnswerSheetRef = target => {
-    this.readingAnswerSheetRef = target;
-  };
-  
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
@@ -117,10 +112,7 @@ class EditTestModal extends React.Component {
     if (activePage === "scores") {
       return (
         <div id="wrapper">
-          <DetailTestScorePage
-            test={test}
-            scoresRef = {this.setScoresRef}
-          />
+          <DetailTestScorePage test={test} />
         </div>
       );
     }
@@ -128,9 +120,6 @@ class EditTestModal extends React.Component {
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test.testScoreDetails}
-          readingScoreRef={this.setReadingScoreRef}
-          readingTypeScoreRef={this.setReadingTypeScoreRef}
-          readingAnswerSheetRef={this.setReadingAnswerSheetRef}
         />
       );
     }

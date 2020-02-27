@@ -392,11 +392,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
     const {
-      readingScoreRef,
-      readingTypeScoreRef,
-      readingAnswerSheetRef
-    } = this.props;
-    const {
       testScoreDetails: {
         reading,
         mathNoCalc,
@@ -408,8 +403,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
       return (
         <ReadingPage
           reading={reading}
-          readingScoreRef={readingScoreRef}
-          readingTypeScoreRef={readingTypeScoreRef}
         />
       );
     }
@@ -417,7 +410,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
       return (
         <WritingPage
           sampleAnswers={sampleAnswers}
-          readingAnswerSheetRef={readingAnswerSheetRef}
         />
       );
     }

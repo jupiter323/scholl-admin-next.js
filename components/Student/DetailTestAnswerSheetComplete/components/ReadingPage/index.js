@@ -12,8 +12,6 @@ const data = (totalScore, totalPossible) => ({
 });
 
 const ReadingPage = ({
-  readingScoreRef,
-  readingTypeScoreRef,
   reading: {
     totalCorrect,
     totalPossible,
@@ -37,7 +35,7 @@ const ReadingPage = ({
   <div className="slide">
     <div className="container-sm">
       <div className="row mb-0" style={{ marginTop: "20px" }}>
-        <div className="col s12 l5 xl4 chart-column" ref = {readingScoreRef}>
+        <div className="col s12 l5 xl4 chart-column" id = "readingScoreRef">
           <div className="chart-block chart-block-large">
             <Doughnut
               data={() => data(totalCorrect, totalPossible)}
@@ -123,7 +121,7 @@ const ReadingPage = ({
         </div>
       </div>
       {/* <div className="graphs-section"> */}
-      <div className="graphs-section" ref = {readingTypeScoreRef}>
+      <div className="graphs-section" id = "readingTypeScoreRef">
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">

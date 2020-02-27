@@ -8,7 +8,6 @@ import CrossTestScoresCard from "./components/CrossTestScoresCard";
 import SubScoresCard from "./components/SubscoresCard";
 
 const DetailTestScorePage = ({
-  scoresRef,
   test: {
     subjectScores,
     totalScore,
@@ -19,7 +18,7 @@ const DetailTestScorePage = ({
     subScores
   }
 }) => (
-  <div className="container" ref = {scoresRef}>
+  <div className="container" id = "scoresRef">
     <div className="cards-section">
       <div className="d-flex-content same-height justify-center row mb-0">
         <TotalScoreCard
