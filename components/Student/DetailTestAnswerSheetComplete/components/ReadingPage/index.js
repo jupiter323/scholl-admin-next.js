@@ -119,7 +119,7 @@ const ReadingPage = ({
           </ul>
         </div>
       </div>
-           <div className="graphs-section graphs-students">
+      <div className="graphs-section graphs-students" id="readingTypeScoreRef">
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">
@@ -224,7 +224,7 @@ const ReadingPage = ({
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-            <strong className="graph-subtitle">
+              <strong className="graph-subtitle">
                 <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
                   66%
                 </span>
@@ -279,7 +279,7 @@ const ReadingPage = ({
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-            <strong className="graph-subtitle">
+              <strong className="graph-subtitle">
                 <span className="badge-rounded-sm orange darken-5 badge white-text">
                   50%
                 </span>
@@ -309,7 +309,7 @@ const ReadingPage = ({
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-            <strong className="graph-subtitle">
+              <strong className="graph-subtitle">
                 <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
                   66%
                 </span>
@@ -341,7 +341,7 @@ const ReadingPage = ({
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">
-            <h3 className="graph-title">
+              <h3 className="graph-title">
                 <span className="badge-rounded-sm light-green lighten-1 badge white-text">
                   100%
                 </span>
@@ -401,7 +401,7 @@ const ReadingPage = ({
           <div className="graph-row-block">
             <div className="graph-row graph-row-subtitle">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm light-green lighten-1 darken-1 badge white-text">
                     77%
                   </span>
@@ -431,7 +431,7 @@ const ReadingPage = ({
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm red darken-5 badge white-text">
                     35%
                   </span>
@@ -461,7 +461,7 @@ const ReadingPage = ({
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
                     60%
                   </span>
@@ -499,7 +499,7 @@ const ReadingPage = ({
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm red darken-5 badge white-text">
                     35%
                   </span>
@@ -531,7 +531,7 @@ const ReadingPage = ({
           <div className="graph-row-block">
             <div className="graph-row graph-row-subtitle">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
                     60%
                   </span>
@@ -592,7 +592,7 @@ const ReadingPage = ({
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm light-green lighten-1 badge white-text">
                     96%
                   </span>
@@ -653,7 +653,7 @@ const ReadingPage = ({
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-              <strong className="graph-subtitle">
+                <strong className="graph-subtitle">
                   <span className="badge-rounded-sm light-green lighten-1 darken-1 badge white-text">
                     80%
                   </span>
