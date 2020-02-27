@@ -15,6 +15,27 @@ class EditTestModal extends React.Component {
       activeWritingPdf: false
     };
   }
+
+  getBase64ImageFromURL = url => {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = url;
+    });
+  };
+
   onSetActivePage = activePage => {
     this.setState({
       activePage
@@ -80,12 +101,12 @@ class EditTestModal extends React.Component {
 
   generateScoreReportPdf = async () => {
     const userInfo = {
-      version:"Version: SAT Practice Test #1",
-      target:"Score Report",
-      test_date:"September 28th, 2018",
-      name:"Arnold Studently",
-      test_type:"Practice Test",
-      order:"3rd",
+      version: "Version: SAT Practice Test #1",
+      target: "Score Report",
+      test_date: "September 28th, 2018",
+      name: "Arnold Studently",
+      test_type: "Practice Test",
+      order: "3rd"
     };
     const subjects = [
       "Practice Test Scores",
@@ -94,12 +115,14 @@ class EditTestModal extends React.Component {
       "Reading Answer Sheet",
       "Writing Analysis",
       "Writing Analysis (cont’d)",
-      "Writing Answer Sheet",
+      "Writing Answer Sheet"
     ];
-    const adminInfo ="Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com";
+    const adminInfo =
+      "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com";
     let imgDataLists = [];
+
     const { activePage } = this.state;
-    let getScoreImgPromise = new Promise(async (resolve) => {
+    let getScoreImgPromise = new Promise(async resolve => {
       if (activePage === "scores") {
         const scoresImages = await this.getScoresImgData();
         imgDataLists.push(scoresImages);
@@ -114,9 +137,12 @@ class EditTestModal extends React.Component {
         });
       }
     });
-
+    const coverBackgroundImg = "./static/images/sunset.jpg";
+    const testImg = await this.getBase64ImageFromURL(
+      coverBackgroundImg + "?auto=compress&cs=tinysrgb&dpr=1&w=300"
+    );
     getScoreImgPromise.then(() => {
-      let getAnswerSheetImgPromise = new Promise(async (resolve) => {
+      let getAnswerSheetImgPromise = new Promise(async resolve => {
         this.setState({ activePage: "answerSheet" }, () => {
           setTimeout(async () => {
             const answerSheetImages = await this.getAnswerSheetImgData();
@@ -139,7 +165,7 @@ class EditTestModal extends React.Component {
               margin: [0, 20, 0, 0],
               pageBreak: "after"
             });
-            pdfMakeReport(imgDataLists,userInfo,subjects,adminInfo);
+            pdfMakeReport(imgDataLists, userInfo, subjects, adminInfo, testImg);
           }, 1000);
         });
       });
