@@ -387,31 +387,31 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   }
 
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.activeWritingPdf === true) {
+      this.setState({
+        activeSlide: "writing"
+      });
+    }
+  };
+
   onSetActiveSlide = activeSlide => this.setState({ activeSlide });
 
   renderCurrentSlide = () => {
-    const { activeSlide } = this.state;
     const {
       testScoreDetails: {
         reading,
         mathNoCalc,
         mathCalculator,
         writing: { sampleAnswers }
-      }
+      },
+      activeSlide
     } = this.state;
     if (activeSlide === "reading") {
-      return (
-        <ReadingPage
-          reading={reading}
-        />
-      );
+      return <ReadingPage reading={reading} />;
     }
     if (activeSlide === "writing") {
-      return (
-        <WritingPage
-          sampleAnswers={sampleAnswers}
-        />
-      );
+      return <WritingPage sampleAnswers={sampleAnswers} />;
     }
     if (activeSlide === "math (no calc)") {
       return <MathNoCalcPage mathNoCalc={mathNoCalc} />;
@@ -443,6 +443,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 }
 
-DetailTestAnswerSheetComplete.propTypes = {};
+DetailTestAnswerSheetComplete.propTypes = {
+  activeWritingPdf: PropTypes.bool.isRequired
+};
 
 export default DetailTestAnswerSheetComplete;

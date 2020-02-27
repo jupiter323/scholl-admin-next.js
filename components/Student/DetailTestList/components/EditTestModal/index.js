@@ -11,7 +11,8 @@ class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores"
+      activePage: "scores",
+      activeWritingPdf: false
     };
   }
   onSetActivePage = activePage => {
@@ -52,10 +53,35 @@ class EditTestModal extends React.Component {
     return imgDataLists;
   };
 
+  getAnswerSheetImgData = async () => {
+    const imgDataLists = [];
+    const [readingScoreImg, readingTypeScoreImg] = await Promise.all([
+      this.getTargetImage(document.getElementById("readingScoreRef")),
+      this.getTargetImage(document.getElementById("readingTypeScoreRef"))
+    ]);
+    imgDataLists.push({
+      image: readingScoreImg,
+      width: 300,
+      margin: [0, 20, 0, 0]
+    });
+    imgDataLists.push({
+      image: readingTypeScoreImg,
+      width: 550,
+      pageBreak: "after"
+    });
+    imgDataLists.push({
+      image: readingTypeScoreImg,
+      width: 550,
+      margin: [0, 20, 0, 0],
+      pageBreak: "after"
+    });
+    return imgDataLists;
+  };
+
   generateScoreReportPdf = async () => {
     let imgDataLists = [];
     const { activePage } = this.state;
-    let myFirstPromise = new Promise(async (resolve, reject) => {
+    let getScoreImgPromise = new Promise(async (resolve, reject) => {
       if (activePage === "scores") {
         const scoresImages = await this.getScoresImgData();
         imgDataLists.push(scoresImages);
@@ -71,33 +97,39 @@ class EditTestModal extends React.Component {
       }
     });
 
-    myFirstPromise.then(() => {
-      this.setState({ activePage: "answerSheet" }, () => {
-        setTimeout(async () => {
-          return Promise.all([
-            this.getTargetImage(document.getElementById("readingScoreRef")),
-            this.getTargetImage(document.getElementById("readingTypeScoreRef"))
-          ])
-            .then(([readingScoreImg, readingTypeScoreImg]) => {
-              imgDataLists.push({
-                image: readingScoreImg,
-                width: 300,
-                margin: [0, 20, 0, 0]
-              });
-              imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
-              imgDataLists.push({ image: readingTypeScoreImg, width: 550 });
-              return imgDataLists;
-            })
-            .then(() => {
-              pdfMakeReport(imgDataLists);
+    getScoreImgPromise.then(() => {
+      let getAnswerSheetImgPromise = new Promise(async (resolve, reject) => {
+        this.setState({ activePage: "answerSheet" }, () => {
+          setTimeout(async () => {
+            const answerSheetImages = await this.getAnswerSheetImgData();
+            imgDataLists.push(answerSheetImages);
+            resolve();
+          }, 1000);
+        });
+      });
+      getAnswerSheetImgPromise.then(() => {
+        this.setState({ activeWritingPdf: true }, () => {
+          setTimeout(async () => {
+            const [readingAnswerSheetImg] = await Promise.all([
+              this.getTargetImage(
+                document.getElementById("readingAnswerSheetRef")
+              )
+            ]);
+            imgDataLists.push({
+              image: readingAnswerSheetImg,
+              width: 550,
+              margin: [0, 20, 0, 0],
+              pageBreak: "after"
             });
-        }, 2000);
+            pdfMakeReport(imgDataLists);
+          }, 1000);
+        });
       });
     });
   };
 
   renderCurrentPage = () => {
-    const { activePage } = this.state;
+    const { activePage, activeWritingPdf } = this.state;
     const { test, user, onDeleteTest, onSaveTestChanges } = this.props;
     if (activePage === "testVersion") {
       return (
@@ -120,6 +152,7 @@ class EditTestModal extends React.Component {
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test.testScoreDetails}
+          activeWritingPdf={activeWritingPdf}
         />
       );
     }

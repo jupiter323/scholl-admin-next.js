@@ -7,7 +7,11 @@ export default imgDataLists => {
   const headTitles = [
     "Practice Test Scores",
     "Reading Analysis",
-    "Reading Answer Sheet"
+    "Reading Analysis (cont’d)",
+    "Reading Answer Sheet",
+    "Writing Analysis",
+    "Writing Analysis (cont’d)",
+    "Writing Answer Sheet",
   ];
   const documentDefinition = {
     pageSize: "A4",
