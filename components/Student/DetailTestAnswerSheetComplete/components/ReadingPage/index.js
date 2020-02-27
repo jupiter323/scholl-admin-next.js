@@ -35,7 +35,7 @@ const ReadingPage = ({
   <div className="slide">
     <div className="container-sm">
       <div className="row mb-0" style={{ marginTop: "20px" }}>
-        <div className="col s12 l5 xl4 chart-column" id = "readingScoreRef">
+        <div className="col s12 l5 xl4 chart-column" id="readingScoreRef">
           <div className="chart-block chart-block-large">
             <Doughnut
               data={() => data(totalCorrect, totalPossible)}
@@ -49,7 +49,6 @@ const ReadingPage = ({
               <span className="title">Reading</span>
               <span className="value">{totalCorrect}</span>
               <span className="description">
-                {" "}
                 out of <b>{totalPossible}</b>
               </span>
             </div>
@@ -121,11 +120,16 @@ const ReadingPage = ({
         </div>
       </div>
       {/* <div className="graphs-section"> */}
-      <div className="graphs-section" id = "readingTypeScoreRef">
+      <div className="graphs-section" id="readingTypeScoreRef">
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">
-              <h3 className="graph-title">Passage Type</h3>
+              <h3 className="graph-title">
+                <span className="badge-rounded-sm light-green lighten-1 badge white-text">
+                  100%
+                </span>
+                Passage Type
+              </h3>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -149,7 +153,12 @@ const ReadingPage = ({
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong className="graph-subtitle">Science</strong>
+              <strong className="graph-subtitle">
+                <span className="badge-rounded-sm light-green lighten-1 badge white-text">
+                  92%
+                </span>
+                Science
+              </strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -174,6 +183,9 @@ const ReadingPage = ({
           <div className="graph-row">
             <div className="graph-col text-column">
               <strong className="graph-subtitle">
+                <span className="badge-rounded-sm light-green lighten-1 darken-1 badge white-text">
+                  78%
+                </span>
                 Informational Graphic Passage
               </strong>
             </div>
@@ -199,7 +211,12 @@ const ReadingPage = ({
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong className="graph-subtitle">History/Social Science</strong>
+              <strong className="graph-subtitle">
+                <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
+                  66%
+                </span>
+                History/Social Science
+              </strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -224,6 +241,9 @@ const ReadingPage = ({
           <div className="graph-row">
             <div className="graph-col text-column">
               <strong className="graph-subtitle">
+                <span className="badge-rounded-sm orange darken-5 badge white-text">
+                  50%
+                </span>
                 US &amp; World Literature
               </strong>
             </div>
@@ -249,7 +269,12 @@ const ReadingPage = ({
           </div>
           <div className="graph-row">
             <div className="graph-col text-column">
-              <strong className="graph-subtitle">Paired Passages</strong>
+              <strong className="graph-subtitle">
+                <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
+                  66%
+                </span>
+                Paired Passages
+              </strong>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -275,7 +300,12 @@ const ReadingPage = ({
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">
-              <h3 className="graph-title">Question Type</h3>
+              <h3 className="graph-title">
+                <span className="badge-rounded-sm light-green lighten-1 badge white-text">
+                  100%
+                </span>
+                Question Type
+              </h3>
             </div>
             <div className="graph-col graph-container">
               <div className="graph-linear">
@@ -302,6 +332,9 @@ const ReadingPage = ({
             <div className="graph-row graph-row-subtitle">
               <div className="graph-col text-column">
                 <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm light-green lighten-1 darken-1 badge white-text">
+                    77%
+                  </span>
                   Citing Textual Evidence
                 </strong>
               </div>
@@ -331,6 +364,9 @@ const ReadingPage = ({
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
                 <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm red darken-5 badge white-text">
+                    35%
+                  </span>
                   Cite Text as Evidence
                 </strong>
               </div>
@@ -357,6 +393,9 @@ const ReadingPage = ({
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
                 <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
+                    60%
+                  </span>
                   Author’s Intention and Method
                 </strong>
               </div>
@@ -383,6 +422,9 @@ const ReadingPage = ({
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
                 <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm red darken-5 badge white-text">
+                    35%
+                  </span>
                   Support / Refute a Claim
                 </strong>
               </div>
@@ -410,7 +452,12 @@ const ReadingPage = ({
           <div className="graph-row-block">
             <div className="graph-row graph-row-subtitle">
               <div className="graph-col text-column">
-                <strong className="graph-subtitle">Reading Closely</strong>
+                <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
+                    60%
+                  </span>
+                  Reading Closely
+                </strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -437,7 +484,12 @@ const ReadingPage = ({
             </div>
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
-                <strong className="graph-subtitle">Detail Question</strong>
+                <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm light-green lighten-1 badge white-text">
+                    96%
+                  </span>
+                  Detail Question
+                </strong>
               </div>
               <div className="graph-col graph-container">
                 <div className="graph-linear">
@@ -462,6 +514,9 @@ const ReadingPage = ({
             <div className="graph-row graph-row-inner">
               <div className="graph-col text-column">
                 <strong className="graph-subtitle">
+                  <span className="badge-rounded-sm light-green lighten-1 darken-1 badge white-text">
+                    80%
+                  </span>
                   Support / Refute a Claim
                 </strong>
               </div>

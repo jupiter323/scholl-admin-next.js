@@ -208,6 +208,9 @@
 .red.darken-4 {
   background-color: #b71c1c !important;
 }
+.red.darken-5 {
+  background-color: #f27c7c !important;
+}
 
 .red-text.text-darken-4 {
   color: #b71c1c !important;
@@ -1296,6 +1299,12 @@
 .light-green.lighten-1 {
   background-color: #9ccc65 !important;
 }
+.light-green.lighten-1.darken-1 {
+  background-color: #a9c466 !important;
+}
+.light-green.lighten-1.darken-2 {
+  background-color: #d8c539 !important;
+}
 
 .light-green-text.text-lighten-1 {
   color: #9ccc65 !important;
@@ -1775,6 +1784,9 @@
 
 .orange.darken-4 {
   background-color: #e65100 !important;
+}
+.orange.darken-5 {
+  background-color: #e89258 !important;
 }
 
 .orange-text.text-darken-4 {
