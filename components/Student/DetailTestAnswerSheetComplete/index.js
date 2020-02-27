@@ -285,8 +285,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
               status: "M",
               flagged: false,
               reviewed: false,
-              studentNotes:
-                "Lorem ipsum dolor sit amet sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?",
               tutorNotes: "work and study hard"
             },
             {

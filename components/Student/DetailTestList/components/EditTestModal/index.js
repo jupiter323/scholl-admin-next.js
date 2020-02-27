@@ -285,7 +285,7 @@ class EditTestModal extends React.Component {
                     Strengths &amp; Weaknesses
                   </a>
                 </li>
-                <li className="col s3">
+                {/* <li className="col s3">
                   <a
                     className={activePage === "testVersion" ? "active" : ""}
                     onClick={() => this.onSetActivePage("testVersion")}
@@ -293,7 +293,7 @@ class EditTestModal extends React.Component {
                   >
                     Test Version
                   </a>
-                </li>
+                </li> */}
                 <li className="menu-special col s3">
                   <a href="#" onClick={() => this.generateScoreReportPdf()}>
                     Download Score Report
