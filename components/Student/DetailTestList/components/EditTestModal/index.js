@@ -79,9 +79,27 @@ class EditTestModal extends React.Component {
   };
 
   generateScoreReportPdf = async () => {
+    const userInfo = {
+      version:"Version: SAT Practice Test #1",
+      target:"Score Report",
+      test_date:"September 28th, 2018",
+      name:"Arnold Studently",
+      test_type:"Practice Test",
+      order:"3rd",
+    };
+    const subjects = [
+      "Practice Test Scores",
+      "Reading Analysis",
+      "Reading Analysis (cont’d)",
+      "Reading Answer Sheet",
+      "Writing Analysis",
+      "Writing Analysis (cont’d)",
+      "Writing Answer Sheet",
+    ];
+    const adminInfo ="Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com";
     let imgDataLists = [];
     const { activePage } = this.state;
-    let getScoreImgPromise = new Promise(async (resolve, reject) => {
+    let getScoreImgPromise = new Promise(async (resolve) => {
       if (activePage === "scores") {
         const scoresImages = await this.getScoresImgData();
         imgDataLists.push(scoresImages);
@@ -98,7 +116,7 @@ class EditTestModal extends React.Component {
     });
 
     getScoreImgPromise.then(() => {
-      let getAnswerSheetImgPromise = new Promise(async (resolve, reject) => {
+      let getAnswerSheetImgPromise = new Promise(async (resolve) => {
         this.setState({ activePage: "answerSheet" }, () => {
           setTimeout(async () => {
             const answerSheetImages = await this.getAnswerSheetImgData();
@@ -121,7 +139,7 @@ class EditTestModal extends React.Component {
               margin: [0, 20, 0, 0],
               pageBreak: "after"
             });
-            pdfMakeReport(imgDataLists);
+            pdfMakeReport(imgDataLists,userInfo,subjects,adminInfo);
           }, 1000);
         });
       });

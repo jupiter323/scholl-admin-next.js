@@ -1,28 +1,36 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import vfsFonts from "pdfmake/build/vfs_fonts";
 
-export default imgDataLists => {
+export default (imgDataLists, userInfo, subjects, adminInfo) => {
   const { vfs } = vfsFonts.pdfMake;
   pdfMake.vfs = vfs;
-  const headTitles = [
-    "Practice Test Scores",
-    "Reading Analysis",
-    "Reading Analysis (cont’d)",
-    "Reading Answer Sheet",
-    "Writing Analysis",
-    "Writing Analysis (cont’d)",
-    "Writing Answer Sheet",
-  ];
+
   const documentDefinition = {
     pageSize: "A4",
     pageOrientation: "portrait",
-    pageMargins: [ 30, 50, 20, 25 ],
+    pageMargins: [30, 50, 20, 25],
     header: function(currentPage) {
       if (currentPage > 1) {
         return [
-          { canvas: [ { type: 'rect', x: 0, y: 0, w: 700, h: 50,linearGradient:[ '#ec693d 0%', '#649aab 61%', '#30add6 87%', '#18b5e9 100%'] } ] },
           {
-            text: headTitles[currentPage - 2],
+            canvas: [
+              {
+                type: "rect",
+                x: 0,
+                y: 0,
+                w: 700,
+                h: 50,
+                linearGradient: [
+                  "#ec693d 0%",
+                  "#649aab 61%",
+                  "#30add6 87%",
+                  "#18b5e9 100%"
+                ]
+              }
+            ]
+          },
+          {
+            text: subjects[currentPage - 2],
             style: { fontSize: 28 },
             absolutePosition: { x: 50, y: 10 }
           }
@@ -30,13 +38,12 @@ export default imgDataLists => {
       }
     },
 
-    footer: function(currentPage, pageCount) {
+    footer: function(currentPage) {
       if (currentPage === 1) {
         return {
           columns: [
             {
-              text:
-                "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
+              text: adminInfo,
               alignment: "center"
             }
           ]
@@ -45,8 +52,7 @@ export default imgDataLists => {
         return {
           columns: [
             {
-              text:
-                "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
+              text: adminInfo,
               alignment: "left",
               margin: [50, 0, 0, 0],
               width: "70%",
@@ -72,33 +78,33 @@ export default imgDataLists => {
         absolutePosition: { x: 0, y: 0 }
       },
       {
-        text: "September 28th, 2018",
+        text: userInfo.test_date,
         alignment: "right"
       },
       {
-        text: "Version: SAT Practice Test #1",
+        text: userInfo.version,
         alignment: "right"
       },
       {
-        text: "Arnold Studently",
+        text: userInfo.name,
         alignment: "center",
         margin: [0, 300, 0, 0],
         style: { fontSize: 28 }
       },
       {
-        text: "3rd",
+        text: userInfo.order,
         alignment: "center",
         margin: [0, 10, 0, 0],
         style: { fontSize: 32, bold: true }
       },
       {
-        text: "Practice Test",
+        text: userInfo.test_type,
         alignment: "center",
         margin: [0, 10, 0, 0],
         style: { fontSize: 28, bold: true }
       },
       {
-        text: "Score Report",
+        text: userInfo.target,
         alignment: "center",
         margin: [0, 10, 0, 0],
         style: { fontSize: 28 },
@@ -110,7 +116,7 @@ export default imgDataLists => {
       color: "#FFFFFF"
     }
   };
-  imgDataLists.map((imgData, index) => {
+  imgDataLists.map(imgData => {
     documentDefinition.content.push(imgData);
   });
   pdfMake.createPdf(documentDefinition).download();
