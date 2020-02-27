@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import TestVersionPage from "../TestVersionPage";
 import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
+import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 
 class EditTestModal extends React.Component {
@@ -198,6 +199,12 @@ class EditTestModal extends React.Component {
           testScoreDetails={test.testScoreDetails}
           activeWritingPdf={activeWritingPdf}
         />
+      );
+    }
+
+    if (activePage === "StrengthsAndWeaknesses") {
+      return (
+        <StrengthsAndWeaknesses testScoreDetails={test.testScoreDetails} />
       );
     }
     return null;
