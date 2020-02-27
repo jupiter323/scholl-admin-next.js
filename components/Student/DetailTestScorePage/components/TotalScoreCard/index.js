@@ -1,14 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
-// import RadialBar from "../../../../../components/common/RadialBar";
-
 
 const data = (totalScore, totalPossible) => ({
   datasets: [
     {
       data: [totalPossible, totalPossible - totalScore],
-      backgroundColor: ["#ce237a", "rgb(234, 234, 234)"]
+      backgroundColor: ["#32b9ec", "rgb(234, 234, 234)"]
     }
   ]
 });

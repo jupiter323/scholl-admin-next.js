@@ -2,13 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 
-// import RadialBar from "../../../../../components/common/RadialBar";
-
-const data = (totalScore, totalPossible) => ({
+const readingAndWritingData = (totalScore, totalPossible) => ({
   datasets: [
     {
       data: [totalPossible, totalPossible - totalScore],
-      backgroundColor: ["#f5883f", "rgb(234, 234, 234)"]
+      backgroundColor: ["#51b349", "rgb(234, 234, 234)"]
+    }
+  ]
+});
+const mathData = (totalScore, totalPossible) => ({
+  datasets: [
+    {
+      data: [totalPossible, totalPossible - totalScore],
+      backgroundColor: ["#567ebf", "rgb(234, 234, 234)"]
     }
   ]
 });
@@ -27,39 +33,27 @@ const SectionScoreCard = ({
           <div className="several-charts-row row mb-0">
             <div className="col s6 center-align">
               <div className="chart-block chart-block-218">
-              <Doughnut
-                data={() => data(readingAndWriting, totalPossible)}
-                width={215}
-                height={215}
-                options={{
-                  cutoutPercentage: 80,
-                }} />
-                <div className="chart-text">
-                  <span className="title">Reading &amp; Writing</span>
-                  <span className="value">{readingAndWriting}</span>
-                  <span className="description">(+80)</span>
-              </div>
-              </div>
-              {/* <div className="chart-block chart-block-218">
-                <RadialBar
-                  svgWidth={215}
-                  svgHeight={215}
-                  strokeWidth={22}
-                  maxValue={readingAndWriting}
-                  currentValue={totalPossible * 0.8}
-                  strokeColor="#f5883f"
+                <Doughnut
+                  data={() =>
+                    readingAndWritingData(readingAndWriting, totalPossible)
+                  }
+                  width={215}
+                  height={215}
+                  options={{
+                    cutoutPercentage: 80
+                  }}
                 />
                 <div className="chart-text">
                   <span className="title">Reading &amp; Writing</span>
                   <span className="value">{readingAndWriting}</span>
                   <span className="description">(+80)</span>
                 </div>
-              </div> */}
+              </div>
             </div>
             <div className="col s6 center-align">
               <div className="chart-block chart-block-218">
                 <Doughnut
-                  data={() => data(math, totalPossible)}
+                  data={() => mathData(math, totalPossible)}
                   width={215}
                   height={215}
                   options={{
@@ -72,21 +66,6 @@ const SectionScoreCard = ({
                   <span className="description">(+80)</span>
                 </div>
               </div>
-              {/* <div className="chart-block chart-block-218">
-                <RadialBar
-                  svgWidth={215}
-                  svgHeight={215}
-                  strokeWidth={22}
-                  maxValue={math}
-                  currentValue={totalPossible * 0.8}
-                  strokeColor="#f5883f"
-                />
-                <div className="chart-text">
-                  <span className="title">Math</span>
-                  <span className="value">{math}</span>
-                  <span className="description">(+80)</span>
-                </div>
-              </div> */}
             </div>
           </div>
           <p>
