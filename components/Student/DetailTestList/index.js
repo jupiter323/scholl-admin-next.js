@@ -139,7 +139,7 @@ class DetailTestList extends React.Component {
 
   mapFutureTests = () => {
     const { tests } = this.state;
-    return tests.filter(test => test.status === "STARTED").map((test, index) => (
+    return tests.filter(test => test.status === "COMPLETED").map((test, index) => (
         <FutureTestCard
           futureTest
           test={test}

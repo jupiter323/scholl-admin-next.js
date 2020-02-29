@@ -34,7 +34,7 @@ const SubjectsCard = () => (
       <div className="card-main-full card">
         <div className="card-content">
           <div className="several-charts-row row mb-0">
-            <div className="col s4 center-align">
+            <div className="col s4 center-align" id = "analysisReadingCicleImg">
               <div className="chart-block chart-block-182">
                 <Doughnut
                   data={() => readingData(81, 100)}
@@ -53,7 +53,7 @@ const SubjectsCard = () => (
                 </div>
               </div>
             </div>
-            <div className="col s4 center-align">
+            <div className="col s4 center-align" id = "analysisWritingCircleImg">
               <div className="chart-block chart-block-182">
                 <Doughnut
                   data={() => writingData(73, 100)}
@@ -70,7 +70,7 @@ const SubjectsCard = () => (
                 </div>
               </div>
             </div>
-            <div className="col s4 center-align">
+            <div className="col s4 center-align" id = "analysisMathCircleImg">
               <div className="chart-block chart-block-182">
                 <Doughnut
                   data={() => mathData(21, 100)}

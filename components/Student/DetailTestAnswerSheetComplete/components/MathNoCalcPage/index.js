@@ -14,7 +14,7 @@ class MathNoCalcPage extends React.Component {
 
   render() {
     return (
-      <div className="slide">
+      <div className="slide" id = "mathNoCalcAnswerSheetImg">
         <div className="row"  style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
           <ol className="answers-list">
             {this.mapMathNoCalcAnswers()}

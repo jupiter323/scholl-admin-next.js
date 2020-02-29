@@ -1,40 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Doughnut } from "react-chartjs-2";
-
-const data = (totalScore, totalPossible) => ({
-  datasets: [
-    {
-      data: [totalPossible, totalPossible - totalScore],
-      backgroundColor: ["#ce237a", "rgb(234, 234, 234)"]
-    }
-  ]
-});
 
 const ReadingPage = ({
   reading: {
-    totalCorrect,
-    totalPossible,
-    passageType: {
-      science,
-      informationalGraphicPassage,
-      historySocialScience,
-      USWorldLiterature,
-      pairedPassages
-    },
-    questionType: {
-      citingTextualEvidence: {
-        citeTextAsEvidence,
-        authorsIntentionAndMethod,
-        supportOrRefute
-      },
-      readingClosely: { detailQuestion, supportRefuteAClaim }
-    }
+    questionType: {}
   }
 }) => (
-  <div className="slide">
+  <div className="slide" >
     <div className="container-sm">
-      <div className="graphs-section graphs-students" id="readingTypeScoreRef">
+      <div className="graphs-section graphs-students" id="readingAnalysisBarImg">
         <div className="graphs-block">
           <div className="graph-row graph-row-title">
             <div className="graph-col text-column">

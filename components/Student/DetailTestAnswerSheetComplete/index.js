@@ -12,6 +12,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     super(props);
     this.state = {
       activeSlide: "reading",
+      isOpened: false,
       testScoreDetails: {
         reading: {
           totalCorrect: "39",
@@ -385,12 +386,51 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   }
 
-  componentWillReceiveProps = nextProps => {
-    if (nextProps.activeWritingPdf === true) {
-      this.setState({
-        activeSlide: "writing"
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
+  getComponentImages = () => {
+    return new Promise(resolve => {
+      let imgDataList = [];
+      const componentRefs = [
+        { id: "readingAnswerSheetImg", state: "reading" },
+        { id: "writingAnswerSheetImg", state: "writing" },
+        { id: "mathNoCalcAnswerSheetImg", state: "math (no calc)" },
+        { id: "mathCalcAnswerSheetImg", state: "math (calculator)" }
+      ];
+      const getImgListPromise = componentRefs.reduce((accumulatorPromise, item) => {
+          return accumulatorPromise
+            .then(async () => {
+              const result = await this.getData(item);
+              return imgDataList.push(result);
+            })
+            .catch(console.error);
+        },
+        Promise.resolve()
+      );
+      getImgListPromise.then(() => {
+        resolve(imgDataList);
       });
-    }
+    });
+  };
+
+  getData = item => {
+    return new Promise(resolve => {
+      this.setState({ activeSlide: item.state }, async () => {
+        const currentImg = await this.onHandleTargetImage(item.id)
+        resolve(currentImg);
+      });
+    });
+  };
+
+  onHandleTargetImage = async currentRef => {
+    const { getTargetImage } = this.props;
+    const currentImg = await getTargetImage(document.getElementById(currentRef))
+    return currentImg;
   };
 
   onSetActiveSlide = activeSlide => this.setState({ activeSlide });
@@ -398,7 +438,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
   renderCurrentSlide = () => {
     const {
       testScoreDetails: {
-        reading,
         mathNoCalc,
         mathCalculator,
         writing: { sampleAnswers }
@@ -406,7 +445,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       activeSlide
     } = this.state;
     if (activeSlide === "reading") {
-      return <ReadingPage reading={reading} />;
+      return <ReadingPage mathNoCalc={mathNoCalc} />;
     }
     if (activeSlide === "writing") {
       return <WritingPage sampleAnswers={sampleAnswers} />;
@@ -442,7 +481,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 }
 
 DetailTestAnswerSheetComplete.propTypes = {
-  activeWritingPdf: PropTypes.bool.isRequired
+  getTargetImage: PropTypes.func.isRequired
 };
 
 export default DetailTestAnswerSheetComplete;

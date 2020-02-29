@@ -272,12 +272,62 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   }
 
-  componentWillReceiveProps = nextProps => {
-    if (nextProps.activeWritingPdf === true) {
-      this.setState({
-        activeSlide: "writing"
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
+  getComponentImages = () => {
+    return new Promise(async resolve => {
+      const circleImageList = [];
+      let barImageList = [];
+      const circleRefs = [
+        { id: "analysisReadingCicleImg" },
+        { id: "analysisWritingCircleImg" },
+        { id: "analysisMathCircleImg" }
+      ];
+      const barRefs = [
+        { id: "readingAnalysisBarImg", state: "reading" },
+        { id: "writingAnalysisBarImg", state: "writing" },
+        { id: "mathAnalysisBarImg", state: "math" }
+      ];
+      barImageList = await Promise.all(
+        barRefs.map(async barRef => await this.getData(barRef))
+      );
+      circleRefs.map(async (circleRef, index) => {
+        const [currentImg] = await Promise.all([
+          this.onHandleTargetImage(circleRef.id)
+        ]);
+        circleImageList.push(currentImg);
       });
-    }
+
+      const imgList = { circleImageList, barImageList };
+      resolve(imgList);
+    });
+  };
+  getData = item => {
+    return new Promise(async resolve => {
+      setTimeout(() => {
+        this.setState({ activeSlide: item.state }, async () => {
+          const [currentImg] = await Promise.all([
+            this.onHandleTargetImage(item.id)
+          ]);
+          resolve(currentImg);
+        });
+      }, 1000);
+    });
+  };
+
+  onHandleTargetImage = async currentRef => {
+    return new Promise(async resolve => {
+      const { getTargetImage } = this.props;
+      const [currentImg] = await Promise.all([
+        getTargetImage(document.getElementById(currentRef))
+      ]);
+      resolve(currentImg);
+    });
   };
 
   onSetActiveSlide = activeSlide => this.setState({ activeSlide });
@@ -295,10 +345,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
       return <ReadingPage reading={reading} />;
     }
     if (activeSlide === "writing") {
-      return <WritingPage sampleAnswers={sampleAnswers} />;
+      return <WritingPage reading={reading} />;
     }
     if (activeSlide === "math") {
-      return <MathPage mathData={mathData} />;
+      return <MathPage reading={reading} />;
     }
     return null;
   };
@@ -328,7 +378,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 }
 
 DetailTestAnswerSheetComplete.propTypes = {
-  activeWritingPdf: PropTypes.bool.isRequired
+  getTargetImage: PropTypes.func.isRequired
 };
 
 export default DetailTestAnswerSheetComplete;
