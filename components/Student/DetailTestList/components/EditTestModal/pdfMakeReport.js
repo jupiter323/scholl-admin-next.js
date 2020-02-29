@@ -1,7 +1,15 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import vfsFonts from "pdfmake/build/vfs_fonts";
 
-export default (imgDataLists, userInfo, subjects, adminInfo, backgroundImg) => {
+export default (
+  imgDataLists,
+  userInfo,
+  subjects,
+  adminInfo,
+  backgroundImg,
+  headerGradient,
+  logo
+) => {
   const { vfs } = vfsFonts.pdfMake;
   pdfMake.vfs = vfs;
 
@@ -20,12 +28,7 @@ export default (imgDataLists, userInfo, subjects, adminInfo, backgroundImg) => {
                 y: 0,
                 w: 700,
                 h: 50,
-                linearGradient: [
-                  "#ec693d 0%",
-                  "#649aab 61%",
-                  "#30add6 87%",
-                  "#18b5e9 100%"
-                ]
+                linearGradient: headerGradient
               }
             ]
           },
@@ -75,6 +78,12 @@ export default (imgDataLists, userInfo, subjects, adminInfo, backgroundImg) => {
         width: 600,
         height: 1122,
         absolutePosition: { x: 0, y: 0 }
+      },
+      {
+        image: logo,
+        width: 226,
+        height: 79,
+        absolutePosition: { x: 50, y: 50 }
       },
       {
         text: userInfo.test_date,

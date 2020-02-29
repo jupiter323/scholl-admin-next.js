@@ -39,7 +39,13 @@ class EditTestModal extends React.Component {
         "Math Answer Sheet(calculator)"
       ],
       adminInfo:
-        "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com"
+        "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
+      headerGradient: [
+        "#ec693d 0%",
+        "#649aab 61%",
+        "#30add6 87%",
+        "#18b5e9 100%"
+      ]
     };
   }
 
@@ -122,10 +128,14 @@ class EditTestModal extends React.Component {
 
   generateScoreReportPdf = async () => {
     let imgDataLists = [];
-    const { userInfo, subjects, adminInfo } = this.state;
+    const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = "./static/images/sunset.jpg";
-    const testImg = await this.getBase64ImageFromURL(
-      coverBackgroundImg + "?auto=compress&cs=tinysrgb&dpr=1&w=300"
+    const logoImg = "./static/images/study-hut-logo.png";
+    const backgroundImage = await this.getBase64ImageFromURL(
+      coverBackgroundImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+    );
+    const logo = await this.getBase64ImageFromURL(
+      logoImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
     );
     const pageStates = [
       {
@@ -190,9 +200,17 @@ class EditTestModal extends React.Component {
       imgDataLists.push({
         image: answerSheetImages[3],
         width: 550,
-        margin: [0, 20, 0, 0],
+        margin: [0, 20, 0, 0]
       });
-      pdfMakeReport(imgDataLists, userInfo, subjects, adminInfo, testImg);
+      pdfMakeReport(
+        imgDataLists,
+        userInfo,
+        subjects,
+        adminInfo,
+        backgroundImage,
+        headerGradient,
+        logo
+      );
     });
   };
 
