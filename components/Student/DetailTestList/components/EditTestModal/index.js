@@ -17,6 +17,7 @@ class EditTestModal extends React.Component {
       analysisBarImages: [],
       analysisCicleImages: [],
       answerSheetImages: [],
+      enablePublish:true,
       userInfo: {
         version: "Version: SAT Practice Test #1",
         target: "Score Report",
@@ -127,6 +128,9 @@ class EditTestModal extends React.Component {
   };
 
   generateScoreReportPdf = async () => {
+    this.setState({
+      enablePublish:false,
+    })
     let imgDataLists = [];
     const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = "./static/images/sunset.jpg";
@@ -160,6 +164,9 @@ class EditTestModal extends React.Component {
     }, Promise.resolve());
 
     getImagesPromise.then(() => {
+      this.setState({
+        enablePublish:true
+      })
       const {
         scoresImages,
         analysisCicleImages,
@@ -262,7 +269,7 @@ class EditTestModal extends React.Component {
 
   render() {
     const { test, user } = this.props;
-    const { activePage } = this.state;
+    const { activePage,enablePublish } = this.state;
     const { title, version: testVersion } = test;
     const {
       studentInformation: { firstName, lastName }
@@ -314,7 +321,7 @@ class EditTestModal extends React.Component {
                 <li className="col s3">
                   <a
                     className={activePage === "scores" ? "active" : ""}
-                    onClick={() => this.onSetActivePage("scores")}
+                    onClick={() => enablePublish && this.onSetActivePage("scores")}
                     href="#"
                   >
                     Scores
@@ -323,7 +330,7 @@ class EditTestModal extends React.Component {
                 <li className="col s3">
                   <a
                     className={activePage === "answerSheet" ? "active" : ""}
-                    onClick={() => this.onSetActivePage("answerSheet")}
+                    onClick={() => enablePublish && this.onSetActivePage("answerSheet")}
                     href="#"
                   >
                     Answer Sheet
@@ -335,7 +342,7 @@ class EditTestModal extends React.Component {
                       activePage === "StrengthsAndWeaknesses" ? "active" : ""
                     }
                     onClick={() =>
-                      this.onSetActivePage("StrengthsAndWeaknesses")
+                      enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
                     }
                     href="#"
                   >
@@ -352,7 +359,7 @@ class EditTestModal extends React.Component {
                   </a>
                 </li> */}
                 <li className="menu-special col s3">
-                  <a href="#" onClick={() => this.generateScoreReportPdf()}>
+                  <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
                     Download Score Report
                     <i className="icon-download-file"></i>
                   </a>
