@@ -36,6 +36,12 @@ export default (
             text: subjects[currentPage - 2],
             style: { fontSize: 28 },
             absolutePosition: { x: 50, y: 10 }
+          },
+          {
+            image: logo,
+            width: 113,
+            height: 40,
+            absolutePosition: { x: 450, y: 10 }
           }
         ];
       }
@@ -45,7 +51,7 @@ export default (
         return {
           image: backgroundImg,
           height: 841.89,
-          alignment: 'center'
+          alignment: "center"
         };
       }
     },
