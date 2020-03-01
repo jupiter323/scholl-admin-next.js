@@ -40,7 +40,15 @@ export default (
         ];
       }
     },
-
+    background: function(currentPage, pageSize) {
+      if (currentPage === 1) {
+        return {
+          image: backgroundImg,
+          height: 841.89,
+          alignment: 'center'
+        };
+      }
+    },
     footer: function(currentPage) {
       if (currentPage === 1) {
         return {
@@ -73,12 +81,6 @@ export default (
       }
     },
     content: [
-      {
-        image: backgroundImg,
-        width: 600,
-        height: 1122,
-        absolutePosition: { x: 0, y: 0 }
-      },
       {
         image: logo,
         width: 226,
