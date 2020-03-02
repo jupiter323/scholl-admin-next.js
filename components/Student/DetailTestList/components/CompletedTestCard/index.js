@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import moment from 'moment';
 class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +52,8 @@ class CompletedTestCard extends React.Component {
       dropdownIsOpen,
       onDownloadReport,
       onDeleteTest,
-      onDetailTest
+      onDetailTest,
+      test:{test_name,test_description,assignment_date,dueDate}
     } = this.props;
     const {
       ReadingScore,
@@ -61,6 +62,8 @@ class CompletedTestCard extends React.Component {
       MathScore,
       NA
     } = this.state;
+    const formattedDueDate = moment(dueDate).format('MM/DD/YY')
+    const formattedAssignmentDate = moment(assignment_date).format('MM/DD/YY')
     return (
       <React.Fragment>
         <div
@@ -135,7 +138,7 @@ class CompletedTestCard extends React.Component {
                     <div className="row">
                       <div className="col s12 m12">
                         <strong className="list-title">
-                          2nd Practice Test
+                          {test_name}
                         </strong>
                       </div>
                       <div className="col s12 m6">
@@ -151,7 +154,7 @@ class CompletedTestCard extends React.Component {
                           <li>
                             <span className="list-date">
                               <i className="icon-calendar" />
-                              <span className="date">Due 6/8/20</span>
+                              <span className="date">Due {formattedDueDate}</span>
                             </span>
                           </li>
                         </ul>
@@ -161,7 +164,7 @@ class CompletedTestCard extends React.Component {
                         >
                           <dl className="dl-horizontal">
                             <dt>Version:</dt>
-                            <dd>SAT Practice Test #5</dd>
+                            <dd>{test_description}</dd>
                           </dl>
                         </div>
                       </div>
@@ -357,7 +360,8 @@ CompletedTestCard.propTypes = {
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  onDetailTest: PropTypes.func.isRequired
+  onDetailTest: PropTypes.func.isRequired,
+  test:PropTypes.object.isRequired,
 };
 
 export default CompletedTestCard;

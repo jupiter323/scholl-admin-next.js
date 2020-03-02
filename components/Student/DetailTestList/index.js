@@ -146,8 +146,8 @@ class DetailTestList extends React.Component {
         (test, index) =>
           existTestsData && (
             <CompletedTestCard
-              show={true}
               scores={scores}
+              test = {test}
               index={test.test_id}
               onDetailTest={() => this.onToggleCompleteTestDetailView()}
               onSetDropdown={this.onSetDropdown}
@@ -257,7 +257,6 @@ class DetailTestList extends React.Component {
       testDetailViewOpen
     } = this.state;
     const { user } = this.props;
-    // console.log("OMG:",activeTest)
     return (
       <React.Fragment>
         {!selectedTest && (
