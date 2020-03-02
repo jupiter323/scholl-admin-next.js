@@ -899,7 +899,7 @@ export const addStudentTestQuestionFlagApi = body =>
     .catch(err => err);
     
 export const fetchStudentTestScoreApi = student_test_id =>
-  fetch(`${API_URL}/api/studentTests/${student_test_id}/score`, {
+  fetch(`${API_URL}/api/studentTestScore/${student_test_id}`, {
     headers: {
       "Allow-Control-Allow-Origin": "*",
       "Content-Type": "application/json"

@@ -51,13 +51,13 @@ class DetailTestList extends React.Component {
       const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
         id
       );
-      console.log("Tests Length:", tests.length);
       if (tests.length !== 0) {
         this.setState({
           tests,
           student_test_id: tests[0].student_test_id,
           existTestsData: true
         });
+        this.onFetchTestScoresByStudentTestId();
       } else {
         this.setState({
           existTestsData: false
@@ -147,7 +147,7 @@ class DetailTestList extends React.Component {
           existTestsData && (
             <CompletedTestCard
               scores={scores}
-              test = {test}
+              test={test}
               index={test.test_id}
               onDetailTest={() => this.onToggleCompleteTestDetailView()}
               onSetDropdown={this.onSetDropdown}
@@ -162,6 +162,7 @@ class DetailTestList extends React.Component {
 
   mapFutureTests = () => {
     const { tests, existTestsData } = this.state;
+
     return tests
       .filter(test => test.status === "STARTED")
       .map(
@@ -193,6 +194,15 @@ class DetailTestList extends React.Component {
 
   onOpenStudentAnswerModal = () =>
     this.setState({ StartTestWrapperOpen: true });
+  onFetchTestScoresByStudentTestId = async () => {
+    const { student_test_id } = this.state;
+    const { formattedTestScores } = await fetchStudentTestScoreApi(
+      student_test_id
+    );
+    this.setState({
+      scores: formattedTestScores.scores
+    });
+  };
 
   onActiveCompletedTestCard = async () => {
     const { student_test_id } = this.state;

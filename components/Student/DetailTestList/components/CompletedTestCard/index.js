@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from 'moment';
+import moment from "moment";
 class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
@@ -16,15 +16,15 @@ class CompletedTestCard extends React.Component {
   componentWillReceiveProps = nextProps => {
     const scores = nextProps.scores;
     scores.map((score, index) => {
-      switch (score.name) {
+      switch (score.subject_name) {
         case "Reading":
-          this.setState({ ReadingScore: score.score });
+          this.setState({ ReadingScore: score.current_score });
         case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: score.score });
+          this.setState({ ReadingAndWrigingScore: score.current_score });
         case "Math":
-          this.setState({ MathScore: score.score });
+          this.setState({ MathScore: score.current_score });
         case "Writing":
-          this.setState({ MathScore: score.score });
+          this.setState({ MathScore: score.current_score });
         default:
           this.setState({ NA: 0 });
       }
@@ -53,7 +53,7 @@ class CompletedTestCard extends React.Component {
       onDownloadReport,
       onDeleteTest,
       onDetailTest,
-      test:{test_name,test_description,assignment_date,dueDate}
+      test: { test_name, test_description, assignment_date, dueDate }
     } = this.props;
     const {
       ReadingScore,
@@ -62,8 +62,8 @@ class CompletedTestCard extends React.Component {
       MathScore,
       NA
     } = this.state;
-    const formattedDueDate = moment(dueDate).format('MM/DD/YY')
-    const formattedAssignmentDate = moment(assignment_date).format('MM/DD/YY')
+    const formattedDueDate = moment(dueDate).format("MM/DD/YY");
+    const formattedAssignmentDate = moment(assignment_date).format("MM/DD/YY");
     return (
       <React.Fragment>
         <div
@@ -137,9 +137,7 @@ class CompletedTestCard extends React.Component {
                   <li>
                     <div className="row">
                       <div className="col s12 m12">
-                        <strong className="list-title">
-                          {test_name}
-                        </strong>
+                        <strong className="list-title">{test_name}</strong>
                       </div>
                       <div className="col s12 m6">
                         <ul className="info-list info-list-gray  assigned">
@@ -154,7 +152,9 @@ class CompletedTestCard extends React.Component {
                           <li>
                             <span className="list-date">
                               <i className="icon-calendar" />
-                              <span className="date">Due {formattedDueDate}</span>
+                              <span className="date">
+                                Due {formattedDueDate}
+                              </span>
                             </span>
                           </li>
                         </ul>
@@ -354,14 +354,14 @@ class CompletedTestCard extends React.Component {
 
 CompletedTestCard.propTypes = {
   scores: PropTypes.array,
-  index: PropTypes.number,
-  dropdownIndex: PropTypes.number,
+  index: PropTypes.string,
+  dropdownIndex: PropTypes.string,
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
   onDetailTest: PropTypes.func.isRequired,
-  test:PropTypes.object.isRequired,
+  test: PropTypes.object.isRequired
 };
 
 export default CompletedTestCard;
