@@ -40,7 +40,8 @@ class DetailTestList extends React.Component {
       StartTestWrapperOpen: false,
       activeTest: null,
       selectedTest: null,
-      createTestModalOpen: false
+      createTestModalOpen: false,
+      existTestsData: false
     };
   }
 
@@ -50,7 +51,18 @@ class DetailTestList extends React.Component {
       const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
         id
       );
-      this.setState({ tests, student_test_id: tests[0].student_test_id });
+      console.log("Tests Length:", tests.length);
+      if (tests.length !== 0) {
+        this.setState({
+          tests,
+          student_test_id: tests[0].student_test_id,
+          existTestsData: true
+        });
+      } else {
+        this.setState({
+          existTestsData: false
+        });
+      }
     }
   };
 
@@ -66,15 +78,15 @@ class DetailTestList extends React.Component {
   };
 
   onToggleCompleteTestDetailView = () => {
-    this.setState(
-      ({testDetailViewOpen}) => ({
-        testDetailViewOpen: !testDetailViewOpen
-      })
-    )
-  }
+    this.setState(({ testDetailViewOpen }) => ({
+      testDetailViewOpen: !testDetailViewOpen
+    }));
+  };
 
-  onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onSetDropdown = dropdownIndex =>
+    this.setState({ dropdownIndex, dropdownIsOpen: true });
+  onCloseDropdown = () =>
+    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   onCreateTest = event => {
     event.preventDefault();
@@ -89,7 +101,8 @@ class DetailTestList extends React.Component {
     this.setState({ StartTestWrapperOpen: true, currentTestSection });
   };
 
-  onEditTest = () => console.warn("Pending implementation edit test UI and functionality");
+  onEditTest = () =>
+    console.warn("Pending implementation edit test UI and functionality");
   onDownloadReport = () =>
     console.warn(
       "Pending implementation of download report ui and functionality"
@@ -120,42 +133,60 @@ class DetailTestList extends React.Component {
   };
 
   mapCompletedTests = () => {
-    const { activeCompletedTestCard, scores } = this.state;
+    const {
+      activeCompletedTestCard,
+      scores,
+      existTestsData,
+      tests
+    } = this.state;
     //We are using 0 as index.In the future,The Completed Test Card should be mapping so that index should be unique
-    return (
-      <CompletedTestCard
-        show={activeCompletedTestCard}
-        scores={scores}
-        index={1119}
-        onDetailTest={() => this.onToggleCompleteTestDetailView()}
-        onSetDropdown={this.onSetDropdown}
-        onCloseDropdown={this.onCloseDropdown}
-        onDownloadReport={this.onDownloadReport}
-        dropdownIndex={this.state.dropdownIndex}
-        dropdownIsOpen={this.state.dropdownIsOpen}
-      />
-    );
+    return tests
+      .filter(test => test.status === "COMPLETED")
+      .map(
+        (test, index) =>
+          existTestsData && (
+            <CompletedTestCard
+              show={true}
+              scores={scores}
+              index={test.test_id}
+              onDetailTest={() => this.onToggleCompleteTestDetailView()}
+              onSetDropdown={this.onSetDropdown}
+              onCloseDropdown={this.onCloseDropdown}
+              onDownloadReport={this.onDownloadReport}
+              dropdownIndex={this.state.dropdownIndex}
+              dropdownIsOpen={this.state.dropdownIsOpen}
+            />
+          )
+      );
   };
 
   mapFutureTests = () => {
-    const { tests } = this.state;
-    return tests.filter(test => test.status === "COMPLETED").map((test, index) => (
-        <FutureTestCard
-          futureTest
-          test={test}
-          key={`future-${test.test_id}`}
-          onEditTest={() => this.onToggleEditTestModal(test)}
-          onDeleteTest={this.onDeleteTest}
-          onSetDropdown={this.onSetDropdown}
-          onEnterAnswers={this.onEnterAnswers}
-          onCloseDropdown={this.onCloseDropdown}
-          onDownloadReport={this.onDownloadReport}
-          dropdownIndex={this.state.dropdownIndex}
-          dropdownIsOpen={this.state.dropdownIsOpen}
-          openTestScores={this.openTestScores}
-          index={ tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
-        />
-      ));
+    const { tests, existTestsData } = this.state;
+    return tests
+      .filter(test => test.status === "STARTED")
+      .map(
+        (test, index) =>
+          existTestsData && (
+            <FutureTestCard
+              futureTest
+              test={test}
+              key={`future-${test.test_id}`}
+              onEditTest={() => this.onToggleEditTestModal(test)}
+              onDeleteTest={this.onDeleteTest}
+              onSetDropdown={this.onSetDropdown}
+              onEnterAnswers={this.onEnterAnswers}
+              onCloseDropdown={this.onCloseDropdown}
+              onDownloadReport={this.onDownloadReport}
+              dropdownIndex={this.state.dropdownIndex}
+              dropdownIsOpen={this.state.dropdownIsOpen}
+              openTestScores={this.openTestScores}
+              index={
+                tests.filter(filterTest => filterTest.status === "ASSIGNED")
+                  .length + index
+              }
+            />
+          )
+      );
   };
 
   onCloseTestModal = () => this.setState({ createTestModalOpen: false });
