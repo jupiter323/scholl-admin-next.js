@@ -35,30 +35,29 @@ class ProblemRow extends React.Component {
   handleClickBadge = index => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
-    if(selectedIndex === -1){
+    if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
-        [index]: { selected: { $set: !currentBadge.selected } },
+        [index]: { selected: { $set: !currentBadge.selected } }
       });
-      this.onSaveStudentAnswer(updatedProblemCells,index)
-    }else{
+      this.onSaveStudentAnswer(updatedProblemCells, index);
+    } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
         [selectedIndex]: { selected: { $set: false } }
       });
-      this.onSaveStudentAnswer(updatedProblemCells,index)
+      this.onSaveStudentAnswer(updatedProblemCells, index);
     }
   };
 
-  onSaveStudentAnswer = (updatedProblemCells,index) =>{
+  onSaveStudentAnswer = (updatedProblemCells, index) => {
     const {
       onAddStudentAnswerToTest,
       problem: { test_problem_id }
     } = this.props;
-    this.setState({ problemCells: updatedProblemCells,selectedIndex: index});
+    this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
     onAddStudentAnswerToTest(test_problem_id, label);
-  }
-
+  };
   render() {
     const { problemCells } = this.state;
     return (

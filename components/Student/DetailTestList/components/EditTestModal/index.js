@@ -5,16 +5,221 @@ import PropTypes from "prop-types";
 import TestVersionPage from "../TestVersionPage";
 import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
+import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
+import pdfMakeReport from "./pdfMakeReport";
 
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores"
+      activePage: "scores",
+      scoresImages: null,
+      analysisBarImages: [],
+      analysisCicleImages: [],
+      answerSheetImages: [],
+      enablePublish:true,
+      userInfo: {
+        version: "Version: SAT Practice Test #1",
+        target: "Score Report",
+        test_date: "September 28th, 2018",
+        name: "Arnold Studently",
+        test_type: "Practice Test",
+        order: "3rd"
+      },
+      subjects: [
+        "Practice Test Scores",
+        "Reading Analysis",
+        "Reading Analysis (cont’d)",
+        "Reading Answer Sheet",
+        "Writing Analysis",
+        "Writing Analysis (cont’d)",
+        "Writing Answer Sheet",
+        "Math Analysis",
+        "Math Analysis (cont'd)",
+        "Math Answer Sheet(no calc)",
+        "Math Answer Sheet(calculator)"
+      ],
+      adminInfo:
+        "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
+      headerGradient: [
+        "#ec693d 0%",
+        "#649aab 61%",
+        "#30add6 87%",
+        "#18b5e9 100%"
+      ]
     };
   }
 
-  onSetActivePage = (activePage) => this.setState({ activePage });
+  getBase64ImageFromURL = url => {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = url;
+    });
+  };
+
+  onSetActivePage = activePage => {
+    this.setState({
+      activePage
+    });
+  };
+
+  getTargetImage = currentRef => {
+    const html2canvas = require("html2canvas");
+    const defaultCanvasSetting = {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "rgba(0,0,0,0)",
+      removeContainer: true
+    };
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
+      canvas => {
+        const imgData = canvas.toDataURL("image/png", 1.0);
+        return imgData;
+      }
+    );
+    return targetImg;
+  };
+
+  getData = item => {
+    return new Promise(async resolve => {
+      const currentChild = item.child;
+      this.setState(
+        {
+          activePage: item.state
+        },
+        async () => {
+          const data = await this[currentChild].getComponentImages();
+          switch (item.state) {
+            case "StrengthsAndWeaknesses":
+              this.setState({
+                analysisCicleImages: data.circleImageList,
+                analysisBarImages: data.barImageList
+              });
+              break;
+            case "answerSheet":
+              this.setState({
+                answerSheetImages: data
+              });
+              break;
+            case "scores":
+              this.setState({
+                scoresImages: data
+              });
+              break;
+          }
+          resolve();
+        }
+      );
+    });
+  };
+
+  generateScoreReportPdf = async () => {
+    this.setState({
+      enablePublish:false,
+    })
+    let imgDataLists = [];
+    const { userInfo, subjects, adminInfo, headerGradient } = this.state;
+    const coverBackgroundImg = "./static/images/sunset.jpg";
+    const logoImg = "./static/images/study-hut-logo.png";
+    const backgroundImage = await this.getBase64ImageFromURL(
+      coverBackgroundImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+    );
+    const logo = await this.getBase64ImageFromURL(
+      logoImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+    );
+    const pageStates = [
+      {
+        state: "scores",
+        child: "ScoresChild"
+      },
+      {
+        state: "StrengthsAndWeaknesses",
+        child: "AnalysisChild"
+      },
+      {
+        state: "answerSheet",
+        child: "AnswerSheetChild"
+      }
+    ];
+    const getImagesPromise = pageStates.reduce((accumulatorPromise, item) => {
+      return accumulatorPromise
+        .then(async () => {
+          const images = await this.getData(item);
+        })
+        .catch(console.error);
+    }, Promise.resolve());
+
+    getImagesPromise.then(() => {
+      this.setState({
+        enablePublish:true
+      })
+      const {
+        scoresImages,
+        analysisCicleImages,
+        analysisBarImages,
+        answerSheetImages
+      } = this.state;
+      imgDataLists.push({
+        image: scoresImages,
+        width: 550,
+        margin: [0, 20, 0, 0],
+        pageBreak: "after"
+      });
+      for (let i = 0; i < 3; i++) {
+        imgDataLists.push({
+          image: analysisCicleImages[i],
+          width: 300,
+          margin: [0, 20, 0, 0]
+        });
+        imgDataLists.push({
+          image: analysisBarImages[i],
+          width: 550,
+          margin: [0, 20, 0, 0],
+          pageBreak: "after"
+        });
+        imgDataLists.push({
+          image: analysisBarImages[i],
+          width: 550,
+          margin: [0, 20, 0, 0],
+          pageBreak: "after"
+        });
+        imgDataLists.push({
+          image: answerSheetImages[i],
+          width: 550,
+          margin: [0, 20, 0, 0],
+          pageBreak: "after"
+        });
+      }
+      imgDataLists.push({
+        image: answerSheetImages[3],
+        width: 550,
+        margin: [0, 20, 0, 0]
+      });
+      pdfMakeReport(
+        imgDataLists,
+        userInfo,
+        subjects,
+        adminInfo,
+        backgroundImage,
+        headerGradient,
+        logo
+      );
+    });
+  };
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
@@ -30,12 +235,32 @@ class EditTestModal extends React.Component {
       );
     }
     if (activePage === "scores") {
-      return <DetailTestScorePage test={test} />;
+      return (
+        <div id="wrapper">
+          <DetailTestScorePage
+            test={test}
+            getTargetImage={this.getTargetImage}
+            onRef={ref => (this.ScoresChild = ref)}
+          />
+        </div>
+      );
     }
     if (activePage === "answerSheet") {
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test.testScoreDetails}
+          getTargetImage={this.getTargetImage}
+          onRef={ref => (this.AnswerSheetChild = ref)}
+        />
+      );
+    }
+
+    if (activePage === "StrengthsAndWeaknesses") {
+      return (
+        <StrengthsAndWeaknesses
+          testScoreDetails={test.testScoreDetails}
+          getTargetImage={this.getTargetImage}
+          onRef={ref => (this.AnalysisChild = ref)}
         />
       );
     }
@@ -44,7 +269,7 @@ class EditTestModal extends React.Component {
 
   render() {
     const { test, user } = this.props;
-    const {activePage} = this.state; 
+    const { activePage,enablePublish } = this.state;
     const { title, version: testVersion } = test;
     const {
       studentInformation: { firstName, lastName }
@@ -96,7 +321,7 @@ class EditTestModal extends React.Component {
                 <li className="col s3">
                   <a
                     className={activePage === "scores" ? "active" : ""}
-                    onClick={() => this.onSetActivePage("scores")}
+                    onClick={() => enablePublish && this.onSetActivePage("scores")}
                     href="#"
                   >
                     Scores
@@ -105,7 +330,7 @@ class EditTestModal extends React.Component {
                 <li className="col s3">
                   <a
                     className={activePage === "answerSheet" ? "active" : ""}
-                    onClick={() => this.onSetActivePage("answerSheet")}
+                    onClick={() => enablePublish && this.onSetActivePage("answerSheet")}
                     href="#"
                   >
                     Answer Sheet
@@ -113,14 +338,18 @@ class EditTestModal extends React.Component {
                 </li>
                 <li className="col s3">
                   <a
-                    className={ activePage === "StrengthsAndWeaknesses" ? "active" : ""}
-                    onClick={() => this.onSetActivePage("StrengthsAndWeaknesses")}
+                    className={
+                      activePage === "StrengthsAndWeaknesses" ? "active" : ""
+                    }
+                    onClick={() =>
+                      enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
+                    }
                     href="#"
                   >
                     Strengths &amp; Weaknesses
                   </a>
                 </li>
-                <li className="col s3">
+                {/* <li className="col s3">
                   <a
                     className={activePage === "testVersion" ? "active" : ""}
                     onClick={() => this.onSetActivePage("testVersion")}
@@ -128,10 +357,11 @@ class EditTestModal extends React.Component {
                   >
                     Test Version
                   </a>
-                </li>
+                </li> */}
                 <li className="menu-special col s3">
-                  <a href="#">
-                    Download Score Report <i className="icon-download-file"></i>
+                  <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
+                    Download Score Report
+                    <i className="icon-download-file"></i>
                   </a>
                 </li>
               </ul>
