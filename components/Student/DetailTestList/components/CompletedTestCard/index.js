@@ -12,6 +12,7 @@ class CompletedTestCard extends React.Component {
       NA: 0
     };
   }
+
   componentWillReceiveProps = nextProps => {
     const scores = nextProps.scores;
     scores.map((score, index) => {
@@ -30,8 +31,30 @@ class CompletedTestCard extends React.Component {
     });
   };
 
+  handleDropdownClick = event => {
+    const {
+      onSetDropdown,
+      onCloseDropdown,
+      dropdownIsOpen,
+      index
+    } = this.props;
+    event.preventDefault();
+    if (dropdownIsOpen) {
+      return onCloseDropdown();
+    }
+    return onSetDropdown(index);
+  };
+
   render() {
-    const { show } = this.props;
+    const {
+      show,
+      dropdownIndex,
+      index,
+      dropdownIsOpen,
+      onDownloadReport,
+      onDeleteTest,
+      onDetailTest,
+    } = this.props;
     const {
       ReadingScore,
       WritingScore,
@@ -64,9 +87,46 @@ class CompletedTestCard extends React.Component {
                       <i className="icon-flag"></i>
                     </span>
                     <div className="dropdown-block col">
-                      <a href="#" className="dropdown-trigger btn">
+                      <a href="#" className="dropdown-trigger btn" onClick={this.handleDropdownClick}>
                         <i className="material-icons dots-icon">more_vert</i>
                       </a>
+                      <If condition={dropdownIsOpen && dropdownIndex === index}>
+                        <ul
+                          id="dropdown01"
+                          style={{
+                            display: "block",
+                            minWidth:"160px",
+                            transformOrigin: "0px 0px 0px",
+                            opacity: "1",
+                            transform: "scaleX(1) scaleY(1)"
+                          }}
+                          className="dropdown-content"
+                        >
+                          <li>
+                            <a href="#" onClick={onDetailTest}>
+                              Edit
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={onDownloadReport}
+                              className="disabled"
+                            >
+                              Download Report
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              // onClick={onDeleteTest}
+                              className="red-text text-darken-3"
+                            >
+                              Delete
+                            </a>
+                          </li>
+                        </ul>
+                      </If>
                     </div>
                   </div>
                 </div>
@@ -294,7 +354,14 @@ class CompletedTestCard extends React.Component {
 
 CompletedTestCard.propTypes = {
   show: PropTypes.bool.isRequired,
-  scores: PropTypes.array
+  scores: PropTypes.array,
+  index: PropTypes.number,
+  dropdownIndex: PropTypes.number,
+  onSetDropdown: PropTypes.func.isRequired,
+  dropdownIsOpen: PropTypes.bool.isRequired,
+  onCloseDropdown: PropTypes.func.isRequired,
+  onDownloadReport: PropTypes.func.isRequired,
+  onDetailTest: PropTypes.func.isRequired,
 };
 
 export default CompletedTestCard;
