@@ -39,7 +39,7 @@ class DetailTestList extends React.Component {
       StartTestWrapperOpen: false,
       activeTest: null,
       selectedTest: null,
-      createTestModalOpen: false
+      createTestModalOpen: false,
     };
   }
 
@@ -111,22 +111,22 @@ class DetailTestList extends React.Component {
   mapFutureTests = () => {
     const { tests } = this.state;
     return tests.filter(test => test.status === "ASSIGNED").map((test, index) => (
-        <FutureTestCard
-          futureTest
-          test={test}
-          key={`future-${test.test_id}`}
-          onEditTest={() => this.onToggleEditTestModal(test)}
-          onDeleteTest={this.onDeleteTest}
-          onSetDropdown={this.onSetDropdown}
-          onEnterAnswers={this.onEnterAnswers}
-          onCloseDropdown={this.onCloseDropdown}
-          onDownloadReport={this.onDownloadReport}
-          dropdownIndex={this.state.dropdownIndex}
-          dropdownIsOpen={this.state.dropdownIsOpen}
-          openTestScores={this.openTestScores}
-          index={ tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
-        />
-      ));
+      <FutureTestCard
+        futureTest
+        test={test}
+        key={`future-${test.test_id}`}
+        onEditTest={() => this.onToggleEditTestModal(test)}
+        onDeleteTest={this.onDeleteTest}
+        onSetDropdown={this.onSetDropdown}
+        onEnterAnswers={this.onEnterAnswers}
+        onCloseDropdown={this.onCloseDropdown}
+        onDownloadReport={this.onDownloadReport}
+        dropdownIndex={this.state.dropdownIndex}
+        dropdownIsOpen={this.state.dropdownIsOpen}
+        openTestScores={this.openTestScores}
+        index={ tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
+      />
+    ));
   };
 
   onCloseTestModal = () => this.setState({ createTestModalOpen: false });
@@ -151,24 +151,24 @@ class DetailTestList extends React.Component {
     const sampleNewTest = {
       id: uuidGenerator(),
       status: "future",
-      title: "Practice Test " + newTestNumber,
+      title: `Practice Test ${newTestNumber}`,
       testDate: Moment(test.assignDate).format("YYYY-MM-DD"),
       dueDate: Moment(test.dueDate).format("YYYY-MM-DD"),
       completionDate: "",
       completionTime: "",
       weekNumber: "3",
-      subjects: [{}, {}]
+      subjects: [{}, {}],
     };
     const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
     this.setState({ tests: updatedTests });
     const {
-      user: { id }
+      user: { id },
     } = this.props;
     const postBody = {
       student_id: id,
       test_id: uuidGenerator(),
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
-      due_date: Moment(test.dueDate).format("YYYY-MM-DD")
+      due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
     };
     assignTestToStudentApi(postBody);
   };
@@ -176,9 +176,9 @@ class DetailTestList extends React.Component {
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
     const { student_test_id } = this.state;
     const postBody = {
-      student_test_id: student_test_id,
-      test_problem_id: test_problem_id,
-      answer: answer
+      student_test_id,
+      test_problem_id,
+      answer,
     };
     await addStudentAnswerToTestApi(postBody);
   };
@@ -260,7 +260,7 @@ DetailTestList.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value))
+    onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
   };
 }
 

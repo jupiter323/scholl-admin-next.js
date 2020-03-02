@@ -8,7 +8,7 @@ import Settings from '../EditTestModal/components/Settings';
 import {
   updateStudentTestDueDate,
   updateStudentTestAssignmentDate,
-} from '../../../index/api'
+} from '../../../index/api';
 
 class TestVersion extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class TestVersion extends React.Component {
         allowStudentToEnterAnswers: false,
         timed: false,
       },
-    }
+    };
   }
 
   componentDidMount() {
@@ -112,7 +112,7 @@ class TestVersion extends React.Component {
         $set: value,
       },
     });
-    this.setState({ settings },()=>this.handleStudentTestApiUpdate(field,value));
+    this.setState({ settings }, () => this.handleStudentTestApiUpdate(field, value));
   }
 
   saveTestChanges = () => {
