@@ -199,12 +199,10 @@ class CompletedTestCard extends React.Component {
                       <strong>
                         <h2 style={{ marginBottom: "5px" }}>Math</h2>
                       </strong>
-                      <h2 style={{ marginBottom: "5px" }}>
+                      <h2 style={MathScore.previous_score?{ marginBottom: "5px" }:{marginBottom:'20px'}}>
                         {MathScore.current_score}
                         <br />
-                        {MathScore.previous_score === null && MathScore.delta
-                          ? "+" + MathScore.delta
-                          : ""}
+                        {MathScore.previous_score === null? "": "+"+MathScore.delta}
                       </h2>
                     </span>
                   </span>
@@ -236,13 +234,10 @@ class CompletedTestCard extends React.Component {
                         <br />
                         &amp; Writing
                       </strong>
-                      <h2>
+                      <h2 style = {ReadingAndWrigingScore.previous_score === null?{marginBottom:'15px'}:""}>
                         {ReadingAndWrigingScore.current_score}
                         <br />
-                        {ReadingAndWrigingScore.previous_score === null &&
-                        ReadingAndWrigingScore.delta
-                          ? "+" + ReadingAndWrigingScore.delta
-                          : ""}
+                        {ReadingAndWrigingScore.previous_score === null? "": "+"+ReadingAndWrigingScore.delta}
                       </h2>
                     </span>
                   </span>
@@ -279,13 +274,10 @@ class CompletedTestCard extends React.Component {
                     <span className="badge-text" style={{ fontSize: "16px" }}>
                       Reading
                       <br />
-                      <h3>
+                      <h3 style = {ReadingScore.previous_score === null?{marginBottom:'20px'}:""}>
                         {ReadingScore.current_score}
                         <br />
-                        {ReadingScore.previous_score === null &&
-                        ReadingScore.delta
-                          ? "+" + ReadingScore.delta
-                          : ""}
+                        {ReadingScore.previous_score === null? "": "+"+ReadingScore.delta}
                       </h3>
                     </span>
                   </span>
@@ -327,10 +319,7 @@ class CompletedTestCard extends React.Component {
                       <h4>
                         {WritingScore.current_score}
                         <br />
-                        {WritingScore.previous_score === null &&
-                        WritingScore.delta
-                          ? "+" + WritingScore.delta
-                          : ""}
+                        {WritingScore.previous_score === null? "": "+"+ WritingScore.delta}
                       </h4>
                     </span>
                   </span>
