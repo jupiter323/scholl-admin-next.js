@@ -30,8 +30,6 @@ class DetailTestList extends React.Component {
     this.state = {
       tests: [],
       currentTestSection: {},
-      student_test_id: "",
-      scores: [],
       dropdownIndex: null,
       dropdownIsOpen: false,
       editTestModalOpen: false,
@@ -48,16 +46,12 @@ class DetailTestList extends React.Component {
   componentDidMount = async () => {
     if (this.state.tests.length === 0) {
       const { id } = this.props.user;
-      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
-        id
-      );
+      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
       if (tests.length !== 0) {
         this.setState({
           tests,
-          student_test_id: tests[0].student_test_id,
           existTestsData: true
         });
-        this.onFetchTestScoresByStudentTestId();
       } else {
         this.setState({
           existTestsData: false
@@ -65,6 +59,12 @@ class DetailTestList extends React.Component {
       }
     }
   };
+
+  onGetStudentScoresByStudentTestId = async(test) =>{
+    const { student_test_id } = test;
+    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    return formattedTestScores.scores;
+  }
 
   onToggleEditTestModal = (activeTest = null) => {
     this.onSetIsVisibleTopBar(false);
@@ -94,10 +94,8 @@ class DetailTestList extends React.Component {
     console.warn("Pending implementation of create test UI and functionality");
   };
 
-  onEnterAnswers = currentTestId => {
-    const currentTestSection = this.state.tests.find(
-      test => test.test_id === currentTestId
-    );
+  onEnterAnswers = (currentTestId,test) => {
+    const currentTestSection = this.state.tests.find(test => test.test_id === currentTestId);
     this.setState({ StartTestWrapperOpen: true, currentTestSection });
   };
 
@@ -141,12 +139,9 @@ class DetailTestList extends React.Component {
     } = this.state;
     //We are using 0 as index.In the future,The Completed Test Card should be mapping so that index should be unique
     return tests
-      .filter(test => test.status === "COMPLETED")
-      .map(
-        (test, index) =>
-          existTestsData && (
+      .filter(test => test.status === "COMPLETED").map((test, index) =>existTestsData && (
             <CompletedTestCard
-              scores={scores}
+              scores={this.onGetStudentScoresByStudentTestId()}
               test={test}
               index={test.test_id}
               onDetailTest={() => this.onToggleCompleteTestDetailView()}
@@ -164,7 +159,7 @@ class DetailTestList extends React.Component {
     const { tests, existTestsData } = this.state;
 
     return tests
-      .filter(test => test.status === "STARTED")
+      .filter(test => test.status === "ASSIGNED")
       .map(
         (test, index) =>
           existTestsData && (
@@ -194,25 +189,11 @@ class DetailTestList extends React.Component {
 
   onOpenStudentAnswerModal = () =>
     this.setState({ StartTestWrapperOpen: true });
-  onFetchTestScoresByStudentTestId = async () => {
-    const { student_test_id } = this.state;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(
-      student_test_id
-    );
-    this.setState({
-      scores: formattedTestScores.scores
-    });
-  };
 
   onActiveCompletedTestCard = async () => {
-    const { student_test_id } = this.state;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(
-      student_test_id
-    );
     this.setState({
       StartTestWrapperOpen: false,
       activeCompletedTestCard: true,
-      scores: formattedTestScores.scores
     });
     this.onCloseDropdown();
   };
@@ -247,7 +228,7 @@ class DetailTestList extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const { student_test_id } = this.state;
+    const { currentTestSection:{student_test_id} } = this.state;
     const postBody = {
       student_test_id,
       test_problem_id,
