@@ -19,12 +19,16 @@ class CompletedTestCard extends React.Component {
       switch (score.subject_name) {
         case "Reading":
           this.setState({ ReadingScore: score });
+          break;
         case "Writing and Language":
           this.setState({ ReadingAndWrigingScore: score });
+          break;
         case "Math":
           this.setState({ MathScore: score });
+          break;
         case "Writing":
-          this.setState({ MathScore: score });
+          this.setState({ WritingScore: score });
+          break;
         default:
           this.setState({ NA: 0 });
       }
@@ -199,10 +203,18 @@ class CompletedTestCard extends React.Component {
                       <strong>
                         <h2 style={{ marginBottom: "5px" }}>Math</h2>
                       </strong>
-                      <h2 style={MathScore.previous_score?{ marginBottom: "5px" }:{marginBottom:'20px'}}>
+                      <h2
+                        style={
+                          MathScore.previous_score
+                            ? { marginBottom: "5px" }
+                            : { marginBottom: "20px" }
+                        }
+                      >
                         {MathScore.current_score}
                         <br />
-                        {MathScore.previous_score === null? "": "+"+MathScore.delta}
+                        {MathScore.previous_score === null
+                          ? ""
+                          : "+" + MathScore.delta}
                       </h2>
                     </span>
                   </span>
@@ -234,10 +246,18 @@ class CompletedTestCard extends React.Component {
                         <br />
                         &amp; Writing
                       </strong>
-                      <h2 style = {ReadingAndWrigingScore.previous_score === null?{marginBottom:'15px'}:""}>
+                      <h2
+                        style={
+                          ReadingAndWrigingScore.previous_score === null
+                            ? { marginBottom: "15px" }
+                            : ""
+                        }
+                      >
                         {ReadingAndWrigingScore.current_score}
                         <br />
-                        {ReadingAndWrigingScore.previous_score === null? "": "+"+ReadingAndWrigingScore.delta}
+                        {ReadingAndWrigingScore.previous_score === null
+                          ? ""
+                          : "+" + ReadingAndWrigingScore.delta}
                       </h2>
                     </span>
                   </span>
@@ -274,10 +294,18 @@ class CompletedTestCard extends React.Component {
                     <span className="badge-text" style={{ fontSize: "16px" }}>
                       Reading
                       <br />
-                      <h3 style = {ReadingScore.previous_score === null?{marginBottom:'20px'}:""}>
+                      <h3
+                        style={
+                          ReadingScore.previous_score === null
+                            ? { marginBottom: "20px" }
+                            : ""
+                        }
+                      >
                         {ReadingScore.current_score}
                         <br />
-                        {ReadingScore.previous_score === null? "": "+"+ReadingScore.delta}
+                        {ReadingScore.previous_score === null
+                          ? ""
+                          : "+" + ReadingScore.delta}
                       </h3>
                     </span>
                   </span>
@@ -319,7 +347,9 @@ class CompletedTestCard extends React.Component {
                       <h4>
                         {WritingScore.current_score}
                         <br />
-                        {WritingScore.previous_score === null? "": "+"+ WritingScore.delta}
+                        {WritingScore.previous_score === null
+                          ? ""
+                          : "+" + WritingScore.delta}
                       </h4>
                     </span>
                   </span>
