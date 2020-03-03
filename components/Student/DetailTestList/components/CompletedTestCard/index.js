@@ -5,10 +5,10 @@ class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ReadingScore: 0,
-      WritingScore: 0,
-      ReadingAndWrigingScore: 0,
-      MathScore: 0,
+      ReadingScore: null,
+      WritingScore: null,
+      ReadingAndWrigingScore: null,
+      MathScore: null,
       NA: 0
     };
   }
@@ -18,13 +18,13 @@ class CompletedTestCard extends React.Component {
     scores.map((score, index) => {
       switch (score.subject_name) {
         case "Reading":
-          this.setState({ ReadingScore: score.current_score });
+          this.setState({ ReadingScore: score });
         case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: score.current_score });
+          this.setState({ ReadingAndWrigingScore: score });
         case "Math":
-          this.setState({ MathScore: score.current_score });
+          this.setState({ MathScore: score });
         case "Writing":
-          this.setState({ MathScore: score.current_score });
+          this.setState({ MathScore: score });
         default:
           this.setState({ NA: 0 });
       }
@@ -186,7 +186,7 @@ class CompletedTestCard extends React.Component {
                   n/a
                 </span>
               </li>
-              {MathScore !== 0 ? (
+              {MathScore ? (
                 <li>
                   <span
                     className="badge-circle"
@@ -200,9 +200,11 @@ class CompletedTestCard extends React.Component {
                         <h2 style={{ marginBottom: "5px" }}>Math</h2>
                       </strong>
                       <h2 style={{ marginBottom: "5px" }}>
-                        {MathScore}
+                        {MathScore.current_score}
                         <br />
-                        +70
+                        {MathScore.previous_score === null && MathScore.delta
+                          ? "+" + MathScore.delta
+                          : ""}
                       </h2>
                     </span>
                   </span>
@@ -219,7 +221,7 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               )}
-              {ReadingAndWrigingScore !== 0 ? (
+              {ReadingAndWrigingScore ? (
                 <li>
                   <span
                     className="badge-circle"
@@ -235,9 +237,12 @@ class CompletedTestCard extends React.Component {
                         &amp; Writing
                       </strong>
                       <h2>
-                        {ReadingAndWrigingScore}
+                        {ReadingAndWrigingScore.current_score}
                         <br />
-                        +70
+                        {ReadingAndWrigingScore.previous_score === null &&
+                        ReadingAndWrigingScore.delta
+                          ? "+" + ReadingAndWrigingScore.delta
+                          : ""}
                       </h2>
                     </span>
                   </span>
@@ -260,7 +265,7 @@ class CompletedTestCard extends React.Component {
                 </li>
               )}
 
-              {ReadingScore !== 0 ? (
+              {ReadingScore ? (
                 <li>
                   <span
                     className="badge-circle"
@@ -275,9 +280,12 @@ class CompletedTestCard extends React.Component {
                       Reading
                       <br />
                       <h3>
-                        {ReadingScore}
+                        {ReadingScore.current_score}
                         <br />
-                        +70
+                        {ReadingScore.previous_score === null &&
+                        ReadingScore.delta
+                          ? "+" + ReadingScore.delta
+                          : ""}
                       </h3>
                     </span>
                   </span>
@@ -299,7 +307,7 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               )}
-              {WritingScore !== 0 ? (
+              {WritingScore ? (
                 <li>
                   <span
                     className="badge-circle"
@@ -317,9 +325,12 @@ class CompletedTestCard extends React.Component {
                       Writing
                       <br />
                       <h4>
-                        {WritingScore}
+                        {WritingScore.current_score}
                         <br />
-                        +70
+                        {WritingScore.previous_score === null &&
+                        WritingScore.delta
+                          ? "+" + WritingScore.delta
+                          : ""}
                       </h4>
                     </span>
                   </span>
