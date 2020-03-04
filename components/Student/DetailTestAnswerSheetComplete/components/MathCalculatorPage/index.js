@@ -14,7 +14,7 @@ class MathCalculatorPage extends React.Component {
 
   render() {
     return (
-      <div className="slide">
+      <div className="slide" id = "mathCalcAnswerSheetImg">
         <div className="row" style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
             <ol className="answers-list">
               {this.mapMathCalculatorAnswers()}
