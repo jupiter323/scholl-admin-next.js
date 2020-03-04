@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+
 class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
@@ -14,27 +15,28 @@ class CompletedTestCard extends React.Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    const scores = nextProps.scores;
-    console.log("OMG:",nextProps.scores)
-    scores.map((score, index) => {
+    const {scores} = nextProps.testScores;
+     scores.map((score) => {
       switch (score.subject_name) {
         case "Reading":
-          this.setState({ ReadingScore: current_score });
+          this.setState({ ReadingScore: score });
           break;
         case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: current_score });
+          this.setState({ ReadingAndWrigingScore: score });
           break;
         case "Math":
-          this.setState({ MathScore: current_score });
+          this.setState({ MathScore: score });
           break;
         case "Writing":
-          this.setState({ WritingScore: current_score });
+          this.setState({ WritingScore: score });
           break;
         default:
           this.setState({ NA: 0 });
       }
     });
   };
+
+  
 
   handleDropdownClick = event => {
     const {
@@ -56,19 +58,16 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      onDeleteTest,
       onDetailTest,
-      test: { test_name, test_description, assignment_date, dueDate }
+      test: { test_name, test_description, dueDate,completion_date },
     } = this.props;
     const {
       ReadingScore,
       WritingScore,
       ReadingAndWrigingScore,
-      MathScore,
-      NA
-    } = this.state;
+      MathScore    } = this.state;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
-    const formattedAssignmentDate = moment(assignment_date).format("MM/DD/YY");
+    const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
     return (
       <React.Fragment>
         <div
@@ -144,13 +143,13 @@ class CompletedTestCard extends React.Component {
                       <div className="col s12 m12">
                         <strong className="list-title">{test_name}</strong>
                       </div>
-                      <div className="col s12 m6">
+                      <div className="col s12 m8">
                         <ul className="info-list info-list-gray  assigned">
                           <li>
                             <span className="list-status">
                               <span className="ico-mark" />
                               <span className="status-text">
-                                Complete 6/3/20
+                                Complete {formattedCompletedDate}
                               </span>
                             </span>
                           </li>
@@ -384,7 +383,6 @@ class CompletedTestCard extends React.Component {
 }
 
 CompletedTestCard.propTypes = {
-  scores: PropTypes.array,
   index: PropTypes.string,
   dropdownIndex: PropTypes.string,
   onSetDropdown: PropTypes.func.isRequired,

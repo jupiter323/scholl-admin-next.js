@@ -8,13 +8,11 @@ import { compose } from "redux";
 import FutureTestCard from "./components/FutureTestCard";
 import CompletedTestCard from "./components/CompletedTestCard";
 import TestSections from "../TestSections";
-// import sampleTests from "./utils/sampleTests";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
 import StartTestWrapper from "./components/StartTestPage";
 import CompletedTestDetailView from "./components/CompletedTestDetailView";
 import { setIsVisibleTopBar } from "../index/actions";
-
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
@@ -22,12 +20,15 @@ import {
   fetchStudentTestScoreApi
 } from "../index/api";
 
+// import sampleTests from "./utils/sampleTests";
+
 const uuidGenerator = require("uuid/v4");
 class DetailTestList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tests: [],
+      completedScores: [],
       currentTestSection: {},
       dropdownIndex: null,
       dropdownIsOpen: false,
@@ -45,12 +46,15 @@ class DetailTestList extends React.Component {
   componentDidMount = async () => {
     if (this.state.tests.length === 0) {
       const { id } = this.props.user;
-      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
+      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(
+        id
+      );
       if (tests.length !== 0) {
         this.setState({
           tests,
           existTestsData: true
-        });
+        },()=>this.getScoresForTests());
+        
       } else {
         this.setState({
           existTestsData: false
@@ -59,11 +63,20 @@ class DetailTestList extends React.Component {
     }
   };
 
-  onGetStudentScoresByStudentTestId = async(test) =>{
-    const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    console.log(formattedTestScores.scores)
-    return formattedTestScores.scores;
+  getScoresForTests = () => {
+    this.state.tests.filter(test => test.status === "COMPLETED").map(async test => {
+        const scores = await this.getScoresByStudentTest(test);
+        const { completedScores } = this.state;
+        completedScores.push({ id: test.test_id, scores });
+        this.setState({
+          completedScores
+        })
+      });
+  };
+
+  getScoresByTestId = (testId) => {
+    const scores = this.state.completedScores.find(test=>test.id === testId)
+    return scores;
   }
 
   onToggleEditTestModal = (activeTest = null) => {
@@ -94,17 +107,13 @@ class DetailTestList extends React.Component {
     console.warn("Pending implementation of create test UI and functionality");
   };
 
-  onEnterAnswers = (currentTestId,test) => {
+  onEnterAnswers = currentTestId => {
     const currentTestSection = this.state.tests.find(test => test.test_id === currentTestId);
     this.setState({ StartTestWrapperOpen: true, currentTestSection });
   };
 
-  onEditTest = () =>
-    console.warn("Pending implementation edit test UI and functionality");
-  onDownloadReport = () =>
-    console.warn(
-      "Pending implementation of download report ui and functionality"
-    );
+  onEditTest = () => console.warn("Pending implementation edit test UI and functionality");
+  onDownloadReport = () =>console.warn("Pending implementation of download report ui and functionality");
   onDeleteTest = () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ editTestModalOpen: false }, () =>
@@ -130,19 +139,20 @@ class DetailTestList extends React.Component {
     this.setState({ selectedTest: newTestArray[index.index] });
   };
 
+  getScoresByStudentTest = async test => {
+    const { student_test_id } = test;
+    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    return formattedTestScores.scores;
+  };
+
   mapCompletedTests = () => {
-    const {
-      activeCompletedTestCard,
-      scores,
-      existTestsData,
-      tests
-    } = this.state;
-    //We are using 0 as index.In the future,The Completed Test Card should be mapping so that index should be unique
-    return tests.filter(test => test.status === "COMPLETED").map((test, index) =>existTestsData && (
+    const { existTestsData, tests } = this.state;
+    return tests.filter(test => test.status === "COMPLETED").map(test =>existTestsData && (
             <CompletedTestCard
-              scores={this.onGetStudentScoresByStudentTestId(test)}
               test={test}
+              testScores ={this.getScoresByTestId(test.test_id)}
               index={test.test_id}
+              key ={test.test_id}
               onDetailTest={() => this.onToggleCompleteTestDetailView()}
               onSetDropdown={this.onSetDropdown}
               onCloseDropdown={this.onCloseDropdown}
@@ -156,12 +166,7 @@ class DetailTestList extends React.Component {
 
   mapFutureTests = () => {
     const { tests, existTestsData } = this.state;
-
-    return tests
-      .filter(test => test.status === "ASSIGNED")
-      .map(
-        (test, index) =>
-          existTestsData && (
+    return tests.filter(test => test.status === "ASSIGNED").map((test, index) =>existTestsData && (
             <FutureTestCard
               futureTest
               test={test}
@@ -175,10 +180,7 @@ class DetailTestList extends React.Component {
               dropdownIndex={this.state.dropdownIndex}
               dropdownIsOpen={this.state.dropdownIsOpen}
               openTestScores={this.openTestScores}
-              index={
-                tests.filter(filterTest => filterTest.status === "ASSIGNED")
-                  .length + index
-              }
+              index={tests.filter(filterTest => filterTest.status === "ASSIGNED").length + index}
             />
           )
       );
@@ -186,13 +188,12 @@ class DetailTestList extends React.Component {
 
   onCloseTestModal = () => this.setState({ createTestModalOpen: false });
 
-  onOpenStudentAnswerModal = () =>
-    this.setState({ StartTestWrapperOpen: true });
+  onOpenStudentAnswerModal = () => this.setState({ StartTestWrapperOpen: true });
 
   onActiveCompletedTestCard = async () => {
     this.setState({
       StartTestWrapperOpen: false,
-      activeCompletedTestCard: true,
+      activeCompletedTestCard: true
     });
     this.onCloseDropdown();
   };
@@ -227,7 +228,7 @@ class DetailTestList extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const { currentTestSection:{student_test_id} } = this.state;
+    const {currentTestSection: { student_test_id }} = this.state;
     const postBody = {
       student_test_id,
       test_problem_id,
@@ -288,7 +289,7 @@ class DetailTestList extends React.Component {
                   <div className="content-container">
                     <h2>Completed Tests</h2>
                     <div className="row d-flex-content card-width-366">
-                      {this.mapCompletedTests()}
+                      {this.state.existTestsData && this.mapCompletedTests()}
                     </div>
                   </div>
                   <div className="content-container">
