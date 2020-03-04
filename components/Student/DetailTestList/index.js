@@ -60,9 +60,9 @@ class DetailTestList extends React.Component {
   };
 
   onGetStudentScoresByStudentTestId = async(test) =>{
-    console.log("test:",test)
     const { student_test_id } = test;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    console.log(formattedTestScores.scores)
     return formattedTestScores.scores;
   }
 
@@ -138,8 +138,7 @@ class DetailTestList extends React.Component {
       tests
     } = this.state;
     //We are using 0 as index.In the future,The Completed Test Card should be mapping so that index should be unique
-    return tests
-      .filter(test => test.status === "COMPLETED").map((test, index) =>existTestsData && (
+    return tests.filter(test => test.status === "COMPLETED").map((test, index) =>existTestsData && (
             <CompletedTestCard
               scores={this.onGetStudentScoresByStudentTestId(test)}
               test={test}

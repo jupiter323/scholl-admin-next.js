@@ -15,19 +15,20 @@ class CompletedTestCard extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const scores = nextProps.scores;
+    console.log("OMG:",nextProps.scores)
     scores.map((score, index) => {
       switch (score.subject_name) {
         case "Reading":
-          this.setState({ ReadingScore: score });
+          this.setState({ ReadingScore: current_score });
           break;
         case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: score });
+          this.setState({ ReadingAndWrigingScore: current_score });
           break;
         case "Math":
-          this.setState({ MathScore: score });
+          this.setState({ MathScore: current_score });
           break;
         case "Writing":
-          this.setState({ WritingScore: score });
+          this.setState({ WritingScore: current_score });
           break;
         default:
           this.setState({ NA: 0 });
