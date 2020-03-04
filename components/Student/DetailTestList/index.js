@@ -60,6 +60,7 @@ class DetailTestList extends React.Component {
   };
 
   onGetStudentScoresByStudentTestId = async(test) =>{
+    console.log("test:",test)
     const { student_test_id } = test;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
     return formattedTestScores.scores;
@@ -140,7 +141,7 @@ class DetailTestList extends React.Component {
     return tests
       .filter(test => test.status === "COMPLETED").map((test, index) =>existTestsData && (
             <CompletedTestCard
-              scores={this.onGetStudentScoresByStudentTestId()}
+              scores={this.onGetStudentScoresByStudentTestId(test)}
               test={test}
               index={test.test_id}
               onDetailTest={() => this.onToggleCompleteTestDetailView()}
