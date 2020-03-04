@@ -23,7 +23,6 @@ import {
 } from "../index/api";
 
 const uuidGenerator = require("uuid/v4");
-
 class DetailTestList extends React.Component {
   constructor(props) {
     super(props);
