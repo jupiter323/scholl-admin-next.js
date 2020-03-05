@@ -17,7 +17,7 @@ class EditTestModal extends React.Component {
       analysisBarImages: [],
       analysisCicleImages: [],
       answerSheetImages: [],
-      enablePublish:true,
+      enablePublish: true,
       userInfo: {
         version: "Version: SAT Practice Test #1",
         target: "Score Report",
@@ -129,8 +129,8 @@ class EditTestModal extends React.Component {
 
   generateScoreReportPdf = async () => {
     this.setState({
-      enablePublish:false,
-    })
+      enablePublish: false
+    });
     let imgDataLists = [];
     const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = "./static/images/sunset.jpg";
@@ -165,8 +165,8 @@ class EditTestModal extends React.Component {
 
     getImagesPromise.then(() => {
       this.setState({
-        enablePublish:true
-      })
+        enablePublish: true
+      });
       const {
         scoresImages,
         analysisCicleImages,
@@ -268,8 +268,8 @@ class EditTestModal extends React.Component {
   };
 
   render() {
-    const { test, user } = this.props;
-    const { activePage,enablePublish } = this.state;
+    const { test, user,onCloseEditTestModal } = this.props;
+    const { activePage, enablePublish } = this.state;
     const { title, version: testVersion } = test;
     const {
       studentInformation: { firstName, lastName }
@@ -301,7 +301,11 @@ class EditTestModal extends React.Component {
                 </div>
               </div>
               <div className="col s1 right-align">
-                <div className="row icons-row">&nbsp;</div>
+                <div className="close-block">
+                  <a href="#" className="modal-close close">
+                    <i className="icon-close-thin" onClick={onCloseEditTestModal} />
+                  </a>
+                </div>
               </div>
             </div>
             <div className="header-row-block card-panel-row row">
@@ -321,7 +325,9 @@ class EditTestModal extends React.Component {
                 <li className="col s3">
                   <a
                     className={activePage === "scores" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("scores")}
+                    onClick={() =>
+                      enablePublish && this.onSetActivePage("scores")
+                    }
                     href="#"
                   >
                     Scores
@@ -330,7 +336,9 @@ class EditTestModal extends React.Component {
                 <li className="col s3">
                   <a
                     className={activePage === "answerSheet" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("answerSheet")}
+                    onClick={() =>
+                      enablePublish && this.onSetActivePage("answerSheet")
+                    }
                     href="#"
                   >
                     Answer Sheet
@@ -342,7 +350,8 @@ class EditTestModal extends React.Component {
                       activePage === "StrengthsAndWeaknesses" ? "active" : ""
                     }
                     onClick={() =>
-                      enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
+                      enablePublish &&
+                      this.onSetActivePage("StrengthsAndWeaknesses")
                     }
                     href="#"
                   >
@@ -359,7 +368,12 @@ class EditTestModal extends React.Component {
                   </a>
                 </li> */}
                 <li className="menu-special col s3">
-                  <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
+                  <a
+                    href="#"
+                    onClick={() =>
+                      enablePublish && this.generateScoreReportPdf()
+                    }
+                  >
                     Download Score Report
                     <i className="icon-download-file"></i>
                   </a>
@@ -382,7 +396,8 @@ EditTestModal.propTypes = {
   test: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   onDeleteTest: PropTypes.func.isRequired,
-  onSaveTestChanges: PropTypes.func.isRequired
+  onSaveTestChanges: PropTypes.func.isRequired,
+  onCloseEditTestModal:PropTypes.func.isRequired
 };
 
 export default EditTestModal;
