@@ -116,12 +116,6 @@ class DetailTestList extends React.Component {
     this.setState({ selectedTest: newTestArray[index.index] });
   };
 
-  getScoresByStudentTest = async test => {
-    const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
-  };
-
   mapCompletedTests = () => {
     const { existTestsData, tests } = this.state;
     return tests
