@@ -17,7 +17,7 @@ class EditTestModal extends React.Component {
       analysisBarImages: [],
       analysisCicleImages: [],
       answerSheetImages: [],
-      enablePublish:true,
+      enablePublish: true,
       userInfo: {
         version: "Version: SAT Practice Test #1",
         target: "Score Report",
@@ -39,14 +39,8 @@ class EditTestModal extends React.Component {
         "Math Answer Sheet(no calc)",
         "Math Answer Sheet(calculator)"
       ],
-      adminInfo:
-        "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
-      headerGradient: [
-        "#ec693d 0%",
-        "#649aab 61%",
-        "#30add6 87%",
-        "#18b5e9 100%"
-      ]
+      adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
+      headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"]
     };
   }
 
@@ -85,12 +79,10 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true
     };
-    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
-      canvas => {
-        const imgData = canvas.toDataURL("image/png", 1.0);
-        return imgData;
-      }
-    );
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(canvas => {
+      const imgData = canvas.toDataURL("image/png", 1.0);
+      return imgData;
+    });
     return targetImg;
   };
 
@@ -129,8 +121,8 @@ class EditTestModal extends React.Component {
 
   generateScoreReportPdf = async () => {
     this.setState({
-      enablePublish:false,
-    })
+      enablePublish: false
+    });
     let imgDataLists = [];
     const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = "./static/images/sunset.jpg";
@@ -165,8 +157,8 @@ class EditTestModal extends React.Component {
 
     getImagesPromise.then(() => {
       this.setState({
-        enablePublish:true
-      })
+        enablePublish: true
+      });
       const {
         scoresImages,
         analysisCicleImages,
@@ -268,12 +260,14 @@ class EditTestModal extends React.Component {
   };
 
   render() {
-    const { test, user } = this.props;
-    const { activePage,enablePublish } = this.state;
+    const { test, user, onCloseEditTestModal } = this.props;
+    const { activePage, enablePublish } = this.state;
     const { title, version: testVersion } = test;
     const {
       studentInformation: { firstName, lastName }
     } = user;
+    console.log("User:", user);
+    console.log("test:", test);
     return (
       <div className="wrapper">
         <div
@@ -295,13 +289,15 @@ class EditTestModal extends React.Component {
               <div className="col s9">
                 <div className="card-panel-text center-align">
                   <div className="text-xlarge">{title}</div>
-                  <div className="text-small">
-                    Version: SAT Practice Test #{testVersion}
-                  </div>
+                  <div className="text-small">Version: SAT Practice Test #{testVersion}</div>
                 </div>
               </div>
               <div className="col s1 right-align">
-                <div className="row icons-row">&nbsp;</div>
+                <div className="close-block">
+                  <a href="#" className="modal-close close">
+                    <i className="icon-close-thin" onClick={onCloseEditTestModal} />
+                  </a>
+                </div>
               </div>
             </div>
             <div className="header-row-block card-panel-row row">
@@ -338,12 +334,8 @@ class EditTestModal extends React.Component {
                 </li>
                 <li className="col s3">
                   <a
-                    className={
-                      activePage === "StrengthsAndWeaknesses" ? "active" : ""
-                    }
-                    onClick={() =>
-                      enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
-                    }
+                    className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
+                    onClick={() => enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")}
                     href="#"
                   >
                     Strengths &amp; Weaknesses
@@ -368,9 +360,7 @@ class EditTestModal extends React.Component {
             </div>
           </div>
           <div className="content-section">
-            <div className="content-section-holder">
-              {this.renderCurrentPage()}
-            </div>
+            <div className="content-section-holder">{this.renderCurrentPage()}</div>
           </div>
         </div>
       </div>
@@ -382,7 +372,8 @@ EditTestModal.propTypes = {
   test: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   onDeleteTest: PropTypes.func.isRequired,
-  onSaveTestChanges: PropTypes.func.isRequired
+  onSaveTestChanges: PropTypes.func.isRequired,
+  onCloseEditTestModal: PropTypes.func.isRequired
 };
 
 export default EditTestModal;

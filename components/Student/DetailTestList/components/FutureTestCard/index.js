@@ -17,12 +17,7 @@ export const data = percentage => ({
 
 class FutureTestCard extends React.Component {
   handleDropdownClick = event => {
-    const {
-      onSetDropdown,
-      onCloseDropdown,
-      dropdownIsOpen,
-      index
-    } = this.props;
+    const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
     event.preventDefault();
     if (dropdownIsOpen) {
       return onCloseDropdown();
@@ -38,7 +33,9 @@ class FutureTestCard extends React.Component {
         <Choose>
           <When condition={!futureTest}>
             <Doughnut
-              data={() => data( subjects.length ? (subject.currentScore / subject.targetScore) * 100 : 0)}
+              data={() =>
+                data(subjects.length ? (subject.currentScore / subject.targetScore) * 100 : 0)
+              }
               height={104}
               width={104}
               options={{ cutoutPercentage: 80 }}
@@ -95,17 +92,24 @@ class FutureTestCard extends React.Component {
     return (
       <div className="col s12 m8 l7 xl5">
         <div className="card-main-col">
-          <div className={ futureTest ? "card-test card-main card-disabled card" : "card-test card-main card"}>
+          <div
+            className={
+              futureTest ? "card-test card-main card-disabled card" : "card-test card-main card"
+            }
+          >
             <div className="card-content">
               <div className=" card-panel-row row mb-0">
                 <div className="col s7">
-                  <div className="card-title-block" style={{ marginTop: !futureTest ? "-30px" : "0px" }}>
+                  <div
+                    className="card-title-block"
+                    style={{ marginTop: !futureTest ? "-30px" : "0px" }}
+                  >
                     <h4 className="h2" style={{ minWidth: "200px" }}>
                       <a href="#" onClick={() => openTestScores({ index })}>
                         {test_description}
                       </a>
                     </h4>
-                    <time className="date" style={{ marginBottom: futureTest ? "20px" : "" }} >
+                    <time className="date" style={{ marginBottom: futureTest ? "20px" : "" }}>
                       {Moment(assignment_date).format("MM/DD/YY")} (week {weekNumber})
                     </time>
                     <If condition={!futureTest}>
@@ -116,7 +120,15 @@ class FutureTestCard extends React.Component {
                     <div className="chart-holder">
                       <span className="svg-curved-bar">
                         <Doughnut
-                          data={() => data( initialScore?Number((currentScore - initialScore) /(targetScore - initialScore)) * 100: 0)}
+                          data={() =>
+                            data(
+                              initialScore
+                                ? Number(
+                                    (currentScore - initialScore) / (targetScore - initialScore)
+                                  ) * 100
+                                : 0
+                            )
+                          }
                           options={{
                             circumference: 1 * Math.PI,
                             rotation: 1 * Math.PI,
@@ -142,7 +154,7 @@ class FutureTestCard extends React.Component {
                         </span>
                       </span>
                       <span className="chart-value" style={{ backgroundColor: "#00bbf7" }}>
-                        <span > {currentScore}</span>
+                        <span> {currentScore}</span>
                       </span>
                     </div>
                     <div className="chart-row">
@@ -158,12 +170,13 @@ class FutureTestCard extends React.Component {
                   </div>
                 </div>
                 <div className="col s5 right-align">
-                  <div
-                    className="row icons-row"
-                    style={{ marginBottom: "10px" }}
-                  >
+                  <div className="row icons-row" style={{ marginBottom: "10px" }}>
                     <div className="dropdown-block col">
-                      <a href="#" className="dropdown-trigger btn" onClick={this.handleDropdownClick}>
+                      <a
+                        href="#"
+                        className="dropdown-trigger btn"
+                        onClick={this.handleDropdownClick}
+                      >
                         <i className="material-icons dots-icon">more_vert</i>
                       </a>
                       <If condition={dropdownIsOpen && dropdownIndex === index}>
@@ -178,7 +191,10 @@ class FutureTestCard extends React.Component {
                           }}
                         >
                           <li>
-                            <a href="#" onClick={() =>onEnterAnswers(this.props.test.test_id,test)}>
+                            <a
+                              href="#"
+                              onClick={() => onEnterAnswers(this.props.test.test_id, test)}
+                            >
                               Enter Answers
                             </a>
                           </li>
@@ -188,20 +204,12 @@ class FutureTestCard extends React.Component {
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              onClick={onDownloadReport}
-                              className="disabled"
-                            >
+                            <a href="#" onClick={onDownloadReport} className="disabled">
                               Download Report
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              onClick={onDeleteTest}
-                              className="red-text text-darken-3"
-                            >
+                            <a href="#" onClick={onDeleteTest} className="red-text text-darken-3">
                               Delete
                             </a>
                           </li>
