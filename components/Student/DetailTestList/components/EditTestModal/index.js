@@ -44,6 +44,13 @@ class EditTestModal extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
   getBase64ImageFromURL = url => {
     return new Promise((resolve, reject) => {
       var img = new Image();
@@ -266,8 +273,6 @@ class EditTestModal extends React.Component {
     const {
       studentInformation: { firstName, lastName }
     } = user;
-    console.log("User:", user);
-    console.log("test:", test);
     return (
       <div className="wrapper">
         <div

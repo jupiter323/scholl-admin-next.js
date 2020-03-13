@@ -7,7 +7,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { onCloseStartTest, onSetActivePage, testDescription } = this.props;
+    const { onCloaseAnswerWrapper, onSetActivePage, testDescription } = this.props;
     return (
       <React.Fragment>
         <div className="header-row card-panel light-blue lighten-1 white-text">
@@ -20,7 +20,7 @@ class NavBar extends React.Component {
             <div className="col s2 right-align">
               <div className="close-block">
                 <a href="#" className="modal-close close">
-                  <i className="icon-close-thin" onClick={onCloseStartTest} />
+                  <i className="icon-close-thin" onClick={onCloaseAnswerWrapper} />
                 </a>
               </div>
             </div>
@@ -60,7 +60,7 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
-  onCloseStartTest: PropTypes.func.isRequired,
+  onCloaseAnswerWrapper: PropTypes.func.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
   testDescription: PropTypes.string.isRequired
 };

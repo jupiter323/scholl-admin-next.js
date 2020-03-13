@@ -58,8 +58,9 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      onDetailTest,
-      test: { test_name, test_description, dueDate, completion_date }
+      test: { test_name, test_description, dueDate, completion_date, test_id },
+      onEditTest,
+      onEnterAnswers
     } = this.props;
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
@@ -93,27 +94,39 @@ class CompletedTestCard extends React.Component {
                           minWidth: "160px",
                           transformOrigin: "0px 0px 0px",
                           opacity: "1",
-                          transform: "scaleX(1) scaleY(1)"
+                          transform: "scaleX(1) scaleY(1)",
+                          width: "210px"
                         }}
                         className="dropdown-content"
                       >
                         <li>
-                          <a href="#" onClick={onDetailTest}>
-                            Edit
+                          <a href="#" onClick={() => onEnterAnswers(test_id)}>
+                            Edit/Enter Answers
                           </a>
                         </li>
                         <li>
-                          <a href="#" onClick={onDownloadReport} className="disabled">
-                            Download Report
+                          <a href="#" onClick={() => onDownloadReport(this.props.test)}>
+                            Download score report
                           </a>
                         </li>
                         <li>
-                          <a
-                            href="#"
-                            // onClick={onDeleteTest}
-                            className="red-text text-darken-3"
-                          >
-                            Delete
+                          <a href="#" className="disabled">
+                            Excuse/Unexcuse lateness
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" className="disabled">
+                            Mark flags reviewed
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" className="disabled">
+                            Reset
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" className="red-text text-darken-3">
+                            Unassign
                           </a>
                         </li>
                       </ul>
@@ -121,7 +134,7 @@ class CompletedTestCard extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col s12">
+              <div className="col s12" onClick={onEditTest}>
                 <ul className="to-do-list">
                   <li>
                     <div className="row">

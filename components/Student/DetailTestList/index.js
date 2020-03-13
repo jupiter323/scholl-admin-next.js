@@ -10,9 +10,11 @@ import CompletedTestCard from "./components/CompletedTestCard";
 import TestSections from "../TestSections";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
-import StartTestWrapper from "./components/StartTestPage";
+import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
 import CompletedTestDetailView from "./components/CompletedTestDetailView";
+import CardHeader from "./components/CardHeader";
 import { setIsVisibleTopBar } from "../index/actions";
+
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
@@ -23,6 +25,7 @@ import {
 // import sampleTests from "./utils/sampleTests";
 
 const uuidGenerator = require("uuid/v4");
+
 class DetailTestList extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +37,7 @@ class DetailTestList extends React.Component {
       editTestModalOpen: false,
       testDetailViewOpen: false,
       activeCompletedTestCard: false,
-      StartTestWrapperOpen: false,
+      enterAnswerWrapperOpen: false,
       activeTest: null,
       selectedTest: null,
       createTestModalOpen: false,
@@ -55,6 +58,16 @@ class DetailTestList extends React.Component {
   };
 
   onToggleEditTestModal = (activeTest = null) => {
+    this.onSetIsVisibleTopBar(false);
+    this.setState(
+      ({ editTestModalOpen }) => ({
+        editTestModalOpen: !editTestModalOpen,
+        activeTest
+      }),
+      this.onCloseDropdown
+    );
+  };
+  onToggleEditCompletedTestModal = (activeTest = null) => {
     this.onSetIsVisibleTopBar(false);
     this.setState(
       ({ editTestModalOpen }) => ({
@@ -88,13 +101,27 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = currentTestId => {
+    this.onSetIsVisibleTopBar(false);
+    this.onCloseDropdown;
     const currentTestSection = this.state.tests.find(test => test.test_id === currentTestId);
-    this.setState({ StartTestWrapperOpen: true, currentTestSection });
+    this.setState({ enterAnswerWrapperOpen: true, currentTestSection });
   };
 
   onEditTest = () => console.warn("Pending implementation edit test UI and functionality");
-  onDownloadReport = () =>
-    console.warn("Pending implementation of download report ui and functionality");
+  onDownloadReport = activeTest => {
+    console.log("downloading...");
+    this.onSetIsVisibleTopBar(false);
+    this.onCloseDropdown;
+    this.setState(
+      {
+        activeTest,
+        editTestModalOpen: true
+      },
+      async () => {
+        await this.editTestModal.generateScoreReportPdf();
+      }
+    );
+  };
   onDeleteTest = () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ editTestModalOpen: false }, () =>
@@ -127,6 +154,7 @@ class DetailTestList extends React.Component {
               test={test}
               index={test.test_id}
               key={test.test_id}
+              onEnterAnswers={this.onEnterAnswers}
               onDetailTest={() => this.onToggleCompleteTestDetailView()}
               onSetDropdown={this.onSetDropdown}
               onCloseDropdown={this.onCloseDropdown}
@@ -141,7 +169,7 @@ class DetailTestList extends React.Component {
   mapFutureTests = () => {
     const { tests, existTestsData } = this.state;
     return tests
-      .filter(test => test.status === "ASSIGNED")
+      .filter(test => test.status === "COMPLETED")
       .map(
         (test, index) =>
           existTestsData && (
@@ -166,11 +194,12 @@ class DetailTestList extends React.Component {
 
   onCloseTestModal = () => this.setState({ createTestModalOpen: false });
 
-  onOpenStudentAnswerModal = () => this.setState({ StartTestWrapperOpen: true });
+  onOpenStudentAnswerModal = () => this.setState({ enterAnswerWrapperOpen: true });
 
-  onActiveCompletedTestCard = async () => {
+  onCloaseAnswerWrapper = async () => {
+    this.onSetIsVisibleTopBar(true);
     this.setState({
-      StartTestWrapperOpen: false,
+      enterAnswerWrapperOpen: false,
       activeCompletedTestCard: true
     });
     this.onCloseDropdown();
@@ -221,7 +250,7 @@ class DetailTestList extends React.Component {
     const {
       editTestModalOpen,
       createTestModalOpen,
-      StartTestWrapperOpen,
+      enterAnswerWrapperOpen,
       activeTest,
       selectedTest,
       currentTestSection,
@@ -234,6 +263,7 @@ class DetailTestList extends React.Component {
           <Choose>
             <When condition={editTestModalOpen}>
               <EditTestModal
+                onRef={ref => (this.editTestModal = ref)}
                 user={user}
                 test={activeTest}
                 onDeleteTest={this.onDeleteTest}
@@ -249,10 +279,10 @@ class DetailTestList extends React.Component {
                 onSaveTestChanges={this.onSaveTestChanges}
               />
             </When>
-            <When condition={StartTestWrapperOpen}>
-              <StartTestWrapper
-                open={StartTestWrapperOpen}
-                onActiveCompletedTestCard={this.onActiveCompletedTestCard}
+            <When condition={enterAnswerWrapperOpen}>
+              <EnterAnswerWrapper
+                open={enterAnswerWrapperOpen}
+                onCloaseAnswerWrapper={this.onCloaseAnswerWrapper}
                 onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
                 test={currentTestSection}
               />
@@ -268,7 +298,7 @@ class DetailTestList extends React.Component {
               <div className="content-section">
                 <div className="section-holder">
                   <div className="content-container">
-                    <h2>Completed Tests</h2>
+                    <CardHeader title="Completed" amount={1} />
                     <div className="row d-flex-content card-width-366">
                       {this.state.existTestsData && this.mapCompletedTests()}
                     </div>

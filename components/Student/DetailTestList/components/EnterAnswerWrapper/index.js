@@ -10,7 +10,7 @@ import {
   fetchProblemsByStudentTestIdApi
 } from "../../../index/api";
 
-class StartTestPage extends React.Component {
+class EnterAnswerWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,7 +100,7 @@ class StartTestPage extends React.Component {
       previewTest
     } = this.state;
     const {
-      onActiveCompletedTestCard,
+      onCloaseAnswerWrapper,
       open,
       test: { test_description },
       onAddStudentAnswerToTest
@@ -111,7 +111,7 @@ class StartTestPage extends React.Component {
           <div className="starting">
               <div className="main-holder grey lighten-5">
                 <NavBar
-                  onCloseStartTest={onActiveCompletedTestCard}
+                  onCloaseAnswerWrapper={onCloaseAnswerWrapper}
                   onSetActivePage={this.onSetActivePage}
                   testDescription={test_description}
                 />
@@ -124,7 +124,7 @@ class StartTestPage extends React.Component {
                   open={startedTest}
                   onAddStudentAnswerToTest={onAddStudentAnswerToTest}
                   testSection={this.getCurrentTestProblems()}
-                  onStudentTestScore={onActiveCompletedTestCard}
+                  onStudentTestScore={onCloaseAnswerWrapper}
                 />
               </div>
           </div>
@@ -134,11 +134,11 @@ class StartTestPage extends React.Component {
   }
 }
 
-StartTestPage.propTypes = {
-  onActiveCompletedTestCard: PropTypes.func.isRequired,
+EnterAnswerWrapper.propTypes = {
+  onCloaseAnswerWrapper: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   test: PropTypes.object,
   onAddStudentAnswerToTest:PropTypes.func.isRequired,
 };
 
-export default StartTestPage;
+export default EnterAnswerWrapper;

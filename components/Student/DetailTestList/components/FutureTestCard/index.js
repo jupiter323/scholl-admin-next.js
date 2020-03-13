@@ -82,6 +82,7 @@ class FutureTestCard extends React.Component {
     } = this.props;
     const {
       test_description,
+      test_id,
       version = "",
       assignment_date,
       weekNumber,
@@ -193,7 +194,7 @@ class FutureTestCard extends React.Component {
                           <li>
                             <a
                               href="#"
-                              onClick={() => onEnterAnswers(this.props.test.test_id, test)}
+                              onClick={() => onEnterAnswers(test_id)}
                             >
                               Enter Answers
                             </a>
