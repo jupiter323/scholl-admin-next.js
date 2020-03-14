@@ -85,7 +85,7 @@ class DetailTestList extends React.Component {
 
   onEnterAnswers = currentTestId => {
     this.onSetIsVisibleTopBar(false);
-    this.onCloseDropdown;
+    this.onCloseDropdown();
     const activeTest = this.props.tests.find(test => test.test_id === currentTestId);
     this.setState({ openEnterAnswerWrapper: true, activeTest });
   };
@@ -93,7 +93,7 @@ class DetailTestList extends React.Component {
   onDownloadReport = activeTest => {
     console.log("downloading...");
     this.onSetIsVisibleTopBar(false);
-    this.onCloseDropdown;
+    this.onCloseDropdown();
     this.setState(
       {
         activeTest,

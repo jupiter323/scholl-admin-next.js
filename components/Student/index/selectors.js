@@ -30,7 +30,10 @@ const makeSelectCompletedStudentTests = () =>
 const makeSelectAssignedStudentTests = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.assignedStudentTests);
 
-const makeSelectStudentTests = () => createSelector(makeSelectStudentPageState(),substate => substate.studentTests);
+const makeSelectStudentTests = () =>
+  createSelector(makeSelectStudentPageState(), substate => substate.studentTests);
+const makeSelectStudentSections = () =>
+  createSelector(makeSelectStudentPageState(), substate => substate.sections);
 
 export default selectStudentsDomain;
 export {
@@ -44,5 +47,6 @@ export {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
   makeSelectAssignedStudentTests,
-  makeSelectStudentTests
+  makeSelectStudentTests,
+  makeSelectStudentSections
 };

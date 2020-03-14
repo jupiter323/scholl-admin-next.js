@@ -12,6 +12,7 @@ import {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
+  fetchProblemsByStudentTestIdApi,
 } from "./components/Student/index/api";
 
 import {
@@ -59,6 +60,7 @@ export const studentApi = {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
+  fetchProblemsByStudentTestIdApi,
 };
 
 export const instructorApi = {

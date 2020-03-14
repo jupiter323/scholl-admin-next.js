@@ -22,6 +22,8 @@ import {
   SET_STUDENT_OVERDUE_TESTS,
   SET_STUDENT_ASSIGNED_TESTS,
   SET_STUDENT_TESTS,
+  SET_STUDENT_SECTIONS,
+  FETCH_STUDENT_TEST_SECTIONS
 } from "./constants";
 
 export function fetchStudents() {
@@ -44,11 +46,25 @@ export function fetchStudentTests(user) {
   };
 }
 
-export function setStudentTests(tests){
+export function fetchStudentTestSections(studentTestId) {
   return {
-    type:SET_STUDENT_TESTS,
+    type: FETCH_STUDENT_TEST_SECTIONS,
+    studentTestId
+  };
+}
+
+export function setStudentSections(sections) {
+  return {
+    type: SET_STUDENT_SECTIONS,
+    sections
+  };
+}
+
+export function setStudentTests(tests) {
+  return {
+    type: SET_STUDENT_TESTS,
     tests
-  }
+  };
 }
 
 export function setStudentCompletedTests(tests) {

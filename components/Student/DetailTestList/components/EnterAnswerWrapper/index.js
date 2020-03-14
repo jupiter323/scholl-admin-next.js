@@ -1,14 +1,16 @@
 import React from "react";
 import update from "immutability-helper";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import NavBar from "./common/NavBar";
 import InCompleteTestSection from "./components/InCompleteSection";
 import PreStartTestSection from "./components/StartSection";
 
-import {
-  addStudentAnswerToTestApi,
-  fetchProblemsByStudentTestIdApi
-} from "../../../index/api";
+import { addStudentAnswerToTestApi } from "../../../index/api";
+import { makeSelectStudentSections } from "../../../index/selectors";
+import { fetchStudentTestSections } from "../../../index/actions";
 
 class EnterAnswerWrapper extends React.Component {
   constructor(props) {
@@ -34,16 +36,23 @@ class EnterAnswerWrapper extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { test: { student_test_id }} = this.props;
-    const { formattedData } = await fetchProblemsByStudentTestIdApi(student_test_id);
-    this.setState({
-      testReadingProblems: formattedData.test.sections[0],
-      testWritingProblems: formattedData.test.sections[1],
-      testMathCalcProblems: formattedData.test.sections[2],
-      testMathNoCalcProblems: formattedData.test.sections[3],
-      testSections: formattedData.test.sections,
-      studentTestId: formattedData.student_test_id
-    });
+    const {
+      onFetchStudentTestSections,
+      sections,
+      test: { student_test_id }
+    } = this.props;
+    if (sections.length === 0) {
+      onFetchStudentTestSections(student_test_id);
+    } else {
+      this.setState({
+        testReadingProblems: sections[0],
+        testWritingProblems: sections[1],
+        testMathCalcProblems: sections[2],
+        testMathNoCalcProblems: sections[3],
+        testSections: sections,
+        studentTestId: student_test_id
+      });
+    }
   };
 
   onSetActivePage = name => {
@@ -95,10 +104,7 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   render() {
-    const {
-      startedTest,
-      previewTest
-    } = this.state;
+    const { startedTest, previewTest } = this.state;
     const {
       onCloaseAnswerWrapper,
       open,
@@ -110,25 +116,25 @@ class EnterAnswerWrapper extends React.Component {
       <React.Fragment>
         {open && (
           <div className="starting">
-              <div className="main-holder grey lighten-5">
-                <NavBar
-                  onCloaseAnswerWrapper={onCloaseAnswerWrapper}
-                  onSetActivePage={this.onSetActivePage}
-                  testDescription={test_description}
-                />
-                <PreStartTestSection
-                  open={previewTest}
-                  onSetActivePage={this.onSetActivePage}
-                  testSection={this.getCurrentTestProblems()}
-                />
-                <InCompleteTestSection
-                  open={startedTest}
-                  onAddStudentAnswerToTest={onAddStudentAnswerToTest}
-                  testSection={this.getCurrentTestProblems()}
-                  onStudentTestScore={onCloaseAnswerWrapper}
-                  onEditTest = {onEditTest}
-                />
-              </div>
+            <div className="main-holder grey lighten-5">
+              <NavBar
+                onCloaseAnswerWrapper={onCloaseAnswerWrapper}
+                onSetActivePage={this.onSetActivePage}
+                testDescription={test_description}
+              />
+              <PreStartTestSection
+                open={previewTest}
+                onSetActivePage={this.onSetActivePage}
+                testSection={this.getCurrentTestProblems()}
+              />
+              <InCompleteTestSection
+                open={startedTest}
+                onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+                testSection={this.getCurrentTestProblems()}
+                onStudentTestScore={onCloaseAnswerWrapper}
+                onEditTest={onEditTest}
+              />
+            </div>
           </div>
         )}
       </React.Fragment>
@@ -140,8 +146,18 @@ EnterAnswerWrapper.propTypes = {
   onCloaseAnswerWrapper: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   test: PropTypes.object,
-  onEditTest:PropTypes.func.isRequired,
-  onAddStudentAnswerToTest:PropTypes.func.isRequired,
+  onEditTest: PropTypes.func.isRequired,
+  onAddStudentAnswerToTest: PropTypes.func.isRequired,
+  onSetStudentTestSections: PropTypes.func.isRequired
 };
 
-export default EnterAnswerWrapper;
+const mapStateToProps = createStructuredSelector({
+  sections: makeSelectStudentSections()
+});
+function mapDispatchToProps(dispatch) {
+  return {
+    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId))
+  };
+}
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+export default compose(withConnect)(EnterAnswerWrapper);

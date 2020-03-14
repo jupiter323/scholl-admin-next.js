@@ -13,9 +13,7 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
   GET_TESTS,
-  SET_STUDENT_COMPLETED_TESTS,
-  SET_STUDENT_OVERDUE_TESTS,
-  SET_STUDENT_ASSIGNED_TESTS
+  FETCH_STUDENT_TEST_SECTIONS
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -44,7 +42,8 @@ import {
   setStudentTests,
   setStudentCompletedTests,
   setStudentOverDueTests,
-  setStudentAssignedTests
+  setStudentAssignedTests,
+  setStudentSections
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -62,7 +61,8 @@ const {
   updateStudentPhoneApi,
   updateStudentStateApi,
   updateStudentZipApi,
-  fetchTestsByStudentIdApi
+  fetchTestsByStudentIdApi,
+  fetchProblemsByStudentTestIdApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -103,6 +103,22 @@ export function* fetchStudents() {
     }
   } catch (err) {
     console.warn("Error occurred in the fetchStudents saga", err);
+  }
+}
+
+export function* watchForFetchStudentTestSections() {
+  while (true) {
+    const { studentTestId } = yield take(FETCH_STUDENT_TEST_SECTIONS);
+    yield call(fetchStudentTestSections, studentTestId);
+  }
+}
+
+export function* fetchStudentTestSections(studentTestId) {
+  try {
+    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId);
+    yield put(setStudentSections(formattedData.test.sections));
+  } catch (err) {
+    console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
 }
 
@@ -584,6 +600,7 @@ export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
     watchForFetchStudentTests(),
+    watchForFetchStudentTestSections(),
     watchForSearchStudents(),
     watchForCreateStudent(),
     watchForDeleteStudent(),
