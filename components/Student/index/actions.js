@@ -16,7 +16,12 @@ import {
   SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
   SET_IS_VISIBLE_TOP_BAR,
-  SET_ACTIVE_TEST_SCORES
+  SET_ACTIVE_TEST_SCORES,
+  GET_TESTS,
+  SET_STUDENT_COMPLETED_TESTS,
+  SET_STUDENT_OVERDUE_TESTS,
+  SET_STUDENT_ASSIGNED_TESTS,
+  SET_STUDENT_TESTS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -29,6 +34,39 @@ export function searchStudents(filters) {
   return {
     type: SEARCH_STUDENTS,
     filters
+  };
+}
+
+export function fetchStudentTests(user) {
+  return {
+    type: GET_TESTS,
+    user
+  };
+}
+
+export function setStudentTests(tests){
+  return {
+    type:SET_STUDENT_TESTS,
+    tests
+  }
+}
+
+export function setStudentCompletedTests(tests) {
+  return {
+    type: SET_STUDENT_COMPLETED_TESTS,
+    tests
+  };
+}
+export function setStudentOverDueTests(tests) {
+  return {
+    type: SET_STUDENT_OVERDUE_TESTS,
+    tests
+  };
+}
+export function setStudentAssignedTests(tests) {
+  return {
+    type: SET_STUDENT_ASSIGNED_TESTS,
+    tests
   };
 }
 

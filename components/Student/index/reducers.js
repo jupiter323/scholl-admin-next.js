@@ -5,7 +5,11 @@ import {
   SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
   SET_IS_VISIBLE_TOP_BAR,
-  SET_ACTIVE_TEST_SCORES
+  SET_ACTIVE_TEST_SCORES,
+  SET_STUDENT_COMPLETED_TESTS,
+  SET_STUDENT_OVERDUE_TESTS,
+  SET_STUDENT_ASSIGNED_TESTS,
+  SET_STUDENT_TESTS
 } from "./constants";
 
 const initialState = fromJS({
@@ -14,7 +18,11 @@ const initialState = fromJS({
   assignWorkSheetsModalOpen: false,
   calendarRows: [],
   isVisibleTopBar: true,
-  activeTestScores: []
+  activeTestScores: [],
+  overdueStudentTests: [],
+  assignedStudentTests: [],
+  completedStudentTests: [],
+  studentTests: []
 });
 
 function studentReducer(state = initialState, action) {
@@ -31,6 +39,14 @@ function studentReducer(state = initialState, action) {
       return state.set("isVisibleTopBar", action.value);
     case SET_ACTIVE_TEST_SCORES:
       return state.set("activeTestScores", action.scores);
+    case SET_STUDENT_COMPLETED_TESTS:
+      return state.set("completedStudentTests", action.tests);
+    case SET_STUDENT_OVERDUE_TESTS:
+      return state.set("overdueStudentTests", action.tests);
+    case SET_STUDENT_ASSIGNED_TESTS:
+      return state.set("assignedStudentTests", action.tests);
+    case SET_STUDENT_TESTS:
+      return state.set("studentTests", action.tests);
     default:
       return state;
   }

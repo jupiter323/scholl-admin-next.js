@@ -105,7 +105,9 @@ class AssignedTestCard extends React.Component {
                                 className="dropdown-content"
                               >
                                 <li>
-                                  <a href="#" onClick ={handleTestSettingModalOpen}>Edit Test Settings</a>
+                                  <a href="#" onClick={handleTestSettingModalOpen}>
+                                    Edit Test Settings
+                                  </a>
                                 </li>
                                 <li>
                                   <a href="#" onClick={() => onEnterAnswers(test_id)}>
@@ -177,13 +179,11 @@ class AssignedTestCard extends React.Component {
 }
 
 AssignedTestCard.propTypes = {
-  index: PropTypes.string,
-  dropdownIndex: PropTypes.string,
+  dropdownIndex: PropTypes.number,
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  onDetailTest: PropTypes.func.isRequired,
   test: PropTypes.object.isRequired
 };
 
