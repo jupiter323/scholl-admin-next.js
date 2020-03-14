@@ -35,7 +35,7 @@ class EnterAnswerWrapper extends React.Component {
     };
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     const {
       onFetchStudentTestSections,
       sections,
@@ -44,15 +44,26 @@ class EnterAnswerWrapper extends React.Component {
     if (sections.length === 0) {
       onFetchStudentTestSections(student_test_id);
     } else {
-      this.setState({
-        testReadingProblems: sections[0],
-        testWritingProblems: sections[1],
-        testMathCalcProblems: sections[2],
-        testMathNoCalcProblems: sections[3],
-        testSections: sections,
-        studentTestId: student_test_id
-      });
+      this.onSetProblems(sections, student_test_id);
     }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { sections, student_test_id } = nextProps;
+    if (sections.length !== 0) {
+      this.onSetProblems(sections, student_test_id);
+    }
+  };
+
+  onSetProblems = (sections, studentTestId) => {
+    this.setState({
+      testReadingProblems: sections[0],
+      testWritingProblems: sections[1],
+      testMathCalcProblems: sections[2],
+      testMathNoCalcProblems: sections[3],
+      testSections: sections,
+      studentTestId
+    });
   };
 
   onSetActivePage = name => {

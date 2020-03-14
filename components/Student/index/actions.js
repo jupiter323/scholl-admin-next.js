@@ -23,7 +23,8 @@ import {
   SET_STUDENT_ASSIGNED_TESTS,
   SET_STUDENT_TESTS,
   SET_STUDENT_SECTIONS,
-  FETCH_STUDENT_TEST_SECTIONS
+  FETCH_STUDENT_TEST_SECTIONS,
+  SET_ACTIVE_STUDENT_TEST_ID
 } from "./constants";
 
 export function fetchStudents() {
@@ -57,6 +58,13 @@ export function setStudentSections(sections) {
   return {
     type: SET_STUDENT_SECTIONS,
     sections
+  };
+}
+
+export function setActiveStudentTestId(studentTestId) {
+  return {
+    type: SET_ACTIVE_STUDENT_TEST_ID,
+    studentTestId
   };
 }
 

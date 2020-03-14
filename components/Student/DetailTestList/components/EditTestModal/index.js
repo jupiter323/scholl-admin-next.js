@@ -2,12 +2,17 @@
 /* eslint-disable react/no-did-mount-set-state */
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { compose } from "redux";
 import TestVersionPage from "../TestVersionPage";
 import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 
+import { makeSelectStudentSections } from "../../../index/selectors";
+import { fetchStudentTestSections } from "../../../index/actions";
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +51,14 @@ class EditTestModal extends React.Component {
 
   componentDidMount() {
     this.props.onRef(this);
+    const {
+      onFetchStudentTestSections,
+      sections,
+      test: { student_test_id }
+    } = this.props;
+    if (sections.length === 0) {
+      onFetchStudentTestSections(student_test_id);
+    }
   }
   componentWillUnmount() {
     this.props.onRef(undefined);
@@ -381,4 +394,13 @@ EditTestModal.propTypes = {
   onCloseEditTestModal: PropTypes.func.isRequired
 };
 
-export default EditTestModal;
+const mapStateToProps = createStructuredSelector({
+  sections: makeSelectStudentSections()
+});
+function mapDispatchToProps(dispatch) {
+  return {
+    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId))
+  };
+}
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+export default compose(withConnect)(EditTestModal);

@@ -34,7 +34,7 @@ const makeSelectStudentTests = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.studentTests);
 const makeSelectStudentSections = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.sections);
-
+const makeSelectActiveStudentTestId = () => createSelector(makeSelectStudentPageState(),substate => substate.activeStudentTestId)
 export default selectStudentsDomain;
 export {
   makeSelectStudentPageState,
@@ -48,5 +48,6 @@ export {
   makeSelectCompletedStudentTests,
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
-  makeSelectStudentSections
+  makeSelectStudentSections,
+  makeSelectActiveStudentTestId
 };

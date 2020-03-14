@@ -13,7 +13,7 @@ import NewTestModal from "./components/TestModal";
 import TestSettingModal from "./components/TestSettingModal";
 import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
 import CardHeader from "./components/CardHeader";
-import { setIsVisibleTopBar, fetchStudentTests } from "../index/actions";
+import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
@@ -48,6 +48,8 @@ class DetailTestList extends React.Component {
   };
 
   onToggleEditTestModal = (activeTest = null) => {
+    const { onSetActiveStudentTestId } = this.props;
+    onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
     this.setState(
       ({ openEditTestModal }) => ({
@@ -304,7 +306,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
-    onFetchStudentTests: user => dispatch(fetchStudentTests(user))
+    onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
+    onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId))
   };
 }
 

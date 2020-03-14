@@ -10,7 +10,8 @@ import {
   SET_STUDENT_OVERDUE_TESTS,
   SET_STUDENT_ASSIGNED_TESTS,
   SET_STUDENT_TESTS,
-  SET_STUDENT_SECTIONS
+  SET_STUDENT_SECTIONS,
+  SET_ACTIVE_STUDENT_TEST_ID
 } from "./constants";
 
 const initialState = fromJS({
@@ -24,7 +25,8 @@ const initialState = fromJS({
   assignedStudentTests: [],
   completedStudentTests: [],
   studentTests: [],
-  sections: []
+  sections: [],
+  activeStudentTestId: ""
 });
 
 function studentReducer(state = initialState, action) {
@@ -51,6 +53,8 @@ function studentReducer(state = initialState, action) {
       return state.set("studentTests", action.tests);
     case SET_STUDENT_SECTIONS:
       return state.set("sections", action.sections);
+    case SET_ACTIVE_STUDENT_TEST_ID:
+      return state.set("activeStudentTestId", action.studentTestId);
     default:
       return state;
   }
