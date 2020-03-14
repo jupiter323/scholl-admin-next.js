@@ -70,77 +70,83 @@ class CompletedTestCard extends React.Component {
         <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
           <div className="card-content">
             <div className=" card-panel-row row mb-0">
-              <div className="col s12 right-align">
-                <div className="row icons-row" style={{ marginBottom: "10px" }}>
-                  <span
-                    className="badge-rounded-xs badge red darken-2 white-text"
-                    style={{
-                      minWidth: "20px",
-                      minHeight: "20px",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <i className="icon-flag"></i>
-                  </span>
-                  <div className="dropdown-block col">
-                    <a href="#" className="dropdown-trigger btn" onClick={this.handleDropdownClick}>
-                      <i className="material-icons dots-icon">more_vert</i>
-                    </a>
-                    <If condition={dropdownIsOpen && dropdownIndex === index}>
-                      <ul
-                        id="dropdown01"
-                        style={{
-                          display: "block",
-                          minWidth: "160px",
-                          transformOrigin: "0px 0px 0px",
-                          opacity: "1",
-                          transform: "scaleX(1) scaleY(1)",
-                          width: "210px"
-                        }}
-                        className="dropdown-content"
-                      >
-                        <li>
-                          <a href="#" onClick={() => onEnterAnswers(test_id)}>
-                            Edit/Enter Answers
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" onClick={() => onDownloadReport(this.props.test)}>
-                            Download score report
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="disabled">
-                            Excuse/Unexcuse lateness
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="disabled">
-                            Mark flags reviewed
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="disabled">
-                            Reset
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="red-text text-darken-3">
-                            Unassign
-                          </a>
-                        </li>
-                      </ul>
-                    </If>
-                  </div>
-                </div>
-              </div>
-              <div className="col s12" onClick={onEditTest}>
+              <div className="col s12" >
                 <ul className="to-do-list">
                   <li>
-                    <div className="row">
-                      <div className="col s12 m12">
+                    <div className="row" style={{ marginBottom: "0px !important", marginTop: "20px" }}>
+                      <div className="col s12 m6">
                         <strong className="list-title">{test_name}</strong>
                       </div>
+                      <div className="col s12 m6 right-align">
+                        <div className="row icons-row" style={{ marginBottom: "10px" }}>
+                          <span
+                            className="badge-rounded-xs badge red darken-2 white-text"
+                            style={{
+                              minWidth: "20px",
+                              minHeight: "20px",
+                              borderRadius: "50%"
+                            }}
+                          >
+                            <i className="icon-flag"></i>
+                          </span>
+                          <div className="dropdown-block col">
+                            <a
+                              href="#"
+                              className="dropdown-trigger btn"
+                              onClick={this.handleDropdownClick}
+                            >
+                              <i className="material-icons dots-icon">more_vert</i>
+                            </a>
+                            <If condition={dropdownIsOpen && dropdownIndex === index}>
+                              <ul
+                                id="dropdown01"
+                                style={{
+                                  display: "block",
+                                  minWidth: "160px",
+                                  transformOrigin: "0px 0px 0px",
+                                  opacity: "1",
+                                  transform: "scaleX(1) scaleY(1)",
+                                  width: "210px"
+                                }}
+                                className="dropdown-content"
+                              >
+                                <li>
+                                  <a href="#" onClick={() => onEnterAnswers(test_id)}>
+                                    Edit/Enter Answers
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#" onClick={() => onDownloadReport(this.props.test)}>
+                                    Download score report
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#" className="disabled">
+                                    Excuse/Unexcuse lateness
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#" className="disabled">
+                                    Mark flags reviewed
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#" className="disabled">
+                                    Reset
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#" className="red-text text-darken-3">
+                                    Unassign
+                                  </a>
+                                </li>
+                              </ul>
+                            </If>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row" onClick={onEditTest}>
                       <div className="col s12 m8">
                         <ul className="info-list info-list-gray  assigned">
                           <li>
@@ -171,7 +177,7 @@ class CompletedTestCard extends React.Component {
                 </ul>
               </div>
             </div>
-            <ul className="points-list-custom">
+            <ul className="points-list-custom" onClick={onEditTest}>
               <li className="point-custom-large">
                 <span
                   className="badge-circle"
