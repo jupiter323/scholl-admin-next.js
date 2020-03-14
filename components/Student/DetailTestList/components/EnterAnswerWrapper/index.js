@@ -103,7 +103,8 @@ class EnterAnswerWrapper extends React.Component {
       onCloaseAnswerWrapper,
       open,
       test: { test_description },
-      onAddStudentAnswerToTest
+      onAddStudentAnswerToTest,
+      onEditTest
     } = this.props;
     return (
       <React.Fragment>
@@ -125,6 +126,7 @@ class EnterAnswerWrapper extends React.Component {
                   onAddStudentAnswerToTest={onAddStudentAnswerToTest}
                   testSection={this.getCurrentTestProblems()}
                   onStudentTestScore={onCloaseAnswerWrapper}
+                  onEditTest = {onEditTest}
                 />
               </div>
           </div>
@@ -138,6 +140,7 @@ EnterAnswerWrapper.propTypes = {
   onCloaseAnswerWrapper: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   test: PropTypes.object,
+  onEditTest:PropTypes.func.isRequired,
   onAddStudentAnswerToTest:PropTypes.func.isRequired,
 };
 

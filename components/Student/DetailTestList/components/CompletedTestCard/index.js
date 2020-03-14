@@ -370,7 +370,6 @@ CompletedTestCard.propTypes = {
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  onDetailTest: PropTypes.func.isRequired,
   test: PropTypes.object.isRequired
 };
 

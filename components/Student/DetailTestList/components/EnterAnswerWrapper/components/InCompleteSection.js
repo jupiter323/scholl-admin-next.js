@@ -26,12 +26,16 @@ class InCompleteReadingTest extends React.Component {
         problem={problem}
         index={index}
         key={problem.test_problem_id}
-        onAddStudentAnswerToTest = {this.props.onAddStudentAnswerToTest}
+        onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest}
       />
     ));
 
   render() {
-    const { open, testSection:{problems,time_limit},onStudentTestScore } = this.props;
+    const {
+      open,
+      testSection: { problems },
+      onEditTest
+    } = this.props;
     return (
       <div>
         {open && (
@@ -43,7 +47,10 @@ class InCompleteReadingTest extends React.Component {
                     <div className="card-content">
                       <div className="custom-form">
                         <div className="jcf-scrollable no-border height-window">
-                          <ol className="answers-list answers-list-columns" style={{ marginBottom: "20px" }}>
+                          <ol
+                            className="answers-list answers-list-columns"
+                            style={{ marginBottom: "20px" }}
+                          >
                             {problems && this.mapProblems()}
                           </ol>
                         </div>
@@ -55,9 +62,9 @@ class InCompleteReadingTest extends React.Component {
                       <a
                         href="#"
                         className="btn btn-xlarge waves-effect waves-light bg-blue"
-                        onClick={onStudentTestScore}
+                        onClick={onEditTest}
                       >
-                        I’m Done
+                        Score Test
                       </a>
                     </div>
                   </div>
@@ -75,7 +82,8 @@ InCompleteReadingTest.propTypes = {
   open: PropTypes.bool.isRequired,
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
   testSection: PropTypes.object.isRequired,
-  onStudentTestScore:PropTypes.func.isRequired,
+  onStudentTestScore: PropTypes.func.isRequired,
+  onEditTest: PropTypes.func.isRequired
 };
 
 export default InCompleteReadingTest;
