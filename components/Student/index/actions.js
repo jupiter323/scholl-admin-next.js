@@ -16,124 +16,130 @@ import {
   SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
   SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
   SET_IS_VISIBLE_TOP_BAR,
-} from './constants';
+  SET_ACTIVE_TEST_SCORES
+} from "./constants";
 
 export function fetchStudents() {
   return {
-    type: FETCH_STUDENTS,
+    type: FETCH_STUDENTS
   };
 }
 
 export function searchStudents(filters) {
   return {
     type: SEARCH_STUDENTS,
-    filters,
+    filters
   };
 }
 
 export function setStudents(students) {
   return {
     type: SET_STUDENTS,
-    students,
+    students
   };
 }
 
 export function createStudent(student) {
   return {
     type: CREATE_STUDENT,
-    student,
+    student
   };
 }
 
 export function deleteStudent(id) {
   return {
     type: DELETE_STUDENT,
-    id,
+    id
   };
 }
 
 export function updateStudentAddress(address) {
   return {
     type: UPDATE_STUDENT_ADDRESS,
-    address,
+    address
   };
 }
 
 export function updateStudentCity(city) {
   return {
     type: UPDATE_STUDENT_CITY,
-    city,
+    city
   };
 }
 
 export function updateStudentEmail(email) {
   return {
     type: UPDATE_STUDENT_EMAIL,
-    email,
+    email
   };
 }
 
 export function updateStudentFirstName(firstName) {
   return {
     type: UPDATE_STUDENT_FIRSTNAME,
-    firstName,
+    firstName
   };
 }
 
 export function updateStudentLastName(lastName) {
   return {
     type: UPDATE_STUDENT_LASTNAME,
-    lastName,
+    lastName
   };
 }
 
 export function updateStudentPhone(phone) {
   return {
     type: UPDATE_STUDENT_PHONE,
-    phone,
+    phone
   };
 }
-
 
 export function updateStudentState(state) {
   return {
     type: UPDATE_STUDENT_STATE,
-    state,
+    state
   };
 }
 
 export function updateStudentZip(zip) {
   return {
     type: UPDATE_STUDENT_ZIP,
-    zip,
+    zip
   };
 }
 
 export function setAssignLessonsModalOpen(value) {
   return {
     type: SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
-    value,
+    value
   };
 }
 
 export function setAssignWorksheetModalOpen(value) {
   return {
     type: SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN,
-    value,
+    value
   };
 }
 
 export function setCalendarRows(rows) {
   return {
     type: SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
-    rows,
+    rows
   };
 }
 
-
-export function setIsVisibleTopBar(value){
+export function setIsVisibleTopBar(value) {
   return {
-    type:SET_IS_VISIBLE_TOP_BAR,
+    type: SET_IS_VISIBLE_TOP_BAR,
     value
-  }
+  };
+}
+
+export function setActiveTestScores(scores) {
+  return {
+    type: SET_ACTIVE_TEST_SCORES,
+    scores
+  };
 }

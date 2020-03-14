@@ -1,6 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import moment from "moment";
+
+import { setActiveTestScores } from "../../../index/actions";
+import { makeSelectActiveTestScores } from "../../../index/selectors";
 
 import { fetchStudentTestScoreApi } from "../../../index/api";
 class CompletedTestCard extends React.Component {
@@ -16,7 +22,17 @@ class CompletedTestCard extends React.Component {
   }
 
   componentDidMount = async () => {
-    const scores = await this.getScoresByStudentTest(this.props.test);
+    const { scores, onSetScores } = this.props;
+    if (scores.length === 0) {
+      const formattedScores = await this.getScoresByStudentTest(this.props.test);
+      onSetScores(formattedScores);
+      this.setScores(formattedScores);
+    } else {
+      this.setScores(scores);
+    }
+  };
+
+  setScores = scores => {
     scores.map(score => {
       switch (score.subject_name) {
         case "Reading":
@@ -70,10 +86,13 @@ class CompletedTestCard extends React.Component {
         <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
           <div className="card-content">
             <div className=" card-panel-row row mb-0">
-              <div className="col s12" >
+              <div className="col s12">
                 <ul className="to-do-list">
                   <li>
-                    <div className="row" style={{ marginBottom: "0px !important", marginTop: "20px" }}>
+                    <div
+                      className="row"
+                      style={{ marginBottom: "0px !important", marginTop: "20px" }}
+                    >
                       <div className="col s12 m6">
                         <strong className="list-title">{test_name}</strong>
                       </div>
@@ -370,7 +389,18 @@ CompletedTestCard.propTypes = {
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  test: PropTypes.object.isRequired
+  test: PropTypes.object.isRequired,
+  scores: PropTypes.array
 };
 
-export default CompletedTestCard;
+const mapStateToProps = createStructuredSelector({
+  scores: makeSelectActiveTestScores()
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSetScores: scores => dispatch(setActiveTestScores(scores))
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(CompletedTestCard);

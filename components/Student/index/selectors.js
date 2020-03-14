@@ -30,6 +30,11 @@ const makeSelectIsVisibleTopBar = () => createSelector(
     (substate) => substate.isVisibleTopBar
 )
 
+const makeSelectActiveTestScores = () => createSelector(
+    makeSelectStudentPageState(),
+    (substate) => substate.activeTestScores
+)
+
 export default selectStudentsDomain;
 export {
     makeSelectStudentPageState,
@@ -38,4 +43,5 @@ export {
     makeSelectCalendarRows,
     makeSelectStudents,
     makeSelectIsVisibleTopBar,
+    makeSelectActiveTestScores,
 }
