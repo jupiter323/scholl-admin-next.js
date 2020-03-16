@@ -12,7 +12,7 @@ const initialState = fromJS({
   assignLessonsModalOpen: false,
   assignWorkSheetsModalOpen: false,
   calendarRows: [],
-  isVisibleTopBar:true,
+  isVisibleTopBar: true,
 });
 
 function studentReducer(state = initialState, action) {
@@ -26,7 +26,8 @@ function studentReducer(state = initialState, action) {
     case SET_STUDENTS_CALENDAR_CALENDAR_ROWS:
       return state.set('calendarRows', action.rows);
     case SET_IS_VISIBLE_TOP_BAR:
-      return state.set('isVisibleTopBar',action.value)
+      return state.set('isVisibleTopBar', action.value);
+
     default:
       return state;
   }

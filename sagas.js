@@ -1,4 +1,4 @@
-import { take, call, put, all } from "redux-saga/effects";
+import { take, call, put, all, takeEvery } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -32,10 +32,13 @@ import { FETCH_INSTRUCTORS, SEARCH_INSTRUCTORS, UPDATE_INSTRUCTOR_FIRSTNAME,
   UPDATE_INSTRUCTOR_ADDRESS,
   UPDATE_INSTRUCTOR_PHONE,
   ADD_INSTRUCTOR_LOCATION } from './components/Instructor/index/constants';
+import {
+  FETCH_LESSON_LIST, FETCH_LESSON_LIST_SUCCESS, FETCH_LESSON_LIST_FAIL,
+} from './components/Student/DetailLessonList/index/constants';
 import { setStudents } from "./components/Student/index/actions";
 import { setInstructors } from './components/Instructor/index/actions';
 import { setClasses } from './components/Classes/index/actions';
-import { studentApi, classApi, instructorApi } from "./api";
+import { studentApi, classApi, instructorApi, lessonApi } from "./api";
 const {
   fetchStudentsApi,
   searchStudentsApi,
@@ -72,6 +75,8 @@ const { fetchInstructorsApi,
   createNewInstructorApi,
 } = instructorApi;
 
+const { fetchLessonListApi } = lessonApi;
+
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -90,6 +95,7 @@ export function* fetchStudents() {
     console.warn("Error occurred in the fetchStudents saga", err);
   }
 }
+
 
 export function* watchForSearchStudents() {
   while (true) {
@@ -146,7 +152,7 @@ export function* watchForUpdateStudentFirstName() {
       const response = yield call(updateStudentFirstNameApi, firstName);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentFirstNameApi."
+          "Something went wrong in updateStudentFirstNameApi.",
         );
       }
     } catch (err) {
@@ -162,7 +168,7 @@ export function* watchForUpdateStudentLastName() {
       const response = yield call(updateStudentLastNameApi, lastName);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentLastNameApi."
+          "Something went wrong in updateStudentLastNameApi.",
         );
       }
     } catch (err) {
@@ -178,7 +184,7 @@ export function* watchForUpdateStudentAddress() {
       const response = yield call(updateStudentAddressApi, address);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentAddressApi."
+          "Something went wrong in updateStudentAddressApi.",
         );
       }
     } catch (err) {
@@ -194,7 +200,7 @@ export function* watchForUpdateStudentCity() {
       const response = yield call(updateStudentCityApi, city);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentCityApi."
+          "Something went wrong in updateStudentCityApi.",
         );
       }
     } catch (err) {
@@ -210,7 +216,7 @@ export function* watchForUpdateStudentEmail() {
       const response = yield call(updateStudentEmailApi, email);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentEmailApi."
+          "Something went wrong in updateStudentEmailApi.",
         );
       }
     } catch (err) {
@@ -226,7 +232,7 @@ export function* watchForUpdateStudentPhone() {
       const response = yield call(updateStudentPhoneApi, phone);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentPhoneApi."
+          "Something went wrong in updateStudentPhoneApi.",
         );
       }
     } catch (err) {
@@ -242,7 +248,7 @@ export function* watchForUpdateStudentState() {
       const response = yield call(updateStudentStateApi, state);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentStateApi."
+          "Something went wrong in updateStudentStateApi.",
         );
       }
     } catch (err) {
@@ -258,7 +264,7 @@ export function* watchForUpdateStudentZip() {
       const response = yield call(updateStudentZipApi, zip);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateStudentZipApi."
+          "Something went wrong in updateStudentZipApi.",
         );
       }
     } catch (err) {
@@ -275,7 +281,7 @@ export function* watchForUpdateInstructorFirstName() {
       const response = yield call(updateInstructorFirstNameApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorFirstNameApi."
+          "Something went wrong in updateInstructorFirstNameApi.",
         );
       }
     } catch (err) {
@@ -291,7 +297,7 @@ export function* watchForUpdateInstructorLastName() {
       const response = yield call(updateInstructorLastNameApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorLastNameApi."
+          "Something went wrong in updateInstructorLastNameApi.",
         );
       }
     } catch (err) {
@@ -307,7 +313,7 @@ export function* watchForUpdateInstructorEmail() {
       const response = yield call(updateInstructorEmailApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorEmailApi."
+          "Something went wrong in updateInstructorEmailApi.",
         );
       }
     } catch (err) {
@@ -323,7 +329,7 @@ export function* watchForUpdateInstructorState() {
       const response = yield call(updateInstructorStateApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorStateApi."
+          "Something went wrong in updateInstructorStateApi.",
         );
       }
     } catch (err) {
@@ -339,7 +345,7 @@ export function* watchForUpdateInstructorCity() {
       const response = yield call(updateInstructorCityApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorCityApi."
+          "Something went wrong in updateInstructorCityApi.",
         );
       }
     } catch (err) {
@@ -355,7 +361,7 @@ export function* watchForUpdateInstructorZip() {
       const response = yield call(updateInstructorZipApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorZipApi."
+          "Something went wrong in updateInstructorZipApi.",
         );
       }
     } catch (err) {
@@ -371,7 +377,7 @@ export function* watchForUpdateInstructorAddress() {
       const response = yield call(updateInstructorAddressApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorAddressApi."
+          "Something went wrong in updateInstructorAddressApi.",
         );
       }
     } catch (err) {
@@ -387,7 +393,7 @@ export function* watchForUpdateInstructorPhone() {
       const response = yield call(updateInstructorPhoneApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateInstructorPhoneApi."
+          "Something went wrong in updateInstructorPhoneApi.",
         );
       }
     } catch (err) {
@@ -492,7 +498,7 @@ export function* watchForUpdateClassName() {
       const response = yield call(updateClassNameApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateClassNameApi."
+          "Something went wrong in updateClassNameApi.",
         );
       }
     } catch (err) {
@@ -508,7 +514,7 @@ export function* watchForUpdateClassStartDate() {
       const response = yield call(updateClassStartDateApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateClassStartDateApi."
+          "Something went wrong in updateClassStartDateApi.",
         );
       }
     } catch (err) {
@@ -523,7 +529,7 @@ export function* watchForUpdateClassEndDate() {
       const response = yield call(updateClassEndDateApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateClassEndDateApi."
+          "Something went wrong in updateClassEndDateApi.",
         );
       }
     } catch (err) {
@@ -539,7 +545,7 @@ export function* watchForUpdateClassDuration() {
       const response = yield call(updateClassDurationApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateClassDurationApi."
+          "Something went wrong in updateClassDurationApi.",
         );
       }
     } catch (err) {
@@ -555,7 +561,7 @@ export function* watchForUpdateClassExcludeFromStatistics() {
       const response = yield call(updateClassExcludeFromStatisticsApi, value);
       if (response && response.message) {
         return console.warn(
-          "Something went wrong in updateClassExcludeFromStatisticsApi."
+          "Something went wrong in updateClassExcludeFromStatisticsApi.",
         );
       }
     } catch (err) {
@@ -564,6 +570,26 @@ export function* watchForUpdateClassExcludeFromStatistics() {
   }
 }
 
+/** ******************************************    LESSONS    ******************************************* */
+function* watchForFetchLesson() {
+  yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
+}
+
+function* handleFetchLesson(action) {
+  try {
+    const lessons = yield call(fetchLessonListApi);
+    yield put({
+      type: FETCH_LESSON_LIST_SUCCESS,
+      payload: lessons,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchLesson saga", error);
+    yield put({
+      type: FETCH_LESSON_LIST_FAIL,
+      payload: error,
+    });
+  }
+}
 
 export default function* defaultSaga() {
   yield all([
@@ -597,5 +623,6 @@ export default function* defaultSaga() {
     watchForUpdateClassExcludeFromStatistics(),
     watchForUpdateClassName(),
     watchForUpdateClassDuration(),
+    watchForFetchLesson(),
   ]);
 }

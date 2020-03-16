@@ -95,9 +95,10 @@ class LessonCard extends React.Component {
 
 
   renderAlerts = (flags) => {
-    if (flags.length) {
+    // if (flags.length) {
+    if (true) {
       return (
-        <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
+        <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{0}</b> <i className="icon-flag"></i></span>
       );
     }
     return (
@@ -109,7 +110,7 @@ class LessonCard extends React.Component {
     const { dropdownIsOpen } = this.state;
     const { lesson, lesson: { subject, timeEstimate, status, scoreStatus, score, unit, lessonName, assigned, flags,
       type, problems, completedProblems = '', passage, dueDate,
-      availableDate, completionDate, overdue } } = this.props;
+      availableDate, completionDate, overdue, starting_page, ending_page } } = this.props;
     return (
       <React.Fragment>
         <LessonDetailAnswerSheet
@@ -123,12 +124,12 @@ class LessonCard extends React.Component {
             <div className="card-panel" style={{ backgroundColor: '#666', color: '#fff' }}>
               <div className="card-panel-row row">
                 <div className="icon-col col s1">
-                  <i className={this.renderLessonIcon(subject)}></i>
+                  <i className={this.renderLessonIcon(this.props.lesson.subjects.name)}></i>
                 </div>
                 <div className="col s9">
                   <div className="card-panel-text center-align">
                     <div className="text-small">{unit}</div>
-                    <div className="text-large"><a href="#" onClick={this.onOpenDetailModal}>{lessonName}</a></div>
+                    <div className="text-large"><a href="#" onClick={this.onOpenDetailModal}>{this.props.lesson.units.multi_line_label}</a></div>
                   </div>
                 </div>
                 <div className="col s1 right-align">
@@ -226,7 +227,7 @@ class LessonCard extends React.Component {
             <div className="card-text">
               <dl className="dl-horizontal">
                 <dt>p.{passage}</dt>
-                <dd>({type})</dd>
+                <dd>({starting_page} - {ending_page})</dd>
               </dl>
             </div>
           </div>

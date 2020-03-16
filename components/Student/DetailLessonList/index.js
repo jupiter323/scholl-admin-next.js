@@ -1,6 +1,9 @@
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable react/no-did-update-set-state */
 /* eslint-disable react/no-array-index-key */
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
@@ -10,6 +13,8 @@ import FullView from './components/FullView';
 import { dueDateAscending, subjectAscending, subjectDescending, passageAscending, passageDescending, lessonNameDescending, lessonNameAscending, statusDescending, statusAscending, availableDateAscending, availableDateDescending, dueDate, flagsAscending, flagsDescending, completionDateAscending, completionDateDescending, lessonTypeAscending, lessonTypeDescending } from '../../utils/sortFunctions';
 import ListView from './components/ListView';
 import AssignLessonModal from './components/AssignLessonModal';
+
+import { getLessonList } from "./index/actions";
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -32,6 +37,10 @@ class DetailLessonList extends React.Component {
       unitFilter: "",
       updatedLessons: [],
     };
+  }
+
+  componentDidMount() {
+    this.props.dispathGetLessonList();
   }
 
   onOpenModal = () => this.setState({ modalOpen: true });
@@ -142,7 +151,7 @@ class DetailLessonList extends React.Component {
 
   getMappableLessons = () => {
     const { sort, unitFilter, lessons, dueDateFilters, nameFilter, statusFilters, subjectFilters, scoreStatusFilters, classTypeFilters, flagFilters } = this.state;
-    let mappableLessons = lessons;
+    let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -282,4 +291,12 @@ DetailLessonList.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-export default DetailLessonList;
+const mapDispatchToProps = dispatch => ({
+  dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
+});
+
+const mapStateToProps = state => ({
+  lessonList: state.lessonListReducer.lessonList,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
