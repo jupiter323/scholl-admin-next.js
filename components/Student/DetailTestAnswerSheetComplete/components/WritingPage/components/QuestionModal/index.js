@@ -253,7 +253,7 @@ QuestionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  studentTestId: makeSelectActiveStudentTestId
+  studentTestId: makeSelectActiveStudentTestId()
 });
 
 const withConnect = connect(mapStateToProps, null);
