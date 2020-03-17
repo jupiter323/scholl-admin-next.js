@@ -120,7 +120,7 @@ class LessonCard extends React.Component {
              </div>
              <div className="col s9">
                <div className="card-panel-text center-align">
-                 <div className="text-small">{subject} Unit {unitNumber}</div>
+                 <div className="text-small">{subject} Unit  {unitNumber}</div>
                  <div className="text-large">{lessonName}</div>
                </div>
              </div>

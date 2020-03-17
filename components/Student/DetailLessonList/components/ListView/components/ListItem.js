@@ -51,7 +51,7 @@ class ListItem extends React.Component {
 
   render() {
     const { lessonName, score, scoreStatus, passage, reviewedAlerts, overdue, subject, status, completionDate, problems, type, availableDate, dueDate, flags } = this.props.lesson;
-    const { dropdownIndex, lesson, dropdownIsOpen, index, user, handleDropdownClick } = this.props;
+    const { lesson: {name, subjects},dropdownIndex, lesson, dropdownIsOpen, index, user, handleDropdownClick } = this.props;
     return (
       <React.Fragment>
         <LessonDetailAnswerSheet
@@ -67,8 +67,8 @@ class ListItem extends React.Component {
             </span>
           </div>
           <div className="list-table-cell type-cell">
-            <div className="card-panel-text truncate">
-              <div className="text-large truncate" id="lessonName"><a href="#" onClick={this.onOpenDetailModal}>{lessonName}</a></div>
+            <div className="card-panel-text ">
+              <div className="text-large truncate" id="lessonName"><a href="#" onClick={this.onOpenDetailModal}>{name}</a></div>
             </div>
           </div>
           <div className="list-table-cell graph-cell" style={{ marginLeft: '50px' }}>
@@ -86,7 +86,7 @@ class ListItem extends React.Component {
               </Otherwise>
             </Choose>
           </div>
-          <div className="list-table-cell type-cell" style={{ marginLeft: '10px' }}>{subject}</div>
+          <div className="list-table-cell type-cell" style={{ marginLeft: '10px' }}>{subjects.name}</div>
           <div className="list-table-cell type-cell">p. {passage}</div>
           <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{availableDate}</time></div>
           <div className="list-table-cell dueDate-cell" style={{ color: overdue ? "#db1b29" : "" }}><time dateTime="2019-01-27">{dueDate}</time></div>
@@ -102,7 +102,7 @@ class ListItem extends React.Component {
               <div className="text-large truncate">{type}</div>
             </div>
           </div>
-          <div className="list-table-cell graph-cell">
+          {/* <div className="list-table-cell graph-cell">
             {reviewedAlerts.length > 0 && (
               <span className="badge-rounded-xs badge grey darken-1 white-text"><b className="badge-text">{reviewedAlerts.length}</b> <i className="icon-flag"></i></span>
             )}
@@ -111,7 +111,7 @@ class ListItem extends React.Component {
             {flags.length > 0 && (
               <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
             )}
-          </div>
+          </div> */}
 
           <div className="list-table-cell drop-cell">
             <div className="dropdown-block">
