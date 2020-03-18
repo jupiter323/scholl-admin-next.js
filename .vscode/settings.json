@@ -2,5 +2,6 @@
   "git.ignoreLimitWarning": true,
   "eslint.alwaysShowStatus": true,
   "eslint.enable": false,
-  "prettier.printWidth": 100
+  "prettier.printWidth": 100,
+  "editor.fontSize": 14
 }
