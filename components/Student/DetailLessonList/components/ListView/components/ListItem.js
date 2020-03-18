@@ -50,8 +50,10 @@ class ListItem extends React.Component {
 
 
   render() {
+    // eslint-disable-next-line
     const { lessonName, score, scoreStatus, passage, reviewedAlerts, overdue, subject, status, completionDate, problems, type, availableDate, dueDate, flags } = this.props.lesson;
-    const { lesson: {name, subjects},dropdownIndex, lesson, dropdownIsOpen, index, user, handleDropdownClick } = this.props;
+    // eslint-disable-next-line
+    const { lesson: { name, subjects, practice_page }, dropdownIndex, lesson, dropdownIsOpen, index, user, handleDropdownClick } = this.props;
     return (
       <React.Fragment>
         <LessonDetailAnswerSheet
@@ -73,6 +75,7 @@ class ListItem extends React.Component {
           </div>
           <div className="list-table-cell graph-cell" style={{ marginLeft: '50px' }}>
             {scoreStatus && (
+              // eslint-disable-next-line
               <span className={`chart-bar ${statusColorMap[scoreStatus]} white-text`}>{Math.floor(`${score / problems * 100}`)}%</span>
             )}
           </div>
@@ -87,7 +90,8 @@ class ListItem extends React.Component {
             </Choose>
           </div>
           <div className="list-table-cell type-cell" style={{ marginLeft: '10px' }}>{subjects.name}</div>
-          <div className="list-table-cell type-cell">p. {passage}</div>
+          {/* eslint-disable-next-line*/}
+          <div className="list-table-cell type-cell">p. {practice_page}</div>
           <div className="list-table-cell date-cell"><time dateTime="2019-01-27">{availableDate}</time></div>
           <div className="list-table-cell dueDate-cell" style={{ color: overdue ? "#db1b29" : "" }}><time dateTime="2019-01-27">{dueDate}</time></div>
           <div className="list-table-cell completed-cell">{completionDate}
@@ -99,7 +103,7 @@ class ListItem extends React.Component {
           </div>
           <div className="list-table-cell name-cell">
             <div className="card-panel-text truncate">
-              <div className="text-large truncate">{type}</div>
+              <div className="text-large truncate">{}</div>
             </div>
           </div>
           {/* <div className="list-table-cell graph-cell">

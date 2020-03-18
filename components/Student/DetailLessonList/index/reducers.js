@@ -1,4 +1,10 @@
-import { FETCH_LESSON_LIST, FETCH_LESSON_LIST_SUCCESS, FETCH_LESSON_LIST_FAIL } from "./constants";
+import {
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
+  CHECKED_LESSON,
+  CHECK_ALL_LESSONS,
+} from "./constants";
 
 
 const initialState = {
@@ -26,7 +32,31 @@ const lessonListReducer = (state = initialState, action = {}) => {
         isLoading: false,
         error: action.payload,
       };
-    default: return state;
+    case CHECKED_LESSON:
+      return {
+        ...state,
+        lessonList: state.lessonList.map((lesson, index) => {
+          if (index !== action.index) {
+            return lesson;
+          }
+          return {
+            ...lesson,
+            selected: !lesson.selected,
+          };
+        }),
+      };
+
+    case CHECK_ALL_LESSONS:
+      return {
+        ...state,
+        lessonList: state.lessonList.map((lesson) => ({
+          ...lesson,
+          selected: !action.checked,
+        })),
+      };
+
+    default:
+      return state;
   }
 };
 
