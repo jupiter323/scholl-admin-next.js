@@ -180,7 +180,7 @@ class DetailLessonList extends React.Component {
       lessons = lessons.filter(lesson => statusFilters.indexOf(lesson.status) !== -1);
     }
     if (subjectFilters.length && subjectFilters.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subject) !== -1);
+      lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subjects.name) !== -1);
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => lesson.flags.length !== 0);
