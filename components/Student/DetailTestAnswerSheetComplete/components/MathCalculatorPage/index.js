@@ -1,31 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AnswerRow from '../WritingPage/components/AnswerRow';
-
+import React from "react";
+import PropTypes from "prop-types";
+import AnswerRow from "../WritingPage/components/AnswerRow";
 
 class MathCalculatorPage extends React.Component {
-
-  mapMathCalculatorAnswers = () => {
-    const { mathCalculator: {sampleAnswers} } = this.props;
-    return sampleAnswers.map(question => (
-      <AnswerRow question={question} key={question.id}/>
-    ))
-  }
+  mapAnswers = () => {
+    const {
+      testSection: { problems }
+    } = this.props;
+    return (
+      problems &&
+      problems.map(problem => <AnswerRow key={problem.test_problem_id} problem={problem} />)
+    );
+  };
 
   render() {
     return (
-      <div className="slide" id = "mathCalcAnswerSheetImg">
-        <div className="row" style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
-            <ol className="answers-list">
-              {this.mapMathCalculatorAnswers()}
-            </ol>
-         </div>
-         </div>
-    )
+      <div className="slide" id="mathCalcAnswerSheetImg">
+        <div className="row" style={{ columns: "3 auto", marginLeft: "10px", marginRight: "10px" }}>
+          <ol className="answers-list">{this.mapAnswers()}</ol>
+        </div>
+      </div>
+    );
   }
 }
 
 MathCalculatorPage.propTypes = {
-  mathCalculator: PropTypes.object.isRequired,
-}
+  testSection: PropTypes.object
+};
 export default MathCalculatorPage;

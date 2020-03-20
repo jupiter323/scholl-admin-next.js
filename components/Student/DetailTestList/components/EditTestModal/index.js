@@ -2,12 +2,17 @@
 /* eslint-disable react/no-did-mount-set-state */
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { compose } from "redux";
 import TestVersionPage from "../TestVersionPage";
 import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 
+import { makeSelectStudentSections } from "../../../index/selectors";
+import { fetchStudentTestSections } from "../../../index/actions";
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
@@ -42,6 +47,21 @@ class EditTestModal extends React.Component {
       adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
       headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"]
     };
+  }
+
+  componentDidMount() {
+    this.props.onRef(this);
+    const {
+      onFetchStudentTestSections,
+      sections,
+      test: { student_test_id }
+    } = this.props;
+    if (sections.length === 0) {
+      onFetchStudentTestSections(student_test_id);
+    }
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined);
   }
 
   getBase64ImageFromURL = url => {
@@ -266,8 +286,6 @@ class EditTestModal extends React.Component {
     const {
       studentInformation: { firstName, lastName }
     } = user;
-    console.log("User:", user);
-    console.log("test:", test);
     return (
       <div className="wrapper">
         <div
@@ -376,4 +394,13 @@ EditTestModal.propTypes = {
   onCloseEditTestModal: PropTypes.func.isRequired
 };
 
-export default EditTestModal;
+const mapStateToProps = createStructuredSelector({
+  sections: makeSelectStudentSections()
+});
+function mapDispatchToProps(dispatch) {
+  return {
+    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId))
+  };
+}
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+export default compose(withConnect)(EditTestModal);
