@@ -33,8 +33,8 @@ class CompletedTestCard extends React.Component {
   };
 
   setScores = scores => {
-    scores.map(score => {
-      switch (score.subject_name) {
+    Object.values(scores).map(score => {
+      switch (score.name) {
         case "Reading":
           this.setState({ ReadingScore: score });
           break;
@@ -56,7 +56,7 @@ class CompletedTestCard extends React.Component {
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
+    return formattedTestScores.section_scores;
   };
 
   handleDropdownClick = event => {

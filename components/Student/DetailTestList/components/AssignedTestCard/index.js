@@ -6,51 +6,7 @@ import { fetchStudentTestScoreApi } from "../../../index/api";
 class AssignedTestCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ReadingScore: null,
-      WritingScore: null,
-      ReadingAndWrigingScore: null,
-      MathScore: null,
-      NA: 0
-    };
   }
-
-  componentDidMount = async () => {
-    const scores = await this.getScoresByStudentTest(this.props.test);
-    scores.map(score => {
-      switch (score.subject_name) {
-        case "Reading":
-          this.setState({ ReadingScore: score });
-          break;
-        case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: score });
-          break;
-        case "Math":
-          this.setState({ MathScore: score });
-          break;
-        case "Writing":
-          this.setState({ WritingScore: score });
-          break;
-        default:
-          this.setState({ NA: 0 });
-      }
-    });
-  };
-
-  getScoresByStudentTest = async test => {
-    const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
-  };
-
-  handleDropdownClick = event => {
-    const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
-    event.preventDefault();
-    if (dropdownIsOpen) {
-      return onCloseDropdown();
-    }
-    return onSetDropdown(index);
-  };
 
   render() {
     const {

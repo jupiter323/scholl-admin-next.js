@@ -147,7 +147,7 @@ class DetailTestList extends React.Component {
     return assigneds.map((test, index) => (
       <AssignedTestCard
         test={test}
-        key={`future-${test.test_id}`}
+        key={`future-${index}`}
         handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
