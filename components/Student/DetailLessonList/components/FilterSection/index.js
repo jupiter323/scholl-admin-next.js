@@ -91,7 +91,7 @@ class FilterSection extends React.Component {
                       type="checkbox"
                       id="writing"
                       checked={subjectFilters.indexOf('Writing') !== -1}
-                      onChange={() => handleFilterClick("subject", 'Writing')}
+                      onChange={() => handleFilterClick("subject", 'Writing and Language')}
                     />
                     <label htmlFor="writing">Writing</label>
                   </li>
