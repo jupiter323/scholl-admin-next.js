@@ -34,118 +34,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
             }
           }
         },
-        mathData: {
-          sampleAnswers: [
-            {
-              id: 11,
-              topic: "topic1",
-              problem: 1,
-              answer: "B",
-              studentChoice: "A",
-              correct: false,
-              status: "E",
-              flagged: false,
-              reviewed: true,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 12,
-              topic: "topic2",
-              problem: 1,
-              answer: "A",
-              studentChoice: "",
-              correct: true,
-              status: "E",
-              flagged: true,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 13,
-              topic: "topic3",
-              problem: 1,
-              answer: "C",
-              studentChoice: "",
-              correct: false,
-              status: "E",
-              flagged: true,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 14,
-              topic: "topic4",
-              problem: 1,
-              answer: "D",
-              studentChoice: "D",
-              correct: true,
-              status: "E",
-              flagged: false,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 21,
-              topic: "topic1",
-              problem: 1,
-              answer: "A",
-              studentChoice: "B",
-              correct: false,
-              status: "E",
-              flagged: true,
-              reviewed: true,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 22,
-              topic: "topic2",
-              problem: 1,
-              answer: "B",
-              studentChoice: "B",
-              correct: true,
-              status: "E",
-              flagged: false,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 23,
-              topic: "topic3",
-              problem: 1,
-              answer: "C",
-              studentChoice: "",
-              correct: false,
-              status: "E",
-              flagged: true,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 24,
-              topic: "topic4",
-              problem: 1,
-              answer: "D",
-              studentChoice: "A",
-              correct: true,
-              status: "E",
-              flagged: true,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            },
-            {
-              id: 25,
-              topic: "topic4",
-              problem: 1,
-              answer: "D",
-              studentChoice: "",
-              correct: true,
-              status: "E",
-              flagged: true,
-              reviewed: false,
-              tutorNotes: "work and study hard"
-            }
-          ]
-        },
         writing: {
           sampleAnswers: [
             {
@@ -336,8 +224,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const {
       testScoreDetails: {
         reading,
-        mathData,
-        writing: { sampleAnswers }
       },
       activeSlide
     } = this.state;

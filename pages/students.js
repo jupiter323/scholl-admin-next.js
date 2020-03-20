@@ -6,12 +6,13 @@ import { StickyContainer, Sticky } from "react-sticky";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+
 import { createStructuredSelector } from "reselect";
 import {
   fetchStudents,
   createStudent,
   deleteStudent,
-  setStudents,
+  setStudents
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -24,7 +25,7 @@ import {
   studentFirstNameAscending,
   studentFirstNameDescending,
   studentLastNameAscending,
-  studentLastNameDescending,
+  studentLastNameDescending
 } from "../components/utils/sortFunctions";
 import { loggedIn } from "../utils/AuthService";
 // eslint-disable-next-line prefer-template
@@ -53,7 +54,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: "",
+          lastName: ""
         },
         contactInformation: {
           phone: "",
@@ -61,15 +62,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: "",
+          zipCode: ""
         },
         emailAddress: {
-          email: "",
+          email: ""
         },
         location: {
-          locations: [],
-        },
-      },
+          locations: []
+        }
+      }
     };
   }
 
@@ -118,7 +119,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: "",
+          lastName: ""
         },
         contactInformation: {
           phone: "",
@@ -126,15 +127,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: "",
+          zipCode: ""
         },
         emailAddress: {
-          email: "",
+          email: ""
         },
         location: {
-          locations: [],
-        },
-      },
+          locations: []
+        }
+      }
     });
     this.setState({ newStudent });
     onFetchStudents();
@@ -148,7 +149,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: "",
+          lastName: ""
         },
         contactInformation: {
           phone: "",
@@ -156,15 +157,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: "",
+          zipCode: ""
         },
         emailAddress: {
-          email: "",
+          email: ""
         },
         location: {
-          locations: [],
-        },
-      },
+          locations: []
+        }
+      }
     });
     this.setState({ newStudent });
   };
@@ -172,14 +173,11 @@ class Students extends Component {
   onRemoveLocation = index => {
     const { newStudent: previousStudentState } = this.state;
     const {
-      location: { locations },
+      location: { locations }
     } = this.state.newStudent;
-    const newLocationsArray = this.arrayItemRemover(
-      locations,
-      locations[index]
-    );
+    const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
     const newStudent = update(previousStudentState, {
-      location: { $set: { locations: newLocationsArray } },
+      location: { $set: { locations: newLocationsArray } }
     });
     this.setState({ newStudent });
   };
@@ -188,15 +186,10 @@ class Students extends Component {
     const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
       const {
-        studentInformation: { firstName, lastName },
+        studentInformation: { firstName, lastName }
       } = currentStudent;
-      const studentString = `${firstName}${lastName}`
-        .replace(/\s/g, "")
-        .toLowerCase();
-      if (
-        studentString.indexOf(nameFilter) !== -1 &&
-        finalArr.indexOf(currentStudent) === -1
-      ) {
+      const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
+      if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
         finalArr.push(currentStudent);
       }
       return finalArr;
@@ -228,7 +221,7 @@ class Students extends Component {
   onCloneStudent = index => {
     const { students } = this.state;
     const newStudent = update(students[index], {
-      id: { $set: idGenerator() },
+      id: { $set: idGenerator() }
     });
     this.setState(prevState => {
       prevState.students.push(newStudent);
@@ -240,7 +233,7 @@ class Students extends Component {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
-      [section]: { $merge: { [name]: value } },
+      [section]: { $merge: { [name]: value } }
     });
     this.setState({ newStudent: updatedStudent });
   };
@@ -252,12 +245,13 @@ class Students extends Component {
       studentInformation,
       contactInformation,
       emailAddress,
-      location,
+      location
     } = updatedStudent;
     const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
-    const students = update(originalStudents, {[updatedStudentIndex]: {
-        $merge: {active,studentInformation,contactInformation,emailAddress,location}
+    const students = update(originalStudents, {
+      [updatedStudentIndex]: {
+        $merge: { active, studentInformation, contactInformation, emailAddress, location }
       }
     });
     this.setState({ students });
@@ -265,10 +259,8 @@ class Students extends Component {
     onSetStudents(students);
   };
 
-  onSetDropdown = dropdownIndex =>
-    this.setState({ dropdownIsOpen: true, dropdownIndex });
-  onCloseDropdown = () =>
-    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onSetDropdown = dropdownIndex => this.setState({ dropdownIsOpen: true, dropdownIndex });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   // eslint-disable-next-line consistent-return
   onSortStudents = students => {
@@ -296,8 +288,7 @@ class Students extends Component {
     return mappableStudents;
   };
 
-  arrayItemRemover = (array, value) =>
-    array.filter(student => student !== value);
+  arrayItemRemover = (array, value) => array.filter(student => student !== value);
 
   mapStudents = () =>
     this.getMappableStudents().map((student, index) => (
@@ -327,16 +318,9 @@ class Students extends Component {
               <React.Fragment>
                 <Sticky>
                   {({ style }) => (
-                    <div
-                      className="title-row card-panel"
-                      style={{ ...style, zIndex: 1999 }}
-                    >
+                    <div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
                       <div className="mobile-header">
-                        <a
-                          href="#"
-                          data-target="slide-out"
-                          className="sidenav-trigger"
-                        >
+                        <a href="#" data-target="slide-out" className="sidenav-trigger">
                           <i className="material-icons">menu</i>
                         </a>
                       </div>
@@ -354,9 +338,7 @@ class Students extends Component {
                   onSetFilteredState={this.onSetFilteredState}
                   onUnsetFilteredState={this.onUnsetFilteredState}
                   onSetFilteredLocationState={this.onSetFilteredLocationState}
-                  onUnsetFilteredLocationState={
-                    this.onUnsetFilteredLocationState
-                  }
+                  onUnsetFilteredLocationState={this.onUnsetFilteredLocationState}
                   handleFilterClick={this.handleFilterClick}
                   onFilterByName={this.onFilterByName}
                 />
@@ -384,11 +366,7 @@ class Students extends Component {
                   open={this.state.locationModalOpen}
                   onClose={this.onCloseLocationModal}
                   handleLocationsChange={selectedLocations =>
-                    this.handleChange(
-                      selectedLocations,
-                      "locations",
-                      "location"
-                    )
+                    this.handleChange(selectedLocations, "locations", "location")
                   }
                 />
               </React.Fragment>
@@ -411,18 +389,18 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
-  onSetStudents: PropTypes.func.isRequired,
+  onSetStudents: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  students: makeSelectStudents(),
+  students: makeSelectStudents()
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student)),
+  onCreateStudent: student => dispatch(createStudent(student))
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
