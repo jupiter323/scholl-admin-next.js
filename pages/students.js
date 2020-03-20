@@ -31,7 +31,7 @@ import { loggedIn } from "../utils/AuthService";
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
-    subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
+  subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () =>
   Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
