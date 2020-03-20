@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ListItem from './components/ListItem';
+import Checkbox from '../FullView/components/LessonCard/components/Checkbox';
 
 
 class ListView extends React.Component {
@@ -70,10 +71,33 @@ class ListView extends React.Component {
     return (
       <React.Fragment>
         <div className="content-section">
-          <div className="container-md">
-            <div className="result-row center-align">
-              <b className="result"> - {lessons.length} results -</b>
+
+          <div className="d-flex justify-content-between">
+            {/* <label >
+            <input type='checkbox' />
+            <span>Check all</span>
+          </label> */}
+            <div>
+              <Checkbox label="Check all" checkBoxId="checkall" />
+
             </div>
+            <div>
+              <b> - {lessons.length} results -</b>
+            </div>
+
+            <div className="dropdown-block col">
+              <a
+                className="dropdown-trigger btn"
+                href="#"
+                data-target="dropdown01"
+                // eslint-disable-next-line
+                onClick={() => console.log("menu option")}
+              >
+                <i className="material-icons dots-icon">more_vert</i>
+              </a>
+            </div>
+          </div>
+          <div className="container-md">
             <div className="list-view-section" style={{ margin: '0 -160px' }}>
               <div className="list-table">
                 <div className="list-table-header">
