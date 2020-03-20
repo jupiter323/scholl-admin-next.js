@@ -11,7 +11,12 @@ import {
   SET_STUDENT_ASSIGNED_TESTS,
   SET_STUDENT_TESTS,
   SET_STUDENT_SECTIONS,
-  SET_ACTIVE_STUDENT_TEST_ID
+  SET_ACTIVE_STUDENT_TEST_ID,
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
+  CHECKED_LESSON,
+  CHECK_ALL_LESSONS
 } from "./constants";
 
 const initialState = fromJS({
@@ -26,7 +31,10 @@ const initialState = fromJS({
   completedStudentTests: [],
   studentTests: [],
   sections: [],
-  activeStudentTestId: ""
+  activeStudentTestId: "",
+  lessonList: [],
+  isLoading: false,
+  error: null
 });
 
 function studentReducer(state = initialState, action) {
@@ -55,6 +63,49 @@ function studentReducer(state = initialState, action) {
       return state.set("sections", action.sections);
     case SET_ACTIVE_STUDENT_TEST_ID:
       return state.set("activeStudentTestId", action.studentTestId);
+    case FETCH_LESSON_LIST:
+      return state.set("isLoading", true);
+
+    case FETCH_LESSON_LIST_SUCCESS:
+      return state.set("lessonList", action.payload);
+
+    // return {
+    //   ...state,
+    //   isLoading: false,
+    //   lessonList: action.payload,
+    // };
+
+    // case FETCH_LESSON_LIST_FAIL:
+    //   return {
+    //     ...state,
+    //     isLoading: false,
+    //     error: action.payload,
+    //   };
+    case CHECKED_LESSON:
+      return state.set(
+        "lessonList",
+        state.get('lessonList').map((lesson, index) => {
+          if (index !== action.index) {
+            return lesson;
+          }
+          return {
+            ...lesson,
+            selected: !lesson.selected
+          };
+        })
+      );
+    
+
+    case CHECK_ALL_LESSONS:
+      return state.set(
+        "lessonList",
+        state.get('lessonList').map((lesson) => ({
+          ...lesson,
+          selected: !action.checked,
+        }))
+
+      )
+    
     default:
       return state;
   }

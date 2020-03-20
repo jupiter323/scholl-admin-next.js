@@ -7,6 +7,7 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 
 class FullView extends React.Component {
   mapLessons = () => {
+
     const { lessons, onCloneLesson, onDeleteLesson, user } = this.props;
     return lessons.map((lesson, index) => (
       <LessonCard

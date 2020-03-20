@@ -14,7 +14,10 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
   GET_TESTS,
-  FETCH_STUDENT_TEST_SECTIONS
+  FETCH_STUDENT_TEST_SECTIONS,
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -23,7 +26,8 @@ import {
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_CLASS_DURATION,
-  UPDATE_EXCLUDE_FROM_STATISTICS
+  UPDATE_EXCLUDE_FROM_STATISTICS,
+
 } from "./components/Classes/index/constants";
 import {
   FETCH_INSTRUCTORS,
@@ -50,11 +54,7 @@ import {
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
   
-import {
-  FETCH_LESSON_LIST,
-  FETCH_LESSON_LIST_SUCCESS,
-  FETCH_LESSON_LIST_FAIL,
-} from "./components/Student/DetailLessonList/index/constants";
+
 import { studentApi, classApi, instructorApi, lessonApi } from "./api";
 const {
   fetchStudentsApi,
@@ -70,7 +70,8 @@ const {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi
+  fetchProblemsByStudentTestIdApi,
+  fetchLessonListApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -96,7 +97,6 @@ const {
   createNewInstructorApi,
 } = instructorApi;
 
-const { fetchLessonListApi } = lessonApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -615,13 +615,15 @@ function* watchForFetchLesson() {
 function* handleFetchLesson() {
   try {
     const lessons = yield call(fetchLessonListApi);
-    yield put({
-      type: FETCH_LESSON_LIST_SUCCESS,
-      payload: lessons.map(lesson => ({
-        ...lesson,
-        selected: false,
-      })),
-    });
+     if (Array.isArray(lessons) || lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+        })),
+      });
+    }
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({
