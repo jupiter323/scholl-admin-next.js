@@ -368,7 +368,8 @@ class DetailLessonList extends React.Component {
         {this.renderCurrentView()}
         <AssignLessonModal
           open={this.state.modalOpen}
-          lessons={this.props.user.lessons}
+          // lessons={this.props.user.lessons}
+          lessons={this.props.lessonList}
           onCloseModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
         />

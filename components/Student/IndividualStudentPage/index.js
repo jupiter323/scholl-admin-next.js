@@ -58,7 +58,7 @@ class IndividualStudentPage extends React.Component {
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
-    //The api data is not enough for now,so we are using dummy data for selected student detail
+    //The  data is not enough for now,so we are using dummy data for selected student detail
     const { student } = this.props;
     // const student = sampleSelectedStudent;
     if (activePage === "summary") {

@@ -7,7 +7,7 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 
 class FullView extends React.Component {
   mapLessons = () => {
-    const { lessons, onCloneLesson, onDeleteLesson, user } = this.props;
+    const { lessons, onCloneLesson, onDeleteLesson, user, onCheckLesson } = this.props;
     return lessons.map((lesson, index) => (
       <LessonCard
         // eslint-disable-next-line react/no-array-index-key
@@ -17,7 +17,7 @@ class FullView extends React.Component {
         onCloneLesson={() => onCloneLesson(index)}
         onDeleteLesson={() => onDeleteLesson(index)}
         user={user}
-        onChecked={this.props.onCheckLesson}
+        onChecked={onCheckLesson}
       />
     ));
   };

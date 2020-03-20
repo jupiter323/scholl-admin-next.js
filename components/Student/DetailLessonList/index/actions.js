@@ -2,6 +2,7 @@ import {
   FETCH_LESSON_LIST,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  UNCHECK_ALL_LESSONS
 } from "./constants";
 
 // Watcher
@@ -16,4 +17,8 @@ export const checkLesson = (index) => ({
 export const checkAllLessons = (checked) => ({
   type: CHECK_ALL_LESSONS,
   checked,
+});
+export const unCheckAllLessons = () => ({
+  type: UNCHECK_ALL_LESSONS,
+  
 });
