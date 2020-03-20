@@ -2,13 +2,12 @@
 /* eslint-disable jsx-control-statements/jsx-jcs-no-undef */
 const API_URL = process.env.API_URL;
 
-
 export const fetchStudentsApi = () =>
   fetch(`${API_URL}/api/students`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -17,7 +16,7 @@ export const fetchStudentsApi = () =>
         active: false,
         studentInformation: {
           firstName: student.first_name,
-          lastName: student.last_name,
+          lastName: student.last_name
         },
         contactInformation: {
           phone: student.user_address.phone,
@@ -25,13 +24,13 @@ export const fetchStudentsApi = () =>
           addressLine2: "",
           city: student.user_address.city,
           state: student.user_address.state,
-          zipCode: student.user_address.zip,
+          zipCode: student.user_address.zip
         },
         emailAddress: {
-          email: student.email,
+          email: student.email
         },
         location: {
-          locations: student.user_locations,
+          locations: student.user_locations
         },
         stats: student.stats,
         tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
@@ -41,7 +40,7 @@ export const fetchStudentsApi = () =>
             : student.testScores.initialScore,
           currentScore: !student.hasOwnProperty("testScores")
             ? "0"
-            : student.testScores.currentScore,
+            : student.testScores.currentScore
         },
         // courseContext: {
         //   targetScore: !student.hasOwnProperty("courseContext")
@@ -56,7 +55,7 @@ export const fetchStudentsApi = () =>
           targetTestDate: "12/12/2019",
           targetScore: "1400",
           highSchool: "Everglades High",
-          graduationYear: "2018",
+          graduationYear: "2018"
         },
         courseProgress: {
           startDate: "6/03/18",
@@ -65,13 +64,13 @@ export const fetchStudentsApi = () =>
           improvement: "82",
           lessons: "73",
           instruction: "68",
-          practiceTests: "47",
+          practiceTests: "47"
         },
         overdueWork: {
           lessons: "12",
           worksheets: "3",
           quizzes: "1",
-          practiceTests: "5",
+          practiceTests: "5"
         },
         summary: {
           questionsAnswered: "791",
@@ -80,7 +79,7 @@ export const fetchStudentsApi = () =>
           totalTimeLoggedIn: "220",
           lastLogIn: "3:12",
           loginTimeCode: "pm",
-          onTimePercentage: "77",
+          onTimePercentage: "77"
         },
         testScores: {
           initialScore: "1040",
@@ -89,29 +88,29 @@ export const fetchStudentsApi = () =>
             reading: "83",
             writing: "31",
             math: "105",
-            composite: "218",
+            composite: "218"
           },
           subjectScores: {
             reading: "58",
             writing: "44",
             math: "91",
-            composite: "195",
-          },
+            composite: "195"
+          }
         },
         strengthsAndWeaknesses: {
           reading: {
             correctAnswers: "32",
-            totalAnswers: "52",
+            totalAnswers: "52"
           },
           writing: {
             correctAnswers: "35",
-            totalAnswers: "52",
+            totalAnswers: "52"
           },
           math: {
             correctAnswers: "37",
-            totalAnswers: "52",
-          },
-        },
+            totalAnswers: "52"
+          }
+        }
       }));
       return formattedStudents;
     });
@@ -137,8 +136,8 @@ export const searchStudentsApi = filters => {
   return fetch(`${API_URL}/api/students?${queryString}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -150,7 +149,7 @@ export const searchStudentsApi = filters => {
         active: false,
         studentInformation: {
           firstName: student.first_name,
-          lastName: student.last_name,
+          lastName: student.last_name
         },
         contactInformation: {
           phone: student.user_address.phone,
@@ -158,13 +157,13 @@ export const searchStudentsApi = filters => {
           addressLine2: "",
           city: student.user_address.city,
           state: student.user_address.state,
-          zipCode: student.user_address.zip,
+          zipCode: student.user_address.zip
         },
         emailAddress: {
-          email: student.email,
+          email: student.email
         },
         location: {
-          locations: student.user_locations,
+          locations: student.user_locations
         },
         stats: student.stats,
         tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
@@ -174,13 +173,13 @@ export const searchStudentsApi = filters => {
             : student.testScores.initialScore,
           currentScore: !student.hasOwnProperty("testScores")
             ? "0"
-            : student.testScores.currentScore,
+            : student.testScores.currentScore
         },
         courseContext: {
           targetScore: !student.hasOwnProperty("courseContext")
             ? "0"
-            : student.courseContext.targetScore,
-        },
+            : student.courseContext.targetScore
+        }
       }));
       return formattedStudents;
     })
@@ -188,10 +187,7 @@ export const searchStudentsApi = filters => {
 };
 
 export const createStudentApi = student => {
-  const {
-    firstName: first_name,
-    lastName: last_name,
-  } = student.studentInformation;
+  const { firstName: first_name, lastName: last_name } = student.studentInformation;
   const { email } = student.emailAddress;
   const {
     state,
@@ -199,7 +195,7 @@ export const createStudentApi = student => {
     addressLine2,
     city,
     phone,
-    zipCode: zip,
+    zipCode: zip
   } = student.contactInformation;
   const { locations } = student.location;
   const studentPayload = {
@@ -211,15 +207,15 @@ export const createStudentApi = student => {
     phone,
     address: `${addressLine1}\n${addressLine2}`,
     city,
-    zip,
+    zip
   };
   fetch(`${API_URL}/api/commands/create-student`, {
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(studentPayload),
+    body: JSON.stringify(studentPayload)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -230,9 +226,9 @@ export const updateStudentActivationApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -242,9 +238,9 @@ export const updateStudentAddressApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -254,9 +250,9 @@ export const updateStudentCityApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -266,9 +262,9 @@ export const updateStudentEmailApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -278,9 +274,9 @@ export const updateStudentFirstNameApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -290,9 +286,9 @@ export const updateStudentLastNameApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -302,9 +298,9 @@ export const updateStudentPhoneApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -314,9 +310,9 @@ export const updateStudentStateApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -326,9 +322,9 @@ export const updateStudentZipApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -338,9 +334,9 @@ export const updateStudentTestDueDate = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   }).catch(err => err);
 
 export const updateStudentTestAssignmentDate = body =>
@@ -348,9 +344,9 @@ export const updateStudentTestAssignmentDate = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   }).catch(err => err);
 
 export const deleteStudentApi = id =>
@@ -358,9 +354,9 @@ export const deleteStudentApi = id =>
     method: "DELETE",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({ student_id: id }),
+    body: JSON.stringify({ student_id: id })
   })
     .then(res => res.json())
     .catch(err => err);
@@ -370,9 +366,9 @@ export const assignTestToStudentApi = test => {
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(test),
+    body: JSON.stringify(test)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -382,470 +378,467 @@ export const fetchTestsByStudentIdApi = student_id =>
   fetch(`${API_URL}/api/students/${student_id}/tests`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedStudentTests = data.tests.reduce(
-        (finalArry, currentStudentTest) => {
-          const {
-            test_id,
-            test_name,
-            test_description,
-            test_form,
-            student_test_id,
-            student_id,
-            assignment_date,
-            due_date,
-            status,
-          } = currentStudentTest;
-          const newStudentTest = {
-            test_id,
-            test_name,
-            test_description,
-            test_form,
-            student_test_id,
-            student_id,
-            assignment_date,
-            status,
-            dueDate: due_date,
-            completionDate: "05/12/2019",
-            completionTime: "4:21 PM",
-            weekNumber: "3",
-            version: "1234",
-            initialScore: "1050",
-            targetScore: "1500",
-            currentScore: "1245",
-            totalGain: "132",
-            subjects: [
-              {
-                subject: "Reading & Writing",
-                targetScore: "750",
-                currentScore: "454",
-                totalGain: "73",
+      const formattedStudentTests = data.tests.reduce((finalArry, currentStudentTest) => {
+        const {
+          test_id,
+          test_name,
+          test_description,
+          test_form,
+          student_test_id,
+          student_id,
+          assignment_date,
+          due_date,
+          status
+        } = currentStudentTest;
+        const newStudentTest = {
+          test_id,
+          test_name,
+          test_description,
+          test_form,
+          student_test_id,
+          student_id,
+          assignment_date,
+          status,
+          dueDate: due_date,
+          completionDate: "05/12/2019",
+          completionTime: "4:21 PM",
+          weekNumber: "3",
+          version: "1234",
+          initialScore: "1050",
+          targetScore: "1500",
+          currentScore: "1245",
+          totalGain: "132",
+          subjects: [
+            {
+              subject: "Reading & Writing",
+              targetScore: "750",
+              currentScore: "454",
+              totalGain: "73"
+            },
+            {
+              subject: "Math",
+              targetScore: "490",
+              currentScore: "345",
+              totalGain: "101"
+            }
+          ],
+          compositeScore: {
+            reading: "83",
+            writing: "31",
+            math: "105",
+            composite: "218"
+          },
+          subjectScores: {
+            reading: "58",
+            writing: "44",
+            math: "91",
+            composite: "195"
+          },
+          totalScore: "1080",
+          totalPossible: "1600",
+          sectionScores: {
+            readingAndWriting: "710",
+            math: "650",
+            totalPossible: "800"
+          },
+          essayScores: {
+            reading: "7",
+            analysis: "6",
+            writing: "7",
+            totalPossible: "8"
+          },
+          crossTestScores: "24",
+          subScores: {
+            commandOfEvidence: "5",
+            wordsInContext: "12",
+            expressionOfIdeas: "12",
+            standardEnglishConventions: "14",
+            heartOfAlgebra: "10",
+            problemSolvingAndDataAnalysis: "10",
+            passportToAdvancedMath: "13",
+            totalPossible: "15"
+          },
+          testScoreDetails: {
+            reading: {
+              totalCorrect: "39",
+              totalPossible: "59",
+              passageType: {
+                science: "11",
+                informationalGraphicPassage: "12",
+                historySocialScience: "13",
+                USWorldLiterature: "14",
+                pairedPassages: "12"
               },
-              {
-                subject: "Math",
-                targetScore: "490",
-                currentScore: "345",
-                totalGain: "101",
-              },
-            ],
-            compositeScore: {
-              reading: "83",
-              writing: "31",
-              math: "105",
-              composite: "218",
-            },
-            subjectScores: {
-              reading: "58",
-              writing: "44",
-              math: "91",
-              composite: "195",
-            },
-            totalScore: "1080",
-            totalPossible: "1600",
-            sectionScores: {
-              readingAndWriting: "710",
-              math: "650",
-              totalPossible: "800",
-            },
-            essayScores: {
-              reading: "7",
-              analysis: "6",
-              writing: "7",
-              totalPossible: "8",
-            },
-            crossTestScores: "24",
-            subScores: {
-              commandOfEvidence: "5",
-              wordsInContext: "12",
-              expressionOfIdeas: "12",
-              standardEnglishConventions: "14",
-              heartOfAlgebra: "10",
-              problemSolvingAndDataAnalysis: "10",
-              passportToAdvancedMath: "13",
-              totalPossible: "15",
-            },
-            testScoreDetails: {
-              reading: {
-                totalCorrect: "39",
-                totalPossible: "59",
-                passageType: {
-                  science: "11",
-                  informationalGraphicPassage: "12",
-                  historySocialScience: "13",
-                  USWorldLiterature: "14",
-                  pairedPassages: "12",
+              questionType: {
+                citingTextualEvidence: {
+                  citeTextAsEvidence: "12",
+                  authorsIntentionAndMethod: "12",
+                  supportOrRefute: "12"
                 },
-                questionType: {
-                  citingTextualEvidence: {
-                    citeTextAsEvidence: "12",
-                    authorsIntentionAndMethod: "12",
-                    supportOrRefute: "12",
-                  },
-                  readingClosely: {
-                    detailQuestion: "12",
-                    supportRefuteAClaim: "13",
-                  },
+                readingClosely: {
+                  detailQuestion: "12",
+                  supportRefuteAClaim: "13"
+                }
+              }
+            },
+            mathCalculator: {
+              sampleAnswers: [
+                {
+                  id: 11,
+                  topic: "topic1",
+                  problem: 1,
+                  answer: "A",
+                  studentChoice: "B",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: true,
+                  tutorNotes: "work and study hard"
                 },
-              },
-              mathCalculator: {
-                sampleAnswers: [
-                  {
-                    id: 11,
-                    topic: "topic1",
-                    problem: 1,
-                    answer: "A",
-                    studentChoice: "B",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: true,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 12,
-                    topic: "topic2",
-                    problem: 1,
-                    answer: "B",
-                    studentChoice: "B",
-                    correct: true,
-                    status: "E",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 13,
-                    topic: "topic3",
-                    problem: 1,
-                    answer: "C",
-                    studentChoice: "",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 14,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "A",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 21,
-                    topic: "topic1",
-                    problem: 1,
-                    answer: "A",
-                    studentChoice: "B",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: true,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 22,
-                    topic: "topic2",
-                    problem: 1,
-                    answer: "B",
-                    studentChoice: "B",
-                    correct: true,
-                    status: "E",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 23,
-                    topic: "topic3",
-                    problem: 1,
-                    answer: "C",
-                    studentChoice: "",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 24,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "A",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 25,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                ],
-              },
-              mathNoCalc: {
-                sampleAnswers: [
-                  {
-                    id: 11,
-                    topic: "topic1",
-                    problem: 1,
-                    answer: "B",
-                    studentChoice: "A",
-                    correct: false,
-                    status: "E",
-                    flagged: false,
-                    reviewed: true,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 12,
-                    topic: "topic2",
-                    problem: 1,
-                    answer: "A",
-                    studentChoice: "",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 13,
-                    topic: "topic3",
-                    problem: 1,
-                    answer: "C",
-                    studentChoice: "",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 14,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "D",
-                    correct: true,
-                    status: "E",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 21,
-                    topic: "topic1",
-                    problem: 1,
-                    answer: "A",
-                    studentChoice: "B",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: true,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 22,
-                    topic: "topic2",
-                    problem: 1,
-                    answer: "B",
-                    studentChoice: "B",
-                    correct: true,
-                    status: "E",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 23,
-                    topic: "topic3",
-                    problem: 1,
-                    answer: "C",
-                    studentChoice: "",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 24,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "A",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 25,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                ],
-              },
-              writing: {
-                sampleAnswers: [
-                  {
-                    id: 11,
-                    numeric: false,
-                    topic: "writing",
-                    problem: 1,
-                    answer: "B",
-                    studentChoice: "",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 12,
-                    numeric: false,
-                    topic: "writing",
-                    problem: 2,
-                    answer: "D",
-                    studentChoice: "D",
-                    correct: true,
-                    status: "M",
-                    flagged: false,
-                    reviewed: false,
-                    studentNotes:
-                      "Lorem ipsum dolor sit amet sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?",
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 13,
-                    numeric: true,
-                    topic: "writing",
-                    problem: 3,
-                    answer: 1492,
-                    studentChoice: 1492,
-                    correct: true,
-                    status: "M",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 14,
-                    numeric: true,
-                    topic: "writing",
-                    problem: 4,
-                    answer: 1.25,
-                    studentChoice: 5.71,
-                    correct: false,
-                    status: "E  ",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 21,
-                    numeric: false,
+                {
+                  id: 12,
+                  topic: "topic2",
+                  problem: 1,
+                  answer: "B",
+                  studentChoice: "B",
+                  correct: true,
+                  status: "E",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 13,
+                  topic: "topic3",
+                  problem: 1,
+                  answer: "C",
+                  studentChoice: "",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 14,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "A",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 21,
+                  topic: "topic1",
+                  problem: 1,
+                  answer: "A",
+                  studentChoice: "B",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: true,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 22,
+                  topic: "topic2",
+                  problem: 1,
+                  answer: "B",
+                  studentChoice: "B",
+                  correct: true,
+                  status: "E",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 23,
+                  topic: "topic3",
+                  problem: 1,
+                  answer: "C",
+                  studentChoice: "",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 24,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "A",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 25,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                }
+              ]
+            },
+            mathNoCalc: {
+              sampleAnswers: [
+                {
+                  id: 11,
+                  topic: "topic1",
+                  problem: 1,
+                  answer: "B",
+                  studentChoice: "A",
+                  correct: false,
+                  status: "E",
+                  flagged: false,
+                  reviewed: true,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 12,
+                  topic: "topic2",
+                  problem: 1,
+                  answer: "A",
+                  studentChoice: "",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 13,
+                  topic: "topic3",
+                  problem: 1,
+                  answer: "C",
+                  studentChoice: "",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 14,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "D",
+                  correct: true,
+                  status: "E",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 21,
+                  topic: "topic1",
+                  problem: 1,
+                  answer: "A",
+                  studentChoice: "B",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: true,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 22,
+                  topic: "topic2",
+                  problem: 1,
+                  answer: "B",
+                  studentChoice: "B",
+                  correct: true,
+                  status: "E",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 23,
+                  topic: "topic3",
+                  problem: 1,
+                  answer: "C",
+                  studentChoice: "",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 24,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "A",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 25,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                }
+              ]
+            },
+            writing: {
+              sampleAnswers: [
+                {
+                  id: 11,
+                  numeric: false,
+                  topic: "writing",
+                  problem: 1,
+                  answer: "B",
+                  studentChoice: "",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 12,
+                  numeric: false,
+                  topic: "writing",
+                  problem: 2,
+                  answer: "D",
+                  studentChoice: "D",
+                  correct: true,
+                  status: "M",
+                  flagged: false,
+                  reviewed: false,
+                  studentNotes:
+                    "Lorem ipsum dolor sit amet sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?",
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 13,
+                  numeric: true,
+                  topic: "writing",
+                  problem: 3,
+                  answer: 1492,
+                  studentChoice: 1492,
+                  correct: true,
+                  status: "M",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 14,
+                  numeric: true,
+                  topic: "writing",
+                  problem: 4,
+                  answer: 1.25,
+                  studentChoice: 5.71,
+                  correct: false,
+                  status: "E  ",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 21,
+                  numeric: false,
 
-                    topic: "topic1",
-                    problem: 1,
-                    answer: "A",
-                    studentChoice: "B",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: true,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 22,
-                    numeric: false,
-                    topic: "topic2",
-                    problem: 1,
-                    answer: "B",
-                    studentChoice: "B",
-                    correct: true,
-                    status: "E",
-                    flagged: false,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 23,
-                    numeric: false,
-                    topic: "topic3",
-                    problem: 1,
-                    answer: "C",
-                    studentChoice: "",
-                    correct: false,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 24,
-                    numeric: false,
-                    topic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "A",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                  {
-                    id: 25,
-                    numeric: false,
-                    opic: "topic4",
-                    problem: 1,
-                    answer: "D",
-                    studentChoice: "",
-                    correct: true,
-                    status: "E",
-                    flagged: true,
-                    reviewed: false,
-                    tutorNotes: "work and study hard",
-                  },
-                ],
-              },
-            },
-          };
-          finalArry.push(newStudentTest);
-          return finalArry;
-        },
-        [],
-      );
+                  topic: "topic1",
+                  problem: 1,
+                  answer: "A",
+                  studentChoice: "B",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: true,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 22,
+                  numeric: false,
+                  topic: "topic2",
+                  problem: 1,
+                  answer: "B",
+                  studentChoice: "B",
+                  correct: true,
+                  status: "E",
+                  flagged: false,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 23,
+                  numeric: false,
+                  topic: "topic3",
+                  problem: 1,
+                  answer: "C",
+                  studentChoice: "",
+                  correct: false,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 24,
+                  numeric: false,
+                  topic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "A",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                },
+                {
+                  id: 25,
+                  numeric: false,
+                  opic: "topic4",
+                  problem: 1,
+                  answer: "D",
+                  studentChoice: "",
+                  correct: true,
+                  status: "E",
+                  flagged: true,
+                  reviewed: false,
+                  tutorNotes: "work and study hard"
+                }
+              ]
+            }
+          }
+        };
+        finalArry.push(newStudentTest);
+        return finalArry;
+      }, []);
       return { formattedStudentTests };
     })
     .catch(err => err);
@@ -854,8 +847,8 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
   fetch(`${API_URL}/students/${student_id}/tests/${test_id}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   })
     .then(res => res.json())
     .catch(err => err);
@@ -865,8 +858,8 @@ export const fetchProblemsByStudentTestIdApi = student_test_id =>
   fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -880,9 +873,9 @@ export const addStudentAnswerToTestApi = answer =>
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(answer),
+    body: JSON.stringify(answer)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -892,9 +885,9 @@ export const addStudentTestQuestionFlagApi = body =>
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .catch(err => err);
@@ -903,8 +896,8 @@ export const fetchStudentTestScoreApi = student_test_id =>
   fetch(`${API_URL}/api/studentTestScore/${student_test_id}`, {
     headers: {
       "Allow-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   })
     .then(res => res.json())
     .then(({ data }) => {
