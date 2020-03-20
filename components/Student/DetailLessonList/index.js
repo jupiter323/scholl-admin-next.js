@@ -33,7 +33,9 @@ import {
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
 
-import { getLessonList, checkLesson, checkAllLessons } from "./index/actions";
+import { getLessonList, checkLesson, checkAllLessons } from "../index/actions";
+import { makeSelectGetLessonList } from "../index/selectors";
+import { createStructuredSelector } from "reselect";
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -59,6 +61,7 @@ class DetailLessonList extends React.Component {
   }
 
   componentDidMount() {
+    console.log('should dispatch')
     this.props.dispathGetLessonList();
   }
 
@@ -398,8 +401,9 @@ const mapDispatchToProps = dispatch => ({
   dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
 });
 
-const mapStateToProps = state => ({
-  lessonList: state.lessonListReducer.lessonList,
+const mapStateToProps = createStructuredSelector({
+  lessonList: makeSelectGetLessonList(),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);

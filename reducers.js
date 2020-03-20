@@ -10,6 +10,5 @@ export default combineReducers({
   instructorReducer,
   studentReducer,
   classesReducer,
-  userReducer,
-  lessonListReducer,
+  userReducer
 });

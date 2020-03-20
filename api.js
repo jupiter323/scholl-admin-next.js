@@ -13,6 +13,7 @@ import {
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
   fetchProblemsByStudentTestIdApi,
+  fetchLessonListApi
 } from "./components/Student/index/api";
 
 import {
@@ -36,9 +37,6 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
   createNewInstructorApi,
 } from './components/Instructor/index/api';
 
-import {
-  fetchLessonListApi,
-} from './components/Student/DetailLessonList/index/api';
 
 export const classApi = {
   createClassApi,
@@ -65,6 +63,7 @@ export const studentApi = {
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
   fetchProblemsByStudentTestIdApi,
+  fetchLessonListApi,
 };
 
 export const instructorApi = {
@@ -79,8 +78,6 @@ export const instructorApi = {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
+  
 };
 
-export const lessonApi = {
-  fetchLessonListApi,
-};
