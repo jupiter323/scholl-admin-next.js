@@ -1,5 +1,4 @@
-/* eslint-disable no-console*/
-import { take, call, put, all, takeEvery } from "redux-saga/effects";
+import { take, call, put, all } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -36,8 +35,7 @@ import {
   UPDATE_INSTRUCTOR_CITY,
   UPDATE_INSTRUCTOR_ZIP,
   UPDATE_INSTRUCTOR_ADDRESS,
-  UPDATE_INSTRUCTOR_PHONE,
-  ADD_INSTRUCTOR_LOCATION,
+  UPDATE_INSTRUCTOR_PHONE
 } from "./components/Instructor/index/constants";
 import {
   setStudents,
@@ -49,13 +47,7 @@ import {
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
-  
-import {
-  FETCH_LESSON_LIST,
-  FETCH_LESSON_LIST_SUCCESS,
-  FETCH_LESSON_LIST_FAIL,
-} from "./components/Student/DetailLessonList/index/constants";
-import { studentApi, classApi, instructorApi, lessonApi } from "./api";
+import { studentApi, classApi, instructorApi } from "./api";
 const {
   fetchStudentsApi,
   searchStudentsApi,
@@ -92,11 +84,8 @@ const {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   updateInstructorPhoneApi,
-  addInstructorToLocationApi,
-  createNewInstructorApi,
+  createNewInstructorApi
 } = instructorApi;
-
-const { fetchLessonListApi } = lessonApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -607,30 +596,6 @@ export function* watchForUpdateClassExcludeFromStatistics() {
   }
 }
 
-/** ******************************************    LESSONS    ******************************************* */
-function* watchForFetchLesson() {
-  yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
-}
-
-function* handleFetchLesson() {
-  try {
-    const lessons = yield call(fetchLessonListApi);
-    yield put({
-      type: FETCH_LESSON_LIST_SUCCESS,
-      payload: lessons.map(lesson => ({
-        ...lesson,
-        selected: false,
-      })),
-    });
-  } catch (error) {
-    console.warn("Error occurred in the handleFetchLesson saga", error);
-    yield put({
-      type: FETCH_LESSON_LIST_FAIL,
-      payload: error,
-    });
-  }
-}
-
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -664,7 +629,6 @@ export default function* defaultSaga() {
     watchForUpdateClassEndDate(),
     watchForUpdateClassExcludeFromStatistics(),
     watchForUpdateClassName(),
-    watchForUpdateClassDuration(),
-    watchForFetchLesson(),
+    watchForUpdateClassDuration()
   ]);
 }
