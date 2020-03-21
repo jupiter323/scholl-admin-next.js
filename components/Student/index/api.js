@@ -924,7 +924,7 @@ export const updateStudentTestQuestionFlagStatusApi = body =>
     .then(res => res)
     .catch(err => err);
 
- 
+
 export const fetchLessonListApi = () =>
   fetch(`${API_URL}/api/lessons`, {
     headers: {
@@ -937,3 +937,27 @@ export const fetchLessonListApi = () =>
       const lessons = data.lessons;
       return lessons;
     });
+export const fetchUnitsApi = () =>
+  fetch(`${API_URL}/api/units`,
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => res.json())
+    .then(({ data }) => {
+      const { units = [] } = data;
+      const formattedUnits = units.reduce((finalArr, currentUnit) => {
+        const { id, name, reference_id, } = currentUnit;
+        const newUnit = {
+          label: name,
+          value: id
+        };
+        finalArr.push(newUnit);
+        return finalArr;
+      }, []);
+      return { formattedUnits, };
+    })
+    .catch(err => console.warn('err', err));

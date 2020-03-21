@@ -18,6 +18,7 @@ import {
   FETCH_LESSON_LIST,
   FETCH_LESSON_LIST_SUCCESS,
   FETCH_LESSON_LIST_FAIL,
+  FETCH_UNITS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -49,7 +50,8 @@ import {
   setStudentCompletedTests,
   setStudentOverDueTests,
   setStudentAssignedTests,
-  setStudentSections
+  setStudentSections,
+  setUnitFilterOptions
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -71,7 +73,8 @@ const {
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
   fetchProblemsByStudentTestIdApi,
-  fetchLessonListApi
+  fetchLessonListApi,
+  fetchUnitsApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -114,6 +117,24 @@ export function* fetchStudents() {
     }
   } catch (err) {
     console.warn("Error occurred in the fetchStudents saga", err);
+  }
+}
+
+export function* watchForFetchUnitFilterOptions(){
+  while(true){
+    yield take(FETCH_UNITS);
+    yield call(fetchUnits)
+  }
+}
+
+export function* fetchUnits(){
+  try {
+    const {formattedUnits} = yield call(fetchUnitsApi);
+    if(Array.isArray(formattedUnits) || formattedUnits instanceof Array){
+      yield put(setUnitFilterOptions(formattedUnits))
+    }
+  } catch(err){
+    console.warn("Error occured in the fetchUnits saga",err)
   }
 }
 
@@ -668,5 +689,6 @@ export default function* defaultSaga() {
     watchForUpdateClassName(),
     watchForUpdateClassDuration(),
     watchForFetchLesson(),
+    watchForFetchUnitFilterOptions(),
   ]);
 }

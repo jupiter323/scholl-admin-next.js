@@ -16,7 +16,8 @@ import {
   FETCH_LESSON_LIST_SUCCESS,
   FETCH_LESSON_LIST_FAIL,
   CHECKED_LESSON,
-  CHECK_ALL_LESSONS
+  CHECK_ALL_LESSONS,
+  SET_UNIT_FILTER_OPTIONS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -34,7 +35,8 @@ const initialState = fromJS({
   activeStudentTestId: "",
   lessonList: [],
   isLoading: false,
-  error: null
+  error: null,
+  unitFilterOptions:[],
 });
 
 function studentReducer(state = initialState, action) {
@@ -68,7 +70,8 @@ function studentReducer(state = initialState, action) {
 
     case FETCH_LESSON_LIST_SUCCESS:
       return state.set("lessonList", action.payload);
-
+    case SET_UNIT_FILTER_OPTIONS:
+      return state.set('unitFilterOptions',action.options)
     // return {
     //   ...state,
     //   isLoading: false,

@@ -2,10 +2,14 @@
 import React from 'react';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import lessonSortOptions from '../../utils/lessonSortOptions';
-import unitOptions from '../../utils/unitOptions';
+import { makeSelectUnitFilterOptions } from '../../../index/selectors';
+import { setUnitFilterOptions, fetchUnits } from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -15,7 +19,22 @@ class FilterSection extends React.Component {
       sort: {},
       nameFilter: "",
       unitFilter: "",
+      unitOptions: [],
     };
+  }
+
+  componentDidMount = () => {
+    const { onFetchUnits } = this.props;
+    onFetchUnits();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if(this.state.unitOptions.length === 0 && nextProps.unitOptions.length !== 0){
+      const {unitOptions} = nextProps;
+      this.setState({
+        unitOptions
+      })
+    }
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
@@ -215,9 +234,9 @@ class FilterSection extends React.Component {
                 <div className="col s12 m3">
                   <div className="input-field" style={{ marginTop: '-7px' }}>
                     <Dropdown
-                      value={getValueFromState(unitFilter, unitOptions)}
+                      value={getValueFromState(unitFilter, this.state.unitOptions)}
                       onChange={(event) => this.handleUnitChange(event)}
-                      options={unitOptions}
+                      options={this.state.unitOptions}
                       label="Unit"
                       stateKey="unit"
                       dropdownKey="unit"
@@ -300,4 +319,16 @@ FilterSection.propTypes = {
   classTypeFilters: PropTypes.array.isRequired,
   onSetUnitFilter: PropTypes.func.isRequired,
 };
-export default FilterSection;
+
+const mapStateToProps = createStructuredSelector({
+  unitOptions: makeSelectUnitFilterOptions(),
+})
+
+const mapDispatchToProps = dispatch => ({
+  onSetUnitFilterOptions: options => dispatch(setUnitFilterOptions(options)),
+  onFetchUnits: () => dispatch(fetchUnits()),
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(FilterSection);

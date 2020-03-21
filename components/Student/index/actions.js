@@ -28,12 +28,27 @@ import {
   FETCH_LESSON_LIST,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  FETCH_UNITS,
+  SET_UNIT_FILTER_OPTIONS,
 } from "./constants";
 
 export function fetchStudents() {
   return {
     type: FETCH_STUDENTS
   };
+}
+
+export function fetchUnits(){
+  return {
+    type:FETCH_UNITS
+  }
+}
+
+export function setUnitFilterOptions(options){
+  return {
+    type:SET_UNIT_FILTER_OPTIONS,
+    options
+  }
 }
 
 export function searchStudents(filters) {
