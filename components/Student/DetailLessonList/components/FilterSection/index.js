@@ -69,7 +69,7 @@ class FilterSection extends React.Component {
   }
   render() {
     const { open, sort, nameFilter, unitFilter } = this.state;
-    const { currentView, dueDateFilters, flagFilters, subjectFilters, statusFilters, scoreStatusFilters, classTypeFilters, onChangeView, handleFilterClick } = this.props;
+    const { currentView, dueDateFilters, flagFilters, subjectFilters, scoreStatusFilters, onChangeView, handleFilterClick } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -147,44 +147,6 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="scheduled"
-                      checked={statusFilters.indexOf('Scheduled') !== -1}
-                      onChange={() => handleFilterClick('status', 'Scheduled')}
-                    />
-                    <label htmlFor="scheduled">Scheduled</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="assigned"
-                      checked={statusFilters.indexOf('Assigned') !== -1}
-                      onChange={() => handleFilterClick('status', 'Assigned')}
-                    />
-                    <label htmlFor="assigned">Assigned</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="started"
-                      checked={statusFilters.indexOf('Started') !== -1}
-                      onChange={() => handleFilterClick('status', 'Started')}
-                    />
-                    <label htmlFor="started">Started</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="complete"
-                      checked={statusFilters.indexOf('Complete') !== -1}
-                      onChange={() => handleFilterClick('status', 'Complete')}
-                    />
-                    <label htmlFor="complete">Complete</label>
-                  </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
-                  <li>
-                    <input
-                      type="checkbox"
                       id="hasReviewFlags"
                       checked={flagFilters.indexOf("flags") !== -1}
                       onChange={() => handleFilterClick('flags', 'true')}
@@ -214,40 +176,20 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="dueThisWeek"
-                      checked={dueDateFilters.indexOf('dueThisWeek') !== -1}
-                      onChange={() => handleFilterClick('dueDate', 'dueThisWeek')}
-                    />
-                    <label htmlFor="dueThisWeek">Due this Week</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
                       id="overdue"
                       checked={dueDateFilters.indexOf('overdue') !== -1}
                       onChange={() => handleFilterClick('dueDate', 'overdue')}
                     />
                     <label htmlFor="overdue">Overdue</label>
                   </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="some-class"
-                      checked={classTypeFilters.indexOf('class') !== -1}
-                      onChange={() => handleFilterClick('classType', 'class')}
+                      id="noDueDate"
+                      checked={dueDateFilters.indexOf('noDueDate') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'noDueDate')}
                     />
-                    <label htmlFor="some-class">Some Class</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="tutoring"
-                      checked={classTypeFilters.indexOf('tutoring') !== -1}
-                      onChange={() => handleFilterClick('classType', 'tutoring')}
-                    />
-                    <label htmlFor="tutoring">Tutoring</label>
+                    <label htmlFor="noDueDate">noDueDate</label>
                   </li>
                 </ul>
               </div>
@@ -276,7 +218,7 @@ class FilterSection extends React.Component {
                       value={getValueFromState(unitFilter, unitOptions)}
                       onChange={(event) => this.handleUnitChange(event)}
                       options={unitOptions}
-                      label="Unit Number"
+                      label="Unit"
                       stateKey="unit"
                       dropdownKey="unit"
                     />
