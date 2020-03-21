@@ -390,7 +390,6 @@ CompletedTestCard.propTypes = {
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
   test: PropTypes.object.isRequired,
-  scores: PropTypes.array
 };
 
 const mapStateToProps = createStructuredSelector({

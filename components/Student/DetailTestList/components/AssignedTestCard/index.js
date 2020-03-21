@@ -8,6 +8,15 @@ class AssignedTestCard extends React.Component {
     super(props);
   }
 
+  handleDropdownClick = event => {
+    const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
+    event.preventDefault();
+    if (dropdownIsOpen) {
+      return onCloseDropdown();
+    }
+    return onSetDropdown(index);
+  };
+
   render() {
     const {
       dropdownIndex,
@@ -135,7 +144,6 @@ class AssignedTestCard extends React.Component {
 }
 
 AssignedTestCard.propTypes = {
-  dropdownIndex: PropTypes.number,
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
