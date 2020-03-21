@@ -23,12 +23,12 @@ class CompletedTestCard extends React.Component {
 
   componentDidMount = async () => {
     const { scores, onSetScores } = this.props;
-    if (scores.length === 0) {
+    if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
       onSetScores(formattedScores);
-      this.setScores(formattedScores);
+      this.setScores(formattedScores.section_scores);
     } else {
-      this.setScores(scores);
+      this.setScores(scores.section_scores);
     }
   };
 
@@ -56,7 +56,7 @@ class CompletedTestCard extends React.Component {
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.section_scores;
+    return formattedTestScores;
   };
 
   handleDropdownClick = event => {
