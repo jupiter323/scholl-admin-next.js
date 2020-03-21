@@ -90,7 +90,7 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="writing"
-                      checked={subjectFilters.indexOf('Writing') !== -1}
+                      checked={subjectFilters.indexOf('Writing and Language') !== -1}
                       onChange={() => handleFilterClick("subject", 'Writing and Language')}
                     />
                     <label htmlFor="writing">Writing</label>
@@ -109,38 +109,38 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="beginning"
-                      checked={scoreStatusFilters.indexOf('Beginning') !== -1}
-                      onChange={() => handleFilterClick("score", 'Beginning')}
+                      id="great"
+                      checked={scoreStatusFilters.indexOf('great') !== -1}
+                      onChange={() => handleFilterClick("score", 'great')}
                     />
-                    <label htmlFor="beginning">Beginning</label>
+                    <label htmlFor="great">Great</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="developing"
-                      checked={scoreStatusFilters.indexOf('Developing') !== -1}
-                      onChange={() => handleFilterClick("score", 'Developing')}
+                      id="aboveAverage"
+                      checked={scoreStatusFilters.indexOf('aboveAverage') !== -1}
+                      onChange={() => handleFilterClick("score", 'aboveAverage')}
                     />
-                    <label htmlFor="developing">Developing</label>
+                    <label htmlFor="aboveAverage">Above Average</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="accomplished"
-                      checked={scoreStatusFilters.indexOf('Accomplished') !== -1}
-                      onChange={() => handleFilterClick("score", 'Accomplished')}
+                      id="belowAverage"
+                      checked={scoreStatusFilters.indexOf('belowAverage') !== -1}
+                      onChange={() => handleFilterClick("score", 'belowAverage')}
                     />
-                    <label htmlFor="accomplished">Accomplished</label>
+                    <label htmlFor="belowAverage">Below Average</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="exemplary"
-                      checked={scoreStatusFilters.indexOf('Exemplary') !== -1}
-                      onChange={() => handleFilterClick("score", 'Exemplary')}
+                      id="poor"
+                      checked={scoreStatusFilters.indexOf('poor') !== -1}
+                      onChange={() => handleFilterClick("score", 'poor')}
                     />
-                    <label htmlFor="exemplary">Exemplary</label>
+                    <label htmlFor="poor">Poor</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
