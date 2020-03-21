@@ -43,7 +43,7 @@ class DetailLessonList extends React.Component {
     super(props);
     this.state = {
       test: true,
-      lessons: this.props.lessonList,
+      lessons: [],
       modalOpen: false,
       currentView: "full",
       active: "full",
@@ -63,6 +63,14 @@ class DetailLessonList extends React.Component {
   componentDidMount() {
     console.log('should dispatch')
     this.props.dispathGetLessonList();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.state.lessons.length === 0) {
+      this.setState({
+        lessons: nextProps.lessonList
+      })
+    }
   }
 
   onCheckCard = () => this.setState()
@@ -403,7 +411,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = createStructuredSelector({
   lessonList: makeSelectGetLessonList(),
-  
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
