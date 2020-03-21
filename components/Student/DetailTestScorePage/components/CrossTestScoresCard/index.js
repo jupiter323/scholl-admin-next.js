@@ -16,7 +16,7 @@ class CrossTestScoresCard extends React.Component {
           </div>
         </div>
         <div className="progress progress-rounded-md">
-          <div className="determinate" style={{ width: item.current_score+'%', backgroundColor: "#f5883f" }}>
+          <div className="determinate" style={{ width: (item.current_score/40)*100+'%', backgroundColor: "#f5883f" }}>
             <span className="progress-label">{item.current_score}</span>
           </div>
         </div>

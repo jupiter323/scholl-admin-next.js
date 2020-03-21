@@ -23427,7 +23427,7 @@ a.collapsible-opener:hover {
 }
 
 .progress-legend .legend-block:last-child {
-	text-align: right;
+	text-align: left;
 }
 
 .progress-legend .text-frame {
