@@ -93,7 +93,9 @@ class DetailLessonList extends React.Component {
   onUnsetFilteredState = filter => this.setState({ [filter]: "" });
   onChangeView = view => this.setState({ currentView: view, active: view });
 
-  onSetUnitFilter = unit => this.setState({ unitFilter: unit });
+  onSetUnitFilter = unit => {
+    this.setState({ unitFilter: unit });
+  }
 
   // eslint-disable-next-line consistent-return
   onSortLessons = lessons => {
@@ -185,7 +187,7 @@ class DetailLessonList extends React.Component {
       // lessons = lessons.filter(lesson => lesson.flags.length !== 0);
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.unit) !== -1);
+      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.units.id) !== -1);
     }
     return lessons;
   };

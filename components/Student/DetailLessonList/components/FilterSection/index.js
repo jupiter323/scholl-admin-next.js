@@ -250,7 +250,7 @@ class FilterSection extends React.Component {
               <div className="col s12 l4">
                 <div className="row mb-0">
 
-                  <div className="col s12 x17">
+                  <div className="col s12 m12">
                     <div className="input-field">
                       <Dropdown
                         value={getValueFromState(sort, lessonSortOptions)}
