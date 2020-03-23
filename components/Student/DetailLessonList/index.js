@@ -61,7 +61,6 @@ class DetailLessonList extends React.Component {
   }
 
   componentDidMount() {
-    console.log('should dispatch')
     this.props.dispathGetLessonList();
   }
 
@@ -73,7 +72,6 @@ class DetailLessonList extends React.Component {
     }
   }
 
-  onCheckCard = () => this.setState()
   onCheckAll = () => this.setState(this.state.lessons.map(lesson => ({
     ...lesson,
     selected: !lesson.selected,
