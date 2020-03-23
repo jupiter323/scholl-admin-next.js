@@ -20,6 +20,8 @@ import {
   lessonNameAscending,
   statusDescending,
   statusAscending,
+  scoreDescending,
+  scoreAscending,
   availableDateAscending,
   availableDateDescending,
   dueDate,
@@ -109,10 +111,14 @@ class DetailLessonList extends React.Component {
         return lessons.sort(passageAscending);
       case "statusAscending":
         return lessons.sort(statusAscending);
+      case "scoreAscending":
+        return lessons.sort(scoreAscending);
       case "passageDescending":
         return lessons.sort(passageDescending);
       case "statusDescending":
         return lessons.sort(statusDescending);
+      case "scoreDescending":
+        return lessons.sort(scoreDescending);
       case "availableDateAscending":
         return lessons.sort(availableDateAscending);
       case "availableDateDescending":
@@ -185,7 +191,6 @@ class DetailLessonList extends React.Component {
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => lesson.lesson_problems.length !== 0);
-      console.log("lessons:",lessons)
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.units.id) !== -1);

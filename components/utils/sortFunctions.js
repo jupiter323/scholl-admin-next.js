@@ -106,6 +106,15 @@ export const statusAscending = ({ status: statusA }, { status: statusB }) => {
   if (statusA < statusB) { return -1; }
   return 0;
 };
+export const scoreDescending = ({ score: scoreA }, { score: scoreB }) => {
+  if (scoreA > scoreB) { return -1; }
+  return 0;
+};
+
+export const scoreAscending = ({ score: scoreA }, { score: scoreB }) => {
+  if (scoreA < scoreB) { return -1; }
+  return 0;
+};
 
 export const flagsDescending = ({ flags: flagsA }, { flags: flagsB }) => {
   if (flagsA.length > flagsB.length) { return -1; }

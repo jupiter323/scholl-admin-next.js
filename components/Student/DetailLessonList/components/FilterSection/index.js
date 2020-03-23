@@ -321,11 +321,9 @@ FilterSection.propTypes = {
   onUnsetFilteredState: PropTypes.func.isRequired,
   onSetSort: PropTypes.func.isRequired,
   subjectFilters: PropTypes.array.isRequired,
-  statusFilters: PropTypes.array.isRequired,
   scoreStatusFilters: PropTypes.array.isRequired,
   flagFilters: PropTypes.array.isRequired,
   dueDateFilters: PropTypes.array.isRequired,
-  classTypeFilters: PropTypes.array.isRequired,
   onSetUnitFilter: PropTypes.func.isRequired,
 };
 

@@ -4,7 +4,7 @@ export default [
     value: "passageAscending",
   },
   {
-    label: "Status/Score",
+    label: "Status",
     value: "statusAscending",
   },
   {
@@ -16,7 +16,7 @@ export default [
     value: "dueDate",
   },
   {
-    label: "Flag Count",
-    value: "alertsAscending",
+    label: "Score",
+    value: "scoreAscending",
   },
 ];
