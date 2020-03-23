@@ -167,7 +167,7 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="hasReviewFlags"
-                      checked={flagFilters.indexOf("flags") !== -1}
+                      checked={flagFilters.indexOf("true") !== -1}
                       onChange={() => handleFilterClick('flags', 'true')}
                     />
                     <label htmlFor="hasReviewFlags">Has Review Flags</label>
