@@ -185,6 +185,7 @@ class DetailLessonList extends React.Component {
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => lesson.lesson_problems.length !== 0);
+      console.log("lessons:",lessons)
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
       lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.units.id) !== -1);
@@ -237,6 +238,9 @@ class DetailLessonList extends React.Component {
         lessons = lessons.filter(lesson => lesson.overdue === true);
       }
       if (dueDateFilters.includes("noDueDate")) {
+      }
+      if (dueDateFilters.includes("unAssgined")) {
+        lessons = lessons.filter(lesson => lesson.status === 1);
       }
       return lessons;
     }

@@ -210,6 +210,15 @@ class FilterSection extends React.Component {
                     />
                     <label htmlFor="noDueDate">noDueDate</label>
                   </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="unAssigned"
+                      checked={dueDateFilters.indexOf('unAssigned') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'unAssigned')}
+                    />
+                    <label htmlFor="unAssigned">UnAssigned</label>
+                  </li>
                 </ul>
               </div>
               <div className="d-flex row mb-0 justify-center">
