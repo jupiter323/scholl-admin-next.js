@@ -13,7 +13,11 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
   GET_TESTS,
-  FETCH_STUDENT_TEST_SECTIONS
+  FETCH_STUDENT_TEST_SECTIONS,
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
+  FETCH_UNITS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -22,7 +26,8 @@ import {
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_CLASS_DURATION,
-  UPDATE_EXCLUDE_FROM_STATISTICS
+  UPDATE_EXCLUDE_FROM_STATISTICS,
+
 } from "./components/Classes/index/constants";
 import {
   FETCH_INSTRUCTORS,
@@ -43,11 +48,14 @@ import {
   setStudentCompletedTests,
   setStudentOverDueTests,
   setStudentAssignedTests,
-  setStudentSections
+  setStudentSections,
+  setUnitFilterOptions
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
-import { studentApi, classApi, instructorApi } from "./api";
+  
+
+import { studentApi, classApi, instructorApi, lessonApi } from "./api";
 const {
   fetchStudentsApi,
   searchStudentsApi,
@@ -62,7 +70,9 @@ const {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi
+  fetchProblemsByStudentTestIdApi,
+  fetchLessonListApi,
+  fetchUnitsApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -103,6 +113,24 @@ export function* fetchStudents() {
     }
   } catch (err) {
     console.warn("Error occurred in the fetchStudents saga", err);
+  }
+}
+
+export function* watchForFetchUnitFilterOptions(){
+  while(true){
+    yield take(FETCH_UNITS);
+    yield call(fetchUnits)
+  }
+}
+
+export function* fetchUnits(){
+  try {
+    const {formattedUnits} = yield call(fetchUnitsApi);
+    if(Array.isArray(formattedUnits) || formattedUnits instanceof Array){
+      yield put(setUnitFilterOptions(formattedUnits))
+    }
+  } catch(err){
+    console.warn("Error occured in the fetchUnits saga",err)
   }
 }
 
@@ -596,6 +624,32 @@ export function* watchForUpdateClassExcludeFromStatistics() {
   }
 }
 
+/** ******************************************    LESSONS    ******************************************* */
+function* watchForFetchLesson() {
+  yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
+}
+
+function* handleFetchLesson() {
+  try {
+    const lessons = yield call(fetchLessonListApi);
+     if (Array.isArray(lessons) || lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+        })),
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchLesson saga", error);
+    yield put({
+      type: FETCH_LESSON_LIST_FAIL,
+      payload: error,
+    });
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -629,6 +683,8 @@ export default function* defaultSaga() {
     watchForUpdateClassEndDate(),
     watchForUpdateClassExcludeFromStatistics(),
     watchForUpdateClassName(),
-    watchForUpdateClassDuration()
+    watchForUpdateClassDuration(),
+    watchForFetchLesson(),
+    watchForFetchUnitFilterOptions(),
   ]);
 }

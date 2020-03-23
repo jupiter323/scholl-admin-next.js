@@ -4,6 +4,7 @@ import LessonCard from '../FullView/components/LessonCard';
 
 class FullView extends React.Component {
   mapLessons = () => {
+
     const { lessons, onCloneLesson, onDeleteLesson, user } = this.props;
     return lessons.map((lesson, index) => (
       <LessonCard
