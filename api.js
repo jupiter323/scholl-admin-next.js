@@ -38,7 +38,6 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
   createNewInstructorApi,
 } from './components/Instructor/index/api';
 
-
 export const classApi = {
   createClassApi,
   fetchClassesApi,
@@ -82,4 +81,3 @@ export const instructorApi = {
   addInstructorToLocationApi,
   
 };
-

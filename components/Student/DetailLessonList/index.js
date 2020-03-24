@@ -98,54 +98,55 @@ class DetailLessonList extends React.Component {
   }
 
   // eslint-disable-next-line consistent-return
-  onSortLessons = lessons => {
+  onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch (sort) {
-      case "subjectAscending":
+      case 'subjectAscending':
         return lessons.sort(subjectAscending);
-      case "subjectDescending":
+      case 'subjectDescending':
         return lessons.sort(subjectDescending);
-      case "passageAscending":
+      case 'passageAscending':
         return lessons.sort(passageAscending);
-      case "statusAscending":
+      case 'statusAscending':
         return lessons.sort(statusAscending);
       case "scoreAscending":
         return lessons.sort(scoreAscending);
       case "passageDescending":
         return lessons.sort(passageDescending);
-      case "statusDescending":
+      case 'statusDescending':
         return lessons.sort(statusDescending);
       case "scoreDescending":
         return lessons.sort(scoreDescending);
       case "availableDateAscending":
         return lessons.sort(availableDateAscending);
-      case "availableDateDescending":
+      case 'availableDateDescending':
         return lessons.sort(availableDateDescending);
-      case "dueDateDescending":
+      case 'dueDateDescending':
         return lessons.sort(dueDate);
-      case "dueDateAscending":
+      case 'dueDateAscending':
         return lessons.sort(dueDateAscending);
-      case "flagsAscending":
+      case 'flagsAscending':
         return lessons.sort(flagsAscending);
-      case "flagsDescending":
+      case 'flagsDescending':
         return lessons.sort(flagsDescending);
-      case "lessonNameAscending":
+      case 'lessonNameAscending':
         return lessons.sort(lessonNameAscending);
-      case "lessonNameDescending":
+      case 'lessonNameDescending':
         return lessons.sort(lessonNameDescending);
-      case "completionDateAscending":
+      case 'completionDateAscending':
         return lessons.sort(completionDateAscending);
-      case "completionDateDescending":
+      case 'completionDateDescending':
         return lessons.sort(completionDateDescending);
-      case "lessonTypeAscending":
+      case 'lessonTypeAscending':
         return lessons.sort(lessonTypeAscending);
-      case "lessonTypeDescending":
+      case 'lessonTypeDescending':
         return lessons.sort(lessonTypeDescending);
       default:
         break;
     }
-  };
-  onAddUpdatedLessons = lessons => this.setState({ updatedLessons: lessons });
+  }
+  onAddUpdatedLessons = (lessons) => this.setState({ updatedLessons: lessons })
+
 
   onFilterByName = () => {
     const { lessons, nameFilter } = this.state;
@@ -157,20 +158,20 @@ class DetailLessonList extends React.Component {
       }
       return finalArr;
     }, []);
-  };
-  onCloneLesson = index => {
+  }
+  onCloneLesson = (index) => {
     const { lessons } = this.state;
     this.setState(prevState => {
       prevState.lessons.push(lessons[index]);
       return { lessons: prevState.lessons };
     });
-  };
+  }
 
-  onDeleteLesson = index => {
+  onDeleteLesson = (index) => {
     const { lessons } = this.state;
     const newLessonsArray = this.arrayItemRemover(lessons, lessons[index]);
     this.setState({ lessons: newLessonsArray });
-  };
+  }
   // note: unassigned and incomplete are filtering opposite, but this works for some reason
   onFilterLessons = () => {
     const {
@@ -194,7 +195,7 @@ class DetailLessonList extends React.Component {
       lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.units.id) !== -1);
     }
     return lessons;
-  };
+  }
 
   getMappableLessons = () => {
     const {
@@ -220,7 +221,8 @@ class DetailLessonList extends React.Component {
       return this.onSortLessons(mappableLessons);
     }
     return mappableLessons;
-  };
+  }
+
 
   // may need to alter dueNextSession depending if client wants ALL vs incomplete/overdue
   // TODO: only works with one due date filter, not multiple
@@ -261,21 +263,21 @@ class DetailLessonList extends React.Component {
     let modifiedFilterName;
     let modifiedFilterUpdatedState;
     switch (filterType) {
-      case "subject":
+      case 'subject':
         modifiedFilterCurrentState = currentSubjectFilters;
-        modifiedFilterName = "subjectFilters";
+        modifiedFilterName = 'subjectFilters';
         break;
       case "score":
         modifiedFilterCurrentState = currentScoreStatusFilters;
-        modifiedFilterName = "scoreStatusFilters";
+        modifiedFilterName = 'scoreStatusFilters';
         break;
-      case "flags":
+      case 'flags':
         modifiedFilterCurrentState = currentFlagFilters;
-        modifiedFilterName = "flagFilters";
+        modifiedFilterName = 'flagFilters';
         break;
-      case "dueDate":
+      case 'dueDate':
         modifiedFilterCurrentState = currentDueDateFilters;
-        modifiedFilterName = "dueDateFilters";
+        modifiedFilterName = 'dueDateFilters';
         break;
       default:
         break;
@@ -292,34 +294,19 @@ class DetailLessonList extends React.Component {
       });
     }
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
-  };
+  }
 
-  arrayItemRemover = (array, value) => array.filter(lesson => lesson !== value);
+  arrayItemRemover = (array, value) => array.filter((lesson) => lesson !== value)
 
   renderCurrentView = () => {
     const { active } = this.state;
     const { user } = this.props;
-    if (active === "full") {
-      return (
-        <FullView
-          user={user}
-          lessons={this.getMappableLessons()}
-          onDeleteLesson={this.onDeleteLesson}
-          onCloneLesson={this.onCloneLesson}
-          onCheckAll={this.props.dispathCheckAllLesson}
-          onCheckLesson={this.props.dispathCheckLesson}
-        />
-      );
+    if (active === 'full') {
+      return <FullView user={user} lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson} />;
     }
-    return (
-      <ListView
-        user={user}
-        lessons={this.getMappableLessons()}
-        onSetSort={this.onSetSort}
-        sort={this.state.sort}
-      />
-    );
-  };
+    return <ListView user={user} lessons={this.getMappableLessons()} onSetSort={this.onSetSort} sort={this.state.sort} />;
+  }
+
 
   render() {
     const {
@@ -353,13 +340,7 @@ class DetailLessonList extends React.Component {
           onCloseModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
         />
-        <a
-          href="#"
-          onClick={this.onOpenModal}
-          className="waves-effect waves-teal btn add-btn modal-trigger"
-        >
-          <i className="material-icons">add</i>Assign Lesson
-        </a>
+        <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Lesson</a>
       </React.Fragment>
     );
   }
@@ -367,10 +348,6 @@ class DetailLessonList extends React.Component {
 
 DetailLessonList.propTypes = {
   user: PropTypes.object.isRequired,
-  lessonList: PropTypes.array.isRequired,
-  dispathGetLessonList: PropTypes.func.isRequired,
-  dispathCheckLesson: PropTypes.func.isRequired,
-  dispathCheckAllLesson: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
