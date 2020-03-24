@@ -25,21 +25,15 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    const grant_type = "password";
-    const client_id = "1";
-    const client_secret = "5eRIxuj2rWQDAWplsOK0PtgV8LW4wlLFsCc92ty4";
-    const username = "test1@example.com";
+    const email = "test3@example.com";
     const password = "password";
     const postBody = {
-      grant_type,
-      client_id,
-      client_secret,
-      username,
+      email,
       password
     };
     const data = await logIn(postBody);
     if (data) {
-      setToken(data.access_token, data.refresh_token);
+      setToken(data.token, data.expires_at);
       const { onSetUserIsLogged } = this.props;
       onSetUserIsLogged(true);
       Router.push("/dashboard");
