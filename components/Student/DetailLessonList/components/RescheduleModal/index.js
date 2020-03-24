@@ -122,6 +122,12 @@ class RescheduleModal extends React.Component {
                                     onChange={date => this.handleDetailsChange(date, "assignDate")}
                                     placeholderText="AssignFor"
                                   />
+                                  <label
+                                    className={assignDate !== "" ? "label active" : "label"}
+                                    htmlFor="assignDate"
+                                  >
+                                    Assign For
+                                  </label>
                                 </div>
                               </div>
                               <div className="col s6">
@@ -156,6 +162,12 @@ class RescheduleModal extends React.Component {
                                     onChange={date => this.handleDetailsChange(date, "dueDate")}
                                     placeholderText="Due(optional)"
                                   />
+                                    <label
+                                    className={dueDate !== "" ? "label active" : "label"}
+                                    htmlFor="dueDate"
+                                  >
+                                    Due(Optionanl)
+                                  </label>
                                 </div>
                               </div>
                               <div className="col s6">
@@ -209,7 +221,7 @@ class RescheduleModal extends React.Component {
                               Cancel
                             </a>
                             <a href="#" className="btn" onClick={this.onSave}>
-                              Save
+                              Save Changes
                             </a>
                           </div>
                         </div>
