@@ -22,7 +22,11 @@ class EditTestModal extends React.Component {
       analysisBarImages: [],
       analysisCicleImages: [],
       answerSheetImages: [],
+<<<<<<< HEAD
       enablePublish: true,
+=======
+      enablePublish:true,
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
       userInfo: {
         version: "Version: SAT Practice Test #1",
         target: "Score Report",
@@ -44,6 +48,7 @@ class EditTestModal extends React.Component {
         "Math Answer Sheet(no calc)",
         "Math Answer Sheet(calculator)"
       ],
+<<<<<<< HEAD
       adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
       headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"]
     };
@@ -64,6 +69,19 @@ class EditTestModal extends React.Component {
     this.props.onRef(undefined);
   }
 
+=======
+      adminInfo:
+        "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
+      headerGradient: [
+        "#ec693d 0%",
+        "#649aab 61%",
+        "#30add6 87%",
+        "#18b5e9 100%"
+      ]
+    };
+  }
+
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
   getBase64ImageFromURL = url => {
     return new Promise((resolve, reject) => {
       var img = new Image();
@@ -99,10 +117,19 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true
     };
+<<<<<<< HEAD
     const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(canvas => {
       const imgData = canvas.toDataURL("image/png", 1.0);
       return imgData;
     });
+=======
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
+      canvas => {
+        const imgData = canvas.toDataURL("image/png", 1.0);
+        return imgData;
+      }
+    );
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
     return targetImg;
   };
 
@@ -141,8 +168,13 @@ class EditTestModal extends React.Component {
 
   generateScoreReportPdf = async () => {
     this.setState({
+<<<<<<< HEAD
       enablePublish: false
     });
+=======
+      enablePublish:false,
+    })
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
     let imgDataLists = [];
     const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = "./static/images/sunset.jpg";
@@ -177,8 +209,13 @@ class EditTestModal extends React.Component {
 
     getImagesPromise.then(() => {
       this.setState({
+<<<<<<< HEAD
         enablePublish: true
       });
+=======
+        enablePublish:true
+      })
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
       const {
         scoresImages,
         analysisCicleImages,
@@ -280,8 +317,13 @@ class EditTestModal extends React.Component {
   };
 
   render() {
+<<<<<<< HEAD
     const { test, user, onCloseEditTestModal } = this.props;
     const { activePage, enablePublish } = this.state;
+=======
+    const { test, user } = this.props;
+    const { activePage,enablePublish } = this.state;
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
     const { title, version: testVersion } = test;
     const {
       studentInformation: { firstName, lastName }
@@ -352,8 +394,17 @@ class EditTestModal extends React.Component {
                 </li>
                 <li className="col s3">
                   <a
+<<<<<<< HEAD
                     className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
                     onClick={() => enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")}
+=======
+                    className={
+                      activePage === "StrengthsAndWeaknesses" ? "active" : ""
+                    }
+                    onClick={() =>
+                      enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
+                    }
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
                     href="#"
                   >
                     Strengths &amp; Weaknesses

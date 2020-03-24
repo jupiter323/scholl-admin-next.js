@@ -249,9 +249,14 @@ class Students extends Component {
     } = updatedStudent;
     const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
+<<<<<<< HEAD
     const students = update(originalStudents, {
       [updatedStudentIndex]: {
         $merge: { active, studentInformation, contactInformation, emailAddress, location }
+=======
+    const students = update(originalStudents, {[updatedStudentIndex]: {
+        $merge: {active,studentInformation,contactInformation,emailAddress,location}
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
       }
     });
     this.setState({ students });

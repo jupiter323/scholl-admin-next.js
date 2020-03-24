@@ -15,9 +15,17 @@ class MathNoCalcPage extends React.Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <div className="slide" id="mathNoCalcAnswerSheetImg">
         <div className="row" style={{ columns: "3 auto", marginLeft: "10px", marginRight: "10px" }}>
           <ol className="answers-list">{this.mapAnswers()}</ol>
+=======
+      <div className="slide" id = "mathNoCalcAnswerSheetImg">
+        <div className="row"  style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
+          <ol className="answers-list">
+            {this.mapMathNoCalcAnswers()}
+          </ol>
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
         </div>
       </div>
     );
@@ -25,6 +33,11 @@ class MathNoCalcPage extends React.Component {
 }
 
 MathNoCalcPage.propTypes = {
+<<<<<<< HEAD
   testSection: PropTypes.object
 };
+=======
+  mathNoCalc: PropTypes.object.isRequired,
+}
+>>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
 export default MathNoCalcPage;
