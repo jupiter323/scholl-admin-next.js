@@ -25,16 +25,15 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    // const email = "test-student@example.com";
-    const email = "test3@example.com";
+    const email = "test2@example.com";
     const password = "password";
     const postBody = {
       email,
       password
     };
     const data = await logIn(postBody);
-    if (data) {
-      setToken(data.access_token, data.refresh_token);
+    if (data.token && data.expires_at) {
+      setToken(data.token, data.expires_at);
       const { onSetUserIsLogged } = this.props;
       onSetUserIsLogged(true);
       Router.push("/dashboard");
