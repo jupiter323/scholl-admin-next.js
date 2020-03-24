@@ -65,6 +65,7 @@ class LessonCard extends React.Component {
   renderDropdownOptions = status => {
     const {
       lesson: { assignDate, assignTime, dueDate, dueTime },
+      handleRescheduleModalOpen
     } = this.props;
     if (status === "Scheduled" || status === "Assigned") {
       return (
@@ -81,12 +82,13 @@ class LessonCard extends React.Component {
     return (
       <React.Fragment>
         <li>
-          <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>
+          <a href="#" className="disabled">
             Assign
           </a>
         </li>
         <li>
-          <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>
+          {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
+          <a href="#" onClick={handleRescheduleModalOpen}>
             Reschedule
           </a>
         </li>
@@ -243,6 +245,7 @@ class LessonCard extends React.Component {
                               display: "block",
                               opacity: "1",
                               transform: "scaleX(1) scaleY(1)",
+                              minWidth:'220px'
                             }}
                           >
                             {this.renderDropdownOptions(status)}

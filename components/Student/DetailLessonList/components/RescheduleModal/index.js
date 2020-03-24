@@ -61,7 +61,6 @@ class RescheduleModal extends React.Component {
     const {
       open,
       onClose,
-      test: { test_name: testName }
     } = this.props;
     const {
       versionOptions,
@@ -84,20 +83,19 @@ class RescheduleModal extends React.Component {
           <React.Fragment>
             <div className="overlay">
               <ClickOffComponentWrapper onOuterClick={onClose}>
-                <div id="modal_add_new_class" className="modal modal-custom modal-460">
+                <div id="modal_add_new_class" className="modal modal-custom modal-460" style = {{borderRadius:'5px'}}>
                   <form action="#" className="custom-form">
                     <fieldset>
                       <div className="card-modal card-main card">
                         <div
                           className="card-panel card-panel-title"
-                          style={{ backgroundColor: "#E74021", color: "#fff" }}
+                          style={{ backgroundColor: "#21B9FF", color: "#fff" }}
                         >
                           <div className="card-panel-row row">
                             <div className="col">
                               <h2>
                                 <span className="heading-holder">
-                                  <i className="icon-courses" />
-                                  <span className="heading-block">{testName}</span>
+                                  <span className="heading-block">Reschedule</span>
                                 </span>
                               </h2>
                             </div>
@@ -114,20 +112,6 @@ class RescheduleModal extends React.Component {
                         </div>
                         <div className="card-content">
                           <div className="card-body">
-                            <div className="row mb-0">
-                              <div className="col s12">
-                                <div className="input-field">
-                                  <Dropdown
-                                    value={getValueFromState(version, versionOptions)}
-                                    onChange={event => this.handleDetailsChange(event, "version")}
-                                    options={versionOptions}
-                                    label="Version"
-                                    stateKey="version"
-                                    dropdownKey="version"
-                                  />
-                                </div>
-                              </div>
-                            </div>
                             <div className="row mb-0">
                               <div className="col s6">
                                 <div className="datepicker-field input-field">
@@ -195,112 +179,8 @@ class RescheduleModal extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            <label>Sections:</label>
                             <div className="check-holder">
                               <div className="row mb-0">
-                                <div className="col s6">
-                                  <p>
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        name="reading"
-                                        className="filled-in"
-                                        checked={reading}
-                                        onChange={event =>
-                                          this.handleDetailsChange(event, "reading", "checkBox")
-                                        }
-                                      />
-                                      <span>Reading</span>
-                                    </label>
-                                  </p>
-                                  <p>
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        name="mathNoCalc"
-                                        className="filled-in"
-                                        checked={mathNoCalc}
-                                        onChange={event =>
-                                          this.handleDetailsChange(event, "mathNoCalc", "checkbox")
-                                        }
-                                      />
-                                      <span>Math(no calc)</span>
-                                    </label>
-                                  </p>
-                                </div>
-                                <div className="col s6">
-                                  <p>
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        name="writing"
-                                        className="filled-in"
-                                        checked={writing}
-                                        onChange={event =>
-                                          this.handleDetailsChange(event, "writing", "checkbox")
-                                        }
-                                      />
-                                      <span>Writing</span>
-                                    </label>
-                                  </p>
-                                  <p>
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        name="mathWithCalc"
-                                        className="filled-in"
-                                        checked={mathWithCalc}
-                                        onChange={event =>
-                                          this.handleDetailsChange(
-                                            event,
-                                            "mathWithCalc",
-                                            "checkbox"
-                                          )
-                                        }
-                                      />
-                                      <span>Math(calculator)</span>
-                                    </label>
-                                  </p>
-                                </div>
-                                <label>
-                                  Note: scaled test scores may require combinations of sections
-                                </label>
-                              </div>
-                            </div>
-                            <div className="check-holder">
-                              <div className="row mb-0">
-                                <div className="col s12">
-                                  <p>
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        name="isAllowed"
-                                        className="filled-in"
-                                        checked={isAllowed}
-                                        onChange={event =>
-                                          this.handleDetailsChange(event, "isAllowed", "checkbox")
-                                        }
-                                      />
-                                      <span>Allow Student to Enter Answers</span>
-                                    </label>
-                                  </p>
-                                </div>
-                                <div className="col s12">
-                                  <p>
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        name="isIncluded"
-                                        className="filled-in"
-                                        checked={isIncluded}
-                                        onChange={event =>
-                                          this.handleDetailsChange(event, "isIncluded", "checkbox")
-                                        }
-                                      />
-                                      <span>Include Score in Improvement Metrics</span>
-                                    </label>
-                                  </p>
-                                </div>
                                 <div className="col s12">
                                   <p>
                                     <label>
@@ -313,7 +193,7 @@ class RescheduleModal extends React.Component {
                                           this.handleDetailsChange(event, "isTimed", "checkbox")
                                         }
                                       />
-                                      <span>Timed</span>
+                                      <span>No Due Date</span>
                                     </label>
                                   </p>
                                 </div>
