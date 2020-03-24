@@ -39,6 +39,9 @@ import { getLessonList, checkLesson, checkAllLessons } from "../index/actions";
 import { makeSelectGetLessonList } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 
+import RescheduleModal from './components/RescheduleModal';
+
+
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
   constructor(props) {
@@ -57,6 +60,10 @@ class DetailLessonList extends React.Component {
       nameFilter: "",
       unitFilter: "",
       updatedLessons: [],
+      openRescheduleModal: false,
+      dropdownIndex: null,
+      dropdownIsOpen: false,
+      activeLesson: {},
     };
   }
 
@@ -307,6 +314,19 @@ class DetailLessonList extends React.Component {
     return <ListView user={user} lessons={this.getMappableLessons()} onSetSort={this.onSetSort} sort={this.state.sort} />;
   }
 
+  handleRescheduleModalOpen = activeLesson => {
+    this.onCloseDropdown();
+    this.setState(({ openRescheduleModal }) => ({
+      activeLesson,
+      openRescheduleModal: !openRescheduleModal
+    }));
+  };
+
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+
+  onSaveScheduleChanges = () => {
+
+  }
 
   render() {
     const {
@@ -315,6 +335,8 @@ class DetailLessonList extends React.Component {
       scoreStatusFilters,
       flagFilters,
       dueDateFilters,
+      openRescheduleModal,
+      activeLesson
     } = this.state;
     return (
       <React.Fragment>
@@ -332,6 +354,12 @@ class DetailLessonList extends React.Component {
           handleFilterClick={this.handleFilterClick}
           onSetUnitFilter={this.onSetUnitFilter}
           filterDueDate={this.filterDueDate}
+        />
+        <RescheduleModal
+          open={openRescheduleModal}
+          lesson={activeLesson}
+          onClose={this.handleRescheduleModalOpen}
+          onSave={this.onSaveScheduleChanges}
         />
         {this.renderCurrentView()}
         <AssignLessonModal

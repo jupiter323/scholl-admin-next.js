@@ -82,14 +82,22 @@ class LessonCard extends React.Component {
       <React.Fragment>
         <li>
           <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>
+            Assign
+          </a>
+        </li>
+        <li>
+          <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>
             Reschedule
           </a>
         </li>
         <li>
-          <a href="#!">Mark all Flags Reviewed</a>
+          <a href="#!">Excuse/Unexcuse Lateness</a>
         </li>
         <li>
           <a href="#!">Reset</a>
+        </li>
+        <li>
+          <a href="#!">Mark Flags Reviewed</a>
         </li>
         <li>
           <a href="#!">Unassign</a>
