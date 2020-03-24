@@ -302,7 +302,7 @@ class DetailLessonList extends React.Component {
     const { active } = this.state;
     const { user } = this.props;
     if (active === 'full') {
-      return <FullView user={user} lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson} />;
+      return <FullView user={user} lessons={this.getMappableLessons()} onDeleteLesson={this.onDeleteLesson} onCloneLesson={this.onCloneLesson} onCheckAll={this.onCheckAll} />;
     }
     return <ListView user={user} lessons={this.getMappableLessons()} onSetSort={this.onSetSort} sort={this.state.sort} />;
   }
