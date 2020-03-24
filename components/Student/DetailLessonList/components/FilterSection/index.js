@@ -34,7 +34,6 @@ class FilterSection extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.unitOptions.length !== 0) {
       const { unitOptions:newOptions } = nextProps;
-      console.log('newOptions:',newOptions)
       this.setState({
         unitOptions:this.state.unitOptions.concat(newOptions)
       })
