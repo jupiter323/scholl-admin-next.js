@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable jsx-control-statements/jsx-jcs-no-undef */
 const API_URL = process.env.API_URL;
-
+import { getToken } from "../../../utils/AuthService";
 
 export const fetchStudentsApi = () =>
   fetch(`${API_URL}/api/students`, {
@@ -928,8 +928,10 @@ export const updateStudentTestQuestionFlagStatusApi = body =>
 export const fetchLessonListApi = () =>
   fetch(`${API_URL}/api/lessons`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     },
   })
     .then(res => res.json())

@@ -32,7 +32,7 @@ class Login extends Component {
       password
     };
     const data = await logIn(postBody);
-    if (data) {
+    if (data.token && data.expires_at) {
       setToken(data.token, data.expires_at);
       const { onSetUserIsLogged } = this.props;
       onSetUserIsLogged(true);
