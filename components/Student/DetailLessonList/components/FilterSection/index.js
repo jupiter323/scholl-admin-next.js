@@ -19,7 +19,10 @@ class FilterSection extends React.Component {
       sort: {},
       nameFilter: "",
       unitFilter: "",
-      unitOptions: [],
+      unitOptions: [{
+        label: "Any",
+        value: "",
+      },],
     };
   }
 
@@ -29,10 +32,11 @@ class FilterSection extends React.Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if(this.state.unitOptions.length === 0 && nextProps.unitOptions.length !== 0){
-      const {unitOptions} = nextProps;
+    if (nextProps.unitOptions.length !== 0) {
+      const { unitOptions:newOptions } = nextProps;
+      console.log('newOptions:',newOptions)
       this.setState({
-        unitOptions
+        unitOptions:this.state.unitOptions.concat(newOptions)
       })
     }
   }
