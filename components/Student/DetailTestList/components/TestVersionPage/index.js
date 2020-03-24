@@ -123,14 +123,14 @@ class TestVersion extends React.Component {
     onSaveTestChanges(testVersion, { testDate, dueDate, allowStudentToEnterAnswers, timed });
   }
 
-  handleStudentTestApiUpdate = async (name, value) => {
-    const { student_test_id } = this.props.test;
-    const postDate = moment(value).format('YYYY-MM-DD');
+  handleStudentTestApiUpdate = async(name, value) => {
+    const {student_test_id} = this.props.test;
+    const postDate =  moment(value).format('YYYY-MM-DD');
     switch (name) {
       case "dueDate":
-        return updateStudentTestDueDate({ student_test_id, due_date: postDate });
+        return updateStudentTestDueDate({student_test_id:student_test_id,due_date:postDate});
       case "testDate":
-        return updateStudentTestAssignmentDate({ student_test_id, assignment_date: postDate });
+        return updateStudentTestAssignmentDate({student_test_id:student_test_id,assignment_date:postDate});
       default:
         break;
     }
@@ -140,7 +140,7 @@ class TestVersion extends React.Component {
     const { test, user, onDeleteTest } = this.props;
     const { completionDate, completionTime } = test;
     const { studentInformation: { firstName, lastName } } = user;
-    const { testVersion: { sections: { reading, writing, math, essay }, version, includeScoreInImprovementMetrics },
+    const { testVersion: {sections: { reading, writing, math, essay },version, includeScoreInImprovementMetrics},
       settings: { testDate, dueDate, allowStudentToEnterAnswers, timed },
     } = this.state;
     return (
@@ -153,8 +153,8 @@ class TestVersion extends React.Component {
               writing={writing}
               math={math}
               essay={essay}
-              includeScoreInImprovementMetrics={includeScoreInImprovementMetrics}
-              handleTestVersionSettingsChange={this.handleTestVersionSettingsChange}
+              includeScoreInImprovementMetrics={ includeScoreInImprovementMetrics}
+              handleTestVersionSettingsChange={ this.handleTestVersionSettingsChange}
             />
             <Settings
               timed={timed}
