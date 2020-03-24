@@ -25,16 +25,11 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    const grant_type = "password";
-    const client_id = "1";
-    const client_secret = "5eRIxuj2rWQDAWplsOK0PtgV8LW4wlLFsCc92ty4";
-    const username = "test1@example.com";
+    // const email = "test-student@example.com";
+    const email = "test3@example.com";
     const password = "password";
     const postBody = {
-      grant_type,
-      client_id,
-      client_secret,
-      username,
+      email,
       password
     };
     const data = await logIn(postBody);

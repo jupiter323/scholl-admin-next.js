@@ -67,7 +67,7 @@ export const studentApi = {
   fetchUnitsApi,
 };
 
-export const instructorApi = {
+export const instructorApi = {      
   createNewInstructorApi,
   fetchInstructorsApi,
   searchInstructorsApi,
