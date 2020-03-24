@@ -1,5 +1,4 @@
-/* eslint-disable no-console*/
-import { take, call, put, all, takeEvery } from "redux-saga/effects";
+import { take, call, put, all,takeEvery } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -99,7 +98,6 @@ const {
   addInstructorToLocationApi,
   createNewInstructorApi,
 } = instructorApi;
-
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
