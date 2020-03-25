@@ -40,6 +40,7 @@ class AssignedTestCard extends React.Component {
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    console.log("formattedTestScores:",formattedTestScores)
     return formattedTestScores.scores;
   };
 

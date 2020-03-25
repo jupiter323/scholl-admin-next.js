@@ -378,8 +378,10 @@ export const assignTestToStudentApi = test => {
 export const fetchTestsByStudentIdApi = student_id =>
   fetch(`${API_URL}/api/students/${student_id}/tests`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
@@ -847,8 +849,10 @@ export const fetchTestsByStudentIdApi = student_id =>
 export const fetchTestByTestIdApi = (student_id, test_id) => {
   fetch(`${API_URL}/students/${student_id}/tests/${test_id}`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
@@ -896,8 +900,10 @@ export const addStudentTestQuestionFlagApi = body =>
 export const fetchStudentTestScoreApi = student_test_id =>
   fetch(`${API_URL}/api/studentTestScore/${student_test_id}`, {
     headers: {
+      Accept: "application/json",
       "Allow-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
