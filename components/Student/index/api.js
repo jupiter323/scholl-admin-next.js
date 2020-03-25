@@ -862,8 +862,10 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
 export const fetchProblemsByStudentTestIdApi = student_test_id =>
   fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
