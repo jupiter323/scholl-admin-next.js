@@ -26,7 +26,7 @@ const initialState = fromJS({
   assignWorkSheetsModalOpen: false,
   calendarRows: [],
   isVisibleTopBar: true,
-  activeTestScores: [],
+  activeTestScores: null,
   overdueStudentTests: [],
   assignedStudentTests: [],
   completedStudentTests: [],
