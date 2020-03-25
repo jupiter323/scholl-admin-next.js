@@ -41,9 +41,8 @@ const makeSelectStudentSections = () =>
 const makeSelectActiveStudentTestId = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.activeStudentTestId);
 const makeSelectUnitFilterOptions = () => createSelector(makeSelectStudentPageState(),substate => substate.unitFilterOptions)
-
-const makeSelectActiveStudentIndex = () => createSelector(makeSelectStudentPageState(),substate => substate.activeStudentIndex)
-export default selectStudentsDomain;
+const makeSelectActiveStudentToken = () => createSelector(makeSelectStudentPageState(),substate => substate.activeStudentToken)
+export default selectStudentsDomain; 
 export {
   makeSelectStudentPageState,
   makeSelectAssignLessonsModalOpen,
@@ -60,5 +59,5 @@ export {
   makeSelectActiveStudentTestId,
   makeSelectGetLessonList,
   makeSelectUnitFilterOptions,
-  makeSelectActiveStudentIndex,
+  makeSelectActiveStudentToken,
 };

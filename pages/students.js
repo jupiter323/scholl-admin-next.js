@@ -13,7 +13,7 @@ import {
   createStudent,
   deleteStudent,
   setStudents,
-  setActiveStudentIndex,
+  setActiveStudentToken,
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -28,7 +28,7 @@ import {
   studentLastNameAscending,
   studentLastNameDescending
 } from "../components/utils/sortFunctions";
-import { loggedIn } from "../utils/AuthService";
+import { loggedIn,logIn } from "../utils/AuthService";
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
@@ -197,11 +197,20 @@ class Students extends Component {
     }, []);
   };
 
-  onHandleStudentCard = index => {
+  onHandleStudentCard = async index => {
     const { students } = this.state;
-    const {onSetActiveStudentIndex} = this.props;
+    const {onSetActiveStudentToken} = this.props;
     this.setState({ selectedStudent: students[index] });
-    onSetActiveStudentIndex(index);
+    const {emailAddress:{email}} = students[index];
+    const password = "password";
+    const postBody = {
+      email,
+      password
+    };
+    const data = await logIn(postBody);
+    if (data.token && data.expires_at) {
+      onSetActiveStudentToken(data.token);
+    }
   };
 
   onRedirectToStudentPage = event => {
@@ -405,7 +414,7 @@ const mapDispatchToProps = dispatch => ({
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
   onCreateStudent: student => dispatch(createStudent(student)),
-  onSetActiveStudentIndex:studentIndex => dispatch(setActiveStudentIndex(studentIndex))
+  onSetActiveStudentToken:token => dispatch(setActiveStudentToken(token))
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

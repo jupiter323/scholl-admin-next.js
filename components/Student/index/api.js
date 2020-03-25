@@ -871,6 +871,7 @@ export const fetchProblemsByStudentTestIdApi = (student_test_id,student_token) =
     .then(res => res.json())
     .then(({ data }) => {
       const formattedData = data;
+      console.log('formattedData:',formattedData)
       return { formattedData };
     })
     .catch(err => err);

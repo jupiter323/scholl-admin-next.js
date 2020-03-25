@@ -220,7 +220,6 @@ class DetailTestList extends React.Component {
       opentTestSettingModal
     } = this.state;
     const { user, completes, assigneds } = this.props;
-    console.log('activeTest:',activeTest)
     return (
       <React.Fragment>
         <Choose>
