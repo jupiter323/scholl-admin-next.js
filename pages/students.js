@@ -12,7 +12,8 @@ import {
   fetchStudents,
   createStudent,
   deleteStudent,
-  setStudents
+  setStudents,
+  setActiveStudentIndex,
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -198,7 +199,9 @@ class Students extends Component {
 
   onHandleStudentCard = index => {
     const { students } = this.state;
+    const {onSetActiveStudentIndex} = this.props;
     this.setState({ selectedStudent: students[index] });
+    onSetActiveStudentIndex(index);
   };
 
   onRedirectToStudentPage = event => {
@@ -389,7 +392,8 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
-  onSetStudents: PropTypes.func.isRequired
+  onSetStudents: PropTypes.func.isRequired,
+  onSetActiveStudentIndex:PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -400,7 +404,8 @@ const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student))
+  onCreateStudent: student => dispatch(createStudent(student)),
+  onSetActiveStudentIndex:studentIndex => dispatch(setActiveStudentIndex(studentIndex))
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

@@ -30,6 +30,7 @@ import {
   CHECK_ALL_LESSONS,
   FETCH_UNITS,
   SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_INDEX,
 } from "./constants";
 
 export function fetchStudents() {
@@ -77,6 +78,13 @@ export function setStudentSections(sections) {
     type: SET_STUDENT_SECTIONS,
     sections
   };
+}
+
+export function setActiveStudentIndex(studentIndex){
+  return {
+    type:SET_ACTIVE_STUDENT_INDEX,
+    studentIndex
+  }
 }
 
 export function setActiveStudentTestId(studentTestId) {

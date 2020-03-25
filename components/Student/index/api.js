@@ -859,13 +859,13 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
     .catch(err => err);
 };
 
-export const fetchProblemsByStudentTestIdApi = student_test_id =>
+export const fetchProblemsByStudentTestIdApi = (student_test_id,student_token) =>
   fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      "Authorization":'Bearer '+ getToken()
+      "Authorization":'Bearer '+ student_token
     }
   })
     .then(res => res.json())

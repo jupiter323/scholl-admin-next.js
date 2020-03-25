@@ -18,6 +18,7 @@ import {
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
   SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_INDEX,
 } from "./constants";
 
 const initialState = fromJS({
@@ -37,6 +38,7 @@ const initialState = fromJS({
   isLoading: false,
   error: null,
   unitFilterOptions:[],
+  activeStudentIndex:0,
 });
 
 function studentReducer(state = initialState, action) {
@@ -72,6 +74,8 @@ function studentReducer(state = initialState, action) {
       return state.set("lessonList", action.payload);
     case SET_UNIT_FILTER_OPTIONS:
       return state.set('unitFilterOptions',action.options)
+    case SET_ACTIVE_STUDENT_INDEX:
+      return state.set('activeStudentIndex',action.studentIndex)
     // return {
     //   ...state,
     //   isLoading: false,
