@@ -11,7 +11,14 @@ import {
   SET_STUDENT_ASSIGNED_TESTS,
   SET_STUDENT_TESTS,
   SET_STUDENT_SECTIONS,
-  SET_ACTIVE_STUDENT_TEST_ID
+  SET_ACTIVE_STUDENT_TEST_ID,
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
+  CHECKED_LESSON,
+  CHECK_ALL_LESSONS,
+  SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_TOKEN,
 } from "./constants";
 
 const initialState = fromJS({
@@ -20,13 +27,18 @@ const initialState = fromJS({
   assignWorkSheetsModalOpen: false,
   calendarRows: [],
   isVisibleTopBar: true,
-  activeTestScores: [],
+  activeTestScores: null,
   overdueStudentTests: [],
   assignedStudentTests: [],
   completedStudentTests: [],
   studentTests: [],
   sections: [],
-  activeStudentTestId: ""
+  activeStudentTestId: "",
+  lessonList: [],
+  isLoading: false,
+  error: null,
+  unitFilterOptions:[],
+  activeStudentToken:"",
 });
 
 function studentReducer(state = initialState, action) {
@@ -55,6 +67,52 @@ function studentReducer(state = initialState, action) {
       return state.set("sections", action.sections);
     case SET_ACTIVE_STUDENT_TEST_ID:
       return state.set("activeStudentTestId", action.studentTestId);
+    case FETCH_LESSON_LIST:
+      return state.set("isLoading", true);
+
+    case FETCH_LESSON_LIST_SUCCESS:
+      return state.set("lessonList", action.payload);
+    case SET_UNIT_FILTER_OPTIONS:
+      return state.set('unitFilterOptions',action.options)
+    case SET_ACTIVE_STUDENT_TOKEN:
+      return state.set('activeStudentToken',action.token)
+    // return {
+    //   ...state,
+    //   isLoading: false,
+    //   lessonList: action.payload,
+    // };
+
+    // case FETCH_LESSON_LIST_FAIL:
+    //   return {
+    //     ...state,
+    //     isLoading: false,
+    //     error: action.payload,
+    //   };
+    case CHECKED_LESSON:
+      return state.set(
+        "lessonList",
+        state.get('lessonList').map((lesson, index) => {
+          if (index !== action.index) {
+            return lesson;
+          }
+          return {
+            ...lesson,
+            selected: !lesson.selected
+          };
+        })
+      );
+    
+
+    case CHECK_ALL_LESSONS:
+      return state.set(
+        "lessonList",
+        state.get('lessonList').map((lesson) => ({
+          ...lesson,
+          selected: !action.checked,
+        }))
+
+      )
+    
     default:
       return state;
   }

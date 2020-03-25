@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable jsx-control-statements/jsx-jcs-no-undef */
 const API_URL = process.env.API_URL;
+import { getToken } from "../../../utils/AuthService";
 
 export const fetchStudentsApi = () =>
   fetch(`${API_URL}/api/students`, {
@@ -377,8 +378,10 @@ export const assignTestToStudentApi = test => {
 export const fetchTestsByStudentIdApi = student_id =>
   fetch(`${API_URL}/api/students/${student_id}/tests`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
@@ -846,24 +849,29 @@ export const fetchTestsByStudentIdApi = student_id =>
 export const fetchTestByTestIdApi = (student_id, test_id) => {
   fetch(`${API_URL}/students/${student_id}/tests/${test_id}`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
     .catch(err => err);
 };
 
-export const fetchProblemsByStudentTestIdApi = student_test_id =>
+export const fetchProblemsByStudentTestIdApi = (student_test_id,student_token) =>
   fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ student_token
     }
   })
     .then(res => res.json())
     .then(({ data }) => {
       const formattedData = data;
+      console.log('formattedData:',formattedData)
       return { formattedData };
     })
     .catch(err => err);
@@ -895,8 +903,10 @@ export const addStudentTestQuestionFlagApi = body =>
 export const fetchStudentTestScoreApi = student_test_id =>
   fetch(`${API_URL}/api/studentTestScore/${student_test_id}`, {
     headers: {
+      Accept: "application/json",
       "Allow-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
     }
   })
     .then(res => res.json())
@@ -916,3 +926,43 @@ export const updateStudentTestQuestionFlagStatusApi = body =>
   })
     .then(res => res)
     .catch(err => err);
+
+
+export const fetchLessonListApi = () =>
+  fetch(`${API_URL}/api/lessons`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      const lessons = data.lessons;
+      return lessons;
+    });
+export const fetchUnitsApi = () =>
+  fetch(`${API_URL}/api/units`,
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => res.json())
+    .then(({ data }) => {
+      const { units = [] } = data;
+      const formattedUnits = units.reduce((finalArr, currentUnit) => {
+        const { id, name, reference_id, } = currentUnit;
+        const newUnit = {
+          label: name,
+          value: id
+        };
+        finalArr.push(newUnit);
+        return finalArr;
+      }, []);
+      return { formattedUnits, };
+    })
+    .catch(err => console.warn('err', err));

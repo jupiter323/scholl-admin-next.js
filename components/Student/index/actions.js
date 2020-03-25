@@ -24,13 +24,32 @@ import {
   SET_STUDENT_TESTS,
   SET_STUDENT_SECTIONS,
   FETCH_STUDENT_TEST_SECTIONS,
-  SET_ACTIVE_STUDENT_TEST_ID
+  SET_ACTIVE_STUDENT_TEST_ID,
+  FETCH_LESSON_LIST,
+  CHECKED_LESSON,
+  CHECK_ALL_LESSONS,
+  FETCH_UNITS,
+  SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_TOKEN,
 } from "./constants";
 
 export function fetchStudents() {
   return {
     type: FETCH_STUDENTS
   };
+}
+
+export function fetchUnits(){
+  return {
+    type:FETCH_UNITS
+  }
+}
+
+export function setUnitFilterOptions(options){
+  return {
+    type:SET_UNIT_FILTER_OPTIONS,
+    options
+  }
 }
 
 export function searchStudents(filters) {
@@ -47,10 +66,10 @@ export function fetchStudentTests(user) {
   };
 }
 
-export function fetchStudentTestSections(studentTestId) {
+export function fetchStudentTestSections(postBody) {
   return {
     type: FETCH_STUDENT_TEST_SECTIONS,
-    studentTestId
+    postBody
   };
 }
 
@@ -59,6 +78,13 @@ export function setStudentSections(sections) {
     type: SET_STUDENT_SECTIONS,
     sections
   };
+}
+
+export function setActiveStudentToken(token){
+  return {
+    type:SET_ACTIVE_STUDENT_TOKEN,
+    token
+  }
 }
 
 export function setActiveStudentTestId(studentTestId) {
@@ -205,3 +231,16 @@ export function setActiveTestScores(scores) {
     scores
   };
 }
+
+export const getLessonList = () => ({
+  type: FETCH_LESSON_LIST,
+});
+
+export const checkLesson = (index) => ({
+  type: CHECKED_LESSON,
+  index,
+});
+export const checkAllLessons = (checked) => ({
+  type: CHECK_ALL_LESSONS,
+  checked,
+});

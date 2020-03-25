@@ -13,7 +13,7 @@ export const _checkStatus = (response)=> {
 }
 
 export const oAuthTokenApi = (data) => 
-    fetch (`${API_URL}/oauth/token`,{
+    fetch (`${API_URL}/api/login`,{
         method:'POST',
         headers:{
             Accept:"application/json",

@@ -12,7 +12,8 @@ import {
   fetchStudents,
   createStudent,
   deleteStudent,
-  setStudents
+  setStudents,
+  setActiveStudentToken,
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -27,11 +28,11 @@ import {
   studentLastNameAscending,
   studentLastNameDescending
 } from "../components/utils/sortFunctions";
-import { loggedIn } from "../utils/AuthService";
+import { loggedIn,logIn } from "../utils/AuthService";
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
-    subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
+  subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () =>
   Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
@@ -196,9 +197,20 @@ class Students extends Component {
     }, []);
   };
 
-  onHandleStudentCard = index => {
+  onHandleStudentCard = async index => {
     const { students } = this.state;
+    const {onSetActiveStudentToken} = this.props;
     this.setState({ selectedStudent: students[index] });
+    const {emailAddress:{email}} = students[index];
+    const password = "password";
+    const postBody = {
+      email,
+      password
+    };
+    const data = await logIn(postBody);
+    if (data.token && data.expires_at) {
+      onSetActiveStudentToken(data.token);
+    }
   };
 
   onRedirectToStudentPage = event => {
@@ -389,7 +401,8 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
-  onSetStudents: PropTypes.func.isRequired
+  onSetStudents: PropTypes.func.isRequired,
+  onSetActiveStudentIndex:PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -400,7 +413,8 @@ const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student))
+  onCreateStudent: student => dispatch(createStudent(student)),
+  onSetActiveStudentToken:token => dispatch(setActiveStudentToken(token))
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
