@@ -915,12 +915,14 @@ export const fetchStudentTestScoreApi = student_test_id =>
       return { formattedTestScores };
     })
     .catch(err => err);
-export const updateStudentTestQuestionFlagStatusApi = body =>
+export const updateStudentTestQuestionFlagStatusApi = (body,studentToken) =>
   fetch(`${API_URL}/api/commands/update-student-test-question-flag-status`, {
     method: "PATCH",
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ studentToken
     },
     body: JSON.stringify(body)
   })

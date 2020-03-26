@@ -7,7 +7,7 @@ import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 
 import { updateStudentTestQuestionFlagStatusApi } from "../../../../../index/api";
-import { makeSelectActiveStudentTestId } from "../../../../../index/selectors";
+import { makeSelectActiveStudentTestId,makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
   constructor(props) {
@@ -17,10 +17,11 @@ class QuestionModal extends React.Component {
   onHandleQuestionFlagStatus = async (e, status) => {
     const {
       studentTestId,
-      question: { test_problem_id }
+      question: { test_problem_id },
+      studentToken
     } = this.props;
     const postBody = { student_test_id: studentTestId, flag_id: test_problem_id, status: status };
-    await updateStudentTestQuestionFlagStatusApi(postBody);
+    await updateStudentTestQuestionFlagStatusApi(postBody,studentToken);
   };
 
   render() {
@@ -253,7 +254,8 @@ QuestionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  studentTestId: makeSelectActiveStudentTestId()
+  studentTestId: makeSelectActiveStudentTestId(),
+  studentToken:makeSelectActiveStudentToken(),
 });
 
 const withConnect = connect(mapStateToProps, null);

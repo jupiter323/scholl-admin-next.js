@@ -8,7 +8,6 @@ class AnswerRow extends React.Component {
     super(props);
     this.state = {
       open: false,
-      flagged: false
     };
   }
 
@@ -62,7 +61,7 @@ class AnswerRow extends React.Component {
 
   render() {
     const { problem } = this.props;
-    const { open, flagged } = this.state;
+    const { open } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
@@ -91,7 +90,7 @@ class AnswerRow extends React.Component {
               <span className="status-info">E</span>
             </div>
             <div className="col col-auto">
-              <If condition={flagged}>
+              <If condition={this.props.problem.flag}>
                 <span className="status-answer" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
                   <b className="status-text">Review</b>
