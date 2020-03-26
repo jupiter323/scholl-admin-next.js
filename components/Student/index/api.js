@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable jsx-control-statements/jsx-jcs-no-undef */
 const API_URL = process.env.API_URL;
+import { getToken } from "../../../utils/AuthService";
 
 export const fetchStudentsApi = () =>
   fetch(`${API_URL}/api/students`, {
@@ -916,3 +917,43 @@ export const updateStudentTestQuestionFlagStatusApi = body =>
   })
     .then(res => res)
     .catch(err => err);
+
+
+export const fetchLessonListApi = () =>
+  fetch(`${API_URL}/api/lessons`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ getToken()
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      const lessons = data.lessons;
+      return lessons;
+    });
+export const fetchUnitsApi = () =>
+  fetch(`${API_URL}/api/units`,
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => res.json())
+    .then(({ data }) => {
+      const { units = [] } = data;
+      const formattedUnits = units.reduce((finalArr, currentUnit) => {
+        const { id, name, reference_id, } = currentUnit;
+        const newUnit = {
+          label: name,
+          value: id
+        };
+        finalArr.push(newUnit);
+        return finalArr;
+      }, []);
+      return { formattedUnits, };
+    })
+    .catch(err => console.warn('err', err));
