@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Portal from "../../../../Portal";
-import getValueFromState from "../../../../utils/getValueFromState";
-import Dropdown from "../../../../FormComponents/Dropdown";
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -63,18 +61,10 @@ class RescheduleModal extends React.Component {
       onClose,
     } = this.props;
     const {
-      versionOptions,
-      version,
       assignDate,
       dueDate,
       assignTime,
       dueTime,
-      reading,
-      mathNoCalc,
-      writing,
-      mathWithCalc,
-      isAllowed,
-      isIncluded,
       isTimed
     } = this.state;
     return (
