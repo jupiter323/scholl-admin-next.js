@@ -23,7 +23,7 @@ class FullView extends React.Component {
 
   render() {
     const { lessons } = this.props;
-    console.log({ lessons });
+
 
 
     return (

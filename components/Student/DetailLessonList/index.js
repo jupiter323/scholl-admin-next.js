@@ -341,7 +341,7 @@ class DetailLessonList extends React.Component {
           open={this.state.modalOpen}
           // lessons={this.props.user.lessons}
           lessons={this.props.lessonList}
-          onCloseModal={this.onCloseModal}
+          onCloseDatesModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
         />
         <a href="#" onClick={this.onOpenModal} className="waves-effect waves-teal btn add-btn modal-trigger"><i className="material-icons">add</i>Assign Lesson</a>
