@@ -18,6 +18,7 @@ import {
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
   SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_TOKEN,
 } from "./constants";
 
 const initialState = fromJS({
@@ -26,7 +27,7 @@ const initialState = fromJS({
   assignWorkSheetsModalOpen: false,
   calendarRows: [],
   isVisibleTopBar: true,
-  activeTestScores: [],
+  activeTestScores: null,
   overdueStudentTests: [],
   assignedStudentTests: [],
   completedStudentTests: [],
@@ -36,7 +37,8 @@ const initialState = fromJS({
   lessonList: [],
   isLoading: false,
   error: null,
-  unitFilterOptions:[],
+  unitFilterOptions: [],
+  activeStudentToken: "",
 });
 
 function studentReducer(state = initialState, action) {
@@ -71,12 +73,14 @@ function studentReducer(state = initialState, action) {
     case FETCH_LESSON_LIST_SUCCESS:
       return state.set("lessonList", action.payload);
     case SET_UNIT_FILTER_OPTIONS:
-      return state.set('unitFilterOptions',action.options)
-    // return {
-    //   ...state,
-    //   isLoading: false,
-    //   lessonList: action.payload,
-    // };
+      return state.set('unitFilterOptions', action.options);
+    case SET_ACTIVE_STUDENT_TOKEN:
+      return state.set('activeStudentToken', action.token);
+      // return {
+      //   ...state,
+      //   isLoading: false,
+      //   lessonList: action.payload,
+      // };
 
     // case FETCH_LESSON_LIST_FAIL:
     //   return {
@@ -93,11 +97,11 @@ function studentReducer(state = initialState, action) {
           }
           return {
             ...lesson,
-            selected: !lesson.selected
+            selected: !lesson.selected,
           };
-        })
+        }),
       );
-    
+
 
     case CHECK_ALL_LESSONS:
       return state.set(
@@ -105,10 +109,10 @@ function studentReducer(state = initialState, action) {
         state.get('lessonList').map((lesson) => ({
           ...lesson,
           selected: !action.checked,
-        }))
+        })),
 
-      )
-    
+      );
+
     default:
       return state;
   }

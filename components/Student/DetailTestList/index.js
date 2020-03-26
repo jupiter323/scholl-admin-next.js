@@ -18,7 +18,7 @@ import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
   makeSelectAssignedStudentTests,
-  makeSelectStudentTests
+  makeSelectStudentTests,
 } from "../index/selectors";
 import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
 
@@ -36,7 +36,7 @@ class DetailTestList extends React.Component {
       openEditTestModal: false,
       openCreateTestModal: false,
       opentTestSettingModal: false,
-      openEnterAnswerWrapper: false
+      openEnterAnswerWrapper: false,
     };
   }
 
@@ -55,16 +55,16 @@ class DetailTestList extends React.Component {
       ({ openEditTestModal }) => ({
         openEditTestModal: !openEditTestModal,
         openEnterAnswerWrapper: false,
-        activeTest
+        activeTest,
       }),
-      this.onCloseDropdown
+      this.onCloseDropdown,
     );
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
     this.setState(({ openEditTestModal }) => ({
       openEditTestModal: !openEditTestModal,
-      openEnterAnswerWrapper: false
+      openEnterAnswerWrapper: false,
     }));
   };
 
@@ -75,7 +75,7 @@ class DetailTestList extends React.Component {
     this.onCloseDropdown();
     this.setState(({ opentTestSettingModal }) => ({
       activeTest,
-      opentTestSettingModal: !opentTestSettingModal
+      opentTestSettingModal: !opentTestSettingModal,
     }));
   };
 
@@ -99,17 +99,17 @@ class DetailTestList extends React.Component {
     this.setState(
       {
         activeTest,
-        openEditTestModal: true
+        openEditTestModal: true,
       },
       async () => {
         await this.editTestModal.generateScoreReportPdf();
-      }
+      },
     );
   };
   onDeleteTest = () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
-      console.warn("Pending implementation of delete test UI and functionality")
+      console.warn("Pending implementation of delete test UI and functionality"),
     );
   };
   onSetIsVisibleTopBar = value => {
@@ -147,7 +147,7 @@ class DetailTestList extends React.Component {
     return assigneds.map((test, index) => (
       <AssignedTestCard
         test={test}
-        key={`future-${test.test_id}`}
+        key={`future-${index}`}
         handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
@@ -165,7 +165,7 @@ class DetailTestList extends React.Component {
   onCloaseAnswerWrapper = async () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({
-      openEnterAnswerWrapper: false
+      openEnterAnswerWrapper: false,
     });
     this.onCloseDropdown();
   };
@@ -183,30 +183,30 @@ class DetailTestList extends React.Component {
       completionDate: "",
       completionTime: "",
       weekNumber: "3",
-      subjects: [{}, {}]
+      subjects: [{}, {}],
     };
     const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
     this.setState({ tests: updatedTests });
     const {
-      user: { id }
+      user: { id },
     } = this.props;
     const postBody = {
       student_id: id,
       test_id: uuidGenerator(),
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
-      due_date: Moment(test.dueDate).format("YYYY-MM-DD")
+      due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
     };
     assignTestToStudentApi(postBody);
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
     const {
-      activeTest: { student_test_id }
+      activeTest: { student_test_id },
     } = this.state;
     const postBody = {
       student_test_id,
       test_problem_id,
-      answer
+      answer,
     };
     await addStudentAnswerToTestApi(postBody);
   };
@@ -217,7 +217,7 @@ class DetailTestList extends React.Component {
       openCreateTestModal,
       openEnterAnswerWrapper,
       activeTest,
-      opentTestSettingModal
+      opentTestSettingModal,
     } = this.state;
     const { user, completes, assigneds } = this.props;
     return (
@@ -293,21 +293,21 @@ DetailTestList.propTypes = {
   onSetIsVisibleTopBar: PropTypes.func.isRequired,
   completes: PropTypes.array,
   overdues: PropTypes.array,
-  assigneds: PropTypes.array
+  assigneds: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   completes: makeSelectCompletedStudentTests(),
   assigneds: makeSelectAssignedStudentTests(),
   overdues: makeSelectOverDueStudentTests(),
-  tests: makeSelectStudentTests()
+  tests: makeSelectStudentTests(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
-    onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId))
+    onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
   };
 }
 

@@ -11,25 +11,25 @@ export const loggedIn = () => {
   return !!token && !isTokenExpired(token); // handwaiving here
 };
 
-export const setToken = (access_token, refresh_token) => {
+export const setToken = (token, expires_at) => {
   // Saves user token to localStorage
-  localStorage.setItem('access_token', access_token);
-  localStorage.setItem('refresh_token', refresh_token);
+  localStorage.setItem('token', token);
+  localStorage.setItem('expires_at', expires_at);
 };
 
 export const getToken = () => {
 // Retrieves the user token from localStorage
   if (typeof window !== 'undefined') {
     // Is running on the client
-    return localStorage.getItem('access_token');
+    return localStorage.getItem('token');
   }
   console.log('we are running on the server');
 };
 
 export const logout = () => {
   // Clear user token from localStorage
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
+  localStorage.removeItem('token');
+  localStorage.removeItem('expires_at');
 };
 
 export const isTokenExpired = token => {

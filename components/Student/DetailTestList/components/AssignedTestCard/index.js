@@ -6,42 +6,7 @@ import { fetchStudentTestScoreApi } from "../../../index/api";
 class AssignedTestCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ReadingScore: null,
-      WritingScore: null,
-      ReadingAndWrigingScore: null,
-      MathScore: null,
-      NA: 0
-    };
   }
-
-  componentDidMount = async () => {
-    const scores = await this.getScoresByStudentTest(this.props.test);
-    scores.map(score => {
-      switch (score.subject_name) {
-        case "Reading":
-          this.setState({ ReadingScore: score });
-          break;
-        case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: score });
-          break;
-        case "Math":
-          this.setState({ MathScore: score });
-          break;
-        case "Writing":
-          this.setState({ WritingScore: score });
-          break;
-        default:
-          this.setState({ NA: 0 });
-      }
-    });
-  };
-
-  getScoresByStudentTest = async test => {
-    const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
-  };
 
   handleDropdownClick = event => {
     const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
@@ -59,7 +24,7 @@ class AssignedTestCard extends React.Component {
       dropdownIsOpen,
       test: { test_name, test_description, dueDate, completion_date, test_id },
       onEnterAnswers,
-      handleTestSettingModalOpen
+      handleTestSettingModalOpen,
     } = this.props;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
     const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
@@ -100,7 +65,7 @@ class AssignedTestCard extends React.Component {
                                   transformOrigin: "0px 0px 0px",
                                   opacity: "1",
                                   transform: "scaleX(1) scaleY(1)",
-                                  width: "210px"
+                                  width: "210px",
                                 }}
                                 className="dropdown-content"
                               >
@@ -179,12 +144,11 @@ class AssignedTestCard extends React.Component {
 }
 
 AssignedTestCard.propTypes = {
-  dropdownIndex: PropTypes.number,
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  test: PropTypes.object.isRequired
+  test: PropTypes.object.isRequired,
 };
 
 export default AssignedTestCard;

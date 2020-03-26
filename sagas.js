@@ -1,4 +1,4 @@
-import { take, call, put, all } from "redux-saga/effects";
+import { take, call, put, all, takeEvery } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -13,7 +13,11 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
   GET_TESTS,
-  FETCH_STUDENT_TEST_SECTIONS
+  FETCH_STUDENT_TEST_SECTIONS,
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
+  FETCH_UNITS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -22,7 +26,8 @@ import {
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_CLASS_DURATION,
-  UPDATE_EXCLUDE_FROM_STATISTICS
+  UPDATE_EXCLUDE_FROM_STATISTICS,
+
 } from "./components/Classes/index/constants";
 import {
   FETCH_INSTRUCTORS,
@@ -35,7 +40,7 @@ import {
   UPDATE_INSTRUCTOR_CITY,
   UPDATE_INSTRUCTOR_ZIP,
   UPDATE_INSTRUCTOR_ADDRESS,
-  UPDATE_INSTRUCTOR_PHONE
+  UPDATE_INSTRUCTOR_PHONE,
 } from "./components/Instructor/index/constants";
 import {
   setStudents,
@@ -43,11 +48,14 @@ import {
   setStudentCompletedTests,
   setStudentOverDueTests,
   setStudentAssignedTests,
-  setStudentSections
+  setStudentSections,
+  setUnitFilterOptions,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
-import { studentApi, classApi, instructorApi } from "./api";
+
+
+import { studentApi, classApi, instructorApi, lessonApi } from "./api";
 const {
   fetchStudentsApi,
   searchStudentsApi,
@@ -62,7 +70,9 @@ const {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi
+  fetchProblemsByStudentTestIdApi,
+  fetchLessonListApi,
+  fetchUnitsApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -71,7 +81,7 @@ const {
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassDurationApi,
-  updateClassExcludeFromStatisticsApi
+  updateClassExcludeFromStatisticsApi,
 } = classApi;
 const {
   fetchInstructorsApi,
@@ -84,7 +94,7 @@ const {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   updateInstructorPhoneApi,
-  createNewInstructorApi
+  createNewInstructorApi,
 } = instructorApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
@@ -106,16 +116,35 @@ export function* fetchStudents() {
   }
 }
 
-export function* watchForFetchStudentTestSections() {
+export function* watchForFetchUnitFilterOptions() {
   while (true) {
-    const { studentTestId } = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    yield call(fetchStudentTestSections, studentTestId);
+    yield take(FETCH_UNITS);
+    yield call(fetchUnits);
   }
 }
 
-export function* fetchStudentTestSections(studentTestId) {
+export function* fetchUnits() {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId);
+    const { formattedUnits } = yield call(fetchUnitsApi);
+    if (Array.isArray(formattedUnits) || formattedUnits instanceof Array) {
+      yield put(setUnitFilterOptions(formattedUnits));
+    }
+  } catch (err) {
+    console.warn("Error occured in the fetchUnits saga", err);
+  }
+}
+
+export function* watchForFetchStudentTestSections() {
+  while (true) {
+    const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
+    const { postBody: { student_test_id, studentToken } } = payload;
+    yield call(fetchStudentTestSections, student_test_id, studentToken);
+  }
+}
+
+export function* fetchStudentTestSections(studentTestId, studentToken) {
+  try {
+    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId, studentToken);
     yield put(setStudentSections(formattedData.test.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
@@ -136,7 +165,7 @@ export function* fetchStudentTests(user) {
     const sortedTests = {
       overdues: [],
       assigneds: [],
-      completes: []
+      completes: [],
     };
     // sort test into assisend, incompletes
     //* * using for development purposes pushing :STARTED to assigneds */
@@ -596,6 +625,32 @@ export function* watchForUpdateClassExcludeFromStatistics() {
   }
 }
 
+/** ******************************************    LESSONS    ******************************************* */
+function* watchForFetchLesson() {
+  yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
+}
+
+function* handleFetchLesson() {
+  try {
+    const lessons = yield call(fetchLessonListApi);
+    if (Array.isArray(lessons) || lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+        })),
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchLesson saga", error);
+    yield put({
+      type: FETCH_LESSON_LIST_FAIL,
+      payload: error,
+    });
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -629,6 +684,8 @@ export default function* defaultSaga() {
     watchForUpdateClassEndDate(),
     watchForUpdateClassExcludeFromStatistics(),
     watchForUpdateClassName(),
-    watchForUpdateClassDuration()
+    watchForUpdateClassDuration(),
+    watchForFetchLesson(),
+    watchForFetchUnitFilterOptions(),
   ]);
 }

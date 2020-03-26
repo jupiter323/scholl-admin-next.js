@@ -6,8 +6,8 @@ import userReducer from './components/User/index/reducers';
 
 
 export default combineReducers({
-    instructorReducer,
-    studentReducer,
-    classesReducer,
-    userReducer,
+  instructorReducer,
+  studentReducer,
+  classesReducer,
+  userReducer,
 });

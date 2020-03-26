@@ -7,8 +7,8 @@ export const fetchStudentsApi = () =>
   fetch(`${API_URL}/api/students`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -17,7 +17,7 @@ export const fetchStudentsApi = () =>
         active: false,
         studentInformation: {
           firstName: student.first_name,
-          lastName: student.last_name
+          lastName: student.last_name,
         },
         contactInformation: {
           phone: student.user_address.phone,
@@ -25,13 +25,13 @@ export const fetchStudentsApi = () =>
           addressLine2: "",
           city: student.user_address.city,
           state: student.user_address.state,
-          zipCode: student.user_address.zip
+          zipCode: student.user_address.zip,
         },
         emailAddress: {
-          email: student.email
+          email: student.email,
         },
         location: {
-          locations: student.user_locations
+          locations: student.user_locations,
         },
         stats: student.stats,
         tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
@@ -41,7 +41,7 @@ export const fetchStudentsApi = () =>
             : student.testScores.initialScore,
           currentScore: !student.hasOwnProperty("testScores")
             ? "0"
-            : student.testScores.currentScore
+            : student.testScores.currentScore,
         },
         // courseContext: {
         //   targetScore: !student.hasOwnProperty("courseContext")
@@ -56,7 +56,7 @@ export const fetchStudentsApi = () =>
           targetTestDate: "12/12/2019",
           targetScore: "1400",
           highSchool: "Everglades High",
-          graduationYear: "2018"
+          graduationYear: "2018",
         },
         courseProgress: {
           startDate: "6/03/18",
@@ -65,13 +65,13 @@ export const fetchStudentsApi = () =>
           improvement: "82",
           lessons: "73",
           instruction: "68",
-          practiceTests: "47"
+          practiceTests: "47",
         },
         overdueWork: {
           lessons: "12",
           worksheets: "3",
           quizzes: "1",
-          practiceTests: "5"
+          practiceTests: "5",
         },
         summary: {
           questionsAnswered: "791",
@@ -80,7 +80,7 @@ export const fetchStudentsApi = () =>
           totalTimeLoggedIn: "220",
           lastLogIn: "3:12",
           loginTimeCode: "pm",
-          onTimePercentage: "77"
+          onTimePercentage: "77",
         },
         testScores: {
           initialScore: "1040",
@@ -89,29 +89,29 @@ export const fetchStudentsApi = () =>
             reading: "83",
             writing: "31",
             math: "105",
-            composite: "218"
+            composite: "218",
           },
           subjectScores: {
             reading: "58",
             writing: "44",
             math: "91",
-            composite: "195"
-          }
+            composite: "195",
+          },
         },
         strengthsAndWeaknesses: {
           reading: {
             correctAnswers: "32",
-            totalAnswers: "52"
+            totalAnswers: "52",
           },
           writing: {
             correctAnswers: "35",
-            totalAnswers: "52"
+            totalAnswers: "52",
           },
           math: {
             correctAnswers: "37",
-            totalAnswers: "52"
-          }
-        }
+            totalAnswers: "52",
+          },
+        },
       }));
       return formattedStudents;
     });
@@ -137,8 +137,8 @@ export const searchStudentsApi = filters => {
   return fetch(`${API_URL}/api/students?${queryString}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -150,7 +150,7 @@ export const searchStudentsApi = filters => {
         active: false,
         studentInformation: {
           firstName: student.first_name,
-          lastName: student.last_name
+          lastName: student.last_name,
         },
         contactInformation: {
           phone: student.user_address.phone,
@@ -158,13 +158,13 @@ export const searchStudentsApi = filters => {
           addressLine2: "",
           city: student.user_address.city,
           state: student.user_address.state,
-          zipCode: student.user_address.zip
+          zipCode: student.user_address.zip,
         },
         emailAddress: {
-          email: student.email
+          email: student.email,
         },
         location: {
-          locations: student.user_locations
+          locations: student.user_locations,
         },
         stats: student.stats,
         tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
@@ -174,13 +174,13 @@ export const searchStudentsApi = filters => {
             : student.testScores.initialScore,
           currentScore: !student.hasOwnProperty("testScores")
             ? "0"
-            : student.testScores.currentScore
+            : student.testScores.currentScore,
         },
         courseContext: {
           targetScore: !student.hasOwnProperty("courseContext")
             ? "0"
-            : student.courseContext.targetScore
-        }
+            : student.courseContext.targetScore,
+        },
       }));
       return formattedStudents;
     })
@@ -196,7 +196,7 @@ export const createStudentApi = student => {
     addressLine2,
     city,
     phone,
-    zipCode: zip
+    zipCode: zip,
   } = student.contactInformation;
   const { locations } = student.location;
   const studentPayload = {
@@ -208,15 +208,15 @@ export const createStudentApi = student => {
     phone,
     address: `${addressLine1}\n${addressLine2}`,
     city,
-    zip
+    zip,
   };
   fetch(`${API_URL}/api/commands/create-student`, {
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(studentPayload)
+    body: JSON.stringify(studentPayload),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -227,9 +227,9 @@ export const updateStudentActivationApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -239,9 +239,9 @@ export const updateStudentAddressApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -251,9 +251,9 @@ export const updateStudentCityApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -263,9 +263,9 @@ export const updateStudentEmailApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -275,9 +275,9 @@ export const updateStudentFirstNameApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -287,9 +287,9 @@ export const updateStudentLastNameApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -299,9 +299,9 @@ export const updateStudentPhoneApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -311,9 +311,9 @@ export const updateStudentStateApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -323,9 +323,9 @@ export const updateStudentZipApi = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -335,9 +335,9 @@ export const updateStudentTestDueDate = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   }).catch(err => err);
 
 export const updateStudentTestAssignmentDate = body =>
@@ -345,9 +345,9 @@ export const updateStudentTestAssignmentDate = body =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   }).catch(err => err);
 
 export const deleteStudentApi = id =>
@@ -355,9 +355,9 @@ export const deleteStudentApi = id =>
     method: "DELETE",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ student_id: id })
+    body: JSON.stringify({ student_id: id }),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -367,9 +367,9 @@ export const assignTestToStudentApi = test => {
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(test)
+    body: JSON.stringify(test),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -378,9 +378,11 @@ export const assignTestToStudentApi = test => {
 export const fetchTestsByStudentIdApi = student_id =>
   fetch(`${API_URL}/api/students/${student_id}/tests`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -394,7 +396,7 @@ export const fetchTestsByStudentIdApi = student_id =>
           student_id,
           assignment_date,
           due_date,
-          status
+          status,
         } = currentStudentTest;
         const newStudentTest = {
           test_id,
@@ -419,39 +421,39 @@ export const fetchTestsByStudentIdApi = student_id =>
               subject: "Reading & Writing",
               targetScore: "750",
               currentScore: "454",
-              totalGain: "73"
+              totalGain: "73",
             },
             {
               subject: "Math",
               targetScore: "490",
               currentScore: "345",
-              totalGain: "101"
-            }
+              totalGain: "101",
+            },
           ],
           compositeScore: {
             reading: "83",
             writing: "31",
             math: "105",
-            composite: "218"
+            composite: "218",
           },
           subjectScores: {
             reading: "58",
             writing: "44",
             math: "91",
-            composite: "195"
+            composite: "195",
           },
           totalScore: "1080",
           totalPossible: "1600",
           sectionScores: {
             readingAndWriting: "710",
             math: "650",
-            totalPossible: "800"
+            totalPossible: "800",
           },
           essayScores: {
             reading: "7",
             analysis: "6",
             writing: "7",
-            totalPossible: "8"
+            totalPossible: "8",
           },
           crossTestScores: "24",
           subScores: {
@@ -462,7 +464,7 @@ export const fetchTestsByStudentIdApi = student_id =>
             heartOfAlgebra: "10",
             problemSolvingAndDataAnalysis: "10",
             passportToAdvancedMath: "13",
-            totalPossible: "15"
+            totalPossible: "15",
           },
           testScoreDetails: {
             reading: {
@@ -473,19 +475,19 @@ export const fetchTestsByStudentIdApi = student_id =>
                 informationalGraphicPassage: "12",
                 historySocialScience: "13",
                 USWorldLiterature: "14",
-                pairedPassages: "12"
+                pairedPassages: "12",
               },
               questionType: {
                 citingTextualEvidence: {
                   citeTextAsEvidence: "12",
                   authorsIntentionAndMethod: "12",
-                  supportOrRefute: "12"
+                  supportOrRefute: "12",
                 },
                 readingClosely: {
                   detailQuestion: "12",
-                  supportRefuteAClaim: "13"
-                }
-              }
+                  supportRefuteAClaim: "13",
+                },
+              },
             },
             mathCalculator: {
               sampleAnswers: [
@@ -499,7 +501,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: true,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 12,
@@ -511,7 +513,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 13,
@@ -523,7 +525,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 14,
@@ -535,7 +537,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 21,
@@ -547,7 +549,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: true,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 22,
@@ -559,7 +561,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 23,
@@ -571,7 +573,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 24,
@@ -583,7 +585,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 25,
@@ -595,9 +597,9 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
-                }
-              ]
+                  tutorNotes: "work and study hard",
+                },
+              ],
             },
             mathNoCalc: {
               sampleAnswers: [
@@ -611,7 +613,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: false,
                   reviewed: true,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 12,
@@ -623,7 +625,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 13,
@@ -635,7 +637,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 14,
@@ -647,7 +649,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 21,
@@ -659,7 +661,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: true,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 22,
@@ -671,7 +673,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 23,
@@ -683,7 +685,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 24,
@@ -695,7 +697,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 25,
@@ -707,9 +709,9 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
-                }
-              ]
+                  tutorNotes: "work and study hard",
+                },
+              ],
             },
             writing: {
               sampleAnswers: [
@@ -724,7 +726,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 12,
@@ -739,7 +741,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   reviewed: false,
                   studentNotes:
                     "Lorem ipsum dolor sit amet sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?",
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 13,
@@ -752,7 +754,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "M",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 14,
@@ -765,7 +767,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E  ",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 21,
@@ -779,7 +781,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: true,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 22,
@@ -792,7 +794,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: false,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 23,
@@ -805,7 +807,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 24,
@@ -818,7 +820,7 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
+                  tutorNotes: "work and study hard",
                 },
                 {
                   id: 25,
@@ -831,11 +833,11 @@ export const fetchTestsByStudentIdApi = student_id =>
                   status: "E",
                   flagged: true,
                   reviewed: false,
-                  tutorNotes: "work and study hard"
-                }
-              ]
-            }
-          }
+                  tutorNotes: "work and study hard",
+                },
+              ],
+            },
+          },
         };
         finalArry.push(newStudentTest);
         return finalArry;
@@ -847,24 +849,29 @@ export const fetchTestsByStudentIdApi = student_id =>
 export const fetchTestByTestIdApi = (student_id, test_id) => {
   fetch(`${API_URL}/students/${student_id}/tests/${test_id}`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
   })
     .then(res => res.json())
     .catch(err => err);
 };
 
-export const fetchProblemsByStudentTestIdApi = student_test_id =>
+export const fetchProblemsByStudentTestIdApi = (student_test_id, student_token) =>
   fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${student_token}`,
+    },
   })
     .then(res => res.json())
     .then(({ data }) => {
       const formattedData = data;
+      console.log('formattedData:', formattedData);
       return { formattedData };
     })
     .catch(err => err);
@@ -874,9 +881,9 @@ export const addStudentAnswerToTestApi = answer =>
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(answer)
+    body: JSON.stringify(answer),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -886,9 +893,9 @@ export const addStudentTestQuestionFlagApi = body =>
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .catch(err => err);
@@ -896,9 +903,11 @@ export const addStudentTestQuestionFlagApi = body =>
 export const fetchStudentTestScoreApi = student_test_id =>
   fetch(`${API_URL}/api/studentTestScore/${student_test_id}`, {
     headers: {
+      Accept: "application/json",
       "Allow-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
   })
     .then(res => res.json())
     .then(({ data }) => {
@@ -911,9 +920,9 @@ export const updateStudentTestQuestionFlagStatusApi = body =>
     method: "PATCH",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
     .then(res => res)
     .catch(err => err);
@@ -925,7 +934,7 @@ export const fetchLessonListApi = () =>
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      "Authorization":'Bearer '+ getToken()
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -940,20 +949,20 @@ export const fetchUnitsApi = () =>
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-    }
+    },
   )
     .then(res => res.json())
     .then(({ data }) => {
       const { units = [] } = data;
       const formattedUnits = units.reduce((finalArr, currentUnit) => {
-        const { id, name, reference_id, } = currentUnit;
+        const { id, name, reference_id } = currentUnit;
         const newUnit = {
           label: name,
-          value: id
+          value: id,
         };
         finalArr.push(newUnit);
         return finalArr;
       }, []);
-      return { formattedUnits, };
+      return { formattedUnits };
     })
     .catch(err => console.warn('err', err));

@@ -40,6 +40,7 @@ import { makeSelectGetLessonList } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 
+
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
   constructor(props) {
@@ -68,8 +69,8 @@ class DetailLessonList extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     if (this.state.lessons.length === 0) {
       this.setState({
-        lessons: nextProps.lessonList
-      })
+        lessons: nextProps.lessonList,
+      });
     }
   }
 
@@ -336,7 +337,7 @@ class DetailLessonList extends React.Component {
         />
         {this.renderCurrentView()}
         <AssignDatesModal
-        
+
           open={this.state.modalOpen}
           // lessons={this.props.user.lessons}
           lessons={this.props.lessonList}

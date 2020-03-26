@@ -25,8 +25,6 @@ import {
 } from '../index/actions';
 
 
-
-
 class IndividualStudentPage extends React.Component {
   constructor(props) {
     super(props);
@@ -35,14 +33,14 @@ class IndividualStudentPage extends React.Component {
       activationDropdownOpen: false,
       licenseCode: "",
       currentTestSection: {},
-      tests:[],
+      tests: [],
     };
   }
 
-  componentDidMount = async() =>{
-    const { onSetIsVisibleTopBar,isVisibleTopBar } = this.props;
-    if(!isVisibleTopBar){
-        onSetIsVisibleTopBar(true);
+  componentDidMount = async () => {
+    const { onSetIsVisibleTopBar, isVisibleTopBar } = this.props;
+    if (!isVisibleTopBar) {
+      onSetIsVisibleTopBar(true);
     }
   }
 
@@ -58,7 +56,7 @@ class IndividualStudentPage extends React.Component {
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
-    //The api data is not enough for now,so we are using dummy data for selected student detail
+    // The  data is not enough for now,so we are using dummy data for selected student detail
     const { student } = this.props;
     // const student = sampleSelectedStudent;
     if (activePage === "summary") {
@@ -77,13 +75,13 @@ class IndividualStudentPage extends React.Component {
       return <LessonDetailAnswerSheet />;
     }
     if (activePage === "test") {
-      return <DetailTestList user={student}/>;
+      return <DetailTestList user={student} />;
     }
     if (activePage === "scored-tests") {
       return <ScoredTestListPage />;
     }
     if (activePage === "calendar") {
-      return <SessionCalendar user = {student}/>;
+      return <SessionCalendar user={student} />;
     }
     return null;
   };
@@ -96,7 +94,7 @@ class IndividualStudentPage extends React.Component {
       },
     } = this.props;
     const { activePage, activationDropdownOpen, licenseCode } = this.state;
-    const { assignLessonsModalOpen, assignWorkSheetsModalOpen,isVisibleTopBar } = this.props;
+    const { assignLessonsModalOpen, assignWorkSheetsModalOpen, isVisibleTopBar } = this.props;
     return (
       <React.Fragment>
         <Choose>
@@ -171,7 +169,7 @@ class IndividualStudentPage extends React.Component {
                     <div
                       id="dropdown_activate"
                       className="dropdown-content"
-                      style={activationDropdownOpen? { display: "block", opacity: "1" }: {}}
+                      style={activationDropdownOpen ? { display: "block", opacity: "1" } : {}}
                     >
                       <div className="card-panel">
                         <div className="title-block">
@@ -238,8 +236,8 @@ class IndividualStudentPage extends React.Component {
 IndividualStudentPage.propTypes = {
   student: PropTypes.object.isRequired,
   onRedirectToStudentPage: PropTypes.func.isRequired,
-  isVisibleTopBar:PropTypes.bool,
-  onSetIsVisibleTopBar:PropTypes.func.isRequired,
+  isVisibleTopBar: PropTypes.bool,
+  onSetIsVisibleTopBar: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -248,10 +246,10 @@ const mapStateToProps = createStructuredSelector({
   isVisibleTopBar: makeSelectIsVisibleTopBar(),
 });
 
-function maptDispatchToProps(dispatch){
+function maptDispatchToProps(dispatch) {
   return {
-    onSetIsVisibleTopBar:(value) => dispatch(setIsVisibleTopBar(value)),
-  }
+    onSetIsVisibleTopBar: (value) => dispatch(setIsVisibleTopBar(value)),
+  };
 }
 
 const withConnect = connect(mapStateToProps, maptDispatchToProps);

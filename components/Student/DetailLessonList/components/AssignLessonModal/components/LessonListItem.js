@@ -18,7 +18,7 @@ class LessonListItem extends React.Component {
   }
 
   render() {
-    const { checkedLessons, selectAll, handleCheckbox, index, lesson, lesson: { id, lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unit, passage, timeEstimate, problems, lessonType, flags } } = this.props;
+    const { checkedLessons, selectAll, handleCheckbox, index, lesson, lesson: { id, name: lessonName, status, assigned, score, scoreStatus, reviewedAlerts, subject, unit, passage, timeEstimate, problems, lessonType, flags } } = this.props;
     return (
       <div className="card list-table-row" key={id} style={{ opacity: assigned ? 0.5 : 1 }}>
         <div className="list-table-cell icon-cell">
@@ -68,7 +68,7 @@ class LessonListItem extends React.Component {
             <div className="text-large truncate" style={{ paddingLeft: '70px' }}>{lessonType}</div>
           </div>
         </div>
-        <div className="list-table-cell graph-cell">
+        {/* <div className="list-table-cell graph-cell">
           {reviewedAlerts.length > 0 && (
             <span className="badge-rounded-xs badge grey darken-1 white-text"><b className="badge-text">{reviewedAlerts.length}</b> <i className="icon-flag"></i></span>
           )}
@@ -77,7 +77,7 @@ class LessonListItem extends React.Component {
           {flags.length > 0 && (
             <span className="badge-rounded-xs badge red darken-2 white-text"><b className="badge-text">{flags.length}</b> <i className="icon-flag"></i></span>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }
