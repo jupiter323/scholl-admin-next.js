@@ -34,7 +34,7 @@ class FullView extends React.Component {
             <span>Check all</span>
           </label> */}
           <div>
-            <Checkbox label="Check all" checkBoxId="checkall" onChecked={this.props.onCheckAll} type="pageCheckBox" />
+            <Checkbox label="Check all" checkBoxId="checkall" onChecked={this.props.onCheckAll} type="pageCheckBox" checked={this.props.selectAll} />
           </div>
           <div>
             <b> - {lessons.length} results -</b>

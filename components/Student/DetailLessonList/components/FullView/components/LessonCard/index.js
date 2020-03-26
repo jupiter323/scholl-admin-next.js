@@ -53,7 +53,7 @@ class LessonCard extends React.Component {
     switch (subject) {
       case "Reading":
         return "icon-books";
-      case "Writing":
+      case "Writing and Language":
         return "icon-hands";
       case "Math":
         return "icon-calculator";
@@ -199,10 +199,10 @@ class LessonCard extends React.Component {
           <div className={getLessonActivityStatus(status)}>
             <div className="card-panel" style={{ backgroundColor: "#666", color: "#fff" }}>
               <div className="card-panel-row row">
-                <div className="icon-col col s1">
+                <div className="icon-col col s2">
                   <i className={this.renderLessonIcon(subjects.name)}></i>
                 </div>
-                <div className="col s10">
+                <div className="col s9">
                   <div className="card-panel-text center-left">
                     <div className="text-small">{units.name}</div>
                     <div className="text-large">
