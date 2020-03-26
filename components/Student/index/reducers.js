@@ -18,6 +18,7 @@ import {
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
   SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_TOKEN,
 } from "./constants";
 
 const initialState = fromJS({
@@ -26,7 +27,7 @@ const initialState = fromJS({
   assignWorkSheetsModalOpen: false,
   calendarRows: [],
   isVisibleTopBar: true,
-  activeTestScores: [],
+  activeTestScores: null,
   overdueStudentTests: [],
   assignedStudentTests: [],
   completedStudentTests: [],
@@ -37,6 +38,7 @@ const initialState = fromJS({
   isLoading: false,
   error: null,
   unitFilterOptions:[],
+  activeStudentToken:"",
 });
 
 function studentReducer(state = initialState, action) {
@@ -72,6 +74,8 @@ function studentReducer(state = initialState, action) {
       return state.set("lessonList", action.payload);
     case SET_UNIT_FILTER_OPTIONS:
       return state.set('unitFilterOptions',action.options)
+    case SET_ACTIVE_STUDENT_TOKEN:
+      return state.set('activeStudentToken',action.token)
     // return {
     //   ...state,
     //   isLoading: false,

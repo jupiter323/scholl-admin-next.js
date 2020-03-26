@@ -138,14 +138,15 @@ export function* fetchUnits(){
 
 export function* watchForFetchStudentTestSections() {
   while (true) {
-    const { studentTestId } = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    yield call(fetchStudentTestSections, studentTestId);
+    const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
+    const {postBody:{student_test_id,studentToken}} = payload;
+    yield call(fetchStudentTestSections, student_test_id,studentToken);
   }
 }
 
-export function* fetchStudentTestSections(studentTestId) {
+export function* fetchStudentTestSections(studentTestId,studentToken) {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId);
+    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId,studentToken);
     yield put(setStudentSections(formattedData.test.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);

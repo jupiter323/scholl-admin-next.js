@@ -11,7 +11,7 @@ import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplet
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 
-import { makeSelectStudentSections } from "../../../index/selectors";
+import { makeSelectStudentSections,makeSelectActiveStudentToken } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 class EditTestModal extends React.Component {
   constructor(props) {
@@ -53,11 +53,16 @@ class EditTestModal extends React.Component {
     this.props.onRef(this);
     const {
       onFetchStudentTestSections,
+      studentToken,
       sections,
       test: { student_test_id }
     } = this.props;
     if (sections.length === 0) {
-      onFetchStudentTestSections(student_test_id);
+      const postBody = {
+        student_test_id,
+        studentToken
+      }
+      onFetchStudentTestSections(postBody);
     }
   }
   componentWillUnmount() {
@@ -386,7 +391,8 @@ EditTestModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  sections: makeSelectStudentSections()
+  sections: makeSelectStudentSections(),
+  studentToken:makeSelectActiveStudentToken(),
 });
 function mapDispatchToProps(dispatch) {
   return {

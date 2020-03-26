@@ -30,6 +30,7 @@ import {
   CHECK_ALL_LESSONS,
   FETCH_UNITS,
   SET_UNIT_FILTER_OPTIONS,
+  SET_ACTIVE_STUDENT_TOKEN,
 } from "./constants";
 
 export function fetchStudents() {
@@ -65,10 +66,10 @@ export function fetchStudentTests(user) {
   };
 }
 
-export function fetchStudentTestSections(studentTestId) {
+export function fetchStudentTestSections(postBody) {
   return {
     type: FETCH_STUDENT_TEST_SECTIONS,
-    studentTestId
+    postBody
   };
 }
 
@@ -77,6 +78,13 @@ export function setStudentSections(sections) {
     type: SET_STUDENT_SECTIONS,
     sections
   };
+}
+
+export function setActiveStudentToken(token){
+  return {
+    type:SET_ACTIVE_STUDENT_TOKEN,
+    token
+  }
 }
 
 export function setActiveStudentTestId(studentTestId) {

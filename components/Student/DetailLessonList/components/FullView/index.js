@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LessonCard from '../FullView/components/LessonCard';
+import LessonCard from './components/LessonCard';
 import Checkbox from './components/LessonCard/components/Checkbox';
 import RescheduleModal from '../RescheduleModal';
 class FullView extends React.Component {
