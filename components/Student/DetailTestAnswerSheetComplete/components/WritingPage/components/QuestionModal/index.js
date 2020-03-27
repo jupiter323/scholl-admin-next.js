@@ -6,26 +6,58 @@ import PropTypes from "prop-types";
 import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 
-import { updateStudentTestQuestionFlagStatusApi } from "../../../../../index/api";
-import { makeSelectActiveStudentTestId,makeSelectActiveStudentToken } from "../../../../../index/selectors";
+import { updateStudentTestQuestionFlagStatusApi, addStudentTestQuestionFlagApi } from "../../../../../index/api";
+import { makeSelectActiveStudentTestId, makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      status: 'UN_FLAGGED',
+      originalTestProblemId: ''
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    const { question: { test_problem_id } } = nextProps;
+    const { originalTestProblemId } = this.state;
+    if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
+      const { question: { flag: { status } } } = this.props;
+      this.setState({
+        status: status
+      })
+    }
   }
 
   onHandleQuestionFlagStatus = async (e, status) => {
     const {
       studentTestId,
-      question: { test_problem_id },
-      studentToken
+      studentToken,
+      onChangeFlagState
     } = this.props;
-    const postBody = { student_test_id: studentTestId, flag_id: test_problem_id, status: status };
-    await updateStudentTestQuestionFlagStatusApi(postBody,studentToken);
+    const { status:prevStatus } = this.state;
+    if (prevStatus !== 'UN_FLAGGED') {
+      const { question: { flag: { id } } } = this.props;
+      const postBody = { student_test_id: studentTestId, flag_id: id, status: status };
+      await updateStudentTestQuestionFlagStatusApi(postBody);
+      onChangeFlagState(status)
+    } else {
+      if (status === 'FLAGGED') {
+        this.setState({
+          status
+        })
+        const { question: { test_problem_id } } = this.props;
+        const postBody = { student_test_id: studentTestId, test_problem_id: test_problem_id };
+        await addStudentTestQuestionFlagApi(postBody, studentToken);
+        onChangeFlagState(status)
+      }
+    }
   };
+
 
   render() {
     const { open, onCloseQuestionModal, question } = this.props;
+    const { status } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
@@ -65,6 +97,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                checked={status === 'UN_FLAGGED'}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED ")}
                               />
                               <span>Nope. Got it.</span>
@@ -76,6 +109,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                checked={status === 'FLAGGED'}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
                               />
                               <span>
@@ -90,6 +124,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                checked={status === 'REVIEWED'}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
                               />
                               <span>
@@ -255,7 +290,7 @@ QuestionModal.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   studentTestId: makeSelectActiveStudentTestId(),
-  studentToken:makeSelectActiveStudentToken(),
+  studentToken: makeSelectActiveStudentToken(),
 });
 
 const withConnect = connect(mapStateToProps, null);

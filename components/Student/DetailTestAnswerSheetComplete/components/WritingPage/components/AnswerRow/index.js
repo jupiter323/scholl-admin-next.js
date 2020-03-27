@@ -8,7 +8,23 @@ class AnswerRow extends React.Component {
     super(props);
     this.state = {
       open: false,
+      status: '',
     };
+  }
+
+  componentDidMount = () => {
+    if (this.props.problem.flag) {
+      const { problem: { flag: { status } } } = this.props;
+      this.setState({
+        status
+      })
+    }
+  }
+
+  onChangeFlagState = (status) => {
+    this.setState({
+      status
+    })
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -61,7 +77,7 @@ class AnswerRow extends React.Component {
 
   render() {
     const { problem } = this.props;
-    const { open } = this.state;
+    const { open, status } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
@@ -69,6 +85,7 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
+          onChangeFlagState = {this.onChangeFlagState}
         />
         <li
           className="answers-list-holder"
@@ -90,8 +107,14 @@ class AnswerRow extends React.Component {
               <span className="status-info">E</span>
             </div>
             <div className="col col-auto">
-              <If condition={this.props.problem.flag}>
+              <If condition={status === 'FLAGGED'}>
                 <span className="status-answer" style={{ color: "#c0272d" }}>
+                  <i className="icon-flag"></i>
+                  <b className="status-text">Review</b>
+                </span>
+              </If>
+              <If condition={status === 'REVIEWED'}>
+                <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
                   <b className="status-text">Review</b>
                 </span>

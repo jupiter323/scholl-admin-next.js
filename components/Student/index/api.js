@@ -888,12 +888,14 @@ export const addStudentAnswerToTestApi = answer =>
     .then(res => res.json())
     .catch(err => err);
 
-export const addStudentTestQuestionFlagApi = body =>
+export const addStudentTestQuestionFlagApi = (body,studentToken) =>
   fetch(`${API_URL}/api/commands/add-student-test-question-flag`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization":'Bearer '+ studentToken
     },
     body: JSON.stringify(body)
   })
@@ -915,14 +917,14 @@ export const fetchStudentTestScoreApi = student_test_id =>
       return { formattedTestScores };
     })
     .catch(err => err);
-export const updateStudentTestQuestionFlagStatusApi = (body,studentToken) =>
+export const updateStudentTestQuestionFlagStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-question-flag-status`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      "Authorization":'Bearer '+ studentToken
+      "Authorization":'Bearer '+ getToken()
     },
     body: JSON.stringify(body)
   })
