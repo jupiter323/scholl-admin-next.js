@@ -33,7 +33,7 @@ class LessonCard extends React.Component {
       test: true,
       dropdownIsOpen: false,
       detailModalOpen: false,
-      selected: props.lesson.selected,
+      selected: props.selected,
     };
   }
 

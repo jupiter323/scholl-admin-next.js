@@ -6,6 +6,7 @@ import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 
 class FullView extends React.Component {
+  
   mapLessons = () => {
     const { lessons, onCloneLesson, onDeleteLesson, user, onCheckLesson } = this.props;
     return lessons.map((lesson, index) => (
@@ -19,6 +20,7 @@ class FullView extends React.Component {
         onDeleteLesson={() => onDeleteLesson(index)}
         user={user}
         onChecked={onCheckLesson}
+        selected={lesson.selected}
       />
     ));
   };

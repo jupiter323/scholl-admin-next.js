@@ -75,6 +75,7 @@ class DetailLessonList extends React.Component {
   };
 
   onCheckLesson = (id) => {
+    console.log({checked : id})
     this.props.dispathCheckLesson(id)
   }
 
@@ -172,6 +173,7 @@ class DetailLessonList extends React.Component {
       return finalArr;
     }, []);
   };
+
   onCloneLesson = index => {
     const { lessons } = this.state;
     this.setState(prevState => {
@@ -221,6 +223,7 @@ class DetailLessonList extends React.Component {
       flagFilters
     } = this.state;
     let mappableLessons = this.props.lessonList;
+    
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }

@@ -106,6 +106,7 @@ function studentReducer(state = initialState, action) {
     case CHECK_ALL_LESSONS:
       return state.set(
         "lessonList",
+        // need to map over the filtered state
         state.get('lessonList').map((lesson) => ({
           ...lesson,
           selected: !action.checked,
