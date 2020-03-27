@@ -9,5 +9,5 @@ export default combineReducers({
   instructorReducer,
   studentReducer,
   classesReducer,
-  userReducer
+  userReducer,
 });

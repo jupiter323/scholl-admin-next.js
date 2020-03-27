@@ -4,7 +4,7 @@ import {
   FETCH_LESSON_LIST_FAIL,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
-  UNCHECK_ALL_LESSONS
+  UNCHECK_ALL_LESSONS,
 } from "./constants";
 
 
@@ -56,14 +56,14 @@ const lessonListReducer = (state = initialState, action = {}) => {
         })),
       };
 
-    case UNCHECK_ALL_LESSONS: 
-    return {
-      ...state,
-      lessonList: state.lessonList.map((lesson) => ({
+    case UNCHECK_ALL_LESSONS:
+      return {
+        ...state,
+        lessonList: state.lessonList.map((lesson) => ({
           ...lesson,
           selected: !action.checked,
         })),
-    }
+      };
 
     default:
       return state;

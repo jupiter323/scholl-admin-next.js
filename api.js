@@ -79,5 +79,5 @@ export const instructorApi = {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
-  
+
 };

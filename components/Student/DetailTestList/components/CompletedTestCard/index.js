@@ -17,7 +17,7 @@ class CompletedTestCard extends React.Component {
       WritingScore: null,
       ReadingAndWrigingScore: null,
       MathScore: null,
-      NA: 0
+      NA: 0,
     };
   }
 
@@ -76,7 +76,7 @@ class CompletedTestCard extends React.Component {
       onDownloadReport,
       test: { test_name, test_description, dueDate, completion_date, test_id },
       onEditTest,
-      onEnterAnswers
+      onEnterAnswers,
     } = this.props;
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
@@ -103,7 +103,7 @@ class CompletedTestCard extends React.Component {
                             style={{
                               minWidth: "20px",
                               minHeight: "20px",
-                              borderRadius: "50%"
+                              borderRadius: "50%",
                             }}
                           >
                             <i className="icon-flag"></i>
@@ -125,7 +125,7 @@ class CompletedTestCard extends React.Component {
                                   transformOrigin: "0px 0px 0px",
                                   opacity: "1",
                                   transform: "scaleX(1) scaleY(1)",
-                                  width: "210px"
+                                  width: "210px",
                                 }}
                                 className="dropdown-content"
                               >
@@ -203,7 +203,7 @@ class CompletedTestCard extends React.Component {
                   style={{
                     width: "120px",
                     height: "120px",
-                    fontSize: "55px"
+                    fontSize: "55px",
                   }}
                 >
                   n/a
@@ -215,7 +215,7 @@ class CompletedTestCard extends React.Component {
                     className="badge-circle"
                     style={{
                       backgroundColor: "#4785f4",
-                      borderColor: "#4785f4"
+                      borderColor: "#4785f4",
                     }}
                   >
                     <span className="badge-text">
@@ -231,7 +231,7 @@ class CompletedTestCard extends React.Component {
                       >
                         {MathScore.current_score}
                         <br />
-                        {MathScore.previous_score === null ? "" : "+" + MathScore.delta}
+                        {MathScore.previous_score === null ? "" : `+${MathScore.delta}`}
                       </h2>
                     </span>
                   </span>
@@ -254,7 +254,7 @@ class CompletedTestCard extends React.Component {
                     className="badge-circle"
                     style={{
                       backgroundColor: "#55b24b",
-                      borderColor: "#55b24b"
+                      borderColor: "#55b24b",
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: "16px" }}>
@@ -274,7 +274,7 @@ class CompletedTestCard extends React.Component {
                         <br />
                         {ReadingAndWrigingScore.previous_score === null
                           ? ""
-                          : "+" + ReadingAndWrigingScore.delta}
+                          : `+${ReadingAndWrigingScore.delta}`}
                       </h2>
                     </span>
                   </span>
@@ -302,7 +302,7 @@ class CompletedTestCard extends React.Component {
                       backgroundColor: "#35a6af",
                       borderColor: "#35a6af",
                       width: "80px",
-                      height: "80px"
+                      height: "80px",
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: "16px" }}>
@@ -313,7 +313,7 @@ class CompletedTestCard extends React.Component {
                       >
                         {ReadingScore.current_score}
                         <br />
-                        {ReadingScore.previous_score === null ? "" : "+" + ReadingScore.delta}
+                        {ReadingScore.previous_score === null ? "" : `+${ReadingScore.delta}`}
                       </h3>
                     </span>
                   </span>
@@ -324,7 +324,7 @@ class CompletedTestCard extends React.Component {
                     className="badge-circle"
                     style={{
                       width: "80px",
-                      height: "80px"
+                      height: "80px",
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: "16px" }}>
@@ -343,7 +343,7 @@ class CompletedTestCard extends React.Component {
                       backgroundColor: "#389b7d",
                       borderColor: "#389b7d",
                       width: "80px",
-                      height: "80px"
+                      height: "80px",
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
@@ -352,7 +352,7 @@ class CompletedTestCard extends React.Component {
                       <h4>
                         {WritingScore.current_score}
                         <br />
-                        {WritingScore.previous_score === null ? "" : "+" + WritingScore.delta}
+                        {WritingScore.previous_score === null ? "" : `+${WritingScore.delta}`}
                       </h4>
                     </span>
                   </span>
@@ -363,7 +363,7 @@ class CompletedTestCard extends React.Component {
                     className="badge-circle"
                     style={{
                       width: "80px",
-                      height: "80px"
+                      height: "80px",
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
@@ -393,11 +393,11 @@ CompletedTestCard.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  scores: makeSelectActiveTestScores()
+  scores: makeSelectActiveTestScores(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSetScores: scores => dispatch(setActiveTestScores(scores))
+  onSetScores: scores => dispatch(setActiveTestScores(scores)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

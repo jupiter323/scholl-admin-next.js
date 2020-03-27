@@ -7,11 +7,11 @@ import Router from "next/router";
 import { setUserIsLogged } from "../components/User/index/actions";
 
 class Login extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
     };
   }
 
@@ -29,7 +29,7 @@ class Login extends Component {
     const password = "password";
     const postBody = {
       email,
-      password
+      password,
     };
     const data = await logIn(postBody);
     if (data.token && data.expires_at) {
@@ -42,7 +42,7 @@ class Login extends Component {
 
   handleChangeForm = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -70,24 +70,24 @@ class Login extends Component {
                   <div className="formsec">
                     <ul className="clearfix">
                       <li>
-                        <input 
+                        <input
                           type="text"
                           name="email"
-                          placeholder="email" 
+                          placeholder="email"
                           value={email}
                           onChange={this.handleChangeForm}
                         />
                       </li>
                       <li>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           name="password"
-                          placeholder="password" 
+                          placeholder="password"
                           value={password}
                           onChange={this.handleChangeForm}
                         />
                       </li>
-                      <li style = {{textAlign:"right"}}>
+                      <li style={{ textAlign: "right" }}>
                         <a >Forgot Password</a>
                       </li>
                       <li>
@@ -263,7 +263,7 @@ Login.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetUserIsLogged: value => dispatch(setUserIsLogged(value))
+    onSetUserIsLogged: value => dispatch(setUserIsLogged(value)),
   };
 }
 

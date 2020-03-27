@@ -24,7 +24,7 @@ class AssignedTestCard extends React.Component {
       dropdownIsOpen,
       test: { test_name, test_description, dueDate, completion_date, test_id },
       onEnterAnswers,
-      handleTestSettingModalOpen
+      handleTestSettingModalOpen,
     } = this.props;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
     const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
@@ -65,7 +65,7 @@ class AssignedTestCard extends React.Component {
                                   transformOrigin: "0px 0px 0px",
                                   opacity: "1",
                                   transform: "scaleX(1) scaleY(1)",
-                                  width: "210px"
+                                  width: "210px",
                                 }}
                                 className="dropdown-content"
                               >
@@ -148,7 +148,7 @@ AssignedTestCard.propTypes = {
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  test: PropTypes.object.isRequired
+  test: PropTypes.object.isRequired,
 };
 
 export default AssignedTestCard;

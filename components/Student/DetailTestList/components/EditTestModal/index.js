@@ -11,7 +11,7 @@ import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplet
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 
-import { makeSelectStudentSections,makeSelectActiveStudentToken } from "../../../index/selectors";
+import { makeSelectStudentSections, makeSelectActiveStudentToken } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 class EditTestModal extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class EditTestModal extends React.Component {
         test_date: "September 28th, 2018",
         name: "Arnold Studently",
         test_type: "Practice Test",
-        order: "3rd"
+        order: "3rd",
       },
       subjects: [
         "Practice Test Scores",
@@ -42,10 +42,10 @@ class EditTestModal extends React.Component {
         "Math Analysis",
         "Math Analysis (cont'd)",
         "Math Answer Sheet(no calc)",
-        "Math Answer Sheet(calculator)"
+        "Math Answer Sheet(calculator)",
       ],
       adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
-      headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"]
+      headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"],
     };
   }
 
@@ -55,13 +55,13 @@ class EditTestModal extends React.Component {
       onFetchStudentTestSections,
       studentToken,
       sections,
-      test: { student_test_id }
+      test: { student_test_id },
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
         student_test_id,
-        studentToken
-      }
+        studentToken,
+      };
       onFetchStudentTestSections(postBody);
     }
   }
@@ -69,29 +69,27 @@ class EditTestModal extends React.Component {
     this.props.onRef(undefined);
   }
 
-  getBase64ImageFromURL = url => {
-    return new Promise((resolve, reject) => {
-      var img = new Image();
-      img.setAttribute("crossOrigin", "anonymous");
-      img.onload = () => {
-        var canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-        var dataURL = canvas.toDataURL("image/png");
-        resolve(dataURL);
-      };
-      img.onerror = error => {
-        reject(error);
-      };
-      img.src = url;
-    });
-  };
+  getBase64ImageFromURL = url => new Promise((resolve, reject) => {
+    const img = new Image();
+    img.setAttribute("crossOrigin", "anonymous");
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      const dataURL = canvas.toDataURL("image/png");
+      resolve(dataURL);
+    };
+    img.onerror = error => {
+      reject(error);
+    };
+    img.src = url;
+  });
 
   onSetActivePage = activePage => {
     this.setState({
-      activePage
+      activePage,
     });
   };
 
@@ -102,7 +100,7 @@ class EditTestModal extends React.Component {
       useCORS: true,
       allowTaint: true,
       backgroundColor: "rgba(0,0,0,0)",
-      removeContainer: true
+      removeContainer: true,
     };
     const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(canvas => {
       const imgData = canvas.toDataURL("image/png", 1.0);
@@ -111,120 +109,116 @@ class EditTestModal extends React.Component {
     return targetImg;
   };
 
-  getData = item => {
-    return new Promise(async resolve => {
-      const currentChild = item.child;
-      this.setState(
-        {
-          activePage: item.state
-        },
-        async () => {
-          const data = await this[currentChild].getComponentImages();
-          switch (item.state) {
-            case "StrengthsAndWeaknesses":
-              this.setState({
-                analysisCicleImages: data.circleImageList,
-                analysisBarImages: data.barImageList
-              });
-              break;
-            case "answerSheet":
-              this.setState({
-                answerSheetImages: data
-              });
-              break;
-            case "scores":
-              this.setState({
-                scoresImages: data
-              });
-              break;
-          }
-          resolve();
+  getData = item => new Promise(async resolve => {
+    const currentChild = item.child;
+    this.setState(
+      {
+        activePage: item.state,
+      },
+      async () => {
+        const data = await this[currentChild].getComponentImages();
+        switch (item.state) {
+          case "StrengthsAndWeaknesses":
+            this.setState({
+              analysisCicleImages: data.circleImageList,
+              analysisBarImages: data.barImageList,
+            });
+            break;
+          case "answerSheet":
+            this.setState({
+              answerSheetImages: data,
+            });
+            break;
+          case "scores":
+            this.setState({
+              scoresImages: data,
+            });
+            break;
         }
-      );
-    });
-  };
+        resolve();
+      },
+    );
+  });
 
   generateScoreReportPdf = async () => {
     this.setState({
-      enablePublish: false
+      enablePublish: false,
     });
-    let imgDataLists = [];
+    const imgDataLists = [];
     const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = "./static/images/sunset.jpg";
     const logoImg = "./static/images/study-hut-logo.png";
     const backgroundImage = await this.getBase64ImageFromURL(
-      coverBackgroundImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const logo = await this.getBase64ImageFromURL(
-      logoImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const pageStates = [
       {
         state: "scores",
-        child: "ScoresChild"
+        child: "ScoresChild",
       },
       {
         state: "StrengthsAndWeaknesses",
-        child: "AnalysisChild"
+        child: "AnalysisChild",
       },
       {
         state: "answerSheet",
-        child: "AnswerSheetChild"
-      }
+        child: "AnswerSheetChild",
+      },
     ];
-    const getImagesPromise = pageStates.reduce((accumulatorPromise, item) => {
-      return accumulatorPromise
-        .then(async () => {
-          const images = await this.getData(item);
-        })
-        .catch(console.error);
-    }, Promise.resolve());
+    const getImagesPromise = pageStates.reduce((accumulatorPromise, item) => accumulatorPromise
+      .then(async () => {
+        const images = await this.getData(item);
+      })
+      .catch(console.error), Promise.resolve());
 
     getImagesPromise.then(() => {
       this.setState({
-        enablePublish: true
+        enablePublish: true,
       });
       const {
         scoresImages,
         analysisCicleImages,
         analysisBarImages,
-        answerSheetImages
+        answerSheetImages,
       } = this.state;
       imgDataLists.push({
         image: scoresImages,
         width: 550,
         margin: [0, 20, 0, 0],
-        pageBreak: "after"
+        pageBreak: "after",
       });
       for (let i = 0; i < 3; i++) {
         imgDataLists.push({
           image: analysisCicleImages[i],
           width: 300,
-          margin: [0, 20, 0, 0]
+          margin: [0, 20, 0, 0],
         });
         imgDataLists.push({
           image: analysisBarImages[i],
           width: 550,
           margin: [0, 20, 0, 0],
-          pageBreak: "after"
+          pageBreak: "after",
         });
         imgDataLists.push({
           image: analysisBarImages[i],
           width: 550,
           margin: [0, 20, 0, 0],
-          pageBreak: "after"
+          pageBreak: "after",
         });
         imgDataLists.push({
           image: answerSheetImages[i],
           width: 550,
           margin: [0, 20, 0, 0],
-          pageBreak: "after"
+          pageBreak: "after",
         });
       }
       imgDataLists.push({
         image: answerSheetImages[3],
         width: 550,
-        margin: [0, 20, 0, 0]
+        margin: [0, 20, 0, 0],
       });
       pdfMakeReport(
         imgDataLists,
@@ -233,7 +227,7 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo
+        logo,
       );
     });
   };
@@ -289,7 +283,7 @@ class EditTestModal extends React.Component {
     const { activePage, enablePublish } = this.state;
     const { title, version: testVersion } = test;
     const {
-      studentInformation: { firstName, lastName }
+      studentInformation: { firstName, lastName },
     } = user;
     return (
       <div className="wrapper">
@@ -301,7 +295,7 @@ class EditTestModal extends React.Component {
             position: "absolute",
             top: "0",
             minHeight: "100%",
-            minWidth: "100%"
+            minWidth: "100%",
           }}
         >
           <div className="header-row card-panel light-blue lighten-1 white-text">
@@ -387,16 +381,16 @@ EditTestModal.propTypes = {
   user: PropTypes.object.isRequired,
   onDeleteTest: PropTypes.func.isRequired,
   onSaveTestChanges: PropTypes.func.isRequired,
-  onCloseEditTestModal: PropTypes.func.isRequired
+  onCloseEditTestModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
-  studentToken:makeSelectActiveStudentToken(),
+  studentToken: makeSelectActiveStudentToken(),
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId))
+    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

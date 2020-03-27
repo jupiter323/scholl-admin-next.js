@@ -26,7 +26,7 @@ class DetailTestScorePage extends React.Component {
   getComponentImages = async () => {
     const { getTargetImage } = this.props;
     const [scoresImages] = await Promise.all([
-      getTargetImage(document.getElementById("scoresRef"))
+      getTargetImage(document.getElementById("scoresRef")),
     ]);
     return scoresImages;
   };
@@ -42,8 +42,8 @@ class DetailTestScorePage extends React.Component {
       scores: {
         section_scores,
         cross_section_scores,
-        sub_section_scores
-      }
+        sub_section_scores,
+      },
     } = this.props;
     return (
       <div className="container" id="scoresRef">
@@ -71,12 +71,12 @@ class DetailTestScorePage extends React.Component {
 
 DetailTestScorePage.propTypes = {
   getTargetImage: PropTypes.func.isRequired,
-  test: PropTypes.object.isRequired
+  test: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   scores: makeSelectActiveTestScores(),
-})
+});
 
 const withConnect = connect(mapStateToProps, null);
 

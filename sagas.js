@@ -1,4 +1,4 @@
-import { take, call, put, all,takeEvery } from "redux-saga/effects";
+import { take, call, put, all, takeEvery } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -41,7 +41,6 @@ import {
   UPDATE_INSTRUCTOR_ZIP,
   UPDATE_INSTRUCTOR_ADDRESS,
   UPDATE_INSTRUCTOR_PHONE,
-  ADD_INSTRUCTOR_LOCATION,
 } from "./components/Instructor/index/constants";
 import {
   setStudents,
@@ -50,11 +49,11 @@ import {
   setStudentOverDueTests,
   setStudentAssignedTests,
   setStudentSections,
-  setUnitFilterOptions
+  setUnitFilterOptions,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
-  
+
 
 import { studentApi, classApi, instructorApi, lessonApi } from "./api";
 const {
@@ -73,7 +72,7 @@ const {
   fetchTestsByStudentIdApi,
   fetchProblemsByStudentTestIdApi,
   fetchLessonListApi,
-  fetchUnitsApi
+  fetchUnitsApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -82,7 +81,7 @@ const {
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassDurationApi,
-  updateClassExcludeFromStatisticsApi
+  updateClassExcludeFromStatisticsApi,
 } = classApi;
 const {
   fetchInstructorsApi,
@@ -95,7 +94,6 @@ const {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   updateInstructorPhoneApi,
-  addInstructorToLocationApi,
   createNewInstructorApi,
 } = instructorApi;
 
@@ -118,35 +116,35 @@ export function* fetchStudents() {
   }
 }
 
-export function* watchForFetchUnitFilterOptions(){
-  while(true){
+export function* watchForFetchUnitFilterOptions() {
+  while (true) {
     yield take(FETCH_UNITS);
-    yield call(fetchUnits)
+    yield call(fetchUnits);
   }
 }
 
-export function* fetchUnits(){
+export function* fetchUnits() {
   try {
-    const {formattedUnits} = yield call(fetchUnitsApi);
-    if(Array.isArray(formattedUnits) || formattedUnits instanceof Array){
-      yield put(setUnitFilterOptions(formattedUnits))
+    const { formattedUnits } = yield call(fetchUnitsApi);
+    if (Array.isArray(formattedUnits) || formattedUnits instanceof Array) {
+      yield put(setUnitFilterOptions(formattedUnits));
     }
-  } catch(err){
-    console.warn("Error occured in the fetchUnits saga",err)
+  } catch (err) {
+    console.warn("Error occured in the fetchUnits saga", err);
   }
 }
 
 export function* watchForFetchStudentTestSections() {
   while (true) {
     const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    const {postBody:{student_test_id,studentToken}} = payload;
-    yield call(fetchStudentTestSections, student_test_id,studentToken);
+    const { postBody: { student_test_id, studentToken } } = payload;
+    yield call(fetchStudentTestSections, student_test_id, studentToken);
   }
 }
 
-export function* fetchStudentTestSections(studentTestId,studentToken) {
+export function* fetchStudentTestSections(studentTestId, studentToken) {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId,studentToken);
+    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId, studentToken);
     yield put(setStudentSections(formattedData.test.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
@@ -167,7 +165,7 @@ export function* fetchStudentTests(user) {
     const sortedTests = {
       overdues: [],
       assigneds: [],
-      completes: []
+      completes: [],
     };
     // sort test into assisend, incompletes
     //* * using for development purposes pushing :STARTED to assigneds */
@@ -635,7 +633,7 @@ function* watchForFetchLesson() {
 function* handleFetchLesson() {
   try {
     const lessons = yield call(fetchLessonListApi);
-     if (Array.isArray(lessons) || lessons instanceof Array) {
+    if (Array.isArray(lessons) || lessons instanceof Array) {
       yield put({
         type: FETCH_LESSON_LIST_SUCCESS,
         payload: lessons.map(lesson => ({

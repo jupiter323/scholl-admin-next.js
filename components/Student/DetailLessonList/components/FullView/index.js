@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import LessonCard from './components/LessonCard';
 import Checkbox from './components/LessonCard/components/Checkbox';
 import RescheduleModal from '../RescheduleModal';
+// eslint-disable-next-line
+import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
+
 class FullView extends React.Component {
   constructor(props) {
     super(props);
@@ -14,9 +17,7 @@ class FullView extends React.Component {
     };
   }
   mapLessons = () => {
-
     const { lessons, onCloneLesson, onDeleteLesson, user, onCheckLesson } = this.props;
-
     return lessons.map((lesson, index) => (
       <LessonCard
         // eslint-disable-next-line react/no-array-index-key
@@ -46,7 +47,10 @@ class FullView extends React.Component {
 
   }
   render() {
-    const { openRescheduleModal,activeLesson } = this.state;
+    const { openRescheduleModal, activeLesson } = this.state;
+    const { lessons } = this.props;
+
+
     return (
       <div className="content-section">
         <div className="d-flex justify-content-between">
@@ -55,13 +59,11 @@ class FullView extends React.Component {
             <span>Check all</span>
           </label> */}
           <div>
-
-            <Checkbox label="Check all" checkBoxId="checkall" onChecked={this.props.onCheckAll} type="pageCheckBox" />
+            <Checkbox label="Check all" checkBoxId="checkall" onChecked={this.props.onCheckAll} type="pageCheckBox" checked={this.props.selectAll} />
           </div>
           <div>
-            <b> - {this.props.lessons.length} results -</b>
+            <b> - {lessons.length} results -</b>
           </div>
-
 
           <div className="dropdown-block col">
             <a
@@ -82,6 +84,8 @@ class FullView extends React.Component {
             onClose={this.handleRescheduleModalOpen}
             onSave={this.onSaveScheduleChanges}
           />
+        </div>
+        <div className="row d-flex-content  justify-content-center card-width-auto">
           {this.mapLessons()}
         </div>
       </div>
@@ -94,5 +98,7 @@ FullView.propTypes = {
   user: PropTypes.object.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
+  onCheckLesson: PropTypes.func.isRequired,
+  onCheckAll: PropTypes.func.isRequired,
 };
 export default FullView;
