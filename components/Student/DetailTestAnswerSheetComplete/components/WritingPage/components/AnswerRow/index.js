@@ -85,7 +85,7 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
-          onChangeFlagState = {this.onChangeFlagState}
+          onChangeFlagState={this.onChangeFlagState}
         />
         <li
           className="answers-list-holder"
@@ -120,11 +120,13 @@ class AnswerRow extends React.Component {
                 </span>
               </If>
             </div>
-            <div className="dropdown-block col col-35">
-              <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
-                <i className="material-icons dots-icon">more_vert</i>
-              </a>
-            </div>
+            <If condition={status === 'FLAGGED'}>
+              <div className="dropdown-block col col-35">
+                <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
+                  <i className="material-icons dots-icon">more_vert</i>
+                </a>
+              </div>
+            </If>
           </div>
         </li>
       </React.Fragment>

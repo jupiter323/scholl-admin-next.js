@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 
-import { updateStudentTestQuestionFlagStatusApi, addStudentTestQuestionFlagApi } from "../../../../../index/api";
+import { updateStudentTestQuestionFlagStatusApi } from "../../../../../index/api";
 import { makeSelectActiveStudentTestId, makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
@@ -29,35 +29,21 @@ class QuestionModal extends React.Component {
     }
   }
 
-  onHandleQuestionFlagStatus = async (e, status) => {
+  onHandleQuestionFlagStatus = async (_e, status) => {
     const {
       studentTestId,
-      studentToken,
       onChangeFlagState
     } = this.props;
-    const { status:prevStatus } = this.state;
-    if (prevStatus !== 'UN_FLAGGED') {
-      const { question: { flag: { id } } } = this.props;
-      const postBody = { student_test_id: studentTestId, flag_id: id, status: status };
-      await updateStudentTestQuestionFlagStatusApi(postBody);
-      onChangeFlagState(status)
-    } else {
-      if (status === 'FLAGGED') {
-        this.setState({
-          status
-        })
-        const { question: { test_problem_id } } = this.props;
-        const postBody = { student_test_id: studentTestId, test_problem_id: test_problem_id };
-        await addStudentTestQuestionFlagApi(postBody, studentToken);
-        onChangeFlagState(status)
-      }
-    }
+    onChangeFlagState(status)
+    const { question: { flag: { id } } } = this.props;
+    const postBody = { student_test_id: studentTestId, flag_id: id, status: status };
+    await updateStudentTestQuestionFlagStatusApi(postBody);
+
   };
 
 
   render() {
     const { open, onCloseQuestionModal, question } = this.props;
-    const { status } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
@@ -97,34 +83,6 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={status === 'UN_FLAGGED'}
-                                onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED ")}
-                              />
-                              <span>Nope. Got it.</span>
-                            </label>
-                          </li>
-                          <li>
-                            <label>
-                              <input
-                                className="with-gap"
-                                name="review_radio"
-                                type="radio"
-                                checked={status === 'FLAGGED'}
-                                onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
-                              />
-                              <span>
-                                <i className="icon-flag red-text text-darken-3" />
-                                Flag for Review
-                              </span>
-                            </label>
-                          </li>
-                          <li>
-                            <label>
-                              <input
-                                className="with-gap"
-                                name="review_radio"
-                                type="radio"
-                                checked={status === 'REVIEWED'}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
                               />
                               <span>
