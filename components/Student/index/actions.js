@@ -236,9 +236,9 @@ export const getLessonList = () => ({
   type: FETCH_LESSON_LIST,
 });
 
-export const checkLesson = (index) => ({
+export const checkLesson = (id) => ({
   type: CHECKED_LESSON,
-  index,
+  id,
 });
 export const checkAllLessons = (checked) => ({
   type: CHECK_ALL_LESSONS,

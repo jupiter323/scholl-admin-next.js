@@ -11,7 +11,8 @@ class FullView extends React.Component {
     return lessons.map((lesson, index) => (
       <LessonCard
         // eslint-disable-next-line react/no-array-index-key
-        key={index}
+        key={lesson.id}
+        cardId={lesson.id}
         index={index}
         lesson={lesson}
         onCloneLesson={() => onCloneLesson(index)}

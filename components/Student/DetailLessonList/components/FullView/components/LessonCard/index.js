@@ -354,7 +354,7 @@ class LessonCard extends React.Component {
             </div>
             <div className="card-text">
               <div>
-                <Checkbox checked={selected} onChecked={this.props.onChecked} index={this.props.index} type="cardCheckBox" />
+                <Checkbox checked={selected} onChecked={this.props.onChecked} cardId={this.props.cardId} type="cardCheckBox" />
               </div>
               <dl className="dl-horizontal">
                 <dt>p.{passage}</dt>

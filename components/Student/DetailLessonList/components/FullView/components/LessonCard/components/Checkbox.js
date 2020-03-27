@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Checkbox = ({ label, checkBoxId, checkBoxtyle, checked, onChecked, index, type }) => {
+const Checkbox = ({ label, checkBoxId, checkBoxtyle, checked, onChecked, cardId, type }) => {
   switch (type) {
     case 'cardCheckBox':
       return (
@@ -10,7 +10,7 @@ const Checkbox = ({ label, checkBoxId, checkBoxtyle, checked, onChecked, index, 
             type="checkbox"
             id={checkBoxId}
             checked={checked}
-            onChange={() => onChecked(index)}
+            onChange={() => onChecked(cardId)}
           />
           <span>{label}</span>
         </label>

@@ -74,8 +74,8 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onCheckLesson = (i) => {
-    this.props.dispathCheckLesson(i)
+  onCheckLesson = (id) => {
+    this.props.dispathCheckLesson(id)
   }
 
   onCheckAll = (checked) =>{

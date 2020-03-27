@@ -92,7 +92,7 @@ function studentReducer(state = initialState, action) {
       return state.set(
         "lessonList",
         state.get('lessonList').map((lesson, index) => {
-          if (index !== action.index) {
+          if (lesson.id !== action.id) {
             return lesson;
           }
           return {
