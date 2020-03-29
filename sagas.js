@@ -18,6 +18,9 @@ import {
   FETCH_LESSON_LIST_SUCCESS,
   FETCH_LESSON_LIST_FAIL,
   FETCH_UNITS,
+  FETCH_STUDENT_LESSON_LIST,
+  FETCH_STUDENT_LESSON_LIST_FAIL,
+  FETCH_STUDENT_LESSSON_LIST_SUCCESS
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -50,6 +53,7 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
+
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -73,6 +77,7 @@ const {
   fetchProblemsByStudentTestIdApi,
   fetchLessonListApi,
   fetchUnitsApi,
+  fetchStudentLessonListApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -651,6 +656,28 @@ function* handleFetchLesson() {
   }
 }
 
+
+function* watchForFetchStudentLesson() {
+  yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList)
+  
+}
+
+function* handleFetchStudentLessonList(action) {
+  try {
+    const studentLessonList = yield call(fetchStudentLessonListApi, action.studentId)
+    yield put({
+      type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
+      payload: studentLessonList
+    })
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchStudentLesson saga", error);
+    yield put({
+      type: FETCH_STUDENT_LESSON_LIST_FAIL
+    })
+    
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -687,5 +714,6 @@ export default function* defaultSaga() {
     watchForUpdateClassDuration(),
     watchForFetchLesson(),
     watchForFetchUnitFilterOptions(),
+    watchForFetchStudentLesson()
   ]);
 }

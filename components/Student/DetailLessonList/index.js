@@ -35,8 +35,8 @@ import {
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
 
-import { getLessonList, checkLesson, checkAllLessons } from "../index/actions";
-import { makeSelectGetLessonList } from "../index/selectors";
+import { getLessonList, getStudentLessonList, checkLesson, checkAllLessons, addCheckedLesson, removeCheckedLesson } from "../index/actions";
+import { makeSelectGetLessonList, makeSelectCheckedLessons } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 
@@ -64,6 +64,8 @@ class DetailLessonList extends React.Component {
 
   componentDidMount() {
     this.props.dispathGetLessonList();
+    
+    this.props.dispathGetStudentLessonList(this.props.user.id);
   }
 
   componentWillReceiveProps = nextProps => {
@@ -80,17 +82,20 @@ class DetailLessonList extends React.Component {
   }
 
   onCheckAll = (checked) =>{
-    this.props.dispathCheckAllLesson(checked);
+    this.props.dispathCheckAllLesson(checked, this.getMappableLessons());
     this.setState(state => ({
       selectAll: !state.selectAll
     }))
   }
-    // this.setState(
-    //   this.state.lessons.map(lesson => ({
-    //     ...lesson,
-    //     selected: !lesson.selected
-    //   }))
-    // );
+
+  onAddCheckedLesson = (lessonId) => {
+    this.props.dispatchAddCheckedLesson(lessonId)
+  }
+
+  onRemoveCheckedLesson = (lessonId) => {
+    this.props.dispatchRemoveCheckedLesson(lessonId)
+  }
+
 
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
@@ -331,6 +336,8 @@ class DetailLessonList extends React.Component {
           onCheckAll={this.onCheckAll}
           onCheckLesson={this.onCheckLesson}
           selectAll={this.state.selectAll}
+          onAddCheckedLesson={this.onAddCheckedLesson}
+          onRemoveCheckedLesson={this.onRemoveCheckedLesson}
         />
       );
     }
@@ -395,12 +402,17 @@ DetailLessonList.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
+  dispathGetStudentLessonList: bindActionCreators(getStudentLessonList, dispatch),
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
-  dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch)
+  dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
+  dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
+  dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch)
+  
 });
 
 const mapStateToProps = createStructuredSelector({
-  lessonList: makeSelectGetLessonList()
+  lessonList: makeSelectGetLessonList(),
+  checkLessons : makeSelectCheckedLessons()
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);

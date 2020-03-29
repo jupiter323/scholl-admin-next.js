@@ -15,8 +15,12 @@ import {
   FETCH_LESSON_LIST,
   FETCH_LESSON_LIST_SUCCESS,
   FETCH_LESSON_LIST_FAIL,
+  FETCH_STUDENT_LESSSON_LIST_SUCCESS,
+  FETCH_STUDENT_LESSONL_LIST_FAIL,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  ADD_CHECKED_LESSON,
+  REMOVE_CHECKED_LESSON,
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
 } from "./constants";
@@ -35,10 +39,12 @@ const initialState = fromJS({
   sections: [],
   activeStudentTestId: "",
   lessonList: [],
+  studentLessonList:[],
   isLoading: false,
   error: null,
   unitFilterOptions: [],
   activeStudentToken: "",
+  checkedLessons: []
 });
 
 function studentReducer(state = initialState, action) {
@@ -72,6 +78,10 @@ function studentReducer(state = initialState, action) {
 
     case FETCH_LESSON_LIST_SUCCESS:
       return state.set("lessonList", action.payload);
+    
+
+    case FETCH_STUDENT_LESSSON_LIST_SUCCESS:
+      return state.set("studentLessonList", action.payload)    
     case SET_UNIT_FILTER_OPTIONS:
       return state.set('unitFilterOptions', action.options);
     case SET_ACTIVE_STUDENT_TOKEN:
@@ -91,7 +101,7 @@ function studentReducer(state = initialState, action) {
     case CHECKED_LESSON:
       return state.set(
         "lessonList",
-        state.get('lessonList').map((lesson, index) => {
+        state.get('lessonList').map((lesson) => {
           if (lesson.id !== action.id) {
             return lesson;
           }
@@ -107,12 +117,38 @@ function studentReducer(state = initialState, action) {
       return state.set(
         "lessonList",
         // need to map over the filtered state
-        state.get('lessonList').map((lesson) => ({
+        // state.get('lessonList').map((lesson) => ({
+        action.mappedLesson.map((lesson) => ({
           ...lesson,
           selected: !action.checked,
         })),
 
       );
+
+    case ADD_CHECKED_LESSON:
+      return state.set(
+        "checkedLessons", state.get("checkedLessons").push(action.lessonId)
+
+        // state.get("checkedLessons").map((lessonId, i) => {
+        //   if(lessonId === action.lessonId) {
+        //     return state.getIn("state","checkedLessons").splice(i,1);
+        //   } else {
+        //     return state.get("checkedLessons").push(action.lessonId)
+        //   }
+
+        // })
+        
+      )
+    
+    case REMOVE_CHECKED_LESSON:
+      return state.set(
+        "checkedLessons",
+        state.get("checkedLessons").map((lesson, i) => {
+          if(lesson === action.lessonId) {
+            state.getIn("state","checkedLessons").splice(i,1)
+          }
+        })
+      )
 
     default:
       return state;

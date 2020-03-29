@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 import statusColorMap, {
-  chartColorMap,
+  chartColorMap
 } from "../../../../../DetailWorksheetPage/utils/statusColorMap";
 import LessonDetailAnswerSheet from "../../../../../LessonDetailAnswerSheet";
 import Checkbox from "./components/Checkbox";
@@ -14,9 +14,9 @@ const data = (current, target, status) => ({
   datasets: [
     {
       data: [current, target - current],
-      backgroundColor: [chartColorMap[status], "#eaeaea"],
-    },
-  ],
+      backgroundColor: [chartColorMap[status], "#eaeaea"]
+    }
+  ]
 });
 
 const getLessonActivityStatus = status => {
@@ -33,7 +33,7 @@ class LessonCard extends React.Component {
       test: true,
       dropdownIsOpen: false,
       detailModalOpen: false,
-      selected: props.selected,
+      selected: props.selected
     };
   }
 
@@ -41,7 +41,6 @@ class LessonCard extends React.Component {
   onCloseDetailModal = () => this.setState({ detailModalOpen: false });
   onSetDropdown = dropdownIsOpen => this.setState({ dropdownIsOpen: !dropdownIsOpen });
   // onChecked = () => this.setState({selected: !this.state.selected})
-
 
   onReschedule = (assignDate, assignTime, dueDate, dueTime) => {
     // eslint-disable-next-line no-console
@@ -64,16 +63,16 @@ class LessonCard extends React.Component {
 
   renderDropdownOptions = status => {
     const {
-      lesson: { assignDate, assignTime, dueDate, dueTime },
+      lesson: { assignDate, assignTime, dueDate, dueTime }
     } = this.props;
     if (status === "Scheduled" || status === "Assigned") {
       return (
         <React.Fragment>
           <li>
-            <a href="#">Reschedule</a>
+            <a href='#'>Reschedule</a>
           </li>
           <li>
-            <a href="#!">Unassign</a>
+            <a href='#!'>Unassign</a>
           </li>
         </React.Fragment>
       );
@@ -81,18 +80,18 @@ class LessonCard extends React.Component {
     return (
       <React.Fragment>
         <li>
-          <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>
+          <a href='#' onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}>
             Reschedule
           </a>
         </li>
         <li>
-          <a href="#!">Mark all Flags Reviewed</a>
+          <a href='#!'>Mark all Flags Reviewed</a>
         </li>
         <li>
-          <a href="#!">Reset</a>
+          <a href='#!'>Reset</a>
         </li>
         <li>
-          <a href="#!">Unassign</a>
+          <a href='#!'>Unassign</a>
         </li>
       </React.Fragment>
     );
@@ -102,24 +101,24 @@ class LessonCard extends React.Component {
     if (status === "Started") {
       return (
         <span
-          className="chart-value chart-value-column"
+          className='chart-value chart-value-column'
           style={{ bottom: "8px", backgroundColor: chartColorMap[status] }}
         >
           <span
-            className="chart-count"
+            className='chart-count'
             data-count-up
-            data-start-val="0"
-            data-end-val="4"
-            data-duration="1"
+            data-start-val='0'
+            data-end-val='4'
+            data-duration='1'
           >
-            <span className="text-small" style={{ fontSize: "x-small" }}>
+            <span className='text-small' style={{ fontSize: "x-small" }}>
               {completedProblems}
             </span>
           </span>
-          <span className="text-small" style={{ fontSize: "xx-small" }}>
+          <span className='text-small' style={{ fontSize: "xx-small" }}>
             out of
           </span>{" "}
-          <span className="text-small" style={{ fontSize: "x-small" }}>
+          <span className='text-small' style={{ fontSize: "x-small" }}>
             {problems}
           </span>
         </span>
@@ -127,17 +126,17 @@ class LessonCard extends React.Component {
     }
     return (
       <span
-        className="chart-value"
+        className='chart-value'
         style={{
           height: "50px",
           width: "50px",
           bottom: "6px",
-          backgroundColor: chartColorMap[scoreStatus],
+          backgroundColor: chartColorMap[scoreStatus]
         }}
       >
-        <span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
+        <span data-count-up data-start-val='0' data-end-val='96' data-duration='1'></span>
         <If condition={score !== ""}>
-          <span className="percentage">{Math.floor(`${(score / problems) * 100}`)}%</span>
+          <span className='percentage'>{Math.floor(`${(score / problems) * 100}`)}%</span>
         </If>
       </span>
     );
@@ -148,12 +147,12 @@ class LessonCard extends React.Component {
 
     if (true) {
       return (
-        <span className="badge-rounded-xs badge red darken-2 white-text">
-          <b className="badge-text">{0}</b> <i className="icon-flag"></i>
+        <span className='badge-rounded-xs badge red darken-2 white-text'>
+          <b className='badge-text'>{0}</b> <i className='icon-flag'></i>
         </span>
       );
     }
-    return <div className="right-col col s3">&nbsp;</div>;
+    return <div className='right-col col s3'>&nbsp;</div>;
   };
 
   render() {
@@ -184,8 +183,8 @@ class LessonCard extends React.Component {
         practice_page,
         lesson_problems,
         time_estimate,
-        selected,
-      },
+        selected
+      }
     } = this.props;
     return (
       <React.Fragment>
@@ -195,46 +194,46 @@ class LessonCard extends React.Component {
           user={this.props.user}
           lesson={lesson}
         />
-        <div className="card-main-col col s12 m8 l7 xl5">
+        <div className='card-main-col col s12 m8 l7 xl5'>
           <div className={getLessonActivityStatus(status)}>
-            <div className="card-panel" style={{ backgroundColor: "#666", color: "#fff" }}>
-              <div className="card-panel-row row">
-                <div className="icon-col col s2">
+            <div className='card-panel' style={{ backgroundColor: "#666", color: "#fff" }}>
+              <div className='card-panel-row row'>
+                <div className='icon-col col s2'>
                   <i className={this.renderLessonIcon(subjects.name)}></i>
                 </div>
-                <div className="col s9">
-                  <div className="card-panel-text center-left">
-                    <div className="text-small">{units.name}</div>
-                    <div className="text-large">
-                      <a href="#" onClick={this.onOpenDetailModal}>
+                <div className='col s9'>
+                  <div className='card-panel-text center-left'>
+                    <div className='text-small'>{units.name}</div>
+                    <div className='text-large'>
+                      <a href='#' onClick={this.onOpenDetailModal}>
                         {lesson.name}
                       </a>
                     </div>
-                    <div className="text-small">Subject: {subjects.name}</div>
+                    <div className='text-small'>Subject: {subjects.name}</div>
                   </div>
                 </div>
-                <div className="col s1 right-align">
-                  <div className="row icons-row">
-                    <div className="dropdown-block col">
+                <div className='col s1 right-align'>
+                  <div className='row icons-row'>
+                    <div className='dropdown-block col'>
                       <a
-                        className="dropdown-trigger btn"
-                        href="#"
-                        data-target="dropdown01"
+                        className='dropdown-trigger btn'
+                        href='#'
+                        data-target='dropdown01'
                         onClick={() => this.onSetDropdown(dropdownIsOpen)}
                       >
-                        <i className="material-icons dots-icon">more_vert</i>
+                        <i className='material-icons dots-icon'>more_vert</i>
                       </a>
                       <If condition={dropdownIsOpen}>
                         <ClickOffComponentWrapper
                           onOuterClick={() => this.onSetDropdown(dropdownIsOpen)}
                         >
                           <ul
-                            id="dropdown01"
-                            className="dropdown-content dropdown-wide"
+                            id='dropdown01'
+                            className='dropdown-content dropdown-wide'
                             style={{
                               display: "block",
                               opacity: "1",
-                              transform: "scaleX(1) scaleY(1)",
+                              transform: "scaleX(1) scaleY(1)"
                             }}
                           >
                             {this.renderDropdownOptions(status)}
@@ -246,11 +245,11 @@ class LessonCard extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="card-content">
-              <div className="d-flex sameheight-all row mb-0">
-                <div className="col s6">
-                  <div className="chart-container">
-                    <div className="chart-holder" style={{ width: "140px", height: "95px" }}>
+            <div className='card-content'>
+              <div className='d-flex sameheight-all row mb-0'>
+                <div className='col s6'>
+                  <div className='chart-container'>
+                    <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
                       <Doughnut
                         data={
                           completionDate
@@ -262,7 +261,7 @@ class LessonCard extends React.Component {
                           circumference: 1.45 * Math.PI,
                           rotation: -3.85,
                           cutoutPercentage: 60,
-                          tooltips: false,
+                          tooltips: false
                         }}
                       />
                       {this.renderProblemCount(
@@ -270,31 +269,31 @@ class LessonCard extends React.Component {
                         scoreStatus,
                         score,
                         problems,
-                        completedProblems,
+                        completedProblems
                       )}
                     </div>
-                    <div className="chart-row">
-                      <div className="chart-col chart-start">&nbsp;</div>
-                      <div className="chart-col chart-end">
-                        <span className="amount" style={{ color: chartColorMap[status] }}>
+                    <div className='chart-row'>
+                      <div className='chart-col chart-start'>&nbsp;</div>
+                      <div className='chart-col chart-end'>
+                        <span className='amount' style={{ color: chartColorMap[status] }}>
                           {problems}
                         </span>
                       </div>
                     </div>
-                    <div className="chart-description" style={{ marginTop: "10px" }}>
-                      <dl className="dl-horizontal">
+                    <div className='chart-description' style={{ marginTop: "10px" }}>
+                      <dl className='dl-horizontal'>
                         <dt>Time Est:</dt>
                         <dd>{time_estimate ? timeEstimate : "None"}</dd>
                       </dl>
-                      <dl className="dl-horizontal">
+                      <dl className='dl-horizontal'>
                         <dt>Problems:</dt>
                         <dd>{lesson_problems.length}</dd>
                       </dl>
                     </div>
                   </div>
                 </div>
-                <div className="col s6 d-flex align-items-center">
-                  <dl className="row">
+                <div className='col s6 d-flex align-items-center'>
+                  <dl className='row'>
                     <Choose>
                       <When condition={false}>
                         <dt></dt>
@@ -331,7 +330,7 @@ class LessonCard extends React.Component {
                       </Otherwise>
                     </Choose>
                   </dl>
-                  <div className="align-self-end">
+                  <div className='align-self-end'>
                     <Choose>
                       <When condition={scoreStatus !== ""}>
                         <span
@@ -352,11 +351,17 @@ class LessonCard extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="card-text">
+            <div className='card-text'>
               <div>
-                <Checkbox checked={selected} onChecked={this.props.onChecked} cardId={this.props.cardId} type="cardCheckBox" />
+                <Checkbox
+                  checked={selected}
+                  onChecked={this.props.onAddCheckedLesson}
+                  onUnChecked={this.props.onRemoveCheckedLesson}
+                  cardId={this.props.cardId}
+                  type='cardCheckBox'
+                />
               </div>
-              <dl className="dl-horizontal">
+              <dl className='dl-horizontal'>
                 <dt>p.{passage}</dt>
                 <dd>
                   ({challenge_page} - {practice_page}) (Challenge + Practice)
@@ -373,7 +378,7 @@ class LessonCard extends React.Component {
 LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired
 };
 
 export default LessonCard;

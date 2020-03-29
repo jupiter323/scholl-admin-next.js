@@ -942,6 +942,7 @@ export const fetchLessonListApi = () =>
       const lessons = data.lessons;
       return lessons;
     });
+
 export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,
     {
@@ -966,3 +967,41 @@ export const fetchUnitsApi = () =>
       return { formattedUnits };
     })
     .catch(err => console.warn('err', err));
+
+
+
+// lesson = {
+//   "student_id": "string",
+//   "lesson_id": "string",
+//   "assignment_date": "Unknown Type: date",
+//   "due_date": "Unknown Type: date"
+// }
+export const assignLessonToStudentApi = lesson => {
+  fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
+    method: "POST",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(lesson),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+};
+
+
+export const fetchStudentLessonListApi = (student) =>
+  fetch(`${API_URL}/api/students/${student}/lessons`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      const studentLessons = data.lessons;
+      return studentLessons;
+    });
+

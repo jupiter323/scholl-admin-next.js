@@ -1,7 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Checkbox = ({ label, checkBoxId, checkBoxtyle, checked, onChecked, cardId, type }) => {
+const Checkbox = ({ label, checkBoxId, checkBoxtyle, checked, onChecked, onUnChecked, cardId, type }) => {
+
+  const handleCheck = (cardId) => {
+    if(!checked) {
+      onChecked(cardId)
+    } else {
+      onUnChecked(cardId)
+    }
+  }
   switch (type) {
     case 'cardCheckBox':
       return (
@@ -10,7 +18,7 @@ const Checkbox = ({ label, checkBoxId, checkBoxtyle, checked, onChecked, cardId,
             type="checkbox"
             id={checkBoxId}
             checked={checked}
-            onChange={() => onChecked(cardId)}
+            onChange={() => handleCheck(cardId)}
           />
           <span>{label}</span>
         </label>
