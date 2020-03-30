@@ -64,7 +64,6 @@ class DetailLessonList extends React.Component {
 
   componentDidMount() {
     this.props.dispathGetLessonList();
-    
     this.props.dispathGetStudentLessonList(this.props.user.id);
   }
 
@@ -77,7 +76,6 @@ class DetailLessonList extends React.Component {
   };
 
   onCheckLesson = (id) => {
-    console.log({checked : id})
     this.props.dispathCheckLesson(id)
   }
 
@@ -90,10 +88,13 @@ class DetailLessonList extends React.Component {
 
   onAddCheckedLesson = (lessonId) => {
     this.props.dispatchAddCheckedLesson(lessonId)
+    this.props.dispathCheckLesson(lessonId)
   }
 
   onRemoveCheckedLesson = (lessonId) => {
     this.props.dispatchRemoveCheckedLesson(lessonId)
+    this.props.dispathCheckLesson(lessonId)
+
   }
 
 
@@ -359,6 +360,7 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters
     } = this.state;
+    console.log({studentLEsson: this.props.checkedLessons})
     return (
       <React.Fragment>
         <FilterSection
@@ -412,7 +414,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = createStructuredSelector({
   lessonList: makeSelectGetLessonList(),
-  checkLessons : makeSelectCheckedLessons()
+  checkedLessons : makeSelectCheckedLessons()
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);

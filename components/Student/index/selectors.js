@@ -13,7 +13,7 @@ const makeSelectGetLessonList = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.lessonList);
 
 const makeSelectCheckedLessons = () =>
-  createSelector(makeSelectStudentPageState(), substate => substate.checkLessons);
+  createSelector(makeSelectStudentPageState(), substate => substate.checkedLessons);
 
 const makeSelectAssignLessonsModalOpen = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.assignLessonsModalOpen);
