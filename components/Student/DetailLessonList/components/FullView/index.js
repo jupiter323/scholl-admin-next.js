@@ -13,7 +13,10 @@ const FullView = props => {
     user,
     onCheckLesson,
     onAddCheckedLesson,
-    onRemoveCheckedLesson
+    onRemoveCheckedLesson,
+    onCheckAll,
+    selectAll,
+    dropdownIsOpen,onOpenDropdown,onCloseDropdown, renderDropdownOptions
   } = props;
 
   const mapLessons = () => {
@@ -42,9 +45,9 @@ const FullView = props => {
           <Checkbox
             label='Check all'
             checkBoxId='checkall'
-            onChecked={props.onCheckAll}
+            onChecked={onCheckAll}
             type='pageCheckBox'
-            checked={props.selectAll}
+            checked={selectAll}
           />
         </div>
         <div>
@@ -57,10 +60,25 @@ const FullView = props => {
             href='#'
             data-target='dropdown01'
             // eslint-disable-next-line
-            onClick={() => console.log("menu option")}
+            onClick={() => onOpenDropdown()}
           >
             <i className='material-icons dots-icon'>more_vert</i>
           </a>
+          <If condition={dropdownIsOpen}>
+            <ClickOffComponentWrapper onOuterClick={() => onCloseDropdown()}>
+              <ul
+                id='dropdown01'
+                className='dropdown-content dropdown-wide'
+                style={{
+                  display: "block",
+                  opacity: "1",
+                  transform: "scaleX(1) scaleY(1)"
+                }}
+              >
+                {renderDropdownOptions(status)}
+              </ul>
+            </ClickOffComponentWrapper>
+          </If>
         </div>
       </div>
       <div className='row d-flex-content  justify-content-center card-width-auto'>

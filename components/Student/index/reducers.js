@@ -105,7 +105,7 @@ function studentReducer(state = initialState, action) {
         "lessonList",
         // need to map over the filtered state
         // state.get('lessonList').map((lesson) => ({
-        action.mappedLesson.map(lesson => ({
+        action.mappedLessons.map(lesson => ({
           ...lesson,
           selected: !action.checked
         }))

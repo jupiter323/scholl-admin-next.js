@@ -1,6 +1,6 @@
 /* eslint-disable */
 // used vars and indentifers not camelcase
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
@@ -60,6 +60,15 @@ const {
   const [dropdownIsOpen, toggleDropdown] = useState(false);
   const [detailModalOpen, toggleModal] = useState(false);
   const [selected, toggleSelected] = useState(props.lesson.selected);
+
+
+  
+  // useEffect(()=>{
+  //   if(!selected) {
+  //     console.log('i was toggled')
+  //     toggleSelected(selected)
+  //   }
+  // },[props.lesson.selected])
 
   const onOpenDetailModal = () => toggleModal(true);
   const onCloseDetailModal = () => toggleModal(false);

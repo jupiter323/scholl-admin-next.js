@@ -35,7 +35,14 @@ import {
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
 
-import { getLessonList, getStudentLessonList, checkLesson, checkAllLessons, addCheckedLesson, removeCheckedLesson } from "../index/actions";
+import {
+  getLessonList,
+  getStudentLessonList,
+  checkLesson,
+  checkAllLessons,
+  addCheckedLesson,
+  removeCheckedLesson
+} from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
@@ -58,7 +65,8 @@ class DetailLessonList extends React.Component {
       nameFilter: "",
       unitFilter: "",
       updatedLessons: [],
-      selectAll: false
+      selectAll: false,
+      dropdownIsOpen: false
     };
   }
 
@@ -75,31 +83,40 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onCheckLesson = (id) => {
-    this.props.dispathCheckLesson(id)
-  }
+  onCheckLesson = id => {
+    this.props.dispathCheckLesson(id);
+    if (!this.state.selectAll) {
+      this.setState({
+        selecteAll: true
+      });
+    }
+  };
 
-  onCheckAll = (checked) =>{
+  onCheckAll = checked => {
     this.props.dispathCheckAllLesson(checked, this.getMappableLessons());
-    this.setState(state => ({
-      selectAll: !state.selectAll
-    }))
-  }
+    if (!checked) {
+      this.setState({ selectAll: !checked });
+    } else {
+      this.setState({ selectAll: false });
+    }
+  };
 
-  onAddCheckedLesson = (lessonId) => {
-    this.props.dispatchAddCheckedLesson(lessonId)
-    this.props.dispathCheckLesson(lessonId)
-  }
+  onAddCheckedLesson = lessonId => {
+    this.props.dispatchAddCheckedLesson(lessonId);
+    this.props.dispathCheckLesson(lessonId);
+  };
 
-  onRemoveCheckedLesson = (lessonId) => {
-    this.props.dispatchRemoveCheckedLesson(lessonId)
-    this.props.dispathCheckLesson(lessonId)
-
-  }
-
+  onRemoveCheckedLesson = lessonId => {
+    this.props.dispatchRemoveCheckedLesson(lessonId);
+    this.props.dispathCheckLesson(lessonId);
+  };
 
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
+
+  onOpenDropdown = () => this.setState({dropdownIsOpen: true});
+  onCloseDropdown = () => this.setState({dropdownIsOpen: false});
+
   onClearFilters = () =>
     this.setState({
       subjectFilters: [],
@@ -229,7 +246,7 @@ class DetailLessonList extends React.Component {
       flagFilters
     } = this.state;
     let mappableLessons = this.props.lessonList;
-    
+
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -324,6 +341,28 @@ class DetailLessonList extends React.Component {
 
   arrayItemRemover = (array, value) => array.filter(lesson => lesson !== value);
 
+  renderDropdownOptions = () => {
+    return (
+      <React.Fragment>
+        <li>
+          <a href='#' onClick={()=>this.setState({dropdownIsOpen: false, modalOpen: true})}>Assign</a>
+        </li>
+        <li>
+          <a href='#'>Reschedule</a>
+        </li>
+        <li>
+          <a href='#!'>Mark all Flags Reviewed</a>
+        </li>
+        <li>
+          <a href='#!'>Reset</a>
+        </li>
+        <li>
+          <a href='#!'>Unassign</a>
+        </li>
+      </React.Fragment>
+    );
+  };
+
   renderCurrentView = () => {
     const { active } = this.state;
     const { user } = this.props;
@@ -332,13 +371,19 @@ class DetailLessonList extends React.Component {
         <FullView
           user={user}
           lessons={this.getMappableLessons()}
+          selectAll={this.state.selectAll}
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
           onCheckAll={this.onCheckAll}
           onCheckLesson={this.onCheckLesson}
-          selectAll={this.state.selectAll}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
+          onRenderDropdown={this.renderDropdownOptions}
+          dropdownIsOpen={this.state.dropdownIsOpen}
+          onOpenDropdown={this.onOpenDropdown}
+          onCloseDropdown={this.onCloseDropdown}
+          renderDropdownOptions={this.renderDropdownOptions}
+          
         />
       );
     }
@@ -360,7 +405,7 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters
     } = this.state;
-    console.log({studentLEsson: this.props.checkedLessons})
+    console.log({ studentLEsson: this.props.checkedLessons });
     return (
       <React.Fragment>
         <FilterSection
@@ -409,12 +454,11 @@ const mapDispatchToProps = dispatch => ({
   dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
   dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch)
-  
 });
 
 const mapStateToProps = createStructuredSelector({
   lessonList: makeSelectGetLessonList(),
-  checkedLessons : makeSelectCheckedLessons()
+  checkedLessons: makeSelectCheckedLessons()
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
