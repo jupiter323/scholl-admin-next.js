@@ -9,7 +9,7 @@ import InCompleteTestSection from "./components/InCompleteSection";
 import PreStartTestSection from "./components/StartSection";
 
 import { addStudentAnswerToTestApi } from "../../../index/api";
-import { makeSelectStudentSections } from "../../../index/selectors";
+import { makeSelectStudentSections,makeSelectActiveStudentToken } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 
 class EnterAnswerWrapper extends React.Component {
@@ -39,10 +39,15 @@ class EnterAnswerWrapper extends React.Component {
     const {
       onFetchStudentTestSections,
       sections,
+      studentToken,
       test: { student_test_id }
     } = this.props;
     if (sections.length === 0) {
-      onFetchStudentTestSections(student_test_id);
+      const postBody = {
+        student_test_id,
+        studentToken,
+      };
+      onFetchStudentTestSections(postBody);
     } else {
       this.onSetProblems(sections, student_test_id);
     }
@@ -159,15 +164,15 @@ EnterAnswerWrapper.propTypes = {
   test: PropTypes.object,
   onEditTest: PropTypes.func.isRequired,
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
-  onSetStudentTestSections: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  sections: makeSelectStudentSections()
+  sections: makeSelectStudentSections(),
+  studentToken: makeSelectActiveStudentToken(),
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId))
+    onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody))
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
