@@ -23,18 +23,18 @@ class CompletedTestCard extends React.Component {
 
   componentDidMount = async () => {
     const { scores, onSetScores } = this.props;
-    if (scores.length === 0) {
+    if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
       onSetScores(formattedScores);
-      this.setScores(formattedScores);
+      this.setScores(formattedScores.section_scores);
     } else {
-      this.setScores(scores);
+      this.setScores(scores.section_scores);
     }
   };
 
   setScores = scores => {
-    scores.map(score => {
-      switch (score.subject_name) {
+    Object.values(scores).map(score => {
+      switch (score.name) {
         case "Reading":
           this.setState({ ReadingScore: score });
           break;
@@ -56,7 +56,7 @@ class CompletedTestCard extends React.Component {
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
     const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
+    return formattedTestScores;
   };
 
   handleDropdownClick = event => {
@@ -390,7 +390,6 @@ CompletedTestCard.propTypes = {
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
   test: PropTypes.object.isRequired,
-  scores: PropTypes.array
 };
 
 const mapStateToProps = createStructuredSelector({
