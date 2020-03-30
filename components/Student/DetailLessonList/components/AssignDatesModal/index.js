@@ -21,16 +21,24 @@ const AssignDatesModal = props => {
   const [dueTime, setDueTime] = useState("");
   const [openDueDate, onOpenDueDate] = useState(false);
 
+  const { open, onAssignLesson } = props;
+
   const onAssignDates = () => {
     // assgin dates here
     console.log({
       assignDate: moment(assignDate).format("DD/MM/YYYY"),
       assignTime,
       dueDate: moment(dueDate).format("DD/MM/YYYY"),
-      dueTime,
-      formatedeventDate: assignDate
+      dueTime
     });
-    console.log({Date: moment()})
+
+    onAssignLesson({
+      assignDate: moment(assignDate).format("DD/MM/YYYY"),
+      assignTime,
+      dueDate: moment(dueDate).format("DD/MM/YYYY"),
+      dueTime
+    });
+
     closeModal();
   };
 
@@ -43,13 +51,11 @@ const AssignDatesModal = props => {
   };
 
   const hanldeDueDate = () => {
-    
     setDueDate("");
     setDueTime("");
 
-    onOpenDueDate(!openDueDate)
-
-  }
+    onOpenDueDate(!openDueDate);
+  };
 
   // handleChange = (event, name) => {
   //   const value = event.target ? event.target.value : event;
@@ -57,8 +63,6 @@ const AssignDatesModal = props => {
   //     [name]: value,
   //   });
   // }
-
-  const { open } = props;
 
   return (
     <Portal selector='#modal'>
@@ -161,7 +165,9 @@ const AssignDatesModal = props => {
                     )}
                     <div className='row'>
                       <div className='col s6'>
-                        <a className='btn' onClick={hanldeDueDate}>{openDueDate ? "Remove Due Date" : "Add Due Dute"}</a>
+                        <a className='btn' onClick={hanldeDueDate}>
+                          {openDueDate ? "Remove Due Date" : "Add Due Dute"}
+                        </a>
                       </div>
                     </div>
                   </div>

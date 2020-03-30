@@ -41,7 +41,8 @@ import {
   checkLesson,
   checkAllLessons,
   addCheckedLesson,
-  removeCheckedLesson
+  removeCheckedLesson,
+  assignLessonToStudent
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -114,8 +115,8 @@ class DetailLessonList extends React.Component {
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
 
-  onOpenDropdown = () => this.setState({dropdownIsOpen: true});
-  onCloseDropdown = () => this.setState({dropdownIsOpen: false});
+  onOpenDropdown = () => this.setState({ dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
 
   onClearFilters = () =>
     this.setState({
@@ -345,7 +346,9 @@ class DetailLessonList extends React.Component {
     return (
       <React.Fragment>
         <li>
-          <a href='#' onClick={()=>this.setState({dropdownIsOpen: false, modalOpen: true})}>Assign</a>
+          <a href='#' onClick={() => this.setState({ dropdownIsOpen: false, modalOpen: true })}>
+            Assign
+          </a>
         </li>
         <li>
           <a href='#'>Reschedule</a>
@@ -383,7 +386,6 @@ class DetailLessonList extends React.Component {
           onOpenDropdown={this.onOpenDropdown}
           onCloseDropdown={this.onCloseDropdown}
           renderDropdownOptions={this.renderDropdownOptions}
-          
         />
       );
     }
@@ -397,6 +399,11 @@ class DetailLessonList extends React.Component {
     );
   };
 
+  onAssignLesson(lessonDates) {
+    console.log({ studentLEsson: this.props.checkedLessons });
+    console.log(lessonDates)
+  }
+
   render() {
     const {
       currentView,
@@ -405,7 +412,6 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters
     } = this.state;
-    console.log({ studentLEsson: this.props.checkedLessons });
     return (
       <React.Fragment>
         <FilterSection
@@ -430,6 +436,8 @@ class DetailLessonList extends React.Component {
           lessons={this.props.lessonList}
           onCloseDatesModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
+          onAssignLesson={this.onAssignLesson}
+
         />
         <a
           href='#'
@@ -453,7 +461,8 @@ const mapDispatchToProps = dispatch => ({
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
   dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
-  dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch)
+  dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
+  dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch)
 });
 
 const mapStateToProps = createStructuredSelector({

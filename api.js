@@ -15,7 +15,8 @@ import {
   fetchProblemsByStudentTestIdApi,
   fetchLessonListApi,
   fetchUnitsApi,
-  fetchStudentLessonListApi
+  fetchStudentLessonListApi,
+  assignLessonToStudentApi
 } from "./components/Student/index/api";
 
 import {
@@ -66,7 +67,8 @@ export const studentApi = {
   fetchProblemsByStudentTestIdApi,
   fetchLessonListApi,
   fetchUnitsApi,
-  fetchStudentLessonListApi
+  fetchStudentLessonListApi,
+  assignLessonToStudentApi
 };
 
 export const instructorApi = {
