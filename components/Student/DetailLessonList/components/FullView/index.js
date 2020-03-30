@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import LessonCard from "../FullView/components/LessonCard";
+import LessonCard from "./components/LessonCard";
+import Checkbox from "./components/LessonCard/components/Checkbox";
+import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
-import Checkbox from "./components/LessonCard/components/Checkbox";
 
 const FullView = props => {
+  const [openRescheduleModal, toggleRescheduleModal] = useState(false);
   const {
     lessons,
     onCloneLesson,
@@ -16,37 +18,48 @@ const FullView = props => {
     onRemoveCheckedLesson,
     onCheckAll,
     selectAll,
-    dropdownIsOpen,onOpenDropdown,onCloseDropdown, renderDropdownOptions
+    dropdownIsOpen,
+    onOpenDropdown,
+    onCloseDropdown,
+    renderDropdownOptions,
   } = props;
 
-  const mapLessons = () => {
-    return lessons.map((lesson, index) => (
-      <LessonCard
-        // eslint-disable-next-line react/no-array-index-key
-        key={lesson.id}
-        cardId={lesson.id}
-        index={index}
-        lesson={lesson}
-        onCloneLesson={() => onCloneLesson(index)}
-        onDeleteLesson={() => onDeleteLesson(index)}
-        user={user}
-        onChecked={onCheckLesson}
-        selected={lesson.selected}
-        onAddCheckedLesson={onAddCheckedLesson}
-        onRemoveCheckedLesson={onRemoveCheckedLesson}
-      />
-    ));
+  const mapLessons = () => lessons.map((lesson, index) => (
+    <LessonCard
+      // eslint-disable-next-line react/no-array-index-key
+      key={lesson.id}
+      cardId={lesson.id}
+      index={index}
+      lesson={lesson}
+      onCloneLesson={() => onCloneLesson(index)}
+      onDeleteLesson={() => onDeleteLesson(index)}
+      user={user}
+      onChecked={onCheckLesson}
+      selected={lesson.selected}
+      onAddCheckedLesson={onAddCheckedLesson}
+      onRemoveCheckedLesson={onRemoveCheckedLesson}
+      handleRescheduleModalOpen={handleRescheduleModalOpen}
+    />
+  ));
+  const handleRescheduleModalOpen = activeLesson => {
+    onCloseDropdown();
+    this.setState(({ openRescheduleModal }) => ({
+      activeLesson,
+      openRescheduleModal: !openRescheduleModal,
+    }));
   };
 
+  const onSaveScheduleChanges = () => {};
+
   return (
-    <div className='content-section'>
-      <div className='d-flex justify-content-between'>
+    <div className="content-section">
+      <div className="d-flex justify-content-between">
         <div>
           <Checkbox
-            label='Check all'
-            checkBoxId='checkall'
+            label="Check all"
+            checkBoxId="checkall"
             onChecked={onCheckAll}
-            type='pageCheckBox'
+            type="pageCheckBox"
             checked={selectAll}
           />
         </div>
@@ -54,25 +67,34 @@ const FullView = props => {
           <b> - {lessons.length} results -</b>
         </div>
 
-        <div className='dropdown-block col'>
+        <div className="dropdown-block col">
           <a
-            className='dropdown-trigger btn'
-            href='#'
-            data-target='dropdown01'
+            className="dropdown-trigger btn"
+            href="#"
+            data-target="dropdown01"
             // eslint-disable-next-line
             onClick={() => onOpenDropdown()}
           >
-            <i className='material-icons dots-icon'>more_vert</i>
+            <i className="material-icons dots-icon">more_vert</i>
           </a>
+          <div className="row d-flex-content card-width-272">
+            {/* <RescheduleModal
+              open={openRescheduleModal}
+              lesson={activeLesson}
+              onClose={handleRescheduleModalOpen}
+              onSave={onSaveScheduleChanges}
+            /> */}
+          </div>
+
           <If condition={dropdownIsOpen}>
             <ClickOffComponentWrapper onOuterClick={() => onCloseDropdown()}>
               <ul
-                id='dropdown01'
-                className='dropdown-content dropdown-wide'
+                id="dropdown01"
+                className="dropdown-content dropdown-wide"
                 style={{
                   display: "block",
                   opacity: "1",
-                  transform: "scaleX(1) scaleY(1)"
+                  transform: "scaleX(1) scaleY(1)",
                 }}
               >
                 {renderDropdownOptions(status)}
@@ -81,7 +103,7 @@ const FullView = props => {
           </If>
         </div>
       </div>
-      <div className='row d-flex-content  justify-content-center card-width-auto'>
+      <div className="row d-flex-content  justify-content-center card-width-auto">
         {mapLessons()}
       </div>
     </div>
@@ -94,6 +116,6 @@ FullView.propTypes = {
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
   onCheckLesson: PropTypes.func.isRequired,
-  onCheckAll: PropTypes.func.isRequired
+  onCheckAll: PropTypes.func.isRequired,
 };
 export default FullView;

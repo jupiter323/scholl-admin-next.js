@@ -30,7 +30,7 @@ import {
   completionDateAscending,
   completionDateDescending,
   lessonTypeAscending,
-  lessonTypeDescending
+  lessonTypeDescending,
 } from "../../utils/sortFunctions";
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
@@ -41,11 +41,12 @@ import {
   checkLesson,
   checkAllLessons,
   addCheckedLesson,
-  removeCheckedLesson
+  removeCheckedLesson,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
+
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -66,7 +67,7 @@ class DetailLessonList extends React.Component {
       unitFilter: "",
       updatedLessons: [],
       selectAll: false,
-      dropdownIsOpen: false
+      dropdownIsOpen: false,
     };
   }
 
@@ -78,7 +79,7 @@ class DetailLessonList extends React.Component {
   componentWillReceiveProps = nextProps => {
     if (this.state.lessons.length === 0) {
       this.setState({
-        lessons: nextProps.lessonList
+        lessons: nextProps.lessonList,
       });
     }
   };
@@ -87,7 +88,7 @@ class DetailLessonList extends React.Component {
     this.props.dispathCheckLesson(id);
     if (!this.state.selectAll) {
       this.setState({
-        selecteAll: true
+        selecteAll: true,
       });
     }
   };
@@ -114,8 +115,8 @@ class DetailLessonList extends React.Component {
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
 
-  onOpenDropdown = () => this.setState({dropdownIsOpen: true});
-  onCloseDropdown = () => this.setState({dropdownIsOpen: false});
+  onOpenDropdown = () => this.setState({ dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
 
   onClearFilters = () =>
     this.setState({
@@ -124,7 +125,7 @@ class DetailLessonList extends React.Component {
       flagFilters: [],
       dueDateFilters: [],
       unitFilter: "",
-      nameFilter: ""
+      nameFilter: "",
     });
   onSetSort = sort => this.setState({ sort });
   onSetFilteredState = lesson => this.setState({ nameFilter: lesson });
@@ -217,7 +218,7 @@ class DetailLessonList extends React.Component {
       unitFilter,
       scoreStatusFilters,
       flagFilters,
-      lessons: allLessons
+      lessons: allLessons,
     } = this.state;
     let lessons = allLessons;
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
@@ -243,7 +244,7 @@ class DetailLessonList extends React.Component {
       nameFilter,
       subjectFilters,
       scoreStatusFilters,
-      flagFilters
+      flagFilters,
     } = this.state;
     let mappableLessons = this.props.lessonList;
 
@@ -279,7 +280,7 @@ class DetailLessonList extends React.Component {
       }
       if (dueDateFilters.includes("dueNextSession")) {
         lessons = lessons.filter(lesson =>
-          moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day")
+          moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day"),
         );
       }
       if (dueDateFilters.includes("overdue")) {
@@ -300,7 +301,7 @@ class DetailLessonList extends React.Component {
       subjectFilters: currentSubjectFilters,
       scoreStatusFilters: currentScoreStatusFilters,
       flagFilters: currentFlagFilters,
-      dueDateFilters: currentDueDateFilters
+      dueDateFilters: currentDueDateFilters,
     } = this.state;
     let modifiedFilterCurrentState;
     let modifiedFilterName;
@@ -328,12 +329,12 @@ class DetailLessonList extends React.Component {
     // Decide whether we're adding or removing the selected filter
     if (modifiedFilterCurrentState.indexOf(filter) === -1) {
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
-        $push: [filter]
+        $push: [filter],
       });
     } else {
       const filterIndex = modifiedFilterCurrentState.indexOf(filter);
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
-        $splice: [[filterIndex, 1]]
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
@@ -341,27 +342,25 @@ class DetailLessonList extends React.Component {
 
   arrayItemRemover = (array, value) => array.filter(lesson => lesson !== value);
 
-  renderDropdownOptions = () => {
-    return (
-      <React.Fragment>
-        <li>
-          <a href='#' onClick={()=>this.setState({dropdownIsOpen: false, modalOpen: true})}>Assign</a>
-        </li>
-        <li>
-          <a href='#'>Reschedule</a>
-        </li>
-        <li>
-          <a href='#!'>Mark all Flags Reviewed</a>
-        </li>
-        <li>
-          <a href='#!'>Reset</a>
-        </li>
-        <li>
-          <a href='#!'>Unassign</a>
-        </li>
-      </React.Fragment>
-    );
-  };
+  renderDropdownOptions = () => (
+    <React.Fragment>
+      <li>
+        <a href="#" onClick={() => this.setState({ dropdownIsOpen: false, modalOpen: true })}>Assign</a>
+      </li>
+      <li>
+        <a href="#">Reschedule</a>
+      </li>
+      <li>
+        <a href="#!">Mark all Flags Reviewed</a>
+      </li>
+      <li>
+        <a href="#!">Reset</a>
+      </li>
+      <li>
+        <a href="#!">Unassign</a>
+      </li>
+    </React.Fragment>
+  );
 
   renderCurrentView = () => {
     const { active } = this.state;
@@ -383,7 +382,7 @@ class DetailLessonList extends React.Component {
           onOpenDropdown={this.onOpenDropdown}
           onCloseDropdown={this.onCloseDropdown}
           renderDropdownOptions={this.renderDropdownOptions}
-          
+
         />
       );
     }
@@ -403,7 +402,7 @@ class DetailLessonList extends React.Component {
       subjectFilters,
       scoreStatusFilters,
       flagFilters,
-      dueDateFilters
+      dueDateFilters,
     } = this.state;
     console.log({ studentLEsson: this.props.checkedLessons });
     return (
@@ -432,11 +431,11 @@ class DetailLessonList extends React.Component {
           onAddUpdatedLessons={this.onAddUpdatedLessons}
         />
         <a
-          href='#'
+          href="#"
           onClick={this.onOpenModal}
-          className='waves-effect waves-teal btn add-btn modal-trigger'
+          className="waves-effect waves-teal btn add-btn modal-trigger"
         >
-          <i className='material-icons'>add</i>Assign Lesson
+          <i className="material-icons">add</i>Assign Lesson
         </a>
       </React.Fragment>
     );
@@ -444,7 +443,7 @@ class DetailLessonList extends React.Component {
 }
 
 DetailLessonList.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -453,12 +452,12 @@ const mapDispatchToProps = dispatch => ({
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
   dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
-  dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch)
+  dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
   lessonList: makeSelectGetLessonList(),
-  checkedLessons: makeSelectCheckedLessons()
+  checkedLessons: makeSelectCheckedLessons(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
