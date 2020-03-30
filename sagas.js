@@ -63,7 +63,7 @@ import { setClasses } from "./components/Classes/index/actions";
 
 
 import { studentApi, classApi, instructorApi, lessonApi } from "./api";
-import { trackLifecycle } from "aws-amplify-react";
+
 const {
   fetchStudentsApi,
   searchStudentsApi,

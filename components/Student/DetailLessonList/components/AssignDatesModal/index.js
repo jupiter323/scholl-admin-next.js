@@ -25,17 +25,17 @@ const AssignDatesModal = props => {
 
   const onAssignDates = () => {
     // assgin dates here
-    console.log({
-      assignDate: moment(assignDate).format("DD/MM/YYYY"),
-      assignTime,
-      dueDate: moment(dueDate).format("DD/MM/YYYY"),
-      dueTime
-    });
+    // console.log({
+    //   assignDate: moment(assignDate).format("DD/MM/YYYY"),
+    //   assignTime,
+    //   dueDate: moment(dueDate).format("DD/MM/YYYY"),
+    //   dueTime
+    // });
 
     onAssignLesson({
       assignDate: moment(assignDate).format("DD/MM/YYYY"),
       assignTime,
-      dueDate: moment(dueDate).format("DD/MM/YYYY"),
+      dueDate: dueDate ? moment(dueDate).format("DD/MM/YYYY") : "",
       dueTime
     });
 

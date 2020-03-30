@@ -400,8 +400,14 @@ class DetailLessonList extends React.Component {
   };
 
   onAssignLesson(lessonDates) {
-    console.log({ studentLEsson: this.props.checkedLessons });
-    console.log(lessonDates)
+    this.props.checkedLessons.forEach(lessonId => {
+      this.props.dispatchAssignLessonToStudent({
+        student_id: this.props.user.id,
+        lesson_id: lessonId,
+        assignment_date: lessonDates.assignDate,
+        due_date: lessonDates.dueDate
+      });
+    });
   }
 
   render() {
@@ -436,8 +442,7 @@ class DetailLessonList extends React.Component {
           lessons={this.props.lessonList}
           onCloseDatesModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
-          onAssignLesson={this.onAssignLesson}
-
+          onAssignLesson={this.onAssignLesson.bind(this)}
         />
         <a
           href='#'
