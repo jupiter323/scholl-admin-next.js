@@ -379,8 +379,9 @@ class DetailLessonList extends React.Component {
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
           onRenderDropdown={this.renderDropdownOptions}
           dropdownIsOpen={this.state.dropdownIsOpen}
-          onOpenDropdown={this.onOpenDropdown}
+          onOpenModal={this.onOpenModal}
           onCloseDropdown={this.onCloseDropdown}
+          onOpenDropdown={this.onOpenDropdown}
           renderDropdownOptions={this.renderDropdownOptions}
 
         />

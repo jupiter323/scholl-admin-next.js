@@ -19,6 +19,7 @@ const FullView = props => {
     onCheckAll,
     selectAll,
     dropdownIsOpen,
+    onOpenModal,
     onOpenDropdown,
     onCloseDropdown,
     renderDropdownOptions,
@@ -39,6 +40,8 @@ const FullView = props => {
       onAddCheckedLesson={onAddCheckedLesson}
       onRemoveCheckedLesson={onRemoveCheckedLesson}
       handleRescheduleModalOpen={handleRescheduleModalOpen}
+      onOpenModal={onOpenModal}
+      onCloseDropdown={onCloseDropdown}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {

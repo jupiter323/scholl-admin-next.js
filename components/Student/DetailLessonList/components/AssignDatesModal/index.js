@@ -125,7 +125,7 @@ const AssignDatesModal = props => {
                       <div className='row'>
                         <div className='col s6'>
                           <label htmlFor='dueDate' style={{ marginTop: "50px" }}>
-                            Due Date (optional)
+                            Due Date 
                           </label>
                           <div className='datepicker-field input-field'>
                             <i

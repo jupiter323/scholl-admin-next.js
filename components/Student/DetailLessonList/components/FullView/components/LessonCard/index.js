@@ -53,7 +53,10 @@ const LessonCard = props => {
       practice_page,
       lesson_problems,
       time_estimate
-    }
+    },
+    onOpenModal,
+    onCloseDropdown
+
   } = props;
 
   const [dropdownIsOpen, toggleDropdown] = useState(false);
@@ -86,6 +89,12 @@ const LessonCard = props => {
     toggleSelected(false);
   };
 
+  const handleAssignLesson = () => {
+    onOpenModal()
+    props.onAddCheckedLesson(lesson.id)
+    
+  }
+
   // eslint-disable-next-line consistent-return
   const renderLessonIcon = subject => {
     switch (subject) {
@@ -106,6 +115,8 @@ const LessonCard = props => {
       handleRescheduleModalOpen
     } = props;
 
+  
+
     if (status === "Scheduled" || status === "Assigned") {
       return (
         <React.Fragment>
@@ -121,7 +132,7 @@ const LessonCard = props => {
     return (
       <React.Fragment>
         <li>
-          <a href='#' className='disabled'>
+          <a href='#' onClick={handleAssignLesson}>
             Assign
           </a>
         </li>
