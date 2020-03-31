@@ -982,8 +982,10 @@ export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(lesson),
   })
