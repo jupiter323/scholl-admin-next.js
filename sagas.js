@@ -669,7 +669,7 @@ function* watchForFetchStudentLesson() {
 
 function* handleFetchStudentLessonList(action) {
   try {
-    const studentLessonList = yield call(fetchStudentLessonListApi, action.studentId)
+    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id,action.postBody.studentToken)
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
       payload: studentLessonList

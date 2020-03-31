@@ -240,9 +240,9 @@ export const getLessonList = () => ({
   type: FETCH_LESSON_LIST,
 });
 
-export const getStudentLessonList = (studentId) => ({
+export const getStudentLessonList = (postBody) => ({
   type: FETCH_STUDENT_LESSON_LIST,
-  studentId
+  postBody
 })
 
 export const checkLesson = (id) => ({

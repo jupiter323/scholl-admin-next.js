@@ -45,7 +45,7 @@ import {
   assignLessonToStudent
 
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons } from "../index/selectors";
+import { makeSelectGetLessonList, makeSelectCheckedLessons,makeSelectActiveStudentToken } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 
@@ -75,7 +75,13 @@ class DetailLessonList extends React.Component {
 
   componentDidMount() {
     this.props.dispathGetLessonList();
-    this.props.dispathGetStudentLessonList(this.props.user.id);
+    const {id} = this.props.user;
+    const {studentToken} = this.props;
+    const postBody = {
+      id,
+      studentToken,
+    };
+    this.props.dispathGetStudentLessonList(postBody);
   }
 
   componentWillReceiveProps = nextProps => {
@@ -456,6 +462,8 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = createStructuredSelector({
   lessonList: makeSelectGetLessonList(),
   checkedLessons: makeSelectCheckedLessons(),
+  studentToken: makeSelectActiveStudentToken(),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
