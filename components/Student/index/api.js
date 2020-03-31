@@ -984,6 +984,7 @@ export const assignLessonToStudentApi = lesson => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`
     },
     body: JSON.stringify(lesson),
   })
@@ -1002,6 +1003,7 @@ export const fetchStudentLessonListApi = (student,studentToken) =>
     },
   })
     .then(res => res.json())
+    .then(res => {console.log({res}); return res})
     .then(({ data }) => {
       const studentLessons = data.lessons;
       return studentLessons;

@@ -33,9 +33,9 @@ const AssignDatesModal = props => {
     // });
 
     onAssignLesson({
-      assignDate: moment(assignDate).format("DD/MM/YYYY"),
+      assignDate: moment(assignDate).format("YYYY-MM-DD"),
       assignTime,
-      dueDate: dueDate ? moment(dueDate).format("DD/MM/YYYY") : "",
+      dueDate: dueDate ? moment(dueDate).format("YYYY-MM-DD") : "",
       dueTime
     });
 
