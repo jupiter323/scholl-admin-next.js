@@ -12,6 +12,9 @@ const makeSelectStudents = () =>
 const makeSelectGetLessonList = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.lessonList);
 
+const makeSelectGetStudentLessonList = () =>
+  createSelector(makeSelectStudentPageState(), substate => substate.StudentLessonList);
+
 const makeSelectCheckedLessons = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.checkedLessons);
 
@@ -65,5 +68,6 @@ export {
   makeSelectGetLessonList,
   makeSelectUnitFilterOptions,
   makeSelectActiveStudentToken,
-  makeSelectCheckedLessons
+  makeSelectCheckedLessons,
+  makeSelectGetStudentLessonList
 };

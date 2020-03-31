@@ -45,7 +45,7 @@ import {
   assignLessonToStudent
 
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons,makeSelectActiveStudentToken } from "../index/selectors";
+import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 
@@ -461,6 +461,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = createStructuredSelector({
   lessonList: makeSelectGetLessonList(),
+  studentLess: makeSelectGetStudentLessonList(),
   checkedLessons: makeSelectCheckedLessons(),
   studentToken: makeSelectActiveStudentToken(),
 

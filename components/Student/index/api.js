@@ -1005,7 +1005,7 @@ export const fetchStudentLessonListApi = (student,studentToken) =>
     .then(res => res.json())
     .then(res => {console.log({res}); return res})
     .then(({ data }) => {
-      const studentLessons = data.lessons;
+      const studentLessons = data;
       return studentLessons;
     });
 
