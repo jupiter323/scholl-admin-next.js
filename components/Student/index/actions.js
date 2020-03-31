@@ -34,6 +34,7 @@ import {
   FETCH_UNITS,
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
+  ASSIGN_STUDENT_LESSON
 } from "./constants";
 
 export function fetchStudents() {
@@ -262,4 +263,9 @@ export const addCheckedLesson = (lessonId) => ({
 export const removeCheckedLesson = (lessonId) => ({
   type: REMOVE_CHECKED_LESSON,
   lessonId
+})
+
+export const assignLessonToStudent = (lesson) => ({
+  type:ASSIGN_STUDENT_LESSON,
+  lesson
 })

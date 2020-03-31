@@ -42,6 +42,8 @@ import {
   checkAllLessons,
   addCheckedLesson,
   removeCheckedLesson,
+  assignLessonToStudent
+
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -342,25 +344,6 @@ class DetailLessonList extends React.Component {
 
   arrayItemRemover = (array, value) => array.filter(lesson => lesson !== value);
 
-  renderDropdownOptions = () => (
-    <React.Fragment>
-      <li>
-        <a href="#" onClick={() => this.setState({ dropdownIsOpen: false, modalOpen: true })}>Assign</a>
-      </li>
-      <li>
-        <a href="#">Reschedule</a>
-      </li>
-      <li>
-        <a href="#!">Mark all Flags Reviewed</a>
-      </li>
-      <li>
-        <a href="#!">Reset</a>
-      </li>
-      <li>
-        <a href="#!">Unassign</a>
-      </li>
-    </React.Fragment>
-  );
 
   renderCurrentView = () => {
     const { active } = this.state;
@@ -397,6 +380,17 @@ class DetailLessonList extends React.Component {
     );
   };
 
+  onAssignLesson(lessonDates) {
+    this.props.checkedLessons.forEach(lessonId => {
+      this.props.dispatchAssignLessonToStudent({
+        student_id: this.props.user.id,
+        lesson_id: lessonId,
+        assignment_date: lessonDates.assignDate,
+        due_date: lessonDates.dueDate
+      });
+    });
+  }
+
   render() {
     const {
       currentView,
@@ -405,7 +399,6 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters,
     } = this.state;
-    console.log({ studentLEsson: this.props.checkedLessons });
     return (
       <React.Fragment>
         <FilterSection
@@ -430,6 +423,7 @@ class DetailLessonList extends React.Component {
           lessons={this.props.lessonList}
           onCloseDatesModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
+          onAssignLesson={this.onAssignLesson.bind(this)}
         />
         <a
           href="#"
@@ -454,6 +448,9 @@ const mapDispatchToProps = dispatch => ({
   dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
   dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
+
+  dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch)
+
 });
 
 const mapStateToProps = createStructuredSelector({
