@@ -7,21 +7,40 @@ import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 
 import { updateStudentTestQuestionFlagStatusApi } from "../../../../../index/api";
-import { makeSelectActiveStudentTestId } from "../../../../../index/selectors";
+import { makeSelectActiveStudentTestId, makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      status: 'UN_FLAGGED',
+      originalTestProblemId: ''
+    }
   }
 
-  onHandleQuestionFlagStatus = async (e, status) => {
+  componentWillReceiveProps = (nextProps) => {
+    const { question: { test_problem_id } } = nextProps;
+    const { originalTestProblemId } = this.state;
+    if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
+      const { question: { flag: { status } } } = this.props;
+      this.setState({
+        status: status
+      })
+    }
+  }
+
+  onHandleQuestionFlagStatus = async (_e, status) => {
     const {
       studentTestId,
-      question: { test_problem_id }
+      onChangeFlagState
     } = this.props;
-    const postBody = { student_test_id: studentTestId, flag_id: test_problem_id, status: status };
+    onChangeFlagState(status)
+    const { question: { flag: { id } } } = this.props;
+    const postBody = { student_test_id: studentTestId, flag_id: id, status: status };
     await updateStudentTestQuestionFlagStatusApi(postBody);
+
   };
+
 
   render() {
     const { open, onCloseQuestionModal, question } = this.props;
@@ -58,31 +77,6 @@ class QuestionModal extends React.Component {
                             margin: "0 -10px -7px"
                           }}
                         >
-                          <li>
-                            <label>
-                              <input
-                                className="with-gap"
-                                name="review_radio"
-                                type="radio"
-                                onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED ")}
-                              />
-                              <span>Nope. Got it.</span>
-                            </label>
-                          </li>
-                          <li>
-                            <label>
-                              <input
-                                className="with-gap"
-                                name="review_radio"
-                                type="radio"
-                                onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
-                              />
-                              <span>
-                                <i className="icon-flag red-text text-darken-3" />
-                                Flag for Review
-                              </span>
-                            </label>
-                          </li>
                           <li>
                             <label>
                               <input
@@ -253,7 +247,8 @@ QuestionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  studentTestId: makeSelectActiveStudentTestId()
+  studentTestId: makeSelectActiveStudentTestId(),
+  studentToken: makeSelectActiveStudentToken(),
 });
 
 const withConnect = connect(mapStateToProps, null);

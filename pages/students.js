@@ -12,7 +12,8 @@ import {
   fetchStudents,
   createStudent,
   deleteStudent,
-  setStudents
+  setStudents,
+  setActiveStudentToken,
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -25,13 +26,13 @@ import {
   studentFirstNameAscending,
   studentFirstNameDescending,
   studentLastNameAscending,
-  studentLastNameDescending
+  studentLastNameDescending,
 } from "../components/utils/sortFunctions";
-import { loggedIn } from "../utils/AuthService";
+import { loggedIn, logIn } from "../utils/AuthService";
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
-    subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
+  subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () =>
   Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
@@ -54,7 +55,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
@@ -62,15 +63,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     };
   }
 
@@ -119,7 +120,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
@@ -127,15 +128,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     });
     this.setState({ newStudent });
     onFetchStudents();
@@ -149,7 +150,7 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
@@ -157,15 +158,15 @@ class Students extends Component {
           addressLine2: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     });
     this.setState({ newStudent });
   };
@@ -173,11 +174,11 @@ class Students extends Component {
   onRemoveLocation = index => {
     const { newStudent: previousStudentState } = this.state;
     const {
-      location: { locations }
+      location: { locations },
     } = this.state.newStudent;
     const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
     const newStudent = update(previousStudentState, {
-      location: { $set: { locations: newLocationsArray } }
+      location: { $set: { locations: newLocationsArray } },
     });
     this.setState({ newStudent });
   };
@@ -186,7 +187,7 @@ class Students extends Component {
     const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
       const {
-        studentInformation: { firstName, lastName }
+        studentInformation: { firstName, lastName },
       } = currentStudent;
       const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
       if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
@@ -196,9 +197,20 @@ class Students extends Component {
     }, []);
   };
 
-  onHandleStudentCard = index => {
+  onHandleStudentCard = async index => {
     const { students } = this.state;
+    const { onSetActiveStudentToken } = this.props;
     this.setState({ selectedStudent: students[index] });
+    const { emailAddress: { email } } = students[index];
+    const password = "password";
+    const postBody = {
+      email,
+      password,
+    };
+    const data = await logIn(postBody);
+    if (data.token && data.expires_at) {
+      onSetActiveStudentToken(data.token);
+    }
   };
 
   onRedirectToStudentPage = event => {
@@ -221,7 +233,7 @@ class Students extends Component {
   onCloneStudent = index => {
     const { students } = this.state;
     const newStudent = update(students[index], {
-      id: { $set: idGenerator() }
+      id: { $set: idGenerator() },
     });
     this.setState(prevState => {
       prevState.students.push(newStudent);
@@ -233,7 +245,7 @@ class Students extends Component {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
-      [section]: { $merge: { [name]: value } }
+      [section]: { $merge: { [name]: value } },
     });
     this.setState({ newStudent: updatedStudent });
   };
@@ -245,14 +257,14 @@ class Students extends Component {
       studentInformation,
       contactInformation,
       emailAddress,
-      location
+      location,
     } = updatedStudent;
     const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
     const students = update(originalStudents, {
       [updatedStudentIndex]: {
-        $merge: { active, studentInformation, contactInformation, emailAddress, location }
-      }
+        $merge: { active, studentInformation, contactInformation, emailAddress, location },
+      },
     });
     this.setState({ students });
     const { onSetStudents } = this.props;
@@ -389,18 +401,20 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
-  onSetStudents: PropTypes.func.isRequired
+  onSetStudents: PropTypes.func.isRequired,
+  onSetActiveStudentIndex: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  students: makeSelectStudents()
+  students: makeSelectStudents(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student))
+  onCreateStudent: student => dispatch(createStudent(student)),
+  onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

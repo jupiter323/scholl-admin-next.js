@@ -5,56 +5,54 @@ class SubScoresCard extends React.Component {
   constructor(props) {
     super(props);
   }
-  renderProgressElement = (item) => {
-    return (
-      <div className="progress-block progress-block-md">
-        <div className="progress-legend">
-          <div className="legend-block">
-            <span className="text">{item.name}</span>
-          </div>
-        </div>
-        <div
-          className="progress progress-rounded-md"
-          style={{ borderRadius: "13px" }}
-        >
-          <div
-            className="determinate"
-            style={{
-              width: (item.current_score/15)*100 + "%",
-              backgroundColor: "#f5883f",
-              borderRadius: "13px"
-            }}
-          >
-            <span className="progress-label">
-              {item.current_score}
-            </span>
-          </div>
+  renderProgressElement = (item) => (
+    <div className="progress-block progress-block-md">
+      <div className="progress-legend">
+        <div className="legend-block">
+          <span className="text">{item.name}</span>
         </div>
       </div>
-    )
-  }
+      <div
+        className="progress progress-rounded-md"
+        style={{ borderRadius: "13px" }}
+      >
+        <div
+          className="determinate"
+          style={{
+            width: `${(item.current_score / 15) * 100}%`,
+            backgroundColor: "#f5883f",
+            borderRadius: "13px",
+          }}
+        >
+          <span className="progress-label">
+            {item.current_score}
+          </span>
+        </div>
+      </div>
+    </div>
+  )
   mapProgressBar = () => {
     const { subScores } = this.props;
-    let newRowIndex = Math.floor(subScores.length / 2);
+    const newRowIndex = Math.floor(subScores.length / 2);
     return (
       <React.Fragment><div className="col s12 m6">
         {subScores.map((item, index) => {
           if (index > newRowIndex) {
-            return;
+
           } else {
-            return this.renderProgressElement(item)
+            return this.renderProgressElement(item);
           }
         })}
       </div>
-        <div className="col s12 m6">
-          {subScores.map((item, index) => {
-            if (index <= newRowIndex) {
-              return;
-            } else {
-              return this.renderProgressElement(item)
-            }
-          })}
-        </div></React.Fragment>);
+      <div className="col s12 m6">
+        {subScores.map((item, index) => {
+          if (index <= newRowIndex) {
+
+          } else {
+            return this.renderProgressElement(item);
+          }
+        })}
+      </div></React.Fragment>);
   }
   render() {
     return (
@@ -80,9 +78,8 @@ class SubScoresCard extends React.Component {
 }
 
 
-
 SubScoresCard.propTypes = {
-  subScores: PropTypes.object.isRequired
+  subScores: PropTypes.object.isRequired,
 };
 
 export default SubScoresCard;

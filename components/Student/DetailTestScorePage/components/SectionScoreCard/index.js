@@ -9,26 +9,26 @@ class SectionScoreCard extends React.Component {
       bgColorList: [
         {
           id: "Writing and Language",
-          colorString: ["#51b349", "rgb(234, 234, 234)"]
+          colorString: ["#51b349", "rgb(234, 234, 234)"],
         },
         {
           id: "Reading",
-          colorString: ["#35a6af", "rgb(234, 234, 234)"]
+          colorString: ["#35a6af", "rgb(234, 234, 234)"],
         },
         {
           id: "Math",
-          colorString: ["#567ebf", "rgb(234, 234, 234)"]
+          colorString: ["#567ebf", "rgb(234, 234, 234)"],
         },
-      ]
+      ],
     };
   }
   getCircleBarData = (currentScore, totalPossible, name) => ({
     datasets: [
       {
-        data: [totalPossible,totalPossible - currentScore],
-        backgroundColor: this.getBgColorByName(name)
-      }
-    ]
+        data: [totalPossible, totalPossible - currentScore],
+        backgroundColor: this.getBgColorByName(name),
+      },
+    ],
   });
 
   getBgColorByName = (name) => {
@@ -38,29 +38,27 @@ class SectionScoreCard extends React.Component {
     return bgColorList[targetIndex].colorString;
   }
 
-  mapSectionScores = () => {
-    return Object.values(this.props.sectionScores).map(score => (
-      <div className="col s6 center-align">
-        <div className="chart-block chart-block-218">
-          <Doughnut
-            data={() =>
-              this.getCircleBarData(score.current_score, 800, score.name)
-            }
-            width={215}
-            height={215}
-            options={{
-              cutoutPercentage: 80
-            }}
-          />
-          <div className="chart-text">
-            <span className="title">{score.name === 'Writing and Language' ? 'Writing & Language' : score.name}</span>
-            <span className="value">{score.current_score}</span>
-            <span className="description">(+{score.delta ? score.delta : 0})</span>
-          </div>
+  mapSectionScores = () => Object.values(this.props.sectionScores).map(score => (
+    <div className="col s6 center-align">
+      <div className="chart-block chart-block-218">
+        <Doughnut
+          data={() =>
+            this.getCircleBarData(score.current_score, 800, score.name)
+          }
+          width={215}
+          height={215}
+          options={{
+            cutoutPercentage: 80,
+          }}
+        />
+        <div className="chart-text">
+          <span className="title">{score.name === 'Writing and Language' ? 'Writing & Language' : score.name}</span>
+          <span className="value">{score.current_score}</span>
+          <span className="description">(+{score.delta ? score.delta : 0})</span>
         </div>
       </div>
-    ));
-  }
+    </div>
+  ))
   render() {
     return (
       <div className="col s12 l6 card-width-546">
@@ -82,6 +80,6 @@ class SectionScoreCard extends React.Component {
   }
 }
 SectionScoreCard.propTypes = {
-  sectionScores: PropTypes.object.isRequired
+  sectionScores: PropTypes.object.isRequired,
 };
 export default SectionScoreCard;
