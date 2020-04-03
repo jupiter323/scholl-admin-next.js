@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
+// import LessonCard from "../LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
@@ -114,7 +115,7 @@ const FullView = props => {
 };
 
 FullView.propTypes = {
-  lessons: PropTypes.array.isRequired,
+  lessons: PropTypes.array.ifsRequired,
   user: PropTypes.object.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,

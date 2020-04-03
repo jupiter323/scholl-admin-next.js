@@ -93,7 +93,7 @@ class LessonCard extends React.Component {
   }
 
   renderAlerts = (alerts) => {
-    if (alerts.length) {
+    if (alerts) {
       return (
         <div className="right-col col s3">
           <span className="badge-rounded badge red darken-2 white-text"><b className="badge-text">{alerts.length}</b> <i className="icon-flag"></i></span>
@@ -110,6 +110,7 @@ class LessonCard extends React.Component {
       totalProblems, solvedProblems = '', passage, dueDate, dueTime, completed, availableDate,
       completionDate, completionTime, completedLate, overdue }, dropdownIsOpen, dropdownIndex,
       onToggleDetailModalOpen, index } = this.props;
+    
     return (
       <div className="card-main-col col s12 m8 l7 xl5">
        <div className={getLessonActivityStatus(assigned, dueDate)}>

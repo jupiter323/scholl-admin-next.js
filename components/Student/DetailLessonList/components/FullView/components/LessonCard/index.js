@@ -4,9 +4,17 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
-import statusColorMap, {
+// RENDERING UTILS
+import {
+  getProblemCompletionStatusColor,
+  getLessonActivityStatus,
+  renderLessonIcon,
+  renderDropdownOptions,
+  renderProblemCount,
+  renderAlerts,
+  statusColorMap,
   chartColorMap
-} from "../../../../../DetailWorksheetPage/utils/statusColorMap";
+} from "./utils";
 import LessonDetailAnswerSheet from "../../../../../LessonDetailAnswerSheet";
 import Checkbox from "./components/Checkbox";
 
@@ -19,56 +27,45 @@ const data = (current, target, status) => ({
   ]
 });
 
-const getLessonActivityStatus = status => {
-  if (status === "Scheduled") {
-    return "card-main card-lesson-detail card-disabled card-assigned card";
-  }
-  return "card-main card-lesson-detail card-assigned card";
-};
-
 const LessonCard = props => {
+  // PROPS
   const {
     lesson,
     lesson: {
-      subjects,
-      timeEstimate,
+      name,
+      drill_page: drillPage,
+      practice_page: practicePage,
+      starting_page: startingPage,
       status,
+      time_estimate: timeEstimate,
+      subject_id: subjectId,
+      subjects: { name: subjectName },
+      unit_id: unitId,
+      units: { name: unitName },
+      lesson_problems: lessonProblems,
+
       scoreStatus,
       score,
-      units,
-      lessonName,
+
       assigned,
-      flags,
-      type,
       problems,
       completedProblems = "",
       passage,
       dueDate,
-      availableDate,
       completionDate,
-      overdue,
-      starting_page,
-      ending_page,
       challenge_page,
       practice_page,
-      lesson_problems,
-      time_estimate
+      lesson_problems
     },
     onOpenModal,
-    onCloseDropdown
-
+    onCloseDropdown,
+    handleRescheduleModalOpen
   } = props;
 
+  // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
   const [detailModalOpen, toggleModal] = useState(false);
   const [selected, toggleSelected] = useState(props.lesson.selected);
-
-  // useEffect(()=>{
-  //   if(!selected) {
-  //     console.log('i was toggled')
-  //     toggleSelected(selected)
-  //   }
-  // },[props.lesson.selected])
 
   const onOpenDetailModal = () => toggleModal(true);
   const onCloseDetailModal = () => toggleModal(false);
@@ -90,130 +87,8 @@ const LessonCard = props => {
   };
 
   const handleAssignLesson = () => {
-    onOpenModal()
-    props.onAddCheckedLesson(lesson.id)
-    
-  }
-
-  // eslint-disable-next-line consistent-return
-  const renderLessonIcon = subject => {
-    switch (subject) {
-      case "Reading":
-        return "icon-books";
-      case "Writing and Language":
-        return "icon-hands";
-      case "Math":
-        return "icon-calculator";
-      default:
-        break;
-    }
-  };
-
-  const renderDropdownOptions = status => {
-    const {
-      lesson: { assignDate, assignTime, dueDate, dueTime },
-      handleRescheduleModalOpen
-    } = props;
-
-  
-
-    if (status === "Scheduled" || status === "Assigned") {
-      return (
-        <React.Fragment>
-          <li>
-            <a href='#'>Reschedule</a>
-          </li>
-          <li>
-            <a href='#!'>Unassign</a>
-          </li>
-        </React.Fragment>
-      );
-    }
-    return (
-      <React.Fragment>
-        <li>
-          <a href='#' onClick={handleAssignLesson}>
-            Assign
-          </a>
-        </li>
-        <li>
-          {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
-          <a href='#' onClick={handleRescheduleModalOpen}>
-            Reschedule
-          </a>
-        </li>
-        <li>
-          <a href='#!'>Excuse/Unexcuse Lateness</a>
-        </li>
-        <li>
-          <a href='#!'>Reset</a>
-        </li>
-        <li>
-          <a href='#!'>Mark Flags Reviewed</a>
-        </li>
-        <li>
-          <a href='#!'>Unassign</a>
-        </li>
-      </React.Fragment>
-    );
-  };
-
-  const renderProblemCount = (status, scoreStatus, score, problems, completedProblems) => {
-    if (status === "Started") {
-      return (
-        <span
-          className='chart-value chart-value-column'
-          style={{ bottom: "8px", backgroundColor: chartColorMap[status] }}
-        >
-          <span
-            className='chart-count'
-            data-count-up
-            data-start-val='0'
-            data-end-val='4'
-            data-duration='1'
-          >
-            <span className='text-small' style={{ fontSize: "x-small" }}>
-              {completedProblems}
-            </span>
-          </span>
-          <span className='text-small' style={{ fontSize: "xx-small" }}>
-            out of
-          </span>{" "}
-          <span className='text-small' style={{ fontSize: "x-small" }}>
-            {problems}
-          </span>
-        </span>
-      );
-    }
-    return (
-      <span
-        className='chart-value'
-        style={{
-          height: "50px",
-          width: "50px",
-          bottom: "6px",
-          backgroundColor: chartColorMap[scoreStatus]
-        }}
-      >
-        <span data-count-up data-start-val='0' data-end-val='96' data-duration='1'></span>
-        <If condition={score !== ""}>
-          <span className='percentage'>{Math.floor(`${(score / problems) * 100}`)}%</span>
-        </If>
-      </span>
-    );
-  };
-
-  const renderAlerts = flags => {
-    // if (flags.length) {
-
-    if (true) {
-      return (
-        <span className='badge-rounded-xs badge red darken-2 white-text'>
-          <b className='badge-text'>{0}</b> <i className='icon-flag'></i>
-        </span>
-      );
-    }
-    return <div className='right-col col s3'>&nbsp;</div>;
+    onOpenModal();
+    props.onAddCheckedLesson(lesson.id);
   };
 
   return (
@@ -225,21 +100,22 @@ const LessonCard = props => {
         lesson={lesson}
       />
       <div className='card-main-col col s12 m8 l7 xl5'>
-        <div className={getLessonActivityStatus(status)}>
-          <div className='card-panel' style={{ backgroundColor: "#666", color: "#fff" }}>
+        {/* <div className={getLessonActivityStatus(status)}> */}
+        <div className={getLessonActivityStatus("notassigned")}>
+          <div className='card-panel'>
             <div className='card-panel-row row'>
               <div className='icon-col col s2'>
-                <i className={renderLessonIcon(subjects.name)}></i>
+                <i className={renderLessonIcon(subjectName)}></i>
               </div>
               <div className='col s9'>
                 <div className='card-panel-text center-left'>
-                  <div className='text-small'>{units.name}</div>
+                  <div className='text-small'>{unitName}</div>
                   <div className='text-large'>
                     <a href='#' onClick={onOpenDetailModal}>
                       {lesson.name}
                     </a>
                   </div>
-                  <div className='text-small'>Subject: {subjects.name}</div>
+                  <div className='text-small'>Subject: {subjectName}</div>
                 </div>
               </div>
               <div className='col s1 right-align'>
@@ -264,135 +140,142 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                            {renderDropdownOptions(status)}
-                          </ul>
-                        </ClickOffComponentWrapper>
-                      </If>  
-                    </div>
+                          {renderDropdownOptions(status)}
+                        </ul>
+                      </ClickOffComponentWrapper>
+                    </If>
                   </div>
                 </div>
               </div>
             </div>
-            <div className='card-content'>
-              <div className='d-flex sameheight-all row mb-0'>
-                <div className='col s6'>
-                  <div className='chart-container'>
-                    <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
-                        <Doughnut
-                          data={
-                            completionDate
-                              ? () => data(score, problems, scoreStatus)
-                              : () => data(completedProblems, problems, status)
-                          }
-                          height={210}
-                          options={{
-                            circumference: 1.45 * Math.PI,
-                            rotation: -3.85,
-                            cutoutPercentage: 60,
-                            tooltips: false
-                          }}
-                        />
-                        {renderProblemCount(status, scoreStatus, score, problems, completedProblems)}
-                        </div>
-                        <div className='chart-row'>
-                          <div className='chart-col chart-start'>&nbsp;</div>
-                          <div className='chart-col chart-end'>
-                            <span className='amount' style={{ color: chartColorMap[status] }}>
-                              {problems}
-                            </span>
-                          </div>
-                        </div>
-                         <div className='chart-description' style={{ marginTop: "10px" }}>
-                            <dl className='dl-horizontal'>
-                              <dt>Time Est:</dt>
-                              <dd>{time_estimate ? timeEstimate : "None"}</dd>
-                            </dl>
-                            <dl className='dl-horizontal'>
-                              <dt>Problems:</dt>
-                              <dd>{lesson_problems.length}</dd>
-                            </dl>
-                          </div>
-                      </div>
-                    </div>
-                  <div className='col s6 d-flex align-items-center'>
-                    <dl className='row'>
-                      <Choose>
-                        <When condition={false}>
-                          <dt></dt>
-                          <dd></dd>
-                        </When>
-                        <Otherwise>
-                          <dt style={{ float: "right", clear: "both" }}>Available:</dt>
-                          <dd>
-                            <time dateTime={dueDate}>{dueDate}</time>
-                          </dd>
-                        </Otherwise>
-                      </Choose>
-
-                      <Choose>
-                        <When condition={assigned || status === "Scheduled"}>
-                          <dt>No Due Date</dt>
-                        </When>
-                        <Otherwise>
-                          <dt style={{ float: "right", clear: "both" }}>Due:</dt>
-                          <dd>
-                            <time dateTime={dueDate}>{dueDate}</time>
-                          </dd>
-                        </Otherwise>
-                      </Choose>
-                      <Choose>
-                        <When condition={false}>
-                          <dt>No Due Date</dt>
-                        </When>
-                        <Otherwise>
-                          <dt style={{ float: "right", clear: "both" }}>Complete:</dt>
-                          <dd>
-                            <time dateTime={dueDate}>{dueDate}</time>
-                          </dd>
-                        </Otherwise>
-                      </Choose>
-                    </dl>
-                    <div className='align-self-end'>
-                      <Choose>
-                        <When condition={scoreStatus !== ""}>
-                          <span
-                            className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                          >
-                            {scoreStatus}
-                          </span>
-                        </When>
-                        <Otherwise>
-                          <span
-                            className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
-                          >
-                            {status}
-                          </span>
-                        </Otherwise>
-                      </Choose>
-                    </div>
-                  </div>
-                </div>
-                </div>
-                 <div className='card-text'>
-                  <div>
-                    <Checkbox
-                      checked={selected}
-                      onChecked={onChecked}
-                      onUnChecked={onUnChecked}
-                      cardId={props.cardId}
-                      type='cardCheckBox'
+          </div>
+          <div className='card-content'>
+            <div className='d-flex sameheight-all row mb-0'>
+              <div className='col s6'>
+                <div className='chart-container'>
+                  <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
+                    <Doughnut
+                      data={
+                        completionDate
+                          ? () => data(score, problems, scoreStatus)
+                          : completedProblems
+                          ? () => data(completedProblems, problems, status)
+                          : () => data(0, 1, "Assigned")
+                      }
+                      // height={210}
+                      options={{
+                        circumference: Math.PI,
+                        rotation: Math.PI,
+                        cutoutPercentage: 60,
+                        tooltips: false
+                      }}
                     />
+                    {renderProblemCount("notassigned", scoreStatus, score, problems, completedProblems)}
                   </div>
-                  <dl className='dl-horizontal'>
-                    <dt>p.{passage}</dt>
-                    <dd>
-                      ({challenge_page} - {practice_page}) (Challenge + Practice)
-                    </dd>
+                  <div className='chart-row'>
+                    <div className='chart-col chart-start'>&nbsp;</div>
+                    <div className='chart-col chart-end'>
+                      <span className='amount' style={{ color: chartColorMap[status] }}>
+                        {problems}
+                      </span>
+                    </div>
+                  </div>
+                  <div className='chart-description' style={{ marginTop: "10px" }}>
+                    <dl className='dl-horizontal'>
+                      <dt>Time Est:</dt>
+                      <dd>{timeEstimate ? `${timeEstimate} mins` : "None"}</dd>
+                    </dl>
+                    <dl className='dl-horizontal'>
+                      <dt>Problems:</dt>
+                      <dd>{lessonProblems.length}</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+              <div className='col s6 d-flex align-items-center left-align'>
+                <div className='date-container'>
+                  <dl className='row'>
+                    <Choose>
+                      <When condition={false}>
+                        <dt></dt>
+                        <dd></dd>
+                      </When>
+                      <Otherwise>
+                        <dt style={{ float: "right", clear: "both" }}>Available:</dt>
+                        <dd>
+                          <time dateTime={dueDate}>{dueDate}</time>
+                        </dd>
+                      </Otherwise>
+                    </Choose>
+
+                    <Choose>
+                      <When condition={assigned || status === "Scheduled"}>
+                        <dt>No Due Date</dt>
+                      </When>
+                      <Otherwise>
+                        <dt style={{ float: "right", clear: "both" }}>Due:</dt>
+                        <dd>
+                          <time dateTime={dueDate}>{dueDate}</time>
+                        </dd>
+                      </Otherwise>
+                    </Choose>
+                    <Choose>
+                      <When condition={false}>
+                        <dt>No Due Date</dt>
+                      </When>
+                      <Otherwise>
+                        <dt style={{ float: "right", clear: "both" }}>Complete:</dt>
+                        <dd>
+                          <time dateTime={dueDate}>{dueDate}</time>
+                        </dd>
+                      </Otherwise>
+                    </Choose>
                   </dl>
                 </div>
+
+                <div className='align-self-end'>
+                  <Choose>
+                    <When condition={scoreStatus !== ""}>
+                      <span
+                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                      >
+                        {scoreStatus}
+                      </span>
+                    </When>
+                    <Otherwise>
+                      <span
+                        className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
+                      >
+                        {status}
+                      </span>
+                    </Otherwise>
+                  </Choose>
+                </div>
               </div>
             </div>
-    </React.Fragment>         
+          </div>
+          <div className='row'>
+            <div className='col s2'>
+              <Checkbox
+                checked={selected}
+                onChecked={onChecked}
+                onUnChecked={onUnChecked}
+                cardId={props.cardId}
+                type='cardCheckBox'
+              />
+            </div>
+            <div className='col s8'>
+              <dl className='dl-horizontal'>
+                <dt>p.</dt>
+                <dd>
+                  ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 
