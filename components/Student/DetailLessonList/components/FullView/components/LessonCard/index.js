@@ -30,7 +30,6 @@ const data = (current, target, status) => ({
 });
 
 const LessonCard = props => {
-  console.log('log: lesson', props.lesson)
   // PROPS
   const {
     lesson,
@@ -94,7 +93,7 @@ const LessonCard = props => {
 
   const handleAssignLesson = () => {
     onOpenModal();
-    props.onAddCheckedLesson(lesson.id);
+    props.onAddCheckedLesson(props.cardId);
   };
 
   return (
