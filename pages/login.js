@@ -25,8 +25,9 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    const email = "test2@example.com";
-    const password = "password";
+    // const email = "test2@example.com";
+    // const password = "password";
+    const {email,password} = this.state;
     const postBody = {
       email,
       password,
