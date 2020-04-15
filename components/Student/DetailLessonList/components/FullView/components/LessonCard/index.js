@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
+import moment from 'moment'
 // RENDERING UTILS
 import {
   getProblemCompletionStatusColor,
@@ -29,6 +30,7 @@ const data = (current, target, status) => ({
 });
 
 const LessonCard = props => {
+  console.log('log: lesson', props.lesson)
   // PROPS
   const {
     lesson,
@@ -44,10 +46,8 @@ const LessonCard = props => {
       unit_id: unitId,
       // units: { name: unitName },
       lesson_problems: lessonProblems,
-
       scoreStatus,
       score,
-
       assigned,
       problems = [],
       completedProblems = "",
@@ -107,7 +107,7 @@ const LessonCard = props => {
       />
       <div className='card-main-col col s12 m8 l7 xl5'>
         {/* <div className={getLessonActivityStatus(status)}> */}
-        <div className={getLessonActivityStatus("notassigned")}>
+        <div className={getLessonActivityStatus(props.lesson.lesson_id ? "assigned" : "notassigned")}>
           <div className='card-panel'>
             <div className='card-panel-row row'>
               <div className='icon-col col s2'>
@@ -146,7 +146,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status)}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen)}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>
@@ -179,10 +179,17 @@ const LessonCard = props => {
                     {renderProblemCount(status, scoring.grade ? scoring.grade : "POOR", scoring.percentage_correct, problems.length, 0)}
                   </div>
                   <div className='chart-row'>
-                    <div className='chart-col chart-start'>&nbsp;</div>
+                    <div className='chart-col chart-start'></div>
                     <div className='chart-col chart-end'>
                       <span className='amount' style={{ color: chartColorMap[status] }}>
-                        {problems.length}
+                        <Choose>
+                          <When condition={status==='COMPLETED'}>
+                            0 of {scoring.question_count}
+                          </When>
+                          <When condition={status==="STARTED"}>
+                            0 of {problems.length}
+                          </When>
+                        </Choose>
                       </span>
                     </div>
                   </div>
@@ -202,15 +209,15 @@ const LessonCard = props => {
                 <div className='dates'>
                   <dl className='row'>
                     {assignment_date && (
-                    <dt style={{ float: "right", clear: "both" }}>Available:    <time dateTime={assignment_date}>{assignment_date}</time></dt>
+                    <dt /*style={{ float: "right", clear: "both" }}*/>Available:    <time dateTime={assignment_date}>{moment(assignment_date).format('MM/DD/YYYY')}</time></dt>
                     )}
 
                     {dueAt && assignment_date ? (
-                      <dt style={{ float: "right", clear: "both" }}>Due: <time dateTime={dueAt}>{dueAt}</time></dt>
+                      <dt /*style={{ float: "right", clear: "both" }}*/>Due: <time dateTime={dueAt}>{moment(dueAt).format('MM/DD/YYYY')}</time></dt>
                     ) : assignment_date ? (<dt>No Due Date</dt>) : ""}
 
                     {completedAt ? (
-                      <dt style={{ float: "right", clear: "both" }}>Complete: <time dateTime={completedAt}>{completedAt}</time></dt>
+                      <dt /*style={{ float: "right", clear: "both" }}*/>Completed: <time dateTime={completedAt}>{moment(completedAt).format('MM/DD/YYYY')}</time></dt>
                     ) : ""}
                     {/* <Choose>
                       <When condition={true}>
@@ -260,7 +267,7 @@ const LessonCard = props => {
                         }}
                         className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
                       >
-                        {scoring.grade ? scoring.grade : 'N/A'}
+                        {scoring.grade ? scoring.grade : 'POOR'}
                       </span>
                       ) : (
                       <span

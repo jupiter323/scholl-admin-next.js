@@ -254,10 +254,32 @@ class DetailLessonList extends React.Component {
       scoreStatusFilters,
       flagFilters,
     } = this.state;
-    let mappableLessons = this.props.studentLess;
-    console.log('log: studentLess', this.props.studentLess);
-    // studentLess
-    // lessonList
+
+    // Order student lessons by due date -> other assigned -> unassigned
+    function compareDueDates(a, b) {
+      const dateA = a.due_date;
+      const dateB = b.due_date;
+      let comparison = 0;
+      if (moment(dateA).isBefore(dateB) && moment(dateA).isAfter(Date.now())) {
+        comparison = 1;
+      } else if (moment(dateB).isBefore(dateA)) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    const studentLessonsWithDueDate = [];
+    const studentLessonsWithoutDueDate = [];
+    this.props.studentLess.forEach(lesson => {
+      if (lesson.due_date) return studentLessonsWithDueDate.push(lesson);
+      return studentLessonsWithoutDueDate.push(lesson);
+    });
+    studentLessonsWithDueDate.sort(compareDueDates);
+    let mappableLessons = [
+      ...studentLessonsWithDueDate,
+      ...studentLessonsWithoutDueDate,
+      ...this.props.lessonList,
+    ];
+
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }

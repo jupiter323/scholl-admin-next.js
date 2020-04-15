@@ -34,8 +34,8 @@ export const renderLessonIcon = subject => {
   }
 };
 
-export const renderDropdownOptions = status => {
-  if (status === "Scheduled" || status === "Assigned") {
+export const renderDropdownOptions = (status, handleAssignLesson, handleRescheduleModalOpen) => {
+  if (status === "SCHEDULED" || status === "ASSIGNED") {
     return (
       <React.Fragment>
         <li>
@@ -120,8 +120,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
     );
   }
   if (typeof status === "number") return;
-  const percentage = Math.floor(score / problems) * 100;
-  console.log('log: percentage', percentage);
+  // const percentage = Math.floor(score / problems) * 100;
   return (
     <span
       className="chart-value"
