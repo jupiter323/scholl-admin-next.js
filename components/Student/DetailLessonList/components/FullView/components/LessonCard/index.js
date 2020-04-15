@@ -13,7 +13,8 @@ import {
   renderProblemCount,
   renderAlerts,
   statusColorMap,
-  chartColorMap
+  chartColorMap,
+  gradeColorMap,
 } from "./utils";
 import LessonDetailAnswerSheet from "../../../../../LessonDetailAnswerSheet";
 import Checkbox from "./components/Checkbox";
@@ -57,15 +58,16 @@ const LessonCard = props => {
       practice_page,
       lesson_problems,
       due_date,
-      completed_at
+      completed_at,
+      assignment_date,
+      scoring = ""
     },
     onOpenModal,
     onCloseDropdown,
     handleRescheduleModalOpen
   } = props;
-  const dueAt = dueDate || due_date
+  const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
-  console.log('log: completedAt', completedAt)
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
   const [detailModalOpen, toggleModal] = useState(false);
@@ -161,10 +163,10 @@ const LessonCard = props => {
                     <Doughnut
                       data={
                         completedAt
-                          ? () => data(score, problems, scoreStatus)
+                          ? () => data(scoring.correct_count, scoring.question_count, scoring.grade ? scoring.grade : 'POOR')
                           : completedProblems
                           ? () => data(completedProblems, problems, status)
-                          : () => data(0, 1, "Assigned")
+                          : () => data(0, 1, "ASSIGNED")
                       }
                       // height={210}
                       options={{
@@ -174,7 +176,7 @@ const LessonCard = props => {
                         tooltips: false
                       }}
                     />
-                    {renderProblemCount("notassigned", scoreStatus, score, problems, completedProblems)}
+                    {renderProblemCount(status, scoring.grade ? scoring.grade : "POOR", scoring.percentage_correct, problems.length, 0)}
                   </div>
                   <div className='chart-row'>
                     <div className='chart-col chart-start'>&nbsp;</div>
@@ -197,9 +199,20 @@ const LessonCard = props => {
                 </div>
               </div>
               <div className='col s6 d-flex align-items-center left-align'>
-                <div className='date-container'>
+                <div className='dates'>
                   <dl className='row'>
-                    <Choose>
+                    {assignment_date && (
+                    <dt style={{ float: "right", clear: "both" }}>Available:    <time dateTime={assignment_date}>{assignment_date}</time></dt>
+                    )}
+
+                    {dueAt && assignment_date ? (
+                      <dt style={{ float: "right", clear: "both" }}>Due: <time dateTime={dueAt}>{dueAt}</time></dt>
+                    ) : assignment_date ? (<dt>No Due Date</dt>) : ""}
+
+                    {completedAt ? (
+                      <dt style={{ float: "right", clear: "both" }}>Complete: <time dateTime={completedAt}>{completedAt}</time></dt>
+                    ) : ""}
+                    {/* <Choose>
                       <When condition={true}>
                         <dt></dt>
                         <dd></dd>
@@ -233,13 +246,40 @@ const LessonCard = props => {
                           <time dateTime={dueAt}>{dueAt}</time>
                         </dd>
                       </Otherwise>
-                    </Choose>
+                    </Choose> */}
                   </dl>
                 </div>
 
                 <div className='align-self-end'>
                   <Choose>
-                    <When condition={scoreStatus !== ""}>
+                    <When condition={props.lesson.lesson_id}>
+                      {status === 'COMPLETED' ? (
+                        <span
+                        style={{
+                          backgroundColor: `${props.scoring ? gradeColorMap[props.scoring.grade] : gradeColorMap['POOR']}`,
+                        }}
+                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                      >
+                        {scoring.grade ? scoring.grade : 'N/A'}
+                      </span>
+                      ) : (
+                      <span
+                      
+                      style={status === 'OVERDUE' ? {
+                        backgroundColor: `#fff`,
+                        borderColor: 'red',
+                        color: 'red'
+                      } : {backgroundColor: `#212121`, color: 'white'}}
+                      className={`badge badge-rounded-md ${statusColorMap[status]} `}
+                    >
+                      {status}
+                    </span>
+                    )}
+                    </When>
+                  </Choose>
+                  
+                  {/* <Choose>
+                    <When condition={status === "COMPLETED"}>
                       <span
                         className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
                       >
@@ -253,7 +293,7 @@ const LessonCard = props => {
                         {status}
                       </span>
                     </Otherwise>
-                  </Choose>
+                  </Choose> */}
                 </div>
               </div>
             </div>

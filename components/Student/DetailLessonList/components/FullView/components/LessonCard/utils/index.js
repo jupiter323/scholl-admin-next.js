@@ -1,12 +1,12 @@
 // RENDERING OPTIONS
 export const getProblemCompletionStatusColor = (solvedProblems, totalProblems) => {
-  if (solvedProblems / totalProblems <= .25) {
+  if (solvedProblems / totalProblems <= 0.25) {
     return { backgroundColor: '#ed1c25' };
-  } else if (solvedProblems / totalProblems <= .5) {
+  } else if (solvedProblems / totalProblems <= 0.5) {
     return { backgroundColor: '#a005a5' };
   }
   return { backgroundColor: '#0200fd' };
-}
+};
 
 export const getLessonActivityStatus = (assigned, dueDate) => {
   // if ("assigned && dueDate") {
@@ -18,147 +18,175 @@ export const getLessonActivityStatus = (assigned, dueDate) => {
     return 'card-main card-lesson-detail card-not-assigned card';
   }
   return 'card-main card-lesson-detail card';
-}
+};
 
- // eslint-disable-next-line consistent-return
+// eslint-disable-next-line consistent-return
 export const renderLessonIcon = subject => {
-    switch (subject) {
-      case "Reading":
-        return "icon-books";
-      case "Writing and Language":
-        return "icon-hands";
-      case "Math":
-        return "icon-calculator";
-      default:
-        break;
-    }
-  };
+  switch (subject) {
+    case "Reading":
+      return "icon-books";
+    case "Writing and Language":
+      return "icon-hands";
+    case "Math":
+      return "icon-calculator";
+    default:
+      break;
+  }
+};
 
-  export const renderDropdownOptions = status => {
-    if (status === "Scheduled" || status === "Assigned") {
-      return (
-        <React.Fragment>
-          <li>
-            <a href='#'>Reschedule</a>
-          </li>
-          <li>
-            <a href='#!'>Unassign</a>
-          </li>
-        </React.Fragment>
-      );
-    }
+export const renderDropdownOptions = status => {
+  if (status === "Scheduled" || status === "Assigned") {
     return (
       <React.Fragment>
         <li>
-          <a href='#' onClick={handleAssignLesson}>
-            Assign
-          </a>
+          <a href="#">Reschedule</a>
         </li>
         <li>
-          {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
-          <a href='#' onClick={handleRescheduleModalOpen}>
-            Reschedule
-          </a>
-        </li>
-        <li>
-          <a href='#!'>Excuse/Unexcuse Lateness</a>
-        </li>
-        <li>
-          <a href='#!'>Reset</a>
-        </li>
-        <li>
-          <a href='#!'>Mark Flags Reviewed</a>
-        </li>
-        <li>
-          <a href='#!'>Unassign</a>
+          <a href="#!">Unassign</a>
         </li>
       </React.Fragment>
     );
-  };
+  }
+  return (
+    <React.Fragment>
+      <li>
+        <a href="#" onClick={handleAssignLesson}>
+            Assign
+        </a>
+      </li>
+      <li>
+        {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
+        <a href="#" onClick={handleRescheduleModalOpen}>
+            Reschedule
+        </a>
+      </li>
+      <li>
+        <a href="#!">Excuse/Unexcuse Lateness</a>
+      </li>
+      <li>
+        <a href="#!">Reset</a>
+      </li>
+      <li>
+        <a href="#!">Mark Flags Reviewed</a>
+      </li>
+      <li>
+        <a href="#!">Unassign</a>
+      </li>
+    </React.Fragment>
+  );
+};
 
-  export const renderProblemCount = (status, scoreStatus, score, problems, completedProblems) => {
-    if (status === "Started") {
-      return (
-        <span
-          className='chart-value chart-value-column'
-          style={{ bottom: "8px", backgroundColor: chartColorMap[status] }}
-        >
-          <span
-            className='chart-count'
-            data-count-up
-            data-start-val='0'
-            data-end-val='4'
-            data-duration='1'
-          >
-            <span className='text-small' style={{ fontSize: "x-small" }}>
-              {completedProblems}
-            </span>
-          </span>
-          <span className='text-small' style={{ fontSize: "xx-small" }}>
-            out of
-          </span>{" "}
-          <span className='text-small' style={{ fontSize: "x-small" }}>
-            {problems}
-          </span>
-        </span>
-      );
-    }
-    if(status === "notassigned") {
-      return
-    }
+export const renderProblemCount = (status, scoreStatus, score, problems, completedProblems) => {
+  if (status === "STARTED") {
     return (
       <span
-        className='chart-value'
-        style={{
-          height: "50px",
-          width: "50px",
-          bottom: "6px",
-          backgroundColor: chartColorMap[scoreStatus]
-        }}
+        className="chart-value chart-value-column"
+        style={{ bottom: "8px", backgroundColor: chartColorMap[status] }}
       >
-        <span data-count-up data-start-val='0' data-end-val='96' data-duration='1'></span>
-        <If condition={score !== ""}>
-          {/* <span className='percentage'>{Math.floor(`${(score / problems) * 100}`)}%</span> */}
-          <span className='percentage'>{0}%</span>
-        </If>
+        <span
+          className="chart-count"
+          data-count-up
+          data-start-val="0"
+          data-end-val="4"
+          data-duration="1"
+        >
+          <span className="text-small" style={{ fontSize: "x-small" }}>
+            {completedProblems}
+          </span>
+        </span>
+        <span className="text-small" style={{ fontSize: "xx-small" }}>
+            out of
+        </span>{" "}
+        <span className="text-small" style={{ fontSize: "x-small" }}>
+          {problems}
+        </span>
       </span>
     );
-  };
+  }
+  if (status === "ASSIGNED") {
+    return (
+      <span
+        className="chart-value chart-value-column"
+        style={{ bottom: "8px", border: `2px solid ${chartColorMap[status]}`, backgroundColor: 'white' }}
+      ></span>
+    );
+  }
+  if (status === "OVERDUE") {
+    return (
+      <span
+        className="chart-value chart-value-column"
+        style={{ bottom: "8px", border: `2px solid red`, backgroundColor: 'white' }}
+      ></span>
+    );
+  }
+  if (typeof status === "number") return;
+  const percentage = Math.floor(score / problems) * 100;
+  console.log('log: percentage', percentage);
+  return (
+    <span
+      className="chart-value"
+      style={{
+        height: "50px",
+        width: "50px",
+        bottom: "6px",
+        backgroundColor: chartColorMap[scoreStatus],
+      }}
+    >
+      <span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
+      <If condition={score !== ""}>
+        <span className="percentage">{score || 0}%</span>
+        {/* <span className='percentage'>{0}%</span> */}
+      </If>
+    </span>
+  );
+};
 
-  export const renderAlerts = flags => {
-    // if (flags.length) {
+export const renderAlerts = flags => {
+  // if (flags.length) {
 
-    if (flags.length) {
-      return (
-        <span className='badge-rounded-xs badge red darken-2 white-text'>
-          <b className='badge-text'>{flags.length}</b> <i className='icon-flag'></i>
-        </span>
-      );
-    }
-    return <div className='right-col col s3'>&nbsp;</div>;
-  };
+  if (flags.length) {
+    return (
+      <span className="badge-rounded-xs badge red darken-2 white-text">
+        <b className="badge-text">{flags.length}</b> <i className="icon-flag"></i>
+      </span>
+    );
+  }
+  return <div className="right-col col s3">&nbsp;</div>;
+};
 
 // COLOR MAPS
 export const statusColorMap = {
-  Assigned: 'grey darken-4',
-  Overdue: 'grey darken-4',
-  Started: 'grey darken-4',
-  Scheduled: 'grey',
-  Accomplished: 'purple darken-3',
-  Beginning: 'red darken-3',
-  Exemplary: 'blue accent-4',
-  Developing: 'purple',
+  ASSIGNED: 'grey darken-4',
+  OVERDUE: 'grey darken-4',
+  STARTED: 'grey darken-4',
+  SCHEDULED: 'grey',
+  ACCOMPLISHED: 'purple darken-3',
+  BEGINNING: 'red darken-3',
+  EXEMPLARY: 'blue accent-4',
+  DEVELOPING: 'purple',
 };
 
 export const chartColorMap = {
-  Assigned: '#333',
-  Started: "#333",
-  Overdue: '#333',
-  Scheduled: "#b2b2b2",
-  Accomplished: '#7327cc',
-  Beginning: '#ed1c24',
-  Exemplary: 'rgb(0, 100, 244)',
-  Developing: '#c10078',
+  ASSIGNED: '#333',
+  STARTED: "#333",
+  OVERDUE: '#fff',
+  SCHEDULED: "#b2b2b2",
+  ACCOMPLISHED: '#7327cc',
+  BEGINNING: '#ed1c24',
+  EXEMPLARY: 'rgb(0, 100, 244)',
+  DEVELOPING: '#c10078',
+  GREAT: '#74b287',
+  ABOVE_AVERAGE: 'a9c466',
+  AVERAGE: 'd8c539',
+  BELOW_AVERAGE: 'e89258',
+  POOR: '#f27c7c',
 };
- 
+
+export const gradeColorMap = {
+  GREAT: '#74b287',
+  ABOVE_AVERAGE: 'a9c466',
+  AVERAGE: 'd8c539',
+  BELOW_AVERAGE: 'e89258',
+  POOR: '#f27c7c',
+};
 

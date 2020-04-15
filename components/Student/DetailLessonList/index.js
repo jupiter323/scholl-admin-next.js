@@ -42,7 +42,7 @@ import {
   checkAllLessons,
   addCheckedLesson,
   removeCheckedLesson,
-  assignLessonToStudent
+  assignLessonToStudent,
 
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
@@ -75,8 +75,8 @@ class DetailLessonList extends React.Component {
 
   componentDidMount() {
     this.props.dispathGetLessonList();
-    const {id} = this.props.user;
-    const {studentToken} = this.props;
+    const { id } = this.props.user;
+    const { studentToken } = this.props;
     const postBody = {
       id,
       studentToken,
@@ -254,8 +254,10 @@ class DetailLessonList extends React.Component {
       scoreStatusFilters,
       flagFilters,
     } = this.state;
-    let mappableLessons = this.props.lessonList;
-
+    let mappableLessons = this.props.studentLess;
+    console.log('log: studentLess', this.props.studentLess);
+    // studentLess
+    // lessonList
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -392,7 +394,7 @@ class DetailLessonList extends React.Component {
         student_id: this.props.user.id,
         lesson_id: lessonId,
         assignment_date: lessonDates.assignDate,
-        due_date: lessonDates.dueDate
+        due_date: lessonDates.dueDate,
       });
     });
   }
@@ -455,7 +457,7 @@ const mapDispatchToProps = dispatch => ({
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
   dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
 
-  dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch)
+  dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
 
 });
 

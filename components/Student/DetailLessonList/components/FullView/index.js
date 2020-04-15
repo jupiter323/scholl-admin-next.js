@@ -10,7 +10,7 @@ import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
   const {
-    lessons,
+    lessons = [],
     onCloneLesson,
     onDeleteLesson,
     user,
@@ -68,7 +68,7 @@ const FullView = props => {
           />
         </div>
         <div>
-          <b> - {lessons.length} results -</b>
+          <b> - {lessons && lessons.length} results -</b>
         </div>
 
         <div className="dropdown-block col">
