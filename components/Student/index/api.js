@@ -995,7 +995,7 @@ export const assignLessonToStudentApi = lesson => {
 
 
 export const fetchStudentLessonListApi = (student,studentToken) =>
-  fetch(`${API_URL}/api/students/${student}/lessons`, {
+  fetch(`${API_URL}/api/students/${student}/student_lessons`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
