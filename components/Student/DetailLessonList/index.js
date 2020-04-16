@@ -44,7 +44,8 @@ import {
   addCheckedLesson,
   removeCheckedLesson,
   assignLessonToStudent,
-
+  addAllLessons,
+  removeAllLessons,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -104,21 +105,22 @@ class DetailLessonList extends React.Component {
 
   onCheckAll = checked => {
     console.log('log: checked', checked);
-    // this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
     if (!checked) {
-      console.log('log: option 1');
       this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
+      this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      console.log('log: option 2');
       this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
+      this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
   };
 
-  onAddCheckedLesson = lessonId => {
+  onAddCheckedLesson = (lessonId, uniqueId) => {
+    // lessonId
     this.props.dispatchAddCheckedLesson(lessonId);
-    this.props.dispathCheckLesson(lessonId);
+    // uniqueId
+    this.props.dispathCheckLesson(uniqueId);
     if (!this.state.selectAll) {
       this.setState({
         selectAll: true,
@@ -126,9 +128,9 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onRemoveCheckedLesson = lessonId => {
+  onRemoveCheckedLesson = (lessonId, uniqueId) => {
     this.props.dispatchRemoveCheckedLesson(lessonId);
-    this.props.dispathCheckLesson(lessonId);
+    this.props.dispathCheckLesson(uniqueId);
     if (this.props.checkedLessons.length - 1 <= 0) {
       this.setState({
         selectAll: false,
@@ -284,7 +286,7 @@ class DetailLessonList extends React.Component {
       return comparison;
     }
 
-    const mappableLessons = this.props.lessonList;
+    let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -485,9 +487,9 @@ const mapDispatchToProps = dispatch => ({
   dispatchUnCheckAllLesson: bindActionCreators(unCheckAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
   dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
-
   dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
-
+  dispatchAddAllLessons: bindActionCreators(addAllLessons, dispatch),
+  dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

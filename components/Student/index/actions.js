@@ -36,6 +36,8 @@ import {
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
   ASSIGN_STUDENT_LESSON,
+  ADD_ALL_LESSONS,
+  REMOVE_ALL_LESSONS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -275,4 +277,14 @@ export const removeCheckedLesson = (lessonId) => ({
 export const assignLessonToStudent = (lesson) => ({
   type: ASSIGN_STUDENT_LESSON,
   lesson,
+});
+
+export const addAllLessons = (mappedLessons) => ({
+  type: ADD_ALL_LESSONS,
+  mappedLessons,
+});
+
+export const removeAllLessons = (mappedLessons) => ({
+  type: REMOVE_ALL_LESSONS,
+  mappedLessons,
 });
