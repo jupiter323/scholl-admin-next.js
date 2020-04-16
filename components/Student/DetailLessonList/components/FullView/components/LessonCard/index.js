@@ -70,7 +70,6 @@ const LessonCard = props => {
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
   const [detailModalOpen, toggleModal] = useState(false);
-  console.log('log: selected lessons', props.lesson.selected)
 
   const onOpenDetailModal = () => toggleModal(true);
   const onCloseDetailModal = () => toggleModal(false);

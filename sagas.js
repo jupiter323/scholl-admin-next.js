@@ -676,7 +676,7 @@ function* handleFetchStudentLessonList(action) {
     });
     yield put({
       type: MERGE_STUDENT_LESSON_LISTS,
-      payload: studentLessonList,
+      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
     });
   } catch (error) {
     console.warn("Error occurred in the handleFetchStudentLesson saga", error);

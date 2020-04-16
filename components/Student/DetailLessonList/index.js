@@ -104,7 +104,6 @@ class DetailLessonList extends React.Component {
   };
 
   onCheckAll = checked => {
-    console.log('log: checked', checked);
     if (!checked) {
       this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
       this.props.dispatchAddAllLessons(this.getMappableLessons());
@@ -304,7 +303,6 @@ class DetailLessonList extends React.Component {
     if (sort) {
       return this.onSortLessons(mappableLessons);
     }
-    console.log('log: mappableLessons', mappableLessons.length);
     return mappableLessons;
   };
 
