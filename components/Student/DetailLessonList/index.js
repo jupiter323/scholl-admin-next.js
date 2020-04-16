@@ -30,17 +30,24 @@ import {
   completionDateAscending,
   completionDateDescending,
   lessonTypeAscending,
-  lessonTypeDescending
+  lessonTypeDescending,
 } from "../../utils/sortFunctions";
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
 
-import { getLessonList, checkLesson, checkAllLessons } from "../index/actions";
-import { makeSelectGetLessonList } from "../index/selectors";
+import {
+  getLessonList,
+  getStudentLessonList,
+  checkLesson,
+  checkAllLessons,
+  addCheckedLesson,
+  removeCheckedLesson,
+  assignLessonToStudent,
+
+} from "../index/actions";
+import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
-
-
 
 
 // TODO: compare updatedlessons to lessons and update lesson list
@@ -61,41 +68,64 @@ class DetailLessonList extends React.Component {
       nameFilter: "",
       unitFilter: "",
       updatedLessons: [],
-      selectAll: false
+      selectAll: false,
+      dropdownIsOpen: false,
     };
   }
 
   componentDidMount() {
     this.props.dispathGetLessonList();
+    const { id } = this.props.user;
+    const { studentToken } = this.props;
+    const postBody = {
+      id,
+      studentToken,
+    };
+    this.props.dispathGetStudentLessonList(postBody);
   }
 
   componentWillReceiveProps = nextProps => {
     if (this.state.lessons.length === 0) {
       this.setState({
-        lessons: nextProps.lessonList
+        lessons: nextProps.lessonList,
       });
     }
   };
 
-  onCheckLesson = (i) => {
-    this.props.dispathCheckLesson(i)
-  }
+  onCheckLesson = id => {
+    this.props.dispathCheckLesson(id);
+    if (!this.state.selectAll) {
+      this.setState({
+        selecteAll: true,
+      });
+    }
+  };
 
-  onCheckAll = (checked) =>{
-    this.props.dispathCheckAllLesson(checked);
-    this.setState(state => ({
-      selectAll: !state.selectAll
-    }))
-  }
-    // this.setState(
-    //   this.state.lessons.map(lesson => ({
-    //     ...lesson,
-    //     selected: !lesson.selected
-    //   }))
-    // );
+  onCheckAll = checked => {
+    this.props.dispathCheckAllLesson(checked, this.getMappableLessons());
+    if (!checked) {
+      this.setState({ selectAll: !checked });
+    } else {
+      this.setState({ selectAll: false });
+    }
+  };
+
+  onAddCheckedLesson = lessonId => {
+    this.props.dispatchAddCheckedLesson(lessonId);
+    this.props.dispathCheckLesson(lessonId);
+  };
+
+  onRemoveCheckedLesson = lessonId => {
+    this.props.dispatchRemoveCheckedLesson(lessonId);
+    this.props.dispathCheckLesson(lessonId);
+  };
 
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
+
+  onOpenDropdown = () => this.setState({ dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
+
   onClearFilters = () =>
     this.setState({
       subjectFilters: [],
@@ -103,7 +133,7 @@ class DetailLessonList extends React.Component {
       flagFilters: [],
       dueDateFilters: [],
       unitFilter: "",
-      nameFilter: ""
+      nameFilter: "",
     });
   onSetSort = sort => this.setState({ sort });
   onSetFilteredState = lesson => this.setState({ nameFilter: lesson });
@@ -175,6 +205,7 @@ class DetailLessonList extends React.Component {
       return finalArr;
     }, []);
   };
+
   onCloneLesson = index => {
     const { lessons } = this.state;
     this.setState(prevState => {
@@ -195,7 +226,7 @@ class DetailLessonList extends React.Component {
       unitFilter,
       scoreStatusFilters,
       flagFilters,
-      lessons: allLessons
+      lessons: allLessons,
     } = this.state;
     let lessons = allLessons;
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
@@ -221,9 +252,34 @@ class DetailLessonList extends React.Component {
       nameFilter,
       subjectFilters,
       scoreStatusFilters,
-      flagFilters
+      flagFilters,
     } = this.state;
-    let mappableLessons = this.props.lessonList;
+
+    // Order student lessons by due date -> other assigned -> unassigned
+    function compareDueDates(a, b) {
+      const dateA = a.due_date;
+      const dateB = b.due_date;
+      let comparison = 0;
+      if (moment(dateA).isBefore(dateB) && moment(dateA).isAfter(Date.now())) {
+        comparison = 1;
+      } else if (moment(dateB).isBefore(dateA)) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    const studentLessonsWithDueDate = [];
+    const studentLessonsWithoutDueDate = [];
+    this.props.studentLess.forEach(lesson => {
+      if (lesson.due_date) return studentLessonsWithDueDate.push(lesson);
+      return studentLessonsWithoutDueDate.push(lesson);
+    });
+    studentLessonsWithDueDate.sort(compareDueDates);
+    let mappableLessons = [
+      ...studentLessonsWithDueDate,
+      ...studentLessonsWithoutDueDate,
+      ...this.props.lessonList,
+    ];
+
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -256,7 +312,7 @@ class DetailLessonList extends React.Component {
       }
       if (dueDateFilters.includes("dueNextSession")) {
         lessons = lessons.filter(lesson =>
-          moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day")
+          moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day"),
         );
       }
       if (dueDateFilters.includes("overdue")) {
@@ -277,7 +333,7 @@ class DetailLessonList extends React.Component {
       subjectFilters: currentSubjectFilters,
       scoreStatusFilters: currentScoreStatusFilters,
       flagFilters: currentFlagFilters,
-      dueDateFilters: currentDueDateFilters
+      dueDateFilters: currentDueDateFilters,
     } = this.state;
     let modifiedFilterCurrentState;
     let modifiedFilterName;
@@ -305,18 +361,19 @@ class DetailLessonList extends React.Component {
     // Decide whether we're adding or removing the selected filter
     if (modifiedFilterCurrentState.indexOf(filter) === -1) {
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
-        $push: [filter]
+        $push: [filter],
       });
     } else {
       const filterIndex = modifiedFilterCurrentState.indexOf(filter);
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
-        $splice: [[filterIndex, 1]]
+        $splice: [[filterIndex, 1]],
       });
     }
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   };
 
   arrayItemRemover = (array, value) => array.filter(lesson => lesson !== value);
+
 
   renderCurrentView = () => {
     const { active } = this.state;
@@ -326,11 +383,20 @@ class DetailLessonList extends React.Component {
         <FullView
           user={user}
           lessons={this.getMappableLessons()}
+          selectAll={this.state.selectAll}
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
           onCheckAll={this.onCheckAll}
           onCheckLesson={this.onCheckLesson}
-          selectAll={this.state.selectAll}
+          onAddCheckedLesson={this.onAddCheckedLesson}
+          onRemoveCheckedLesson={this.onRemoveCheckedLesson}
+          onRenderDropdown={this.renderDropdownOptions}
+          dropdownIsOpen={this.state.dropdownIsOpen}
+          onOpenModal={this.onOpenModal}
+          onCloseDropdown={this.onCloseDropdown}
+          onOpenDropdown={this.onOpenDropdown}
+          renderDropdownOptions={this.renderDropdownOptions}
+
         />
       );
     }
@@ -344,13 +410,24 @@ class DetailLessonList extends React.Component {
     );
   };
 
+  onAssignLesson(lessonDates) {
+    this.props.checkedLessons.forEach(lessonId => {
+      this.props.dispatchAssignLessonToStudent({
+        student_id: this.props.user.id,
+        lesson_id: lessonId,
+        assignment_date: lessonDates.assignDate,
+        due_date: lessonDates.dueDate,
+      });
+    });
+  }
+
   render() {
     const {
       currentView,
       subjectFilters,
       scoreStatusFilters,
       flagFilters,
-      dueDateFilters
+      dueDateFilters,
     } = this.state;
     return (
       <React.Fragment>
@@ -376,13 +453,14 @@ class DetailLessonList extends React.Component {
           lessons={this.props.lessonList}
           onCloseDatesModal={this.onCloseModal}
           onAddUpdatedLessons={this.onAddUpdatedLessons}
+          onAssignLesson={this.onAssignLesson.bind(this)}
         />
         <a
-          href='#'
+          href="#"
           onClick={this.onOpenModal}
-          className='waves-effect waves-teal btn add-btn modal-trigger'
+          className="waves-effect waves-teal btn add-btn modal-trigger"
         >
-          <i className='material-icons'>add</i>Assign Lesson
+          <i className="material-icons">add</i>Assign Lesson
         </a>
       </React.Fragment>
     );
@@ -390,17 +468,27 @@ class DetailLessonList extends React.Component {
 }
 
 DetailLessonList.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
+  dispathGetStudentLessonList: bindActionCreators(getStudentLessonList, dispatch),
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
-  dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch)
+  dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
+  dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
+  dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
+
+  dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
+
 });
 
 const mapStateToProps = createStructuredSelector({
-  lessonList: makeSelectGetLessonList()
+  lessonList: makeSelectGetLessonList(),
+  studentLess: makeSelectGetStudentLessonList(),
+  checkedLessons: makeSelectCheckedLessons(),
+  studentToken: makeSelectActiveStudentToken(),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);

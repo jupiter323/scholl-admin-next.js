@@ -14,8 +14,8 @@ class QuestionModal extends React.Component {
     super(props);
     this.state = {
       status: 'UN_FLAGGED',
-      originalTestProblemId: ''
-    }
+      originalTestProblemId: '',
+    };
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -24,21 +24,20 @@ class QuestionModal extends React.Component {
     if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
       const { question: { flag: { status } } } = this.props;
       this.setState({
-        status: status
-      })
+        status,
+      });
     }
   }
 
   onHandleQuestionFlagStatus = async (_e, status) => {
     const {
       studentTestId,
-      onChangeFlagState
+      onChangeFlagState,
     } = this.props;
-    onChangeFlagState(status)
+    onChangeFlagState(status);
     const { question: { flag: { id } } } = this.props;
-    const postBody = { student_test_id: studentTestId, flag_id: id, status: status };
+    const postBody = { student_test_id: studentTestId, flag_id: id, status };
     await updateStudentTestQuestionFlagStatusApi(postBody);
-
   };
 
 
@@ -74,7 +73,7 @@ class QuestionModal extends React.Component {
                           style={{
                             display: "flex",
                             flexWrap: "wrap",
-                            margin: "0 -10px -7px"
+                            margin: "0 -10px -7px",
                           }}
                         >
                           <li>
@@ -243,7 +242,7 @@ class QuestionModal extends React.Component {
 QuestionModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onCloseQuestionModal: PropTypes.func.isRequired,
-  question: PropTypes.object.isRequired
+  question: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

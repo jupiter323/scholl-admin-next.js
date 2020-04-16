@@ -887,14 +887,14 @@ export const addStudentAnswerToTestApi = answer =>
     .then(res => res.json())
     .catch(err => err);
 
-export const addStudentTestQuestionFlagApi = (body,studentToken) =>
+export const addStudentTestQuestionFlagApi = (body, studentToken) =>
   fetch(`${API_URL}/api/commands/add-student-test-question-flag`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      "Authorization":'Bearer '+ studentToken
+      Authorization: `Bearer ${studentToken}`,
     },
     body: JSON.stringify(body),
   })
@@ -923,7 +923,7 @@ export const updateStudentTestQuestionFlagStatusApi = (body) =>
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      "Authorization":'Bearer '+ getToken()
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -945,6 +945,7 @@ export const fetchLessonListApi = () =>
       const lessons = data.lessons;
       return lessons;
     });
+
 export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,
     {
@@ -969,3 +970,43 @@ export const fetchUnitsApi = () =>
       return { formattedUnits };
     })
     .catch(err => console.warn('err', err));
+
+
+// lesson = {
+//   "student_id": "string",
+//   "lesson_id": "string",
+//   "assignment_date": "Unknown Type: date",
+//   "due_date": "Unknown Type: date"
+// }
+export const assignLessonToStudentApi = lesson => {
+  fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lesson),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+};
+
+
+export const fetchStudentLessonListApi = (student,studentToken) =>
+  fetch(`${API_URL}/api/students/${student}/student_lessons`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${studentToken}`,
+    },
+  })
+    .then(res => res.json())
+    .then(res => {console.log({res}); return res})
+    .then(({ data }) => {
+      const studentLessons = data;
+      return studentLessons;
+    });
+

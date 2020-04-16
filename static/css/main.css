@@ -15653,6 +15653,14 @@ a.collapsible-opener:hover {
   padding-bottom: 6px;
 }
 
+.card-lesson-detail > .card-content  {
+  padding: 0px;
+}
+
+.card-lesson-detail > .card-content .col  {
+  padding: 0px;
+}
+
 .card-assigned .card-panel {
   background-color: transparent !important;
   color: #1a1a1a !important;
@@ -15664,6 +15672,7 @@ a.collapsible-opener:hover {
 }
 
 .card-assigned .card-panel:after,
+.card-not-assigned .card-panel:after,
 .card-panel.panel-border:after {
   content: "";
   height: 1px;
@@ -15675,13 +15684,23 @@ a.collapsible-opener:hover {
 }
 
 .card-not-assigned .card-panel {
-  background-color: #b2b2b2 !important;
+  background-color: transparent !important;
+  color: rgba(0, 0, 0, 0.26);
+
+}
+.card-not-assigned a {
+  color: rgba(0, 0, 0, 0.50);
+  text-decoration: none;
+  pointer-events: none;
 }
 
 .card-not-assigned .card-content {
   opacity: 0.5;
 }
 
+.card-not-assigned .card-content .date-container {
+  display: none;
+}
 .card-dashboard-session.card {
   border-radius: 12px;
 }

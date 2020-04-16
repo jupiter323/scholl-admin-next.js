@@ -16,15 +16,15 @@ class AnswerRow extends React.Component {
     if (this.props.problem.flag) {
       const { problem: { flag: { status } } } = this.props;
       this.setState({
-        status
-      })
+        status,
+      });
     }
   }
 
   onChangeFlagState = (status) => {
     this.setState({
-      status
-    })
+      status,
+    });
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -32,7 +32,7 @@ class AnswerRow extends React.Component {
 
   mapNumberBubbles = () => {
     const {
-      problem: { answer, correct_answer }
+      problem: { answer, correct_answer },
     } = this.props;
     if (answer === correct_answer) {
       return (
@@ -135,7 +135,7 @@ class AnswerRow extends React.Component {
 }
 
 AnswerRow.propTypes = {
-  problem: PropTypes.object
+  problem: PropTypes.object,
 };
 
 export default AnswerRow;

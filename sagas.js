@@ -18,6 +18,12 @@ import {
   FETCH_LESSON_LIST_SUCCESS,
   FETCH_LESSON_LIST_FAIL,
   FETCH_UNITS,
+  FETCH_STUDENT_LESSON_LIST,
+  FETCH_STUDENT_LESSON_LIST_FAIL,
+  FETCH_STUDENT_LESSSON_LIST_SUCCESS,
+  ASSIGN_STUDENT_LESSON,
+  ASSIGN_STUDENT_LESSON_SUCCESS,
+  ASSIGN_STUDENT_LESSON_FAIL
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -50,12 +56,14 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
+
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
 
 
 import { studentApi, classApi, instructorApi, lessonApi } from "./api";
+
 const {
   fetchStudentsApi,
   searchStudentsApi,
@@ -73,6 +81,8 @@ const {
   fetchProblemsByStudentTestIdApi,
   fetchLessonListApi,
   fetchUnitsApi,
+  fetchStudentLessonListApi,
+  assignLessonToStudentApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -651,6 +661,46 @@ function* handleFetchLesson() {
   }
 }
 
+
+function* watchForFetchStudentLesson() {
+  yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList)
+  
+}
+
+function* handleFetchStudentLessonList(action) {
+  try {
+    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id,action.postBody.studentToken)
+    yield put({
+      type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
+      payload: studentLessonList
+    })
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchStudentLesson saga", error);
+    yield put({
+      type: FETCH_STUDENT_LESSON_LIST_FAIL
+    })
+    
+  }
+}
+
+function* watchForAssignLesson() {
+  yield takeEvery(ASSIGN_STUDENT_LESSON, handleAssignLesson)
+}
+
+function* handleAssignLesson(action) {
+  try { 
+    yield call(assignLessonToStudentApi, action.lesson)
+    yield put({type:ASSIGN_STUDENT_LESSON_SUCCESS})
+    
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchLesson saga", error);
+    yield put({
+      type: ASSIGN_STUDENT_LESSON_FAIL,
+      payload: error
+    })
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -687,5 +737,7 @@ export default function* defaultSaga() {
     watchForUpdateClassDuration(),
     watchForFetchLesson(),
     watchForFetchUnitFilterOptions(),
+    watchForFetchStudentLesson(),
+    watchForAssignLesson()
   ]);
 }

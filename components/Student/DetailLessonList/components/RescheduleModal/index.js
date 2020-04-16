@@ -24,28 +24,28 @@ class RescheduleModal extends React.Component {
       versionOptions: [
         {
           label: "SAT Pratice Test #1",
-          value: "SAT Pratice Test #1"
+          value: "SAT Pratice Test #1",
         },
         {
           label: "SAT Pratice Test #2",
-          value: "SAT Pratice Test #2"
+          value: "SAT Pratice Test #2",
         },
         {
           label: "SAT Pratice Test #3",
-          value: "SAT Pratice Test #3"
-        }
-      ]
+          value: "SAT Pratice Test #3",
+        },
+      ],
     };
   }
   handleDetailsChange = (event, name, checkBox = false) => {
     const value = event.target ? event.target.value : event;
     if (checkBox) {
       this.setState({
-        [name]: !this.state[name]
+        [name]: !this.state[name],
       });
     } else {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -65,7 +65,7 @@ class RescheduleModal extends React.Component {
       dueDate,
       assignTime,
       dueTime,
-      isTimed
+      isTimed,
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -73,7 +73,7 @@ class RescheduleModal extends React.Component {
           <React.Fragment>
             <div className="overlay">
               <ClickOffComponentWrapper onOuterClick={onClose}>
-                <div id="modal_add_new_class" className="modal modal-custom modal-460" style = {{borderRadius:'5px'}}>
+                <div id="modal_add_new_class" className="modal modal-custom modal-460" style={{ borderRadius: '5px' }}>
                   <form action="#" className="custom-form">
                     <fieldset>
                       <div className="card-modal card-main card">
@@ -152,7 +152,7 @@ class RescheduleModal extends React.Component {
                                     onChange={date => this.handleDetailsChange(date, "dueDate")}
                                     placeholderText="Due(optional)"
                                   />
-                                    <label
+                                  <label
                                     className={dueDate !== "" ? "label active" : "label"}
                                     htmlFor="dueDate"
                                   >
@@ -268,7 +268,7 @@ class RescheduleModal extends React.Component {
 RescheduleModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired
+  onSave: PropTypes.func.isRequired,
 };
 
 export default RescheduleModal;

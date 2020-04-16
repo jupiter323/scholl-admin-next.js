@@ -1,12 +1,22 @@
 /* eslint-disable */
 // used vars and indentifers not camelcase
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
-import statusColorMap, {
+import moment from 'moment'
+// RENDERING UTILS
+import {
+  getProblemCompletionStatusColor,
+  getLessonActivityStatus,
+  renderLessonIcon,
+  renderDropdownOptions,
+  renderProblemCount,
+  renderAlerts,
+  statusColorMap,
   chartColorMap,
-} from "../../../../../DetailWorksheetPage/utils/statusColorMap";
+  gradeColorMap,
+} from "./utils";
 import LessonDetailAnswerSheet from "../../../../../LessonDetailAnswerSheet";
 import Checkbox from "./components/Checkbox";
 
@@ -14,319 +24,221 @@ const data = (current, target, status) => ({
   datasets: [
     {
       data: [current, target - current],
-      backgroundColor: [chartColorMap[status], "#eaeaea"],
-    },
-  ],
+      backgroundColor: [chartColorMap[status], "#eaeaea"]
+    }
+  ]
 });
 
-const getLessonActivityStatus = status => {
-  if (status === "Scheduled") {
-    return "card-main card-lesson-detail card-disabled card-assigned card";
-  }
-  return "card-main card-lesson-detail card-assigned card";
-};
+const LessonCard = props => {
+  // PROPS
+  const {
+    lesson,
+    lesson: {
+      name,
+      drill_page: drillPage,
+      practice_page: practicePage,
+      starting_page: startingPage,
+      status,
+      time_estimate: timeEstimate,
+      subject_id: subjectId,
+      // subjects: { name: subjectName },
+      unit_id: unitId,
+      // units: { name: unitName },
+      lesson_problems: lessonProblems,
+      scoreStatus,
+      score,
+      assigned,
+      problems = [],
+      completedProblems = "",
+      passage,
+      dueDate,
+      completionDate,
+      challenge_page,
+      practice_page,
+      lesson_problems,
+      due_date,
+      completed_at,
+      assignment_date,
+      scoring = ""
+    },
+    onOpenModal,
+    onCloseDropdown,
+    handleRescheduleModalOpen
+  } = props;
+  const dueAt = due_date || dueDate
+  const completedAt = completed_at || completionDate
+  // STATE
+  const [dropdownIsOpen, toggleDropdown] = useState(false);
+  const [detailModalOpen, toggleModal] = useState(false);
+  const [selected, toggleSelected] = useState(props.lesson.selected);
 
-class LessonCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      test: true,
-      dropdownIsOpen: false,
-      detailModalOpen: false,
-      selected: props.lesson.selected,
-    };
-  }
+  const onOpenDetailModal = () => toggleModal(true);
+  const onCloseDetailModal = () => toggleModal(false);
+  const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
 
-  onOpenDetailModal = () => this.setState({ detailModalOpen: true });
-  onCloseDetailModal = () => this.setState({ detailModalOpen: false });
-  onSetDropdown = dropdownIsOpen => this.setState({ dropdownIsOpen: !dropdownIsOpen });
-  // onChecked = () => this.setState({selected: !this.state.selected})
-
-
-  onReschedule = (assignDate, assignTime, dueDate, dueTime) => {
+  const onReschedule = (assignDate, assignTime, dueAt, dueTime) => {
     // eslint-disable-next-line no-console
-    console.warn("Stubbed out date functionality", assignDate, assignTime, dueDate, dueTime);
+    console.warn("Stubbed out date functionality", assignDate, assignTime, dueAt, dueTime);
   };
 
-  // eslint-disable-next-line consistent-return
-  renderLessonIcon = subject => {
-    switch (subject) {
-      case "Reading":
-        return "icon-books";
-      case "Writing and Language":
-        return "icon-hands";
-      case "Math":
-        return "icon-calculator";
-      default:
-        break;
-    }
+  const onChecked = cardId => {
+    props.onAddCheckedLesson(cardId);
+    toggleSelected(true);
   };
 
-  renderDropdownOptions = status => {
-    const {
-      lesson: { assignDate, assignTime, dueDate, dueTime },
-      handleRescheduleModalOpen
-    } = this.props;
-    if (status === "Scheduled" || status === "Assigned") {
-      return (
-        <React.Fragment>
-          <li>
-            <a href="#">Reschedule</a>
-          </li>
-          <li>
-            <a href="#!">Unassign</a>
-          </li>
-        </React.Fragment>
-      );
-    }
-    return (
-      <React.Fragment>
-        <li>
-          <a href="#" className="disabled">
-            Assign
-          </a>
-        </li>
-        <li>
-          {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
-          <a href="#" onClick={handleRescheduleModalOpen}>
-            Reschedule
-          </a>
-        </li>
-        <li>
-          <a href="#!">Excuse/Unexcuse Lateness</a>
-        </li>
-        <li>
-          <a href="#!">Reset</a>
-        </li>
-        <li>
-          <a href="#!">Mark Flags Reviewed</a>
-        </li>
-        <li>
-          <a href="#!">Unassign</a>
-        </li>
-      </React.Fragment>
-    );
+  const onUnChecked = cardId => {
+    props.onRemoveCheckedLesson(cardId);
+    toggleSelected(false);
   };
 
-  renderProblemCount = (status, scoreStatus, score, problems, completedProblems) => {
-    if (status === "Started") {
-      return (
-        <span
-          className="chart-value chart-value-column"
-          style={{ bottom: "8px", backgroundColor: chartColorMap[status] }}
-        >
-          <span
-            className="chart-count"
-            data-count-up
-            data-start-val="0"
-            data-end-val="4"
-            data-duration="1"
-          >
-            <span className="text-small" style={{ fontSize: "x-small" }}>
-              {completedProblems}
-            </span>
-          </span>
-          <span className="text-small" style={{ fontSize: "xx-small" }}>
-            out of
-          </span>{" "}
-          <span className="text-small" style={{ fontSize: "x-small" }}>
-            {problems}
-          </span>
-        </span>
-      );
-    }
-    return (
-      <span
-        className="chart-value"
-        style={{
-          height: "50px",
-          width: "50px",
-          bottom: "6px",
-          backgroundColor: chartColorMap[scoreStatus],
-        }}
-      >
-        <span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
-        <If condition={score !== ""}>
-          <span className="percentage">{Math.floor(`${(score / problems) * 100}`)}%</span>
-        </If>
-      </span>
-    );
+  const handleAssignLesson = () => {
+    onOpenModal();
+    props.onAddCheckedLesson(props.cardId);
   };
 
-  renderAlerts = flags => {
-    // if (flags.length) {
-
-    if (true) {
-      return (
-        <span className="badge-rounded-xs badge red darken-2 white-text">
-          <b className="badge-text">{0}</b> <i className="icon-flag"></i>
-        </span>
-      );
-    }
-    return <div className="right-col col s3">&nbsp;</div>;
-  };
-
-  render() {
-    const { dropdownIsOpen } = this.state;
-    const {
-      lesson,
-      lesson: {
-        subjects,
-        timeEstimate,
-        status,
-        scoreStatus,
-        score,
-        units,
-        lessonName,
-        assigned,
-        flags,
-        type,
-        problems,
-        completedProblems = "",
-        passage,
-        dueDate,
-        availableDate,
-        completionDate,
-        overdue,
-        starting_page,
-        ending_page,
-        challenge_page,
-        practice_page,
-        lesson_problems,
-        time_estimate,
-        selected,
-      },
-    } = this.props;
-    return (
-      <React.Fragment>
-        <LessonDetailAnswerSheet
-          onCloseDetailModal={this.onCloseDetailModal}
-          open={this.state.detailModalOpen}
-          user={this.props.user}
-          lesson={lesson}
-        />
-        <div className="card-main-col col s12 m8 l7 xl5">
-          <div className={getLessonActivityStatus(status)}>
-            <div className="card-panel" style={{ backgroundColor: "#666", color: "#fff" }}>
-              <div className="card-panel-row row">
-                <div className="icon-col col s2">
-                  <i className={this.renderLessonIcon(subjects.name)}></i>
-                </div>
-                <div className="col s9">
-                  <div className="card-panel-text center-left">
-                    <div className="text-small">{units.name}</div>
-                    <div className="text-large">
-                      <a href="#" onClick={this.onOpenDetailModal}>
-                        {lesson.name}
-                      </a>
-                    </div>
-                    <div className="text-small">Subject: {subjects.name}</div>
+  return (
+    <React.Fragment>
+      <LessonDetailAnswerSheet
+        onCloseDetailModal={onCloseDetailModal}
+        open={detailModalOpen}
+        user={props.user}
+        lesson={lesson}
+      />
+      <div className='card-main-col col s12 m8 l7 xl5'>
+        {/* <div className={getLessonActivityStatus(status)}> */}
+        <div className={getLessonActivityStatus(props.lesson.lesson_id ? "assigned" : "notassigned")}>
+          <div className='card-panel'>
+            <div className='card-panel-row row'>
+              <div className='icon-col col s2'>
+                <i className={renderLessonIcon(props.lesson.subjects ? props.lesson.subjects.name : "")}></i>
+              </div>
+              <div className='col s9'>
+                <div className='card-panel-text center-left'>
+                  <div className='text-small'>{props.lesson.units ? props.lesson.units.name : ''}</div>
+                  <div className='text-large'>
+                    <a href='#' onClick={onOpenDetailModal}>
+                      {lesson.name}
+                    </a>
                   </div>
+                  <div className='text-small'>Subject: {props.subjects ? props.lesson.subjects.name : ''}</div>
                 </div>
-                <div className="col s1 right-align">
-                  <div className="row icons-row">
-                    <div className="dropdown-block col">
-                      <a
-                        className="dropdown-trigger btn"
-                        href="#"
-                        data-target="dropdown01"
-                        onClick={() => this.onSetDropdown(dropdownIsOpen)}
-                      >
-                        <i className="material-icons dots-icon">more_vert</i>
-                      </a>
-                      <If condition={dropdownIsOpen}>
-                        <ClickOffComponentWrapper
-                          onOuterClick={() => this.onSetDropdown(dropdownIsOpen)}
+              </div>
+              <div className='col s1 right-align'>
+                <div className='row icons-row'>
+                  <div className='dropdown-block col'>
+                    <a
+                      className='dropdown-trigger btn'
+                      href='#'
+                      data-target='dropdown01'
+                      onClick={() => onSetDropdown(dropdownIsOpen)}
+                    >
+                      <i className='material-icons dots-icon'>more_vert</i>
+                    </a>
+                    <If condition={dropdownIsOpen}>
+                      <ClickOffComponentWrapper onOuterClick={() => onSetDropdown(dropdownIsOpen)}>
+                        <ul
+                          id='dropdown01'
+                          className='dropdown-content dropdown-wide'
+                          style={{
+                            display: "block",
+                            opacity: "1",
+                            transform: "scaleX(1) scaleY(1)"
+                          }}
                         >
-                          <ul
-                            id="dropdown01"
-                            className="dropdown-content dropdown-wide"
-                            style={{
-                              display: "block",
-                              opacity: "1",
-                              transform: "scaleX(1) scaleY(1)",
-                              minWidth:'220px'
-                            }}
-                          >
-                            {this.renderDropdownOptions(status)}
-                          </ul>
-                        </ClickOffComponentWrapper>
-                      </If>
-                    </div>
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen)}
+                        </ul>
+                      </ClickOffComponentWrapper>
+                    </If>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="card-content">
-              <div className="d-flex sameheight-all row mb-0">
-                <div className="col s6">
-                  <div className="chart-container">
-                    <div className="chart-holder" style={{ width: "140px", height: "95px" }}>
-                      <Doughnut
-                        data={
-                          completionDate
-                            ? () => data(score, problems, scoreStatus)
-                            : () => data(completedProblems, problems, status)
-                        }
-                        height={210}
-                        options={{
-                          circumference: 1.45 * Math.PI,
-                          rotation: -3.85,
-                          cutoutPercentage: 60,
-                          tooltips: false,
-                        }}
-                      />
-                      {this.renderProblemCount(
-                        status,
-                        scoreStatus,
-                        score,
-                        problems,
-                        completedProblems,
-                      )}
-                    </div>
-                    <div className="chart-row">
-                      <div className="chart-col chart-start">&nbsp;</div>
-                      <div className="chart-col chart-end">
-                        <span className="amount" style={{ color: chartColorMap[status] }}>
-                          {problems}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="chart-description" style={{ marginTop: "10px" }}>
-                      <dl className="dl-horizontal">
-                        <dt>Time Est:</dt>
-                        <dd>{time_estimate ? timeEstimate : "None"}</dd>
-                      </dl>
-                      <dl className="dl-horizontal">
-                        <dt>Problems:</dt>
-                        <dd>{lesson_problems.length}</dd>
-                      </dl>
+          </div>
+          <div className='card-content'>
+            <div className='d-flex sameheight-all row mb-0'>
+              <div className='col s6'>
+                <div className='chart-container'>
+                  <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
+                    <Doughnut
+                      data={
+                        completedAt
+                          ? () => data(scoring.correct_count, scoring.question_count, scoring.grade ? scoring.grade : 'POOR')
+                          : completedProblems
+                          ? () => data(completedProblems, problems, status)
+                          : () => data(0, 1, "ASSIGNED")
+                      }
+                      // height={210}
+                      options={{
+                        circumference: Math.PI,
+                        rotation: Math.PI,
+                        cutoutPercentage: 60,
+                        tooltips: false
+                      }}
+                    />
+                    {renderProblemCount(status, scoring.grade ? scoring.grade : "POOR", scoring.percentage_correct, problems.length, 0)}
+                  </div>
+                  <div className='chart-row'>
+                    <div className='chart-col chart-start'></div>
+                    <div className='chart-col chart-end'>
+                      <span className='amount' style={{ color: chartColorMap[status] }}>
+                        <Choose>
+                          <When condition={status==='COMPLETED'}>
+                            0 of {scoring.question_count}
+                          </When>
+                          <When condition={status==="STARTED"}>
+                            0 of {problems.length}
+                          </When>
+                        </Choose>
+                      </span>
                     </div>
                   </div>
+                  <div className='chart-description' style={{ marginTop: "10px" }}>
+                    <dl className='dl-horizontal'>
+                      <dt>Time Est:</dt>
+                      <dd>{timeEstimate ? `${timeEstimate} mins` : "None"}</dd>
+                    </dl>
+                    <dl className='dl-horizontal'>
+                      <dt>Problems:</dt>
+                      <dd>{lessonProblems && lessonProblems.length}</dd>
+                    </dl>
+                  </div>
                 </div>
-                <div className="col s6 d-flex align-items-center">
-                  <dl className="row">
-                    <Choose>
-                      <When condition={false}>
+              </div>
+              <div className='col s6 d-flex align-items-center left-align'>
+                <div className='dates'>
+                  <dl className='row'>
+                    {assignment_date && (
+                    <dt /*style={{ float: "right", clear: "both" }}*/>Available:    <time dateTime={assignment_date}>{moment(assignment_date).format('MM/DD/YYYY')}</time></dt>
+                    )}
+
+                    {dueAt && assignment_date ? (
+                      <dt /*style={{ float: "right", clear: "both" }}*/>Due: <time dateTime={dueAt}>{moment(dueAt).format('MM/DD/YYYY')}</time></dt>
+                    ) : assignment_date ? (<dt>No Due Date</dt>) : ""}
+
+                    {completedAt ? (
+                      <dt /*style={{ float: "right", clear: "both" }}*/>Completed: <time dateTime={completedAt}>{moment(completedAt).format('MM/DD/YYYY')}</time></dt>
+                    ) : ""}
+                    {/* <Choose>
+                      <When condition={true}>
                         <dt></dt>
                         <dd></dd>
                       </When>
                       <Otherwise>
                         <dt style={{ float: "right", clear: "both" }}>Available:</dt>
                         <dd>
-                          <time dateTime={dueDate}>{dueDate}</time>
+                          <time dateTime={dueAt}>{dueAt}</time>
                         </dd>
                       </Otherwise>
                     </Choose>
 
                     <Choose>
-                      <When condition={assigned || status === "Scheduled"}>
+                      <When condition={assigned || status === "SCHEDULED"}>
                         <dt>No Due Date</dt>
                       </When>
                       <Otherwise>
                         <dt style={{ float: "right", clear: "both" }}>Due:</dt>
                         <dd>
-                          <time dateTime={dueDate}>{dueDate}</time>
+                          <time dateTime={dueAt}>{dueAt}</time>
                         </dd>
                       </Otherwise>
                     </Choose>
@@ -337,49 +249,85 @@ class LessonCard extends React.Component {
                       <Otherwise>
                         <dt style={{ float: "right", clear: "both" }}>Complete:</dt>
                         <dd>
-                          <time dateTime={dueDate}>{dueDate}</time>
+                          <time dateTime={dueAt}>{dueAt}</time>
                         </dd>
                       </Otherwise>
-                    </Choose>
+                    </Choose> */}
                   </dl>
-                  <div className="align-self-end">
-                    <Choose>
-                      <When condition={scoreStatus !== ""}>
+                </div>
+
+                <div className='align-self-end'>
+                  <Choose>
+                    <When condition={props.lesson.lesson_id}>
+                      {status === 'COMPLETED' ? (
                         <span
-                          className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                        >
-                          {scoreStatus}
-                        </span>
-                      </When>
-                      <Otherwise>
-                        <span
-                          className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
-                        >
-                          {status}
-                        </span>
-                      </Otherwise>
-                    </Choose>
-                  </div>
+                        style={{
+                          backgroundColor: `${props.scoring ? gradeColorMap[props.scoring.grade] : gradeColorMap['POOR']}`,
+                        }}
+                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                      >
+                        {scoring.grade ? scoring.grade : 'POOR'}
+                      </span>
+                      ) : (
+                      <span
+                      
+                      style={status === 'OVERDUE' ? {
+                        backgroundColor: `#fff`,
+                        borderColor: 'red',
+                        color: 'red'
+                      } : {backgroundColor: `#212121`, color: 'white'}}
+                      className={`badge badge-rounded-md ${statusColorMap[status]} `}
+                    >
+                      {status}
+                    </span>
+                    )}
+                    </When>
+                  </Choose>
+                  
+                  {/* <Choose>
+                    <When condition={status === "COMPLETED"}>
+                      <span
+                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                      >
+                        {scoreStatus}
+                      </span>
+                    </When>
+                    <Otherwise>
+                      <span
+                        className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
+                      >
+                        {status}
+                      </span>
+                    </Otherwise>
+                  </Choose> */}
                 </div>
               </div>
             </div>
-            <div className="card-text">
-              <div>
-                <Checkbox checked={selected} onChecked={this.props.onChecked} index={this.props.index} type="cardCheckBox" />
-              </div>
-              <dl className="dl-horizontal">
-                <dt>p.{passage}</dt>
+          </div>
+          <div className='row'>
+            <div className='col s2'>
+              <Checkbox
+                checked={selected}
+                onChecked={onChecked}
+                onUnChecked={onUnChecked}
+                cardId={props.cardId}
+                type='cardCheckBox'
+              />
+            </div>
+            <div className='col s8'>
+              <dl className='dl-horizontal'>
+                <dt>p.</dt>
                 <dd>
-                  ({challenge_page} - {practice_page}) (Challenge + Practice)
+                  ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
                 </dd>
               </dl>
             </div>
           </div>
         </div>
-      </React.Fragment>
-    );
-  }
-}
+      </div>
+    </React.Fragment>
+  );
+};
 
 LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,

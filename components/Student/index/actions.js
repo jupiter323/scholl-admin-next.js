@@ -26,11 +26,15 @@ import {
   FETCH_STUDENT_TEST_SECTIONS,
   SET_ACTIVE_STUDENT_TEST_ID,
   FETCH_LESSON_LIST,
+  FETCH_STUDENT_LESSON_LIST,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  ADD_CHECKED_LESSON,
+  REMOVE_CHECKED_LESSON,
   FETCH_UNITS,
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
+  ASSIGN_STUDENT_LESSON
 } from "./constants";
 
 export function fetchStudents() {
@@ -236,11 +240,32 @@ export const getLessonList = () => ({
   type: FETCH_LESSON_LIST,
 });
 
-export const checkLesson = (index) => ({
+export const getStudentLessonList = (postBody) => ({
+  type: FETCH_STUDENT_LESSON_LIST,
+  postBody
+})
+
+export const checkLesson = (id) => ({
   type: CHECKED_LESSON,
-  index,
+  id,
 });
-export const checkAllLessons = (checked) => ({
+export const checkAllLessons = (checked, mappedLessons) => ({
   type: CHECK_ALL_LESSONS,
   checked,
+  mappedLessons
 });
+
+export const addCheckedLesson = (lessonId) => ({
+  type: ADD_CHECKED_LESSON,
+  lessonId
+})
+
+export const removeCheckedLesson = (lessonId) => ({
+  type: REMOVE_CHECKED_LESSON,
+  lessonId
+})
+
+export const assignLessonToStudent = (lesson) => ({
+  type:ASSIGN_STUDENT_LESSON,
+  lesson
+})
