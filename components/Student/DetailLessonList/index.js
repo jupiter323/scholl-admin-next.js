@@ -103,14 +103,14 @@ class DetailLessonList extends React.Component {
   };
 
   onCheckAll = checked => {
-    console.log('log: checked', checked)
+    console.log('log: checked', checked);
     // this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
     if (!checked) {
-      console.log('log: option 1')
+      console.log('log: option 1');
       this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      console.log('log: option 2')
+      console.log('log: option 2');
       this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
       this.setState({ selectAll: false });
     }
@@ -284,7 +284,7 @@ class DetailLessonList extends React.Component {
       return comparison;
     }
 
-    const mappableLessons = this.props.lessonList
+    const mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -302,7 +302,7 @@ class DetailLessonList extends React.Component {
     if (sort) {
       return this.onSortLessons(mappableLessons);
     }
-    console.log('log: mappableLessons', mappableLessons.length)
+    console.log('log: mappableLessons', mappableLessons.length);
     return mappableLessons;
   };
 

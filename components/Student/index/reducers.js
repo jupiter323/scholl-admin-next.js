@@ -24,7 +24,7 @@ import {
   REMOVE_CHECKED_LESSON,
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
-  MERGE_STUDENT_LESSON_LISTS
+  MERGE_STUDENT_LESSON_LISTS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -46,7 +46,7 @@ const initialState = fromJS({
   error: null,
   unitFilterOptions: [],
   activeStudentToken: "",
-  checkedLessons: []
+  checkedLessons: [],
 });
 
 function studentReducer(state = initialState, action) {
@@ -97,9 +97,9 @@ function studentReducer(state = initialState, action) {
           }
           return {
             ...lesson,
-            selected: !lesson.selected
+            selected: !lesson.selected,
           };
-        })
+        }),
       );
 
     case CHECK_ALL_LESSONS:
@@ -109,8 +109,8 @@ function studentReducer(state = initialState, action) {
         // state.get('lessonList').map((lesson) => ({
         action.mappedLessons.map(lesson => ({
           ...lesson,
-          selected: !action.checked
-        }))
+          selected: !action.checked,
+        })),
       );
 
     case UNCHECK_ALL_LESSONS:
@@ -122,7 +122,7 @@ function studentReducer(state = initialState, action) {
     case REMOVE_CHECKED_LESSON:
       return state.set(
         "checkedLessons",
-        state.get("checkedLessons").filter(lesson => lesson !== action.lessonId)
+        state.get("checkedLessons").filter(lesson => lesson !== action.lessonId),
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
