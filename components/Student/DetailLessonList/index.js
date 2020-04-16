@@ -96,7 +96,7 @@ class DetailLessonList extends React.Component {
     this.props.dispathCheckLesson(id);
     if (!this.state.selectAll) {
       this.setState({
-        selecteAll: true,
+        selectAll: true,
       });
     }
   };
@@ -113,11 +113,22 @@ class DetailLessonList extends React.Component {
   onAddCheckedLesson = lessonId => {
     this.props.dispatchAddCheckedLesson(lessonId);
     this.props.dispathCheckLesson(lessonId);
+    if (!this.state.selectAll) {
+      this.setState({
+        selectAll: true,
+      });
+    }
   };
 
   onRemoveCheckedLesson = lessonId => {
     this.props.dispatchRemoveCheckedLesson(lessonId);
     this.props.dispathCheckLesson(lessonId);
+    console.log('log: checkedLessons', this.props.checkedLessons);
+    if (this.props.checkedLessons.length - 1 <= 0) {
+      this.setState({
+        selectAll: false,
+      });
+    }
   };
 
   onOpenModal = () => this.setState({ modalOpen: true });
