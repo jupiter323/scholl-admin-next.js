@@ -29,6 +29,7 @@ import {
   FETCH_STUDENT_LESSON_LIST,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  UNCHECK_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   FETCH_UNITS,
@@ -251,6 +252,12 @@ export const checkLesson = (id) => ({
 });
 export const checkAllLessons = (checked, mappedLessons) => ({
   type: CHECK_ALL_LESSONS,
+  checked,
+  mappedLessons
+});
+
+export const unCheckAllLessons = (checked, mappedLessons) => ({
+  type: UNCHECK_ALL_LESSONS,
   checked,
   mappedLessons
 });

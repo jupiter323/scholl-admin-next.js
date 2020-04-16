@@ -40,6 +40,7 @@ import {
   getStudentLessonList,
   checkLesson,
   checkAllLessons,
+  unCheckAllLessons,
   addCheckedLesson,
   removeCheckedLesson,
   assignLessonToStudent,
@@ -102,10 +103,15 @@ class DetailLessonList extends React.Component {
   };
 
   onCheckAll = checked => {
-    this.props.dispathCheckAllLesson(checked, this.getMappableLessons());
+    console.log('log: checked', checked)
+    // this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
     if (!checked) {
+      console.log('log: option 1')
+      this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
+      console.log('log: option 2')
+      this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
       this.setState({ selectAll: false });
     }
   };
@@ -123,7 +129,6 @@ class DetailLessonList extends React.Component {
   onRemoveCheckedLesson = lessonId => {
     this.props.dispatchRemoveCheckedLesson(lessonId);
     this.props.dispathCheckLesson(lessonId);
-    console.log('log: checkedLessons', this.props.checkedLessons);
     if (this.props.checkedLessons.length - 1 <= 0) {
       this.setState({
         selectAll: false,
@@ -278,19 +283,8 @@ class DetailLessonList extends React.Component {
       }
       return comparison;
     }
-    const studentLessonsWithDueDate = [];
-    const studentLessonsWithoutDueDate = [];
-    this.props.studentLess.forEach(lesson => {
-      if (lesson.due_date) return studentLessonsWithDueDate.push(lesson);
-      return studentLessonsWithoutDueDate.push(lesson);
-    });
-    studentLessonsWithDueDate.sort(compareDueDates);
-    let mappableLessons = [
-      ...studentLessonsWithDueDate,
-      ...studentLessonsWithoutDueDate,
-      ...this.props.lessonList,
-    ];
 
+    const mappableLessons = this.props.lessonList
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -308,6 +302,7 @@ class DetailLessonList extends React.Component {
     if (sort) {
       return this.onSortLessons(mappableLessons);
     }
+    console.log('log: mappableLessons', mappableLessons.length)
     return mappableLessons;
   };
 
@@ -486,7 +481,8 @@ const mapDispatchToProps = dispatch => ({
   dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
   dispathGetStudentLessonList: bindActionCreators(getStudentLessonList, dispatch),
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
-  dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
+  dispatchCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
+  dispatchUnCheckAllLesson: bindActionCreators(unCheckAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
   dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
 

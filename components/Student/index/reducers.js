@@ -19,10 +19,12 @@ import {
   FETCH_STUDENT_LESSONL_LIST_FAIL,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  UNCHECK_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   SET_UNIT_FILTER_OPTIONS,
-  SET_ACTIVE_STUDENT_TOKEN
+  SET_ACTIVE_STUDENT_TOKEN,
+  MERGE_STUDENT_LESSON_LISTS
 } from "./constants";
 
 const initialState = fromJS({
@@ -111,14 +113,20 @@ function studentReducer(state = initialState, action) {
         }))
       );
 
+    case UNCHECK_ALL_LESSONS:
+      return state.set('checkedLessons', []);
+
     case ADD_CHECKED_LESSON:
-      return state.set("checkedLessons", state.get("checkedLessons").push(action.lessonId));
+      return state.set("checkedLessons", [...state.get("checkedLessons"), action.lessonId]);
 
     case REMOVE_CHECKED_LESSON:
       return state.set(
         "checkedLessons",
         state.get("checkedLessons").filter(lesson => lesson !== action.lessonId)
       );
+
+    case MERGE_STUDENT_LESSON_LISTS:
+      return state.set('lessonList', [...action.payload, ...state.get('lessonList')]);
 
     default:
       return state;
