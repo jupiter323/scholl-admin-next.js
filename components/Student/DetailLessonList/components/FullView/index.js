@@ -101,7 +101,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status)}
+                {/* @TODO fix broken options modal{renderDropdownOptions(status)} */}
               </ul>
             </ClickOffComponentWrapper>
           </If>
