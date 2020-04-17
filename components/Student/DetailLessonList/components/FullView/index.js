@@ -9,6 +9,7 @@ import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
+  const [activeLesson, setActiveLesson] = useState("");
   const {
     lessons = [],
     onCloneLesson,
@@ -47,10 +48,12 @@ const FullView = props => {
   ));
   const handleRescheduleModalOpen = activeLesson => {
     onCloseDropdown();
-    this.setState(({ openRescheduleModal }) => ({
-      activeLesson,
-      openRescheduleModal: !openRescheduleModal,
-    }));
+    toggleRescheduleModal(!openRescheduleModal);
+    setActiveLesson(activeLesson);
+    // this.setState(({ openRescheduleModal }) => ({
+    //   activeLesson,
+    //   openRescheduleModal: !openRescheduleModal,
+    // }));
   };
 
   const onSaveScheduleChanges = () => {};
@@ -82,12 +85,12 @@ const FullView = props => {
             <i className="material-icons dots-icon">more_vert</i>
           </a>
           <div className="row d-flex-content card-width-272">
-            {/* <RescheduleModal
+            <RescheduleModal
               open={openRescheduleModal}
               lesson={activeLesson}
               onClose={handleRescheduleModalOpen}
               onSave={onSaveScheduleChanges}
-            /> */}
+            />
           </div>
 
           <If condition={dropdownIsOpen}>

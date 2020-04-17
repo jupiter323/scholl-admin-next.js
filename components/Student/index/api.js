@@ -994,17 +994,17 @@ export const assignLessonToStudentApi = lesson => {
 };
 
 
-export const fetchStudentLessonListApi = (student,studentToken) =>
+export const fetchStudentLessonListApi = (student, studentToken) =>
   fetch(`${API_URL}/api/students/${student}/student_lessons`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${studentToken}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
-    .then(res => {console.log({res}); return res})
+    .then(res => { console.log({ res }); return res; })
     .then(({ data }) => {
       const studentLessons = data;
       return studentLessons;
