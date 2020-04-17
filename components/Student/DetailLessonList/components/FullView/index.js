@@ -49,10 +49,6 @@ const FullView = props => {
     onCloseDropdown();
     toggleRescheduleModal(!openRescheduleModal);
     setActiveLesson(activeLesson);
-    // this.setState(({ openRescheduleModal }) => ({
-    //   activeLesson,
-    //   openRescheduleModal: !openRescheduleModal,
-    // }));
   };
 
   const onSaveScheduleChanges = () => {};
@@ -79,7 +75,10 @@ const FullView = props => {
             href="#"
             data-target="dropdown01"
             // eslint-disable-next-line
-            onClick={() => onOpenDropdown()}
+            onClick={(e) => {
+              e.preventDefault();
+              onOpenDropdown();
+            }}
           >
             <i className="material-icons dots-icon">more_vert</i>
           </a>
