@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
@@ -9,6 +10,7 @@ import RescheduleModal from "../RescheduleModal";
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import { rescheduleStudentLessons } from '../../../index/actions';
 import moment from 'moment';
+import { makeSelectCheckedLessons } from '../../../index/selectors';
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
@@ -120,7 +122,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, null, handleRescheduleModalOpen)}
+                {renderDropdownOptions(status, null, handleRescheduleModalOpen, props.checkedLessons)}
               </ul>
             </ClickOffComponentWrapper>
           </If>
@@ -146,6 +148,8 @@ const mapDispatchToProps = dispatch => ({
   dispathRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
 });
 
-// const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  checkedLessons: makeSelectCheckedLessons(),
+});
 
-export default connect(null, mapDispatchToProps)(FullView);
+export default connect(mapStateToProps, mapDispatchToProps)(FullView);
