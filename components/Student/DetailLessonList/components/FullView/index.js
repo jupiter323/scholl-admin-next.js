@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
-// import LessonCard from "../LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
@@ -104,7 +103,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status)}
+                {renderDropdownOptions('ALL OPTIONS', null, handleRescheduleModalOpen)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

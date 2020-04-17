@@ -34,6 +34,7 @@ import {
 } from "../../utils/sortFunctions";
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
+import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
 
 import {
   getLessonList,
@@ -390,12 +391,12 @@ class DetailLessonList extends React.Component {
           onCheckLesson={this.onCheckLesson}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
-          onRenderDropdown={this.renderDropdownOptions}
+          onRenderDropdown={renderDropdownOptions}
           dropdownIsOpen={this.state.dropdownIsOpen}
           onOpenModal={this.onOpenModal}
           onCloseDropdown={this.onCloseDropdown}
           onOpenDropdown={this.onOpenDropdown}
-          renderDropdownOptions={this.renderDropdownOptions}
+          renderDropdownOptions={renderDropdownOptions}
 
         />
       );
