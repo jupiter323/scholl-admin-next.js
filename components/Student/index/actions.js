@@ -34,7 +34,8 @@ import {
   FETCH_UNITS,
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
-  ASSIGN_STUDENT_LESSON
+  ASSIGN_STUDENT_LESSON,
+  UNASSIGN_STUDENT_LESSON,
 } from "./constants";
 
 export function fetchStudents() {
@@ -242,8 +243,8 @@ export const getLessonList = () => ({
 
 export const getStudentLessonList = (postBody) => ({
   type: FETCH_STUDENT_LESSON_LIST,
-  postBody
-})
+  postBody,
+});
 
 export const checkLesson = (id) => ({
   type: CHECKED_LESSON,
@@ -252,20 +253,25 @@ export const checkLesson = (id) => ({
 export const checkAllLessons = (checked, mappedLessons) => ({
   type: CHECK_ALL_LESSONS,
   checked,
-  mappedLessons
+  mappedLessons,
 });
 
 export const addCheckedLesson = (lessonId) => ({
   type: ADD_CHECKED_LESSON,
-  lessonId
-})
+  lessonId,
+});
 
 export const removeCheckedLesson = (lessonId) => ({
   type: REMOVE_CHECKED_LESSON,
-  lessonId
-})
+  lessonId,
+});
 
 export const assignLessonToStudent = (lesson) => ({
-  type:ASSIGN_STUDENT_LESSON,
-  lesson
-})
+  type: ASSIGN_STUDENT_LESSON,
+  lesson,
+});
+
+export const unAssignLessonToStudent = (lesson) => ({
+  type: UNASSIGN_STUDENT_LESSON,
+  lesson,
+});
