@@ -55,6 +55,10 @@ const FullView = props => {
 
   const onSaveScheduleChanges = () => {};
 
+  const handleUnassignLesson = () => {
+    console.log('log: hit function');
+  };
+
   return (
     <div className="content-section">
       <div className="d-flex justify-content-between">
@@ -101,7 +105,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status)}
+                {renderDropdownOptions(status, null, null, handleUnassignLesson)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

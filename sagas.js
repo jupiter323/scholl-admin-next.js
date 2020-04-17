@@ -702,6 +702,23 @@ function* handleAssignLesson(action) {
   }
 }
 
+function* watchForUnAssignLesson() {
+  yield takeEvery(ASSIGN_STUDENT_LESSON, handleUnAssignLesson);
+}
+
+function* handleUnAssignLesson(action) {
+  try {
+    yield call(unAssignLessonFromStudentApi, action.lesson);
+    yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS });
+  } catch (error) {
+    console.warn("Error occurred in the handleUnAssignLesson saga", error);
+    yield put({
+      type: UNASSIGN_STUDENT_LESSON_FAIL,
+      payload: error,
+    });
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -740,5 +757,6 @@ export default function* defaultSaga() {
     watchForFetchUnitFilterOptions(),
     watchForFetchStudentLesson(),
     watchForAssignLesson(),
+    watchForUnAssignLesson(),
   ]);
 }

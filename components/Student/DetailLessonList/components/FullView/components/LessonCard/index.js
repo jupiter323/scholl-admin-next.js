@@ -130,7 +130,10 @@ const LessonCard = props => {
                       className='dropdown-trigger btn'
                       href='#'
                       data-target='dropdown01'
-                      onClick={() => onSetDropdown(dropdownIsOpen)}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        onSetDropdown(dropdownIsOpen)
+                      }}
                     >
                       <i className='material-icons dots-icon'>more_vert</i>
                     </a>
