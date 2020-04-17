@@ -34,6 +34,7 @@ const LessonCard = props => {
   const {
     lesson,
     lesson: {
+      id,
       name,
       drill_page: drillPage,
       practice_page: practicePage,
@@ -148,7 +149,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen)}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, id)}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>

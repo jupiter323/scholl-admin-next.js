@@ -8,6 +8,7 @@ import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import { rescheduleStudentLessons } from '../../../index/actions';
+import moment from 'moment';
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
@@ -49,16 +50,26 @@ const FullView = props => {
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
+    console.log('log: activeLesson', activeLesson);
     onCloseDropdown();
     toggleRescheduleModal(!openRescheduleModal);
     setActiveLesson(activeLesson);
   };
 
-  const onSaveScheduleChanges = () => {
+  const onSaveScheduleChanges = (modalState) => {
     const { dispathRescheduleStudentLessons } = props;
-    dispathRescheduleStudentLessons({});
+    console.log('log: rescheduleModalState', modalState);
+    const payload = [{
+      student_lesson_id: activeLesson,
+      assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
+      due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
+    }];
+    console.log('log: payload', payload);
+    dispathRescheduleStudentLessons(payload);
     toggleRescheduleModal(!openRescheduleModal);
   };
+
+  // Add another function for bulk schedulechanges
 
   return (
     <div className="content-section">
