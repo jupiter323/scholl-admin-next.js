@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
+import { rescheduleStudentLessons } from '../../../index/actions';
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
@@ -51,7 +54,11 @@ const FullView = props => {
     setActiveLesson(activeLesson);
   };
 
-  const onSaveScheduleChanges = () => {};
+  const onSaveScheduleChanges = () => {
+    const { dispathRescheduleStudentLessons } = props;
+    dispathRescheduleStudentLessons({});
+    toggleRescheduleModal(!openRescheduleModal);
+  };
 
   return (
     <div className="content-section">
@@ -123,4 +130,11 @@ FullView.propTypes = {
   onCheckLesson: PropTypes.func.isRequired,
   onCheckAll: PropTypes.func.isRequired,
 };
-export default FullView;
+
+const mapDispatchToProps = dispatch => ({
+  dispathRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
+});
+
+// const mapStateToProps = createStructuredSelector({});
+
+export default connect(null, mapDispatchToProps)(FullView);
