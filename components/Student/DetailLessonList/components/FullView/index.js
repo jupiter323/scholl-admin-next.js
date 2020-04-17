@@ -109,7 +109,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions('ALL OPTIONS', null, handleRescheduleModalOpen)}
+                {renderDropdownOptions(status, null, handleRescheduleModalOpen)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

@@ -46,14 +46,6 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         </li>
       </React.Fragment>
     );
-  } else if (status === "ALL OPTIONS") {
-    return (
-      <React.Fragment>
-        <li>
-          <a href="#" onClick={handleRescheduleModalOpen}>Reschedule Selected</a>
-        </li>
-      </React.Fragment>
-    );
   }
   return (
     <React.Fragment>
