@@ -23,7 +23,8 @@ import {
   FETCH_STUDENT_LESSSON_LIST_SUCCESS,
   ASSIGN_STUDENT_LESSON,
   ASSIGN_STUDENT_LESSON_SUCCESS,
-  ASSIGN_STUDENT_LESSON_FAIL
+  ASSIGN_STUDENT_LESSON_FAIL,
+  RESCHEDULE_STUDENT_LESSONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -56,7 +57,7 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
-
+  rescheduleStudentLessons,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -82,7 +83,8 @@ const {
   fetchLessonListApi,
   fetchUnitsApi,
   fetchStudentLessonListApi,
-  assignLessonToStudentApi
+  assignLessonToStudentApi,
+  rescheduleStudentLessonsApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -663,41 +665,55 @@ function* handleFetchLesson() {
 
 
 function* watchForFetchStudentLesson() {
-  yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList)
-  
+  yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList);
 }
 
 function* handleFetchStudentLessonList(action) {
   try {
-    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id,action.postBody.studentToken)
+    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
-      payload: studentLessonList
-    })
+      payload: studentLessonList,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleFetchStudentLesson saga", error);
     yield put({
-      type: FETCH_STUDENT_LESSON_LIST_FAIL
-    })
-    
+      type: FETCH_STUDENT_LESSON_LIST_FAIL,
+    });
   }
 }
 
 function* watchForAssignLesson() {
-  yield takeEvery(ASSIGN_STUDENT_LESSON, handleAssignLesson)
+  yield takeEvery(ASSIGN_STUDENT_LESSON, handleAssignLesson);
 }
 
 function* handleAssignLesson(action) {
-  try { 
-    yield call(assignLessonToStudentApi, action.lesson)
-    yield put({type:ASSIGN_STUDENT_LESSON_SUCCESS})
-    
+  try {
+    yield call(assignLessonToStudentApi, action.lesson);
+    yield put({ type: ASSIGN_STUDENT_LESSON_SUCCESS });
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({
       type: ASSIGN_STUDENT_LESSON_FAIL,
-      payload: error
-    })
+      payload: error,
+    });
+  }
+}
+
+function* watchForRescheduleStudentLessons() {
+  yield takeEvery(RESCHEDULE_STUDENT_LESSONS, handleRescheduleStudentLessons);
+}
+
+function* handleRescheduleStudentLessons(action) {
+  try {
+    yield call(rescheduleStudentLessonsApi, action.studentLessonData);
+    yield put({ type: RESCHEDULE_STUDENT_LESSONS_SUCCESS });
+  } catch (error) {
+    console.warn("Error occurred in the handleRescheduleStudentLessons saga", error);
+    yield put({
+      type: RESCHEDULE_STUDENT_LESSONS_FAIL,
+      payload: error,
+    });
   }
 }
 
@@ -738,6 +754,7 @@ export default function* defaultSaga() {
     watchForFetchLesson(),
     watchForFetchUnitFilterOptions(),
     watchForFetchStudentLesson(),
-    watchForAssignLesson()
+    watchForAssignLesson(),
+    watchForRescheduleStudentLessons(),
   ]);
 }

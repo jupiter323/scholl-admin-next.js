@@ -1010,3 +1010,20 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       return studentLessons;
     });
 
+export const rescheduleStudentLessonsApi = (studentLessonData) =>
+  fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: studentLessonData,
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log({ res });
+      return res;
+    })
+    .then(({ data }) => data);
