@@ -14,6 +14,7 @@ import { unAssignLessonToStudent } from '../../../index/actions';
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
   const [activeLesson, setActiveLesson] = useState([]);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const {
     lessons = [],
     onCloneLesson,
@@ -61,12 +62,13 @@ const FullView = props => {
 
   const onSaveScheduleChanges = () => {};
 
-  const handleUnassignLesson = activeLesson => {
+  const handleUnassignLesson = lessonIds => {
     const { dispathUnAssignLessonToStudent } = props;
-    console.log('log: unassign', activeLesson);
-    if (activeLesson) setActiveLesson(activeLesson);
-    const payload = activeLesson;
-    dispathUnAssignLessonToStudent(payload);
+    console.log('log: unassign', lessonIds);
+    if (lessonIds) {
+      dispathUnAssignLessonToStudent(lessonIds);
+      console.log('log: sent dispatch');
+    }
   };
 
   return (
