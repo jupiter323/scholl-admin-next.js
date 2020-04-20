@@ -1012,7 +1012,7 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
 
 export const rescheduleStudentLessonsApi = (studentLessonData) =>
   fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
-    method: "POST",
+    method: "PATCH",
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -1022,8 +1022,5 @@ export const rescheduleStudentLessonsApi = (studentLessonData) =>
     body: studentLessonData,
   })
     .then((res) => res.json())
-    .then((res) => {
-      console.log({ res });
-      return res;
-    })
+    .then((res) => res)
     .then(({ data }) => data);

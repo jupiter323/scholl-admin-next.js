@@ -52,7 +52,6 @@ const FullView = props => {
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
-    console.log('log: activeLesson', activeLesson);
     onCloseDropdown();
     toggleRescheduleModal(!openRescheduleModal);
     setActiveLesson(activeLesson);
@@ -60,18 +59,15 @@ const FullView = props => {
 
   const onSaveScheduleChanges = (modalState) => {
     const { dispathRescheduleStudentLessons } = props;
-    console.log('log: rescheduleModalState', modalState);
-    const payload = [{
-      student_lesson_id: activeLesson,
+    const payload = activeLesson.map(id => ({
+      student_lesson_id: id,
       assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
-    }];
+    }));
     console.log('log: payload', payload);
-    dispathRescheduleStudentLessons(payload);
+    // dispathRescheduleStudentLessons(payload);
     toggleRescheduleModal(!openRescheduleModal);
   };
-
-  // Add another function for bulk schedulechanges
 
   return (
     <div className="content-section">

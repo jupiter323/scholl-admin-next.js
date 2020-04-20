@@ -71,6 +71,7 @@ class DetailLessonList extends React.Component {
       updatedLessons: [],
       selectAll: false,
       dropdownIsOpen: false,
+      checkedCardIds: [],
     };
   }
 
