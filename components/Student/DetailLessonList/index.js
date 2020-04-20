@@ -112,14 +112,20 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onAddCheckedLesson = lessonId => {
+  onAddCheckedLesson = (lessonId) => {
     this.props.dispatchAddCheckedLesson(lessonId);
     this.props.dispathCheckLesson(lessonId);
+    this.setState({
+      checkedCardIds: props.lessonList.filter(lesson => lesson.selected).map(lesson => lesson.id),
+    });
   };
 
-  onRemoveCheckedLesson = lessonId => {
+  onRemoveCheckedLesson = (lessonId) => {
     this.props.dispatchRemoveCheckedLesson(lessonId);
     this.props.dispathCheckLesson(lessonId);
+    this.setState({
+      checkedCardIds: props.lessonList.filter(lesson => lesson.selected).map(lesson => lesson.id),
+    });
   };
 
   onOpenModal = () => this.setState({ modalOpen: true });

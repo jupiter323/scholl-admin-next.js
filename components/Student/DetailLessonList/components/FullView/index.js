@@ -14,7 +14,7 @@ import { makeSelectCheckedLessons } from '../../../index/selectors';
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
-  const [activeLesson, setActiveLesson] = useState("");
+  const [activeLesson, setActiveLesson] = useState([]);
   const {
     lessons = [],
     onCloneLesson,
