@@ -112,21 +112,23 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onAddCheckedLesson = (lessonId) => {
-    this.props.dispatchAddCheckedLesson(lessonId);
-    this.props.dispathCheckLesson(lessonId);
-    this.setState({
-      checkedCardIds: props.lessonList.filter(lesson => lesson.selected).map(lesson => lesson.id),
-    });
+  onAddCheckedLesson = async (lessonId) => {
+    await this.props.dispatchAddCheckedLesson(lessonId);
+    await this.props.dispathCheckLesson(lessonId);
+    this.setCheckedCardIds();
   };
 
-  onRemoveCheckedLesson = (lessonId) => {
-    this.props.dispatchRemoveCheckedLesson(lessonId);
-    this.props.dispathCheckLesson(lessonId);
-    this.setState({
-      checkedCardIds: props.lessonList.filter(lesson => lesson.selected).map(lesson => lesson.id),
-    });
+  onRemoveCheckedLesson = async (lessonId) => {
+    await this.props.dispatchRemoveCheckedLesson(lessonId);
+    await this.props.dispathCheckLesson(lessonId);
+    this.setCheckedCardIds();
   };
+
+  setCheckedCardIds = () => {
+    this.setState({
+      checkedCardIds: this.props.lessonList.filter(lesson => lesson.selected && lesson.lesson_id).map(lesson => lesson.id),
+    });
+  }
 
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
@@ -404,6 +406,7 @@ class DetailLessonList extends React.Component {
           onCloseDropdown={this.onCloseDropdown}
           onOpenDropdown={this.onOpenDropdown}
           renderDropdownOptions={renderDropdownOptions}
+          checkedCardIds={this.state.checkedCardIds}
 
         />
       );
