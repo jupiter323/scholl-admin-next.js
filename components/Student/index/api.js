@@ -994,7 +994,7 @@ export const assignLessonToStudentApi = lesson => {
 };
 
 
-export const fetchStudentLessonListApi = (student,studentToken) =>
+export const fetchStudentLessonListApi = (student, studentToken) =>
   fetch(`${API_URL}/api/students/${student}/student_lessons`, {
     headers: {
       Accept: "application/json",
@@ -1004,9 +1004,23 @@ export const fetchStudentLessonListApi = (student,studentToken) =>
     },
   })
     .then(res => res.json())
-    .then(res => {console.log({res}); return res})
+    .then(res => { console.log({ res }); return res; })
     .then(({ data }) => {
       const studentLessons = data;
       return studentLessons;
     });
 
+export const resetStudentLessonsApi = (lessons) => {
+  fetch(`${API_URL}/api/commands/reset-student-lessons`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
