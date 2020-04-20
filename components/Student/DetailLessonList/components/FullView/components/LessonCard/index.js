@@ -148,7 +148,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen)}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.handleUnassignLesson)}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>

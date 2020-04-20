@@ -43,6 +43,7 @@ const FullView = props => {
       handleRescheduleModalOpen={handleRescheduleModalOpen}
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
+      handleUnassignLesson={handleUnassignLesson}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {

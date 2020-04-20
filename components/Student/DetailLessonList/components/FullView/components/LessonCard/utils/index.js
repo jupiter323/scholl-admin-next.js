@@ -42,7 +42,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
           <a href="#">Reschedule</a>
         </li>
         <li>
-          <a href="#!">Unassign</a>
+          <a href="#!" onClick={handleUnassignLesson}>Unassign</a>
         </li>
       </React.Fragment>
     );
