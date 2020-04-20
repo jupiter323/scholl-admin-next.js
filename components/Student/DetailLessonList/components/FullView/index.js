@@ -65,7 +65,7 @@ const FullView = props => {
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
     }));
     console.log('log: payload', payload);
-    // dispathRescheduleStudentLessons(payload);
+    dispathRescheduleStudentLessons(payload);
     toggleRescheduleModal(!openRescheduleModal);
   };
 
