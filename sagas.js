@@ -703,7 +703,7 @@ function* handleAssignLesson(action) {
 }
 
 function* watchForUnAssignLesson() {
-  yield takeEvery(ASSIGN_STUDENT_LESSON, handleUnAssignLesson);
+  yield takeEvery(UNASSIGN_STUDENT_LESSON, handleUnAssignLesson);
 }
 
 function* handleUnAssignLesson(action) {

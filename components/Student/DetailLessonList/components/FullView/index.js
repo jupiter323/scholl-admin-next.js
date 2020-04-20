@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 // import LessonCard from "../LessonCard";
@@ -6,9 +9,11 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
+import { unAssignLessonToStudent } from '../../../index/actions';
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
+  const [activeLesson, setActiveLesson] = useState([]);
   const {
     lessons = [],
     onCloneLesson,
@@ -56,8 +61,12 @@ const FullView = props => {
 
   const onSaveScheduleChanges = () => {};
 
-  const handleUnassignLesson = () => {
-    console.log('log: hit function');
+  const handleUnassignLesson = activeLesson => {
+    const { dispathUnAssignLessonToStudent } = props;
+    console.log('log: unassign', activeLesson);
+    if (activeLesson) setActiveLesson(activeLesson);
+    const payload = activeLesson;
+    dispathUnAssignLessonToStudent(payload);
   };
 
   return (
@@ -127,4 +136,12 @@ FullView.propTypes = {
   onCheckLesson: PropTypes.func.isRequired,
   onCheckAll: PropTypes.func.isRequired,
 };
-export default FullView;
+const mapDispatchToProps = dispatch => ({
+  dispathUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
+});
+
+// const mapStateToProps = createStructuredSelector({
+//   checkedLessons: makeSelectCheckedLessons(),
+// });
+
+export default connect(null, mapDispatchToProps)(FullView);
