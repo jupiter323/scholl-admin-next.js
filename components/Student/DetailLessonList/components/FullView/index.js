@@ -65,10 +65,8 @@ const FullView = props => {
 
   const handleUnassignLesson = lessonIds => {
     const { dispathUnAssignLessonToStudent } = props;
-    console.log('log: unassign', lessonIds);
-    if (lessonIds) {
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathUnAssignLessonToStudent(lessonIds);
-      console.log('log: sent dispatch');
     }
   };
 
