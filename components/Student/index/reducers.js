@@ -19,10 +19,14 @@ import {
   FETCH_STUDENT_LESSONL_LIST_FAIL,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  UNCHECK_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   SET_UNIT_FILTER_OPTIONS,
-  SET_ACTIVE_STUDENT_TOKEN
+  SET_ACTIVE_STUDENT_TOKEN,
+  MERGE_STUDENT_LESSON_LISTS,
+  ADD_ALL_LESSONS,
+  REMOVE_ALL_LESSONS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -44,7 +48,7 @@ const initialState = fromJS({
   error: null,
   unitFilterOptions: [],
   activeStudentToken: "",
-  checkedLessons: []
+  checkedLessons: [],
 });
 
 function studentReducer(state = initialState, action) {
@@ -95,30 +99,58 @@ function studentReducer(state = initialState, action) {
           }
           return {
             ...lesson,
-            selected: !lesson.selected
+            selected: !lesson.selected,
           };
-        })
+        }),
       );
 
     case CHECK_ALL_LESSONS:
+      // Sets each "selected" lesson property to true
       return state.set(
         "lessonList",
-        // need to map over the filtered state
-        // state.get('lessonList').map((lesson) => ({
         action.mappedLessons.map(lesson => ({
           ...lesson,
-          selected: !action.checked
-        }))
+          selected: !action.checked,
+        })),
       );
 
+    case UNCHECK_ALL_LESSONS:
+      // Sets each "selected" lesson property to false
+      return state.set(
+        "lessonList",
+        action.mappedLessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+        })),
+      );
+
+    case ADD_ALL_LESSONS:
+      // Adds each lesson to the list of "checkedLessons"
+      return state.set(
+        "checkedLessons",
+        action.mappedLessons.map(lesson => {
+          if (lesson.lesson_id) {
+            return lesson.lesson_id;
+          }
+          return lesson.id;
+        }),
+      );
+
+    case REMOVE_ALL_LESSONS:
+      // Resets all the "checkedLessons" to a blank array
+      return state.set('checkedLessons', []);
+
     case ADD_CHECKED_LESSON:
-      return state.set("checkedLessons", state.get("checkedLessons").push(action.lessonId));
+      return state.set("checkedLessons", [...state.get("checkedLessons"), action.lessonId]);
 
     case REMOVE_CHECKED_LESSON:
       return state.set(
         "checkedLessons",
-        state.get("checkedLessons").filter(lesson => lesson !== action.lessonId)
+        state.get("checkedLessons").filter(lesson => lesson !== action.lessonId),
       );
+
+    case MERGE_STUDENT_LESSON_LISTS:
+      return state.set('lessonList', [...action.payload, ...state.get('lessonList')]);
 
     default:
       return state;
