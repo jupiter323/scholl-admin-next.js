@@ -72,6 +72,7 @@ class DetailLessonList extends React.Component {
       updatedLessons: [],
       selectAll: false,
       dropdownIsOpen: false,
+      checkedCardIds: [],
     };
   }
 
@@ -94,32 +95,30 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onCheckLesson = id => {
-    this.props.dispathCheckLesson(id);
-    if (!this.state.selectAll) {
-      this.setState({
-        selectAll: true,
-      });
-    }
-  };
-
-  onCheckAll = checked => {
+  /**
+   * @param checked {bool}
+   */
+  onCheckAll = async checked => {
     if (!checked) {
-      this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
-      this.props.dispatchAddAllLessons(this.getMappableLessons());
+      await this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
-      this.props.dispatchRemoveAllLessons(this.getMappableLessons());
+      await this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
+    this.setCheckedCardIds();
   };
 
-  onAddCheckedLesson = (lessonId, uniqueId) => {
-    // lessonId
-    this.props.dispatchAddCheckedLesson(lessonId);
-    // uniqueId
-    this.props.dispathCheckLesson(uniqueId);
+  /**
+   * @param lessonId {string}
+   * @param uniqueId {string}
+   */
+  onAddCheckedLesson = async (lessonId, uniqueId) => {
+    await this.props.dispatchAddCheckedLesson(lessonId);
+    await this.props.dispathCheckLesson(uniqueId);
+    this.setCheckedCardIds();
     if (!this.state.selectAll) {
       this.setState({
         selectAll: true,
@@ -127,15 +126,27 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onRemoveCheckedLesson = (lessonId, uniqueId) => {
-    this.props.dispatchRemoveCheckedLesson(lessonId);
-    this.props.dispathCheckLesson(uniqueId);
-    if (this.props.checkedLessons.length - 1 <= 0) {
+  /**
+   * @param lessonId {string}
+   * @param uniqueId {string}
+   */
+  onRemoveCheckedLesson = async (lessonId, uniqueId) => {
+    await this.props.dispatchRemoveCheckedLesson(lessonId);
+    await this.props.dispathCheckLesson(uniqueId);
+    this.setCheckedCardIds();
+    if (this.props.checkedLessons.length === 0) {
       this.setState({
         selectAll: false,
       });
     }
   };
+
+  // This updates the selected ASSIGNED student lessons in local state
+  setCheckedCardIds = () => {
+    this.setState({
+      checkedCardIds: this.props.lessonList.filter(lesson => lesson.selected && lesson.lesson_id).map(lesson => lesson.id),
+    });
+  }
 
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
@@ -402,6 +413,7 @@ class DetailLessonList extends React.Component {
           onCloseDropdown={this.onCloseDropdown}
           onOpenDropdown={this.onOpenDropdown}
           renderDropdownOptions={renderDropdownOptions}
+          checkedCardIds={this.state.checkedCardIds}
 
         />
       );
