@@ -105,16 +105,17 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onCheckAll = checked => {
+  onCheckAll = async checked => {
     if (!checked) {
-      this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
-      this.props.dispatchAddAllLessons(this.getMappableLessons());
+      await this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
-      this.props.dispatchRemoveAllLessons(this.getMappableLessons());
+      await this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
+    this.setCheckedCardIds();
   };
 
   onAddCheckedLesson = async (lessonId, uniqueId) => {
@@ -132,7 +133,7 @@ class DetailLessonList extends React.Component {
     await this.props.dispatchRemoveCheckedLesson(lessonId);
     await this.props.dispathCheckLesson(uniqueId);
     this.setCheckedCardIds();
-    if (this.props.checkedLessons.length - 1 <= 0) {
+    if (this.props.checkedLessons.length === 0) {
       this.setState({
         selectAll: false,
       });
