@@ -41,10 +41,12 @@ import {
   getStudentLessonList,
   checkLesson,
   checkAllLessons,
+  unCheckAllLessons,
   addCheckedLesson,
   removeCheckedLesson,
   assignLessonToStudent,
-
+  addAllLessons,
+  removeAllLessons,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -98,30 +100,43 @@ class DetailLessonList extends React.Component {
     this.props.dispathCheckLesson(id);
     if (!this.state.selectAll) {
       this.setState({
-        selecteAll: true,
+        selectAll: true,
       });
     }
   };
 
   onCheckAll = checked => {
-    this.props.dispathCheckAllLesson(checked, this.getMappableLessons());
     if (!checked) {
+      this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
+      this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
+      this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
+      this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
   };
 
-  onAddCheckedLesson = async (lessonId) => {
+  onAddCheckedLesson = async (lessonId, uniqueId) => {
     await this.props.dispatchAddCheckedLesson(lessonId);
-    await this.props.dispathCheckLesson(lessonId);
+    await this.props.dispathCheckLesson(uniqueId);
     this.setCheckedCardIds();
+    if (!this.state.selectAll) {
+      this.setState({
+        selectAll: true,
+      });
+    }
   };
 
-  onRemoveCheckedLesson = async (lessonId) => {
+  onRemoveCheckedLesson = async (lessonId, uniqueId) => {
     await this.props.dispatchRemoveCheckedLesson(lessonId);
-    await this.props.dispathCheckLesson(lessonId);
+    await this.props.dispathCheckLesson(uniqueId);
     this.setCheckedCardIds();
+    if (this.props.checkedLessons.length - 1 <= 0) {
+      this.setState({
+        selectAll: false,
+      });
+    }
   };
 
   setCheckedCardIds = () => {
@@ -277,19 +292,8 @@ class DetailLessonList extends React.Component {
       }
       return comparison;
     }
-    const studentLessonsWithDueDate = [];
-    const studentLessonsWithoutDueDate = [];
-    this.props.studentLess.forEach(lesson => {
-      if (lesson.due_date) return studentLessonsWithDueDate.push(lesson);
-      return studentLessonsWithoutDueDate.push(lesson);
-    });
-    studentLessonsWithDueDate.sort(compareDueDates);
-    let mappableLessons = [
-      ...studentLessonsWithDueDate,
-      ...studentLessonsWithoutDueDate,
-      ...this.props.lessonList,
-    ];
 
+    let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
     }
@@ -486,12 +490,13 @@ const mapDispatchToProps = dispatch => ({
   dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
   dispathGetStudentLessonList: bindActionCreators(getStudentLessonList, dispatch),
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
-  dispathCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
+  dispatchCheckAllLesson: bindActionCreators(checkAllLessons, dispatch),
+  dispatchUnCheckAllLesson: bindActionCreators(unCheckAllLessons, dispatch),
   dispatchAddCheckedLesson: bindActionCreators(addCheckedLesson, dispatch),
   dispatchRemoveCheckedLesson: bindActionCreators(removeCheckedLesson, dispatch),
-
   dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
-
+  dispatchAddAllLessons: bindActionCreators(addAllLessons, dispatch),
+  dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

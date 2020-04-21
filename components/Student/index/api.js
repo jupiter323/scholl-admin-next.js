@@ -1024,4 +1024,5 @@ export const rescheduleStudentLessonsApi = (studentLessonData) =>
   })
     .then((res) => res.json())
     .then((res) => res)
-    .then(({ data }) => data);
+    .then(({ data }) => data)
+    .catch((err) => err);
