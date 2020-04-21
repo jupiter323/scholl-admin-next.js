@@ -96,15 +96,9 @@ class DetailLessonList extends React.Component {
     }
   };
 
-  onCheckLesson = id => {
-    this.props.dispathCheckLesson(id);
-    if (!this.state.selectAll) {
-      this.setState({
-        selectAll: true,
-      });
-    }
-  };
-
+  /**
+   * @param checked {bool}
+   */
   onCheckAll = async checked => {
     if (!checked) {
       await this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
@@ -118,6 +112,10 @@ class DetailLessonList extends React.Component {
     this.setCheckedCardIds();
   };
 
+  /**
+   * @param lessonId {string}
+   * @param uniqueId {string}
+   */
   onAddCheckedLesson = async (lessonId, uniqueId) => {
     await this.props.dispatchAddCheckedLesson(lessonId);
     await this.props.dispathCheckLesson(uniqueId);
@@ -129,6 +127,10 @@ class DetailLessonList extends React.Component {
     }
   };
 
+  /**
+   * @param lessonId {string}
+   * @param uniqueId {string}
+   */
   onRemoveCheckedLesson = async (lessonId, uniqueId) => {
     await this.props.dispatchRemoveCheckedLesson(lessonId);
     await this.props.dispathCheckLesson(uniqueId);
@@ -140,6 +142,7 @@ class DetailLessonList extends React.Component {
     }
   };
 
+  // This updates the selected ASSIGNED student lessons in local state
   setCheckedCardIds = () => {
     this.setState({
       checkedCardIds: this.props.lessonList.filter(lesson => lesson.selected && lesson.lesson_id).map(lesson => lesson.id),
@@ -402,7 +405,6 @@ class DetailLessonList extends React.Component {
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
           onCheckAll={this.onCheckAll}
-          onCheckLesson={this.onCheckLesson}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
           onRenderDropdown={renderDropdownOptions}

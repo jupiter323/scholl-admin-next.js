@@ -20,7 +20,6 @@ const FullView = props => {
     onCloneLesson,
     onDeleteLesson,
     user,
-    onCheckLesson,
     onAddCheckedLesson,
     onRemoveCheckedLesson,
     onCheckAll,
@@ -43,7 +42,6 @@ const FullView = props => {
       onCloneLesson={() => onCloneLesson(index)}
       onDeleteLesson={() => onDeleteLesson(index)}
       user={user}
-      onChecked={onCheckLesson}
       selected={lesson.selected}
       onAddCheckedLesson={onAddCheckedLesson}
       onRemoveCheckedLesson={onRemoveCheckedLesson}
@@ -65,7 +63,6 @@ const FullView = props => {
       assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
     }));
-    console.log('log: payload', payload);
     dispathRescheduleStudentLessons(payload);
     toggleRescheduleModal(!openRescheduleModal);
   };
