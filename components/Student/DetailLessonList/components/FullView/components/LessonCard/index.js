@@ -70,7 +70,6 @@ const LessonCard = props => {
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
   const [detailModalOpen, toggleModal] = useState(false);
-  const [selected, toggleSelected] = useState(props.lesson.selected);
 
   const onOpenDetailModal = () => toggleModal(true);
   const onCloseDetailModal = () => toggleModal(false);
@@ -82,13 +81,11 @@ const LessonCard = props => {
   };
 
   const onChecked = cardId => {
-    props.onAddCheckedLesson(cardId);
-    toggleSelected(true);
+    props.onAddCheckedLesson(cardId, props.uniqueId);
   };
 
   const onUnChecked = cardId => {
-    props.onRemoveCheckedLesson(cardId);
-    toggleSelected(false);
+    props.onRemoveCheckedLesson(cardId, props.uniqueId);
   };
 
   const handleAssignLesson = () => {
@@ -310,7 +307,7 @@ const LessonCard = props => {
           <div className='row'>
             <div className='col s2'>
               <Checkbox
-                checked={selected}
+                checked={props.lesson.selected}
                 onChecked={onChecked}
                 onUnChecked={onUnChecked}
                 cardId={props.cardId}

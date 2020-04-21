@@ -29,6 +29,7 @@ import {
   FETCH_STUDENT_LESSON_LIST,
   CHECKED_LESSON,
   CHECK_ALL_LESSONS,
+  UNCHECK_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   FETCH_UNITS,
@@ -36,6 +37,8 @@ import {
   SET_ACTIVE_STUDENT_TOKEN,
   ASSIGN_STUDENT_LESSON,
   UNASSIGN_STUDENT_LESSON,
+  ADD_ALL_LESSONS,
+  REMOVE_ALL_LESSONS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -256,6 +259,12 @@ export const checkAllLessons = (checked, mappedLessons) => ({
   mappedLessons,
 });
 
+export const unCheckAllLessons = (checked, mappedLessons) => ({
+  type: UNCHECK_ALL_LESSONS,
+  checked,
+  mappedLessons,
+});
+
 export const addCheckedLesson = (lessonId) => ({
   type: ADD_CHECKED_LESSON,
   lessonId,
@@ -274,4 +283,14 @@ export const assignLessonToStudent = (lesson) => ({
 export const unAssignLessonToStudent = (lesson) => ({
   type: UNASSIGN_STUDENT_LESSON,
   lesson,
+});
+
+export const addAllLessons = (mappedLessons) => ({
+  type: ADD_ALL_LESSONS,
+  mappedLessons,
+});
+
+export const removeAllLessons = (mappedLessons) => ({
+  type: REMOVE_ALL_LESSONS,
+  mappedLessons,
 });
