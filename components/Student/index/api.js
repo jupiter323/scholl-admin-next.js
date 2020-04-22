@@ -8,6 +8,7 @@ export const fetchStudentsApi = () =>
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -1000,7 +1001,7 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${studentToken}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())

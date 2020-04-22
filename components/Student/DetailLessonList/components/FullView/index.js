@@ -9,6 +9,7 @@ import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
+  const [activeLesson, setActiveLesson] = useState([]);
   const {
     lessons = [],
     onCloneLesson,
@@ -44,6 +45,7 @@ const FullView = props => {
       handleRescheduleModalOpen={handleRescheduleModalOpen}
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
+      handleResetLesson={handleResetLesson}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -55,6 +57,10 @@ const FullView = props => {
   };
 
   const onSaveScheduleChanges = () => {};
+
+  const handleResetLesson = lessonIds => {
+    console.log('log: hit reset', lessonIds);
+  };
 
   return (
     <div className="content-section">
@@ -102,7 +108,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {/* @TODO fix broken options modal{renderDropdownOptions(status)} */}
+                {renderDropdownOptions(status, null, null, null, handleResetLesson, props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>
