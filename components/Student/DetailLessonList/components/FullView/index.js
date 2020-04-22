@@ -67,6 +67,7 @@ const FullView = props => {
     const { dispathUnAssignLessonToStudent } = props;
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathUnAssignLessonToStudent(lessonIds);
+      onCloseDropdown();
     }
   };
 

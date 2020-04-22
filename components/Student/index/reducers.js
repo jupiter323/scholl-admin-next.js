@@ -27,6 +27,7 @@ import {
   MERGE_STUDENT_LESSON_LISTS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  UNASSIGN_STUDENT_LESSON_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -151,6 +152,9 @@ function studentReducer(state = initialState, action) {
 
     case MERGE_STUDENT_LESSON_LISTS:
       return state.set('lessonList', [...action.payload, ...state.get('lessonList')]);
+
+    case UNASSIGN_STUDENT_LESSON_SUCCESS:
+      return state.set('lessonList', state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id)));
 
     default:
       return state;

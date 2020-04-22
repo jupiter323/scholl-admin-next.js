@@ -714,7 +714,7 @@ function* watchForUnAssignLesson() {
 function* handleUnAssignLesson(action) {
   try {
     yield call(unAssignLessonFromStudentApi, action.lesson);
-    yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS });
+    yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
   } catch (error) {
     console.warn("Error occurred in the handleUnAssignLesson saga", error);
     yield put({
