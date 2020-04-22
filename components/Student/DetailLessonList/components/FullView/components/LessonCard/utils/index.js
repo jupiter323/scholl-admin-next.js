@@ -64,7 +64,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         <a href="#!">Excuse/Unexcuse Lateness</a>
       </li>
       <li>
-        <a href="#!" onClick={handleResetLesson(listOfCardIds)}>Reset</a>
+        <a href="#!" onClick={() => handleResetLesson(listOfCardIds)}>Reset</a>
       </li>
       <li>
         <a href="#!">Mark Flags Reviewed</a>

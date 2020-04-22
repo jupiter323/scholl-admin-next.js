@@ -25,6 +25,7 @@ const FullView = props => {
     onOpenDropdown,
     onCloseDropdown,
     renderDropdownOptions,
+    checkedCardIds,
   } = props;
 
   const mapLessons = () => lessons.map((lesson, index) => (
