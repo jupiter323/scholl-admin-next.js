@@ -60,7 +60,6 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
-  rescheduleStudentLessons,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -714,7 +713,10 @@ function* watchForRescheduleStudentLessons() {
 function* handleRescheduleStudentLessons(action) {
   try {
     yield call(rescheduleStudentLessonsApi, action.studentLessonData);
-    yield put({ type: RESCHEDULE_STUDENT_LESSONS_SUCCESS });
+    yield put({
+      type: RESCHEDULE_STUDENT_LESSONS_SUCCESS,
+      payload: action.studentLessonData,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleRescheduleStudentLessons saga", error);
     yield put({
