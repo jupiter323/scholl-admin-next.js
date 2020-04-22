@@ -62,7 +62,6 @@ const FullView = props => {
 
   const handleResetLesson = lessonIds => {
     const { dispathResetStudentLessons } = props;
-    console.log('log: hit reset', lessonIds);
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathResetStudentLessons(lessonIds);
       onCloseDropdown();

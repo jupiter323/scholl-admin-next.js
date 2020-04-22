@@ -713,7 +713,6 @@ function* watchForResetLesson() {
 
 function* handleResetLessons(action) {
   try {
-    console.log('log: action body', action.lessons);
     yield call(resetStudentLessonsApi, action.lessons);
     yield put({ type: RESET_STUDENT_LESSONS_SUCCESS, payload: action.lessons });
   } catch (error) {
