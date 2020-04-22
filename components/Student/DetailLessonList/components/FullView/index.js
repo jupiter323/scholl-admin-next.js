@@ -31,6 +31,7 @@ const FullView = props => {
       // eslint-disable-next-line react/no-array-index-key
       key={lesson.id}
       cardId={lesson.lesson_id ? lesson.lesson_id : lesson.id}
+      uniqueId={lesson.id}
       index={index}
       lesson={lesson}
       onCloneLesson={() => onCloneLesson(index)}
@@ -101,7 +102,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status)}
+                {/* @TODO fix broken options modal{renderDropdownOptions(status)} */}
               </ul>
             </ClickOffComponentWrapper>
           </If>

@@ -27,6 +27,7 @@ import {
   RESET_STUDENT_LESSONS,
   RESET_STUDENT_LESSONS_SUCCESS,
   RESET_STUDENT_LESSONS_FAIL,
+  MERGE_STUDENT_LESSON_LISTS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -676,6 +677,10 @@ function* handleFetchStudentLessonList(action) {
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
       payload: studentLessonList,
+    });
+    yield put({
+      type: MERGE_STUDENT_LESSON_LISTS,
+      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
     });
   } catch (error) {
     console.warn("Error occurred in the handleFetchStudentLesson saga", error);
