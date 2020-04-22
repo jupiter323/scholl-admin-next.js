@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 // import LessonCard from "../LessonCard";
@@ -141,9 +140,5 @@ FullView.propTypes = {
 const mapDispatchToProps = dispatch => ({
   dispathUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
 });
-
-// const mapStateToProps = createStructuredSelector({
-//   checkedLessons: makeSelectCheckedLessons(),
-// });
 
 export default connect(null, mapDispatchToProps)(FullView);
