@@ -259,33 +259,6 @@ const LessonCard = props => {
 
                 <div className='align-self-end'>
                   <Choose>
-                    <When condition={props.lesson.lesson_id}>
-                      {status === 'COMPLETED' ? (
-                        <span
-                        style={{
-                          backgroundColor: `${props.scoring ? gradeColorMap[props.scoring.grade] : gradeColorMap['POOR']}`,
-                        }}
-                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                      >
-                        {scoring.grade ? scoring.grade : 'POOR'}
-                      </span>
-                      ) : (
-                      <span
-                      
-                      style={status === 'OVERDUE' ? {
-                        backgroundColor: `#fff`,
-                        borderColor: 'red',
-                        color: 'red'
-                      } : {backgroundColor: `#212121`, color: 'white'}}
-                      className={`badge badge-rounded-md ${statusColorMap[status]} `}
-                    >
-                      {status}
-                    </span>
-                    )}
-                    </When>
-                  </Choose>
-                  
-                  {/* <Choose>
                     <When condition={status === "COMPLETED"}>
                       <span
                         className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
@@ -295,12 +268,15 @@ const LessonCard = props => {
                     </When>
                     <Otherwise>
                       <span
-                        className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
+                      style={status === 'OVERDUE' ? {
+                        color: 'red'
+                      } : {color: 'white'}}
+                        className={`badge badge-rounded-md ${statusColorMap[status]}`}
                       >
                         {status}
                       </span>
                     </Otherwise>
-                  </Choose> */}
+                  </Choose>
                 </div>
               </div>
             </div>

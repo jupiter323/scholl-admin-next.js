@@ -156,7 +156,7 @@ export const renderAlerts = flags => {
 // COLOR MAPS
 export const statusColorMap = {
   ASSIGNED: 'grey darken-4',
-  OVERDUE: 'grey darken-4',
+  OVERDUE: 'overdue-card',
   STARTED: 'grey darken-4',
   SCHEDULED: 'grey',
   ACCOMPLISHED: 'purple darken-3',
