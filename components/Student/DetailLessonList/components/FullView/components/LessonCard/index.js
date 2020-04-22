@@ -63,7 +63,8 @@ const LessonCard = props => {
     },
     onOpenModal,
     onCloseDropdown,
-    handleRescheduleModalOpen
+    handleRescheduleModalOpen,
+    handleResetLesson
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
@@ -142,7 +143,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen)}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, null, handleResetLesson, [lesson.id])}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>

@@ -1013,7 +1013,7 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
 
 export const resetStudentLessonsApi = (lessons) => {
   fetch(`${API_URL}/api/commands/reset-student-lessons`, {
-    method: "POST",
+    method: "PATCH",
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 // import LessonCard from "../LessonCard";
@@ -6,6 +8,7 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
+import { resetStudentLessons } from '../../../index/actions';
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
@@ -60,7 +63,12 @@ const FullView = props => {
   const onSaveScheduleChanges = () => {};
 
   const handleResetLesson = lessonIds => {
+    const { dispathResetStudentLessons } = props;
     console.log('log: hit reset', lessonIds);
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
+      dispathResetStudentLessons(lessonIds);
+      onCloseDropdown();
+    }
   };
 
   return (
@@ -130,4 +138,8 @@ FullView.propTypes = {
   onCheckLesson: PropTypes.func.isRequired,
   onCheckAll: PropTypes.func.isRequired,
 };
-export default FullView;
+const mapDispatchToProps = dispatch => ({
+  dispathResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(FullView);
