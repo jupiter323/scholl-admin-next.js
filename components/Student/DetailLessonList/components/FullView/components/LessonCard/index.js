@@ -159,7 +159,7 @@ const LessonCard = props => {
                   <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
                     <Doughnut
                       data={
-                        completedAt
+                        completedAt && scoring
                           ? () => data(scoring.correct_count, scoring.question_count, scoring.grade ? scoring.grade : 'POOR')
                           : completedProblems
                           ? () => data(completedProblems, problems, status)
@@ -331,7 +331,6 @@ LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  onChecked: PropTypes.func.isRequired
 };
 
 export default LessonCard;

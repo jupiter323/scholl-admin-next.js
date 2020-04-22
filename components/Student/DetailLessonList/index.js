@@ -405,7 +405,6 @@ class DetailLessonList extends React.Component {
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
           onCheckAll={this.onCheckAll}
-          onCheckLesson={this.onCheckLesson}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
           dropdownIsOpen={this.state.dropdownIsOpen}

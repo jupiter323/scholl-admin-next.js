@@ -18,7 +18,6 @@ const FullView = props => {
     onCloneLesson,
     onDeleteLesson,
     user,
-    onCheckLesson,
     onAddCheckedLesson,
     onRemoveCheckedLesson,
     onCheckAll,
@@ -42,7 +41,6 @@ const FullView = props => {
       onCloneLesson={() => onCloneLesson(index)}
       onDeleteLesson={() => onDeleteLesson(index)}
       user={user}
-      onChecked={onCheckLesson}
       selected={lesson.selected}
       onAddCheckedLesson={onAddCheckedLesson}
       onRemoveCheckedLesson={onRemoveCheckedLesson}
@@ -135,7 +133,6 @@ FullView.propTypes = {
   user: PropTypes.object.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
-  onCheckLesson: PropTypes.func.isRequired,
   onCheckAll: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = dispatch => ({

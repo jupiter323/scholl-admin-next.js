@@ -1,4 +1,5 @@
 import { fromJS } from "immutable";
+import moment from 'moment';
 import {
   SET_STUDENTS,
   SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
@@ -27,6 +28,7 @@ import {
   MERGE_STUDENT_LESSON_LISTS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  RESET_STUDENT_LESSONS_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -151,6 +153,28 @@ function studentReducer(state = initialState, action) {
 
     case MERGE_STUDENT_LESSON_LISTS:
       return state.set('lessonList', [...action.payload, ...state.get('lessonList')]);
+
+    case RESET_STUDENT_LESSONS_SUCCESS:
+      return state.set('lessonList', state.get('lessonList').map(lesson => {
+        let updatedLesson = {};
+        action.payload.forEach((sentLessonId) => {
+          if (sentLessonId === lesson.id) {
+            let status = 'ASSIGNED';
+            if (moment().isAfter(lesson.due_date)) status = 'OVERDUE';
+            if (moment().isBefore(lesson.assigned_date)) status = 'SCHEDULED';
+            return (updatedLesson = {
+              ...lesson,
+              status,
+              challenge_completed_at: null,
+              practice_completed_at: null,
+              completed_at: null,
+              scoring: {},
+            });
+          }
+          if (!updatedLesson.id) return updatedLesson = lesson;
+        });
+        return updatedLesson;
+      }));
 
     default:
       return state;
