@@ -972,13 +972,6 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
-
-// lesson = {
-//   "student_id": "string",
-//   "lesson_id": "string",
-//   "assignment_date": "Unknown Type: date",
-//   "due_date": "Unknown Type: date"
-// }
 export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",
@@ -1010,4 +1003,19 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       const studentLessons = data;
       return studentLessons;
     });
+
+export const updateStudentActivationApi = body => {
+  fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+};
 

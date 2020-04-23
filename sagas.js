@@ -25,6 +25,7 @@ import {
   ASSIGN_STUDENT_LESSON_SUCCESS,
   ASSIGN_STUDENT_LESSON_FAIL,
   MERGE_STUDENT_LESSON_LISTS,
+  UPDATE_STUDENT_ACTIVATION,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -84,6 +85,7 @@ const {
   fetchUnitsApi,
   fetchStudentLessonListApi,
   assignLessonToStudentApi,
+  updateStudentActivationApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -703,6 +705,23 @@ function* handleAssignLesson(action) {
   }
 }
 
+function* watchForUpdateStudentActivation() {
+  yield takeEvery(UPDATE_STUDENT_ACTIVATION, handleUpdateStudentActivation);
+}
+
+function* handleUpdateStudentActivation(action) {
+  try {
+    yield call(updateStudentActivationApi, action.studentInfo);
+    yield put({ type: UPDATE_STUDENT_ACTIVATION_SUCCESS });
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateStudentActivation saga", error);
+    yield put({
+      type: UPDATE_STUDENT_ACTIVATION_FAIL,
+      payload: error,
+    });
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -741,5 +760,6 @@ export default function* defaultSaga() {
     watchForFetchUnitFilterOptions(),
     watchForFetchStudentLesson(),
     watchForAssignLesson(),
+    watchForUpdateStudentActivation(),
   ]);
 }
