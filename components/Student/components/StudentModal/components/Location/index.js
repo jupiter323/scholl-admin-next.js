@@ -15,7 +15,7 @@ const Location = ({locations, onOpenLocationModal, onRemoveLocation}) => (
   </div>
    <div className="add-box">
    <div className="add-box-holder">
-     <a href="#" lassName="btn-floating waves-effect waves-light green lighten-1" onClick={onOpenLocationModal}><i className="material-icons">add</i></a>
+     <a href="#" className="btn-floating waves-effect waves-light green lighten-1" onClick={onOpenLocationModal}><i className="material-icons">add</i></a>
    </div>
  </div>
  </React.Fragment>
