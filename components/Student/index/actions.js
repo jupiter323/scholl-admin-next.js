@@ -39,6 +39,7 @@ import {
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
   UPDATE_STUDENT_ACTIVATION,
+  SET_ACTIVE_STUDENT,
 } from "./constants";
 
 export function fetchStudents() {
@@ -292,5 +293,10 @@ export const removeAllLessons = (mappedLessons) => ({
 
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
+  studentInfo,
+});
+
+export const setActiveStudent = (studentInfo) => ({
+  type: SET_ACTIVE_STUDENT,
   studentInfo,
 });

@@ -18,10 +18,12 @@ import {
   makeSelectAssignLessonsModalOpen,
   makeSelectAssignWorkSheetsModalOpen,
   makeSelectIsVisibleTopBar,
+  makeSelectActiveStudent,
 } from "../index/selectors";
 
 import {
   setIsVisibleTopBar,
+  updateStudentActivation,
 } from '../index/actions';
 
 
@@ -85,6 +87,19 @@ class IndividualStudentPage extends React.Component {
     }
     return null;
   };
+
+  handleActivateButton = () => {
+    const { onUpdateStudentActivation, activeStudent } = this.props;
+    console.log('log: Clicked to Activate account!', this.state.licenseCode);
+    console.log('log: activeStudent', activeStudent);
+    const payload = {
+      user_id: activeStudent.id,
+      code: this.state.licenseCode,
+      activate: true,
+    };
+    onUpdateStudentActivation(payload);
+  }
+
   render() {
     const {
       onRedirectToStudentPage,
@@ -192,7 +207,7 @@ class IndividualStudentPage extends React.Component {
                           </label>
                         </div>
                         <div className="btn-holder center-align">
-                          <button className="btn btn-blue" type="submit">
+                          <button className="btn btn-blue" type="submit" onClick={() => this.handleActivateButton()}>
                             Activate
                           </button>
                         </div>
@@ -244,11 +259,13 @@ const mapStateToProps = createStructuredSelector({
   assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
   assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen(),
   isVisibleTopBar: makeSelectIsVisibleTopBar(),
+  activeStudent: makeSelectActiveStudent(),
 });
 
 function maptDispatchToProps(dispatch) {
   return {
     onSetIsVisibleTopBar: (value) => dispatch(setIsVisibleTopBar(value)),
+    onUpdateStudentActivation: (value) => dispatch(updateStudentActivation(value)),
   };
 }
 
