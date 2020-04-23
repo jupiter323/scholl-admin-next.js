@@ -17,6 +17,7 @@ import {
   fetchUnitsApi,
   fetchStudentLessonListApi,
   assignLessonToStudentApi,
+  updateStudentActivationApi,
 } from "./components/Student/index/api";
 
 import {

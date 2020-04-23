@@ -229,6 +229,7 @@ export const updateStudentActivationApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -1003,19 +1004,3 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       const studentLessons = data;
       return studentLessons;
     });
-
-export const updateStudentActivationApi = body => {
-  fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
-    method: "PATCH",
-    headers: {
-      Accept: "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
-    },
-    body: JSON.stringify(body),
-  })
-    .then(res => res.json())
-    .catch(err => err);
-};
-
