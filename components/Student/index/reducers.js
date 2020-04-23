@@ -27,7 +27,6 @@ import {
   MERGE_STUDENT_LESSON_LISTS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
-  SET_ACTIVE_STUDENT,
 } from "./constants";
 
 const initialState = fromJS({
@@ -50,7 +49,6 @@ const initialState = fromJS({
   unitFilterOptions: [],
   activeStudentToken: "",
   checkedLessons: [],
-  activeStudent: {},
 });
 
 function studentReducer(state = initialState, action) {
@@ -153,9 +151,6 @@ function studentReducer(state = initialState, action) {
 
     case MERGE_STUDENT_LESSON_LISTS:
       return state.set('lessonList', [...action.payload, ...state.get('lessonList')]);
-
-    case SET_ACTIVE_STUDENT:
-      return state.set('activeStudent', action.studentInfo);
 
     default:
       return state;

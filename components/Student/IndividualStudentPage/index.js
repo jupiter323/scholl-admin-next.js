@@ -18,7 +18,6 @@ import {
   makeSelectAssignLessonsModalOpen,
   makeSelectAssignWorkSheetsModalOpen,
   makeSelectIsVisibleTopBar,
-  makeSelectActiveStudent,
 } from "../index/selectors";
 
 import {
@@ -89,11 +88,9 @@ class IndividualStudentPage extends React.Component {
   };
 
   handleActivateButton = () => {
-    const { onUpdateStudentActivation, activeStudent } = this.props;
-    console.log('log: Clicked to Activate account!', this.state.licenseCode);
-    console.log('log: activeStudent', activeStudent);
+    const { onUpdateStudentActivation, student } = this.props;
     const payload = {
-      user_id: activeStudent.id,
+      user_id: student.id,
       code: this.state.licenseCode,
       activate: true,
     };
@@ -259,7 +256,6 @@ const mapStateToProps = createStructuredSelector({
   assignLessonsModalOpen: makeSelectAssignLessonsModalOpen(),
   assignWorkSheetsModalOpen: makeSelectAssignWorkSheetsModalOpen(),
   isVisibleTopBar: makeSelectIsVisibleTopBar(),
-  activeStudent: makeSelectActiveStudent(),
 });
 
 function maptDispatchToProps(dispatch) {
