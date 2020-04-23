@@ -84,7 +84,7 @@ class StudentModal extends React.Component {
                                         value={state.emailAddress.email}
                                         onChange={(event) => handleChange(event, 'email', 'emailAddress')}
                                       />
-                                      <label className="label" htmlFor="email">Email Address*</label>
+                                      <label className="label" htmlFor="email">Email Address (optional)</label>
                                     </div>
                                   </div>
                                 </div>
