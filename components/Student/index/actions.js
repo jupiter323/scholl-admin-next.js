@@ -39,6 +39,8 @@ import {
   UNASSIGN_STUDENT_LESSON,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  SET_ACTIVE_LESSON,
+  SET_OPEN_ANSWERSHEET_STATUS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -294,3 +296,17 @@ export const removeAllLessons = (mappedLessons) => ({
   type: REMOVE_ALL_LESSONS,
   mappedLessons,
 });
+
+export const setActiveLesson = (activeLesson) => {
+  return {
+    type: SET_ACTIVE_LESSON,
+    activeLesson
+  }
+}
+
+export const setOpenAnswerSheetStatus = (value) => {
+  return {
+    type: SET_OPEN_ANSWERSHEET_STATUS,
+    value
+  }
+}

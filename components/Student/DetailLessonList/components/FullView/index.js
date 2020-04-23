@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 // import LessonCard from "../LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
-import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import { unAssignLessonToStudent } from '../../../index/actions';
 
 const FullView = props => {
-  const [openRescheduleModal, toggleRescheduleModal] = useState(false);
-  const [activeLesson, setActiveLesson] = useState([]);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [] = useState(false);
+  const [] = useState([]);
+  const [] = useState(false);
   const {
     lessons = [],
     onCloneLesson,
@@ -61,7 +59,6 @@ const FullView = props => {
     }));
   };
 
-  const onSaveScheduleChanges = () => {};
 
   const handleUnassignLesson = lessonIds => {
     const { dispathUnAssignLessonToStudent } = props;

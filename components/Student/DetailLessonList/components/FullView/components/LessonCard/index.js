@@ -1,6 +1,8 @@
 /* eslint-disable */
 // used vars and indentifers not camelcase
 import React, { useState, useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
@@ -19,6 +21,7 @@ import {
 } from "./utils";
 import LessonDetailAnswerSheet from "../../../../../LessonDetailAnswerSheet";
 import Checkbox from "./components/Checkbox";
+import { setIsVisibleTopBar, setActiveLesson,setOpenAnswerSheetStatus } from "../../../../../index/actions";
 
 const data = (current, target, status) => ({
   datasets: [
@@ -71,7 +74,13 @@ const LessonCard = props => {
   const [dropdownIsOpen, toggleDropdown] = useState(false);
   const [detailModalOpen, toggleModal] = useState(false);
 
-  const onOpenDetailModal = () => toggleModal(true);
+  const onOpenDetailModal = () => {
+    const { onSetIsVisibleTopbar,onSetActiveLesson,onSetOpenAnswerSheetStatus } = props;
+    onSetIsVisibleTopbar(false);
+    onSetActiveLesson(lesson);
+    onSetOpenAnswerSheetStatus(true)
+    toggleModal(true);
+  }
   const onCloseDetailModal = () => toggleModal(false);
   const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
 
@@ -164,8 +173,8 @@ const LessonCard = props => {
                         completedAt
                           ? () => data(scoring.correct_count, scoring.question_count, scoring.grade ? scoring.grade : 'POOR')
                           : completedProblems
-                          ? () => data(completedProblems, problems, status)
-                          : () => data(0, 1, "ASSIGNED")
+                            ? () => data(completedProblems, problems, status)
+                            : () => data(0, 1, "ASSIGNED")
                       }
                       // height={210}
                       options={{
@@ -182,10 +191,10 @@ const LessonCard = props => {
                     <div className='chart-col chart-end'>
                       <span className='amount' style={{ color: chartColorMap[status] }}>
                         <Choose>
-                          <When condition={status==='COMPLETED'}>
+                          <When condition={status === 'COMPLETED'}>
                             0 of {scoring.question_count}
                           </When>
-                          <When condition={status==="STARTED"}>
+                          <When condition={status === "STARTED"}>
                             0 of {problems.length}
                           </When>
                         </Choose>
@@ -208,7 +217,7 @@ const LessonCard = props => {
                 <div className='dates'>
                   <dl className='row'>
                     {assignment_date && (
-                    <dt /*style={{ float: "right", clear: "both" }}*/>Available:    <time dateTime={assignment_date}>{moment(assignment_date).format('MM/DD/YYYY')}</time></dt>
+                      <dt /*style={{ float: "right", clear: "both" }}*/>Available:    <time dateTime={assignment_date}>{moment(assignment_date).format('MM/DD/YYYY')}</time></dt>
                     )}
 
                     {dueAt && assignment_date ? (
@@ -261,29 +270,29 @@ const LessonCard = props => {
                     <When condition={props.lesson.lesson_id}>
                       {status === 'COMPLETED' ? (
                         <span
-                        style={{
-                          backgroundColor: `${props.scoring ? gradeColorMap[props.scoring.grade] : gradeColorMap['POOR']}`,
-                        }}
-                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                      >
-                        {scoring.grade ? scoring.grade : 'POOR'}
-                      </span>
+                          style={{
+                            backgroundColor: `${props.scoring ? gradeColorMap[props.scoring.grade] : gradeColorMap['POOR']}`,
+                          }}
+                          className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                        >
+                          {scoring.grade ? scoring.grade : 'POOR'}
+                        </span>
                       ) : (
-                      <span
-                      
-                      style={status === 'OVERDUE' ? {
-                        backgroundColor: `#fff`,
-                        borderColor: 'red',
-                        color: 'red'
-                      } : {backgroundColor: `#212121`, color: 'white'}}
-                      className={`badge badge-rounded-md ${statusColorMap[status]} `}
-                    >
-                      {status}
-                    </span>
-                    )}
+                          <span
+
+                            style={status === 'OVERDUE' ? {
+                              backgroundColor: `#fff`,
+                              borderColor: 'red',
+                              color: 'red'
+                            } : { backgroundColor: `#212121`, color: 'white' }}
+                            className={`badge badge-rounded-md ${statusColorMap[status]} `}
+                          >
+                            {status}
+                          </span>
+                        )}
                     </When>
                   </Choose>
-                  
+
                   {/* <Choose>
                     <When condition={status === "COMPLETED"}>
                       <span
@@ -333,7 +342,12 @@ LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  onChecked: PropTypes.func.isRequired
+  onChecked: PropTypes.func.isRequired,
+  onSetIsVisibleTopbar: PropTypes.func.isRequired,
 };
-
-export default LessonCard;
+const mapDispatchToProps = dispatch => ({
+  onSetIsVisibleTopbar: bindActionCreators(setIsVisibleTopBar, dispatch),
+  onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
+  onSetOpenAnswerSheetStatus:bindActionCreators(setOpenAnswerSheetStatus,dispatch)
+});
+export default connect(null, mapDispatchToProps)(LessonCard);

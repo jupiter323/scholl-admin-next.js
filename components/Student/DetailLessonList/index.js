@@ -33,6 +33,7 @@ import {
   lessonTypeDescending,
 } from "../../utils/sortFunctions";
 import ListView from "./components/ListView";
+import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
 import {
@@ -47,10 +48,10 @@ import {
   addAllLessons,
   removeAllLessons,
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
+import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenAnswerSheetStatus } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
-
+import { setOpenAnswerSheetStatus } from "../index/actions";
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -439,6 +440,11 @@ class DetailLessonList extends React.Component {
     });
   }
 
+  onCloseDetailModal = () => {
+   const {onSetOpenAnswerSheetStatus} = this.props;
+   onSetOpenAnswerSheetStatus(false)
+  }
+
   render() {
     const {
       currentView,
@@ -447,39 +453,55 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters,
     } = this.state;
+    
+    const {
+      openAnswerSheetStatus
+    } = this.props;
     return (
       <React.Fragment>
-        <FilterSection
-          currentView={currentView}
-          onChangeView={this.onChangeView}
-          onClearFilters={this.onClearFilters}
-          onSetFilteredState={this.onSetFilteredState}
-          onUnsetFilteredState={this.onUnsetFilteredState}
-          onSetSort={this.onSetSort}
-          subjectFilters={subjectFilters}
-          scoreStatusFilters={scoreStatusFilters}
-          flagFilters={flagFilters}
-          dueDateFilters={dueDateFilters}
-          handleFilterClick={this.handleFilterClick}
-          onSetUnitFilter={this.onSetUnitFilter}
-          filterDueDate={this.filterDueDate}
-        />
-        {this.renderCurrentView()}
-        <AssignDatesModal
-          open={this.state.modalOpen}
-          // lessons={this.props.user.lessons}
-          lessons={this.props.lessonList}
-          onCloseDatesModal={this.onCloseModal}
-          onAddUpdatedLessons={this.onAddUpdatedLessons}
-          onAssignLesson={this.onAssignLesson.bind(this)}
-        />
-        <a
-          href="#"
-          onClick={this.onOpenModal}
-          className="waves-effect waves-teal btn add-btn modal-trigger"
-        >
-          <i className="material-icons">add</i>Assign Lesson
+        <Choose>
+          <When condition={openAnswerSheetStatus}>
+            <LessonDetailAnswerSheet
+              onCloseDetailModal={this.onCloseDetailModal}
+              open={openAnswerSheetStatus}
+              user={this.props.user}
+              lesson={this.props.activeLesson}
+            />
+          </When>
+          <Otherwise>
+            <FilterSection
+              currentView={currentView}
+              onChangeView={this.onChangeView}
+              onClearFilters={this.onClearFilters}
+              onSetFilteredState={this.onSetFilteredState}
+              onUnsetFilteredState={this.onUnsetFilteredState}
+              onSetSort={this.onSetSort}
+              subjectFilters={subjectFilters}
+              scoreStatusFilters={scoreStatusFilters}
+              flagFilters={flagFilters}
+              dueDateFilters={dueDateFilters}
+              handleFilterClick={this.handleFilterClick}
+              onSetUnitFilter={this.onSetUnitFilter}
+              filterDueDate={this.filterDueDate}
+            />
+            {this.renderCurrentView()}
+            <AssignDatesModal
+              open={this.state.modalOpen}
+              // lessons={this.props.user.lessons}
+              lessons={this.props.lessonList}
+              onCloseDatesModal={this.onCloseModal}
+              onAddUpdatedLessons={this.onAddUpdatedLessons}
+              onAssignLesson={this.onAssignLesson.bind(this)}
+            />
+            <a
+              href="#"
+              onClick={this.onOpenModal}
+              className="waves-effect waves-teal btn add-btn modal-trigger"
+            >
+              <i className="material-icons">add</i>Assign Lesson
         </a>
+          </Otherwise>
+        </Choose>
       </React.Fragment>
     );
   }
@@ -487,6 +509,8 @@ class DetailLessonList extends React.Component {
 
 DetailLessonList.propTypes = {
   user: PropTypes.object.isRequired,
+  activeLesson: PropTypes.object,
+  openAnswerSheetStatus: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -500,6 +524,7 @@ const mapDispatchToProps = dispatch => ({
   dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
   dispatchAddAllLessons: bindActionCreators(addAllLessons, dispatch),
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
+  onSetOpenAnswerSheetStatus:bindActionCreators(setOpenAnswerSheetStatus, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
@@ -507,7 +532,8 @@ const mapStateToProps = createStructuredSelector({
   studentLess: makeSelectGetStudentLessonList(),
   checkedLessons: makeSelectCheckedLessons(),
   studentToken: makeSelectActiveStudentToken(),
-
+  activeLesson: makeSelectActiveLesson(),
+  openAnswerSheetStatus: makeSelectOpenAnswerSheetStatus(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
