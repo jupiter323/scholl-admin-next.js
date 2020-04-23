@@ -96,14 +96,6 @@ class LessonDetailAnswerSheet extends React.Component {
                 </div>
 
               </div>
-              <div className="nav-header nav-header-special white">
-                <div className="nav-additional">
-                  <ul className="menu-additional" style={{ paddingLeft: '25%' }}>
-                    <li className="col s3"><a href="#">Summary</a></li>
-                    <li className="col s3"><a className="active" href="#answer">Answer Sheet</a></li>
-                  </ul>
-                </div>
-              </div>
               <div className="content-section">
                 <div className="container-sm">
                   <div className="main-row row">
