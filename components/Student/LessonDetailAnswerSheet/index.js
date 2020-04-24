@@ -181,7 +181,7 @@ class LessonDetailAnswerSheet extends React.Component {
                       <Choose>
                         <When condition={completed_at}>
                           <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                            {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${completionTime}`}
+                            {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}
                           </time></div>
                         </When>
                         <Otherwise>
