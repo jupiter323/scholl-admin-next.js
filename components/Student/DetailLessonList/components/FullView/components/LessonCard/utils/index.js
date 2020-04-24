@@ -50,7 +50,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
     return (
       <React.Fragment>
         <li>
-          <a href="#" onClick={handleAssignLesson}>
+          <a href="#" onClick={() => handleAssignLesson(ids)}>
             Assign
           </a>
         </li>
@@ -60,7 +60,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
   return (
     <React.Fragment>
       <li>
-        <a href="#" onClick={handleAssignLesson}>
+        <a href="#" onClick={() => handleAssignLesson(ids)}>
             Assign
         </a>
       </li>

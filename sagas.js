@@ -677,7 +677,6 @@ function* watchForFetchStudentLesson() {
 function* handleFetchStudentLessonList(action) {
   try {
     const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
-    console.log('log: studentLessonList', studentLessonList);
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
       payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),

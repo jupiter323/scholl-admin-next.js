@@ -89,8 +89,9 @@ const LessonCard = props => {
     props.onRemoveCheckedLesson(cardId, props.uniqueId);
   };
 
-  const handleAssignLesson = () => {
+  const handleAssignLesson = (lessonIds) => {
     onOpenModal();
+    props.onAddAssignLessonIds(lessonIds)
   };
 
   return (
