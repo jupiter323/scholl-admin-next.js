@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 import Question from '../Question';
 
 class PracticeQuestions extends React.Component {
-  mapQuestions = () => this.props.questions.map(question => (
-    <Question
-      key={question.id}
-      question={question}
-      answerSheetComplete={this.props.answerSheetComplete}
-      onOpenQuestionModal={this.props.onOpenQuestionModal}
-    />
-  ))
+  mapQuestions = () => {
+    if (this.props.questions.length !== 0) {
+      return this.props.questions.map(problem => (
+        <Question
+          key={problem.id} problem={problem}
+        />
+      ))
+    }
+  }
 
   render() {
     return (
-      <div className="col s12 l8">
+      <div className="col s12 l12">
         <div className="card-block">
           <h2>Practice</h2>
           <div className="card">

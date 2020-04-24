@@ -21,7 +21,6 @@ import {
 } from "./utils";
 import Checkbox from "./components/Checkbox";
 import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus } from "../../../../../index/actions";
-import { fetchStudentLessonApi } from "../../../../../index/api";
 const data = (current, target, status) => ({
   datasets: [
     {
@@ -73,13 +72,12 @@ const LessonCard = props => {
   const [dropdownIsOpen, toggleDropdown] = useState(false);
 
   const onOpenDetailModal = async() => {
-    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson:{id:lesson_id},user:{id:student_id} } = props;
-    const activeLesson = await fetchStudentLessonApi(student_id,lesson_id)
-    // if (lesson.scoring) {
-    //   onSetIsVisibleTopbar(false);
-    //   onSetActiveLesson(lesson);
-    //   onSetOpenAnswerSheetStatus(true)
-    // }
+    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson} = props;
+    if (lesson.scoring || lesson.problems) {
+      onSetIsVisibleTopbar(false);
+      onSetActiveLesson(lesson);
+      onSetOpenAnswerSheetStatus(true)
+    }
   }
   const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
 
