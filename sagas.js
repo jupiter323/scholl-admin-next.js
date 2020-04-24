@@ -24,6 +24,9 @@ import {
   ASSIGN_STUDENT_LESSON,
   ASSIGN_STUDENT_LESSON_SUCCESS,
   ASSIGN_STUDENT_LESSON_FAIL,
+  RESCHEDULE_STUDENT_LESSONS,
+  RESCHEDULE_STUDENT_LESSONS_SUCCESS,
+  RESCHEDULE_STUDENT_LESSONS_FAIL,
   MERGE_STUDENT_LESSON_LISTS,
 } from "./components/Student/index/constants";
 import {
@@ -57,7 +60,6 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
-
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -84,6 +86,7 @@ const {
   fetchUnitsApi,
   fetchStudentLessonListApi,
   assignLessonToStudentApi,
+  rescheduleStudentLessonsApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -703,6 +706,26 @@ function* handleAssignLesson(action) {
   }
 }
 
+function* watchForRescheduleStudentLessons() {
+  yield takeEvery(RESCHEDULE_STUDENT_LESSONS, handleRescheduleStudentLessons);
+}
+
+function* handleRescheduleStudentLessons(action) {
+  try {
+    yield call(rescheduleStudentLessonsApi, action.studentLessonData);
+    yield put({
+      type: RESCHEDULE_STUDENT_LESSONS_SUCCESS,
+      payload: action.studentLessonData,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleRescheduleStudentLessons saga", error);
+    yield put({
+      type: RESCHEDULE_STUDENT_LESSONS_FAIL,
+      payload: error,
+    });
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -741,5 +764,6 @@ export default function* defaultSaga() {
     watchForFetchUnitFilterOptions(),
     watchForFetchStudentLesson(),
     watchForAssignLesson(),
+    watchForRescheduleStudentLessons(),
   ]);
 }

@@ -51,8 +51,8 @@ class RescheduleModal extends React.Component {
   };
 
   onSave = () => {
-    const { onSave } = this.props;
-    onSave(this.state);
+    const { onSave, activeLesson } = this.props;
+    onSave(this.state, activeLesson);
   };
 
   render() {

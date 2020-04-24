@@ -34,6 +34,7 @@ const LessonCard = props => {
   const {
     lesson,
     lesson: {
+      id,
       name,
       drill_page: drillPage,
       practice_page: practicePage,
@@ -63,7 +64,7 @@ const LessonCard = props => {
     },
     onOpenModal,
     onCloseDropdown,
-    handleRescheduleModalOpen
+    handleRescheduleModalOpen,
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
@@ -127,7 +128,10 @@ const LessonCard = props => {
                       className='dropdown-trigger btn'
                       href='#'
                       data-target='dropdown01'
-                      onClick={() => onSetDropdown(dropdownIsOpen)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onSetDropdown(dropdownIsOpen)
+                      }}
                     >
                       <i className='material-icons dots-icon'>more_vert</i>
                     </a>
@@ -142,7 +146,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen)}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, [id])}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>
@@ -330,7 +334,6 @@ LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  onChecked: PropTypes.func.isRequired
 };
 
 export default LessonCard;
