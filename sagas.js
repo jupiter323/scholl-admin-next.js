@@ -698,7 +698,6 @@ function* watchForAssignLesson() {
 
 function* handleAssignLesson(action) {
   try {
-    console.log('log: action', action);
     yield call(assignLessonToStudentApi, action.lesson);
     yield put({ type: FETCH_STUDENT_LESSON_LIST, postBody: { id: action.lesson.student_id } });
   } catch (error) {

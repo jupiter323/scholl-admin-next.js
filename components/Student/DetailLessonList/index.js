@@ -430,10 +430,11 @@ class DetailLessonList extends React.Component {
   };
 
   onAssignLesson(lessonDates) {
-    const { dispatchAssignLessonToStudent, dispatchRemoveAllLessons, dispatchUnCheckAllLesson } = this.props;
+    const { dispatchAssignLessonToStudent, dispatchRemoveAllLessons, dispatchUnCheckAllLesson, checkedLessons } = this.props;
+    if (checkedLessons.length <= 0) return null;
     dispatchAssignLessonToStudent({
       student_id: this.props.user.id,
-      lesson_ids: this.props.checkedLessons,
+      lesson_ids: checkedLessons,
       assignment_date: lessonDates.assignDate,
       due_date: lessonDates.dueDate,
     });

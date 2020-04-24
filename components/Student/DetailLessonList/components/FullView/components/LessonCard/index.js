@@ -89,6 +89,10 @@ const LessonCard = props => {
     props.onRemoveCheckedLesson(cardId, props.uniqueId);
   };
 
+  const handleAssignLesson = () => {
+    onOpenModal();
+    props.onAddCheckedLesson(props.lessonId);
+  };
 
   return (
     <React.Fragment>
@@ -142,7 +146,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, props.handleAssignLesson, handleRescheduleModalOpen, [id])}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, [id])}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>

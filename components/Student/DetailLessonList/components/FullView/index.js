@@ -49,7 +49,6 @@ const FullView = props => {
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
       onAddAssignLessonIds={props.onAddAssignLessonIds}
-      handleAssignLesson={handleAssignLesson}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -60,7 +59,6 @@ const FullView = props => {
 
   const handleAssignLesson = () => {
     onOpenModal();
-    onAddCheckedLesson(props.checkedLessons);
   };
 
   const onSaveScheduleChanges = (modalState) => {
