@@ -259,9 +259,8 @@ export const checkAllLessons = (checked, mappedLessons) => ({
   mappedLessons,
 });
 
-export const unCheckAllLessons = (checked, mappedLessons) => ({
+export const unCheckAllLessons = (mappedLessons) => ({
   type: UNCHECK_ALL_LESSONS,
-  checked,
   mappedLessons,
 });
 

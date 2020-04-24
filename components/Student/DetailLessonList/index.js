@@ -74,7 +74,6 @@ class DetailLessonList extends React.Component {
       selectAll: false,
       dropdownIsOpen: false,
       checkedCardIds: [],
-      lessonsToAssign: [],
     };
   }
 
@@ -106,7 +105,7 @@ class DetailLessonList extends React.Component {
       await this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      await this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchUnCheckAllLesson(this.getMappableLessons());
       await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
@@ -171,7 +170,6 @@ class DetailLessonList extends React.Component {
   onSetFilteredState = (lesson) => this.setState({ nameFilter: lesson });
   onUnsetFilteredState = (filter) => this.setState({ [filter]: "" });
   onChangeView = (view) => this.setState({ currentView: view, active: view });
-  onAddAssignLessonIds = (ids) => this.setState({ lessonsToAssign: ids });
 
   onSetUnitFilter = (unit) => {
     this.setState({ unitFilter: unit });
@@ -432,14 +430,17 @@ class DetailLessonList extends React.Component {
   };
 
   onAssignLesson(lessonDates) {
-    console.log('log: dispatched', this.state.lessonsToAssign);
-    this.props.dispatchAssignLessonToStudent({
+    const { dispatchAssignLessonToStudent, dispatchRemoveAllLessons, dispatchUnCheckAllLesson } = this.props;
+    dispatchAssignLessonToStudent({
       student_id: this.props.user.id,
-      lesson_ids: this.state.lessonsToAssign,
+      lesson_ids: this.props.checkedLessons,
       assignment_date: lessonDates.assignDate,
       due_date: lessonDates.dueDate,
     });
-    this.setState({ lessonsToAssign: [] });
+    // Clear the redux checkedLesson property
+    dispatchUnCheckAllLesson(this.getMappableLessons());
+    dispatchRemoveAllLessons(this.getMappableLessons());
+    this.setState({ selectAll: false });
   }
 
   render() {
