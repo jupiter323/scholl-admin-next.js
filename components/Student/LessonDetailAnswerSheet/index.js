@@ -54,6 +54,9 @@ class LessonDetailAnswerSheet extends React.Component {
       practiceProlems: [],
       drillProblems: [],
       currentType: "",
+      hasChallenge: false,
+      hasPractice: false,
+      hasDrill: false,
     };
   }
 
@@ -70,11 +73,17 @@ class LessonDetailAnswerSheet extends React.Component {
         const section_id = section.id;
         const currentSectionName = section.name;
         if (currentSectionName === "challenge") {
+          this.setState({
+            hasChallenge: true
+          })
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
             challengeProblems: challengeProblems.lesson_problems,
           })
         } else {
+          this.setState({
+            hasPractice: true
+          })
           const practiceProlems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
             practiceProlems: practiceProlems.lesson_problems,
@@ -84,7 +93,8 @@ class LessonDetailAnswerSheet extends React.Component {
     }
     if (lesson.problems && lesson.problems.length !== 0) {
       this.setState({
-        currentType: "Drill"
+        currentType: "Drill",
+        hasDrill: true,
       })
       const drillProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
       this.setState({
@@ -127,10 +137,30 @@ class LessonDetailAnswerSheet extends React.Component {
     return amount;
   }
 
+  getTypeLabel = () => {
+    let typeLabel = "";
+    if (this.state.hasChallenge && this.state.hasPractice) {
+      typeLabel = "Challenge + Practice";
+    } else {
+      if (this.state.hasChallenge) {
+        typeLabel = "Challenge";
+      }
+      if (this.state.hasPractice) {
+        typeLabel = "Practice";
+      }
+    }
+
+    if (this.state.hasDrill) {
+      typeLabel = "Drill";
+    }
+
+    return typeLabel;
+  }
+
   render() {
-    const { challengeProblems, practiceProlems, drillProblems, problemsAmount } = this.state;
+    const { challengeProblems, practiceProlems, drillProblems } = this.state;
     const { open, onCloseDetailModal, user,
-      lesson: { lessonName, unit, passage, completed_at, completionTime, assignTime, assignment_date, due_date, dueTime, type, scoring: { question_count, correct_count } } } = this.props;
+      lesson: { name, starting_page, ending_page, unit, passage, completed_at, assignTime, assignment_date, due_date, dueTime, type, scoring: { question_count, correct_count } } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
@@ -154,13 +184,13 @@ class LessonDetailAnswerSheet extends React.Component {
                     <i className="icon-books"></i>
                   </div>
                   <div className="col s2">
-                    <span style={{ fontSize: '17px' }}>{`p.${passage} (${type})`} </span>
+                    <span style={{ fontSize: '17px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </span>
 
                   </div>
                   <div className="col s7">
-                    <div className="card-panel-text center-align">
+                    <div className="card-panel-text left-align">
                       <div className="text-small">{unit}</div>
-                      <div className="text-large">{lessonName}</div>
+                      <div className="text-large">{name}</div>
                     </div>
                   </div>
                   <div className="col s2" style={{ marginTop: '-47px' }}>
