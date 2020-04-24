@@ -216,6 +216,7 @@ export const createStudentApi = student => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(studentPayload),
   })
