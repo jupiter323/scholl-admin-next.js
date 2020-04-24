@@ -253,9 +253,8 @@ export const checkLesson = (id) => ({
   type: CHECKED_LESSON,
   id,
 });
-export const checkAllLessons = (checked, mappedLessons) => ({
+export const checkAllLessons = (mappedLessons) => ({
   type: CHECK_ALL_LESSONS,
-  checked,
   mappedLessons,
 });
 

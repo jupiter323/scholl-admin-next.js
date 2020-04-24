@@ -112,7 +112,7 @@ function studentReducer(state = initialState, action) {
         "lessonList",
         action.mappedLessons.map((lesson) => ({
           ...lesson,
-          selected: !action.checked,
+          selected: true,
         })),
       );
 
