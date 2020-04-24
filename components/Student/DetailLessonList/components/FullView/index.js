@@ -8,7 +8,7 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
-import { rescheduleStudentLessons } from '../../../index/actions';
+import { rescheduleStudentLessons, unAssignLessonToStudent } from '../../../index/actions';
 import moment from 'moment';
 import { makeSelectCheckedLessons } from '../../../index/selectors';
 
@@ -48,6 +48,7 @@ const FullView = props => {
       handleRescheduleModalOpen={handleRescheduleModalOpen}
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
+      handleUnassignLesson={handleUnassignLesson}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -63,8 +64,18 @@ const FullView = props => {
       assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
     }));
-    dispathRescheduleStudentLessons(payload);
-    toggleRescheduleModal(!openRescheduleModal);
+    if (payload.length > 0 && typeof payload === 'object') {
+      dispathRescheduleStudentLessons(payload);
+      toggleRescheduleModal(!openRescheduleModal);
+    }
+  };
+
+  const handleUnassignLesson = lessonIds => {
+    const { dispathUnAssignLessonToStudent } = props;
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
+      dispathUnAssignLessonToStudent(lessonIds);
+      onCloseDropdown();
+    }
   };
 
   return (
@@ -116,7 +127,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, null, handleRescheduleModalOpen, props.checkedCardIds)}
+                {renderDropdownOptions(status, null, handleRescheduleModalOpen, handleUnassignLesson, props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>
@@ -140,6 +151,7 @@ FullView.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   dispathRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
+  dispathUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

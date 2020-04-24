@@ -34,15 +34,15 @@ export const renderLessonIcon = subject => {
   }
 };
 
-export const renderDropdownOptions = (status, handleAssignLesson, handleRescheduleModalOpen, ids) => {
+export const renderDropdownOptions = (status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, listOfCardIds) => {
   if (status === "SCHEDULED" || status === "ASSIGNED") {
     return (
       <React.Fragment>
         <li>
-          <a href="#" onClick={() => handleRescheduleModalOpen(ids)}>Reschedule</a>
+          <a href="#" onClick={() => handleRescheduleModalOpen(listOfCardIds)}>Reschedule</a>
         </li>
         <li>
-          <a href="#!">Unassign</a>
+          <a href="#!" onClick={() => handleUnassignLesson(listOfCardIds)}>Unassign</a>
         </li>
       </React.Fragment>
     );
@@ -56,7 +56,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
       </li>
       <li>
         {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
-        <a href="#" onClick={() => handleRescheduleModalOpen(ids)}>
+        <a href="#" onClick={() => handleRescheduleModalOpen(listOfCardIds)}>
             Reschedule
         </a>
       </li>
@@ -70,7 +70,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         <a href="#!">Mark Flags Reviewed</a>
       </li>
       <li>
-        <a href="#!">Unassign</a>
+        <a href="#!" onClick={() => handleUnassignLesson(listOfCardIds)}>Unassign</a>
       </li>
     </React.Fragment>
   );
