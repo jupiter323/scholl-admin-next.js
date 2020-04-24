@@ -230,10 +230,11 @@ export const updateStudentActivationApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
-    .then(res => res.json())
+    .then(res => res.status)
     .catch(err => err);
 
 export const updateStudentAddressApi = body =>
@@ -973,13 +974,6 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
-
-// lesson = {
-//   "student_id": "string",
-//   "lesson_id": "string",
-//   "assignment_date": "Unknown Type: date",
-//   "due_date": "Unknown Type: date"
-// }
 export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",

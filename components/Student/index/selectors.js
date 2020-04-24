@@ -69,5 +69,5 @@ export {
   makeSelectUnitFilterOptions,
   makeSelectActiveStudentToken,
   makeSelectCheckedLessons,
-  makeSelectGetStudentLessonList
+  makeSelectGetStudentLessonList,
 };
