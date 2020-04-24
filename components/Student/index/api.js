@@ -233,7 +233,7 @@ export const updateStudentActivationApi = body =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res.json())
+    .then(res => res.status)
     .catch(err => err);
 
 export const updateStudentAddressApi = body =>

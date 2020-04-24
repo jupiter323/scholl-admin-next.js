@@ -320,6 +320,7 @@ class Students extends Component {
       />
     ));
 
+  updateStudentStatus = () => this.setState({ selectedStudent: { ...this.state.selectedStudent, active: true } })
   render() {
     const { studentModalOpen, selectedStudent } = this.state;
     return (
@@ -387,6 +388,7 @@ class Students extends Component {
               <IndividualStudentPage
                 student={selectedStudent}
                 onRedirectToStudentPage={this.onRedirectToStudentPage}
+                updateStudentStatus={this.updateStudentStatus}
               />
             )}
           </StickyContainer>

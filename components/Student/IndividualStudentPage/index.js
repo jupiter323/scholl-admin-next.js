@@ -22,8 +22,11 @@ import {
 
 import {
   setIsVisibleTopBar,
-  updateStudentActivation,
 } from '../index/actions';
+
+import {
+  updateStudentActivationApi,
+} from '../index/api';
 
 
 class IndividualStudentPage extends React.Component {
@@ -87,14 +90,20 @@ class IndividualStudentPage extends React.Component {
     return null;
   };
 
-  handleActivateButton = () => {
-    const { onUpdateStudentActivation, student } = this.props;
+  handleActivateButton = async () => {
+    const { student } = this.props;
+    console.log('log: student', student);
     const payload = {
       user_id: student.id,
       code: this.state.licenseCode,
       activate: true,
     };
-    onUpdateStudentActivation(payload);
+    const result = await updateStudentActivationApi(payload);
+    // Check status code for 200 response
+    if (result.toString().split('')[0] !== "2") return null;
+    // Set status of student to active true
+    this.props.updateStudentStatus();
+    this.onToggleActivationDropdown();
   }
 
   render() {
@@ -261,7 +270,6 @@ const mapStateToProps = createStructuredSelector({
 function maptDispatchToProps(dispatch) {
   return {
     onSetIsVisibleTopBar: (value) => dispatch(setIsVisibleTopBar(value)),
-    onUpdateStudentActivation: (value) => dispatch(updateStudentActivation(value)),
   };
 }
 
