@@ -91,7 +91,6 @@ const LessonCard = props => {
 
   const handleAssignLesson = () => {
     onOpenModal();
-    props.onAddCheckedLesson(props.cardId);
   };
 
   return (
@@ -114,9 +113,9 @@ const LessonCard = props => {
                 <div className='card-panel-text center-left'>
                   <div className='text-small'>{props.lesson.units ? props.lesson.units.name : ''}</div>
                   <div className='text-large'>
-                    <a href='#' onClick={onOpenDetailModal}>
+                    {status === 'NOTASSIGNED' ? (<p>{lesson.name}</p>) : (<a href='#' onClick={onOpenDetailModal}>
                       {lesson.name}
-                    </a>
+                    </a>)}
                   </div>
                   <div className='text-small'>Subject: {props.subjects ? props.lesson.subjects.name : ''}</div>
                 </div>

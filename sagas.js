@@ -653,7 +653,11 @@ function* handleFetchLesson() {
         payload: lessons.map(lesson => ({
           ...lesson,
           selected: false,
+          status: 'NOTASSIGNED',
         })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
       });
     }
   } catch (error) {
@@ -673,13 +677,13 @@ function* watchForFetchStudentLesson() {
 function* handleFetchStudentLessonList(action) {
   try {
     const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
+    console.log('log: studentLessonList', studentLessonList);
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
-      payload: studentLessonList,
+      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
     });
     yield put({
       type: MERGE_STUDENT_LESSON_LISTS,
-      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
     });
   } catch (error) {
     console.warn("Error occurred in the handleFetchStudentLesson saga", error);
@@ -695,8 +699,9 @@ function* watchForAssignLesson() {
 
 function* handleAssignLesson(action) {
   try {
-    yield call(assignLessonToStudentApi, action.lesson);
-    yield put({ type: ASSIGN_STUDENT_LESSON_SUCCESS });
+    console.log('log: action', action);
+    // yield call(assignLessonToStudentApi, action.lesson);
+    yield put({ type: FETCH_STUDENT_LESSON_LIST, postBody: { id: action.lesson.student_id } });
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({

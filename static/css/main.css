@@ -15691,7 +15691,6 @@ a.collapsible-opener:hover {
 .card-not-assigned a {
   color: rgba(0, 0, 0, 0.50);
   text-decoration: none;
-  pointer-events: none;
 }
 
 .card-not-assigned .card-content {
