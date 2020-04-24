@@ -216,6 +216,7 @@ export const createStudentApi = student => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(studentPayload),
   })
@@ -995,7 +996,7 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${studentToken}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -1004,3 +1005,19 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       const studentLessons = data;
       return studentLessons;
     });
+
+export const rescheduleStudentLessonsApi = (studentLessonData) =>
+  fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: studentLessonData,
+  })
+    .then((res) => res.json())
+    .then((res) => res)
+    .then(({ data }) => data)
+    .catch((err) => err);

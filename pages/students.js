@@ -72,6 +72,7 @@ class Students extends Component {
           locations: [],
         },
       },
+      hasRequiredFields: true,
     };
   }
 
@@ -110,9 +111,10 @@ class Students extends Component {
   // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = () => {
     const { newStudent: previousStudentState } = this.state;
-
+    const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
     const { onCreateStudent, onFetchStudents } = this.props;
+    if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
     onCreateStudent(previousStudentState);
 
     const newStudent = update(previousStudentState, {
@@ -374,6 +376,7 @@ class Students extends Component {
                   onOpenLocationModal={this.onOpenLocationModal}
                   onRemoveLocation={this.onRemoveLocation}
                   onDeleteNewStudent={this.onDeleteNewStudent}
+                  hasRequiredFields={this.state.hasRequiredFields}
                 />
                 <LocationModal
                   open={this.state.locationModalOpen}

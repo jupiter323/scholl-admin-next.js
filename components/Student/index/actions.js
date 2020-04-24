@@ -36,6 +36,7 @@ import {
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
   ASSIGN_STUDENT_LESSON,
+  RESCHEDULE_STUDENT_LESSONS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
   UPDATE_STUDENT_ACTIVATION,
@@ -280,6 +281,10 @@ export const assignLessonToStudent = (lesson) => ({
   lesson,
 });
 
+export const rescheduleStudentLessons = (studentLessonData) => ({
+  type: RESCHEDULE_STUDENT_LESSONS,
+  studentLessonData,
+});
 export const addAllLessons = (mappedLessons) => ({
   type: ADD_ALL_LESSONS,
   mappedLessons,
