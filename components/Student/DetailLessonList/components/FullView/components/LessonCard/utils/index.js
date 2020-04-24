@@ -39,7 +39,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
     return (
       <React.Fragment>
         <li>
-          <a href="#">Reschedule</a>
+          <a href="#" onClick={() => handleRescheduleModalOpen(listOfCardIds)}>Reschedule</a>
         </li>
         <li>
           <a href="#!" onClick={() => handleUnassignLesson(listOfCardIds)}>Unassign</a>
@@ -56,7 +56,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
       </li>
       <li>
         {/* <a href="#" onClick={this.onReschedule(assignDate, assignTime, dueDate, dueTime)}> */}
-        <a href="#" onClick={handleRescheduleModalOpen}>
+        <a href="#" onClick={() => handleRescheduleModalOpen(listOfCardIds)}>
             Reschedule
         </a>
       </li>

@@ -37,6 +37,7 @@ import {
   SET_ACTIVE_STUDENT_TOKEN,
   ASSIGN_STUDENT_LESSON,
   UNASSIGN_STUDENT_LESSON,
+  RESCHEDULE_STUDENT_LESSONS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
 } from "./constants";
@@ -285,6 +286,10 @@ export const unAssignLessonToStudent = (lesson) => ({
   lesson,
 });
 
+export const rescheduleStudentLessons = (studentLessonData) => ({
+  type: RESCHEDULE_STUDENT_LESSONS,
+  studentLessonData,
+});
 export const addAllLessons = (mappedLessons) => ({
   type: ADD_ALL_LESSONS,
   mappedLessons,

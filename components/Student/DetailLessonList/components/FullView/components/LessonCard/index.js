@@ -34,6 +34,7 @@ const LessonCard = props => {
   const {
     lesson,
     lesson: {
+      id,
       name,
       drill_page: drillPage,
       practice_page: practicePage,
@@ -63,7 +64,7 @@ const LessonCard = props => {
     },
     onOpenModal,
     onCloseDropdown,
-    handleRescheduleModalOpen
+    handleRescheduleModalOpen,
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
@@ -128,7 +129,7 @@ const LessonCard = props => {
                       href='#'
                       data-target='dropdown01'
                       onClick={(e) => {
-                        e.preventDefault()
+                        e.preventDefault();
                         onSetDropdown(dropdownIsOpen)
                       }}
                     >
@@ -333,7 +334,6 @@ LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  onChecked: PropTypes.func.isRequired
 };
 
 export default LessonCard;
