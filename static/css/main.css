@@ -25347,6 +25347,135 @@ a.collapsible-opener:hover {
   color: #e91e63;
 }
 
+.badge {
+	border: 1px solid transparent;
+	background-clip: border-box;
+	margin: 2px;
+}
+
+.badge b {
+	font-weight: 700;
+}
+
+.badge [class^="icon-"],
+.badge [class*=" icon-"] {
+	color: #fff !important;
+}
+
+.badge.badge-rounded-xs,
+.badge.badge-rounded-sm,
+.badge.badge-rounded,
+.badge.badge-rounded-md,
+.badge.badge-rounded-lg,
+.badge.badge-rounded-xlg {
+	float: none;
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	height: auto;
+}
+
+.list-table .badge.badge-rounded-xs,
+.list-table .badge.badge-rounded-sm,
+.list-table .badge.badge-rounded,
+.list-table .badge.badge-rounded-md,
+.list-table .badge.badge-rounded-lg,
+.list-table .badge.badge-rounded-xlg {
+	margin-left: 8px;
+	margin-right: 0;
+}
+
+.graphs-section .badge.badge-rounded-xs,
+.graphs-section .badge.badge-rounded-sm,
+.graphs-section .badge.badge-rounded,
+.graphs-section .badge.badge-rounded-md,
+.graphs-section .badge.badge-rounded-lg,
+.graphs-section .badge.badge-rounded-xlg {
+	font-size: 9px;
+	line-height: 1;
+	min-width: 33px;
+	vertical-align: middle;
+	font-weight: 700;
+}
+
+.badge.badge-rounded {
+	border-radius: 16px;
+	padding: 7px 4px 5px;
+	min-height: 31px;
+	min-width: 56px;
+	font-size: 21px;
+	line-height: 1;
+}
+
+.badge.badge-rounded-bordered {
+	background-color: transparent;
+	color: inherit;
+}
+
+.badge.badge-rounded-xs {
+	border-radius: 9px;
+	padding: 2px;
+	min-height: 18px;
+	min-width: 38px;
+	font-size: 14px;
+	line-height: 13px;
+	height: auto;
+}
+
+.badge.badge-rounded-xs [class^="icon-"],
+.badge.badge-rounded-xs [class*=" icon-"] {
+	font-size: 10px;
+	line-height: 1;
+}
+
+.badge.badge-rounded-sm {
+	border-radius: 13px;
+	padding: 3px 3px 2px;
+	min-height: 23px;
+	min-width: 39px;
+	font-size: 16px;
+	line-height: 16px;
+}
+
+.badge.badge-rounded-md {
+	border-radius: 14px;
+	padding: 1px 5px;
+	min-height: 27px;
+	min-width: 113px;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 20px;
+}
+
+.badge.badge-rounded-lg {
+	border-radius: 18px;
+	padding: 5px 15px;
+	min-height: 27px;
+	min-width: 113px;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 23px;
+}
+
+.badge.badge-rounded-xlg {
+	border-radius: 15px;
+	padding: 1px 9px 0;
+	min-height: 30px;
+	min-width: 62px;
+	font-size: 23px;
+	font-weight: 700;
+	line-height: 25px;
+}
+
+.badge-rounded .badge-text {
+	margin: -4px 4px 4px;
+}
 .wrapper {
   overflow: hidden;
   position: relative;

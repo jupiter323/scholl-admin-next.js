@@ -14,7 +14,7 @@ class PracticeQuestions extends React.Component {
 
   render() {
     return (
-      <div className="col s12 l6">
+      <div className="col s12 l8">
         <div className="card-block">
           <h2>Practice</h2>
           <div className="card">

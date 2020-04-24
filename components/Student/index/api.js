@@ -1025,3 +1025,13 @@ export const unAssignLessonFromStudentApi = lesson => {
     .then(res => res.json())
     .catch(err => err);
 };
+export const fetchStudentLesson = (student_id, lesson_id) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}`, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => res);

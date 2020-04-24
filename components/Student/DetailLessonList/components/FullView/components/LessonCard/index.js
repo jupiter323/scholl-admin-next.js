@@ -19,9 +19,8 @@ import {
   chartColorMap,
   gradeColorMap,
 } from "./utils";
-import LessonDetailAnswerSheet from "../../../../../LessonDetailAnswerSheet";
 import Checkbox from "./components/Checkbox";
-import { setIsVisibleTopBar, setActiveLesson,setOpenAnswerSheetStatus } from "../../../../../index/actions";
+import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus } from "../../../../../index/actions";
 
 const data = (current, target, status) => ({
   datasets: [
@@ -72,16 +71,15 @@ const LessonCard = props => {
   const completedAt = completed_at || completionDate
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
-  const [detailModalOpen, toggleModal] = useState(false);
 
   const onOpenDetailModal = () => {
-    const { onSetIsVisibleTopbar,onSetActiveLesson,onSetOpenAnswerSheetStatus } = props;
-    onSetIsVisibleTopbar(false);
-    onSetActiveLesson(lesson);
-    onSetOpenAnswerSheetStatus(true)
-    toggleModal(true);
+    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson } = props;
+    if (lesson.scoring) {
+      onSetIsVisibleTopbar(false);
+      onSetActiveLesson(lesson);
+      onSetOpenAnswerSheetStatus(true)
+    }
   }
-  const onCloseDetailModal = () => toggleModal(false);
   const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
 
   const onReschedule = (assignDate, assignTime, dueAt, dueTime) => {
@@ -104,12 +102,6 @@ const LessonCard = props => {
 
   return (
     <React.Fragment>
-      <LessonDetailAnswerSheet
-        onCloseDetailModal={onCloseDetailModal}
-        open={detailModalOpen}
-        user={props.user}
-        lesson={lesson}
-      />
       <div className='card-main-col col s12 m8 l7 xl5'>
         {/* <div className={getLessonActivityStatus(status)}> */}
         <div className={getLessonActivityStatus(props.lesson.lesson_id ? "assigned" : "notassigned")}>
@@ -163,7 +155,7 @@ const LessonCard = props => {
               </div>
             </div>
           </div>
-          <div className='card-content'>
+          <div className='card-content' onClick={onOpenDetailModal}>
             <div className='d-flex sameheight-all row mb-0'>
               <div className='col s6'>
                 <div className='chart-container'>
@@ -348,6 +340,6 @@ LessonCard.propTypes = {
 const mapDispatchToProps = dispatch => ({
   onSetIsVisibleTopbar: bindActionCreators(setIsVisibleTopBar, dispatch),
   onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
-  onSetOpenAnswerSheetStatus:bindActionCreators(setOpenAnswerSheetStatus,dispatch)
+  onSetOpenAnswerSheetStatus: bindActionCreators(setOpenAnswerSheetStatus, dispatch)
 });
 export default connect(null, mapDispatchToProps)(LessonCard);
