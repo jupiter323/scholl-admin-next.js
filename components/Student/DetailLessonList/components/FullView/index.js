@@ -8,7 +8,7 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
-import { rescheduleStudentLessons, unAssignLessonToStudent } from '../../../index/actions';
+import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons } from '../../../index/actions';
 import moment from 'moment';
 import { makeSelectCheckedLessons } from '../../../index/selectors';
 
@@ -29,6 +29,7 @@ const FullView = props => {
     onOpenDropdown,
     onCloseDropdown,
     renderDropdownOptions,
+    checkedCardIds,
   } = props;
 
   const mapLessons = () => lessons.map((lesson, index) => (
@@ -48,6 +49,7 @@ const FullView = props => {
       handleRescheduleModalOpen={handleRescheduleModalOpen}
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
+      handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
     />
   ));
@@ -74,6 +76,14 @@ const FullView = props => {
     const { dispathUnAssignLessonToStudent } = props;
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathUnAssignLessonToStudent(lessonIds);
+      onCloseDropdown();
+    }
+  };
+
+  const handleResetLesson = lessonIds => {
+    const { dispathResetStudentLessons } = props;
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
+      dispathResetStudentLessons(lessonIds);
       onCloseDropdown();
     }
   };
@@ -127,7 +137,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, null, handleRescheduleModalOpen, handleUnassignLesson, props.checkedCardIds)}
+                {renderDropdownOptions(status, null, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>
@@ -145,13 +155,13 @@ FullView.propTypes = {
   user: PropTypes.object.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
-  onCheckLesson: PropTypes.func.isRequired,
   onCheckAll: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   dispathRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
   dispathUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
+  dispathResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

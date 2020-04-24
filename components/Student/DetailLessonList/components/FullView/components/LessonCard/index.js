@@ -65,6 +65,7 @@ const LessonCard = props => {
     onOpenModal,
     onCloseDropdown,
     handleRescheduleModalOpen,
+    handleResetLesson
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
@@ -146,7 +147,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.handleUnassignLesson, [lesson.id])}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.handleUnassignLesson, handleResetLesson, [lesson.id])}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>
@@ -162,7 +163,7 @@ const LessonCard = props => {
                   <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
                     <Doughnut
                       data={
-                        completedAt
+                        completedAt && scoring
                           ? () => data(scoring.correct_count, scoring.question_count, scoring.grade ? scoring.grade : 'POOR')
                           : completedProblems
                           ? () => data(completedProblems, problems, status)
@@ -259,33 +260,6 @@ const LessonCard = props => {
 
                 <div className='align-self-end'>
                   <Choose>
-                    <When condition={props.lesson.lesson_id}>
-                      {status === 'COMPLETED' ? (
-                        <span
-                        style={{
-                          backgroundColor: `${props.scoring ? gradeColorMap[props.scoring.grade] : gradeColorMap['POOR']}`,
-                        }}
-                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                      >
-                        {scoring.grade ? scoring.grade : 'POOR'}
-                      </span>
-                      ) : (
-                      <span
-                      
-                      style={status === 'OVERDUE' ? {
-                        backgroundColor: `#fff`,
-                        borderColor: 'red',
-                        color: 'red'
-                      } : {backgroundColor: `#212121`, color: 'white'}}
-                      className={`badge badge-rounded-md ${statusColorMap[status]} `}
-                    >
-                      {status}
-                    </span>
-                    )}
-                    </When>
-                  </Choose>
-                  
-                  {/* <Choose>
                     <When condition={status === "COMPLETED"}>
                       <span
                         className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
@@ -295,12 +269,15 @@ const LessonCard = props => {
                     </When>
                     <Otherwise>
                       <span
-                        className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
+                      style={status === 'OVERDUE' ? {
+                        color: 'red'
+                      } : {color: 'white'}}
+                        className={`badge badge-rounded-md ${statusColorMap[status]}`}
                       >
                         {status}
                       </span>
                     </Otherwise>
-                  </Choose> */}
+                  </Choose>
                 </div>
               </div>
             </div>

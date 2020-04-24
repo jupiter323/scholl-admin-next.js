@@ -36,6 +36,7 @@ import {
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
   ASSIGN_STUDENT_LESSON,
+  RESET_STUDENT_LESSONS,
   UNASSIGN_STUDENT_LESSON,
   RESCHEDULE_STUDENT_LESSONS,
   ADD_ALL_LESSONS,
@@ -280,6 +281,11 @@ export const removeCheckedLesson = (lessonId) => ({
 export const assignLessonToStudent = (lesson) => ({
   type: ASSIGN_STUDENT_LESSON,
   lesson,
+});
+
+export const resetStudentLessons = (lessons) => ({
+  type: RESET_STUDENT_LESSONS,
+  lessons,
 });
 
 export const unAssignLessonToStudent = (lesson) => ({

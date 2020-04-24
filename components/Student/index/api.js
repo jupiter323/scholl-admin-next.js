@@ -1006,7 +1006,21 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       return studentLessons;
     });
 
-export const unAssignLessonFromStudentApi = lesson => {
+export const resetStudentLessonsApi = (lessons) => {
+  fetch(`${API_URL}/api/commands/reset-student-lessons`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+export const unAssignLessonFromStudentApi = lessons => {
   fetch(`${API_URL}/api/commands/unassign-lesson-from-student`, {
     method: "POST",
     headers: {
@@ -1015,11 +1029,12 @@ export const unAssignLessonFromStudentApi = lesson => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: JSON.stringify(lesson),
+    body: JSON.stringify(lessons),
   })
-    .then(res => res.json())
-    .catch(err => err);
+    .then((res) => res.json())
+    .catch((err) => err);
 };
+
 export const rescheduleStudentLessonsApi = (lesson) =>
   fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
     method: "PATCH",
