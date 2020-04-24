@@ -216,6 +216,7 @@ export const createStudentApi = student => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(studentPayload),
   })
@@ -1025,3 +1026,31 @@ export const resetStudentLessonsApi = (lessons) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+export const unAssignLessonFromStudentApi = lessons => {
+  fetch(`${API_URL}/api/commands/unassign-lesson-from-student`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const rescheduleStudentLessonsApi = (lesson) =>
+  fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lesson),
+  })
+    .then(res => res.json())
+    .catch(err => err);

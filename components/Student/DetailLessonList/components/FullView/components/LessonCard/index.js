@@ -34,6 +34,7 @@ const LessonCard = props => {
   const {
     lesson,
     lesson: {
+      id,
       name,
       drill_page: drillPage,
       practice_page: practicePage,
@@ -129,7 +130,7 @@ const LessonCard = props => {
                       href='#'
                       data-target='dropdown01'
                       onClick={(e) => {
-                        e.preventDefault()
+                        e.preventDefault();
                         onSetDropdown(dropdownIsOpen)
                       }}
                     >
@@ -146,7 +147,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, null, handleResetLesson, [lesson.id])}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.handleUnassignLesson, handleResetLesson, [lesson.id])}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>

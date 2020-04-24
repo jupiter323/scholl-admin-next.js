@@ -413,6 +413,7 @@ class DetailLessonList extends React.Component {
           onOpenDropdown={this.onOpenDropdown}
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
+
         />
       );
     }
