@@ -33,8 +33,6 @@ class PracticeQuestions extends React.Component {
 
 PracticeQuestions.propTypes = {
   questions: PropTypes.array.isRequired,
-  answerSheetComplete: PropTypes.string.isRequired,
-  onOpenQuestionModal: PropTypes.func.isRequired,
 };
 
 export default PracticeQuestions;

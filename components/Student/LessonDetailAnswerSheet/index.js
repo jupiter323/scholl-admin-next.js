@@ -4,7 +4,6 @@ import { Doughnut } from 'react-chartjs-2';
 import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
 
-import sampleQuestions from './utils/sampleQuestions';
 import { fetchStudentLessonSectionApi } from "../index/api";
 
 const data = (value, total) => ({
@@ -51,10 +50,6 @@ class LessonDetailAnswerSheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedQuestion: {},
-      questionModalOpen: false,
-      questions: sampleQuestions,
-      answerSheetComplete: this.props.lesson.completed_at && true,
       challengeProblems: [],
       practiceProlems: [],
       drillProblems: []
@@ -65,7 +60,6 @@ class LessonDetailAnswerSheet extends React.Component {
   componentDidMount = async () => {
     const { lesson, user: { id: student_id } } = this.props;
     if (lesson.sections) {//lesson module type
-      console.log('user:', student_id)
       const lesson_id = this.props.lesson.id;
       const { sections } = this.props.lesson;
       sections.map(async section => {
@@ -73,14 +67,14 @@ class LessonDetailAnswerSheet extends React.Component {
         const currentSectionName = section.name;
         if (currentSectionName === "challenge") {
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          console.log('challengeProblems:', challengeProblems)
+          console.log("challengeProblems", challengeProblems.lesson_problems)
           this.setState({
-            challengeProblems:challengeProblems.lesson_problems
+            challengeProblems: challengeProblems.lesson_problems
           })
         } else {
           const practiceProlems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
-            practiceProlems:practiceProlems.lesson_problems
+            practiceProlems: practiceProlems.lesson_problems
           })
         }
       })
@@ -93,23 +87,33 @@ class LessonDetailAnswerSheet extends React.Component {
     }
   }
 
-  onToggleQuestionModal = (selectedQuestion = {}) => this.setState(({ questionModalOpen }) => ({ questionModalOpen: !questionModalOpen, selectedQuestion }))
-
-
   getReviewedAndFlaggedProblemAmount = (type) => {
     const amount = 0;
-    // if (this.props.lesson.problems.length !== 0) {
-    //   problems.map(section => {
-    //     if (section.flag_status === type) {
-    //       reviewedProblems += 1;
-    //     }
-    //   });
-    // }
+    if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
+      problems.map(section => {
+        if (section.flag_status === type) {
+          amount += 1;
+        }
+      });
+    }
+    if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
+      const { challengeProblems, practiceProlems } = this.state;
+      challengeProblems.map(section => {
+        if (section.flag_status === type) {
+          amount += 1;
+        }
+      });
+      practiceProlems.map(section => {
+        if (section.flag_status === type) {
+          amount += 1;
+        }
+      });
+    }
     return amount;
   }
 
   render() {
-    const { questionModalOpen, selectedQuestion, questions, answerSheetComplete, challengeProblems } = this.state;
+    const { answerSheetComplete, challengeProblems } = this.state;
     const { open, onCloseDetailModal, user,
       lesson: { lessonName, unit, passage, completed_at, completionTime, assignTime, assignment_date, due_date, dueTime, type, scoring: { question_count, correct_count } } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
@@ -256,15 +260,11 @@ class LessonDetailAnswerSheet extends React.Component {
                         <div className="card-block" style={{ margin: '0 auto' }}>
                           <div className="main-row row">
                             <ChallengeQuestions
-                              answerSheetComplete={answerSheetComplete}
-                              onOpenQuestionModal={this.onToggleQuestionModal}
                               questions={challengeProblems}
                             />
                           </div>
                           <div className="main-row row">
                             <PracticeQuestions
-                              answerSheetComplete={answerSheetComplete}
-                              onOpenQuestionModal={this.onToggleQuestionModal}
                               questions={challengeProblems}
                             />
                           </div>

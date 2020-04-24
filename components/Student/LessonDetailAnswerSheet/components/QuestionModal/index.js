@@ -71,6 +71,7 @@ class QuestionModal extends React.Component {
   }
 
   onCloseQuestionModal = async () => {
+    clearInterval(this.state.intervalId);
     const { onCloseQuestionModal, question: { problem: { id }, }, activeLesson: { id: lessonId }, } = this.props;
     const { videoWatchedTime } = this.state;
     const postBody = {
