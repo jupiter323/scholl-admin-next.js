@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
-
+import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 
 const data = (value, total) => ({
@@ -52,7 +52,8 @@ class LessonDetailAnswerSheet extends React.Component {
     this.state = {
       challengeProblems: [],
       practiceProlems: [],
-      drillProblems: []
+      drillProblems: [],
+      currentType: "",
     };
   }
 
@@ -60,6 +61,9 @@ class LessonDetailAnswerSheet extends React.Component {
   componentDidMount = async () => {
     const { lesson, user: { id: student_id } } = this.props;
     if (lesson.sections) {//lesson module type
+      this.setState({
+        currentType: "Module"
+      })
       const lesson_id = this.props.lesson.id;
       const { sections } = this.props.lesson;
       sections.map(async section => {
@@ -67,23 +71,34 @@ class LessonDetailAnswerSheet extends React.Component {
         const currentSectionName = section.name;
         if (currentSectionName === "challenge") {
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          console.log("challengeProblems", challengeProblems.lesson_problems)
           this.setState({
-            challengeProblems: challengeProblems.lesson_problems
+            challengeProblems: challengeProblems.lesson_problems,
           })
         } else {
           const practiceProlems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
-            practiceProlems: practiceProlems.lesson_problems
+            practiceProlems: practiceProlems.lesson_problems,
           })
         }
       })
     }
     if (lesson.problems && lesson.problems.length !== 0) {
+      this.setState({
+        currentType: "Drill"
+      })
       const drillProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
       this.setState({
-        drillProblems
+        drillProblems,
       })
+    }
+  }
+
+  getProblemsAmount = () => {
+    if (this.state.currentType === "Module") {
+      return this.state.challengeProblems.length + this.state.practiceProlems.length;
+    }
+    if (this.state.currentType === "Drill") {
+      return this.state.drillProblems.length;
     }
   }
 
@@ -113,11 +128,10 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   render() {
-    const { answerSheetComplete, challengeProblems } = this.state;
+    const { challengeProblems, practiceProlems, drillProblems, problemsAmount } = this.state;
     const { open, onCloseDetailModal, user,
       lesson: { lessonName, unit, passage, completed_at, completionTime, assignTime, assignment_date, due_date, dueTime, type, scoring: { question_count, correct_count } } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
-    console.log('state:', this.state)
     return (
       <React.Fragment>
         {open && (
@@ -167,7 +181,7 @@ class LessonDetailAnswerSheet extends React.Component {
                       <Choose>
                         <When condition={completed_at}>
                           <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                            {`Completed ${completed_at} at ${completionTime}`}
+                            {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${completionTime}`}
                           </time></div>
                         </When>
                         <Otherwise>
@@ -218,11 +232,11 @@ class LessonDetailAnswerSheet extends React.Component {
                                     <div className="chart-description" style={{ marginTop: "10px" }}>
                                       <dl className="dl-horizontal" style={{ fontSize: 16 }}>
                                         <dt>Time Est:</dt>
-                                        <dd>14min</dd>
+                                        <dd>{this.props.lesson.time_estimate ? this.props.lesson.time_estimate : 0}min</dd>
                                       </dl>
                                       <dl className="dl-horizontal" style={{ fontSize: 16 }}>
                                         <dt>Problems:</dt>
-                                        <dd>2323</dd>
+                                        <dd>{this.getProblemsAmount()}</dd>
                                       </dl>
                                       <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(correct_count, question_count, 'color'), color: 'white' }}>{getValuesByScore(correct_count, question_count, 'label')}</dl>
                                     </div>
@@ -258,16 +272,21 @@ class LessonDetailAnswerSheet extends React.Component {
                     <div className="col s12 m6">
                       <div className="row" style={{ margin: 0 }}>
                         <div className="card-block" style={{ margin: '0 auto' }}>
-                          <div className="main-row row">
+                          {challengeProblems.length !== 0 && <div className="main-row row">
                             <ChallengeQuestions
                               questions={challengeProblems}
                             />
-                          </div>
-                          <div className="main-row row">
+                          </div>}
+                          {practiceProlems.length !== 0 && <div className="main-row row">
                             <PracticeQuestions
-                              questions={challengeProblems}
+                              questions={practiceProlems}
                             />
-                          </div>
+                          </div>}
+                          {drillProblems.length !== 0 && <div className="main-row row">
+                            <ChallengeQuestions
+                              questions={drillProblems}
+                            />
+                          </div>}
                         </div></div>
                     </div>
                   </div>
