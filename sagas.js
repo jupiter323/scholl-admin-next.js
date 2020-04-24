@@ -34,6 +34,9 @@ import {
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_FAIL,
   MERGE_STUDENT_LESSON_LISTS,
+  UPDATE_STUDENT_ACTIVATION,
+  UPDATE_STUDENT_ACTIVATION_SUCCESS,
+  UPDATE_STUDENT_ACTIVATION_FAIL,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -93,6 +96,7 @@ const {
   fetchStudentLessonListApi,
   assignLessonToStudentApi,
   resetStudentLessonsApi,
+  updateStudentActivationApi,
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
 } = studentApi;
@@ -730,6 +734,24 @@ function* handleResetLessons(action) {
     });
   }
 }
+
+function* watchForUpdateStudentActivation() {
+  yield takeEvery(UPDATE_STUDENT_ACTIVATION, handleUpdateStudentActivation);
+}
+
+function* handleUpdateStudentActivation(action) {
+  try {
+    yield call(updateStudentActivationApi, action.studentInfo);
+    yield put({ type: UPDATE_STUDENT_ACTIVATION_SUCCESS });
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateStudentActivation saga", error);
+    yield put({
+      type: UPDATE_STUDENT_ACTIVATION_FAIL,
+      payload: error,
+    });
+  }
+}
+
 function* watchForUnAssignLesson() {
   yield takeEvery(UNASSIGN_STUDENT_LESSON, handleUnAssignLesson);
 }
@@ -806,6 +828,7 @@ export default function* defaultSaga() {
     watchForFetchStudentLesson(),
     watchForAssignLesson(),
     watchForResetLesson(),
+    watchForUpdateStudentActivation(),
     watchForUnAssignLesson(),
     watchForRescheduleStudentLessons(),
   ]);

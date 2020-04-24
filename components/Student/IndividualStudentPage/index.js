@@ -24,6 +24,10 @@ import {
   setIsVisibleTopBar,
 } from '../index/actions';
 
+import {
+  updateStudentActivationApi,
+} from '../index/api';
+
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -85,6 +89,23 @@ class IndividualStudentPage extends React.Component {
     }
     return null;
   };
+
+  handleActivateButton = async () => {
+    const { student } = this.props;
+    console.log('log: student', student);
+    const payload = {
+      user_id: student.id,
+      code: this.state.licenseCode,
+      activate: true,
+    };
+    const result = await updateStudentActivationApi(payload);
+    // Check status code for 200 response
+    if (result.toString().split('')[0] !== "2") return null;
+    // Set status of student to active true
+    this.props.updateStudentStatus();
+    this.onToggleActivationDropdown();
+  }
+
   render() {
     const {
       onRedirectToStudentPage,
@@ -192,7 +213,7 @@ class IndividualStudentPage extends React.Component {
                           </label>
                         </div>
                         <div className="btn-holder center-align">
-                          <button className="btn btn-blue" type="submit">
+                          <button className="btn btn-blue" type="submit" onClick={() => this.handleActivateButton()}>
                             Activate
                           </button>
                         </div>
