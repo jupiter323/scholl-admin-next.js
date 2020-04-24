@@ -24,6 +24,9 @@ import {
   ASSIGN_STUDENT_LESSON,
   ASSIGN_STUDENT_LESSON_SUCCESS,
   ASSIGN_STUDENT_LESSON_FAIL,
+  UNASSIGN_STUDENT_LESSON,
+  UNASSIGN_STUDENT_LESSON_SUCCESS,
+  UNASSIGN_STUDENT_LESSON_FAIL,
   RESCHEDULE_STUDENT_LESSONS,
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_FAIL,
@@ -90,6 +93,7 @@ const {
   fetchStudentLessonListApi,
   assignLessonToStudentApi,
   updateStudentActivationApi,
+  unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
 } = studentApi;
 const {
@@ -726,6 +730,22 @@ function* handleUpdateStudentActivation(action) {
     });
   }
 }
+function* watchForUnAssignLesson() {
+  yield takeEvery(UNASSIGN_STUDENT_LESSON, handleUnAssignLesson);
+}
+
+function* handleUnAssignLesson(action) {
+  try {
+    yield call(unAssignLessonFromStudentApi, action.lesson);
+    yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
+  } catch (error) {
+    console.warn("Error occurred in the handleUnAssignLesson saga", error);
+    yield put({
+      type: UNASSIGN_STUDENT_LESSON_FAIL,
+      payload: error,
+    });
+  }
+}
 
 function* watchForRescheduleStudentLessons() {
   yield takeEvery(RESCHEDULE_STUDENT_LESSONS, handleRescheduleStudentLessons);
@@ -786,6 +806,7 @@ export default function* defaultSaga() {
     watchForFetchStudentLesson(),
     watchForAssignLesson(),
     watchForUpdateStudentActivation(),
+    watchForUnAssignLesson(),
     watchForRescheduleStudentLessons(),
   ]);
 }

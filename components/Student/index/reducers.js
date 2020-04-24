@@ -27,6 +27,7 @@ import {
   MERGE_STUDENT_LESSON_LISTS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  UNASSIGN_STUDENT_LESSON_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
 } from "./constants";
 
@@ -171,6 +172,9 @@ function studentReducer(state = initialState, action) {
           return updatedLesson;
         }),
       );
+
+    case UNASSIGN_STUDENT_LESSON_SUCCESS:
+      return state.set('lessonList', state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id)));
 
     default:
       return state;
