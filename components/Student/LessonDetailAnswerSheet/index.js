@@ -183,15 +183,11 @@ class LessonDetailAnswerSheet extends React.Component {
                   <div className="icon-col col s1">
                     <i className="icon-books"></i>
                   </div>
-                  <div className="col s2">
-                    <span style={{ fontSize: '17px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </span>
+                  <div className="col s9">
+                    <p className="text-small" style = {{marginBottom:0,fontSize:18}}>Unit2</p>
+                    <p className="text-large" style = {{marginBottom:0,fontSize:24}}>{name}</p>
+                    <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </p>
 
-                  </div>
-                  <div className="col s7">
-                    <div className="card-panel-text left-align">
-                      <div className="text-small">{unit}</div>
-                      <div className="text-large">{name}</div>
-                    </div>
                   </div>
                   <div className="col s2" style={{ marginTop: '-47px' }}>
                     <div className="card-panel-text center-align">

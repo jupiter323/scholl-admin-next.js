@@ -953,11 +953,12 @@ export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,
     {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
       },
-    },
-  )
+    })
     .then(res => res.json())
     .then(({ data }) => {
       const { units = [] } = data;
