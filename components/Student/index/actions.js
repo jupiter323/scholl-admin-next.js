@@ -36,11 +36,14 @@ import {
   SET_UNIT_FILTER_OPTIONS,
   SET_ACTIVE_STUDENT_TOKEN,
   ASSIGN_STUDENT_LESSON,
+  RESET_STUDENT_LESSONS,
   UNASSIGN_STUDENT_LESSON,
+  RESCHEDULE_STUDENT_LESSONS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
   SET_ACTIVE_LESSON,
   SET_OPEN_ANSWERSHEET_STATUS,
+  UPDATE_STUDENT_ACTIVATION,
 } from "./constants";
 
 export function fetchStudents() {
@@ -282,11 +285,20 @@ export const assignLessonToStudent = (lesson) => ({
   lesson,
 });
 
+export const resetStudentLessons = (lessons) => ({
+  type: RESET_STUDENT_LESSONS,
+  lessons,
+});
+
 export const unAssignLessonToStudent = (lesson) => ({
   type: UNASSIGN_STUDENT_LESSON,
   lesson,
 });
 
+export const rescheduleStudentLessons = (studentLessonData) => ({
+  type: RESCHEDULE_STUDENT_LESSONS,
+  studentLessonData,
+});
 export const addAllLessons = (mappedLessons) => ({
   type: ADD_ALL_LESSONS,
   mappedLessons,
@@ -310,3 +322,7 @@ export const setOpenAnswerSheetStatus = (value) => {
     value
   }
 }
+export const updateStudentActivation = (studentInfo) => ({
+  type: UPDATE_STUDENT_ACTIVATION,
+  studentInfo,
+});

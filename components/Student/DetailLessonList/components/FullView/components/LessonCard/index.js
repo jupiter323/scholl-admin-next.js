@@ -35,6 +35,7 @@ const LessonCard = props => {
   const {
     lesson,
     lesson: {
+      id,
       name,
       drill_page: drillPage,
       practice_page: practicePage,
@@ -64,7 +65,8 @@ const LessonCard = props => {
     },
     onOpenModal,
     onCloseDropdown,
-    handleRescheduleModalOpen
+    handleRescheduleModalOpen,
+    handleResetLesson
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
@@ -102,7 +104,6 @@ const LessonCard = props => {
   return (
     <React.Fragment>
       <div className='card-main-col col s12 m8 l7 xl5'>
-        {/* <div className={getLessonActivityStatus(status)}> */}
         <div className={getLessonActivityStatus(props.lesson.lesson_id ? "assigned" : "notassigned")}>
           <div className='card-panel'>
             <div className='card-panel-row row'>
@@ -128,7 +129,7 @@ const LessonCard = props => {
                       href='#'
                       data-target='dropdown01'
                       onClick={(e) => {
-                        e.preventDefault()
+                        e.preventDefault();
                         onSetDropdown(dropdownIsOpen)
                       }}
                     >
@@ -145,7 +146,7 @@ const LessonCard = props => {
                             transform: "scaleX(1) scaleY(1)"
                           }}
                         >
-                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.handleUnassignLesson, [lesson.id])}
+                          {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.handleUnassignLesson, handleResetLesson, [lesson.id])}
                         </ul>
                       </ClickOffComponentWrapper>
                     </If>
@@ -161,13 +162,12 @@ const LessonCard = props => {
                   <div className='chart-holder' style={{ width: "140px", height: "95px" }}>
                     <Doughnut
                       data={
-                        completedAt
+                        completedAt && scoring
                           ? () => data(scoring.correct_count, scoring.question_count, scoring.grade ? scoring.grade : 'POOR')
                           : completedProblems
                             ? () => data(completedProblems, problems, status)
                             : () => data(0, 1, "ASSIGNED")
                       }
-                      // height={210}
                       options={{
                         circumference: Math.PI,
                         rotation: Math.PI,
@@ -218,41 +218,6 @@ const LessonCard = props => {
                     {completedAt ? (
                       <dt /*style={{ float: "right", clear: "both" }}*/>Completed: <time dateTime={completedAt}>{moment(completedAt).format('MM/DD/YYYY')}</time></dt>
                     ) : ""}
-                    {/* <Choose>
-                      <When condition={true}>
-                        <dt></dt>
-                        <dd></dd>
-                      </When>
-                      <Otherwise>
-                        <dt style={{ float: "right", clear: "both" }}>Available:</dt>
-                        <dd>
-                          <time dateTime={dueAt}>{dueAt}</time>
-                        </dd>
-                      </Otherwise>
-                    </Choose>
-
-                    <Choose>
-                      <When condition={assigned || status === "SCHEDULED"}>
-                        <dt>No Due Date</dt>
-                      </When>
-                      <Otherwise>
-                        <dt style={{ float: "right", clear: "both" }}>Due:</dt>
-                        <dd>
-                          <time dateTime={dueAt}>{dueAt}</time>
-                        </dd>
-                      </Otherwise>
-                    </Choose>
-                    <Choose>
-                      <When condition={false}>
-                        <dt>No Due Date</dt>
-                      </When>
-                      <Otherwise>
-                        <dt style={{ float: "right", clear: "both" }}>Complete:</dt>
-                        <dd>
-                          <time dateTime={dueAt}>{dueAt}</time>
-                        </dd>
-                      </Otherwise>
-                    </Choose> */}
                   </dl>
                 </div>
 
@@ -283,44 +248,8 @@ const LessonCard = props => {
                         )}
                     </When>
                   </Choose>
-
-                  {/* <Choose>
-                    <When condition={status === "COMPLETED"}>
-                      <span
-                        className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                      >
-                        {scoreStatus}
-                      </span>
-                    </When>
-                    <Otherwise>
-                      <span
-                        className={`badge badge-rounded-md ${statusColorMap[status]} white-text`}
-                      >
-                        {status}
-                      </span>
-                    </Otherwise>
-                  </Choose> */}
                 </div>
               </div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col s2'>
-              <Checkbox
-                checked={props.lesson.selected}
-                onChecked={onChecked}
-                onUnChecked={onUnChecked}
-                cardId={props.cardId}
-                type='cardCheckBox'
-              />
-            </div>
-            <div className='col s8'>
-              <dl className='dl-horizontal'>
-                <dt>p.</dt>
-                <dd>
-                  ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
-                </dd>
-              </dl>
             </div>
           </div>
         </div>

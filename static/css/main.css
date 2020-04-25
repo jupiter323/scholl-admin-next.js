@@ -36654,6 +36654,12 @@ a.cal-event-week {
   background-color: #d6d6d6;
 }
 
+.overdue-card {
+  background-color: #ffffff;
+  border-color: red;
+  color: red;
+}
+
 @media (max-device-width: 480px) {
   .sp-color {
     right: 40%;

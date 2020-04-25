@@ -216,6 +216,7 @@ export const createStudentApi = student => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(studentPayload),
   })
@@ -229,10 +230,11 @@ export const updateStudentActivationApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
-    .then(res => res.json())
+    .then(res => res.status)
     .catch(err => err);
 
 export const updateStudentAddressApi = body =>
@@ -972,13 +974,6 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
-
-// lesson = {
-//   "student_id": "string",
-//   "lesson_id": "string",
-//   "assignment_date": "Unknown Type: date",
-//   "due_date": "Unknown Type: date"
-// }
 export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",
@@ -1011,9 +1006,38 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       return studentLessons;
     });
 
-export const unAssignLessonFromStudentApi = lesson => {
+export const resetStudentLessonsApi = (lessons) => {
+  fetch(`${API_URL}/api/commands/reset-student-lessons`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+export const unAssignLessonFromStudentApi = lessons => {
   fetch(`${API_URL}/api/commands/unassign-lesson-from-student`, {
     method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const rescheduleStudentLessonsApi = (lesson) =>
+  fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
+    method: "PATCH",
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -1024,7 +1048,7 @@ export const unAssignLessonFromStudentApi = lesson => {
   })
     .then(res => res.json())
     .catch(err => err);
-};
+
 export const fetchStudentLessonApi = (student_id, lesson_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}`, {
     headers: {

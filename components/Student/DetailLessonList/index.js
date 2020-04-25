@@ -36,6 +36,7 @@ import ListView from "./components/ListView";
 import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
+
 import {
   getLessonList,
   getStudentLessonList,
@@ -405,10 +406,8 @@ class DetailLessonList extends React.Component {
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
           onCheckAll={this.onCheckAll}
-          onCheckLesson={this.onCheckLesson}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
-          onRenderDropdown={renderDropdownOptions}
           dropdownIsOpen={this.state.dropdownIsOpen}
           onOpenModal={this.onOpenModal}
           onCloseDropdown={this.onCloseDropdown}
