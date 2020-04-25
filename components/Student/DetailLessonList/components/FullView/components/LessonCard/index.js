@@ -73,9 +73,10 @@ const LessonCard = props => {
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
 
-  const onOpenDetailModal = async() => {
-    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson} = props;
-    if (lesson.scoring || lesson.problems) {
+  const onOpenDetailModal = async () => {
+    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson } = props;
+    console.log('lesson:',lesson)
+    if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
       onSetIsVisibleTopbar(false);
       onSetActiveLesson(lesson);
       onSetOpenAnswerSheetStatus(true)
