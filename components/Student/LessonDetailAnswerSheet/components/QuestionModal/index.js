@@ -21,6 +21,7 @@ class QuestionModal extends React.Component {
       originalTestProblemId: '',
       videoWatchedTime: 0,
       intervalId: null,
+      watchedVideo: false,
     }
   }
 
@@ -59,10 +60,10 @@ class QuestionModal extends React.Component {
   }
 
   onHandleWatchedVideo = (status) => {
-    console.log('status:', status)
     if (status === 'STARTED') {
       const intervalId = setInterval(this.recordVideoWatchedTime, 1000);
       this.setState({
+        watchedVideo: true,
         intervalId
       })
     } else {
@@ -71,22 +72,24 @@ class QuestionModal extends React.Component {
   }
 
   onCloseQuestionModal = async () => {
-    clearInterval(this.state.intervalId);
     const { onCloseQuestionModal, question: { problem: { id }, }, activeLesson: { id: lessonId }, } = this.props;
-    const { videoWatchedTime } = this.state;
-    const postBody = {
-      problem_id: id,
-      student_lesson_id: lessonId,
-      watched_seconds: videoWatchedTime
+    if (this.state.watchedVideo) {
+      clearInterval(this.state.intervalId);
+      const { videoWatchedTime } = this.state;
+      const postBody = {
+        problem_id: id,
+        student_lesson_id: lessonId,
+        watched_seconds: videoWatchedTime
+      }
+      await addVideoWatchedTime(postBody);
     }
     onCloseQuestionModal();
-    await addVideoWatchedTime(postBody);
   }
 
 
   render() {
-    const { open, question: { video_watched_seconds, problem: { reference_number, video: { url: videoURL, duration } } } } = this.props;
-    const { videoWatchedTime} = this.state;
+    const { open, question: { problem: { reference_number, video: { url: videoURL, duration } } } } = this.props;
+    const { videoWatchedTime } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
