@@ -109,7 +109,7 @@ const LessonCard = props => {
           <div className='card-panel'>
             <div className='card-panel-row row'>
               <div className='icon-col col s2'>
-                <i className={renderLessonIcon(props.lesson.subjects ? props.lesson.subjects.name : "")}></i>
+                <i className={renderLessonIcon(lesson.subjects ? lesson.subjects.name : "")}></i>
               </div>
               <div className='col s9'>
                 <div className='card-panel-text center-left'>
@@ -119,7 +119,7 @@ const LessonCard = props => {
                       {lesson.name}
                     </a>
                   </div>
-                  <div className='text-small'>Subject: {props.subjects ? props.lesson.subjects.name : ''}</div>
+                  <div className='text-small'>Subject: {lesson.subjects ? lesson.subjects.name : ''}</div>
                 </div>
               </div>
               <div className='col s1 right-align'>
@@ -251,6 +251,25 @@ const LessonCard = props => {
                   </Choose>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col s2'>
+              <Checkbox
+                checked={props.lesson.selected}
+                onChecked={onChecked}
+                onUnChecked={onUnChecked}
+                cardId={props.lessonId}
+                type='cardCheckBox'
+              />
+            </div>
+            <div className='col s8'>
+              <dl className='dl-horizontal'>
+                <dt>p.</dt>
+                <dd>
+                  ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
+                </dd>
+              </dl>
             </div>
           </div>
         </div>

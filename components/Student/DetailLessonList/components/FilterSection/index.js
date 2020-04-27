@@ -22,7 +22,7 @@ class FilterSection extends React.Component {
       unitOptions: [{
         label: "Any",
         value: "",
-      },],
+      }],
     };
   }
 
@@ -33,10 +33,10 @@ class FilterSection extends React.Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.unitOptions.length !== 0) {
-      const { unitOptions:newOptions } = nextProps;
+      const { unitOptions: newOptions } = nextProps;
       this.setState({
-        unitOptions:this.state.unitOptions.concat(newOptions)
-      })
+        unitOptions: this.state.unitOptions.concat(newOptions),
+      });
     }
   }
 
@@ -289,7 +289,8 @@ class FilterSection extends React.Component {
                       data-view="view-list"
                       className={currentView === 'list' ? 'active' : ''}
                     >
-                      <a href="#" onClick={() => onChangeView('list')}>List View</a>
+                      {/* @TODO student lesson listview commented out for now */}
+                      {/* <a href="#" onClick={() => onChangeView('list')}>List View</a> */}
                     </li>
                   </ul>
                 </div>
@@ -332,12 +333,12 @@ FilterSection.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   unitOptions: makeSelectUnitFilterOptions(),
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onSetUnitFilterOptions: options => dispatch(setUnitFilterOptions(options)),
   onFetchUnits: () => dispatch(fetchUnits()),
-})
+});
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
