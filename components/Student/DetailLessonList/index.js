@@ -34,7 +34,8 @@ import {
 } from "../../utils/sortFunctions";
 import ListView from "./components/ListView";
 import AssignLessonModal from "./components/AssignLessonModal";
-import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
+import { renderDropdownOptions } from "./components/FullView/components/LessonCard/utils/index";
+import Modal from "../../Modal/index";
 
 import {
   getLessonList,
@@ -48,10 +49,14 @@ import {
   addAllLessons,
   removeAllLessons,
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList } from "../index/selectors";
+import {
+  makeSelectGetLessonList,
+  makeSelectCheckedLessons,
+  makeSelectActiveStudentToken,
+  makeSelectGetStudentLessonList,
+} from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
-
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -74,6 +79,9 @@ class DetailLessonList extends React.Component {
       selectAll: false,
       dropdownIsOpen: false,
       checkedCardIds: [],
+      isConfirmModalOpen: false,
+      prevAssignedLessons: [],
+      lessonsToAssign: {},
     };
   }
 
@@ -156,6 +164,9 @@ class DetailLessonList extends React.Component {
 
   onOpenDropdown = () => this.setState({ dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
+
+  onOpenConfirmModal = () => this.setState({ isConfirmModalOpen: true });
+  onCloseConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
   onClearFilters = () =>
     this.setState({
@@ -430,18 +441,61 @@ class DetailLessonList extends React.Component {
   };
 
   onAssignLesson(lessonDates) {
-    const { dispatchAssignLessonToStudent, dispatchRemoveAllLessons, dispatchUnCheckAllLesson, checkedLessons } = this.props;
+    const { checkedLessons, studentLess } = this.props;
+    // Check if there are lessons to assign
     if (checkedLessons.length <= 0) return null;
-    dispatchAssignLessonToStudent({
+    // Check if that lesson has already been assigned
+    const payload = {
       student_id: this.props.user.id,
       lesson_ids: checkedLessons,
       assignment_date: lessonDates.assignDate,
       due_date: lessonDates.dueDate,
-    });
+    };
+    const prevAssignedLessons = studentLess.filter((lesson) =>
+      checkedLessons.includes(lesson.lesson_id),
+    );
+    console.log("log: prevAssignedLessons", prevAssignedLessons);
+    if (prevAssignedLessons.length > 0) {
+      this.onOpenConfirmModal();
+      return this.setState({
+        prevAssignedLessons,
+        lessonsToAssign: payload,
+      });
+    }
+    this.submitAssignedLesson(payload);
+  }
+
+  submitAssignedLesson = (lessons) => {
+    const {
+      dispatchAssignLessonToStudent,
+      dispatchRemoveAllLessons,
+      dispatchUnCheckAllLesson,
+    } = this.props;
+    this.onCloseConfirmModal();
+    // Dispatch assign lesson to student
+    console.log('log: payload1', lessons);
+    let payload = lessons;
+    if (!payload) {
+      payload = this.state.lessonsToAssign;
+    }
+    console.log('log: payload2', payload);
+    dispatchAssignLessonToStudent(payload);
     // Clear the redux checkedLesson property
     dispatchUnCheckAllLesson(this.getMappableLessons());
     dispatchRemoveAllLessons(this.getMappableLessons());
     this.setState({ selectAll: false });
+  }
+
+  confirmationModal() {
+    return (
+      <Modal
+        open={this.state.isConfirmModalOpen}
+        onConfirm={this.submitAssignedLesson}
+        onClose={this.onCloseConfirmModal}
+        header="Are You Sure?"
+        body="Deleting this location will be permanent"
+      />
+    );
   }
 
   render() {
@@ -454,6 +508,7 @@ class DetailLessonList extends React.Component {
     } = this.state;
     return (
       <React.Fragment>
+        {this.confirmationModal()}
         <FilterSection
           currentView={currentView}
           onChangeView={this.onChangeView}
@@ -494,7 +549,7 @@ DetailLessonList.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
   dispathGetStudentLessonList: bindActionCreators(getStudentLessonList, dispatch),
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
@@ -512,7 +567,6 @@ const mapStateToProps = createStructuredSelector({
   studentLess: makeSelectGetStudentLessonList(),
   checkedLessons: makeSelectCheckedLessons(),
   studentToken: makeSelectActiveStudentToken(),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);

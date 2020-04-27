@@ -973,13 +973,6 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
-
-// lesson = {
-//   "student_id": "string",
-//   "lesson_id": "string",
-//   "assignment_date": "Unknown Type: date",
-//   "due_date": "Unknown Type: date"
-// }
 export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",
