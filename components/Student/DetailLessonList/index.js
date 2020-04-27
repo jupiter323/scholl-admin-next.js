@@ -440,7 +440,7 @@ class DetailLessonList extends React.Component {
     );
   };
 
-  onAssignLesson(lessonDates) {
+  onAssignLesson = (lessonDates) => {
     const { checkedLessons, studentLess } = this.props;
     // Check if there are lessons to assign
     if (checkedLessons.length <= 0) return null;
@@ -454,7 +454,8 @@ class DetailLessonList extends React.Component {
     const prevAssignedLessons = studentLess.filter((lesson) =>
       checkedLessons.includes(lesson.lesson_id),
     );
-    console.log("log: prevAssignedLessons", prevAssignedLessons);
+
+    // If lessons have been assigned before, open modal
     if (prevAssignedLessons.length > 0) {
       this.onOpenConfirmModal();
       return this.setState({
@@ -462,6 +463,7 @@ class DetailLessonList extends React.Component {
         lessonsToAssign: payload,
       });
     }
+    // Move onto sending request
     this.submitAssignedLesson(payload);
   }
 
@@ -473,27 +475,25 @@ class DetailLessonList extends React.Component {
     } = this.props;
     this.onCloseConfirmModal();
     // Dispatch assign lesson to student
-    console.log('log: payload1', lessons);
     let payload = lessons;
     if (!payload) {
       payload = this.state.lessonsToAssign;
     }
-    console.log('log: payload2', payload);
     dispatchAssignLessonToStudent(payload);
     // Clear the redux checkedLesson property
     dispatchUnCheckAllLesson(this.getMappableLessons());
     dispatchRemoveAllLessons(this.getMappableLessons());
-    this.setState({ selectAll: false });
+    this.setState({ selectAll: false, prevAssignedLessons: [], lessonsToAssign: {} });
   }
 
   confirmationModal() {
     return (
       <Modal
         open={this.state.isConfirmModalOpen}
-        onConfirm={this.submitAssignedLesson}
+        onConfirm={() => this.submitAssignedLesson()}
         onClose={this.onCloseConfirmModal}
-        header="Are You Sure?"
-        body="Deleting this location will be permanent"
+        header="Are you sure?"
+        body={`One or more lessons you are assigning to this student have previously been assigned. Assign Lessons anyways?`}
       />
     );
   }
