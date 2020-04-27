@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
@@ -21,6 +22,9 @@ import {
 } from "./utils";
 import Checkbox from "./components/Checkbox";
 import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus } from "../../../../../index/actions";
+import {makeSelectSubjects} from '../../../../../index/selectors'
+
+
 const data = (current, target, status) => ({
   datasets: [
     {
@@ -110,7 +114,7 @@ const LessonCard = props => {
           <div className='card-panel'>
             <div className='card-panel-row row'>
               <div className='icon-col col s2'>
-                <i className={renderLessonIcon(lesson.subjects ? lesson.subjects.name : "")}></i>
+                <i className={renderLessonIcon(lesson.subjects ? lesson.subjects.name : props.subjects[subjectId])}></i>
               </div>
               <div className='col s9'>
                 <div className='card-panel-text center-left'>
@@ -120,7 +124,7 @@ const LessonCard = props => {
                       {lesson.name}
                     </a>
                   </div>
-                  <div className='text-small'>Subject: {lesson.subjects ? lesson.subjects.name : ''}</div>
+                  <div className='text-small'>Subject: {lesson.subjects ? lesson.subjects.name : props.subjects[subjectId]}</div>
                 </div>
               </div>
               <div className='col s1 right-align'>
@@ -290,4 +294,9 @@ const mapDispatchToProps = dispatch => ({
   onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
   onSetOpenAnswerSheetStatus: bindActionCreators(setOpenAnswerSheetStatus, dispatch)
 });
-export default connect(null, mapDispatchToProps)(LessonCard);
+
+const mapStateToProps = createStructuredSelector({
+  subjects: makeSelectSubjects(),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LessonCard);
