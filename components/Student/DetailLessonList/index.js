@@ -36,7 +36,7 @@ import ListView from "./components/ListView";
 import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
-// import ReadWorkBook from '../ReadWorkBook';
+import ReadWorkBook from '../ReadWorkBook';
 
 
 import {
@@ -469,7 +469,11 @@ class DetailLessonList extends React.Component {
               lesson={this.props.activeLesson}
             />
           </When>
-
+          <When condition={activeShowPage === "ReadWorkBook"}>
+            <ReadWorkBook
+              user={this.props.user}
+            />
+          </When>
           <Otherwise>
             <FilterSection
               currentView={currentView}
