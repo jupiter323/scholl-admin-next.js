@@ -41,6 +41,8 @@ import {
   RESCHEDULE_STUDENT_LESSONS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  SET_ACTIVE_LESSON,
+  SET_OPEN_ANSWERSHEET_STATUS,
   UPDATE_STUDENT_ACTIVATION,
 } from "./constants";
 
@@ -307,6 +309,19 @@ export const removeAllLessons = (mappedLessons) => ({
   mappedLessons,
 });
 
+export const setActiveLesson = (activeLesson) => {
+  return {
+    type: SET_ACTIVE_LESSON,
+    activeLesson
+  }
+}
+
+export const setOpenAnswerSheetStatus = (value) => {
+  return {
+    type: SET_OPEN_ANSWERSHEET_STATUS,
+    value
+  }
+}
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
   studentInfo,

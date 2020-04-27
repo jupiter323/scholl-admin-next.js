@@ -28,6 +28,8 @@ import {
   MERGE_STUDENT_LESSON_LISTS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  SET_ACTIVE_LESSON,
+  SET_OPEN_ANSWERSHEET_STATUS,
   RESET_STUDENT_LESSONS_SUCCESS,
   UNASSIGN_STUDENT_LESSON_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
@@ -53,6 +55,8 @@ const initialState = fromJS({
   unitFilterOptions: [],
   activeStudentToken: "",
   checkedLessons: [],
+  activeLesson: null,
+  openAnswerSheet: false,
 });
 
 function studentReducer(state = initialState, action) {
@@ -155,7 +159,10 @@ function studentReducer(state = initialState, action) {
 
     case MERGE_STUDENT_LESSON_LISTS:
       return state.set("lessonList", [...action.payload, ...state.get("lessonList")]);
-
+    case SET_ACTIVE_LESSON:
+      return state.set('activeLesson', action.activeLesson)
+    case SET_OPEN_ANSWERSHEET_STATUS:
+      return state.set('openAnswerSheet', action.value)
     case RESCHEDULE_STUDENT_LESSONS_SUCCESS:
       return state.set(
         "lessonList",

@@ -1,154 +1,221 @@
-/* eslint-disable jsx-a11y/media-has-caption */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import PropTypes from "prop-types";
+import Portal from "../../../../common/Portal";
+import ClickOffComponentWrapper from "../../../../common/ClickOffComponentWrapper";
 
-import Portal from '../../../../Portal';
-import ClickOffComponentWrapper from '../../../../ClickOffComponentWrapper';
-
-import { getAnswerChoiceColors, getAnswerPercentageBreakdownColors } from '../../utils';
-
+import { addStudentLessonProblemFlagApi } from "../../../index/api";
+import { makeSelectActiveLesson } from "../../../index/selectors";
+import RadialBar from "../../../../common/RadialBar";
+import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
+import VideoPlayer from '../VideoPlayer';
+import {
+  addVideoWatchedTime
+} from '../../../index/api';
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      reviewedWithStudent: false,
-    };
-  }
-
-  toggleReviewedStatus = () => this.setState(({ reviewedWithStudent }) => ({ reviewedWithStudent: !reviewedWithStudent }))
-
-  mapAnswerChoices = () => {
-    const { question: { answerChoices, studentAnswer } } = this.props;
-    if (answerChoices[0].answerLetter) {
-      return answerChoices.map(answer => (
-        <li className="answer-block" key={answer.answerLetter}>
-          <div className="answer-box" style={getAnswerChoiceColors(answer.answerLetter, answer.correctAnswer, studentAnswer)}>
-            <b className="answer-circle">{answer.answerLetter}.</b>
-            <span className="answer-text">{answer.answerText}</span>
-          </div>
-        </li>
-      ));
+      status: 'UN_FLAGGED',
+      originalTestProblemId: '',
+      videoWatchedTime: 0,
+      intervalId: null,
+      watchedVideo: false,
     }
-    return answerChoices.map(answer => (
-      <li className="answer-block" key={answer.answerValue}>
-        <div className="answer-box" style={getAnswerChoiceColors(answer.answerValue, answer.correctAnswer, studentAnswer)}>
-          <span className="answer-text" style={{ marginLeft: '30px' }}>{answer.answerValue}</span>
-        </div>
-      </li>
-    ));
   }
 
-  renderAnswerPercentageBreakdown = () => {
-    const { question: { answerChoices, studentAnswer } } = this.props;
-    if (answerChoices[0].answerLetter) {
-      return answerChoices.map(answer => (
-        <li className="informer-block" key={answer.answerLetter}>
-          <div className="informer-box" style={getAnswerPercentageBreakdownColors('half', answer.answerLetter, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>
-            <b className="informer-circle" style={getAnswerPercentageBreakdownColors('full', answer.answerLetter, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>{answer.answerLetter}</b>
-          </div>
-          <b className="informer-value">{answer.answerPercentage}%</b>
-        </li>
-      ));
+  componentWillReceiveProps = (nextProps) => {
+    const { question: { test_problem_id, video_watched_seconds } } = nextProps;
+    const { originalTestProblemId } = this.state;
+    if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
+      const { question: { flag: { status } } } = this.props;
+      this.setState({
+        status: status
+      })
     }
-    return answerChoices.map(answer => (
-      <li className="informer-block" key={answer.answerValue}>
-        <div className="informer-box" style={getAnswerPercentageBreakdownColors('half', answer.answerValue, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>
-          <b className="informer-circle" style={getAnswerPercentageBreakdownColors('full', answer.answerValue, answer.answerPercentage, answer.correctAnswer, studentAnswer)}>{answer.answerValue}</b>
-        </div>
-        <b className="informer-value">{answer.answerPercentage}%</b>
-      </li>
-    ));
+    if (video_watched_seconds) {
+      this.setState({
+        videoWatchedTime: video_watched_seconds
+      })
+    }
   }
+
+  onHandleQuestionFlagStatus = async (_e, status) => {
+    const {
+      activeLesson: { id: lessonId },
+      onChangeFlagState
+    } = this.props;
+    onChangeFlagState(status)
+    const { question: { problem: { id: problemId } } } = this.props;
+    const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: 'FLAGGED' };
+    await addStudentLessonProblemFlagApi(postBody);
+
+  };
+
+  recordVideoWatchedTime = () => {
+    this.setState({
+      videoWatchedTime: this.state.videoWatchedTime + 1,
+    })
+  }
+
+  onHandleWatchedVideo = (status) => {
+    if (status === 'STARTED') {
+      const intervalId = setInterval(this.recordVideoWatchedTime, 1000);
+      this.setState({
+        watchedVideo: true,
+        intervalId
+      })
+    } else {
+      clearInterval(this.state.intervalId);
+    }
+  }
+
+  onCloseQuestionModal = async () => {
+    const { onCloseQuestionModal, question: { problem: { id }, }, activeLesson: { id: lessonId }, } = this.props;
+    if (this.state.watchedVideo) {
+      clearInterval(this.state.intervalId);
+      const { videoWatchedTime } = this.state;
+      const postBody = {
+        problem_id: id,
+        student_lesson_id: lessonId,
+        watched_seconds: videoWatchedTime
+      }
+      await addVideoWatchedTime(postBody);
+    }
+    onCloseQuestionModal();
+  }
+
 
   render() {
-    const { open, onCloseModal, question = {} } = this.props;
-    const { reviewedWithStudent } = this.state;
-    const { topic, questionType, question: questionText, hasVideo, flagged, questionNumber, videoSource, studentNotes, passage, videoThumbnail } = question;
+    const { open, question: { problem: { reference_number, video: { url: videoURL, duration } } } } = this.props;
+    const { videoWatchedTime } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
           <div className="overlay">
-            <ClickOffComponentWrapper onOuterClick={onCloseModal}>
-              <div id="modal_video001" className="modal modal-answer">
+            <ClickOffComponentWrapper onOuterClick={this.onCloseQuestionModal}>
+              <div id="modal_video001" className="modal modal-answer-single">
                 <div className="modal-header row mb-0">
                   <div className="col s10">
-                    <span className="subtitle">{topic}</span>
-                    <span className="title">{questionType} Problem #{questionNumber}</span>
+                    <span className="subtitle">Reading</span>
+                    <span className="title">Problem {reference_number}</span>
                   </div>
                   <div className="col s2 right-align">
-                    <a href="#" className="close modal-close" onClick={onCloseModal}><i className="icon-close-thin"></i></a>
+                    <a href="#!" className="close modal-close" onClick={this.onCloseQuestionModal}>
+                      <i className="icon-close-thin"></i>
+                    </a>
                   </div>
                 </div>
                 <div className="modal-content">
-                  <div className="d-flex row mb-0">
-                    <div className="col s12 l6 order-lg-2">
-                      {hasVideo && (
-                        <div className="card-panel">
-                          <div className="video-frame">
-                            <div className="embed-responsive embed-responsive-16by9">
-                              <video id="video001" className="in-modal embed-responsive-item" data-current-time="0" poster={videoThumbnail} preload="metadata" controls playsInline>
-                                <source type="video/mp4" src={videoSource} />
-                              </video>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      <div className="card-panel">
-                        <div className="panel-block">
-                          <div className="d-flex align-items-center row mb-0">
-                            {flagged && (
-                              <div className="col">
-                                <span className="status-answer" style={{ color: '#c0272d' }}>
-                                  <i className="icon-flag"></i><b className="status-text">Flagged</b>
-                                </span>
-                              </div>
-                            )}
-                            <div className="col">
-                              <label htmlFor="reviewedWithStudent">
-                                <input
-                                  id="reviewedWithStudent"
-                                  type="checkbox"
-                                  className="filled-in"
-                                  checked={reviewedWithStudent}
-                                  onChange={this.toggleReviewedStatus}
-                                />
-                                <span><b>Reviewed with Student</b></span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="panel-block">
-                          <ul className="informers-list">
-                            {this.renderAnswerPercentageBreakdown()}
-                          </ul>
-                        </div>
-                        <div className="panel-block">
-                          <strong className="subtitle">Student’s Notes:</strong>
-                          <div className="text-content custom-form">
-                            <div className="jcf-scrollable height-22">
-                              <div className="text-holder">
-                                {studentNotes}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <div className="card-panel">  <div className="panel-block">
+                    <div className="embed-responsive">
+                      <VideoPlayer url={videoURL} onHandleWatchedVideo={this.onHandleWatchedVideo} />
                     </div>
-                    <div className="col s12 l6 order-lg-1">
-                      <div className="card-panel">
-                        <div className="text-content custom-form">
-                          <div className="jcf-scrollable height-45">
-                            <div className="text-holder">
-                              {passage}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="card-panel">
-                        <strong className="h3 subtitle">{questionText}</strong>
-                        <ul className="answer-full-list">
-                          {this.mapAnswerChoices()}
+                  </div></div>
+                  <div className="card-panel">
+                    <div className="panel-block">
+                      <strong className="subtitle">Review with My Instructor</strong>
+                      <form action="#" className="answer-form review-form">
+                        <ul>
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                              />
+                              <span>Nope. Got it.</span>
+                            </label>
+                          </li>
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                                onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
+                              />
+                              <span>
+                                <i className="icon-flag red-text text-darken-3" />
+                                Flag for Review
+                              </span>
+                            </label>
+                          </li>
                         </ul>
+                      </form>
+                    </div>
+                    <div className="panel-block" style={{ width: '60%', float: 'left' }}>
+                      <ul className="informers-list">
+                        <li className="informer-block">
+                          <div
+                            className="informer-box"
+                            style={{ width: "10%", backgroundColor: "#e5e5e5" }}
+                          >
+                            <b className="informer-circle" style={{ backgroundColor: "#e5e5e5" }}>
+                              A
+                            </b>
+                          </div>
+                          <b className="informer-value">10%</b>
+                        </li>
+                        <li className="informer-block">
+                          <div
+                            className="informer-box"
+                            style={{ width: "16%", backgroundColor: "#db1d41" }}
+                          >
+                            <b
+                              className="informer-circle"
+                              style={{ backgroundColor: "#db1d41", color: "#fff" }}
+                            >
+                              B
+                            </b>
+                          </div>
+                          <b className="informer-value">16%</b>
+                        </li>
+                        <li className="informer-block">
+                          <div
+                            className="informer-box"
+                            style={{ width: "37%", backgroundColor: "#d3efde" }}
+                          >
+                            <b
+                              className="informer-circle"
+                              style={{ backgroundColor: "#32955c", color: "#fff" }}
+                            >
+                              C
+                            </b>
+                          </div>
+                          <b className="informer-value">37%</b>
+                        </li>
+                        <li className="informer-block">
+                          <div
+                            className="informer-box"
+                            style={{ width: "8%", backgroundColor: "#e5e5e5" }}
+                          >
+                            <b className="informer-circle" style={{ backgroundColor: "#e5e5e5" }}>
+                              D
+                            </b>
+                          </div>
+                          <b className="informer-value">8%</b>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="col panel-block">
+                      <div className="chart-block chart-block-test">
+                        <RadialBar
+                          svgWidth={150}
+                          svgHeight={150}
+                          strokeWidth={10}
+                          maxValue={duration}
+                          currentValue={20}
+                          strokeColor="#00BBF7"
+                        />
+                        <div className="chart-text">
+                          <span className="value" style={{ fontSize: '32px', color: 'rgb(0, 187, 247)' }}>{ConvertSecondsToMinutesSeconds(videoWatchedTime)}</span>
+                          <span className="title" style={{ fontSize: '14px' }}>out of</span>
+                          <span className="description" style={{ fontSize: '32px' }}>
+                            {ConvertSecondsToMinutesSeconds(duration)}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -166,11 +233,45 @@ class QuestionModal extends React.Component {
               right: 0;
               bottom: 0;
               left: 0;
-              z-index: 9999;
+              z-index: 1999;
             }
-            .modal-answer {
+            #modal_video001 {
+              z-index: 2003;
+              opacity: 1;
+              transform: scaleX(1) scaleY(1);
+            }
+            .modal {
+              display: block;
+              background-color: white;
+              position: fixed;
+              top: 10%;
+              left: 10%;
+              box-shadow: none;
+            }
+            .modal-answer-single {
               opacity: 1;
               visibility: visible;
+              display: block !important;
+              top: 0 !important;
+              left: auto;
+              right: 0;
+              height: 100vh;
+              max-weight: none;
+              margin: 0 0 0 auto;
+              border-radius: 0;
+              width: 100%;
+              transform-origin: 100% 0;
+            }
+            .modal-footer {
+              background-color: white;
+            }
+            .modal-header {
+              background: #ec693d
+                linear-gradient(to right, #ec693d 0%, #649aab 61%, #30add6 87%, #18b5e9 100%);
+              color: #fff;
+              padding: 7px 10px 5px;
+              min-height: 50px;
+              display: flex;
             }
           `}
         </style>
@@ -181,8 +282,12 @@ class QuestionModal extends React.Component {
 
 QuestionModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  question: PropTypes.object.isRequired,
-  onCloseModal: PropTypes.func.isRequired,
+  onCloseQuestionModal: PropTypes.func.isRequired,
+  question: PropTypes.object.isRequired
 };
 
-export default QuestionModal;
+const mapStateToProps = createStructuredSelector({
+  activeLesson: makeSelectActiveLesson(),
+})
+
+export default connect(mapStateToProps, null)(QuestionModal);

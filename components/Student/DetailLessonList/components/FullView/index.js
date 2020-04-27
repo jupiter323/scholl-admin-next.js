@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { createStructuredSelector } from "reselect";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
-import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons } from '../../../index/actions';
 import moment from 'moment';
 import { makeSelectCheckedLessons } from '../../../index/selectors';
+import RescheduleModal from "../RescheduleModal";
+
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
