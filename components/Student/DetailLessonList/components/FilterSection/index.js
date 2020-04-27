@@ -9,7 +9,7 @@ import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import lessonSortOptions from '../../utils/lessonSortOptions';
 import { makeSelectUnitFilterOptions } from '../../../index/selectors';
-import { setUnitFilterOptions, fetchUnits } from '../../../index/actions';
+import { setUnitFilterOptions, fetchUnits, fetchSubjects } from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -27,8 +27,9 @@ class FilterSection extends React.Component {
   }
 
   componentDidMount = () => {
-    const { onFetchUnits } = this.props;
+    const { onFetchUnits, onFetchSubjects } = this.props;
     onFetchUnits();
+    onFetchSubjects();
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -338,6 +339,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   onSetUnitFilterOptions: options => dispatch(setUnitFilterOptions(options)),
   onFetchUnits: () => dispatch(fetchUnits()),
+  onFetchSubjects: () => dispatch(fetchSubjects()),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

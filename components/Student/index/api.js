@@ -975,6 +975,19 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
+export const fetchSubjectsApi = () =>
+  fetch(`${API_URL}/api/subjects`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(({ data }) => data.subjects)
+    .catch((err) => console.warn("err", err));
+
 export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",
@@ -1064,9 +1077,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
       console.log({ res });
       return res;
     })
-    .then(({ data }) => {
-      return data;
-    });
+    .then(({ data }) => data);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/section/${section_id}`, {
@@ -1082,9 +1093,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
       console.log({ res });
       return res;
     })
-    .then(({ data }) => {
-      return data;
-    });
+    .then(({ data }) => data);
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
     method: 'POST',

@@ -101,7 +101,8 @@ const LessonCard = props => {
     onOpenModal();
     props.onAddCheckedLesson(props.cardId);
   };
-
+  if (lesson.sections) console.log('log: sections', lesson)
+  // if (lesson.problems && lesson.problems.length > 0 && status === 'STARTED') console.log('log: problem lesson', lesson)
   return (
     <React.Fragment>
       <div className='card-main-col col s12 m8 l7 xl5'>
@@ -282,7 +283,6 @@ LessonCard.propTypes = {
   lesson: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  onChecked: PropTypes.func.isRequired,
   onSetIsVisibleTopbar: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = dispatch => ({

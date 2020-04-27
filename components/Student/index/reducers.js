@@ -33,6 +33,7 @@ import {
   RESET_STUDENT_LESSONS_SUCCESS,
   UNASSIGN_STUDENT_LESSON_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
+  FETCH_SUBJECTS_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -57,6 +58,7 @@ const initialState = fromJS({
   checkedLessons: [],
   activeLesson: null,
   openAnswerSheet: false,
+  subjects: {},
 });
 
 function studentReducer(state = initialState, action) {
@@ -92,7 +94,16 @@ function studentReducer(state = initialState, action) {
       return state.set("lessonList", action.payload);
 
     case FETCH_STUDENT_LESSSON_LIST_SUCCESS:
-      return state.set("studentLessonList", action.payload);
+      return state.set("studentLessonList", action.payload.map(lesson => {
+        if (lesson.problems && lesson.problems.length > 0) {
+          lesson = { ...lesson, type: 'drill' };
+        } else if (lesson.sections) {
+          lesson = { ...lesson, type: 'module' };
+        } else if (lesson.problems && lesson.problems.length <= 0) {
+          lesson = { ...lesson, type: 'reading' };
+        }
+        return lesson;
+      }));
     case SET_UNIT_FILTER_OPTIONS:
       return state.set("unitFilterOptions", action.options);
     case SET_ACTIVE_STUDENT_TOKEN:
@@ -160,9 +171,9 @@ function studentReducer(state = initialState, action) {
     case MERGE_STUDENT_LESSON_LISTS:
       return state.set("lessonList", [...action.payload, ...state.get("lessonList")]);
     case SET_ACTIVE_LESSON:
-      return state.set('activeLesson', action.activeLesson)
+      return state.set('activeLesson', action.activeLesson);
     case SET_OPEN_ANSWERSHEET_STATUS:
-      return state.set('openAnswerSheet', action.value)
+      return state.set('openAnswerSheet', action.value);
     case RESCHEDULE_STUDENT_LESSONS_SUCCESS:
       return state.set(
         "lessonList",
@@ -206,6 +217,9 @@ function studentReducer(state = initialState, action) {
         });
         return updatedLesson;
       }));
+
+    case FETCH_SUBJECTS_SUCCESS:
+      return state.set('subjects', action.payload);
 
     default:
       return state;

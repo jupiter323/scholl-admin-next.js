@@ -44,6 +44,7 @@ import {
   SET_ACTIVE_LESSON,
   SET_OPEN_ANSWERSHEET_STATUS,
   UPDATE_STUDENT_ACTIVATION,
+  FETCH_SUBJECTS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -55,6 +56,12 @@ export function fetchStudents() {
 export function fetchUnits() {
   return {
     type: FETCH_UNITS,
+  };
+}
+
+export function fetchSubjects() {
+  return {
+    type: FETCH_SUBJECTS,
   };
 }
 
@@ -309,19 +316,15 @@ export const removeAllLessons = (mappedLessons) => ({
   mappedLessons,
 });
 
-export const setActiveLesson = (activeLesson) => {
-  return {
-    type: SET_ACTIVE_LESSON,
-    activeLesson
-  }
-}
+export const setActiveLesson = (activeLesson) => ({
+  type: SET_ACTIVE_LESSON,
+  activeLesson,
+});
 
-export const setOpenAnswerSheetStatus = (value) => {
-  return {
-    type: SET_OPEN_ANSWERSHEET_STATUS,
-    value
-  }
-}
+export const setOpenAnswerSheetStatus = (value) => ({
+  type: SET_OPEN_ANSWERSHEET_STATUS,
+  value,
+});
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
   studentInfo,
