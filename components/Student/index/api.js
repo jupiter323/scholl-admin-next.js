@@ -954,6 +954,7 @@ export const fetchUnitsApi = () =>
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`,
       },
     },
   )
@@ -999,7 +1000,7 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
     },
   })
     .then(res => res.json())
-    .then(res => { console.log({ res }); return res; })
+    .then(res => res)
     .then(({ data }) => {
       const studentLessons = data;
       return studentLessons;
