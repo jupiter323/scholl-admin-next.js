@@ -36,6 +36,8 @@ import ListView from "./components/ListView";
 import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
+import ReadWorkBook from '../ReadWorkBook';
+
 
 import {
   getLessonList,
@@ -49,10 +51,10 @@ import {
   addAllLessons,
   removeAllLessons,
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenAnswerSheetStatus } from "../index/selectors";
+import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
-import { setOpenAnswerSheetStatus } from "../index/actions";
+import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -440,8 +442,9 @@ class DetailLessonList extends React.Component {
   }
 
   onCloseDetailModal = () => {
-   const {onSetOpenAnswerSheetStatus} = this.props;
-   onSetOpenAnswerSheetStatus(false)
+    const { onSetOpenActivePage, onSetIsVisibleTopBar } = this.props;
+    onSetIsVisibleTopBar(true);
+    onSetOpenActivePage("");
   }
 
   render() {
@@ -452,19 +455,23 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters,
     } = this.state;
-    
+
     const {
-      openAnswerSheetStatus
+      activeShowPage
     } = this.props;
     return (
       <React.Fragment>
         <Choose>
-          <When condition={openAnswerSheetStatus}>
+          <When condition={activeShowPage === "AnswerSheet"}>
             <LessonDetailAnswerSheet
               onCloseDetailModal={this.onCloseDetailModal}
-              open={openAnswerSheetStatus}
               user={this.props.user}
               lesson={this.props.activeLesson}
+            />
+          </When>
+          <When condition={activeShowPage === "ReadWorkBook"}>
+            <ReadWorkBook
+              user={this.props.user}
             />
           </When>
           <Otherwise>
@@ -523,7 +530,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
   dispatchAddAllLessons: bindActionCreators(addAllLessons, dispatch),
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
-  onSetOpenAnswerSheetStatus:bindActionCreators(setOpenAnswerSheetStatus, dispatch),
+  onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
+  onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
@@ -532,7 +540,7 @@ const mapStateToProps = createStructuredSelector({
   checkedLessons: makeSelectCheckedLessons(),
   studentToken: makeSelectActiveStudentToken(),
   activeLesson: makeSelectActiveLesson(),
-  openAnswerSheetStatus: makeSelectOpenAnswerSheetStatus(),
+  activeShowPage: makeSelectOpenActivePage(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
