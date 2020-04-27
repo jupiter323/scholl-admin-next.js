@@ -94,16 +94,7 @@ function studentReducer(state = initialState, action) {
       return state.set("lessonList", action.payload);
 
     case FETCH_STUDENT_LESSSON_LIST_SUCCESS:
-      return state.set("studentLessonList", action.payload.map(lesson => {
-        if (lesson.problems && lesson.problems.length > 0) {
-          lesson = { ...lesson, type: 'drill' };
-        } else if (lesson.sections) {
-          lesson = { ...lesson, type: 'module' };
-        } else if (lesson.problems && lesson.problems.length <= 0) {
-          lesson = { ...lesson, type: 'reading' };
-        }
-        return lesson;
-      }));
+      return state.set("studentLessonList", action.payload);
     case SET_UNIT_FILTER_OPTIONS:
       return state.set("unitFilterOptions", action.options);
     case SET_ACTIVE_STUDENT_TOKEN:

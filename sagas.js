@@ -694,7 +694,16 @@ function* handleFetchStudentLessonList(action) {
     });
     yield put({
       type: MERGE_STUDENT_LESSON_LISTS,
-      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
+      payload: studentLessonList.map(lesson => {
+        if (lesson.problems && lesson.problems.length > 0) {
+          lesson = { ...lesson, type: 'drill', selected: false };
+        } else if (lesson.sections) {
+          lesson = { ...lesson, type: 'module', selected: false };
+        } else if (lesson.problems && lesson.problems.length <= 0) {
+          lesson = { ...lesson, type: 'reading', selected: false };
+        }
+        return lesson;
+      }),
     });
   } catch (error) {
     console.warn("Error occurred in the handleFetchStudentLesson saga", error);
