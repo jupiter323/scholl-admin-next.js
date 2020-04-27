@@ -44,6 +44,7 @@ const LessonCard = props => {
       drill_page: drillPage,
       practice_page: practicePage,
       starting_page: startingPage,
+      ending_page: endingPage,
       status,
       time_estimate: timeEstimate,
       subject_id: subjectId,
@@ -105,8 +106,7 @@ const LessonCard = props => {
     onOpenModal();
     props.onAddCheckedLesson(props.cardId);
   };
-  if (lesson.sections) console.log('log: sections', lesson)
-  // if (lesson.problems && lesson.problems.length > 0 && status === 'COMPLETED') console.log('log: problem lesson', lesson)
+  if (lesson.type === "module" && status==="STARTED") console.log('log: module', lesson)
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -183,43 +183,62 @@ const LessonCard = props => {
               <div className="col s6">
                 <div className="chart-container">
                   <div className="chart-holder" style={{ width: "140px", height: "95px" }}>
-                    <Doughnut
-                      data={
-                        completedAt && scoring
-                          ? () =>
-                              data(
-                                scoring.correct_count,
-                                scoring.question_count,
-                                scoring.grade ? scoring.grade : "POOR"
-                              )
-                          : completedProblems
-                          ? () => data(completedProblems, problems, status)
-                          : () => data(0, 1, "ASSIGNED")
-                      }
-                      options={{
-                        circumference: Math.PI,
-                        rotation: Math.PI,
-                        cutoutPercentage: 60,
-                        tooltips: false,
-                      }}
-                    />
-                    {renderProblemCount(
-                      status,
-                      scoring.grade ? scoring.grade : "POOR",
-                      scoring.percentage_correct,
-                      problems.length,
-                      0
-                    )}
+                    <Choose>
+                      <When condition={lesson.type !== "reading"}>
+                        <Doughnut
+                          data={
+                            completedAt && scoring
+                              ? () =>
+                                  data(
+                                    scoring.correct_count,
+                                    scoring.question_count,
+                                    scoring.grade ? scoring.grade : "POOR"
+                                  )
+                              : completedProblems
+                              ? () => data(completedProblems, problems, status)
+                              : () => data(0, 1, "ASSIGNED")
+                          }
+                          options={{
+                            circumference: Math.PI,
+                            rotation: Math.PI,
+                            cutoutPercentage: 60,
+                            tooltips: false,
+                          }}
+                        />
+                        {lesson.type === 'drill' && renderProblemCount(
+                          status,
+                          scoring.grade ? scoring.grade : "POOR",
+                          scoring.percentage_correct,
+                          problems.length,
+                          lesson.problems.filter(problem => problem.answered).length
+                        )}
+                        {lesson.type === 'module' && renderProblemCount(
+                          status,
+                          scoring.grade ? scoring.grade : "POOR",
+                          scoring.percentage_correct,
+                          lesson.sections.length,
+                          lesson.sections.filter(section => section.status === 'COMPLETED').length
+                        )}
+                      </When>
+                      <Otherwise>
+                        <p style={{ paddingTop: "25%", fontWeight: "bold" }}>
+                          No Scoring For Reading Lessons.
+                        </p>
+                      </Otherwise>
+                    </Choose>
                   </div>
+
                   <div className="chart-row">
                     <div className="chart-col chart-start"></div>
                     <div className="chart-col chart-end">
                       <span className="amount" style={{ color: chartColorMap[status] }}>
                         <Choose>
-                          <When condition={status === "COMPLETED"}>
+                          <When condition={status === "COMPLETED" && lesson.type === "drill"}>
                             0 of {scoring.question_count}
                           </When>
-                          <When condition={status === "STARTED"}>0 of {problems.length}</When>
+                          <When condition={status === "STARTED" && lesson.type === "drill"}>
+                            0 of {problems.length}
+                          </When>
                         </Choose>
                       </span>
                     </div>
@@ -230,22 +249,29 @@ const LessonCard = props => {
                       <dd>{timeEstimate ? `${timeEstimate} mins` : "None"}</dd>
                     </dl>
                     <Choose>
-                      <When condition={lesson.type === "reading" || lesson.type === "module"}></When>
+                      <When
+                        condition={lesson.type === "reading" || lesson.type === "module"}
+                      ></When>
                       <When condition={lesson.type === "drill"}>
+                        <dl className="dl-horizontal">
+                          <dt>Problems:</dt>
+                          <dd>{lesson.problems.length}</dd>
+                        </dl>
+                      </When>
+                      <Otherwise>
                         <dl className="dl-horizontal">
                           <dt>Problems:</dt>
                           <dd>{lessonProblems && lessonProblems.length}</dd>
                         </dl>
-                      </When>
-                      {/* <dl className="dl-horizontal">
-                        <dt>Problems:</dt>
-                        <dd>{lessonProblems && lessonProblems.length}</dd>
-                      </dl> */}
+                      </Otherwise>
                     </Choose>
                   </div>
                 </div>
               </div>
-              <div className="col s6 d-flex align-items-center left-align">
+              <div
+                className="col s6 d-flex align-items-center left-align"
+                style={{ height: "100px" }}
+              >
                 <div className="dates">
                   <dl className="row">
                     {assignment_date && (
@@ -282,36 +308,58 @@ const LessonCard = props => {
 
                 <div className="align-self-end">
                   <Choose>
-                    <When condition={props.lesson.lesson_id}>
-                      {status === "COMPLETED" ? (
-                        <span
-                          style={{
-                            backgroundColor: `${
-                              props.scoring
-                                ? gradeColorMap[props.scoring.grade]
-                                : gradeColorMap["POOR"]
-                            }`,
-                          }}
-                          className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
-                        >
-                          {scoring.grade ? scoring.grade : "POOR"}
-                        </span>
-                      ) : (
-                        <span
-                          style={
-                            status === "OVERDUE"
-                              ? {
-                                  backgroundColor: `#fff`,
-                                  borderColor: "red",
-                                  color: "red",
-                                }
-                              : { backgroundColor: `#212121`, color: "white" }
-                          }
-                          className={`badge badge-rounded-md ${statusColorMap[status]} `}
-                        >
-                          {status}
-                        </span>
-                      )}
+                    {/* If this is an assigned student lesson */}
+                    <When condition={lesson.lesson_id}>
+                      <Choose>
+                        <When condition={status === "COMPLETED" && lesson.type === "reading"}>
+                          <span
+                            style={{
+                              backgroundColor: `#74b287`,
+                            }}
+                            className={`badge badge-rounded-md white-text`}
+                          >
+                            {status}
+                          </span>
+                        </When>
+                        <When condition={status === "COMPLETED"}>
+                          <span
+                            style={{
+                              backgroundColor: `${
+                                props.scoring
+                                  ? gradeColorMap[props.scoring.grade]
+                                  : gradeColorMap["POOR"]
+                              }`,
+                            }}
+                            className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                          >
+                            {scoring.grade ? scoring.grade : "POOR"}
+                          </span>
+                        </When>
+                        <When condition={status === "OVERDUE"}>
+                          <span
+                            style={
+                              status === "OVERDUE"
+                                ? {
+                                    backgroundColor: `#fff`,
+                                    borderColor: "red",
+                                    color: "red",
+                                  }
+                                : { backgroundColor: `#212121`, color: "white" }
+                            }
+                            className={`badge badge-rounded-md ${statusColorMap[status]} `}
+                          >
+                            {status}
+                          </span>
+                        </When>
+                        <Otherwise>
+                          <span
+                            style={{ backgroundColor: `#212121`, color: "white" }}
+                            className={`badge badge-rounded-md ${statusColorMap[status]} `}
+                          >
+                            {status}
+                          </span>
+                        </Otherwise>
+                      </Choose>
                     </When>
                   </Choose>
                 </div>
@@ -331,9 +379,18 @@ const LessonCard = props => {
             <div className="col s8">
               <dl className="dl-horizontal">
                 <dt>p.</dt>
-                <dd>
-                  ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
-                </dd>
+                <Choose>
+                  <When condition={lesson.type === "module"}>
+                    <dd>
+                      ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
+                    </dd>
+                  </When>
+                  <Otherwise>
+                    <dd>
+                      ({startingPage} - {endingPage}) ({"Starting"} - {"Ending"})
+                    </dd>
+                  </Otherwise>
+                </Choose>
               </dl>
             </div>
           </div>
