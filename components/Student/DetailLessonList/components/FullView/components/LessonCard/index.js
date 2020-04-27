@@ -20,7 +20,7 @@ import {
   gradeColorMap,
 } from "./utils";
 import Checkbox from "./components/Checkbox";
-import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus } from "../../../../../index/actions";
+import { setIsVisibleTopBar, setActiveLesson, setOpenActivePage } from "../../../../../index/actions";
 const data = (current, target, status) => ({
   datasets: [
     {
@@ -74,12 +74,11 @@ const LessonCard = props => {
   const [dropdownIsOpen, toggleDropdown] = useState(false);
 
   const onOpenDetailModal = async () => {
-    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson } = props;
-    console.log('lesson:',lesson)
+    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
     if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
       onSetIsVisibleTopbar(false);
       onSetActiveLesson(lesson);
-      onSetOpenAnswerSheetStatus(true)
+      onSetOpenActivePage("AnswerSheet")
     }
   }
   const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
@@ -269,6 +268,6 @@ LessonCard.propTypes = {
 const mapDispatchToProps = dispatch => ({
   onSetIsVisibleTopbar: bindActionCreators(setIsVisibleTopBar, dispatch),
   onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
-  onSetOpenAnswerSheetStatus: bindActionCreators(setOpenAnswerSheetStatus, dispatch)
+  onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch)
 });
 export default connect(null, mapDispatchToProps)(LessonCard);
