@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { createStructuredSelector } from "reselect";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
-import RescheduleModal from "../RescheduleModal";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
-import { rescheduleStudentLessons } from '../../../index/actions';
+import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons } from '../../../index/actions';
 import moment from 'moment';
 import { makeSelectCheckedLessons } from '../../../index/selectors';
+import RescheduleModal from "../RescheduleModal";
+
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
@@ -29,6 +30,7 @@ const FullView = props => {
     onOpenDropdown,
     onCloseDropdown,
     renderDropdownOptions,
+    checkedCardIds,
   } = props;
 
   const mapLessons = () => lessons.map((lesson, index) => (
@@ -49,6 +51,8 @@ const FullView = props => {
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
       onAddAssignLessonIds={props.onAddAssignLessonIds}
+      handleResetLesson={handleResetLesson}
+      handleUnassignLesson={handleUnassignLesson}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -68,8 +72,26 @@ const FullView = props => {
       assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
     }));
-    dispathRescheduleStudentLessons(payload);
-    toggleRescheduleModal(!openRescheduleModal);
+    if (payload.length > 0 && typeof payload === 'object') {
+      dispathRescheduleStudentLessons(payload);
+      toggleRescheduleModal(!openRescheduleModal);
+    }
+  };
+
+  const handleUnassignLesson = lessonIds => {
+    const { dispathUnAssignLessonToStudent } = props;
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
+      dispathUnAssignLessonToStudent(lessonIds);
+      onCloseDropdown();
+    }
+  };
+
+  const handleResetLesson = lessonIds => {
+    const { dispathResetStudentLessons } = props;
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
+      dispathResetStudentLessons(lessonIds);
+      onCloseDropdown();
+    }
   };
 
   return (
@@ -121,7 +143,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, props.checkedCardIds)}
+                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>
@@ -139,12 +161,13 @@ FullView.propTypes = {
   user: PropTypes.object.isRequired,
   onCloneLesson: PropTypes.func.isRequired,
   onDeleteLesson: PropTypes.func.isRequired,
-  onCheckLesson: PropTypes.func.isRequired,
   onCheckAll: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   dispathRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
+  dispathUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
+  dispathResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

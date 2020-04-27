@@ -226,7 +226,7 @@ class NewClassModal extends React.Component {
                                     {!locations.length && (
                                       <div className="add-box">
                                         <div className="add-box-holder">
-                                          <a href="#" lassName="btn-floating waves-effect waves-light green lighten-1" onClick={this.onOpenLocationModal}><i className="material-icons">add</i></a>
+                                          <a href="#" className="btn-floating waves-effect waves-light green lighten-1" onClick={this.onOpenLocationModal}><i className="material-icons">add</i></a>
                                         </div>
                                       </div>)}
                                     {locations.map((location, index) => (
@@ -264,7 +264,7 @@ class NewClassModal extends React.Component {
                                       {!instructors.length && (
                                         <div className="add-box">
                                           <div className="add-box-holder">
-                                            <a href="#" lassName="btn-floating waves-effect waves-light green lighten-1" onClick={this.onOpenInstructorModal}><i className="material-icons">add</i></a>
+                                            <a href="#" className="btn-floating waves-effect waves-light green lighten-1" onClick={this.onOpenInstructorModal}><i className="material-icons">add</i></a>
                                           </div>
                                         </div>)}
                                       {instructors.map((instructor, index) => (

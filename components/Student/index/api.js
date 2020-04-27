@@ -230,10 +230,11 @@ export const updateStudentActivationApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
-    .then(res => res.json())
+    .then(res => res.status)
     .catch(err => err);
 
 export const updateStudentAddressApi = body =>
@@ -952,12 +953,12 @@ export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,
     {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-    },
-  )
+    })
     .then(res => res.json())
     .then(({ data }) => {
       const { units = [] } = data;
@@ -1006,7 +1007,36 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
       return studentLessons;
     });
 
-export const rescheduleStudentLessonsApi = (studentLessonData) =>
+export const resetStudentLessonsApi = (lessons) => {
+  fetch(`${API_URL}/api/commands/reset-student-lessons`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+export const unAssignLessonFromStudentApi = lessons => {
+  fetch(`${API_URL}/api/commands/unassign-lesson-from-student`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(lessons),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const rescheduleStudentLessonsApi = (lesson) =>
   fetch(`${API_URL}/api/commands/reschedule-student-lessons`, {
     method: "PATCH",
     headers: {
@@ -1015,9 +1045,66 @@ export const rescheduleStudentLessonsApi = (studentLessonData) =>
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: studentLessonData,
+    body: JSON.stringify(lesson),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const fetchStudentLessonApi = (student_id, lesson_id) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}`, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
   })
     .then((res) => res.json())
-    .then((res) => res)
-    .then(({ data }) => data)
+    // .then(res => res.text())
+    .then((res) => {
+      console.log({ res });
+      return res;
+    })
+    .then(({ data }) => data);
+
+export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/section/${section_id}`, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then((res) => res.json())
+    // .then(res => res.text())
+    .then((res) => {
+      console.log({ res });
+      return res;
+    })
+    .then(({ data }) => data);
+export const addStudentLessonProblemFlagApi = (body) =>
+  fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+
+export const addVideoWatchedTime = (body) =>
+  fetch(`${API_URL}/api/commands/watch-student-lesson-problem-video`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
     .catch((err) => err);

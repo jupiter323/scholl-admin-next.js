@@ -1,4 +1,5 @@
 import { fromJS } from "immutable";
+import moment from 'moment';
 import {
   SET_STUDENTS,
   SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN,
@@ -27,6 +28,10 @@ import {
   MERGE_STUDENT_LESSON_LISTS,
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
+  SET_ACTIVE_LESSON,
+  SET_OPEN_ANSWERSHEET_STATUS,
+  RESET_STUDENT_LESSONS_SUCCESS,
+  UNASSIGN_STUDENT_LESSON_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
 } from "./constants";
 
@@ -51,6 +56,8 @@ const initialState = fromJS({
   unitFilterOptions: [],
   activeStudentToken: "",
   checkedLessons: [],
+  activeLesson: null,
+  openAnswerSheet: false,
 });
 
 function studentReducer(state = initialState, action) {
@@ -153,7 +160,10 @@ function studentReducer(state = initialState, action) {
 
     case MERGE_STUDENT_LESSON_LISTS:
       return state.set("lessonList", [...state.get('studentLessonList'), ...state.get("unassignedLessonList")]);
-
+    case SET_ACTIVE_LESSON:
+      return state.set('activeLesson', action.activeLesson);
+    case SET_OPEN_ANSWERSHEET_STATUS:
+      return state.set('openAnswerSheet', action.value);
     case RESCHEDULE_STUDENT_LESSONS_SUCCESS:
       return state.set(
         "lessonList",
@@ -172,6 +182,31 @@ function studentReducer(state = initialState, action) {
           return updatedLesson;
         }),
       );
+
+    case UNASSIGN_STUDENT_LESSON_SUCCESS:
+      return state.set('lessonList', state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id)));
+
+    case RESET_STUDENT_LESSONS_SUCCESS:
+      return state.set('lessonList', state.get('lessonList').map(lesson => {
+        let updatedLesson = {};
+        action.payload.forEach((sentLessonId) => {
+          if (sentLessonId === lesson.id) {
+            let status = 'ASSIGNED';
+            if (moment().isAfter(lesson.due_date)) status = 'OVERDUE';
+            if (moment().isBefore(lesson.assigned_date)) status = 'SCHEDULED';
+            return (updatedLesson = {
+              ...lesson,
+              status,
+              challenge_completed_at: null,
+              practice_completed_at: null,
+              completed_at: null,
+              scoring: {},
+            });
+          }
+          if (!updatedLesson.id) return updatedLesson = lesson;
+        });
+        return updatedLesson;
+      }));
 
     default:
       return state;
