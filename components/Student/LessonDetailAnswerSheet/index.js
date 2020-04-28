@@ -113,7 +113,7 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   getReviewedAndFlaggedProblemAmount = (type) => {
-    const amount = 0;
+    let amount = 0;
     if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
       problems.map(section => {
         if (section.flag_status === type) {

@@ -75,7 +75,8 @@ const LessonCard = props => {
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
 
-  const onOpenDetailModal = async () => {
+  const onOpenDetailModal = async (e) => {
+    e.preventDefault()
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson } = props;
     if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
       onSetIsVisibleTopbar(false);
@@ -160,7 +161,7 @@ const LessonCard = props => {
                     {getUnitName()}
                   </div>
                   <div className="text-large">
-                    <a href="#" onClick={onOpenDetailModal}>
+                    <a href="#" onClick={(e) => onOpenDetailModal(e)}>
                       {lesson.name}
                     </a>
                   </div>
