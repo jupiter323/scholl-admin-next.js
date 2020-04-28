@@ -22,7 +22,7 @@ import {
 } from "./utils";
 import Checkbox from "./components/Checkbox";
 import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus } from "../../../../../index/actions";
-import {makeSelectSubjects} from '../../../../../index/selectors'
+import {makeSelectSubjects,makeSelectUnitFilterOptions} from '../../../../../index/selectors'
 
 
 const data = (current, target, status) => ({
@@ -48,15 +48,12 @@ const LessonCard = props => {
       status,
       time_estimate: timeEstimate,
       subject_id: subjectId,
-      // subjects: { name: subjectName },
       unit_id: unitId,
-      // units: { name: unitName },
       lesson_problems: lessonProblems,
       scoreStatus,
       score,
       assigned,
       problems = [],
-      completedProblems = "",
       passage,
       dueDate,
       completionDate,
@@ -80,7 +77,6 @@ const LessonCard = props => {
 
   const onOpenDetailModal = async () => {
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson } = props;
-    console.log('lesson:',lesson)
     if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
       onSetIsVisibleTopbar(false);
       onSetActiveLesson(lesson);
@@ -106,7 +102,43 @@ const LessonCard = props => {
     onOpenModal();
     props.onAddCheckedLesson(props.cardId);
   };
-  if (lesson.type === "module" && status==="STARTED") console.log('log: module', lesson)
+
+  const getUnitName = () => {
+    // Get the unit name of the lesson
+    if (lesson.units) {
+      return lesson.units.name
+    }
+    const lessonUnit = props.units.filter(unit => unit.value === unitId)
+    return (lessonUnit[0] ? lessonUnit[0].label : '') 
+  }
+
+  const graphData = () => {
+    // Determines the graph progress of a completed or started lesson
+    const {type} = lesson;
+    if (status === 'COMPLETED') {
+
+      return data(
+        scoring.correct_count,
+        scoring.question_count,
+        scoring.grade ? scoring.grade : "POOR"
+      )
+
+    } else if (status === 'STARTED' && type === 'drill') {
+
+      const completedProblems = lesson.problems.filter(problem => problem.answered).length
+      return data(completedProblems, lesson.problems.length, status)
+
+    } else if (status === 'STARTED' && type === 'module') {
+
+      const completedSections = lesson.sections.filter(section => section.status === 'COMPLETED').length
+      return data(completedSections, lesson.sections.length, status)
+
+    }
+
+    return data(0, 1, "ASSIGNED")
+  }
+
+  if (lesson.type === "reading" && status==="COMPLETED") console.log('log: module', lesson)
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -125,7 +157,7 @@ const LessonCard = props => {
               <div className="col s9">
                 <div className="card-panel-text center-left">
                   <div className="text-small">
-                    {props.lesson.units ? props.lesson.units.name : ""}
+                    {getUnitName()}
                   </div>
                   <div className="text-large">
                     <a href="#" onClick={onOpenDetailModal}>
@@ -178,7 +210,7 @@ const LessonCard = props => {
               </div>
             </div>
           </div>
-          <div className="card-content" onClick={onOpenDetailModal}>
+          <div className="card-content">
             <div className="d-flex sameheight-all row mb-0">
               <div className="col s6">
                 <div className="chart-container">
@@ -187,16 +219,7 @@ const LessonCard = props => {
                       <When condition={lesson.type !== "reading"}>
                         <Doughnut
                           data={
-                            completedAt && scoring
-                              ? () =>
-                                  data(
-                                    scoring.correct_count,
-                                    scoring.question_count,
-                                    scoring.grade ? scoring.grade : "POOR"
-                                  )
-                              : completedProblems
-                              ? () => data(completedProblems, problems, status)
-                              : () => data(0, 1, "ASSIGNED")
+                            graphData()
                           }
                           options={{
                             circumference: Math.PI,
@@ -222,7 +245,7 @@ const LessonCard = props => {
                       </When>
                       <Otherwise>
                         <p style={{ paddingTop: "25%", fontWeight: "bold" }}>
-                          No Scoring For Reading Lessons.
+                          No Scoring Available For Reading Lessons.
                         </p>
                       </Otherwise>
                     </Choose>
@@ -231,13 +254,10 @@ const LessonCard = props => {
                   <div className="chart-row">
                     <div className="chart-col chart-start"></div>
                     <div className="chart-col chart-end">
-                      <span className="amount" style={{ color: chartColorMap[status] }}>
+                      <span className="amount" style={{ color: chartColorMap[scoring.grade || 'POOR'] }}>
                         <Choose>
-                          <When condition={status === "COMPLETED" && lesson.type === "drill"}>
-                            0 of {scoring.question_count}
-                          </When>
-                          <When condition={status === "STARTED" && lesson.type === "drill"}>
-                            0 of {problems.length}
+                          <When condition={status === "COMPLETED" && (lesson.type === "drill" || lesson.type === 'module')}>
+                            {scoring.correct_count} of {scoring.question_count}
                           </When>
                         </Choose>
                       </span>
@@ -414,6 +434,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = createStructuredSelector({
   subjects: makeSelectSubjects(),
+  units: makeSelectUnitFilterOptions(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonCard);
