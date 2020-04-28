@@ -8,21 +8,18 @@ class AnswerRow extends React.Component {
     super(props);
     this.state = {
       open: false,
-      status: ''
+      status: '',
     };
   }
 
   onChangeFlagState = (status) => {
     this.setState({
-      status
-    })
+      status,
+    });
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
   onCloseQuestionModal = () => this.setState({ open: false });
-
-
-
 
 
   render() {
@@ -78,7 +75,7 @@ class AnswerRow extends React.Component {
 }
 
 AnswerRow.propTypes = {
-  problem: PropTypes.object
+  problem: PropTypes.object,
 };
 
 export default AnswerRow;

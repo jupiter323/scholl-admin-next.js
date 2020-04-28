@@ -35,7 +35,8 @@ import {
 import ListView from "./components/ListView";
 import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import AssignLessonModal from "./components/AssignLessonModal";
-import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
+import { renderDropdownOptions } from "./components/FullView/components/LessonCard/utils/index";
+import Modal from "../../Modal/index";
 
 import {
   getLessonList,
@@ -75,6 +76,9 @@ class DetailLessonList extends React.Component {
       selectAll: false,
       dropdownIsOpen: false,
       checkedCardIds: [],
+      isConfirmModalOpen: false,
+      prevAssignedLessons: [],
+      lessonsToAssign: {},
     };
   }
 
@@ -89,7 +93,7 @@ class DetailLessonList extends React.Component {
     this.props.dispathGetStudentLessonList(postBody);
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (this.state.lessons.length === 0) {
       this.setState({
         lessons: nextProps.lessonList,
@@ -100,13 +104,13 @@ class DetailLessonList extends React.Component {
   /**
    * @param checked {bool}
    */
-  onCheckAll = async checked => {
+  onCheckAll = async (checked) => {
     if (!checked) {
-      await this.props.dispatchCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchCheckAllLesson(this.getMappableLessons());
       await this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      await this.props.dispatchUnCheckAllLesson(checked, this.getMappableLessons());
+      await this.props.dispatchUnCheckAllLesson(this.getMappableLessons());
       await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
@@ -146,15 +150,20 @@ class DetailLessonList extends React.Component {
   // This updates the selected ASSIGNED student lessons in local state
   setCheckedCardIds = () => {
     this.setState({
-      checkedCardIds: this.props.lessonList.filter(lesson => lesson.selected && lesson.lesson_id).map(lesson => lesson.id),
+      checkedCardIds: this.props.lessonList
+        .filter((lesson) => lesson.selected && lesson.lesson_id)
+        .map((lesson) => lesson.id),
     });
-  }
+  };
 
   onOpenModal = () => this.setState({ modalOpen: true });
   onCloseModal = () => this.setState({ modalOpen: false });
 
   onOpenDropdown = () => this.setState({ dropdownIsOpen: true });
   onCloseDropdown = () => this.setState({ dropdownIsOpen: false });
+
+  onOpenConfirmModal = () => this.setState({ isConfirmModalOpen: true });
+  onCloseConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
   onClearFilters = () =>
     this.setState({
@@ -165,17 +174,17 @@ class DetailLessonList extends React.Component {
       unitFilter: "",
       nameFilter: "",
     });
-  onSetSort = sort => this.setState({ sort });
-  onSetFilteredState = lesson => this.setState({ nameFilter: lesson });
-  onUnsetFilteredState = filter => this.setState({ [filter]: "" });
-  onChangeView = view => this.setState({ currentView: view, active: view });
+  onSetSort = (sort) => this.setState({ sort });
+  onSetFilteredState = (lesson) => this.setState({ nameFilter: lesson });
+  onUnsetFilteredState = (filter) => this.setState({ [filter]: "" });
+  onChangeView = (view) => this.setState({ currentView: view, active: view });
 
-  onSetUnitFilter = unit => {
+  onSetUnitFilter = (unit) => {
     this.setState({ unitFilter: unit });
   };
 
   // eslint-disable-next-line consistent-return
-  onSortLessons = lessons => {
+  onSortLessons = (lessons) => {
     const { sort } = this.state;
     switch (sort) {
       case "subjectAscending":
@@ -222,7 +231,7 @@ class DetailLessonList extends React.Component {
         break;
     }
   };
-  onAddUpdatedLessons = lessons => this.setState({ updatedLessons: lessons });
+  onAddUpdatedLessons = (lessons) => this.setState({ updatedLessons: lessons });
 
   onFilterByName = () => {
     const { lessons, nameFilter } = this.state;
@@ -236,15 +245,15 @@ class DetailLessonList extends React.Component {
     }, []);
   };
 
-  onCloneLesson = index => {
+  onCloneLesson = (index) => {
     const { lessons } = this.state;
-    this.setState(prevState => {
+    this.setState((prevState) => {
       prevState.lessons.push(lessons[index]);
       return { lessons: prevState.lessons };
     });
   };
 
-  onDeleteLesson = index => {
+  onDeleteLesson = (index) => {
     const { lessons } = this.state;
     const newLessonsArray = this.arrayItemRemover(lessons, lessons[index]);
     this.setState({ lessons: newLessonsArray });
@@ -260,16 +269,16 @@ class DetailLessonList extends React.Component {
     } = this.state;
     let lessons = allLessons;
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
+      lessons = lessons.filter((lesson) => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
     }
     if (subjectFilters.length && subjectFilters.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => subjectFilters.indexOf(lesson.subjects.name) !== -1);
+      lessons = lessons.filter((lesson) => subjectFilters.indexOf(lesson.subjects.name) !== -1);
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => lesson.lesson_problems.length !== 0);
+      lessons = lessons.filter((lesson) => lesson.lesson_problems.length !== 0);
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
-      lessons = lessons.filter(lesson => unitFilter.indexOf(lesson.units.id) !== -1);
+      lessons = lessons.filter((lesson) => unitFilter.indexOf(lesson.units.id) !== -1);
     }
     return lessons;
   };
@@ -327,20 +336,20 @@ class DetailLessonList extends React.Component {
     let lessons = allLessons;
     if (dueDateFilters.length && dueDateFilters.indexOf("all") === -1) {
       if (dueDateFilters.includes("dueToday")) {
-        lessons = lessons.filter(lesson => lesson.dueDate === moment().format("MM/DD/Y"));
+        lessons = lessons.filter((lesson) => lesson.dueDate === moment().format("MM/DD/Y"));
       }
       if (dueDateFilters.includes("dueNextSession")) {
-        lessons = lessons.filter(lesson =>
+        lessons = lessons.filter((lesson) =>
           moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day"),
         );
       }
       if (dueDateFilters.includes("overdue")) {
-        lessons = lessons.filter(lesson => lesson.overdue === true);
+        lessons = lessons.filter((lesson) => lesson.overdue === true);
       }
       if (dueDateFilters.includes("noDueDate")) {
       }
       if (dueDateFilters.includes("unAssgined")) {
-        lessons = lessons.filter(lesson => lesson.status === 1);
+        lessons = lessons.filter((lesson) => lesson.status === 1);
       }
       return lessons;
     }
@@ -391,8 +400,7 @@ class DetailLessonList extends React.Component {
     this.setState({ [modifiedFilterName]: modifiedFilterUpdatedState });
   };
 
-  arrayItemRemover = (array, value) => array.filter(lesson => lesson !== value);
-
+  arrayItemRemover = (array, value) => array.filter((lesson) => lesson !== value);
 
   renderCurrentView = () => {
     const { active } = this.state;
@@ -414,7 +422,7 @@ class DetailLessonList extends React.Component {
           onOpenDropdown={this.onOpenDropdown}
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
-
+          onAddAssignLessonIds={this.onAddAssignLessonIds}
         />
       );
     }
@@ -428,20 +436,67 @@ class DetailLessonList extends React.Component {
     );
   };
 
-  onAssignLesson(lessonDates) {
-    this.props.checkedLessons.forEach(lessonId => {
-      this.props.dispatchAssignLessonToStudent({
-        student_id: this.props.user.id,
-        lesson_id: lessonId,
-        assignment_date: lessonDates.assignDate,
-        due_date: lessonDates.dueDate,
+  onAssignLesson = (lessonDates) => {
+    const { checkedLessons, studentLess } = this.props;
+    // Check if there are lessons to assign
+    if (checkedLessons.length <= 0) return null;
+    // Check if that lesson has already been assigned
+    const payload = {
+      student_id: this.props.user.id,
+      lesson_ids: checkedLessons,
+      assignment_date: lessonDates.assignDate,
+      due_date: lessonDates.dueDate,
+    };
+    const prevAssignedLessons = studentLess.filter((lesson) =>
+      checkedLessons.includes(lesson.lesson_id),
+    );
+
+    // If lessons have been assigned before, open modal
+    if (prevAssignedLessons.length > 0) {
+      this.onOpenConfirmModal();
+      return this.setState({
+        prevAssignedLessons,
+        lessonsToAssign: payload,
       });
-    });
+    }
+    // Move onto sending request
+    this.submitAssignedLesson(payload);
+  }
+
+  submitAssignedLesson = (lessons) => {
+    const {
+      dispatchAssignLessonToStudent,
+      dispatchRemoveAllLessons,
+      dispatchUnCheckAllLesson,
+    } = this.props;
+    this.onCloseConfirmModal();
+    // Dispatch assign lesson to student
+    let payload = lessons;
+    if (!payload) {
+      payload = this.state.lessonsToAssign;
+    }
+    dispatchAssignLessonToStudent(payload);
+    // Clear the redux checkedLesson property
+    dispatchUnCheckAllLesson(this.getMappableLessons());
+    dispatchRemoveAllLessons(this.getMappableLessons());
+    this.setState({ selectAll: false, prevAssignedLessons: [], lessonsToAssign: {} });
+  }
+
+  confirmationModal() {
+    return (
+      <Modal
+        open={this.state.isConfirmModalOpen}
+        onConfirm={() => this.submitAssignedLesson()}
+        onClose={this.onCloseConfirmModal}
+        header="Are you sure?"
+        body={`One or more lessons you are assigning to this student have previously been assigned. Assign Lessons anyways?`}
+      />
+    );
   }
 
   onCloseDetailModal = () => {
-   const {onSetOpenAnswerSheetStatus} = this.props;
-   onSetOpenAnswerSheetStatus(false)
+    const { onSetOpenAnswerSheetStatus } = this.props;
+    onSetOpenAnswerSheetStatus(false);
   }
 
   render() {
@@ -452,12 +507,13 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters,
     } = this.state;
-    
+
     const {
-      openAnswerSheetStatus
+      openAnswerSheetStatus,
     } = this.props;
     return (
       <React.Fragment>
+        {this.confirmationModal()}
         <Choose>
           <When condition={openAnswerSheetStatus}>
             <LessonDetailAnswerSheet
@@ -498,7 +554,7 @@ class DetailLessonList extends React.Component {
               className="waves-effect waves-teal btn add-btn modal-trigger"
             >
               <i className="material-icons">add</i>Assign Lesson
-        </a>
+            </a>
           </Otherwise>
         </Choose>
       </React.Fragment>
@@ -512,7 +568,7 @@ DetailLessonList.propTypes = {
   openAnswerSheetStatus: PropTypes.bool.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   dispathGetLessonList: bindActionCreators(getLessonList, dispatch),
   dispathGetStudentLessonList: bindActionCreators(getStudentLessonList, dispatch),
   dispathCheckLesson: bindActionCreators(checkLesson, dispatch),
@@ -523,7 +579,7 @@ const mapDispatchToProps = dispatch => ({
   dispatchAssignLessonToStudent: bindActionCreators(assignLessonToStudent, dispatch),
   dispatchAddAllLessons: bindActionCreators(addAllLessons, dispatch),
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
-  onSetOpenAnswerSheetStatus:bindActionCreators(setOpenAnswerSheetStatus, dispatch),
+  onSetOpenAnswerSheetStatus: bindActionCreators(setOpenAnswerSheetStatus, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

@@ -1001,7 +1001,7 @@ export const fetchStudentLessonListApi = (student, studentToken) =>
     },
   })
     .then(res => res.json())
-    .then(res => { console.log({ res }); return res; })
+    .then(res => res)
     .then(({ data }) => {
       const studentLessons = data;
       return studentLessons;
@@ -1064,9 +1064,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
       console.log({ res });
       return res;
     })
-    .then(({ data }) => {
-      return data;
-    });
+    .then(({ data }) => data);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/section/${section_id}`, {
@@ -1082,9 +1080,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
       console.log({ res });
       return res;
     })
-    .then(({ data }) => {
-      return data;
-    });
+    .then(({ data }) => data);
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
     method: 'POST',

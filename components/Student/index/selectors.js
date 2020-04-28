@@ -74,5 +74,5 @@ export {
   makeSelectCheckedLessons,
   makeSelectGetStudentLessonList,
   makeSelectActiveLesson,
-  makeSelectOpenAnswerSheetStatus
+  makeSelectOpenAnswerSheetStatus,
 };

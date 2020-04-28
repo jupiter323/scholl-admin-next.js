@@ -258,15 +258,13 @@ export const checkLesson = (id) => ({
   type: CHECKED_LESSON,
   id,
 });
-export const checkAllLessons = (checked, mappedLessons) => ({
+export const checkAllLessons = (mappedLessons) => ({
   type: CHECK_ALL_LESSONS,
-  checked,
   mappedLessons,
 });
 
-export const unCheckAllLessons = (checked, mappedLessons) => ({
+export const unCheckAllLessons = (mappedLessons) => ({
   type: UNCHECK_ALL_LESSONS,
-  checked,
   mappedLessons,
 });
 
@@ -309,19 +307,15 @@ export const removeAllLessons = (mappedLessons) => ({
   mappedLessons,
 });
 
-export const setActiveLesson = (activeLesson) => {
-  return {
-    type: SET_ACTIVE_LESSON,
-    activeLesson
-  }
-}
+export const setActiveLesson = (activeLesson) => ({
+  type: SET_ACTIVE_LESSON,
+  activeLesson,
+});
 
-export const setOpenAnswerSheetStatus = (value) => {
-  return {
-    type: SET_OPEN_ANSWERSHEET_STATUS,
-    value
-  }
-}
+export const setOpenAnswerSheetStatus = (value) => ({
+  type: SET_OPEN_ANSWERSHEET_STATUS,
+  value,
+});
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
   studentInfo,

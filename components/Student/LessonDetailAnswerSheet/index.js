@@ -63,10 +63,10 @@ class LessonDetailAnswerSheet extends React.Component {
 
   componentDidMount = async () => {
     const { lesson, user: { id: student_id } } = this.props;
-    if (lesson.sections) {//lesson module type
+    if (lesson.sections) { // lesson module type
       this.setState({
-        currentType: "Module"
-      })
+        currentType: "Module",
+      });
       const lesson_id = this.props.lesson.id;
       const { sections } = this.props.lesson;
       sections.map(async section => {
@@ -74,32 +74,32 @@ class LessonDetailAnswerSheet extends React.Component {
         const currentSectionName = section.name;
         if (currentSectionName === "challenge") {
           this.setState({
-            hasChallenge: true
-          })
+            hasChallenge: true,
+          });
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
             challengeProblems: challengeProblems.lesson_problems,
-          })
+          });
         } else {
           this.setState({
-            hasPractice: true
-          })
+            hasPractice: true,
+          });
           const practiceProlems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
             practiceProlems: practiceProlems.lesson_problems,
-          })
+          });
         }
-      })
+      });
     }
     if (lesson.problems && lesson.problems.length !== 0) {
       this.setState({
         currentType: "Drill",
         hasDrill: true,
-      })
+      });
       const drillProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
       this.setState({
         drillProblems,
-      })
+      });
     }
   }
 
@@ -184,9 +184,9 @@ class LessonDetailAnswerSheet extends React.Component {
                     <i className="icon-books"></i>
                   </div>
                   <div className="col s9">
-                    <p className="text-small" style = {{marginBottom:0,fontSize:18}}>Unit2</p>
-                    <p className="text-large" style = {{marginBottom:0,fontSize:24}}>{name}</p>
-                    <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </p>
+                    <p className="text-small" style={{ marginBottom: 0, fontSize: 18 }}>Unit2</p>
+                    <p className="text-large" style={{ marginBottom: 0, fontSize: 24 }}>{name}</p>
+                    <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : `${starting_page}-${ending_page}`} (${this.getTypeLabel()})`} </p>
 
                   </div>
                   <div className="col s2" style={{ marginTop: '-47px' }}>

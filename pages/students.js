@@ -407,7 +407,6 @@ Students.propTypes = {
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
   onSetStudents: PropTypes.func.isRequired,
-  onSetActiveStudentIndex: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -99,7 +99,7 @@ const LessonCard = props => {
 
   const handleAssignLesson = () => {
     onOpenModal();
-    props.onAddCheckedLesson(props.cardId);
+    props.onAddCheckedLesson(props.lessonId);
   };
 
   return (
@@ -115,9 +115,9 @@ const LessonCard = props => {
                 <div className='card-panel-text center-left'>
                   <div className='text-small'>{props.lesson.units ? props.lesson.units.name : ''}</div>
                   <div className='text-large'>
-                    <a href='#' onClick={onOpenDetailModal}>
+                    {status === 'NOTASSIGNED' ? (<p>{lesson.name}</p>) : (<a href='#' onClick={onOpenDetailModal}>
                       {lesson.name}
-                    </a>
+                    </a>)}
                   </div>
                   <div className='text-small'>Subject: {props.subjects ? props.lesson.subjects.name : ''}</div>
                 </div>
@@ -251,6 +251,25 @@ const LessonCard = props => {
                   </Choose>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col s2'>
+              <Checkbox
+                checked={props.lesson.selected}
+                onChecked={onChecked}
+                onUnChecked={onUnChecked}
+                cardId={props.lessonId}
+                type='cardCheckBox'
+              />
+            </div>
+            <div className='col s8'>
+              <dl className='dl-horizontal'>
+                <dt>p.</dt>
+                <dd>
+                  ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
+                </dd>
+              </dl>
             </div>
           </div>
         </div>

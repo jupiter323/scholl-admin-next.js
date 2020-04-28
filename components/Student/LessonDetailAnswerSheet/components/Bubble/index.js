@@ -10,7 +10,7 @@ const styles = {
     backgroundColor: "#db1d41",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   greenFilled: {
     position: "relative",
@@ -20,7 +20,7 @@ const styles = {
     backgroundColor: "#32955c",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   greenBorderOnly: {
     position: "relative",
@@ -30,7 +30,7 @@ const styles = {
     backgroundColor: "#fff",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   plain: {
     position: "relative",
@@ -39,8 +39,8 @@ const styles = {
     borderColor: "#a6a8ab",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
-  }
+    borderRadius: "50%",
+  },
 };
 
 class BubbleGroup extends React.Component {
@@ -51,7 +51,7 @@ class BubbleGroup extends React.Component {
   mapEmptyBubbles = id => {
     const letters = ["A", "B", "C", "D"];
     const {
-      lesson: { answered }
+      lesson: { answered },
     } = this.props;
     return letters.map((letter, index) => (
       <li key={letter}>
@@ -83,7 +83,7 @@ class BubbleGroup extends React.Component {
 
   renderBubbleStyle = index => {
     const {
-      lesson: { is_correct }
+      lesson: { is_correct },
     } = this.props;
     const answerIds = this.props.lesson.problem.answers.map(answer => answer.id);
     const correctAnswerIndex = this.getCorrectAnswerIndex(answerIds);
@@ -105,14 +105,14 @@ class BubbleGroup extends React.Component {
 
   render() {
     const {
-      lesson: { id }
+      lesson: { id },
     } = this.props;
     return <React.Fragment>{this.mapEmptyBubbles(id)}</React.Fragment>;
   }
 }
 
 BubbleGroup.propTypes = {
-  lesson: PropTypes.object.isRequired
+  lesson: PropTypes.object.isRequired,
 };
 
 export default BubbleGroup;
