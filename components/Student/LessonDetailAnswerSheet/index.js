@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
+import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 
@@ -96,9 +97,8 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: "Drill",
         hasDrill: true,
       })
-      const drillProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
       this.setState({
-        drillProblems,
+        drillProblems: lesson.problems,
       })
     }
   }
@@ -160,7 +160,7 @@ class LessonDetailAnswerSheet extends React.Component {
   render() {
     const { challengeProblems, practiceProlems, drillProblems } = this.state;
     const { onCloseDetailModal, user,
-      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime, scoring: { question_count, correct_count } } } = this.props;
+      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
@@ -226,7 +226,7 @@ class LessonDetailAnswerSheet extends React.Component {
             <div className="content-section">
               <div className="row">
                 <div className="container-sm">
-                  <div className="col s12 m6">
+                  {this.props.lesson.status === "COMPLETED" && <div className="col s12 m6">
                     <div className="main-row row">
                       <div className="col s12">
                         <div className="card-block" style={{ margin: '0 auto' }}>
@@ -238,7 +238,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                   <div className="chart-container" style={{ width: 140 }}>
                                     <div className="chart-holder" style={{ width: 140 }}>
                                       <Doughnut
-                                        data={() => data(correct_count, question_count)}
+                                        data={() => data(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count)}
                                         height={140}
                                         width={140}
                                         options={{
@@ -248,9 +248,9 @@ class LessonDetailAnswerSheet extends React.Component {
                                           tooltips: false,
                                         }}
                                       />
-                                      <span className="chart-value" style={{ backgroundColor: getValuesByScore(correct_count, question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(correct_count / question_count * 100)}%</span>
+                                      <span className="chart-value" style={{ backgroundColor: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(this.props.lesson.scoring.correct_count / this.props.lesson.scoring.question_count * 100)}%</span>
                                     </div>
-                                    <div style={{ color: getValuesByScore(correct_count, question_count, 'color'), margin: '45px 45px 0 45px' }}>{correct_count} of {question_count}</div>
+                                    <div style={{ color: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), margin: '45px 45px 0 45px' }}>{this.props.lesson.scoring.correct_count} of {this.props.lesson.scoring.question_count}</div>
                                   </div>
                                 </div>
                                 <div className="col s6">
@@ -263,7 +263,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                       <dt>Problems:</dt>
                                       <dd>{this.getProblemsAmount()}</dd>
                                     </dl>
-                                    <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(correct_count, question_count, 'color'), color: 'white' }}>{getValuesByScore(correct_count, question_count, 'label')}</dl>
+                                    <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), color: 'white' }}>{getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'label')}</dl>
                                   </div>
                                 </div>
                               </div>
@@ -293,27 +293,53 @@ class LessonDetailAnswerSheet extends React.Component {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col s12 m6">
-                    <div className="row" style={{ margin: 0 }}>
-                      <div className="card-block" style={{ margin: '0 auto' }}>
+                  </div>}
+                  <Choose>
+                    <When condition={this.props.lesson.status === "COMPLETED"}>
+                      <div className="col s12 m6">
+                        <div className="row" style={{ margin: 0 }}>
+                          <div className="card-block" style={{ margin: '0 auto' }}>
+                            {challengeProblems.length !== 0 && <div className="main-row row">
+                              <ChallengeQuestions
+                                questions={challengeProblems}
+                              />
+                            </div>}
+                            {practiceProlems.length !== 0 && <div className="main-row row">
+                              <PracticeQuestions
+                                questions={practiceProlems}
+                              />
+                            </div>}
+                            {drillProblems.length !== 0 && <div className="main-row row">
+                              <ChallengeQuestions
+                                questions={drillProblems}
+                              />
+                            </div>}
+                          </div></div>
+                      </div>
+                    </When>
+                    <Otherwise>
+                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
                         {challengeProblems.length !== 0 && <div className="main-row row">
                           <ChallengeQuestions
                             questions={challengeProblems}
                           />
                         </div>}
+                      </div>
+                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
                         {practiceProlems.length !== 0 && <div className="main-row row">
                           <PracticeQuestions
                             questions={practiceProlems}
                           />
                         </div>}
-                        {drillProblems.length !== 0 && <div className="main-row row">
-                          <ChallengeQuestions
-                            questions={drillProblems}
-                          />
-                        </div>}
-                      </div></div>
-                  </div>
+                      </div>
+                      {drillProblems.length !== 0 && <div className="main-row row">
+                        <DrillQuestions
+                          questions={drillProblems}
+                        />
+                      </div>}
+                    </Otherwise>
+                  </Choose>
+
                 </div>
               </div>
             </div>
