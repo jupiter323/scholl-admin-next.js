@@ -1,4 +1,7 @@
 import React from 'react';
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import PracticeQuestions from './components/PracticeQuestions';
@@ -6,6 +9,8 @@ import ChallengeQuestions from './components/ChallengeQuestions';
 import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
+import { makeSelectUnitFilterOptions } from "../index/selectors";
+
 
 const data = (value, total) => ({
   datasets: [{
@@ -157,6 +162,20 @@ class LessonDetailAnswerSheet extends React.Component {
     return typeLabel;
   }
 
+  getUnitNameById = () => {
+    const { units } = this.props;
+    if (units && units.length !== 0) {
+      const unitIds = units.map(unit => unit.value);
+      const currentIndex = unitIds.findIndex(this.getUnitIndexMatchedUnitId);
+      const currentUnit = units[currentIndex];
+      return currentUnit.label;
+    } else {
+      return "Undefind UnitName"
+    }
+  }
+
+  getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
+
   render() {
     const { challengeProblems, practiceProlems, drillProblems } = this.state;
     const { onCloseDetailModal, user,
@@ -176,52 +195,64 @@ class LessonDetailAnswerSheet extends React.Component {
               minWidth: "100%",
             }}
           >
-            <div className="header-row card-panel light-blue lighten-1 white-text">
-
-              <div className="card-panel-row row">
-                <div className="icon-col col s1">
-                  <i className="icon-books"></i>
-                </div>
-                <div className="col s9">
-                  <p className="text-small" style={{ marginBottom: 0, fontSize: 18 }}>Unit2</p>
-                  <p className="text-large" style={{ marginBottom: 0, fontSize: 24 }}>{name}</p>
-                  <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </p>
-
-                </div>
-                <div className="col s2" style={{ marginTop: '-47px' }}>
-                  <div className="card-panel-text center-align">
-                    <div><span className="name" style={{ fontSize: '17px' }}>{firstName} {lastName}</span>  <div className="position-top right-align" style={{ float: 'right' }}>
-                      <div className="icons-row">
-                        <div className="dropdown-block col">
-                          <i className="material-icons dots-icon">more_vert</i>
-                        </div>
-                        <a
-                          href="#"
-                          className="icon-close"
-                          onClick={onCloseDetailModal}
-                          style={{ color: 'white' }}
-                        ></a>
+            <div className="header-box card-panel light-blue lighten-1 white-text">
+              <div className="header-flex-row row mb-0" style={{ width: '100%' }}>
+                <div className="col s12 m7 xl8">
+                  <div className="header-holder">
+                    <div className="header-col">
+                      <div className="icon-col">
+                        <i className="icon-books" />
+                        <span className="text-icon">Lesson</span>
                       </div>
-                    </div></div>
+                    </div>
+                    <div className="header-col">
+                      <div className="card-panel-text">
+                        <div className="text-small">{this.getUnitNameById()}</div>
+                        <h1 className="text-large">{name}</h1>
+                        <div className="text-small">p.{starting_page}{ending_page > starting_page ? `-${ending_page}` : ""}(Reading)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col s9 m4 xl3 position-mobile-left">
+                  <div className="card-panel-text">
+                    <h2 className="text-large">{firstName} {lastName}</h2>
                     <Choose>
-                      <When condition={completed_at}>
-                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                          {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}
-                        </time></div>
+                      <When condition={assignment_date}>
+                        <dl className="text-small dl-horizontal">
+                          <dt>Assigned:</dt>
+                          <dd><time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format("MM/DD/YY")} at ${moment(assignTime).format('hh:mm')}`}</time></dd>
+                        </dl>
                       </When>
-                      <Otherwise>
-                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                          {`Assigned ${assignment_date} at ${assignTime}`}
-                        </time></div>
-                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-28px', fontSize: '17px' }}>
-                          {due_date && (`Due ${due_date} at ${dueTime}`)}
-                        </time></div>
-                      </Otherwise>
+                      <When condition={due_date}>
+                        <dl className="text-small dl-horizontal">
+                          <dt>Due:</dt>
+                          <dd><time dateTime="2019-01-06T16:00">{`${moment(due_date).format("MM/DD/YY")} at ${moment(dueTime).format('hh:mm')}`}</time></dd>
+                        </dl>
+                      </When>
+                      <When condition={completed_at}>
+                        <dl className="text-small dl-horizontal">
+                          <dt>Completed:</dt>
+                          <dd><time dateTime="2019-09-01T06:59">{`${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}</time></dd>
+                        </dl>
+                      </When>
                     </Choose>
                   </div>
                 </div>
+                <div className="col s2 m1 right-align position-mobile-right">
+                  <div className="dropdown-block">
+                    <a className="dropdown-trigger btn" href="#" data-target="dropdown_top"><i className="material-icons dots-icon">more_vert</i></a>
+                  </div>
+                  <div className="close-block">
+                    <a href="#" className="modal-close close" onClick={onCloseDetailModal}><i className="icon-close-thin" /></a>
+                  </div>
+                </div>
               </div>
-
+              <div className='header-row-block card-panel-row row'>
+                <div className='col s12 right-align'>
+                  <h2 className="text-large">DownloadPDF</h2>
+                </div>
+              </div>
             </div>
             <div className="content-section">
               <div className="row">
@@ -357,4 +388,11 @@ LessonDetailAnswerSheet.propTypes = {
   onCloseDetailModal: PropTypes.func.isRequired,
 };
 
-export default LessonDetailAnswerSheet;
+
+const mapStateToProps = createStructuredSelector({
+  units: makeSelectUnitFilterOptions(),
+});
+
+const withConnect = connect(mapStateToProps,null);
+
+export default compose(withConnect)(LessonDetailAnswerSheet);
