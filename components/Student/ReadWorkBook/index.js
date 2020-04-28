@@ -76,26 +76,19 @@ class ReadWorkBook extends React.Component {
                             <div className="col s9 m4 xl3 position-mobile-left">
                                 <div className="card-panel-text">
                                     <h2 className="text-large">{firstName} {lastName}</h2>
-                                    <Choose>
-                                        <When condition={assignment_date}>
-                                            <dl className="text-small dl-horizontal">
-                                                <dt>Assigned:</dt>
-                                                <dd><time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format("MM/DD/YY")} at ${moment(assignTime).format('hh:mm')}`}</time></dd>
-                                            </dl>
-                                        </When>
-                                        <When condition={due_date}>
-                                            <dl className="text-small dl-horizontal">
-                                                <dt>Due:</dt>
-                                                <dd><time dateTime="2019-01-06T16:00">{`${moment(due_date).format("MM/DD/YY")} at ${moment(dueTime).format('hh:mm')}`}</time></dd>
-                                            </dl>
-                                        </When>
-                                        <When condition={completed_at}>
-                                            <dl className="text-small dl-horizontal">
-                                                <dt>Completed:</dt>
-                                                <dd><time dateTime="2019-09-01T06:59">{`${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}</time></dd>
-                                            </dl>
-                                        </When>
-                                    </Choose>
+                                    {assignment_date && <dl className="text-small dl-horizontal">
+                                        <dt>Assigned:</dt>
+                                        <dd><time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format("MM/DD/YY")} at ${moment(assignTime).format('hh:mm')}`}</time></dd>
+                                    </dl>}
+                                    {due_date && <dl className="text-small dl-horizontal">
+                                        <dt>Due:</dt>
+                                        <dd><time dateTime="2019-01-06T16:00">{`${moment(due_date).format("MM/DD/YY")} at ${moment(dueTime).format('hh:mm')}`}</time></dd>
+                                    </dl>}
+                                    {completed_at &&
+                                        <dl className="text-small dl-horizontal">
+                                            <dt>Completed:</dt>
+                                            <dd><time dateTime="2019-09-01T06:59">{`${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}</time></dd>
+                                        </dl>}
                                 </div>
                             </div>
                             <div className="col s2 m1 right-align position-mobile-right">
