@@ -139,6 +139,7 @@ export const searchStudentsApi = filters => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -243,6 +244,7 @@ export const updateStudentAddressApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -255,6 +257,7 @@ export const updateStudentCityApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -267,6 +270,7 @@ export const updateStudentEmailApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -279,6 +283,7 @@ export const updateStudentFirstNameApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -291,6 +296,7 @@ export const updateStudentLastNameApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -303,6 +309,7 @@ export const updateStudentPhoneApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -315,6 +322,7 @@ export const updateStudentStateApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -327,6 +335,7 @@ export const updateStudentZipApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -339,6 +348,7 @@ export const updateStudentTestDueDate = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   }).catch(err => err);
@@ -349,6 +359,7 @@ export const updateStudentTestAssignmentDate = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   }).catch(err => err);
@@ -359,6 +370,7 @@ export const deleteStudentApi = id =>
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify({ student_id: id }),
   })
@@ -371,6 +383,7 @@ export const assignTestToStudentApi = test => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(test),
   })
@@ -884,6 +897,7 @@ export const addStudentAnswerToTestApi = answer =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(answer),
   })
@@ -897,7 +911,7 @@ export const addStudentTestQuestionFlagApi = (body, studentToken) =>
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${studentToken}`,
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
