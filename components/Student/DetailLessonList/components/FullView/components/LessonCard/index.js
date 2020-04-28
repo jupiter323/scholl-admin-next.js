@@ -76,14 +76,12 @@ const LessonCard = props => {
 
   const onOpenDetailModal = async () => {
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
-    if (lesson.status === "COMPLETED") {
-      onSetIsVisibleTopbar(false);
-      onSetActiveLesson(lesson);
-      if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
-        onSetOpenActivePage("AnswerSheet")
-      } else {
-        onSetOpenActivePage("ReadWorkBook")
-      }
+    onSetIsVisibleTopbar(false);
+    onSetActiveLesson(lesson);
+    if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
+      onSetOpenActivePage("AnswerSheet")
+    } else {
+      onSetOpenActivePage("ReadWorkBook")
     }
   }
   const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
