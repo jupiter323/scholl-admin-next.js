@@ -1,1 +1,2 @@
 export const SET_USER_IS_LOGGED = 'SET_USER_IS_LOGGED';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';

@@ -7,7 +7,10 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import Link from "next/link";
 import ActiveLink from "../../utils/ActiveLink";
-import { makeSelectUserIsLogged } from "../User/index/selectors";
+import {
+  makeSelectUserIsLogged,
+  makeSelectCurrentUser,
+} from "../User/index/selectors";
 import { loggedIn } from "../../utils/AuthService";
 
 import { setUserIsLogged } from "../User/index/actions";
@@ -79,7 +82,8 @@ class SideNav extends Component {
   }
 
   render() {
-    const { firstName, lastName } = this.props.user;
+    const { isLogged, currentUser } = this.props;
+    const { first_name: firstName, last_name: lastName } = currentUser;
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
@@ -108,13 +112,13 @@ class SideNav extends Component {
             <div className="text">
               <Link href="/login">
                 <a href="#">
-                  <div className="block white-text">Log Out</div>
+                  <div className="block white-text">{isLogged ? "Log Out" : ""}</div>
                 </a>
               </Link>
               <Link href="/account">
                 <a>
                   <div className="block white-text">
-                    {firstName} {lastName}
+                    {isLogged ? `${firstName} ${lastName}` : ""}
                   </div>
                 </a>
               </Link>
@@ -140,13 +144,14 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   isLogged: makeSelectUserIsLogged(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  { pure: false }
+  { pure: false },
 );
 
 export default compose(withConnect)(SideNav);
