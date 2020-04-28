@@ -1,5 +1,5 @@
 const API_URL = process.env.API_URL;
-
+import { getToken } from '../../../utils/AuthService';
 
 export const _checkStatus = (response) => {
   // raises an error in case response status is not a success
@@ -25,6 +25,19 @@ export const oAuthTokenApi = (data) =>
     .then(data => data)
     .catch(err => err);
 
+export const fetchCurrentUserApi = () =>
+  fetch(`${API_URL}/api/users`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => data)
+    .catch(err => err);
+
 export default [
   oAuthTokenApi,
+  fetchCurrentUserApi,
 ];

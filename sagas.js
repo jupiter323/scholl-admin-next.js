@@ -62,6 +62,10 @@ import {
   UPDATE_INSTRUCTOR_PHONE,
 } from "./components/Instructor/index/constants";
 import {
+  SET_CURRENT_USER,
+  SET_USER_IS_LOGGED,
+} from './components/User/index/constants';
+import {
   setStudents,
   setStudentTests,
   setStudentCompletedTests,
@@ -74,7 +78,7 @@ import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
 
 
-import { studentApi, classApi, instructorApi, lessonApi } from "./api";
+import { studentApi, classApi, instructorApi, lessonApi, userApi } from "./api";
 
 const {
   fetchStudentsApi,
@@ -122,6 +126,7 @@ const {
   updateInstructorPhoneApi,
   createNewInstructorApi,
 } = instructorApi;
+const { fetchCurrentUserApi } = userApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -792,6 +797,24 @@ function* handleRescheduleStudentLessons(action) {
   }
 }
 
+function* watchForFetchCurrentUser() {
+  yield takeEvery(SET_USER_IS_LOGGED, handleFetchCurrentUser);
+}
+
+function* handleFetchCurrentUser() {
+  try {
+    const response = yield call(fetchCurrentUserApi);
+    if (response && response.user) {
+      yield put({
+        type: SET_CURRENT_USER,
+        value: response.user,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchCurrentUser saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -834,5 +857,6 @@ export default function* defaultSaga() {
     watchForUpdateStudentActivation(),
     watchForUnAssignLesson(),
     watchForRescheduleStudentLessons(),
+    watchForFetchCurrentUser(),
   ]);
 }
