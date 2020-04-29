@@ -51,7 +51,7 @@ import {
   addAllLessons,
   removeAllLessons,
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage } from "../index/selectors";
+import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
@@ -260,7 +260,7 @@ class DetailLessonList extends React.Component {
     this.setState({ lessons: newLessonsArray });
   };
   // note: unassigned and incomplete are filtering opposite, but this works for some reason
-  onFilterLessons = () => {
+  onFilterLessons = (mappableLessons) => {
     const {
       subjectFilters,
       unitFilter,
@@ -268,17 +268,21 @@ class DetailLessonList extends React.Component {
       flagFilters,
       lessons: allLessons,
     } = this.state;
+    const { subjects } = this.props;
     let lessons = allLessons;
-    console.log('log: subjectFilters', subjectFilters);
     console.log('log: unitFilter', unitFilter);
     console.log('log: scoreStatusFilters', scoreStatusFilters);
     console.log('log: flagFilters', flagFilters);
-    console.log('log: allLessons', allLessons);
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
       lessons = lessons.filter((lesson) => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
     }
     if (subjectFilters.length && subjectFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => subjectFilters.indexOf(lesson.subjects.name) !== -1);
+      lessons = mappableLessons.filter((lesson) => {
+        if (!lesson.subjects) {
+          return subjectFilters.indexOf(subjects[lesson.subject_id]) !== -1;
+        }
+        return subjectFilters.indexOf(lesson.subjects.name) !== -1;
+      });
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
       lessons = lessons.filter((lesson) => lesson.lesson_problems.length !== 0);
@@ -310,7 +314,7 @@ class DetailLessonList extends React.Component {
       subjectFilters.length ||
       flagFilters.length
     ) {
-      mappableLessons = this.onFilterLessons();
+      mappableLessons = this.onFilterLessons(mappableLessons);
     }
     if (dueDateFilters.length) {
       mappableLessons = this.filterDueDate();
@@ -588,6 +592,7 @@ const mapStateToProps = createStructuredSelector({
   studentToken: makeSelectActiveStudentToken(),
   activeLesson: makeSelectActiveLesson(),
   activeShowPage: makeSelectOpenActivePage(),
+  subjects: makeSelectSubjects(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);
