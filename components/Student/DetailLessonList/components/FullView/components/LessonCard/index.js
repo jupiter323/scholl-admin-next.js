@@ -101,7 +101,7 @@ const LessonCard = props => {
 
   const handleAssignLesson = () => {
     onOpenModal();
-    props.onAddCheckedLesson(props.cardId);
+    props.onAddCheckedLesson(props.lessonId);
   };
 
   const getUnitName = () => {

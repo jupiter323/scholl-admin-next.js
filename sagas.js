@@ -64,6 +64,10 @@ import {
   UPDATE_INSTRUCTOR_PHONE,
 } from "./components/Instructor/index/constants";
 import {
+  SET_CURRENT_USER,
+  SET_USER_IS_LOGGED,
+} from './components/User/index/constants';
+import {
   setStudents,
   setStudentTests,
   setStudentCompletedTests,
@@ -76,7 +80,7 @@ import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
 
 
-import { studentApi, classApi, instructorApi, lessonApi } from "./api";
+import { studentApi, classApi, instructorApi, lessonApi, userApi } from "./api";
 
 const {
   fetchStudentsApi,
@@ -125,6 +129,7 @@ const {
   updateInstructorPhoneApi,
   createNewInstructorApi,
 } = instructorApi;
+const { fetchCurrentUserApi } = userApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -668,7 +673,11 @@ function* handleFetchLesson() {
         payload: lessons.map(lesson => ({
           ...lesson,
           selected: false,
+          status: 'NOTASSIGNED',
         })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
       });
     }
   } catch (error) {
@@ -690,20 +699,10 @@ function* handleFetchStudentLessonList(action) {
     const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
-      payload: studentLessonList,
+      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
     });
     yield put({
       type: MERGE_STUDENT_LESSON_LISTS,
-      payload: studentLessonList.map(lesson => {
-        if (lesson.problems && lesson.problems.length > 0) {
-          lesson = { ...lesson, type: 'drill', selected: false };
-        } else if (lesson.sections) {
-          lesson = { ...lesson, type: 'module', selected: false };
-        } else if (lesson.problems && lesson.problems.length <= 0) {
-          lesson = { ...lesson, type: 'reading', selected: false };
-        }
-        return lesson;
-      }),
     });
   } catch (error) {
     console.warn("Error occurred in the handleFetchStudentLesson saga", error);
@@ -720,7 +719,7 @@ function* watchForAssignLesson() {
 function* handleAssignLesson(action) {
   try {
     yield call(assignLessonToStudentApi, action.lesson);
-    yield put({ type: ASSIGN_STUDENT_LESSON_SUCCESS });
+    yield put({ type: FETCH_STUDENT_LESSON_LIST, postBody: { id: action.lesson.student_id } });
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({
@@ -822,6 +821,24 @@ function* handleFetchSubjects() {
 }
 
 
+function* watchForFetchCurrentUser() {
+  yield takeEvery(SET_USER_IS_LOGGED, handleFetchCurrentUser);
+}
+
+function* handleFetchCurrentUser() {
+  try {
+    const response = yield call(fetchCurrentUserApi);
+    if (response && response.user) {
+      yield put({
+        type: SET_CURRENT_USER,
+        value: response.user,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchCurrentUser saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -865,5 +882,6 @@ export default function* defaultSaga() {
     watchForUnAssignLesson(),
     watchForRescheduleStudentLessons(),
     watchForFetchSubjects(),
+    watchForFetchCurrentUser(),
   ]);
 }

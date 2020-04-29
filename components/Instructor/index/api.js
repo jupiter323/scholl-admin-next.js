@@ -1,11 +1,13 @@
 /* eslint-disable camelcase */
 const API_URL = process.env.API_URL;
+import { getToken } from '../../../utils/AuthService';
 
 export const fetchInstructorsApi = () =>
   fetch(`${API_URL}/api/instructors`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -55,6 +57,7 @@ export const createNewInstructorApi = insturctor =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(insturctor),
   })
@@ -67,6 +70,7 @@ export const updateInstructorFirstNameApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -79,6 +83,7 @@ export const updateInstructorLastNameApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -91,6 +96,7 @@ export const updateInstructorEmailApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -103,6 +109,7 @@ export const updateInstructorStateApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -115,6 +122,7 @@ export const updateInstructorCityApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -127,6 +135,7 @@ export const updateInstructorZipApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -139,6 +148,7 @@ export const updateInstructorAddressApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -151,6 +161,7 @@ export const updateInstructorPhoneApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -163,6 +174,7 @@ export const addInstructorToLocationApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -175,6 +187,7 @@ export const searchInstructorsApi = filters => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())

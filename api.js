@@ -45,6 +45,10 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
   createNewInstructorApi,
 } from './components/Instructor/index/api';
 
+import {
+  fetchCurrentUserApi,
+} from './components/User/index/api';
+
 export const classApi = {
   createClassApi,
   fetchClassesApi,
@@ -93,5 +97,8 @@ export const instructorApi = {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
+};
 
+export const userApi = {
+  fetchCurrentUserApi,
 };

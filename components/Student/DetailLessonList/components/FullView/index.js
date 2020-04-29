@@ -37,7 +37,7 @@ const FullView = props => {
     <LessonCard
       // eslint-disable-next-line react/no-array-index-key
       key={lesson.id}
-      cardId={lesson.lesson_id ? lesson.lesson_id : lesson.id}
+      lessonId={lesson.lesson_id ? lesson.lesson_id : lesson.id}
       uniqueId={lesson.id}
       index={index}
       lesson={lesson}
@@ -50,6 +50,7 @@ const FullView = props => {
       handleRescheduleModalOpen={handleRescheduleModalOpen}
       onOpenModal={onOpenModal}
       onCloseDropdown={onCloseDropdown}
+      onAddAssignLessonIds={props.onAddAssignLessonIds}
       handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
     />
@@ -58,6 +59,10 @@ const FullView = props => {
     onCloseDropdown();
     toggleRescheduleModal(!openRescheduleModal);
     setActiveLesson(activeLesson);
+  };
+
+  const handleAssignLesson = () => {
+    onOpenModal();
   };
 
   const onSaveScheduleChanges = (modalState) => {
@@ -138,7 +143,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, null, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.checkedCardIds)}
+                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

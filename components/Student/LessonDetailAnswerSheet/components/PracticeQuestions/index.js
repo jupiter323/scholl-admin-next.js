@@ -7,9 +7,10 @@ class PracticeQuestions extends React.Component {
     if (this.props.questions.length !== 0) {
       return this.props.questions.map(problem => (
         <Question
-          key={problem.id} problem={problem}
+          key={problem.id}
+          problem={problem}
         />
-      ))
+      ));
     }
   }
 
