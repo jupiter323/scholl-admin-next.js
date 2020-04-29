@@ -123,12 +123,12 @@ class LessonDetailAnswerSheet extends React.Component {
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
       const { challengeProblems, practiceProlems } = this.state;
-      challengeProblems.map(section => {
+      challengeProblems.length !== 0 && challengeProblems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
       });
-      practiceProlems.map(section => {
+      practiceProlems.length !== 0 && practiceProlems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
@@ -164,164 +164,160 @@ class LessonDetailAnswerSheet extends React.Component {
     const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
-        {open && (
-          <div className="wrapper">
-            <div
-              className="card-modal card-main card switcher-section grey lighten-5 modal"
-              style={{
-                zIndex: "1004",
-                display: "block",
-                position: "absolute",
-                top: "0",
-                minHeight: "100%",
-                minWidth: "100%",
-              }}
-            >
-              <div className="header-row card-panel light-blue lighten-1 white-text">
+        <div className="wrapper">
+          <div
+            className="card-modal card-main card switcher-section grey lighten-5 modal"
+            style={{
+              zIndex: "1004",
+              display: "block",
+              position: "absolute",
+              top: "0",
+              minHeight: "100%",
+              minWidth: "100%",
+            }}
+          >
+            <div className="header-row card-panel light-blue lighten-1 white-text">
+              <div className="card-panel-row row">
+                <div className="icon-col col s1">
+                  <i className="icon-books"></i>
+                </div>
+                <div className="col s9">
+                  <p className="text-small" style={{ marginBottom: 0, fontSize: 18 }}>Unit2</p>
+                  <p className="text-large" style={{ marginBottom: 0, fontSize: 24 }}>{name}</p>
+                  <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </p>
 
-                <div className="card-panel-row row">
-                  <div className="icon-col col s1">
-                    <i className="icon-books"></i>
-                  </div>
-                  <div className="col s9">
-                    <p className="text-small" style={{ marginBottom: 0, fontSize: 18 }}>Unit2</p>
-                    <p className="text-large" style={{ marginBottom: 0, fontSize: 24 }}>{name}</p>
-                    <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : `${starting_page}-${ending_page}`} (${this.getTypeLabel()})`} </p>
-
-                  </div>
-                  <div className="col s2" style={{ marginTop: '-47px' }}>
-                    <div className="card-panel-text center-align">
-                      <div><span className="name" style={{ fontSize: '17px' }}>{firstName} {lastName}</span>  <div className="position-top right-align" style={{ float: 'right' }}>
-                        <div className="icons-row">
-                          <div className="dropdown-block col">
-                            <i className="material-icons dots-icon">more_vert</i>
-                          </div>
-                          <a
-                            href="#"
-                            className="icon-close"
-                            onClick={onCloseDetailModal}
-                            style={{ color: 'white' }}
-                          ></a>
+                </div>
+                <div className="col s2" style={{ marginTop: '-47px' }}>
+                  <div className="card-panel-text center-align">
+                    <div><span className="name" style={{ fontSize: '17px' }}>{firstName} {lastName}</span>  <div className="position-top right-align" style={{ float: 'right' }}>
+                      <div className="icons-row">
+                        <div className="dropdown-block col">
+                          <i className="material-icons dots-icon">more_vert</i>
                         </div>
-                      </div></div>
-                      <Choose>
-                        <When condition={completed_at}>
-                          <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                            {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}
-                          </time></div>
-                        </When>
-                        <Otherwise>
-                          <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                            {`Assigned ${assignment_date} at ${assignTime}`}
-                          </time></div>
-                          <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-28px', fontSize: '17px' }}>
-                            {due_date && (`Due ${due_date} at ${dueTime}`)}
-                          </time></div>
-                        </Otherwise>
-                      </Choose>
-                    </div>
+                        <a
+                          href="#"
+                          className="icon-close"
+                          onClick={onCloseDetailModal}
+                          style={{ color: 'white' }}
+                        ></a>
+                      </div>
+                    </div></div>
+                    <Choose>
+                      <When condition={completed_at}>
+                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
+                          {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}
+                        </time></div>
+                      </When>
+                      <Otherwise>
+                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
+                          {`Assigned ${assignment_date} at ${assignTime}`}
+                        </time></div>
+                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-28px', fontSize: '17px' }}>
+                          {due_date && (`Due ${due_date} at ${dueTime}`)}
+                        </time></div>
+                      </Otherwise>
+                    </Choose>
                   </div>
                 </div>
-
               </div>
-              <div className="content-section">
-                <div className="row">
-                  <div className="container-sm">
-                    <div className="col s12 m6">
-                      <div className="main-row row">
-                        <div className="col s12">
-                          <div className="card-block" style={{ margin: '0 auto' }}>
-                            <h3>Performance</h3>
-                            <div className="card-answer card">
-                              <div className="card-content">
-                                <div className="row">
-                                  <div className="col s6">
-                                    <div className="chart-container" style={{ width: 140 }}>
-                                      <div className="chart-holder" style={{ width: 140 }}>
-                                        <Doughnut
-                                          data={() => data(correct_count, question_count)}
-                                          height={140}
-                                          width={140}
-                                          options={{
-                                            circumference: 1.45 * Math.PI,
-                                            rotation: -3.85,
-                                            cutoutPercentage: 55,
-                                            tooltips: false,
-                                          }}
-                                        />
-                                        <span className="chart-value" style={{ backgroundColor: getValuesByScore(correct_count, question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(correct_count / question_count * 100)}%</span>
-                                      </div>
-                                      <div style={{ color: getValuesByScore(correct_count, question_count, 'color'), margin: '45px 45px 0 45px' }}>{correct_count} of {question_count}</div>
-                                    </div>
-                                  </div>
-                                  <div className="col s6">
-                                    <div className="chart-description" style={{ marginTop: "10px" }}>
-                                      <dl className="dl-horizontal" style={{ fontSize: 16 }}>
-                                        <dt>Time Est:</dt>
-                                        <dd>{this.props.lesson.time_estimate ? this.props.lesson.time_estimate : 0}min</dd>
-                                      </dl>
-                                      <dl className="dl-horizontal" style={{ fontSize: 16 }}>
-                                        <dt>Problems:</dt>
-                                        <dd>{this.getProblemsAmount()}</dd>
-                                      </dl>
-                                      <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(correct_count, question_count, 'color'), color: 'white' }}>{getValuesByScore(correct_count, question_count, 'label')}</dl>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="main-row row">
-                        <div className="col s12">
-                          <div className="card-block" style={{ margin: '0 auto' }}>
-                            <h3>Flagged For Review</h3>
-                            <div className="card-answer card">
-                              <div className="card-content">
-                                <div className="row-bordered d-flex row">
-                                  <div className="col s6 badge-block-column red-text">
-                                    <span className="badge-rounded-xlg badge red darken-2 white-text"><b className="badge-text">{this.getReviewedAndFlaggedProblemAmount('REVIEWED')}</b> <i className="icon-flag"></i></span>
-                                    <span style={{ marginLeft: 10, fontSize: 16 }}>To Review</span>
-                                  </div>
-                                  <div className="col s6 badge-block-column">
-                                    <span className="badge-rounded-xlg badge grey darken-2 white-text"><b className="badge-text">{this.getReviewedAndFlaggedProblemAmount('FLAGGED')}</b> <i className="icon-flag"></i></span>
-                                    <span style={{ marginLeft: 10, fontSize: 16 }}>Reviewed</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col s12 m6">
-                      <div className="row" style={{ margin: 0 }}>
+
+            </div>
+            <div className="content-section">
+              <div className="row">
+                <div className="container-sm">
+                  <div className="col s12 m6">
+                    <div className="main-row row">
+                      <div className="col s12">
                         <div className="card-block" style={{ margin: '0 auto' }}>
-                          {challengeProblems.length !== 0 && <div className="main-row row">
-                            <ChallengeQuestions
-                              questions={challengeProblems}
-                            />
-                          </div>}
-                          {practiceProlems.length !== 0 && <div className="main-row row">
-                            <PracticeQuestions
-                              questions={practiceProlems}
-                            />
-                          </div>}
-                          {drillProblems.length !== 0 && <div className="main-row row">
-                            <ChallengeQuestions
-                              questions={drillProblems}
-                            />
-                          </div>}
-                        </div></div>
+                          <h3>Performance</h3>
+                          <div className="card-answer card">
+                            <div className="card-content">
+                              <div className="row">
+                                <div className="col s6">
+                                  <div className="chart-container" style={{ width: 140 }}>
+                                    <div className="chart-holder" style={{ width: 140 }}>
+                                      <Doughnut
+                                        data={() => data(correct_count, question_count)}
+                                        height={140}
+                                        width={140}
+                                        options={{
+                                          circumference: 1.45 * Math.PI,
+                                          rotation: -3.85,
+                                          cutoutPercentage: 55,
+                                          tooltips: false,
+                                        }}
+                                      />
+                                      <span className="chart-value" style={{ backgroundColor: getValuesByScore(correct_count, question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(correct_count / question_count * 100)}%</span>
+                                    </div>
+                                    <div style={{ color: getValuesByScore(correct_count, question_count, 'color'), margin: '45px 45px 0 45px' }}>{correct_count} of {question_count}</div>
+                                  </div>
+                                </div>
+                                <div className="col s6">
+                                  <div className="chart-description" style={{ marginTop: "10px" }}>
+                                    <dl className="dl-horizontal" style={{ fontSize: 16 }}>
+                                      <dt>Time Est:</dt>
+                                      <dd>{this.props.lesson.time_estimate ? this.props.lesson.time_estimate : 0}min</dd>
+                                    </dl>
+                                    <dl className="dl-horizontal" style={{ fontSize: 16 }}>
+                                      <dt>Problems:</dt>
+                                      <dd>{this.getProblemsAmount()}</dd>
+                                    </dl>
+                                    <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(correct_count, question_count, 'color'), color: 'white' }}>{getValuesByScore(correct_count, question_count, 'label')}</dl>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    <div className="main-row row">
+                      <div className="col s12">
+                        <div className="card-block" style={{ margin: '0 auto' }}>
+                          <h3>Flagged For Review</h3>
+                          <div className="card-answer card">
+                            <div className="card-content">
+                              <div className="row-bordered d-flex row">
+                                <div className="col s6 badge-block-column red-text">
+                                  <span className="badge-rounded-xlg badge red darken-2 white-text"><b className="badge-text">{this.getReviewedAndFlaggedProblemAmount('REVIEWED')}</b> <i className="icon-flag"></i></span>
+                                  <span style={{ marginLeft: 10, fontSize: 16 }}>To Review</span>
+                                </div>
+                                <div className="col s6 badge-block-column">
+                                  <span className="badge-rounded-xlg badge grey darken-2 white-text"><b className="badge-text">{this.getReviewedAndFlaggedProblemAmount('FLAGGED')}</b> <i className="icon-flag"></i></span>
+                                  <span style={{ marginLeft: 10, fontSize: 16 }}>Reviewed</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col s12 m6">
+                    <div className="row" style={{ margin: 0 }}>
+                      <div className="card-block" style={{ margin: '0 auto' }}>
+                        {challengeProblems.length !== 0 && <div className="main-row row">
+                          <ChallengeQuestions
+                            questions={challengeProblems}
+                          />
+                        </div>}
+                        {practiceProlems.length !== 0 && <div className="main-row row">
+                          <PracticeQuestions
+                            questions={practiceProlems}
+                          />
+                        </div>}
+                        {drillProblems.length !== 0 && <div className="main-row row">
+                          <ChallengeQuestions
+                            questions={drillProblems}
+                          />
+                        </div>}
+                      </div></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )
-        }
+        </div>
   Î </React.Fragment>
     );
   }
