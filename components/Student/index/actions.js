@@ -42,7 +42,7 @@ import {
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
   SET_ACTIVE_LESSON,
-  SET_OPEN_ANSWERSHEET_STATUS,
+  SET_OPEN_ACTIVE_PAGE,
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
 } from "./constants";
@@ -319,8 +319,8 @@ export const setActiveLesson = (activeLesson) => ({
   activeLesson,
 });
 
-export const setOpenAnswerSheetStatus = (value) => ({
-  type: SET_OPEN_ANSWERSHEET_STATUS,
+export const setOpenActivePage = (value) => ({
+  type: SET_OPEN_ACTIVE_PAGE,
   value,
 });
 export const updateStudentActivation = (studentInfo) => ({

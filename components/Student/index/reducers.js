@@ -29,11 +29,12 @@ import {
   ADD_ALL_LESSONS,
   REMOVE_ALL_LESSONS,
   SET_ACTIVE_LESSON,
-  SET_OPEN_ANSWERSHEET_STATUS,
+  SET_OPEN_ACTIVE_PAGE,
   RESET_STUDENT_LESSONS_SUCCESS,
   UNASSIGN_STUDENT_LESSON_SUCCESS,
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
   FETCH_SUBJECTS_SUCCESS,
+  SET_OPEN_ANSWERSHEET_STATUS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -60,6 +61,7 @@ const initialState = fromJS({
   activeLesson: null,
   openAnswerSheet: false,
   subjects: {},
+  activeShowPage: "",
 });
 
 function studentReducer(state = initialState, action) {
@@ -161,18 +163,16 @@ function studentReducer(state = initialState, action) {
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
-      const getStudentLessonList = (studentLessonList) => {
-        return studentLessonList.map(lesson => {
-          if (lesson.problems && lesson.problems.length > 0) {
-            lesson = { ...lesson, type: 'drill', selected: false };
-          } else if (lesson.sections) {
-            lesson = { ...lesson, type: 'module', selected: false };
-          } else if (lesson.problems && lesson.problems.length <= 0) {
-            lesson = { ...lesson, type: 'reading', selected: false };
-          }
-          return lesson;
-        })
-      }
+      const getStudentLessonList = (studentLessonList) => studentLessonList.map(lesson => {
+        if (lesson.problems && lesson.problems.length > 0) {
+          lesson = { ...lesson, type: 'drill', selected: false };
+        } else if (lesson.sections) {
+          lesson = { ...lesson, type: 'module', selected: false };
+        } else if (lesson.problems && lesson.problems.length <= 0) {
+          lesson = { ...lesson, type: 'reading', selected: false };
+        }
+        return lesson;
+      });
       return state.set("lessonList", [...getStudentLessonList(state.get('studentLessonList')), ...state.get("unassignedLessonList")]);
 
     case SET_ACTIVE_LESSON:
@@ -180,7 +180,10 @@ function studentReducer(state = initialState, action) {
 
     case SET_OPEN_ANSWERSHEET_STATUS:
       return state.set('openAnswerSheet', action.value);
-      
+
+    case SET_OPEN_ACTIVE_PAGE:
+      return state.set('activeShowPage', action.value);
+
     case RESCHEDULE_STUDENT_LESSONS_SUCCESS:
       return state.set(
         "lessonList",

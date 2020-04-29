@@ -21,9 +21,9 @@ import {
   gradeColorMap,
 } from "./utils";
 import Checkbox from "./components/Checkbox";
-import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus } from "../../../../../index/actions";
+import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus, setOpenActivePage } from "../../../../../index/actions";
 import {makeSelectSubjects,makeSelectUnitFilterOptions} from '../../../../../index/selectors'
-
+import lessonSortOptions from "../../../../utils/lessonSortOptions";
 
 const data = (current, target, status) => ({
   datasets: [
@@ -77,11 +77,13 @@ const LessonCard = props => {
 
   const onOpenDetailModal = async (e) => {
     e.preventDefault()
-    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenAnswerSheetStatus, lesson } = props;
+    const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
+    onSetIsVisibleTopbar(false);
+    onSetActiveLesson(lesson);
     if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
-      onSetIsVisibleTopbar(false);
-      onSetActiveLesson(lesson);
-      onSetOpenAnswerSheetStatus(true)
+      onSetOpenActivePage("AnswerSheet")
+    } else {
+      onSetOpenActivePage("ReadWorkBook")
     }
   }
   const onSetDropdown = () => toggleDropdown(!dropdownIsOpen);
@@ -139,7 +141,6 @@ const LessonCard = props => {
     return data(0, 1, "ASSIGNED")
   }
 
-  if (lesson.type === "reading" && status==="COMPLETED") console.log('log: module', lesson)
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -430,7 +431,7 @@ LessonCard.propTypes = {
 const mapDispatchToProps = dispatch => ({
   onSetIsVisibleTopbar: bindActionCreators(setIsVisibleTopBar, dispatch),
   onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
-  onSetOpenAnswerSheetStatus: bindActionCreators(setOpenAnswerSheetStatus, dispatch)
+  onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch)
 });
 
 const mapStateToProps = createStructuredSelector({
