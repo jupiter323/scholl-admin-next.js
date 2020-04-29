@@ -1,6 +1,8 @@
 // TODO: change componentDidMount for when user comes though as props, profile pic change
 
 import React from 'react';
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import update from 'immutability-helper';
 import Router from 'next/router';
 import { StickyContainer, Sticky } from 'react-sticky';
@@ -9,7 +11,7 @@ import getValueFromState from '../components/utils/getValueFromState';
 import stateOptions from '../components/utils/stateOptions';
 import { nestedEditFieldValidation } from '../components/utils/fieldValidation';
 import sampleInstructors from "../components/utils/sampleInstructors";
-
+import { makeSelectCurrentUser } from '../components/User/index/selectors';
 import {
   loggedIn,
 } from "../utils/AuthService";
@@ -47,7 +49,7 @@ const timeZoneOptions = [
     label: "(UTC - 3:30) Newfoundland Time Zone (Canada)",
     value: "Newfoundland",
   },
-]
+];
 
 class Account extends React.Component {
   constructor(props) {
@@ -86,22 +88,42 @@ class Account extends React.Component {
         lastName: true,
         email: true,
       },
-    }
+    };
   }
 
 
   componentDidMount() {
-    if(!loggedIn()){
-      Router.push('/login')
-    }else{
-      const { firstName, lastName, avatarURL, addressLine1, city, state, zipCode, timeZone, email = {} } = sampleInstructors[0];
-      const updatedAccount = { firstName, lastName, avatarURL, addressLine1, city, state, zipCode, timeZone, email };
-      const { originalAccount: originalAccountState } = this.state;
-      const originalAccount = update(originalAccountState, {
-        $merge: updatedAccount,
-      });
-      this.setState({ originalAccount, updatedAccount }); // eslint-disable-line
+    if (!loggedIn()) {
+      Router.push('/login');
+    } else {
+      this.setCurrentUser();
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.currentUser !== this.props.currentUser) {
+      this.setCurrentUser();
+    }
+  }
+
+  setCurrentUser = () => {
+    const {
+      currentUser: { first_name, last_name, email },
+    } = this.props;
+    this.setState({
+      originalAccount: {
+        ...this.state.originalAccount,
+        firstName: first_name,
+        lastName: last_name,
+        email,
+      },
+      updatedAccount: {
+        ...this.state.updatedAccount,
+        firstName: first_name,
+        lastName: last_name,
+        email,
+      },
+    });
   }
 
   // This function is passed into nestedCreateFieldValidation, it takes the result of the validation check and a callback function
@@ -150,7 +172,6 @@ class Account extends React.Component {
     });
     this.setState({ updatedAccount });
   }
-
 
 
   render() {
@@ -287,9 +308,12 @@ class Account extends React.Component {
           </StickyContainer>
         </div>
       </main>
-    )
+    );
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  currentUser: makeSelectCurrentUser(),
+});
 
-export default Account;
+export default connect(mapStateToProps, null)(Account);
