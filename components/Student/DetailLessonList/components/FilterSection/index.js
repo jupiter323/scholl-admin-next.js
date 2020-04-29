@@ -142,8 +142,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="aboveAverage"
-                      checked={scoreStatusFilters.indexOf('aboveAverage') !== -1}
-                      onChange={() => handleFilterClick("score", 'aboveAverage')}
+                      checked={scoreStatusFilters.indexOf('above average') !== -1}
+                      onChange={() => handleFilterClick("score", 'above average')}
                     />
                     <label htmlFor="aboveAverage">Above Average</label>
                   </li>
@@ -151,8 +151,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="belowAverage"
-                      checked={scoreStatusFilters.indexOf('belowAverage') !== -1}
-                      onChange={() => handleFilterClick("score", 'belowAverage')}
+                      checked={scoreStatusFilters.indexOf('below average') !== -1}
+                      onChange={() => handleFilterClick("score", 'below average')}
                     />
                     <label htmlFor="belowAverage">Below Average</label>
                   </li>

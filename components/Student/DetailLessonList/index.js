@@ -266,15 +266,13 @@ class DetailLessonList extends React.Component {
       unitFilter,
       scoreStatusFilters,
       flagFilters,
-      lessons: allLessons,
     } = this.state;
     const { subjects } = this.props;
-    let lessons = allLessons;
-    console.log('log: unitFilter', unitFilter);
-    console.log('log: scoreStatusFilters', scoreStatusFilters);
-    console.log('log: flagFilters', flagFilters);
+    let lessons = [];
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
+      lessons = mappableLessons.filter((lesson) => {
+        lesson.scoring && lesson.scoring.grade && scoreStatusFilters.indexOf(lesson.scoring.grade.toLowerCase()) !== -1;
+      });
     }
     if (subjectFilters.length && subjectFilters.indexOf("all") === -1) {
       lessons = mappableLessons.filter((lesson) => {
@@ -285,10 +283,17 @@ class DetailLessonList extends React.Component {
       });
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => lesson.lesson_problems.length !== 0);
+      lessons = lessons.filter((lesson) => {
+        lesson.flag_status && lesson.lesson_problems.length !== 0;
+      });
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => unitFilter.indexOf(lesson.units.id) !== -1);
+      lessons = mappableLessons.filter((lesson) => {
+        if (!lesson.units) {
+          return unitFilter.indexOf(lesson.unit_id) !== -1;
+        }
+        return unitFilter.indexOf(lesson.units.id) !== -1;
+      });
     }
     return lessons;
   };
