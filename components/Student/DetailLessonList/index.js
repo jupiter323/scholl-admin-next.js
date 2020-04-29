@@ -270,9 +270,9 @@ class DetailLessonList extends React.Component {
     const { subjects } = this.props;
     let lessons = [];
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
-      lessons = mappableLessons.filter((lesson) => {
-        lesson.scoring && lesson.scoring.grade && scoreStatusFilters.indexOf(lesson.scoring.grade.toLowerCase()) !== -1;
-      });
+      lessons = mappableLessons.filter((lesson) =>
+        (lesson.scoring && lesson.scoring.grade && scoreStatusFilters.indexOf(lesson.scoring.grade.toLowerCase()) !== -1),
+      );
     }
     if (subjectFilters.length && subjectFilters.indexOf("all") === -1) {
       lessons = mappableLessons.filter((lesson) => {
@@ -283,9 +283,9 @@ class DetailLessonList extends React.Component {
       });
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => {
-        lesson.flag_status && lesson.lesson_problems.length !== 0;
-      });
+      lessons = lessons.filter((lesson) =>
+        (lesson.problems && lesson.problems.filter(problem => problem.flat_status).length !== 0),
+      );
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
       lessons = mappableLessons.filter((lesson) => {
@@ -322,7 +322,7 @@ class DetailLessonList extends React.Component {
       mappableLessons = this.onFilterLessons(mappableLessons);
     }
     if (dueDateFilters.length) {
-      mappableLessons = this.filterDueDate();
+      mappableLessons = this.filterDueDate(mappableLessons);
     }
     if (sort) {
       return this.onSortLessons(mappableLessons);
@@ -332,26 +332,28 @@ class DetailLessonList extends React.Component {
 
   // may need to alter dueNextSession depending if client wants ALL vs incomplete/overdue
   // TODO: only works with one due date filter, not multiple
-  filterDueDate = () => {
+  filterDueDate = (mappableLessons) => {
     const { user } = this.props;
     const { dueDateFilters, lessons: allLessons } = this.state;
     let lessons = allLessons;
     if (dueDateFilters.length && dueDateFilters.indexOf("all") === -1) {
       if (dueDateFilters.includes("dueToday")) {
-        lessons = lessons.filter((lesson) => lesson.dueDate === moment().format("MM/DD/Y"));
+        lessons = mappableLessons.filter((lesson) => lesson.due_date === moment().format("YYYY-MM-DD"));
       }
       if (dueDateFilters.includes("dueNextSession")) {
-        lessons = lessons.filter((lesson) =>
+        lessons = mappableLessons.filter((lesson) =>
           moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day"),
         );
       }
       if (dueDateFilters.includes("overdue")) {
-        lessons = lessons.filter((lesson) => lesson.overdue === true);
+        lessons = mappableLessons.filter((lesson) => lesson.status === 'OVERDUE');
       }
       if (dueDateFilters.includes("noDueDate")) {
+        lessons = mappableLessons.filter((lesson) => !lesson.due_date);
       }
-      if (dueDateFilters.includes("unAssgined")) {
-        lessons = lessons.filter((lesson) => lesson.status === 1);
+      if (dueDateFilters.includes("unAssigned")) {
+        console.log('hello');
+        lessons = mappableLessons.filter((lesson) => lesson.status === "NOTASSIGNED");
       }
       return lessons;
     }
