@@ -78,6 +78,7 @@ class BubbleGroup extends React.Component {
   }
   getStudentAnswerIndex = (answerIds) => {
     const studentAnswerIndex = answerIds.findIndex(this.getStudentAnswerIndexMatchedId);
+    console.log('studentAnswerIndex:',studentAnswerIndex)
     return studentAnswerIndex;
   }
 

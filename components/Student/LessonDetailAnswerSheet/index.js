@@ -1,10 +1,16 @@
 import React from 'react';
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
+import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
+import { makeSelectUnitFilterOptions } from "../index/selectors";
+
 
 const data = (value, total) => ({
   datasets: [{
@@ -95,11 +101,10 @@ class LessonDetailAnswerSheet extends React.Component {
       this.setState({
         currentType: "Drill",
         hasDrill: true,
-      });
-      const drillProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
+      })
       this.setState({
-        drillProblems,
-      });
+        drillProblems: lesson.problems,
+      })
     }
   }
 
@@ -113,7 +118,7 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   getReviewedAndFlaggedProblemAmount = (type) => {
-    const amount = 0;
+    let amount = 0;
     if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
       problems.map(section => {
         if (section.flag_status === type) {
@@ -157,10 +162,24 @@ class LessonDetailAnswerSheet extends React.Component {
     return typeLabel;
   }
 
+  getUnitNameById = () => {
+    const { units } = this.props;
+    if (units && units.length !== 0) {
+      const unitIds = units.map(unit => unit.value);
+      const currentIndex = unitIds.findIndex(this.getUnitIndexMatchedUnitId);
+      const currentUnit = units[currentIndex];
+      return currentUnit.label;
+    } else {
+      return "Undefind UnitName"
+    }
+  }
+
+  getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
+
   render() {
     const { challengeProblems, practiceProlems, drillProblems } = this.state;
-    const { open, onCloseDetailModal, user,
-      lesson: { name, starting_page, ending_page, unit, passage, completed_at, assignTime, assignment_date, due_date, dueTime, type, scoring: { question_count, correct_count } } } = this.props;
+    const { onCloseDetailModal, user,
+      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
@@ -176,56 +195,62 @@ class LessonDetailAnswerSheet extends React.Component {
               minWidth: "100%",
             }}
           >
-            <div className="header-row card-panel light-blue lighten-1 white-text">
-              <div className="card-panel-row row">
-                <div className="icon-col col s1">
-                  <i className="icon-books"></i>
-                </div>
-                <div className="col s9">
-                  <p className="text-small" style={{ marginBottom: 0, fontSize: 18 }}>Unit2</p>
-                  <p className="text-large" style={{ marginBottom: 0, fontSize: 24 }}>{name}</p>
-                  <p style={{ fontSize: '16px' }}>{`p.${starting_page === ending_page ? starting_page : starting_page + '-' + ending_page} (${this.getTypeLabel()})`} </p>
-
-                </div>
-                <div className="col s2" style={{ marginTop: '-47px' }}>
-                  <div className="card-panel-text center-align">
-                    <div><span className="name" style={{ fontSize: '17px' }}>{firstName} {lastName}</span>  <div className="position-top right-align" style={{ float: 'right' }}>
-                      <div className="icons-row">
-                        <div className="dropdown-block col">
-                          <i className="material-icons dots-icon">more_vert</i>
-                        </div>
-                        <a
-                          href="#"
-                          className="icon-close"
-                          onClick={onCloseDetailModal}
-                          style={{ color: 'white' }}
-                        ></a>
+            <div className="header-box card-panel light-blue lighten-1 white-text">
+              <div className="header-flex-row row mb-0" style={{ width: '100%' }}>
+                <div className="col s12 m7 xl8">
+                  <div className="header-holder">
+                    <div className="header-col">
+                      <div className="icon-col">
+                        <i className="icon-books" />
+                        <span className="text-icon">Lesson</span>
                       </div>
-                    </div></div>
-                    <Choose>
-                      <When condition={completed_at}>
-                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                          {`Completed ${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}
-                        </time></div>
-                      </When>
-                      <Otherwise>
-                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-50px', fontSize: '17px' }}>
-                          {`Assigned ${assignment_date} at ${assignTime}`}
-                        </time></div>
-                        <div><time className="date" dateTime="" style={{ color: 'white', fontWeight: 'unset', marginTop: '-28px', fontSize: '17px' }}>
-                          {due_date && (`Due ${due_date} at ${dueTime}`)}
-                        </time></div>
-                      </Otherwise>
-                    </Choose>
+                    </div>
+                    <div className="header-col">
+                      <div className="card-panel-text">
+                        <div className="text-small">{this.getUnitNameById()}</div>
+                        <h1 className="text-large">{name}</h1>
+                        <div className="text-small">p.{starting_page}{ending_page > starting_page ? `-${ending_page}` : ""}(Reading)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col s9 m4 xl3 position-mobile-left">
+                  <div className="card-panel-text">
+                    <h2 className="text-large">{firstName} {lastName}</h2>
+                    {assignment_date && <dl className="text-small dl-horizontal">
+                      <dt>Assigned:</dt>
+                      <dd><time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format("MM/DD/YY")} at ${moment(assignTime).format('hh:mm')}`}</time></dd>
+                    </dl>}
+                    {due_date && <dl className="text-small dl-horizontal">
+                      <dt>Due:</dt>
+                      <dd><time dateTime="2019-01-06T16:00">{`${moment(due_date).format("MM/DD/YY")} at ${moment(dueTime).format('hh:mm')}`}</time></dd>
+                    </dl>}
+                    {completed_at &&
+                      <dl className="text-small dl-horizontal">
+                        <dt>Completed:</dt>
+                        <dd><time dateTime="2019-09-01T06:59">{`${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}</time></dd>
+                      </dl>}
+                  </div>
+                </div>
+                <div className="col s2 m1 right-align position-mobile-right">
+                  <div className="dropdown-block">
+                    <a className="dropdown-trigger btn" href="#" data-target="dropdown_top"><i className="material-icons dots-icon">more_vert</i></a>
+                  </div>
+                  <div className="close-block">
+                    <a href="#" className="modal-close close" onClick={onCloseDetailModal}><i className="icon-close-thin" /></a>
                   </div>
                 </div>
               </div>
-
+              <div className='header-row-block card-panel-row row'>
+                <div className='col s12 right-align'>
+                  <h2 className="text-large">DownloadPDF</h2>
+                </div>
+              </div>
             </div>
             <div className="content-section">
               <div className="row">
                 <div className="container-sm">
-                  <div className="col s12 m6">
+                  {this.props.lesson.status === "COMPLETED" && <div className="col s12 m6">
                     <div className="main-row row">
                       <div className="col s12">
                         <div className="card-block" style={{ margin: '0 auto' }}>
@@ -237,7 +262,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                   <div className="chart-container" style={{ width: 140 }}>
                                     <div className="chart-holder" style={{ width: 140 }}>
                                       <Doughnut
-                                        data={() => data(correct_count, question_count)}
+                                        data={() => data(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count)}
                                         height={140}
                                         width={140}
                                         options={{
@@ -247,9 +272,9 @@ class LessonDetailAnswerSheet extends React.Component {
                                           tooltips: false,
                                         }}
                                       />
-                                      <span className="chart-value" style={{ backgroundColor: getValuesByScore(correct_count, question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(correct_count / question_count * 100)}%</span>
+                                      <span className="chart-value" style={{ backgroundColor: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(this.props.lesson.scoring.correct_count / this.props.lesson.scoring.question_count * 100)}%</span>
                                     </div>
-                                    <div style={{ color: getValuesByScore(correct_count, question_count, 'color'), margin: '45px 45px 0 45px' }}>{correct_count} of {question_count}</div>
+                                    <div style={{ color: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), margin: '45px 45px 0 45px' }}>{this.props.lesson.scoring.correct_count} of {this.props.lesson.scoring.question_count}</div>
                                   </div>
                                 </div>
                                 <div className="col s6">
@@ -262,7 +287,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                       <dt>Problems:</dt>
                                       <dd>{this.getProblemsAmount()}</dd>
                                     </dl>
-                                    <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(correct_count, question_count, 'color'), color: 'white' }}>{getValuesByScore(correct_count, question_count, 'label')}</dl>
+                                    <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), color: 'white' }}>{getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'label')}</dl>
                                   </div>
                                 </div>
                               </div>
@@ -292,27 +317,53 @@ class LessonDetailAnswerSheet extends React.Component {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col s12 m6">
-                    <div className="row" style={{ margin: 0 }}>
-                      <div className="card-block" style={{ margin: '0 auto' }}>
+                  </div>}
+                  <Choose>
+                    <When condition={this.props.lesson.status === "COMPLETED"}>
+                      <div className="col s12 m6">
+                        <div className="row" style={{ margin: 0 }}>
+                          <div className="card-block" style={{ margin: '0 auto' }}>
+                            {challengeProblems.length !== 0 && <div className="main-row row">
+                              <ChallengeQuestions
+                                questions={challengeProblems}
+                              />
+                            </div>}
+                            {practiceProlems.length !== 0 && <div className="main-row row">
+                              <PracticeQuestions
+                                questions={practiceProlems}
+                              />
+                            </div>}
+                            {drillProblems.length !== 0 && <div className="main-row row">
+                              <ChallengeQuestions
+                                questions={drillProblems}
+                              />
+                            </div>}
+                          </div></div>
+                      </div>
+                    </When>
+                    <Otherwise>
+                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
                         {challengeProblems.length !== 0 && <div className="main-row row">
                           <ChallengeQuestions
                             questions={challengeProblems}
                           />
                         </div>}
+                      </div>
+                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
                         {practiceProlems.length !== 0 && <div className="main-row row">
                           <PracticeQuestions
                             questions={practiceProlems}
                           />
                         </div>}
-                        {drillProblems.length !== 0 && <div className="main-row row">
-                          <ChallengeQuestions
-                            questions={drillProblems}
-                          />
-                        </div>}
-                      </div></div>
-                  </div>
+                      </div>
+                      {drillProblems.length !== 0 && <div className="main-row row">
+                        <DrillQuestions
+                          questions={drillProblems}
+                        />
+                      </div>}
+                    </Otherwise>
+                  </Choose>
+
                 </div>
               </div>
             </div>
@@ -330,4 +381,11 @@ LessonDetailAnswerSheet.propTypes = {
   onCloseDetailModal: PropTypes.func.isRequired,
 };
 
-export default LessonDetailAnswerSheet;
+
+const mapStateToProps = createStructuredSelector({
+  units: makeSelectUnitFilterOptions(),
+});
+
+const withConnect = connect(mapStateToProps, null);
+
+export default compose(withConnect)(LessonDetailAnswerSheet);
