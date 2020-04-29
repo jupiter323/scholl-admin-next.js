@@ -88,7 +88,7 @@ export const subjectDescending = ({ subject: subjectA }, { subject: subjectB }) 
   return 0;
 };
 
-export const passageAscending = ({ passage: passageA }, { passage: passageB }) => {
+export const passageAscending = ({ starting_page: passageA }, { starting_page: passageB }) => {
   if (passageA < passageB) { return -1; }
   return 0;
 };
@@ -112,6 +112,8 @@ export const scoreDescending = ({ score: scoreA }, { score: scoreB }) => {
 };
 
 export const scoreAscending = ({ score: scoreA }, { score: scoreB }) => {
+  console.log('log: scoreA', scoreA);
+  console.log('log: scoreB', scoreA);
   if (scoreA < scoreB) { return -1; }
   return 0;
 };
@@ -131,7 +133,7 @@ export const availableDateDescending = ({ availableDate: availableDateA }, { ava
   return 0;
 };
 
-export const availableDateAscending = ({ availableDate: availableDateA }, { availableDate: availableDateB }) => {
+export const availableDateAscending = ({ assignment_date: availableDateA }, { assignment_date: availableDateB }) => {
   if (availableDateA < availableDateB) { return -1; }
   return 0;
 };
@@ -146,7 +148,7 @@ export const lessonNameDescending = ({ lessonName: lessonNameA }, { lessonName: 
   return 0;
 };
 
-export const dueDateAscending = ({ dueDate: dueDateA }, { dueDate: dueDateB }) => {
+export const dueDateAscending = ({ due_date: dueDateA }, { due_date: dueDateB }) => {
   if (dueDateA < dueDateB) { return -1; }
   return 0;
 };
