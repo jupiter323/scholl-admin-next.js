@@ -234,11 +234,11 @@ class DetailLessonList extends React.Component {
   };
   onAddUpdatedLessons = (lessons) => this.setState({ updatedLessons: lessons });
 
-  onFilterByName = () => {
-    const { lessons, nameFilter } = this.state;
-    return lessons.reduce((finalArr, currentLesson) => {
-      const { lessonName } = currentLesson;
-      const lessonString = lessonName.replace(/\s/g, "").toLowerCase();
+  onFilterByName = (mappableLessons) => {
+    const { nameFilter } = this.state;
+    return mappableLessons.reduce((finalArr, currentLesson) => {
+      const { name } = currentLesson;
+      const lessonString = name.replace(/\s/g, "").toLowerCase();
       if (lessonString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentLesson) === -1) {
         finalArr.push(currentLesson);
       }
@@ -269,6 +269,11 @@ class DetailLessonList extends React.Component {
       lessons: allLessons,
     } = this.state;
     let lessons = allLessons;
+    console.log('log: subjectFilters', subjectFilters);
+    console.log('log: unitFilter', unitFilter);
+    console.log('log: scoreStatusFilters', scoreStatusFilters);
+    console.log('log: flagFilters', flagFilters);
+    console.log('log: allLessons', allLessons);
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
       lessons = lessons.filter((lesson) => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
     }
@@ -297,7 +302,7 @@ class DetailLessonList extends React.Component {
 
     let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
-      mappableLessons = this.onFilterByName();
+      mappableLessons = this.onFilterByName(mappableLessons);
     }
     if (
       unitFilter.length ||
