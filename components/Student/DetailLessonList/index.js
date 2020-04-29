@@ -106,12 +106,13 @@ class DetailLessonList extends React.Component {
    * @param checked {bool}
    */
   onCheckAll = async (checked) => {
+    const selectedLessonIds = this.getMappableLessons().map(lesson => lesson.id);
     if (!checked) {
-      await this.props.dispatchCheckAllLesson(this.getMappableLessons());
+      await this.props.dispatchCheckAllLesson(selectedLessonIds);
       await this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      await this.props.dispatchUnCheckAllLesson(this.getMappableLessons());
+      await this.props.dispatchUnCheckAllLesson(selectedLessonIds);
       await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
