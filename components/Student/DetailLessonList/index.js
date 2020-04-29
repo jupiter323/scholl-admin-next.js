@@ -295,19 +295,6 @@ class DetailLessonList extends React.Component {
       flagFilters,
     } = this.state;
 
-    // Order student lessons by due date -> other assigned -> unassigned
-    function compareDueDates(a, b) {
-      const dateA = a.due_date;
-      const dateB = b.due_date;
-      let comparison = 0;
-      if (moment(dateA).isBefore(dateB) && moment(dateA).isAfter(Date.now())) {
-        comparison = 1;
-      } else if (moment(dateB).isBefore(dateA)) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-
     let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName();
