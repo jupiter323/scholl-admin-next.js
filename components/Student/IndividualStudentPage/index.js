@@ -92,7 +92,6 @@ class IndividualStudentPage extends React.Component {
 
   handleActivateButton = async () => {
     const { student } = this.props;
-    console.log('log: student', student);
     const payload = {
       user_id: student.id,
       code: this.state.licenseCode,

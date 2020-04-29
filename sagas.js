@@ -37,6 +37,8 @@ import {
   UPDATE_STUDENT_ACTIVATION,
   UPDATE_STUDENT_ACTIVATION_SUCCESS,
   UPDATE_STUDENT_ACTIVATION_FAIL,
+  FETCH_SUBJECTS,
+  FETCH_SUBJECTS_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -103,6 +105,7 @@ const {
   updateStudentActivationApi,
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
+  fetchSubjectsApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -797,6 +800,27 @@ function* handleRescheduleStudentLessons(action) {
   }
 }
 
+function* watchForFetchSubjects() {
+  yield takeEvery(FETCH_SUBJECTS, handleFetchSubjects);
+}
+
+function* handleFetchSubjects() {
+  try {
+    const response = yield call(fetchSubjectsApi);
+    const newSubjectObject = {};
+    response.forEach(subject => {
+      newSubjectObject[subject.id] = subject.name;
+    });
+    yield put({
+      type: FETCH_SUBJECTS_SUCCESS,
+      payload: newSubjectObject,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchSubjects saga", error);
+  }
+}
+
+
 function* watchForFetchCurrentUser() {
   yield takeEvery(SET_USER_IS_LOGGED, handleFetchCurrentUser);
 }
@@ -857,6 +881,7 @@ export default function* defaultSaga() {
     watchForUpdateStudentActivation(),
     watchForUnAssignLesson(),
     watchForRescheduleStudentLessons(),
+    watchForFetchSubjects(),
     watchForFetchCurrentUser(),
   ]);
 }

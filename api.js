@@ -21,6 +21,7 @@ import {
   updateStudentActivationApi,
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
+  fetchSubjectsApi,
 } from "./components/Student/index/api";
 
 import {
@@ -81,6 +82,7 @@ export const studentApi = {
   updateStudentActivationApi,
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
+  fetchSubjectsApi,
 };
 
 export const instructorApi = {

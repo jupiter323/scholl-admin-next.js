@@ -9,7 +9,7 @@ import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import lessonSortOptions from '../../utils/lessonSortOptions';
 import { makeSelectUnitFilterOptions } from '../../../index/selectors';
-import { setUnitFilterOptions, fetchUnits } from '../../../index/actions';
+import { setUnitFilterOptions, fetchUnits, fetchSubjects } from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -22,21 +22,22 @@ class FilterSection extends React.Component {
       unitOptions: [{
         label: "Any",
         value: "",
-      },],
+      }],
     };
   }
 
   componentDidMount = () => {
-    const { onFetchUnits } = this.props;
+    const { onFetchUnits, onFetchSubjects } = this.props;
     onFetchUnits();
+    onFetchSubjects();
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.unitOptions.length !== 0) {
-      const { unitOptions:newOptions } = nextProps;
+      const { unitOptions: newOptions } = nextProps;
       this.setState({
-        unitOptions:this.state.unitOptions.concat(newOptions)
-      })
+        unitOptions: this.state.unitOptions.concat(newOptions),
+      });
     }
   }
 
@@ -289,7 +290,8 @@ class FilterSection extends React.Component {
                       data-view="view-list"
                       className={currentView === 'list' ? 'active' : ''}
                     >
-                      <a href="#" onClick={() => onChangeView('list')}>List View</a>
+                      {/* @TODO student lesson listview commented out for now */}
+                      {/* <a href="#" onClick={() => onChangeView('list')}>List View</a> */}
                     </li>
                   </ul>
                 </div>
@@ -332,12 +334,13 @@ FilterSection.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   unitOptions: makeSelectUnitFilterOptions(),
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onSetUnitFilterOptions: options => dispatch(setUnitFilterOptions(options)),
   onFetchUnits: () => dispatch(fetchUnits()),
-})
+  onFetchSubjects: () => dispatch(fetchSubjects()),
+});
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

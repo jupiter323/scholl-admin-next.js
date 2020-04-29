@@ -511,7 +511,7 @@ class DetailLessonList extends React.Component {
     } = this.state;
 
     const {
-      activeShowPage
+      activeShowPage,
     } = this.props;
     return (
       <React.Fragment>

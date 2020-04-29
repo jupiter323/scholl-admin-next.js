@@ -101,10 +101,10 @@ class LessonDetailAnswerSheet extends React.Component {
       this.setState({
         currentType: "Drill",
         hasDrill: true,
-      })
+      });
       this.setState({
         drillProblems: lesson.problems,
-      })
+      });
     }
   }
 
@@ -169,9 +169,8 @@ class LessonDetailAnswerSheet extends React.Component {
       const currentIndex = unitIds.findIndex(this.getUnitIndexMatchedUnitId);
       const currentUnit = units[currentIndex];
       return currentUnit.label;
-    } else {
-      return "Undefind UnitName"
     }
+    return "Undefind UnitName";
   }
 
   getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
@@ -241,8 +240,8 @@ class LessonDetailAnswerSheet extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className='header-row-block card-panel-row row'>
-                <div className='col s12 right-align'>
+              <div className="header-row-block card-panel-row row">
+                <div className="col s12 right-align">
                   <h2 className="text-large">DownloadPDF</h2>
                 </div>
               </div>

@@ -52,6 +52,9 @@ const makeSelectActiveStudentToken = () =>
   createSelector(makeSelectStudentPageState(), substate => substate.activeStudentToken);
 
 const makeSelectActiveLesson = () => createSelector(makeSelectStudentPageState(), substate => substate.activeLesson);
+const makeSelectOpenAnswerSheetStatus = () => createSelector(makeSelectStudentPageState(), substate => substate.openAnswerSheet);
+const makeSelectSubjects = () => createSelector(makeSelectStudentPageState(), substate => substate.subjects);
+
 const makeSelectOpenActivePage = () => createSelector(makeSelectStudentPageState(), substate => substate.activeShowPage);
 export default selectStudentsDomain;
 export {
@@ -74,5 +77,7 @@ export {
   makeSelectCheckedLessons,
   makeSelectGetStudentLessonList,
   makeSelectActiveLesson,
-  makeSelectOpenActivePage
+  makeSelectOpenAnswerSheetStatus,
+  makeSelectSubjects,
+  makeSelectOpenActivePage,
 };

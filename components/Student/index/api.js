@@ -989,6 +989,19 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
+export const fetchSubjectsApi = () =>
+  fetch(`${API_URL}/api/subjects`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(({ data }) => data.subjects)
+    .catch((err) => console.warn("err", err));
+
 export const assignLessonToStudentApi = lesson => {
   fetch(`${API_URL}/api/commands/assign-lesson-to-student`, {
     method: "POST",
