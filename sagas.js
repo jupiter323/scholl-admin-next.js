@@ -735,7 +735,7 @@ function* watchForResetLesson() {
 
 function* handleResetLessons(action) {
   try {
-    yield call(resetStudentLessonsApi, action.lessons);
+    yield call(resetStudentLessonsApi, { student_lesson_ids: action.lessons });
     yield put({ type: RESET_STUDENT_LESSONS_SUCCESS, payload: action.lessons });
   } catch (error) {
     console.warn("Error occurred in the handleResetLessons saga", error);
@@ -769,7 +769,7 @@ function* watchForUnAssignLesson() {
 
 function* handleUnAssignLesson(action) {
   try {
-    yield call(unAssignLessonFromStudentApi, action.lesson);
+    yield call(unAssignLessonFromStudentApi, { student_lesson_ids: action.lesson });
     yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
   } catch (error) {
     console.warn("Error occurred in the handleUnAssignLesson saga", error);

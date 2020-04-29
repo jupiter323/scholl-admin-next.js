@@ -919,7 +919,7 @@ export const addStudentTestQuestionFlagApi = (body, studentToken) =>
     .catch(err => err);
 
 export const fetchStudentTestScoreApi = student_test_id =>
-  fetch(`${API_URL}/api/studentTestScore/${student_test_id}`, {
+  fetch(`${API_URL}/api/studentTest/${student_test_id}/score`, {
     headers: {
       Accept: "application/json",
       "Allow-Control-Allow-Origin": "*",
