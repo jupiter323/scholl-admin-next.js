@@ -107,6 +107,7 @@ class Account extends React.Component {
   }
 
   setCurrentUser = () => {
+    console.log('log: currentUser', this.props.currentUser);
     const {
       currentUser: { first_name, last_name, email },
     } = this.props;
