@@ -50,6 +50,7 @@ const initialState = fromJS({
   activeStudentTestId: "",
   lessonList: [],
   studentLessonList: [],
+  unassignedLessonList: [],
   isLoading: false,
   error: null,
   unitFilterOptions: [],
@@ -89,7 +90,7 @@ function studentReducer(state = initialState, action) {
       return state.set("isLoading", true);
 
     case FETCH_LESSON_LIST_SUCCESS:
-      return state.set("lessonList", action.payload);
+      return state.set("unassignedLessonList", action.payload);
 
     case FETCH_STUDENT_LESSSON_LIST_SUCCESS:
       return state.set("studentLessonList", action.payload);
@@ -118,7 +119,7 @@ function studentReducer(state = initialState, action) {
         "lessonList",
         action.mappedLessons.map((lesson) => ({
           ...lesson,
-          selected: !action.checked,
+          selected: true,
         })),
       );
 
@@ -158,7 +159,7 @@ function studentReducer(state = initialState, action) {
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
-      return state.set("lessonList", [...action.payload, ...state.get("lessonList")]);
+      return state.set("lessonList", [...state.get('studentLessonList'), ...state.get("unassignedLessonList")]);
     case SET_ACTIVE_LESSON:
       return state.set('activeLesson', action.activeLesson)
     case SET_OPEN_ACTIVE_PAGE:

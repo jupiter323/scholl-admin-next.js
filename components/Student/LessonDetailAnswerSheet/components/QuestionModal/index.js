@@ -11,7 +11,7 @@ import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
 import {
-  addVideoWatchedTime
+  addVideoWatchedTime,
 } from '../../../index/api';
 class QuestionModal extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class QuestionModal extends React.Component {
       videoWatchedTime: 0,
       intervalId: null,
       watchedVideo: false,
-    }
+    };
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -31,32 +31,31 @@ class QuestionModal extends React.Component {
     if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
       const { question: { flag: { status } } } = this.props;
       this.setState({
-        status: status
-      })
+        status,
+      });
     }
     if (video_watched_seconds) {
       this.setState({
-        videoWatchedTime: video_watched_seconds
-      })
+        videoWatchedTime: video_watched_seconds,
+      });
     }
   }
 
   onHandleQuestionFlagStatus = async (_e, status) => {
     const {
       activeLesson: { id: lessonId },
-      onChangeFlagState
+      onChangeFlagState,
     } = this.props;
-    onChangeFlagState(status)
+    onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
     const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: 'FLAGGED' };
     await addStudentLessonProblemFlagApi(postBody);
-
   };
 
   recordVideoWatchedTime = () => {
     this.setState({
       videoWatchedTime: this.state.videoWatchedTime + 1,
-    })
+    });
   }
 
   onHandleWatchedVideo = (status) => {
@@ -64,23 +63,23 @@ class QuestionModal extends React.Component {
       const intervalId = setInterval(this.recordVideoWatchedTime, 1000);
       this.setState({
         watchedVideo: true,
-        intervalId
-      })
+        intervalId,
+      });
     } else {
       clearInterval(this.state.intervalId);
     }
   }
 
   onCloseQuestionModal = async () => {
-    const { onCloseQuestionModal, question: { problem: { id }, }, activeLesson: { id: lessonId }, } = this.props;
+    const { onCloseQuestionModal, question: { problem: { id } }, activeLesson: { id: lessonId } } = this.props;
     if (this.state.watchedVideo) {
       clearInterval(this.state.intervalId);
       const { videoWatchedTime } = this.state;
       const postBody = {
         problem_id: id,
         student_lesson_id: lessonId,
-        watched_seconds: videoWatchedTime
-      }
+        watched_seconds: videoWatchedTime,
+      };
       await addVideoWatchedTime(postBody);
     }
     onCloseQuestionModal();
@@ -283,11 +282,11 @@ class QuestionModal extends React.Component {
 QuestionModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onCloseQuestionModal: PropTypes.func.isRequired,
-  question: PropTypes.object.isRequired
+  question: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   activeLesson: makeSelectActiveLesson(),
-})
+});
 
 export default connect(mapStateToProps, null)(QuestionModal);

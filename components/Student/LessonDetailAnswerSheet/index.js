@@ -63,10 +63,10 @@ class LessonDetailAnswerSheet extends React.Component {
 
   componentDidMount = async () => {
     const { lesson, user: { id: student_id } } = this.props;
-    if (lesson.sections) {//lesson module type
+    if (lesson.sections) { // lesson module type
       this.setState({
-        currentType: "Module"
-      })
+        currentType: "Module",
+      });
       const lesson_id = this.props.lesson.id;
       const { sections } = this.props.lesson;
       sections.map(async section => {
@@ -74,32 +74,32 @@ class LessonDetailAnswerSheet extends React.Component {
         const currentSectionName = section.name;
         if (currentSectionName === "challenge") {
           this.setState({
-            hasChallenge: true
-          })
+            hasChallenge: true,
+          });
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
             challengeProblems: challengeProblems.lesson_problems,
-          })
+          });
         } else {
           this.setState({
-            hasPractice: true
-          })
+            hasPractice: true,
+          });
           const practiceProlems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.setState({
             practiceProlems: practiceProlems.lesson_problems,
-          })
+          });
         }
-      })
+      });
     }
     if (lesson.problems && lesson.problems.length !== 0) {
       this.setState({
         currentType: "Drill",
         hasDrill: true,
-      })
+      });
       const drillProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
       this.setState({
         drillProblems,
-      })
+      });
     }
   }
 
@@ -177,7 +177,6 @@ class LessonDetailAnswerSheet extends React.Component {
             }}
           >
             <div className="header-row card-panel light-blue lighten-1 white-text">
-
               <div className="card-panel-row row">
                 <div className="icon-col col s1">
                   <i className="icon-books"></i>

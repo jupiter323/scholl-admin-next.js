@@ -46,11 +46,21 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         </li>
       </React.Fragment>
     );
+  } else if (status === "NOTASSIGNED") {
+    return (
+      <React.Fragment>
+        <li>
+          <a href="#" onClick={() => handleAssignLesson()}>
+            Assign
+          </a>
+        </li>
+      </React.Fragment>
+    );
   }
   return (
     <React.Fragment>
       <li>
-        <a href="#" onClick={handleAssignLesson}>
+        <a href="#" onClick={() => handleAssignLesson()}>
             Assign
         </a>
       </li>
@@ -119,7 +129,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
       ></span>
     );
   }
-  if (typeof status === "number") return;
+  if (status === "NOTASSIGNED") return;
   // const percentage = Math.floor(score / problems) * 100;
   return (
     <span
