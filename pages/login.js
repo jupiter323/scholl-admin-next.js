@@ -123,9 +123,29 @@ class Login extends Component {
                               <span className="input-icon icon-key"></span>
                             </div>
                           </li>
-                          <li style={{ textAlign: "right" }}>
-                            <a onClick={this.handleForgotPassword} style = {{cursor:'pointer'}}>Forgot Password</a>
-                          </li>
+                          <div className="course-context_two-col" style = {{marginBottom:20}}>
+                            <div className="column">
+                              <div className="checkbox-block" style={{ textAlign: 'left', paddingLeft: 20 }}>
+                                <div className="checkbox-holder">
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      className="filled-in"
+                                      name="chk_remember"
+                                      id="chk_remember"
+                                      value={true}
+                                    />
+                                    <span className="large-label">Remember Me</span>
+                                  </label>
+                                </div>
+
+                              </div>
+                            </div>
+                            <div style={{ textAlign: "right", width: '100%', paddingRight: 20 }}>
+                              <a onClick={this.handleForgotPassword} style={{ cursor: 'pointer' }}>Forgot Password?</a>
+                            </div>
+                          </div>
+
                           <li>
                             <button className="btn waves-effect read" onClick={this.handleSubmit}>LogIn</button>
                           </li>
