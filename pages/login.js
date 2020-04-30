@@ -77,11 +77,12 @@ class Login extends Component {
                           placeholder="email"
                           value={email}
                           onChange={this.handleChangeForm}
+                          className = "email"
                         />
                       </li>
                       <li>
                         <input
-                          type="text"
+                          type="password"
                           name="password"
                           placeholder="password"
                           value={password}
