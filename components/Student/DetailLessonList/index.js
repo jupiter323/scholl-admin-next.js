@@ -338,26 +338,25 @@ class DetailLessonList extends React.Component {
   // TODO: only works with one due date filter, not multiple
   filterDueDate = (mappableLessons) => {
     const { user } = this.props;
-    const { dueDateFilters, lessons: allLessons } = this.state;
-    let lessons = allLessons;
+    const { dueDateFilters } = this.state;
+    let lessons = mappableLessons;
     if (dueDateFilters.length && dueDateFilters.indexOf("all") === -1) {
       if (dueDateFilters.includes("dueToday")) {
-        lessons = mappableLessons.filter((lesson) => lesson.due_date === moment().format("YYYY-MM-DD"));
+        lessons = lessons.filter((lesson) => lesson.due_date === moment().format("YYYY-MM-DD"));
       }
       if (dueDateFilters.includes("dueNextSession")) {
-        lessons = mappableLessons.filter((lesson) =>
+        lessons = lessons.filter((lesson) =>
           moment(user.nextSession).isSameOrAfter(lesson.dueDate, "day"),
         );
       }
       if (dueDateFilters.includes("overdue")) {
-        lessons = mappableLessons.filter((lesson) => lesson.status === 'OVERDUE');
+        lessons = lessons.filter((lesson) => lesson.status === 'OVERDUE');
       }
       if (dueDateFilters.includes("noDueDate")) {
-        lessons = mappableLessons.filter((lesson) => !lesson.due_date);
+        lessons = lessons.filter((lesson) => !lesson.due_date);
       }
       if (dueDateFilters.includes("unAssigned")) {
-        console.log('hello');
-        lessons = mappableLessons.filter((lesson) => lesson.status === "NOTASSIGNED");
+        lessons = lessons.filter((lesson) => lesson.status === "NOTASSIGNED");
       }
       return lessons;
     }
