@@ -45,6 +45,7 @@ import {
   SET_OPEN_ACTIVE_PAGE,
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
+  FILTER_LESSONS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -326,4 +327,9 @@ export const setOpenActivePage = (value) => ({
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
   studentInfo,
+});
+
+export const filterLessons = (filters) => ({
+  type: FILTER_LESSONS,
+  filters,
 });

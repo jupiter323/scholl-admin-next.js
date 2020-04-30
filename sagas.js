@@ -39,6 +39,7 @@ import {
   UPDATE_STUDENT_ACTIVATION_FAIL,
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
+  FILTER_LESSONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -106,6 +107,7 @@ const {
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
+  filterLessonListApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -839,6 +841,32 @@ function* handleFetchCurrentUser() {
   }
 }
 
+function* watchForFilterLessons() {
+  yield takeEvery(FILTER_LESSONS, handleFilterLessons);
+}
+
+function* handleFilterLessons(action) {
+  try {
+    const lessons = yield call(filterLessonListApi, action.filters);
+    console.log('log: response from saga:', lessons);
+    if (lessons && lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+          status: 'NOTASSIGNED',
+        })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFilterLessons saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -883,5 +911,6 @@ export default function* defaultSaga() {
     watchForRescheduleStudentLessons(),
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
+    watchForFilterLessons(),
   ]);
 }

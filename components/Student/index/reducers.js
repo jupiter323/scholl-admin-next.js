@@ -129,9 +129,6 @@ function studentReducer(state = initialState, action) {
     case UNSELECT_ALL_LESSONS:
       // Sets each "selected" lesson property to false
       return state.set('lessonList', state.get('lessonList').map(lesson =>
-        // if (action.mappedLessons.includes(lesson.id)) {
-        //   return { ...lesson, selected: false };
-        // }
         ({ ...lesson, selected: false }),
       ));
 
@@ -148,7 +145,6 @@ function studentReducer(state = initialState, action) {
       );
 
     case REMOVE_ALL_LESSONS:
-      // Resets all the "checkedLessons" to a blank array
       return state.set("checkedLessons", []);
 
     case ADD_CHECKED_LESSON:

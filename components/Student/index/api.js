@@ -989,6 +989,28 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
+export const filterLessonListApi = (filters) => {
+  const { unitFilter, nameFilter } = filters;
+  const unitString = unitFilter.length ? `unit_id=${unitFilter}&` : '';
+  const subjectString = '';
+  const searchString = nameFilter.length ? `search=${nameFilter}&` : '';
+  const filterQuery = `${searchString}${subjectString}${unitString}`;
+  console.log(`${API_URL}/api/lessons?${filterQuery}`);
+  return fetch(`${API_URL}/api/lessons?${filterQuery}`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(({ data }) => {
+      const lessons = data.lessons;
+      return lessons;
+    })
+    .catch(err => err);
+};
 export const fetchSubjectsApi = () =>
   fetch(`${API_URL}/api/subjects`, {
     headers: {

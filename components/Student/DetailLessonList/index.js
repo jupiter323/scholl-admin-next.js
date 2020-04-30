@@ -50,6 +50,7 @@ import {
   assignLessonToStudent,
   addAllLessons,
   removeAllLessons,
+  filterLessons,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -80,6 +81,10 @@ class DetailLessonList extends React.Component {
       isConfirmModalOpen: false,
       prevAssignedLessons: [],
       lessonsToAssign: {},
+      prevFilters: {
+        nameFilter: '',
+        unitFilter: '',
+      },
     };
   }
 
@@ -311,8 +316,15 @@ class DetailLessonList extends React.Component {
       subjectFilters,
       scoreStatusFilters,
       flagFilters,
+      prevFilters,
     } = this.state;
-
+    console.log('log: nameFilter', nameFilter);
+    if (unitFilter.length && unitFilter !== prevFilters.unitFilter || nameFilter !== prevFilters.nameFilter || subjectFilters.length) {
+      // Make search here and dispatch to set lessons
+      const { dispatchFilterLessons } = this.props;
+      this.setState({ prevFilters: { unitFilter, nameFilter } });
+      dispatchFilterLessons({ unitFilter, nameFilter, subjectFilters });
+    }
     let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
       mappableLessons = this.onFilterByName(mappableLessons);
@@ -593,6 +605,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
+  dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
