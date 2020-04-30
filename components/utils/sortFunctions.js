@@ -39,7 +39,7 @@ export const studentLastNameDescending = ({ studentInformation: { lastName: last
 };
 
 export const dueDate = ({ dueDate: dueDateA }, { dueDate: dueDateB }) => {
-  if (dueDateA > dueDateB) { return -1; }
+  if (dueDateA < dueDateB) { return -1; }
   return 0;
 };
 
@@ -112,8 +112,6 @@ export const scoreDescending = ({ score: scoreA }, { score: scoreB }) => {
 };
 
 export const scoreAscending = ({ score: scoreA }, { score: scoreB }) => {
-  console.log('log: scoreA', scoreA);
-  console.log('log: scoreB', scoreA);
   if (scoreA < scoreB) { return -1; }
   return 0;
 };

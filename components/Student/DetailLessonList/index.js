@@ -340,7 +340,7 @@ class DetailLessonList extends React.Component {
       mappableLessons = this.filterDueDate(mappableLessons);
     }
     if (sort) {
-      return this.onSortLessons(mappableLessons);
+      return [...this.onSortLessons(mappableLessons)];
     }
     return mappableLessons;
   };
