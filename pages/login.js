@@ -22,6 +22,10 @@ class Login extends Component {
       const { onSetUserIsLogged } = this.props;
       onSetUserIsLogged(false);
     }
+    this.textFieldForUserEmailRef = React.createRef();
+    this.textFieldForPasswordRef = React.createRef();
+    this.chkRememberRef = React.createRef();
+    this.buttonForLoginRef = React.createRef();
   }
 
   handleSubmit = async event => {
@@ -56,6 +60,7 @@ class Login extends Component {
 
   render() {
     const { email, password, forgotPassword } = this.state;
+
     return (
       <React.Fragment>
         <div className="wrapper forgot_account_number">
@@ -107,6 +112,13 @@ class Login extends Component {
                                 value={email}
                                 onChange={this.handleChangeForm}
                                 className="email"
+                                autoFocus={true}
+                                ref={this.textFieldForUserEmailRef}
+                                onKeyPress={event => {
+                                  if (event.key === "Enter") {
+                                    this.textFieldForPasswordRef.current.focus();
+                                  }
+                                }}
                               />
                               <span className="input-icon icon-letter2"></span>
                             </div>
@@ -120,6 +132,13 @@ class Login extends Component {
                                 value={password}
                                 onChange={this.handleChangeForm}
                                 className="password"
+                                autoFocus={true}
+                                ref={this.textFieldForPasswordRef}
+                                onKeyPress={event => {
+                                  if (event.key === "Enter") {
+                                    this.chkRememberRef.current.focus();
+                                  }
+                                }}
                               />
                               <span className="input-icon icon-key"></span>
                             </div>
@@ -135,6 +154,14 @@ class Login extends Component {
                                       name="chk_remember"
                                       id="chk_remember"
                                       value={true}
+                                      autoFocus={true}
+                                      ref={this.chkRememberRef}
+                                      onKeyPress={event => {
+                                        if (event.key === "Enter") {
+                                          this.buttonForLoginRef.current.click();
+                                        }
+                                      }}
+
                                     />
                                     <span className="large-label">Remember Me</span>
                                   </label>
@@ -148,7 +175,7 @@ class Login extends Component {
                           </div>
 
                           <li>
-                            <button className="btn waves-effect read" onClick={this.handleSubmit}>LogIn</button>
+                            <button className="btn waves-effect read" onClick={this.handleSubmit} ref={this.buttonForLoginRef}>LogIn</button>
                           </li>
                         </ul>
                       </div>
