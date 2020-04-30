@@ -10,6 +10,8 @@ import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 import { makeSelectUnitFilterOptions } from "../index/selectors";
+import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
+import { renderDropdownOptions } from '../DetailLessonList/components/FullView/components/LessonCard/utils/';
 
 
 const data = (value, total) => ({
@@ -63,6 +65,7 @@ class LessonDetailAnswerSheet extends React.Component {
       hasChallenge: false,
       hasPractice: false,
       hasDrill: false,
+      dropdownIsOpen: false,
     };
   }
 
@@ -83,6 +86,7 @@ class LessonDetailAnswerSheet extends React.Component {
             hasChallenge: true,
           });
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
+          console.log('log: challengeProblems', challengeProblems);
           this.setState({
             challengeProblems: challengeProblems.lesson_problems,
           });
@@ -90,9 +94,10 @@ class LessonDetailAnswerSheet extends React.Component {
           this.setState({
             hasPractice: true,
           });
-          const practiceProlems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
+          const practiceProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
+          if (!practiceProblems) return;
           this.setState({
-            practiceProlems: practiceProlems.lesson_problems,
+            practiceProlems: practiceProblems.lesson_problems,
           });
         }
       });
@@ -120,7 +125,7 @@ class LessonDetailAnswerSheet extends React.Component {
   getReviewedAndFlaggedProblemAmount = (type) => {
     let amount = 0;
     if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
-      problems.map(section => {
+      this.props.lesson.problems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
@@ -174,6 +179,14 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
+
+  onSetDropdown = () => this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
+
+  handleAssignLesson = () => {
+    const { onOpenModal, onAddCheckedLesson, lesson } = this.props;
+    onOpenModal();
+    onAddCheckedLesson(lesson.id);
+  }
 
   render() {
     const { challengeProblems, practiceProlems, drillProblems } = this.state;
@@ -233,7 +246,37 @@ class LessonDetailAnswerSheet extends React.Component {
                 </div>
                 <div className="col s2 m1 right-align position-mobile-right">
                   <div className="dropdown-block">
-                    <a className="dropdown-trigger btn" href="#" data-target="dropdown_top"><i className="material-icons dots-icon">more_vert</i></a>
+                    <a
+                      className="dropdown-trigger btn"
+                      href="#"
+                      data-target="dropdown_top"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.onSetDropdown();
+                      }}
+                    ><i className="material-icons dots-icon">more_vert</i></a>
+                    <If condition={this.state.dropdownIsOpen}>
+                      <ClickOffComponentWrapper onOuterClick={() => this.onSetDropdown()}>
+                        <ul
+                          id="dropdown01"
+                          className="dropdown-content dropdown-wide"
+                          style={{
+                            display: "block",
+                            opacity: "1",
+                            transform: "scaleX(1) scaleY(1)",
+                          }}
+                        >
+                          {renderDropdownOptions(
+                            status,
+                            this.handleAssignLesson,
+                            null,
+                            null,
+                            null,
+                            '',
+                          )}
+                        </ul>
+                      </ClickOffComponentWrapper>
+                    </If>
                   </div>
                   <div className="close-block">
                     <a href="#" className="modal-close close" onClick={onCloseDetailModal}><i className="icon-close-thin" /></a>
