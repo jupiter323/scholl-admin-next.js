@@ -12,6 +12,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      forgotPassword: false,
     };
   }
 
@@ -47,8 +48,14 @@ class Login extends Component {
     });
   };
 
+  handleForgotPassword = () => {
+    this.setState({
+      forgotPassword: true,
+    })
+  }
+
   render() {
-    const { email, password } = this.state;
+    const { email, password, forgotPassword } = this.state;
     return (
       <React.Fragment>
         <div className="wrapper forgot_account_number">
@@ -60,50 +67,73 @@ class Login extends Component {
                     <img src="./static/images/choice_logo_big.png" alt="" />
                   </a>
                 </div>
-                <div className="forgot_account">
-                  <div className="discrption">
-                    <h5>Please Enter your email and password</h5>
-                    <p>
-                      For security purposes, you need to enter a current your
-                      email and password for this account.
+                <Choose>
+                  <When condition={forgotPassword}>
+                    <div className="forgot_account">
+                      <div className="discrption">
+                        <h5>Forgot Account Number</h5>
+                        <p>If you’ve lost or forgotten your Account Number, we can sendt it to your email address. To receive your Account Number by email, enter your email address below and click “Send Account Number”.</p>
+                      </div>
+                      <div className="formsec">
+                        <ul className="clearfix">
+                          <li>
+                            <div className="input-field input-field-icon">
+                              <input type="email" placeholder="Enter your Email Addres" />
+                              <span className="input-icon icon-letter2"></span>
+                            </div>
+                          </li>
+                          <li><button className="btn waves-effect read">Send Account Number</button></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </When>
+                  <Otherwise>
+                    <div className="forgot_account">
+                      <div className="discrption">
+                        <h5>Please Enter your email and password</h5>
+                        <p>
+                          For security purposes, you need to enter a current your
+                          email and password for this account.
                     </p>
-                  </div>
-                  <div className="formsec">
-                    <ul className="clearfix">
-                      <li>
-                        <div className="input-field input-field-icon">
-                          <input
-                            type="text"
-                            name="email"
-                            placeholder="email"
-                            value={email}
-                            onChange={this.handleChangeForm}
-                            className="email"
-                          />
-                          <span className="input-icon icon-letter2"></span>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="input-field input-field-icon">
-                          <input
-                            type="password"
-                            name="password"
-                            placeholder="password"
-                            value={password}
-                            onChange={this.handleChangeForm}
-                          />
-                          <span className="input-icon icon-key"></span>
-                        </div>
-                      </li>
-                      <li style={{ textAlign: "right" }}>
-                        <a >Forgot Password</a>
-                      </li>
-                      <li>
-                        <button className="btn waves-effect read" onClick={this.handleSubmit}>LogIn</button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                      </div>
+                      <div className="formsec">
+                        <ul className="clearfix">
+                          <li>
+                            <div className="input-field input-field-icon">
+                              <input
+                                type="text"
+                                name="email"
+                                placeholder="email"
+                                value={email}
+                                onChange={this.handleChangeForm}
+                                className="email"
+                              />
+                              <span className="input-icon icon-letter2"></span>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="input-field input-field-icon">
+                              <input
+                                type="password"
+                                name="password"
+                                placeholder="password"
+                                value={password}
+                                onChange={this.handleChangeForm}
+                              />
+                              <span className="input-icon icon-key"></span>
+                            </div>
+                          </li>
+                          <li style={{ textAlign: "right" }}>
+                            <a onClick={this.handleForgotPassword} style = {{cursor:'pointer'}}>Forgot Password</a>
+                          </li>
+                          <li>
+                            <button className="btn waves-effect read" onClick={this.handleSubmit}>LogIn</button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </Otherwise>
+                </Choose>
               </div>
             </div>
           </div>
@@ -116,7 +146,6 @@ class Login extends Component {
               margin-right: auto;
               margin-left: auto;
             }
-
             .clearfix {
               clear: both;
             }
