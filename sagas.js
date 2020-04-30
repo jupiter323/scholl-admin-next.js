@@ -820,9 +820,14 @@ function* handleFetchSubjects() {
   }
 }
 
-
-function* watchForFetchCurrentUser() {
-  yield takeEvery(SET_USER_IS_LOGGED, handleFetchCurrentUser);
+export function* watchForFetchCurrentUser() {
+  while (true) {
+    const payload = yield take(SET_USER_IS_LOGGED);
+    const { value: status } = payload;
+    if (status) {
+      yield call(handleFetchCurrentUser);
+    }
+  }
 }
 
 function* handleFetchCurrentUser() {

@@ -36,8 +36,21 @@ export const fetchCurrentUserApi = () =>
     .then(res => res.json())
     .then(({ data }) => data)
     .catch(err => err);
-
+export const LogoutApi = () =>
+  fetch(`${API_URL}/api/logout`, {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then(_checkStatus)
+    .then(response => response.json())
+    .then(data => data)
+    .catch(err => err);
 export default [
   oAuthTokenApi,
   fetchCurrentUserApi,
+  LogoutApi,
 ];
