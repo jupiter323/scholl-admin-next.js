@@ -119,11 +119,12 @@ class Login extends Component {
                                 placeholder="password"
                                 value={password}
                                 onChange={this.handleChangeForm}
+                                className="password"
                               />
                               <span className="input-icon icon-key"></span>
                             </div>
                           </li>
-                          <div className="course-context_two-col" style = {{marginBottom:20}}>
+                          <div className="course-context_two-col" style={{ marginBottom: 20 }}>
                             <div className="column">
                               <div className="checkbox-block" style={{ textAlign: 'left', paddingLeft: 20 }}>
                                 <div className="checkbox-holder">
@@ -302,6 +303,12 @@ class Login extends Component {
             }
 
             .formsec ul li input[type="text"] {
+              height: 2rem;
+              margin-bottom: 0;
+              font-family: "Raleway", sans-serif;
+              font-size: 14px;
+            }
+            .formsec ul li input[type="password"] {
               height: 2rem;
               margin-bottom: 0;
               font-family: "Raleway", sans-serif;
