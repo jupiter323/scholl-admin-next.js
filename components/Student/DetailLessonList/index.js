@@ -38,6 +38,7 @@ import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
 import ReadWorkBook from '../ReadWorkBook';
 import Modal from "../../Modal/index";
+import { debounce } from 'debounce';
 
 import {
   getLessonList,
@@ -318,12 +319,10 @@ class DetailLessonList extends React.Component {
       flagFilters,
       prevFilters,
     } = this.state;
-    console.log('log: nameFilter', nameFilter);
-    if (unitFilter.length && unitFilter !== prevFilters.unitFilter || nameFilter !== prevFilters.nameFilter || subjectFilters.length) {
-      // Make search here and dispatch to set lessons
+    if (unitFilter !== prevFilters.unitFilter || nameFilter !== prevFilters.nameFilter) {
       const { dispatchFilterLessons } = this.props;
       this.setState({ prevFilters: { unitFilter, nameFilter } });
-      dispatchFilterLessons({ unitFilter, nameFilter, subjectFilters });
+      dispatchFilterLessons({ unitFilter, nameFilter });
     }
     let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
@@ -605,7 +604,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
-  dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
+  dispatchFilterLessons: debounce(bindActionCreators(filterLessons, dispatch), 200),
 });
 
 const mapStateToProps = createStructuredSelector({

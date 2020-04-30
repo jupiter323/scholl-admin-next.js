@@ -81,7 +81,7 @@ class FilterSection extends React.Component {
       if (event === '') {
         return onUnsetFilteredState();
       }
-      if (typeof event === 'string') return onSetFilteredState(event);
+      return onSetFilteredState(event.target.value);
     }
     if (name === 'unitFilter') {
       if (event === "") {
