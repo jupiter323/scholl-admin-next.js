@@ -848,7 +848,6 @@ function* watchForFilterLessons() {
 function* handleFilterLessons(action) {
   try {
     const lessons = yield call(filterLessonListApi, action.filters);
-    console.log('log: response from saga:', lessons);
     if (lessons && lessons instanceof Array) {
       yield put({
         type: FETCH_LESSON_LIST_SUCCESS,

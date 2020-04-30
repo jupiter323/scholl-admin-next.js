@@ -992,9 +992,8 @@ export const fetchUnitsApi = () =>
 export const filterLessonListApi = (filters) => {
   const { unitFilter, nameFilter } = filters;
   const unitString = unitFilter.length ? `unit_id=${unitFilter}&` : '';
-  const searchString = nameFilter.length ? `search=${nameFilter.toLowerCase().replace(' ', '+')}&` : '';
+  const searchString = nameFilter.length ? `search=${nameFilter.toLowerCase().replace(/\s/g, '+')}&` : '';
   const filterQuery = `${searchString}${unitString}`;
-  console.log(`${API_URL}/api/lessons?${filterQuery}`);
   return fetch(`${API_URL}/api/lessons?${filterQuery}`, {
     headers: {
       Accept: "application/json",

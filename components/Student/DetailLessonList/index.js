@@ -249,7 +249,7 @@ class DetailLessonList extends React.Component {
     return mappableLessons.reduce((finalArr, currentLesson) => {
       const { name } = currentLesson;
       const lessonString = name.replace(/\s/g, "").toLowerCase();
-      if (lessonString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentLesson) === -1) {
+      if (lessonString.indexOf(nameFilter.toLowerCase().replace(/\s/g, '')) !== -1 && finalArr.indexOf(currentLesson) === -1) {
         finalArr.push(currentLesson);
       }
       return finalArr;
