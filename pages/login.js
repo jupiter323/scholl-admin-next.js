@@ -27,7 +27,7 @@ class Login extends Component {
     event.preventDefault();
     // const email = "test2@example.com";
     // const password = "password";
-    const {email,password} = this.state;
+    const { email, password } = this.state;
     const postBody = {
       email,
       password,
@@ -71,23 +71,29 @@ class Login extends Component {
                   <div className="formsec">
                     <ul className="clearfix">
                       <li>
-                        <input
-                          type="text"
-                          name="email"
-                          placeholder="email"
-                          value={email}
-                          onChange={this.handleChangeForm}
-                          className = "email"
-                        />
+                        <div className="input-field input-field-icon">
+                          <input
+                            type="text"
+                            name="email"
+                            placeholder="email"
+                            value={email}
+                            onChange={this.handleChangeForm}
+                            className="email"
+                          />
+                          <span className="input-icon icon-letter2"></span>
+                        </div>
                       </li>
                       <li>
-                        <input
-                          type="password"
-                          name="password"
-                          placeholder="password"
-                          value={password}
-                          onChange={this.handleChangeForm}
-                        />
+                        <div className="input-field input-field-icon">
+                          <input
+                            type="password"
+                            name="password"
+                            placeholder="password"
+                            value={password}
+                            onChange={this.handleChangeForm}
+                          />
+                          <span className="input-icon icon-key"></span>
+                        </div>
                       </li>
                       <li style={{ textAlign: "right" }}>
                         <a >Forgot Password</a>
