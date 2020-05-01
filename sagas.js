@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -22,7 +22,6 @@ import {
   FETCH_STUDENT_LESSON_LIST_FAIL,
   FETCH_STUDENT_LESSSON_LIST_SUCCESS,
   ASSIGN_STUDENT_LESSON,
-  ASSIGN_STUDENT_LESSON_SUCCESS,
   ASSIGN_STUDENT_LESSON_FAIL,
   RESET_STUDENT_LESSONS,
   RESET_STUDENT_LESSONS_SUCCESS,
@@ -39,6 +38,7 @@ import {
   UPDATE_STUDENT_ACTIVATION_FAIL,
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
+  FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -694,6 +694,10 @@ function* watchForFetchStudentLesson() {
   yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList);
 }
 
+function* watchForFetchStudentLessonDebounce() {
+  yield debounce(1000, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
+}
+
 function* handleFetchStudentLessonList(action) {
   try {
     const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
@@ -719,7 +723,7 @@ function* watchForAssignLesson() {
 function* handleAssignLesson(action) {
   try {
     yield call(assignLessonToStudentApi, action.lesson);
-    yield put({ type: FETCH_STUDENT_LESSON_LIST, postBody: { id: action.lesson.student_id } });
+    yield put({ type: FETCH_STUDENT_LESSON_LIST_DEBOUNCE, postBody: { id: action.lesson.student_id } });
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({
@@ -883,5 +887,6 @@ export default function* defaultSaga() {
     watchForRescheduleStudentLessons(),
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
+    watchForFetchStudentLessonDebounce(),
   ]);
 }
