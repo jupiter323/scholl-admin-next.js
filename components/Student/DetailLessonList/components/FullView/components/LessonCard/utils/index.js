@@ -69,7 +69,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         </a>
       </li>
       <li>
-        <a href="#!" className="disabled">Excuse/Unexcuse Lateness</a>
+        <a href="#!" className="disabled">Excuse/ Unexcuse Lateness</a>
       </li>
       <li>
         <a href="#!" onClick={() => handleResetLesson(listOfCardIds)}>Reset</a>
