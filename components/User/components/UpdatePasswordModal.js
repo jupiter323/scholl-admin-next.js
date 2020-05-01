@@ -24,9 +24,9 @@ class UpdatePasswordModal extends React.Component {
                                     </div>
                                     <div className="formsec">
                                         <ul className="clearfix">
-                                            <li><input type="text" placeholder="Current Password" /></li>
-                                            <li><input type="text" placeholder="New Password" /></li>
-                                            <li><input type="text" placeholder="Confirm New Password" /></li>
+                                            <li><input type="password" placeholder="Current Password" /></li>
+                                            <li><input type="password" placeholder="New Password" /></li>
+                                            <li><input type="password" placeholder="Confirm New Password" /></li>
                                             <li><button className="btn waves-effect read">Update Password</button></li>
                                         </ul>
                                     </div>
@@ -98,7 +98,7 @@ class UpdatePasswordModal extends React.Component {
                     color: #959595;
                 }
                 .formsec {
-                    width: 100%;
+                    width: 90%;
                 }
                 .formsec ul {
                     margin: 0;
