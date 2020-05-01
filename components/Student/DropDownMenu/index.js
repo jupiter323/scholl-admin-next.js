@@ -1,6 +1,5 @@
 import React from "react";
 import { compose, bindActionCreators } from "redux";
-import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from 'moment';
@@ -140,8 +139,6 @@ const mapDispatchToProps = (dispatch) => ({
   onResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
   onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
 });
-
-const mapStateToProps = createStructuredSelector({});
 
 const withConnect = connect(null, mapDispatchToProps);
 

@@ -188,13 +188,14 @@ function studentReducer(state = initialState, action) {
       return state.set(
         "lessonList",
         state.get("lessonList").map((lesson) => {
+          const {payload: {due_date, assignment_date}} = action;
           let updatedLesson = {};
           action.payload.student_lesson_ids.forEach((setLessons) => {
             if (setLessons === lesson.id) {
               return (updatedLesson = {
                 ...lesson,
-                assignment_date: action.payload.assignment_date,
-                due_date: action.payload.due_date,
+                assignment_date,
+                due_date,
               });
             }
             if (!updatedLesson.id) return updatedLesson = lesson;
