@@ -45,16 +45,6 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         </li>
       </React.Fragment>
     );
-  } else if (status === "NOTASSIGNED") {
-    return (
-      <React.Fragment>
-        <li>
-          <a href="#" onClick={() => handleAssignLesson()}>
-            Assign
-          </a>
-        </li>
-      </React.Fragment>
-    );
   }
   return (
     <React.Fragment>
@@ -69,7 +59,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         </a>
       </li>
       <li>
-        <a href="#!" onClick={() => handleExcuseLessonLateness()}>Excuse/ Unexcuse Lateness</a>
+        <a href="#!" onClick={() => handleExcuseLessonLateness(listOfCardIds)}>Excuse/ Unexcuse Lateness</a>
       </li>
       <li>
         <a href="#!" onClick={() => handleResetLesson(listOfCardIds)}>Reset</a>

@@ -503,13 +503,14 @@ class DetailLessonList extends React.Component {
     onSetOpenActivePage("");
   }
 
-  handleExcuseLessonLateness(lessonCardIds) {
+  handleExcuseLessonLateness = (lessonCardIds) => {
+    console.log('log: lessonCardIds', lessonCardIds);
     const { onExcuseStudentLateness } = this.props;
     if (lessonCardIds && lessonCardIds.length > 0) {
       this.getMappableLessons().forEach(lesson => {
         if (lessonCardIds.includes(lesson.id)) {
           const payload = {
-            student_lesson_ids: lesson.id,
+            student_lesson_id: lesson.id,
             was_excused: !lesson.lateness_excused,
           };
           onExcuseStudentLateness(payload);
