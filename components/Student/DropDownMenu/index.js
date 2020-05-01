@@ -42,10 +42,6 @@ class DropDownMenu extends React.Component {
       onOpenModal,
       onAddCheckedLesson,
       lesson,
-      onSetIsVisibleTopbar,
-      onSetActiveLesson,
-      onSetOpenActivePage,
-      onCloseDetailModal,
     } = this.props;
     onOpenModal();
     onAddCheckedLesson(lesson.id);
@@ -59,7 +55,7 @@ class DropDownMenu extends React.Component {
   };
 
   onSaveScheduleChanges = (modalState) => {
-    const { onRescheduleStudentLessons, lesson } = this.props;
+    const { onRescheduleStudentLessons, lesson, resetLessonSelections } = this.props;
     const payload = {
       student_lesson_ids: [lesson.id],
       assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
@@ -68,15 +64,27 @@ class DropDownMenu extends React.Component {
     if (Object.keys(payload).length > 0 && typeof payload === 'object') {
       onRescheduleStudentLessons(payload);
       this.onToggleRescheduleModal();
+      resetLessonSelections();
     }
   };
 
   handleUnassignLesson = lessonIds => {
-    const { onUnAssignLessonToStudent, onCloseDropdown } = this.props;
+    const { onUnAssignLessonToStudent, onCloseDropdown, resetLessonSelections } = this.props;
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       onUnAssignLessonToStudent(lessonIds);
       onCloseDropdown();
       this.leaveDetailView();
+      resetLessonSelections();
+    }
+  };
+
+  handleResetLesson = lessonIds => {
+    const { onResetStudentLessons, onCloseDropdown, resetLessonSelections } = this.props;
+    if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
+      onResetStudentLessons(lessonIds);
+      onCloseDropdown();
+      this.leaveDetailView();
+      resetLessonSelections();
     }
   };
 
@@ -101,7 +109,7 @@ class DropDownMenu extends React.Component {
                 transform: "scaleX(1) scaleY(1)",
               }}
             >
-              {renderDropdownOptions(lesson.status, this.handleAssignLesson, this.handleRescheduleModalOpen, this.handleUnassignLesson, null, [
+              {renderDropdownOptions(lesson.status, this.handleAssignLesson, this.handleRescheduleModalOpen, this.handleUnassignLesson, this.handleResetLesson, [
                 lesson.id,
               ])}
             </ul>
@@ -111,6 +119,16 @@ class DropDownMenu extends React.Component {
     );
   }
 }
+
+DropDownMenu.propTypes = {
+  onCloseDetailModal: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  lesson: PropTypes.object.isRequired,
+  onOpenModal: PropTypes.func.isRequired,
+  onAddCheckedLesson: PropTypes.func.isRequired,
+  onCloseDropdown: PropTypes.func.isRequired,
+  resetLessonSelections: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   onSetIsVisibleTopbar: bindActionCreators(setIsVisibleTopBar, dispatch),

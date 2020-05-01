@@ -286,6 +286,7 @@ class LessonDetailAnswerSheet extends React.Component {
                       onSetDropdown={this.onSetDropdown}
                       onCloseDetailModal={this.props.onCloseDetailModal}
                       onCloseDropdown={this.props.onCloseDropdown}
+                      resetLessonSelections={this.props.resetLessonSelections}
                     />
                   </div>
                   <div className="close-block">
