@@ -50,6 +50,7 @@ import {
   assignLessonToStudent,
   addAllLessons,
   removeAllLessons,
+  excuseStudentLateness,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -424,6 +425,7 @@ class DetailLessonList extends React.Component {
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
+          handleExcuseLessonLateness={this.handleExcuseLessonLateness}
         />
       );
     }
@@ -499,6 +501,21 @@ class DetailLessonList extends React.Component {
     const { onSetOpenActivePage, onSetIsVisibleTopBar } = this.props;
     onSetIsVisibleTopBar(true);
     onSetOpenActivePage("");
+  }
+
+  handleExcuseLessonLateness(lessonCardIds) {
+    const { onExcuseStudentLateness } = this.props;
+    if (lessonCardIds && lessonCardIds.length > 0) {
+      this.getMappableLessons().forEach(lesson => {
+        if (lessonCardIds.includes(lesson.id)) {
+          const payload = {
+            student_lesson_ids: lesson.id,
+            was_excused: !lesson.lateness_excused,
+          };
+          onExcuseStudentLateness(payload);
+        }
+      });
+    }
   }
 
   render() {
@@ -587,6 +604,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
+  onExcuseStudentLateness: bindActionCreators(excuseStudentLateness, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

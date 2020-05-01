@@ -39,6 +39,7 @@ import {
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
   FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
+  EXCUSE_STUDENT_LATENESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -106,6 +107,7 @@ const {
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
+  excuseStudentLessonLatenessApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -843,6 +845,24 @@ function* handleFetchCurrentUser() {
   }
 }
 
+function* watchForExcuseStudentLateness() {
+  yield takeEvery(EXCUSE_STUDENT_LATENESS, handleExcuseStudentLateness);
+}
+
+function* handleExcuseStudentLateness(action) {
+  try {
+    const response = yield call(excuseStudentLessonLatenessApi, action.lessons);
+    // if (response && response.user) {
+    //   yield put({
+    //     type: SET_CURRENT_USER,
+    //     value: response.user,
+    //   });
+    // }
+  } catch (error) {
+    console.warn("Error occurred in the handleExcuseStudentLateness saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -888,5 +908,6 @@ export default function* defaultSaga() {
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
     watchForFetchStudentLessonDebounce(),
+    watchForExcuseStudentLateness(),
   ]);
 }
