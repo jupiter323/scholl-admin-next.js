@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
 import { makeSelectActiveLesson, makeSelectUnitFilterOptions } from "../index/selectors";
 import moment from "moment";
+import DropDownMenu from '../DropDownMenu/';
 
 
 class ReadWorkBook extends React.Component {
@@ -15,6 +16,7 @@ class ReadWorkBook extends React.Component {
     this.state = {
       // use initials to check against
       initials: [],
+      dropdownIsOpen: false,
     };
   }
     onSetActivePage = () => {
@@ -35,6 +37,8 @@ class ReadWorkBook extends React.Component {
     }
 
     getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
+
+    onSetDropdown = () => this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
 
     render() {
       const { user,
@@ -92,7 +96,25 @@ class ReadWorkBook extends React.Component {
                 </div>
                 <div className="col s2 m1 right-align position-mobile-right">
                   <div className="dropdown-block">
-                    <a className="dropdown-trigger btn" href="#" data-target="dropdown_top"><i className="material-icons dots-icon">more_vert</i></a>
+                    <a
+                      className="dropdown-trigger btn"
+                      href="#"
+                      data-target="dropdown_top"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.onSetDropdown();
+                      }}
+                    ><i className="material-icons dots-icon">more_vert</i></a>
+                    <DropDownMenu
+                      onOpenModal={this.props.onOpenModal}
+                      onAddCheckedLesson={this.props.onAddCheckedLesson}
+                      lesson={this.props.lesson}
+                      dropdownIsOpen={this.state.dropdownIsOpen}
+                      onSetDropdown={this.onSetDropdown}
+                      onCloseDetailModal={this.props.onCloseDetailModal}
+                      onCloseDropdown={this.props.onCloseDropdown}
+                      resetLessonSelections={this.props.resetLessonSelections}
+                    />
                   </div>
                   <div className="close-block">
                     <a href="#" className="modal-close close" onClick={this.onSetActivePage}><i className="icon-close-thin" /></a>

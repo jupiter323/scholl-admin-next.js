@@ -131,7 +131,7 @@ function studentReducer(state = initialState, action) {
       // Sets each "selected" lesson property to false
       return state.set(
         "lessonList",
-        action.mappedLessons.map((lesson) => ({
+        state.get('lessonList').map((lesson) => ({
           ...lesson,
           selected: false,
         })),
@@ -189,12 +189,12 @@ function studentReducer(state = initialState, action) {
         "lessonList",
         state.get("lessonList").map((lesson) => {
           let updatedLesson = {};
-          action.payload.forEach((setLessons) => {
-            if (setLessons.student_lesson_id === lesson.id) {
+          action.payload.student_lesson_ids.forEach((setLessons) => {
+            if (setLessons === lesson.id) {
               return (updatedLesson = {
                 ...lesson,
-                assignment_date: setLessons.assignment_date,
-                due_date: setLessons.due_date,
+                assignment_date: action.payload.assignment_date,
+                due_date: action.payload.due_date,
               });
             }
             if (!updatedLesson.id) return updatedLesson = lesson;

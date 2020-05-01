@@ -31,7 +31,7 @@ class DropDownMenu extends React.Component {
     } = this.props;
     onSetIsVisibleTopbar(true);
     onSetActiveLesson({});
-    onSetOpenActivePage(false);
+    onSetOpenActivePage("");
     onCloseDetailModal();
   }
 
@@ -44,7 +44,7 @@ class DropDownMenu extends React.Component {
       lesson,
     } = this.props;
     onOpenModal();
-    onAddCheckedLesson(lesson.id);
+    onAddCheckedLesson(lesson.lesson_id);
     this.leaveDetailView();
   };
 
@@ -55,16 +55,17 @@ class DropDownMenu extends React.Component {
   };
 
   onSaveScheduleChanges = (modalState) => {
-    const { onRescheduleStudentLessons, lesson, resetLessonSelections } = this.props;
+    const { onRescheduleStudentLessons, lesson, resetLessonSelections, onSetActiveLesson } = this.props;
     const payload = {
       student_lesson_ids: [lesson.id],
-      assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
+      assignment_date: moment(modalState.assignDate).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
     };
     if (Object.keys(payload).length > 0 && typeof payload === 'object') {
       onRescheduleStudentLessons(payload);
       this.onToggleRescheduleModal();
       resetLessonSelections();
+      onSetActiveLesson({ ...lesson, assignment_date: moment(modalState.assignDate).format('YYYY-MM-DD'), due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null });
     }
   };
 
@@ -137,6 +138,7 @@ const mapDispatchToProps = (dispatch) => ({
   onRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
   onUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
   onResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
+  onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({});
