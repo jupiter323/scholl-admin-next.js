@@ -10,8 +10,7 @@ import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 import { makeSelectUnitFilterOptions } from "../index/selectors";
-import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
-import { renderDropdownOptions } from '../DetailLessonList/components/FullView/components/LessonCard/utils/';
+import DropDownMenu from '../DropDownMenu';
 
 
 const data = (value, total) => ({
@@ -208,7 +207,7 @@ class LessonDetailAnswerSheet extends React.Component {
             }}
           >
             <div className="header-box card-panel light-blue lighten-1 white-text">
-              <div className="header-flex-row row mb-0" style={{ width: '100%' }}>
+              <div className="header-flex-row row mb-0" style={{ width: "100%" }}>
                 <div className="col s12 m7 xl8">
                   <div className="header-holder">
                     <div className="header-col">
@@ -221,27 +220,49 @@ class LessonDetailAnswerSheet extends React.Component {
                       <div className="card-panel-text">
                         <div className="text-small">{this.getUnitNameById()}</div>
                         <h1 className="text-large">{name}</h1>
-                        <div className="text-small">p.{starting_page}{ending_page > starting_page ? `-${ending_page}` : ""}(Reading)</div>
+                        <div className="text-small">
+                          p.{starting_page}
+                          {ending_page > starting_page ? `-${ending_page}` : ""}(Reading)
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="col s9 m4 xl3 position-mobile-left">
                   <div className="card-panel-text">
-                    <h2 className="text-large">{firstName} {lastName}</h2>
-                    {assignment_date && <dl className="text-small dl-horizontal">
-                      <dt>Assigned:</dt>
-                      <dd><time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format("MM/DD/YY")} at ${moment(assignTime).format('hh:mm')}`}</time></dd>
-                    </dl>}
-                    {due_date && <dl className="text-small dl-horizontal">
-                      <dt>Due:</dt>
-                      <dd><time dateTime="2019-01-06T16:00">{`${moment(due_date).format("MM/DD/YY")} at ${moment(dueTime).format('hh:mm')}`}</time></dd>
-                    </dl>}
-                    {completed_at &&
+                    <h2 className="text-large">
+                      {firstName} {lastName}
+                    </h2>
+                    {assignment_date && (
+                      <dl className="text-small dl-horizontal">
+                        <dt>Assigned:</dt>
+                        <dd>
+                          <time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format(
+                            "MM/DD/YY",
+                          )} at ${moment(assignTime).format("hh:mm")}`}</time>
+                        </dd>
+                      </dl>
+                    )}
+                    {due_date && (
+                      <dl className="text-small dl-horizontal">
+                        <dt>Due:</dt>
+                        <dd>
+                          <time dateTime="2019-01-06T16:00">{`${moment(due_date).format(
+                            "MM/DD/YY",
+                          )} at ${moment(dueTime).format("hh:mm")}`}</time>
+                        </dd>
+                      </dl>
+                    )}
+                    {completed_at && (
                       <dl className="text-small dl-horizontal">
                         <dt>Completed:</dt>
-                        <dd><time dateTime="2019-09-01T06:59">{`${moment(completed_at).format("MM/DD/YY")} at ${moment(completed_at).format('hh:mm')}`}</time></dd>
-                      </dl>}
+                        <dd>
+                          <time dateTime="2019-09-01T06:59">{`${moment(completed_at).format(
+                            "MM/DD/YY",
+                          )} at ${moment(completed_at).format("hh:mm")}`}</time>
+                        </dd>
+                      </dl>
+                    )}
                   </div>
                 </div>
                 <div className="col s2 m1 right-align position-mobile-right">
@@ -254,32 +275,23 @@ class LessonDetailAnswerSheet extends React.Component {
                         e.preventDefault();
                         this.onSetDropdown();
                       }}
-                    ><i className="material-icons dots-icon">more_vert</i></a>
-                    <If condition={this.state.dropdownIsOpen}>
-                      <ClickOffComponentWrapper onOuterClick={() => this.onSetDropdown()}>
-                        <ul
-                          id="dropdown01"
-                          className="dropdown-content dropdown-wide"
-                          style={{
-                            display: "block",
-                            opacity: "1",
-                            transform: "scaleX(1) scaleY(1)",
-                          }}
-                        >
-                          {renderDropdownOptions(
-                            status,
-                            this.handleAssignLesson,
-                            null,
-                            null,
-                            null,
-                            '',
-                          )}
-                        </ul>
-                      </ClickOffComponentWrapper>
-                    </If>
+                    >
+                      <i className="material-icons dots-icon">more_vert</i>
+                    </a>
+                    <DropDownMenu
+                      onOpenModal={this.props.onOpenModal}
+                      onAddCheckedLesson={this.props.onAddCheckedLesson}
+                      lesson={this.props.lesson}
+                      dropdownIsOpen={this.state.dropdownIsOpen}
+                      onSetDropdown={this.onSetDropdown}
+                      onCloseDetailModal={this.props.onCloseDetailModal}
+                      onCloseDropdown={this.props.onCloseDropdown}
+                    />
                   </div>
                   <div className="close-block">
-                    <a href="#" className="modal-close close" onClick={onCloseDetailModal}><i className="icon-close-thin" /></a>
+                    <a href="#" className="modal-close close" onClick={onCloseDetailModal}>
+                      <i className="icon-close-thin" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -292,44 +304,140 @@ class LessonDetailAnswerSheet extends React.Component {
             <div className="content-section">
               <div className="row">
                 <div className="container-sm">
-                  {this.props.lesson.status === "COMPLETED" && <div className="col s12 m6">
-                    <div className="main-row row">
-                      <div className="col s12">
-                        <div className="card-block" style={{ margin: '0 auto' }}>
-                          <h3>Performance</h3>
-                          <div className="card-answer card">
-                            <div className="card-content">
-                              <div className="row">
-                                <div className="col s6">
-                                  <div className="chart-container" style={{ width: 140 }}>
-                                    <div className="chart-holder" style={{ width: 140 }}>
-                                      <Doughnut
-                                        data={() => data(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count)}
-                                        height={140}
-                                        width={140}
-                                        options={{
-                                          circumference: 1.45 * Math.PI,
-                                          rotation: -3.85,
-                                          cutoutPercentage: 55,
-                                          tooltips: false,
+                  {this.props.lesson.status === "COMPLETED" && (
+                    <div className="col s12 m6">
+                      <div className="main-row row">
+                        <div className="col s12">
+                          <div className="card-block" style={{ margin: "0 auto" }}>
+                            <h3>Performance</h3>
+                            <div className="card-answer card">
+                              <div className="card-content">
+                                <div className="row">
+                                  <div className="col s6">
+                                    <div className="chart-container" style={{ width: 140 }}>
+                                      <div className="chart-holder" style={{ width: 140 }}>
+                                        <Doughnut
+                                          data={() =>
+                                            data(
+                                              this.props.lesson.scoring.correct_count,
+                                              this.props.lesson.scoring.question_count,
+                                            )
+                                          }
+                                          height={140}
+                                          width={140}
+                                          options={{
+                                            circumference: 1.45 * Math.PI,
+                                            rotation: -3.85,
+                                            cutoutPercentage: 55,
+                                            tooltips: false,
+                                          }}
+                                        />
+                                        <span
+                                          className="chart-value"
+                                          style={{
+                                            backgroundColor: getValuesByScore(
+                                              this.props.lesson.scoring.correct_count,
+                                              this.props.lesson.scoring.question_count,
+                                              "color",
+                                            ),
+                                            marginBottom: "-40px",
+                                            width: "50px",
+                                            height: "50px",
+                                          }}
+                                        >
+                                          {Math.floor(
+                                            (this.props.lesson.scoring.correct_count /
+                                              this.props.lesson.scoring.question_count) *
+                                              100,
+                                          )}
+                                          %
+                                        </span>
+                                      </div>
+                                      <div
+                                        style={{
+                                          color: getValuesByScore(
+                                            this.props.lesson.scoring.correct_count,
+                                            this.props.lesson.scoring.question_count,
+                                            "color",
+                                          ),
+                                          margin: "45px 45px 0 45px",
                                         }}
-                                      />
-                                      <span className="chart-value" style={{ backgroundColor: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), marginBottom: '-40px', width: '50px', height: '50px' }}>{Math.floor(this.props.lesson.scoring.correct_count / this.props.lesson.scoring.question_count * 100)}%</span>
+                                      >
+                                        {this.props.lesson.scoring.correct_count} of{" "}
+                                        {this.props.lesson.scoring.question_count}
+                                      </div>
                                     </div>
-                                    <div style={{ color: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), margin: '45px 45px 0 45px' }}>{this.props.lesson.scoring.correct_count} of {this.props.lesson.scoring.question_count}</div>
+                                  </div>
+                                  <div className="col s6">
+                                    <div
+                                      className="chart-description"
+                                      style={{ marginTop: "10px" }}
+                                    >
+                                      <dl className="dl-horizontal" style={{ fontSize: 16 }}>
+                                        <dt>Time Est:</dt>
+                                        <dd>
+                                          {this.props.lesson.time_estimate
+                                            ? this.props.lesson.time_estimate
+                                            : 0}
+                                          min
+                                        </dd>
+                                      </dl>
+                                      <dl className="dl-horizontal" style={{ fontSize: 16 }}>
+                                        <dt>Problems:</dt>
+                                        <dd>{this.getProblemsAmount()}</dd>
+                                      </dl>
+                                      <dl
+                                        className="dl-horizontal"
+                                        style={{
+                                          fontSize: 16,
+                                          margin: 30,
+                                          padding: 10,
+                                          backgroundColor: getValuesByScore(
+                                            this.props.lesson.scoring.correct_count,
+                                            this.props.lesson.scoring.question_count,
+                                            "color",
+                                          ),
+                                          color: "white",
+                                        }}
+                                      >
+                                        {getValuesByScore(
+                                          this.props.lesson.scoring.correct_count,
+                                          this.props.lesson.scoring.question_count,
+                                          "label",
+                                        )}
+                                      </dl>
+                                    </div>
                                   </div>
                                 </div>
-                                <div className="col s6">
-                                  <div className="chart-description" style={{ marginTop: "10px" }}>
-                                    <dl className="dl-horizontal" style={{ fontSize: 16 }}>
-                                      <dt>Time Est:</dt>
-                                      <dd>{this.props.lesson.time_estimate ? this.props.lesson.time_estimate : 0}min</dd>
-                                    </dl>
-                                    <dl className="dl-horizontal" style={{ fontSize: 16 }}>
-                                      <dt>Problems:</dt>
-                                      <dd>{this.getProblemsAmount()}</dd>
-                                    </dl>
-                                    <dl className="dl-horizontal" style={{ fontSize: 16, margin: 30, padding: 10, backgroundColor: getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'color'), color: 'white' }}>{getValuesByScore(this.props.lesson.scoring.correct_count, this.props.lesson.scoring.question_count, 'label')}</dl>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="main-row row">
+                        <div className="col s12">
+                          <div className="card-block" style={{ margin: "0 auto" }}>
+                            <h3>Flagged For Review</h3>
+                            <div className="card-answer card">
+                              <div className="card-content">
+                                <div className="row-bordered d-flex row">
+                                  <div className="col s6 badge-block-column red-text">
+                                    <span className="badge-rounded-xlg badge red darken-2 white-text">
+                                      <b className="badge-text">
+                                        {this.getReviewedAndFlaggedProblemAmount("REVIEWED")}
+                                      </b>{" "}
+                                      <i className="icon-flag"></i>
+                                    </span>
+                                    <span style={{ marginLeft: 10, fontSize: 16 }}>To Review</span>
+                                  </div>
+                                  <div className="col s6 badge-block-column">
+                                    <span className="badge-rounded-xlg badge grey darken-2 white-text">
+                                      <b className="badge-text">
+                                        {this.getReviewedAndFlaggedProblemAmount("FLAGGED")}
+                                      </b>{" "}
+                                      <i className="icon-flag"></i>
+                                    </span>
+                                    <span style={{ marginLeft: 10, fontSize: 16 }}>Reviewed</span>
                                   </div>
                                 </div>
                               </div>
@@ -338,80 +446,60 @@ class LessonDetailAnswerSheet extends React.Component {
                         </div>
                       </div>
                     </div>
-                    <div className="main-row row">
-                      <div className="col s12">
-                        <div className="card-block" style={{ margin: '0 auto' }}>
-                          <h3>Flagged For Review</h3>
-                          <div className="card-answer card">
-                            <div className="card-content">
-                              <div className="row-bordered d-flex row">
-                                <div className="col s6 badge-block-column red-text">
-                                  <span className="badge-rounded-xlg badge red darken-2 white-text"><b className="badge-text">{this.getReviewedAndFlaggedProblemAmount('REVIEWED')}</b> <i className="icon-flag"></i></span>
-                                  <span style={{ marginLeft: 10, fontSize: 16 }}>To Review</span>
-                                </div>
-                                <div className="col s6 badge-block-column">
-                                  <span className="badge-rounded-xlg badge grey darken-2 white-text"><b className="badge-text">{this.getReviewedAndFlaggedProblemAmount('FLAGGED')}</b> <i className="icon-flag"></i></span>
-                                  <span style={{ marginLeft: 10, fontSize: 16 }}>Reviewed</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>}
+                  )}
                   <Choose>
                     <When condition={this.props.lesson.status === "COMPLETED"}>
                       <div className="col s12 m6">
                         <div className="row" style={{ margin: 0 }}>
-                          <div className="card-block" style={{ margin: '0 auto' }}>
-                            {challengeProblems.length !== 0 && <div className="main-row row">
-                              <ChallengeQuestions
-                                questions={challengeProblems}
-                              />
-                            </div>}
-                            {practiceProlems.length !== 0 && <div className="main-row row">
-                              <PracticeQuestions
-                                questions={practiceProlems}
-                              />
-                            </div>}
-                            {drillProblems.length !== 0 && <div className="main-row row">
-                              <ChallengeQuestions
-                                questions={drillProblems}
-                              />
-                            </div>}
-                          </div></div>
+                          <div className="card-block" style={{ margin: "0 auto" }}>
+                            {challengeProblems.length !== 0 && (
+                              <div className="main-row row">
+                                <ChallengeQuestions questions={challengeProblems} />
+                              </div>
+                            )}
+                            {practiceProlems.length !== 0 && (
+                              <div className="main-row row">
+                                <PracticeQuestions questions={practiceProlems} />
+                              </div>
+                            )}
+                            {drillProblems.length !== 0 && (
+                              <div className="main-row row">
+                                <ChallengeQuestions questions={drillProblems} />
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </When>
                     <Otherwise>
-                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
-                        {challengeProblems.length !== 0 && <div className="main-row row">
-                          <ChallengeQuestions
-                            questions={challengeProblems}
-                          />
-                        </div>}
+                      <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
+                        {challengeProblems.length !== 0 && (
+                          <div className="main-row row">
+                            <ChallengeQuestions questions={challengeProblems} />
+                          </div>
+                        )}
                       </div>
-                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
-                        {practiceProlems.length !== 0 && <div className="main-row row">
-                          <PracticeQuestions
-                            questions={practiceProlems}
-                          />
-                        </div>}
+                      <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
+                        {practiceProlems.length !== 0 && (
+                          <div className="main-row row">
+                            <PracticeQuestions questions={practiceProlems} />
+                          </div>
+                        )}
                       </div>
-                      {drillProblems.length !== 0 && <div className="main-row row">
-                        <DrillQuestions
-                          questions={drillProblems}
-                        />
-                      </div>}
+                      {drillProblems.length !== 0 && (
+                        <div className="main-row row">
+                          <DrillQuestions questions={drillProblems} />
+                        </div>
+                      )}
                     </Otherwise>
                   </Choose>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
-  Î </React.Fragment>
+        Î{" "}
+      </React.Fragment>
     );
   }
 }

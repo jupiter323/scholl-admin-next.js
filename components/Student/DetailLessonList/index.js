@@ -511,6 +511,7 @@ class DetailLessonList extends React.Component {
               lesson={this.props.activeLesson}
               onOpenModal={this.onOpenModal}
               onAddCheckedLesson={this.onAddCheckedLesson}
+              onCloseDropdown={this.onCloseDropdown}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
