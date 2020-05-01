@@ -1086,11 +1086,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     },
   })
     .then((res) => res.json())
-    // .then(res => res.text())
-    .then((res) => {
-      console.log({ res });
-      return res;
-    })
+    .then((res) => res)
     .then(({ data }) => data);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
@@ -1102,11 +1098,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
     },
   })
     .then((res) => res.json())
-    // .then(res => res.text())
-    .then((res) => {
-      console.log({ res });
-      return res;
-    })
+    .then((res) => res)
     .then(({ data }) => data);
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
