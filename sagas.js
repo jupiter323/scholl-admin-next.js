@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -842,7 +842,7 @@ function* handleFetchCurrentUser() {
 }
 
 function* watchForFilterLessons() {
-  yield takeEvery(FILTER_LESSONS, handleFilterLessons);
+  yield debounce(200, FILTER_LESSONS, handleFilterLessons);
 }
 
 function* handleFilterLessons(action) {

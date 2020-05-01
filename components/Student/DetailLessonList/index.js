@@ -38,7 +38,6 @@ import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
 import ReadWorkBook from '../ReadWorkBook';
 import Modal from "../../Modal/index";
-import { debounce } from 'debounce';
 
 import {
   getLessonList,
@@ -604,7 +603,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
-  dispatchFilterLessons: debounce(bindActionCreators(filterLessons, dispatch), 200),
+  dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
