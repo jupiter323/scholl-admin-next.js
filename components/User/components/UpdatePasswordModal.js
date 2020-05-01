@@ -98,7 +98,7 @@ class UpdatePasswordModal extends React.Component {
                     color: #959595;
                 }
                 .formsec {
-                    width: 90%;
+                    width: 100%;
                 }
                 .formsec ul {
                     margin: 0;
