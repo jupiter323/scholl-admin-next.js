@@ -68,12 +68,12 @@ const FullView = props => {
 
   const onSaveScheduleChanges = (modalState) => {
     const { dispathRescheduleStudentLessons } = props;
-    const payload = activeLesson.map(id => ({
-      student_lesson_id: id,
-      assignment_date: moment(modalState.assignTime).format('YYYY-MM-DD'),
+    const payload = {
+      student_lesson_ids: activeLesson,
+      assignment_date: moment(modalState.assignDate).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
-    }));
-    if (payload.length > 0 && typeof payload === 'object') {
+    };
+    if (Object.keys(payload).length > 0 && typeof payload === 'object') {
       dispathRescheduleStudentLessons(payload);
       toggleRescheduleModal(!openRescheduleModal);
     }

@@ -989,6 +989,26 @@ export const fetchUnitsApi = () =>
     })
     .catch(err => console.warn('err', err));
 
+export const filterLessonListApi = (filters) => {
+  const { unitFilter, nameFilter } = filters;
+  const unitString = unitFilter.length ? `unit_id=${unitFilter}&` : '';
+  const searchString = nameFilter.length ? `search=${nameFilter.toLowerCase().replace(/\s/g, '+')}&` : '';
+  const filterQuery = `${searchString}${unitString}`;
+  return fetch(`${API_URL}/api/lessons?${filterQuery}`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(({ data }) => {
+      const lessons = data.lessons;
+      return lessons;
+    })
+    .catch(err => err);
+};
 export const fetchSubjectsApi = () =>
   fetch(`${API_URL}/api/subjects`, {
     headers: {
@@ -1086,11 +1106,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     },
   })
     .then((res) => res.json())
-    // .then(res => res.text())
-    .then((res) => {
-      console.log({ res });
-      return res;
-    })
+    .then((res) => res)
     .then(({ data }) => data);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
@@ -1102,11 +1118,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
     },
   })
     .then((res) => res.json())
-    // .then(res => res.text())
-    .then((res) => {
-      console.log({ res });
-      return res;
-    })
+    .then((res) => res)
     .then(({ data }) => data);
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {

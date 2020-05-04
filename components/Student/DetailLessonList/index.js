@@ -51,8 +51,9 @@ import {
   addAllLessons,
   removeAllLessons,
   excuseStudentLateness,
+  filterLessons,
 } from "../index/actions";
-import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage } from "../index/selectors";
+import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
@@ -81,6 +82,10 @@ class DetailLessonList extends React.Component {
       isConfirmModalOpen: false,
       prevAssignedLessons: [],
       lessonsToAssign: {},
+      prevFilters: {
+        nameFilter: '',
+        unitFilter: '',
+      },
     };
   }
 
@@ -107,12 +112,13 @@ class DetailLessonList extends React.Component {
    * @param checked {bool}
    */
   onCheckAll = async (checked) => {
+    const selectedLessonIds = this.getMappableLessons().map(lesson => lesson.id);
     if (!checked) {
-      await this.props.dispatchCheckAllLesson(this.getMappableLessons());
+      await this.props.dispatchCheckAllLesson(selectedLessonIds);
       await this.props.dispatchAddAllLessons(this.getMappableLessons());
       this.setState({ selectAll: !checked });
     } else {
-      await this.props.dispatchUnCheckAllLesson(this.getMappableLessons());
+      await this.props.dispatchUnCheckAllLesson(selectedLessonIds);
       await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
       this.setState({ selectAll: false });
     }
@@ -188,6 +194,7 @@ class DetailLessonList extends React.Component {
   // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
+    console.log('log: sort', sort);
     switch (sort) {
       case "subjectAscending":
         return lessons.sort(subjectAscending);
@@ -229,18 +236,20 @@ class DetailLessonList extends React.Component {
         return lessons.sort(lessonTypeAscending);
       case "lessonTypeDescending":
         return lessons.sort(lessonTypeDescending);
+      case "dueDate":
+        return lessons.sort(dueDateAscending);
       default:
         break;
     }
   };
   onAddUpdatedLessons = (lessons) => this.setState({ updatedLessons: lessons });
 
-  onFilterByName = () => {
-    const { lessons, nameFilter } = this.state;
-    return lessons.reduce((finalArr, currentLesson) => {
-      const { lessonName } = currentLesson;
-      const lessonString = lessonName.replace(/\s/g, "").toLowerCase();
-      if (lessonString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentLesson) === -1) {
+  onFilterByName = (mappableLessons) => {
+    const { nameFilter } = this.state;
+    return mappableLessons.reduce((finalArr, currentLesson) => {
+      const { name } = currentLesson;
+      const lessonString = name.replace(/\s/g, "").toLowerCase();
+      if (lessonString.indexOf(nameFilter.toLowerCase().replace(/\s/g, '')) !== -1 && finalArr.indexOf(currentLesson) === -1) {
         finalArr.push(currentLesson);
       }
       return finalArr;
@@ -261,26 +270,40 @@ class DetailLessonList extends React.Component {
     this.setState({ lessons: newLessonsArray });
   };
   // note: unassigned and incomplete are filtering opposite, but this works for some reason
-  onFilterLessons = () => {
+  onFilterLessons = (mappableLessons) => {
     const {
       subjectFilters,
       unitFilter,
       scoreStatusFilters,
       flagFilters,
-      lessons: allLessons,
     } = this.state;
-    let lessons = allLessons;
+    const { subjects } = this.props;
+    let lessons = [];
     if (scoreStatusFilters.length && scoreStatusFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => scoreStatusFilters.indexOf(lesson.scoreStatus) !== -1);
+      lessons = mappableLessons.filter((lesson) =>
+        (lesson.scoring && lesson.scoring.grade && scoreStatusFilters.indexOf(lesson.scoring.grade.toLowerCase()) !== -1),
+      );
     }
     if (subjectFilters.length && subjectFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => subjectFilters.indexOf(lesson.subjects.name) !== -1);
+      lessons = mappableLessons.filter((lesson) => {
+        if (!lesson.subjects) {
+          return subjectFilters.indexOf(subjects[lesson.subject_id]) !== -1;
+        }
+        return subjectFilters.indexOf(lesson.subjects.name) !== -1;
+      });
     }
     if (flagFilters.length && flagFilters.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => lesson.lesson_problems.length !== 0);
+      lessons = lessons.filter((lesson) =>
+        (lesson.problems && lesson.problems.filter(problem => problem.flat_status).length !== 0),
+      );
     }
     if (unitFilter.length && unitFilter.indexOf("all") === -1) {
-      lessons = lessons.filter((lesson) => unitFilter.indexOf(lesson.units.id) !== -1);
+      lessons = mappableLessons.filter((lesson) => {
+        if (!lesson.units) {
+          return unitFilter.indexOf(lesson.unit_id) !== -1;
+        }
+        return unitFilter.indexOf(lesson.units.id) !== -1;
+      });
     }
     return lessons;
   };
@@ -294,24 +317,16 @@ class DetailLessonList extends React.Component {
       subjectFilters,
       scoreStatusFilters,
       flagFilters,
+      prevFilters,
     } = this.state;
-
-    // Order student lessons by due date -> other assigned -> unassigned
-    function compareDueDates(a, b) {
-      const dateA = a.due_date;
-      const dateB = b.due_date;
-      let comparison = 0;
-      if (moment(dateA).isBefore(dateB) && moment(dateA).isAfter(Date.now())) {
-        comparison = 1;
-      } else if (moment(dateB).isBefore(dateA)) {
-        comparison = -1;
-      }
-      return comparison;
+    if (unitFilter !== prevFilters.unitFilter || nameFilter !== prevFilters.nameFilter) {
+      const { dispatchFilterLessons } = this.props;
+      this.setState({ prevFilters: { unitFilter, nameFilter } });
+      dispatchFilterLessons({ unitFilter, nameFilter });
     }
-
     let mappableLessons = this.props.lessonList;
     if (nameFilter.length) {
-      mappableLessons = this.onFilterByName();
+      mappableLessons = this.onFilterByName(mappableLessons);
     }
     if (
       unitFilter.length ||
@@ -319,26 +334,26 @@ class DetailLessonList extends React.Component {
       subjectFilters.length ||
       flagFilters.length
     ) {
-      mappableLessons = this.onFilterLessons();
+      mappableLessons = this.onFilterLessons(mappableLessons);
     }
     if (dueDateFilters.length) {
-      mappableLessons = this.filterDueDate();
+      mappableLessons = this.filterDueDate(mappableLessons);
     }
     if (sort) {
-      return this.onSortLessons(mappableLessons);
+      return [...this.onSortLessons(mappableLessons)];
     }
     return mappableLessons;
   };
 
   // may need to alter dueNextSession depending if client wants ALL vs incomplete/overdue
   // TODO: only works with one due date filter, not multiple
-  filterDueDate = () => {
+  filterDueDate = (mappableLessons) => {
     const { user } = this.props;
-    const { dueDateFilters, lessons: allLessons } = this.state;
-    let lessons = allLessons;
+    const { dueDateFilters } = this.state;
+    let lessons = mappableLessons;
     if (dueDateFilters.length && dueDateFilters.indexOf("all") === -1) {
       if (dueDateFilters.includes("dueToday")) {
-        lessons = lessons.filter((lesson) => lesson.dueDate === moment().format("MM/DD/Y"));
+        lessons = lessons.filter((lesson) => lesson.due_date === moment().format("YYYY-MM-DD"));
       }
       if (dueDateFilters.includes("dueNextSession")) {
         lessons = lessons.filter((lesson) =>
@@ -346,12 +361,13 @@ class DetailLessonList extends React.Component {
         );
       }
       if (dueDateFilters.includes("overdue")) {
-        lessons = lessons.filter((lesson) => lesson.overdue === true);
+        lessons = lessons.filter((lesson) => lesson.status === 'OVERDUE');
       }
       if (dueDateFilters.includes("noDueDate")) {
+        lessons = lessons.filter((lesson) => !lesson.due_date);
       }
-      if (dueDateFilters.includes("unAssgined")) {
-        lessons = lessons.filter((lesson) => lesson.status === 1);
+      if (dueDateFilters.includes("unAssigned")) {
+        lessons = lessons.filter((lesson) => lesson.status === "NOTASSIGNED");
       }
       return lessons;
     }
@@ -469,8 +485,6 @@ class DetailLessonList extends React.Component {
   submitAssignedLesson = (lessons) => {
     const {
       dispatchAssignLessonToStudent,
-      dispatchRemoveAllLessons,
-      dispatchUnCheckAllLesson,
     } = this.props;
     this.onCloseConfirmModal();
     // Dispatch assign lesson to student
@@ -480,6 +494,14 @@ class DetailLessonList extends React.Component {
     }
     dispatchAssignLessonToStudent(payload);
     // Clear the redux checkedLesson property
+    this.resetLessonSelections();
+  }
+
+  resetLessonSelections = () => {
+    const {
+      dispatchRemoveAllLessons,
+      dispatchUnCheckAllLesson,
+    } = this.props;
     dispatchUnCheckAllLesson(this.getMappableLessons());
     dispatchRemoveAllLessons(this.getMappableLessons());
     this.setState({ selectAll: false, prevAssignedLessons: [], lessonsToAssign: {} });
@@ -540,11 +562,21 @@ class DetailLessonList extends React.Component {
               onCloseDetailModal={this.onCloseDetailModal}
               user={this.props.user}
               lesson={this.props.activeLesson}
+              onOpenModal={this.onOpenModal}
+              onAddCheckedLesson={this.onAddCheckedLesson}
+              onCloseDropdown={this.onCloseDropdown}
+              resetLessonSelections={this.resetLessonSelections}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
             <ReadWorkBook
+              onCloseDetailModal={this.onCloseDetailModal}
               user={this.props.user}
+              lesson={this.props.activeLesson}
+              onOpenModal={this.onOpenModal}
+              onAddCheckedLesson={this.onAddCheckedLesson}
+              onCloseDropdown={this.onCloseDropdown}
+              resetLessonSelections={this.resetLessonSelections}
             />
           </When>
           <Otherwise>
@@ -606,6 +638,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
   onExcuseStudentLateness: bindActionCreators(excuseStudentLateness, dispatch),
+  dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
@@ -615,6 +648,7 @@ const mapStateToProps = createStructuredSelector({
   studentToken: makeSelectActiveStudentToken(),
   activeLesson: makeSelectActiveLesson(),
   activeShowPage: makeSelectOpenActivePage(),
+  subjects: makeSelectSubjects(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailLessonList);

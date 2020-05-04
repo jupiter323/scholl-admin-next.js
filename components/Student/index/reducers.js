@@ -19,8 +19,8 @@ import {
   FETCH_STUDENT_LESSSON_LIST_SUCCESS,
   FETCH_STUDENT_LESSONL_LIST_FAIL,
   CHECKED_LESSON,
-  CHECK_ALL_LESSONS,
-  UNCHECK_ALL_LESSONS,
+  SELECT_ALL_LESSONS,
+  UNSELECT_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   SET_UNIT_FILTER_OPTIONS,
@@ -117,21 +117,18 @@ function studentReducer(state = initialState, action) {
         }),
       );
 
-    case CHECK_ALL_LESSONS:
-      // Sets each "selected" lesson property to true
-      return state.set(
-        "lessonList",
-        action.mappedLessons.map((lesson) => ({
-          ...lesson,
-          selected: true,
-        })),
-      );
+    case SELECT_ALL_LESSONS:
+      return state.set('lessonList', state.get('lessonList').map(lesson => {
+        if (action.mappedLessons.includes(lesson.id)) {
+          return { ...lesson, selected: true };
+        }
+        return lesson;
+      }));
 
-    case UNCHECK_ALL_LESSONS:
-      // Sets each "selected" lesson property to false
+    case UNSELECT_ALL_LESSONS:
       return state.set(
         "lessonList",
-        action.mappedLessons.map((lesson) => ({
+        state.get('lessonList').map((lesson) => ({
           ...lesson,
           selected: false,
         })),
@@ -150,7 +147,6 @@ function studentReducer(state = initialState, action) {
       );
 
     case REMOVE_ALL_LESSONS:
-      // Resets all the "checkedLessons" to a blank array
       return state.set("checkedLessons", []);
 
     case ADD_CHECKED_LESSON:
@@ -188,13 +184,14 @@ function studentReducer(state = initialState, action) {
       return state.set(
         "lessonList",
         state.get("lessonList").map((lesson) => {
+          const { payload: { due_date, assignment_date } } = action;
           let updatedLesson = {};
-          action.payload.forEach((setLessons) => {
-            if (setLessons.student_lesson_id === lesson.id) {
+          action.payload.student_lesson_ids.forEach((setLessons) => {
+            if (setLessons === lesson.id) {
               return (updatedLesson = {
                 ...lesson,
-                assignment_date: setLessons.assignment_date,
-                due_date: setLessons.due_date,
+                assignment_date,
+                due_date,
               });
             }
             if (!updatedLesson.id) return updatedLesson = lesson;

@@ -40,6 +40,7 @@ import {
   FETCH_SUBJECTS_SUCCESS,
   FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
   EXCUSE_STUDENT_LATENESS,
+  FILTER_LESSONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -108,6 +109,7 @@ const {
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
   excuseStudentLessonLatenessApi,
+  filterLessonListApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -697,7 +699,7 @@ function* watchForFetchStudentLesson() {
 }
 
 function* watchForFetchStudentLessonDebounce() {
-  yield debounce(1000, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
+  yield debounce(200, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
 }
 
 function* handleFetchStudentLessonList(action) {
@@ -826,9 +828,14 @@ function* handleFetchSubjects() {
   }
 }
 
-
-function* watchForFetchCurrentUser() {
-  yield takeEvery(SET_USER_IS_LOGGED, handleFetchCurrentUser);
+export function* watchForFetchCurrentUser() {
+  while (true) {
+    const payload = yield take(SET_USER_IS_LOGGED);
+    const { value: status } = payload;
+    if (status) {
+      yield call(handleFetchCurrentUser);
+    }
+  }
 }
 
 function* handleFetchCurrentUser() {
@@ -860,6 +867,31 @@ function* handleExcuseStudentLateness(action) {
     // }
   } catch (error) {
     console.warn("Error occurred in the handleExcuseStudentLateness saga", error);
+  }
+}
+
+function* watchForFilterLessons() {
+  yield debounce(200, FILTER_LESSONS, handleFilterLessons);
+}
+
+function* handleFilterLessons(action) {
+  try {
+    const lessons = yield call(filterLessonListApi, action.filters);
+    if (lessons && lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+          status: 'NOTASSIGNED',
+        })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFilterLessons saga", error);
   }
 }
 
@@ -909,5 +941,6 @@ export default function* defaultSaga() {
     watchForFetchCurrentUser(),
     watchForFetchStudentLessonDebounce(),
     watchForExcuseStudentLateness(),
+    watchForFilterLessons(),
   ]);
 }
