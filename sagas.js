@@ -700,7 +700,7 @@ function* watchForFetchStudentLesson() {
 }
 
 function* watchForFetchStudentLessonDebounce() {
-  yield debounce(200, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
+  yield debounce(1000, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
 }
 
 function* handleFetchStudentLessonList(action) {
