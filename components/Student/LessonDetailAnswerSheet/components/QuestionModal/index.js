@@ -10,6 +10,7 @@ import { makeSelectActiveLesson } from "../../../index/selectors";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
+import EditProblemRow from '../EditProblemRow';
 import {
   addVideoWatchedTime,
 } from '../../../index/api';
@@ -216,6 +217,12 @@ class QuestionModal extends React.Component {
                           </span>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="card-panel">
+                    <div className="panel-block">
+                      <strong className="subtitle">Edit Student's Answer</strong>
+                      <EditProblemRow activeLesson={this.props.activeLesson} question={this.props.question} />
                     </div>
                   </div>
                 </div>
