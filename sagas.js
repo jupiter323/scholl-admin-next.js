@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   CREATE_STUDENT,
@@ -39,6 +39,7 @@ import {
   UPDATE_STUDENT_ACTIVATION_FAIL,
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
+  FILTER_LESSONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -106,6 +107,7 @@ const {
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
+  filterLessonListApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -820,9 +822,14 @@ function* handleFetchSubjects() {
   }
 }
 
-
-function* watchForFetchCurrentUser() {
-  yield takeEvery(SET_USER_IS_LOGGED, handleFetchCurrentUser);
+export function* watchForFetchCurrentUser() {
+  while (true) {
+    const payload = yield take(SET_USER_IS_LOGGED);
+    const { value: status } = payload;
+    if (status) {
+      yield call(handleFetchCurrentUser);
+    }
+  }
 }
 
 function* handleFetchCurrentUser() {
@@ -836,6 +843,31 @@ function* handleFetchCurrentUser() {
     }
   } catch (error) {
     console.warn("Error occurred in the handleFetchCurrentUser saga", error);
+  }
+}
+
+function* watchForFilterLessons() {
+  yield debounce(200, FILTER_LESSONS, handleFilterLessons);
+}
+
+function* handleFilterLessons(action) {
+  try {
+    const lessons = yield call(filterLessonListApi, action.filters);
+    if (lessons && lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+          status: 'NOTASSIGNED',
+        })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFilterLessons saga", error);
   }
 }
 
@@ -883,5 +915,6 @@ export default function* defaultSaga() {
     watchForRescheduleStudentLessons(),
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
+    watchForFilterLessons(),
   ]);
 }
