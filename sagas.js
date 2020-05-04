@@ -66,7 +66,7 @@ import {
 } from "./components/Instructor/index/constants";
 import {
   SET_CURRENT_USER,
-  SET_USER_IS_LOGGED,
+  FETCH_CURRENT_USER,
 } from './components/User/index/constants';
 import {
   setStudents,
@@ -824,14 +824,10 @@ function* handleFetchSubjects() {
 
 export function* watchForFetchCurrentUser() {
   while (true) {
-    const payload = yield take(SET_USER_IS_LOGGED);
-    const { value: status } = payload;
-    if (status) {
-      yield call(handleFetchCurrentUser);
-    }
+    yield take(FETCH_CURRENT_USER);
+    yield call(handleFetchCurrentUser);
   }
 }
-
 function* handleFetchCurrentUser() {
   try {
     const response = yield call(fetchCurrentUserApi);
