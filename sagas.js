@@ -41,6 +41,7 @@ import {
   FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
   EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
+  SET_EXCUSE_STUDENT_LATENESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -858,13 +859,12 @@ function* watchForExcuseStudentLateness() {
 
 function* handleExcuseStudentLateness(action) {
   try {
-    const response = yield call(excuseStudentLessonLatenessApi, action.lessons);
-    // if (response && response.user) {
-    //   yield put({
-    //     type: SET_CURRENT_USER,
-    //     value: response.user,
-    //   });
-    // }
+    yield call(excuseStudentLessonLatenessApi, action.lessons);
+    console.log('log: action.lessons', action.lessons);
+    yield put({
+      type: SET_EXCUSE_STUDENT_LATENESS,
+      payload: action.lessons,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleExcuseStudentLateness saga", error);
   }

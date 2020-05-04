@@ -108,10 +108,16 @@ class DetailLessonList extends React.Component {
     }
   };
 
+  // deSelectAllLessons = async (selectedLessonIds) => {
+  //   await this.props.dispatchUnCheckAllLesson(selectedLessonIds);
+  //   await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
+  //   this.setState({ selectAll: false });
+  // }
+
   /**
    * @param checked {bool}
    */
-  onCheckAll = async (checked) => {
+  onCheckAllClicked = async (checked) => {
     const selectedLessonIds = this.getMappableLessons().map(lesson => lesson.id);
     if (!checked) {
       await this.props.dispatchCheckAllLesson(selectedLessonIds);
@@ -194,7 +200,6 @@ class DetailLessonList extends React.Component {
   // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
-    console.log('log: sort', sort);
     switch (sort) {
       case "subjectAscending":
         return lessons.sort(subjectAscending);
@@ -431,7 +436,7 @@ class DetailLessonList extends React.Component {
           selectAll={this.state.selectAll}
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
-          onCheckAll={this.onCheckAll}
+          onCheckAll={this.onCheckAllClicked}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
           dropdownIsOpen={this.state.dropdownIsOpen}
@@ -497,6 +502,7 @@ class DetailLessonList extends React.Component {
     this.resetLessonSelections();
   }
 
+  // Resets redux store, unchecks lessons, resets checked state
   resetLessonSelections = () => {
     const {
       dispatchRemoveAllLessons,
@@ -526,7 +532,6 @@ class DetailLessonList extends React.Component {
   }
 
   handleExcuseLessonLateness = (lessonCardIds) => {
-    console.log('log: lessonCardIds', lessonCardIds);
     const { onExcuseStudentLateness } = this.props;
     if (lessonCardIds && lessonCardIds.length > 0) {
       this.getMappableLessons().forEach(lesson => {
@@ -538,6 +543,8 @@ class DetailLessonList extends React.Component {
           onExcuseStudentLateness(payload);
         }
       });
+      // Deselect all checks and lessons
+      this.resetLessonSelections();
     }
   }
 
@@ -566,6 +573,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
@@ -577,6 +585,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>
           <Otherwise>

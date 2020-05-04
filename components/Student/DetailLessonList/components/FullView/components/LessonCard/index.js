@@ -70,13 +70,11 @@ const LessonCard = props => {
     onCloseDropdown,
     handleRescheduleModalOpen,
     handleResetLesson,
-    handleExcuseLessonLateness
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
-
   const onOpenDetailModal = async (e) => {
     e.preventDefault()
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
@@ -204,7 +202,7 @@ const LessonCard = props => {
                             handleRescheduleModalOpen,
                             props.handleUnassignLesson,
                             handleResetLesson,
-                            handleExcuseLessonLateness
+                            props.handleExcuseLessonLateness,
                             [lesson.id]
                           )}
                         </ul>
