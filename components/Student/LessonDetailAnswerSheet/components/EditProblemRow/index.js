@@ -35,11 +35,32 @@ class ProblemRow extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { activeLesson, question } = this.props;
+    const currentAnswerId = question.answer_id;
+    const answerChoices = question.problem.answers;
+    const currentSelection = answerChoices.map((id, index) => {
+      if (id === currentAnswerId) {
+        return index;
+      }
+      return null;
+    }).filter(id => id);
+    if (!currentSelection) return;
+    console.log('currentSelection', currentSelection);
+    this.setState({
+      problemCells: update(this.state.problemCells, {
+        [currentSelection]: { selected: { $set: true } },
+      }),
+      selectedIndex: currentSelection,
+    });
+  }
+
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
-    console.log(updatedProblemCells);
-    console.log(index);
+    // console.log('cells', updatedProblemCells);
+    // console.log('index',index);
+    // console.log('label', label);
     // console.log({student_test_id: this.props.studentTestId,
     //   test_problem_id: testProblemId,
     //   answer: label})
@@ -49,6 +70,7 @@ class ProblemRow extends React.Component {
     //   answer: label,
     // });
   };
+
   handleClickBadge = index => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
@@ -59,8 +81,8 @@ class ProblemRow extends React.Component {
       this.onSaveStudentAnswer(updatedProblemCells, index);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
-        [index]: { selected: { $set: !currentBadge.selected } },
         [selectedIndex]: { selected: { $set: false } },
+        [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
     }
@@ -68,6 +90,7 @@ class ProblemRow extends React.Component {
 
   render() {
     const { problemCells } = this.state;
+    console.log('edit props', this.props);
     return (
     //   <li className="answers-list-holder">
       <ul className="answer-list">
