@@ -14,8 +14,9 @@ import {
 import { loggedIn } from "../../utils/AuthService";
 
 import { setUserIsLogged } from "../User/index/actions";
+import { LogoutApi } from "../User/index/api";
 import $ from "jquery";
-
+import Router from "next/router";
 if (typeof window !== "undefined") {
   window.$ = $;
   window.jQuery = $;
@@ -81,6 +82,11 @@ class SideNav extends Component {
     $(".sidenav").sidenav();
   }
 
+  handleLogout = () => {
+    LogoutApi();
+    Router.push("/login");
+  }
+
   render() {
     const { isLogged, currentUser } = this.props;
     const { first_name: firstName, last_name: lastName } = currentUser;
@@ -110,11 +116,9 @@ class SideNav extends Component {
           </ul>
           <div className="log-block white-text" style={{ cursor: "hand" }}>
             <div className="text">
-              <Link href="/login">
-                <a href="#">
-                  <div className="block white-text">{isLogged ? "Log Out" : ""}</div>
-                </a>
-              </Link>
+              <a href="#" onClick={this.handleLogout}>
+                <div className="block white-text">{isLogged ? "Log Out" : ""}</div>
+              </a>
               <Link href="/account">
                 <a>
                   <div className="block white-text">

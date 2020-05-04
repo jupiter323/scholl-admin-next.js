@@ -12,6 +12,7 @@ import stateOptions from '../components/utils/stateOptions';
 import { nestedEditFieldValidation } from '../components/utils/fieldValidation';
 import sampleInstructors from "../components/utils/sampleInstructors";
 import { makeSelectCurrentUser } from '../components/User/index/selectors';
+import UpdatePasswordModal from '../components/User/components/UpdatePasswordModal';
 import {
   loggedIn,
 } from "../utils/AuthService";
@@ -88,6 +89,7 @@ class Account extends React.Component {
         lastName: true,
         email: true,
       },
+      openModal: false,
     };
   }
 
@@ -158,6 +160,9 @@ class Account extends React.Component {
 
   onResetPassword = (event) => {
     event.preventDefault();
+    this.setState({
+      openModal: true
+    })
     const {
       actions: { password, confirmPassword },
     } = this.state;
@@ -180,6 +185,14 @@ class Account extends React.Component {
     });
     this.setState({ updatedAccount });
   };
+
+  onToggleModal = (value) => {
+    console.log(value)
+    this.setState({
+      openModal: value
+    })
+  }
+
 
   render() {
     const {
@@ -214,8 +227,10 @@ class Account extends React.Component {
                 </div>
               )}
             </Sticky>
+
             <div className="content-section">
               <div className="content-section-holder">
+                <UpdatePasswordModal onCloseModal={this.onToggleModal} open={this.state.openModal} />
                 <form action="#" className="custom-form">
                   <fieldset>
                     <div className="container-xs container-align-left">
@@ -328,7 +343,7 @@ class Account extends React.Component {
                         </div>
                       </div>
                       <div className="account_btn-holder">
-                        <a href="#" onClick={this.onResetPassword}>
+                        <a href="#" onClick={(e) => this.onToggleModal(true, e)}>
                           Reset Password
                         </a>
                         <a className="btn" href="#" onClick={this.onUpdateProfile}>
