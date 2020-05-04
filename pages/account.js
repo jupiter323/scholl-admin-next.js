@@ -161,8 +161,8 @@ class Account extends React.Component {
   onResetPassword = (event) => {
     event.preventDefault();
     this.setState({
-      openModal: true
-    })
+      openModal: true,
+    });
     const {
       actions: { password, confirmPassword },
     } = this.state;
@@ -187,10 +187,10 @@ class Account extends React.Component {
   };
 
   onToggleModal = (value) => {
-    console.log(value)
+    console.log(value);
     this.setState({
-      openModal: value
-    })
+      openModal: value,
+    });
   }
 
 

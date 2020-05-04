@@ -55,7 +55,7 @@ class Login extends Component {
   handleForgotPassword = () => {
     this.setState({
       forgotPassword: true,
-    })
+    });
   }
 
   render() {
@@ -99,7 +99,7 @@ class Login extends Component {
                         <p>
                           For security purposes, you need to enter a current your
                           email and password for this account.
-                    </p>
+                        </p>
                       </div>
                       <div className="formsec">
                         <ul className="clearfix">
@@ -112,7 +112,7 @@ class Login extends Component {
                                 value={email}
                                 onChange={this.handleChangeForm}
                                 className="email"
-                                autoFocus={true}
+                                autoFocus
                                 ref={this.textFieldForUserEmailRef}
                                 onKeyPress={event => {
                                   if (event.key === "Enter") {
@@ -132,7 +132,7 @@ class Login extends Component {
                                 value={password}
                                 onChange={this.handleChangeForm}
                                 className="password"
-                                autoFocus={true}
+                                autoFocus
                                 ref={this.textFieldForPasswordRef}
                                 onKeyPress={event => {
                                   if (event.key === "Enter") {
@@ -153,8 +153,8 @@ class Login extends Component {
                                       className="filled-in"
                                       name="chk_remember"
                                       id="chk_remember"
-                                      value={true}
-                                      autoFocus={true}
+                                      value
+                                      autoFocus
                                       ref={this.chkRememberRef}
                                       onKeyPress={event => {
                                         if (event.key === "Enter") {

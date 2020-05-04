@@ -118,7 +118,6 @@ function studentReducer(state = initialState, action) {
       );
 
     case SELECT_ALL_LESSONS:
-      // Sets each "selected" lesson property to true
       return state.set('lessonList', state.get('lessonList').map(lesson => {
         if (action.mappedLessons.includes(lesson.id)) {
           return { ...lesson, selected: true };
@@ -127,10 +126,13 @@ function studentReducer(state = initialState, action) {
       }));
 
     case UNSELECT_ALL_LESSONS:
-      // Sets each "selected" lesson property to false
-      return state.set('lessonList', state.get('lessonList').map(lesson =>
-        ({ ...lesson, selected: false }),
-      ));
+      return state.set(
+        "lessonList",
+        state.get('lessonList').map((lesson) => ({
+          ...lesson,
+          selected: false,
+        })),
+      );
 
     case ADD_ALL_LESSONS:
       // Adds each lesson to the list of "checkedLessons"
@@ -182,13 +184,14 @@ function studentReducer(state = initialState, action) {
       return state.set(
         "lessonList",
         state.get("lessonList").map((lesson) => {
+          const { payload: { due_date, assignment_date } } = action;
           let updatedLesson = {};
-          action.payload.forEach((setLessons) => {
-            if (setLessons.student_lesson_id === lesson.id) {
+          action.payload.student_lesson_ids.forEach((setLessons) => {
+            if (setLessons === lesson.id) {
               return (updatedLesson = {
                 ...lesson,
-                assignment_date: setLessons.assignment_date,
-                due_date: setLessons.due_date,
+                assignment_date,
+                due_date,
               });
             }
             if (!updatedLesson.id) return updatedLesson = lesson;

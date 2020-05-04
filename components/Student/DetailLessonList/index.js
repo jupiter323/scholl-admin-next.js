@@ -483,8 +483,6 @@ class DetailLessonList extends React.Component {
   submitAssignedLesson = (lessons) => {
     const {
       dispatchAssignLessonToStudent,
-      dispatchRemoveAllLessons,
-      dispatchUnCheckAllLesson,
     } = this.props;
     this.onCloseConfirmModal();
     // Dispatch assign lesson to student
@@ -494,6 +492,14 @@ class DetailLessonList extends React.Component {
     }
     dispatchAssignLessonToStudent(payload);
     // Clear the redux checkedLesson property
+    this.resetLessonSelections();
+  }
+
+  resetLessonSelections = () => {
+    const {
+      dispatchRemoveAllLessons,
+      dispatchUnCheckAllLesson,
+    } = this.props;
     dispatchUnCheckAllLesson(this.getMappableLessons());
     dispatchRemoveAllLessons(this.getMappableLessons());
     this.setState({ selectAll: false, prevAssignedLessons: [], lessonsToAssign: {} });
@@ -538,11 +544,21 @@ class DetailLessonList extends React.Component {
               onCloseDetailModal={this.onCloseDetailModal}
               user={this.props.user}
               lesson={this.props.activeLesson}
+              onOpenModal={this.onOpenModal}
+              onAddCheckedLesson={this.onAddCheckedLesson}
+              onCloseDropdown={this.onCloseDropdown}
+              resetLessonSelections={this.resetLessonSelections}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
             <ReadWorkBook
+              onCloseDetailModal={this.onCloseDetailModal}
               user={this.props.user}
+              lesson={this.props.activeLesson}
+              onOpenModal={this.onOpenModal}
+              onAddCheckedLesson={this.onAddCheckedLesson}
+              onCloseDropdown={this.onCloseDropdown}
+              resetLessonSelections={this.resetLessonSelections}
             />
           </When>
           <Otherwise>

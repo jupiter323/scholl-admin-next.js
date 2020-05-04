@@ -3,37 +3,37 @@ import Portal from '../../Portal';
 import ClickOffComponentWrapper from '../../ClickOffComponentWrapper';
 
 class UpdatePasswordModal extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        const { onCloseModal, open } = this.props;
-        return (
-            <Portal selector="#modal">
-                {open && (
-                    <div className="overlay">
-                        <ClickOffComponentWrapper onOuterClick={(e) => onCloseModal(false, e)}>
-                            <div
-                                id="modal_add_new_class"
-                                className="modal modal-custom modal-460"
-                            >
-                                <div className="forgot_account">
-                                    <div className="discrption">
-                                        <h5>Please update your password</h5>
-                                        <p>For security purposes, you need to set a new password for this account. Please select a password between 6 and 24 characters and enter it below.</p>
-                                    </div>
-                                    <div className="formsec">
-                                        <ul className="clearfix">
-                                            <li><input type="password" placeholder="Current Password" /></li>
-                                            <li><input type="password" placeholder="New Password" /></li>
-                                            <li><input type="password" placeholder="Confirm New Password" /></li>
-                                            <li><button className="btn waves-effect read">Update Password</button></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </ClickOffComponentWrapper></div>)} <style jsx>
-                    {`
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const { onCloseModal, open } = this.props;
+    return (
+      <Portal selector="#modal">
+        {open && (
+          <div className="overlay">
+            <ClickOffComponentWrapper onOuterClick={(e) => onCloseModal(false, e)}>
+              <div
+                id="modal_add_new_class"
+                className="modal modal-custom modal-460"
+              >
+                <div className="forgot_account">
+                  <div className="discrption">
+                    <h5>Please update your password</h5>
+                    <p>For security purposes, you need to set a new password for this account. Please select a password between 6 and 24 characters and enter it below.</p>
+                  </div>
+                  <div className="formsec">
+                    <ul className="clearfix">
+                      <li><input type="password" placeholder="Current Password" /></li>
+                      <li><input type="password" placeholder="New Password" /></li>
+                      <li><input type="password" placeholder="Confirm New Password" /></li>
+                      <li><button className="btn waves-effect read">Update Password</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ClickOffComponentWrapper></div>)} <style jsx>
+          {`
             .overlay {
               position: fixed;
               background-color: rgba(0, 0, 0, 0.7);
@@ -190,8 +190,8 @@ class UpdatePasswordModal extends React.Component {
                     transition: .3s ease-out;
                 }
           `}
-                </style></Portal>
-        )
-    }
+        </style></Portal>
+    );
+  }
 }
 export default UpdatePasswordModal;
