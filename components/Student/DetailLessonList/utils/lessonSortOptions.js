@@ -13,7 +13,7 @@ export default [
   },
   {
     label: "Due Date",
-    value: "dueDate",
+    value: "dueDateDescending",
   },
   {
     label: "Score",

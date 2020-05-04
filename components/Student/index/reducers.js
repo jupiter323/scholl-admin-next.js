@@ -19,8 +19,8 @@ import {
   FETCH_STUDENT_LESSSON_LIST_SUCCESS,
   FETCH_STUDENT_LESSONL_LIST_FAIL,
   CHECKED_LESSON,
-  CHECK_ALL_LESSONS,
-  UNCHECK_ALL_LESSONS,
+  SELECT_ALL_LESSONS,
+  UNSELECT_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   SET_UNIT_FILTER_OPTIONS,
@@ -117,25 +117,20 @@ function studentReducer(state = initialState, action) {
         }),
       );
 
-    case CHECK_ALL_LESSONS:
+    case SELECT_ALL_LESSONS:
       // Sets each "selected" lesson property to true
-      return state.set(
-        "lessonList",
-        action.mappedLessons.map((lesson) => ({
-          ...lesson,
-          selected: true,
-        })),
-      );
+      return state.set('lessonList', state.get('lessonList').map(lesson => {
+        if (action.mappedLessons.includes(lesson.id)) {
+          return { ...lesson, selected: true };
+        }
+        return lesson;
+      }));
 
-    case UNCHECK_ALL_LESSONS:
+    case UNSELECT_ALL_LESSONS:
       // Sets each "selected" lesson property to false
-      return state.set(
-        "lessonList",
-        action.mappedLessons.map((lesson) => ({
-          ...lesson,
-          selected: false,
-        })),
-      );
+      return state.set('lessonList', state.get('lessonList').map(lesson =>
+        ({ ...lesson, selected: false }),
+      ));
 
     case ADD_ALL_LESSONS:
       // Adds each lesson to the list of "checkedLessons"
@@ -150,7 +145,6 @@ function studentReducer(state = initialState, action) {
       );
 
     case REMOVE_ALL_LESSONS:
-      // Resets all the "checkedLessons" to a blank array
       return state.set("checkedLessons", []);
 
     case ADD_CHECKED_LESSON:

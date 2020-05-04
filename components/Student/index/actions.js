@@ -28,8 +28,8 @@ import {
   FETCH_LESSON_LIST,
   FETCH_STUDENT_LESSON_LIST,
   CHECKED_LESSON,
-  CHECK_ALL_LESSONS,
-  UNCHECK_ALL_LESSONS,
+  SELECT_ALL_LESSONS,
+  UNSELECT_ALL_LESSONS,
   ADD_CHECKED_LESSON,
   REMOVE_CHECKED_LESSON,
   FETCH_UNITS,
@@ -45,6 +45,7 @@ import {
   SET_OPEN_ACTIVE_PAGE,
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
+  FILTER_LESSONS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -266,12 +267,12 @@ export const checkLesson = (id) => ({
   id,
 });
 export const checkAllLessons = (mappedLessons) => ({
-  type: CHECK_ALL_LESSONS,
+  type: SELECT_ALL_LESSONS,
   mappedLessons,
 });
 
 export const unCheckAllLessons = (mappedLessons) => ({
-  type: UNCHECK_ALL_LESSONS,
+  type: UNSELECT_ALL_LESSONS,
   mappedLessons,
 });
 
@@ -326,4 +327,9 @@ export const setOpenActivePage = (value) => ({
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
   studentInfo,
+});
+
+export const filterLessons = (filters) => ({
+  type: FILTER_LESSONS,
+  filters,
 });
