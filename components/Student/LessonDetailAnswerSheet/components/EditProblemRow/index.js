@@ -3,7 +3,7 @@ import update from "immutability-helper";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { addStudentLessonProblemAnswer } from "../../../index/actions";
+import { addStudentLessonProblemAnswerApi } from '../../../index/api';
 
 class ProblemRow extends React.Component {
   constructor(props) {
@@ -76,8 +76,8 @@ class ProblemRow extends React.Component {
     this.setState({ answer_text: setText });
   }
 
-  onSaveStudentAnswer = (updatedProblemCells, index) => {
-    const { activeLesson, question, dispatchOnAddAnswers } = this.props;
+  onSaveStudentAnswer = async (updatedProblemCells, index) => {
+    const { activeLesson, question } = this.props;
     const answerChoices = question.problem.answers;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const payload = {
@@ -85,9 +85,24 @@ class ProblemRow extends React.Component {
       problem_id: question.problem.id,
       answer_id: answerChoices[index].id,
     };
-    dispatchOnAddAnswers(payload);
+    const res = await addStudentLessonProblemAnswerApi(payload);
+    // if (res === 202) {
     this.props.updateProblemList(this.props.problemType, { ...question, answer_id: answerChoices[index].id, answer_text: null, answered: true });
+    // }
   };
+
+  handleSubmit = async (e) => {
+    const { activeLesson, question } = this.props;
+    const payload = {
+      student_lesson_id: activeLesson.id,
+      problem_id: question.problem.id,
+      answer_text: this.state.answer_text,
+    };
+    const res = await addStudentLessonProblemAnswerApi(payload);
+    // if (res === 202) {
+    this.props.updateProblemList(this.props.problemType, { ...question, answer_id: null, answer_text: this.state.answer_text, answered: true });
+    // }
+  }
 
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
@@ -108,17 +123,6 @@ class ProblemRow extends React.Component {
 
   handleChange = (e) => {
     this.setState({ answer_text: e.target.value });
-  }
-
-  handleSubmit = (e) => {
-    const { activeLesson, question, dispatchOnAddAnswers } = this.props;
-    const payload = {
-      student_lesson_id: activeLesson.id,
-      problem_id: question.problem.id,
-      answer_text: this.state.answer_text,
-    };
-    dispatchOnAddAnswers(payload);
-    this.props.updateProblemList(this.props.problemType, { ...question, answer_id: null, answer_text: this.state.answer_text, answered: true });
   }
 
   render() {
@@ -161,17 +165,14 @@ class ProblemRow extends React.Component {
 ProblemRow.propTypes = {
   activeLesson: PropTypes.object.isRequired,
   question: PropTypes.object.isRequired,
-  dispatchOnAddAnswers: PropTypes.func.isRequired,
   updateProblemList: PropTypes.func.isRequired,
   problemType: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  //   studentTestId: state.testReducer.studentTestId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchOnAddAnswers: bindActionCreators(addStudentLessonProblemAnswer, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProblemRow);

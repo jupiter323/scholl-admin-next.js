@@ -1160,5 +1160,5 @@ export const addStudentLessonProblemAnswerApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then((res) => res.json())
+    .then((res) => res.status)
     .catch((err) => err);
