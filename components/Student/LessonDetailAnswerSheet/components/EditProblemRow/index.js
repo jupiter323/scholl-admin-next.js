@@ -36,17 +36,18 @@ class ProblemRow extends React.Component {
   }
 
   componentDidMount() {
-    const { activeLesson, question } = this.props;
+    const { question } = this.props;
     const currentAnswerId = question.answer_id;
     const answerChoices = question.problem.answers;
-    const currentSelection = answerChoices.map((id, index) => {
-      if (id === currentAnswerId) {
+    const currentSelection = answerChoices.map((answer, index) => {
+      if (answer.id === currentAnswerId) {
         return index;
       }
       return null;
-    }).filter(id => id);
-    if (!currentSelection) return;
-    console.log('currentSelection', currentSelection);
+    }).filter(index => index !== null)[0];
+    console.log('log: currentSelection', currentSelection);
+    if (typeof currentSelection !== 'number') return;
+    console.log('log: this should be running');
     this.setState({
       problemCells: update(this.state.problemCells, {
         [currentSelection]: { selected: { $set: true } },
@@ -58,17 +59,7 @@ class ProblemRow extends React.Component {
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
-    // console.log('cells', updatedProblemCells);
-    // console.log('index',index);
-    // console.log('label', label);
-    // console.log({student_test_id: this.props.studentTestId,
-    //   test_problem_id: testProblemId,
-    //   answer: label})
-    // this.props.dispatchOnAddAnswers({
-    //   student_test_id: this.props.studentTestId,
-    //   test_problem_id: testProblemId,
-    //   answer: label,
-    // });
+    // Dispatch from here
   };
 
   handleClickBadge = index => {
