@@ -40,6 +40,7 @@ import {
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
   FILTER_LESSONS,
+  ADD_STUDENT_ANSWER,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -108,6 +109,7 @@ const {
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
   filterLessonListApi,
+  addStudentLessonProblemAnswerApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -941,5 +943,6 @@ export default function* defaultSaga() {
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
     watchForFilterLessons(),
+    watchForAddStudentLessonAnswer(),
   ]);
 }

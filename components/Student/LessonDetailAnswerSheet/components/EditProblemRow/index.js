@@ -33,22 +33,39 @@ class ProblemRow extends React.Component {
         },
       ],
       answerChoices: [],
+      answer_text: "",
     };
   }
 
   componentDidMount() {
-    console.log('log: props', this.props);
+    console.log("log: props", this.props);
+    const { question: { problem } } = this.props;
+    console.log(problem.answer_id);
+    console.log(problem.answer_text);
+    console.log(problem.answered);
+    if (problem.answer_id && !problem.answer_text && problem.answered) {
+      this.setAnswerChoice();
+    } else if (!problem.answer_id && problem.answer_text && problem.answered) {
+      console.log('run condition');
+      this.setAnswerText();
+    }
+  }
+
+  setAnswerChoice = () => {
     const { question } = this.props;
     const currentAnswerId = question.answer_id;
     const answerChoices = question.problem.answers;
-    const currentSelection = answerChoices.map((answer, index) => {
-      if (answer.id === currentAnswerId) {
-        return index;
-      }
-      return null;
-    }).filter(index => index !== null)[0];
+    this.setState({ answerChoices });
+    const currentSelection = answerChoices
+      .map((answer, index) => {
+        if (answer.id === currentAnswerId) {
+          return index;
+        }
+        return null;
+      })
+      .filter((index) => index !== null)[0];
 
-    if (typeof currentSelection !== 'number') return;
+    if (typeof currentSelection !== "number") return;
 
     this.setState({
       problemCells: update(this.state.problemCells, {
@@ -59,23 +76,28 @@ class ProblemRow extends React.Component {
     });
   }
 
+  setAnswerText = () => {
+    console.log('run function');
+    const { question: { problem: { answer_text } } } = this.props;
+    const setText = !answer_text ? "" : answer_text;
+    console.log('log: setText', setText);
+    this.setState({ answer_text: setText });
+  }
+
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     const { activeLesson, question, dispatchOnAddAnswers } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
-    const { label } = this.state.problemCells[index];
-    console.log(this.state);
-    console.log(label);
-    // Dispatch from here
+    console.log("log: answerChoices", this.state.answerChoices);
+
     const payload = {
       student_lesson_id: activeLesson.id,
-      problem_id: question.id,
-      answer_id: this.state.answerChoices[index],
+      problem_id: question.problem.id,
+      answer_id: this.state.answerChoices[index].id,
     };
-    console.log('log: payload', payload);
-    // dispatchOnAddAnswers()
+    dispatchOnAddAnswers(payload);
   };
 
-  handleClickBadge = index => {
+  handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
     if (selectedIndex === -1) {
@@ -92,11 +114,32 @@ class ProblemRow extends React.Component {
     }
   };
 
+  handleChange = (e) => {
+    this.setState({ answer_text: e.target.value });
+  }
+
+  handleSubmit = (e) => {
+    const { activeLesson, question, dispatchOnAddAnswers } = this.props;
+    const payload = {
+      student_lesson_id: activeLesson.id,
+      problem_id: question.problem.id,
+      answer_text: this.state.answer_text,
+    };
+    dispatchOnAddAnswers(payload);
+  }
+
   render() {
     const { problemCells } = this.state;
-    console.log('edit props', this.props);
+    if (this.props.question.problem.answers.length === 0) {
+      return (
+        <>
+          <input type="text" className="answer-input" value={this.state.openAnswer} onChange={this.handleChange} />
+          <button className="btn" onClick={this.handleSubmit}>Submit</button>
+        </>
+      );
+    }
     return (
-    //   <li className="answers-list-holder">
+      //   <li className="answers-list-holder">
       <ul className="answer-list">
         {problemCells.map((cell, index) => (
           <li
@@ -117,22 +160,22 @@ class ProblemRow extends React.Component {
           </li>
         ))}
       </ul>
-    //   </li>
+      //   </li>
     );
   }
 }
 
 ProblemRow.propTypes = {
   activeLesson: PropTypes.object.isRequired,
-  question: PropTypes.string.isRequired,
+  question: PropTypes.object.isRequired,
   dispatchOnAddAnswers: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-//   studentTestId: state.testReducer.studentTestId,
+const mapStateToProps = (state) => ({
+  //   studentTestId: state.testReducer.studentTestId,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   dispatchOnAddAnswers: bindActionCreators(addStudentLessonProblemAnswer, dispatch),
 });
 
