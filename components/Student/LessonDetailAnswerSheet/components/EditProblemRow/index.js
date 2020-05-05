@@ -39,14 +39,10 @@ class ProblemRow extends React.Component {
 
   componentDidMount() {
     console.log("log: props", this.props);
-    const { question: { problem } } = this.props;
-    console.log(problem.answer_id);
-    console.log(problem.answer_text);
-    console.log(problem.answered);
-    if (problem.answer_id && !problem.answer_text && problem.answered) {
+    const { question: { answer_id, answer_text, answered } } = this.props;
+    if (answer_id && !answer_text && answered) {
       this.setAnswerChoice();
-    } else if (!problem.answer_id && problem.answer_text && problem.answered) {
-      console.log('run condition');
+    } else if (!answer_id && answer_text && answered) {
       this.setAnswerText();
     }
   }
@@ -55,7 +51,6 @@ class ProblemRow extends React.Component {
     const { question } = this.props;
     const currentAnswerId = question.answer_id;
     const answerChoices = question.problem.answers;
-    this.setState({ answerChoices });
     const currentSelection = answerChoices
       .map((answer, index) => {
         if (answer.id === currentAnswerId) {
@@ -72,27 +67,23 @@ class ProblemRow extends React.Component {
         [currentSelection]: { selected: { $set: true } },
       }),
       selectedIndex: currentSelection,
-      answerChoices,
     });
   }
 
   setAnswerText = () => {
-    console.log('run function');
-    const { question: { problem: { answer_text } } } = this.props;
+    const { question: { answer_text } } = this.props;
     const setText = !answer_text ? "" : answer_text;
-    console.log('log: setText', setText);
     this.setState({ answer_text: setText });
   }
 
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     const { activeLesson, question, dispatchOnAddAnswers } = this.props;
+    const answerChoices = question.problem.answers;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
-    console.log("log: answerChoices", this.state.answerChoices);
-
     const payload = {
       student_lesson_id: activeLesson.id,
       problem_id: question.problem.id,
-      answer_id: this.state.answerChoices[index].id,
+      answer_id: answerChoices[index].id,
     };
     dispatchOnAddAnswers(payload);
   };
@@ -100,18 +91,18 @@ class ProblemRow extends React.Component {
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
+    let updatedProblemCells = this.state.problemCells;
     if (selectedIndex === -1) {
-      const updatedProblemCells = update(this.state.problemCells, {
+      updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index);
     } else {
-      const updatedProblemCells = update(this.state.problemCells, {
+      updatedProblemCells = update(this.state.problemCells, {
         [selectedIndex]: { selected: { $set: false } },
         [index]: { selected: { $set: !currentBadge.selected } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index);
     }
+    this.onSaveStudentAnswer(updatedProblemCells, index);
   };
 
   handleChange = (e) => {
@@ -133,7 +124,7 @@ class ProblemRow extends React.Component {
     if (this.props.question.problem.answers.length === 0) {
       return (
         <>
-          <input type="text" className="answer-input" value={this.state.openAnswer} onChange={this.handleChange} />
+          <input type="text" className="answer-input" value={this.state.answer_text} onChange={this.handleChange} />
           <button className="btn" onClick={this.handleSubmit}>Submit</button>
         </>
       );
