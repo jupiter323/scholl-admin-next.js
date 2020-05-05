@@ -871,6 +871,31 @@ function* handleFilterLessons(action) {
   }
 }
 
+function* watchForAddStudentLessonAnswer() {
+  yield takeEvery(ADD_STUDENT_ANSWER, handleAddStudentLessonAnswer);
+}
+
+function* handleAddStudentLessonAnswer(action) {
+  try {
+    yield call(addStudentLessonProblemAnswerApi, action.answer);
+    // if (lessons && lessons instanceof Array) {
+    //   yield put({
+    //     type: FETCH_LESSON_LIST_SUCCESS,
+    //     payload: lessons.map(lesson => ({
+    //       ...lesson,
+    //       selected: false,
+    //       status: 'NOTASSIGNED',
+    //     })),
+    //   });
+    //   yield put({
+    //     type: MERGE_STUDENT_LESSON_LISTS,
+    //   });
+    // }
+  } catch (error) {
+    console.warn("Error occurred in the handleFilterLessons saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
