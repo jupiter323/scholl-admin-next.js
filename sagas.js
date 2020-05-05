@@ -879,7 +879,8 @@ function* watchForAddStudentLessonAnswer() {
 
 function* handleAddStudentLessonAnswer(action) {
   try {
-    yield call(addStudentLessonProblemAnswerApi, action.answer);
+    const res = yield call(addStudentLessonProblemAnswerApi, action.answer);
+    console.log('log: saga res', res);
     // if (lessons && lessons instanceof Array) {
     //   yield put({
     //     type: FETCH_LESSON_LIST_SUCCESS,

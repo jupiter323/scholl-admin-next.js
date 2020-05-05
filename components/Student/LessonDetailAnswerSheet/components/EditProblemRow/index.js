@@ -86,6 +86,7 @@ class ProblemRow extends React.Component {
       answer_id: answerChoices[index].id,
     };
     dispatchOnAddAnswers(payload);
+    this.props.updateProblemList(this.props.problemType, { ...question, answer_id: answerChoices[index].id, answer_text: null, answered: true });
   };
 
   handleClickBadge = (index) => {
@@ -117,6 +118,7 @@ class ProblemRow extends React.Component {
       answer_text: this.state.answer_text,
     };
     dispatchOnAddAnswers(payload);
+    this.props.updateProblemList(this.props.problemType, { ...question, answer_id: null, answer_text: this.state.answer_text, answered: true });
   }
 
   render() {
@@ -160,6 +162,8 @@ ProblemRow.propTypes = {
   activeLesson: PropTypes.object.isRequired,
   question: PropTypes.object.isRequired,
   dispatchOnAddAnswers: PropTypes.func.isRequired,
+  updateProblemList: PropTypes.func.isRequired,
+  problemType: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

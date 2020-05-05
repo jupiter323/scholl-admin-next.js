@@ -186,6 +186,16 @@ class LessonDetailAnswerSheet extends React.Component {
     onAddCheckedLesson(lesson.id);
   }
 
+  updateProblemList = (problemsType, updatedProblem) => {
+    const problems = this.state[problemsType];
+    const newProblems = problems.map(problem => {
+      if (problem.id === updatedProblem.id) return updatedProblem;
+      return problem;
+    });
+    this.setState({ practiceProlems: [...newProblems] });
+    console.log('log: should have set state');
+  }
+
   render() {
     const { challengeProblems, practiceProlems, drillProblems } = this.state;
     const { onCloseDetailModal, user,
@@ -454,17 +464,17 @@ class LessonDetailAnswerSheet extends React.Component {
                           <div className="card-block" style={{ margin: "0 auto" }}>
                             {challengeProblems.length !== 0 && (
                               <div className="main-row row">
-                                <ChallengeQuestions questions={challengeProblems} />
+                                <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
                               </div>
                             )}
                             {practiceProlems.length !== 0 && (
                               <div className="main-row row">
-                                <PracticeQuestions questions={practiceProlems} />
+                                <PracticeQuestions questions={practiceProlems} updateProblemList={this.updateProblemList} problemType={'practiceProlems'} />
                               </div>
                             )}
                             {drillProblems.length !== 0 && (
                               <div className="main-row row">
-                                <ChallengeQuestions questions={drillProblems} />
+                                <DrillQuestions questions={drillProblems} updateProblemList={this.updateProblemList} problemType={'drillProblems'} />
                               </div>
                             )}
                           </div>
@@ -475,20 +485,20 @@ class LessonDetailAnswerSheet extends React.Component {
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {challengeProblems.length !== 0 && (
                           <div className="main-row row">
-                            <ChallengeQuestions questions={challengeProblems} />
+                            <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
                           </div>
                         )}
                       </div>
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {practiceProlems.length !== 0 && (
                           <div className="main-row row">
-                            <PracticeQuestions questions={practiceProlems} />
+                            <PracticeQuestions questions={practiceProlems} updateProblemList={this.updateProblemList} problemType={'practiceProlems'} />
                           </div>
                         )}
                       </div>
                       {drillProblems.length !== 0 && (
                         <div className="main-row row">
-                          <DrillQuestions questions={drillProblems} />
+                          <DrillQuestions questions={drillProblems} updateProblemList={this.updateProblemList} problemType={'drillProblems'} />
                         </div>
                       )}
                     </Otherwise>
