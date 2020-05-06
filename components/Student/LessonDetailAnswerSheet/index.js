@@ -187,13 +187,12 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   updateProblemList = (problemsType, updatedProblem) => {
-    console.log('log: problemsType', problemsType);
     const problems = this.state[problemsType];
     const newProblems = problems.map(problem => {
       if (problem.id === updatedProblem.id) return updatedProblem;
       return problem;
     });
-    this.setState({ practiceProlems: [...newProblems] });
+    this.setState({ [problemsType]: [...newProblems] });
   }
 
   render() {

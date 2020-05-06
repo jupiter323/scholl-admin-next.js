@@ -3,6 +3,7 @@ import update from "immutability-helper";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import styled from 'styled-components';
 import { addStudentLessonProblemAnswerApi } from '../../../index/api';
 
 class ProblemRow extends React.Component {
@@ -34,6 +35,8 @@ class ProblemRow extends React.Component {
       ],
       answerChoices: [],
       answer_text: "",
+      userMessage: "",
+      messageType: "",
     };
   }
 
@@ -86,9 +89,11 @@ class ProblemRow extends React.Component {
       answer_id: answerChoices[index].id,
     };
     const res = await addStudentLessonProblemAnswerApi(payload);
-    // if (res === 202) {
-    this.props.updateProblemList(this.props.problemType, { ...question, answer_id: answerChoices[index].id, answer_text: null, answered: true });
-    // }
+    if (res === 202) {
+      this.props.updateProblemList(this.props.problemType, { ...question, answer_id: answerChoices[index].id, answer_text: null, answered: true });
+      return this.handleUserMessage('success');
+    }
+    return this.handleUserMessage('fail');
   };
 
   handleSubmit = async (e) => {
@@ -99,9 +104,11 @@ class ProblemRow extends React.Component {
       answer_text: this.state.answer_text,
     };
     const res = await addStudentLessonProblemAnswerApi(payload);
-    // if (res === 202) {
-    this.props.updateProblemList(this.props.problemType, { ...question, answer_id: null, answer_text: this.state.answer_text, answered: true });
-    // }
+    if (res === 202) {
+      this.props.updateProblemList(this.props.problemType, { ...question, answer_id: null, answer_text: this.state.answer_text, answered: true });
+      return this.handleUserMessage('success');
+    }
+    return this.handleUserMessage('fail');
   }
 
   handleClickBadge = (index) => {
@@ -125,6 +132,13 @@ class ProblemRow extends React.Component {
     this.setState({ answer_text: e.target.value });
   }
 
+  handleUserMessage = (status) => {
+    if (status === 'fail') {
+      return this.setState({ userMessage: "Something went wrong updating student answer.", messageType: status });
+    }
+    return this.setState({ userMessage: "Successfully updated student answer.", messageType: status });
+  }
+
   render() {
     const { problemCells } = this.state;
     if (this.props.question.problem.answers.length === 0) {
@@ -132,11 +146,12 @@ class ProblemRow extends React.Component {
         <>
           <input type="text" className="answer-input" value={this.state.answer_text} onChange={this.handleChange} />
           <button className="btn" onClick={this.handleSubmit}>Submit</button>
+          <UserMessage messageType={this.state.messageType}>{this.state.userMessage}</UserMessage>
         </>
       );
     }
     return (
-      //   <li className="answers-list-holder">
+      <>
       <ul className="answer-list">
         {problemCells.map((cell, index) => (
           <li
@@ -157,10 +172,15 @@ class ProblemRow extends React.Component {
           </li>
         ))}
       </ul>
-      //   </li>
+      <UserMessage messageType={this.state.messageType}>{this.state.userMessage}</UserMessage>
+      </>
     );
   }
 }
+
+const UserMessage = styled.p`
+  color: ${props => props.messageType === 'fail' ? "red" : "green"};
+`;
 
 ProblemRow.propTypes = {
   activeLesson: PropTypes.object.isRequired,
