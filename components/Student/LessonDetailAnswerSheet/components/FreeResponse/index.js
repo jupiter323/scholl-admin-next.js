@@ -4,26 +4,22 @@ import PropTypes from "prop-types";
 const styles = {
   red: {
     color: "#fff",
-    borderColor: "#fff",
-    border: "1px solid",
+    border: "1px solid #fff",
     backgroundColor: "#db1d41",
   },
   greenFilled: {
     color: "#fff",
-    borderColor: "#32955c",
-    border: "1px solid",
+    border: "1px solid #32955c",
     backgroundColor: "#32955c",
   },
   greenBorderOnly: {
     color: "#32955c",
-    borderColor: "#32955c",
-    border: "1px solid",
+    border: "1px solid #32955c",
     backgroundColor: "#fff",
   },
   plain: {
     color: "#a6a8ab",
-    border: "1px solid",
-    borderColor: "#a6a8ab",
+    border: "1px solid #a6a8ab",
   },
 };
 
@@ -43,7 +39,7 @@ class FreeResponse extends React.Component {
             className="badge badge-rounded badge-rounded-bordered"
             style={this.renderResponseStyle()}
           >
-            {answer_text}
+            {!answer_text ? "Free Response" : answer_text}
           </span>
         </li>
         {!is_correct && correct_answer_id && (
@@ -64,10 +60,10 @@ class FreeResponse extends React.Component {
     const {
       lesson: { is_correct, correct_answer_id, answer_text },
     } = this.props;
-    if (is_correct && correct_answer_id === answer_text) {
+    if (is_correct && answer_text && correct_answer_id === answer_text) {
       return styles.greenFilled;
     }
-    if (!is_correct && correct_answer_id !== answer_text) {
+    if (!is_correct && answer_text && correct_answer_id !== answer_text) {
       return styles.red;
     }
     return styles.plain;
