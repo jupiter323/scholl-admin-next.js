@@ -129,7 +129,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
       }}
     >
       <span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
-      <If condition={score !== ""}>
+      <If condition={score && score !== ""}>
         <span className="percentage">{score.toFixed(0) || 0}%</span>
       </If>
     </span>

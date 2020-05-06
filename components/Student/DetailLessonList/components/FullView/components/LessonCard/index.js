@@ -241,7 +241,7 @@ const LessonCard = props => {
                         {lesson.type === 'module' && renderProblemCount(
                           status,
                           scoring ? scoring.grade : "POOR",
-                          scoring.percentage_correct,
+                          scoring && scoring.percentage_correct,
                           lesson.sections.length,
                           lesson.sections.filter(section => section.status === 'COMPLETED').length
                         )}
