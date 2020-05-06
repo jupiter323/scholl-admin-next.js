@@ -187,7 +187,6 @@ class Account extends React.Component {
   };
 
   onToggleModal = (value) => {
-    console.log(value);
     this.setState({
       openModal: value,
     });

@@ -193,7 +193,6 @@ class DetailLessonList extends React.Component {
   // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
-    console.log('log: sort', sort);
     switch (sort) {
       case "subjectAscending":
         return lessons.sort(subjectAscending);

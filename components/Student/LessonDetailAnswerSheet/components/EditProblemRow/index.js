@@ -41,7 +41,6 @@ class ProblemRow extends React.Component {
   }
 
   componentDidMount() {
-    console.log("log: props", this.props);
     const { question: { answer_id, answer_text, answered } } = this.props;
     if (answer_id && !answer_text && answered) {
       this.setAnswerChoice();

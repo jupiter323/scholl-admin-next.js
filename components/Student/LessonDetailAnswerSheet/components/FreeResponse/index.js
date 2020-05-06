@@ -3,43 +3,27 @@ import PropTypes from "prop-types";
 
 const styles = {
   red: {
-    position: "relative",
     color: "#fff",
     borderColor: "#fff",
     border: "1px solid",
     backgroundColor: "#db1d41",
-    height: "19px",
-    width: "19px",
-    borderRadius: "50%",
   },
   greenFilled: {
-    position: "relative",
     color: "#fff",
     borderColor: "#32955c",
     border: "1px solid",
     backgroundColor: "#32955c",
-    height: "19px",
-    width: "19px",
-    borderRadius: "50%",
   },
   greenBorderOnly: {
-    position: "relative",
     color: "#32955c",
     borderColor: "#32955c",
     border: "1px solid",
     backgroundColor: "#fff",
-    height: "19px",
-    width: "19px",
-    borderRadius: "50%",
   },
   plain: {
-    position: "relative",
     color: "#a6a8ab",
     border: "1px solid",
     borderColor: "#a6a8ab",
-    height: "19px",
-    width: "19px",
-    borderRadius: "50%",
   },
 };
 
@@ -48,48 +32,43 @@ class FreeResponse extends React.Component {
     super(props);
   }
 
-  mapEmptyBubbles = (id) => {
-    const { lesson: is_correct } = this.props;
+  responseSection = () => {
+    const {
+      lesson: { is_correct, answer_text, correct_answer_id },
+    } = this.props;
     return (
       <>
         <li>
-          <span style={this.renderBubbleStyle()}></span>
+          <span
+            className="badge badge-rounded badge-rounded-bordered"
+            style={this.renderResponseStyle()}
+          >
+            {answer_text}
+          </span>
         </li>
-        <li>{!is_correct && <span style={this.renderBubbleStyle()}></span>}</li>
+        {!is_correct && correct_answer_id && (
+          <li>
+            <span
+              className="badge badge-rounded badge-rounded-bordered"
+              style={styles.greenBorderOnly}
+            >
+              {correct_answer_id}
+            </span>
+          </li>
+        )}
       </>
     );
   };
 
-  getCorrectAnswerIndexMatchedId = (answer) => answer === this.props.lesson.correct_answer_id;
-  getStudentAnswerIndexMatchedId = (answer) => answer === this.props.lesson.answer_id;
-
-  getCorrectAnswerIndex = (answerIds) => {
-    const correctAnswerIndex = answerIds.findIndex(this.getCorrectAnswerIndexMatchedId);
-    return correctAnswerIndex;
-  };
-  getStudentAnswerIndex = (answerIds) => {
-    const studentAnswerIndex = answerIds.findIndex(this.getStudentAnswerIndexMatchedId);
-    return studentAnswerIndex;
-  };
-
-  renderBubbleStyle = (index) => {
+  renderResponseStyle = () => {
     const {
-      lesson: { is_correct },
+      lesson: { is_correct, correct_answer_id, answer_text },
     } = this.props;
-    const answerIds = this.props.lesson.problem.answers.map((answer) => answer.id);
-    const correctAnswerIndex = this.getCorrectAnswerIndex(answerIds);
-    const studentAnswerIndex = this.getStudentAnswerIndex(answerIds);
-    if (correctAnswerIndex === index && is_correct) {
+    if (is_correct && correct_answer_id === answer_text) {
       return styles.greenFilled;
     }
-    if (correctAnswerIndex === index && !is_correct) {
-      return styles.greenBorderOnly;
-    }
-    if (index === studentAnswerIndex && !is_correct) {
+    if (!is_correct && correct_answer_id !== answer_text) {
       return styles.red;
-    }
-    if (index !== studentAnswerIndex && index !== correctAnswerIndex) {
-      return styles.plain;
     }
     return styles.plain;
   };
@@ -98,7 +77,7 @@ class FreeResponse extends React.Component {
     const {
       lesson: { id },
     } = this.props;
-    return <React.Fragment>{this.mapEmptyBubbles(id)}</React.Fragment>;
+    return <React.Fragment>{this.responseSection()}</React.Fragment>;
   }
 }
 
