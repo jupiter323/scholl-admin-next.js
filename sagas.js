@@ -196,7 +196,7 @@ export function* watchForFetchStudentTests() {
 
 export function* fetchStudentTests(user) {
   try {
-    const { formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    const { data:formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
       overdues: [],

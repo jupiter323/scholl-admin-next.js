@@ -47,7 +47,6 @@ const initialState = fromJS({
   overdueStudentTests: [],
   assignedStudentTests: [],
   completedStudentTests: [],
-  studentTests: [],
   sections: [],
   activeStudentTestId: "",
   lessonList: [],
