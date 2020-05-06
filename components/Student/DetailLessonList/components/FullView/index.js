@@ -31,6 +31,7 @@ const FullView = props => {
     onCloseDropdown,
     renderDropdownOptions,
     checkedCardIds,
+    handleMarkAllFlagsReviewed,
   } = props;
 
   const mapLessons = () => lessons.map((lesson, index) => (
@@ -53,6 +54,7 @@ const FullView = props => {
       onAddAssignLessonIds={props.onAddAssignLessonIds}
       handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
+      handleMarkAllFlagsReviewed={handleMarkAllFlagsReviewed}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -143,7 +145,14 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.checkedCardIds)}
+                {renderDropdownOptions(
+                  status,
+                  handleAssignLesson,
+                  handleRescheduleModalOpen,
+                  handleUnassignLesson,
+                  handleMarkAllFlagsReviewed,
+                  handleResetLesson,
+                  props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

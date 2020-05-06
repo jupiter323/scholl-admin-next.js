@@ -51,6 +51,7 @@ import {
   addAllLessons,
   removeAllLessons,
   filterLessons,
+  flagStudentLessonProblem,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -440,6 +441,7 @@ class DetailLessonList extends React.Component {
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
+          handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
         />
       );
     }
@@ -521,6 +523,21 @@ class DetailLessonList extends React.Component {
     const { onSetOpenActivePage, onSetIsVisibleTopBar } = this.props;
     onSetIsVisibleTopBar(true);
     onSetOpenActivePage("");
+  }
+
+  handleMarkAllFlagsReviewed = (studentLessonIds) => {
+    const { onFlagStudentLessonProblem } = this.props;
+    console.log('log: studentLessonIds', studentLessonIds);
+    if (studentLessonIds && studentLessonIds.length > 0) {
+      this.getMappableLessons().forEach(lesson => {
+        if (lesson.problems && lesson.problems.length > 0 && studentLessonIds.includes(lesson.id)) {
+          lesson.problems.forEach(problem => {
+            if (problem.flag_status === "FLAGGED") console.log('hi');
+          });
+        }
+      });
+      this.resetLessonSelections();
+    }
   }
 
   render() {
@@ -620,6 +637,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
   dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
+  onFlagStudentLessonProblem: bindActionCreators(flagStudentLessonProblem, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

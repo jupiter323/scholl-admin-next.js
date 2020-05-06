@@ -22,7 +22,6 @@ import {
   FETCH_STUDENT_LESSON_LIST_FAIL,
   FETCH_STUDENT_LESSSON_LIST_SUCCESS,
   ASSIGN_STUDENT_LESSON,
-  ASSIGN_STUDENT_LESSON_SUCCESS,
   ASSIGN_STUDENT_LESSON_FAIL,
   RESET_STUDENT_LESSONS,
   RESET_STUDENT_LESSONS_SUCCESS,
@@ -40,6 +39,7 @@ import {
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
   FILTER_LESSONS,
+  FLAG_STUDENT_LESSON_PROBLEM,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -871,6 +871,27 @@ function* handleFilterLessons(action) {
   }
 }
 
+function* watchForFlagStudentLessonProblem() {
+  yield takeEvery(FLAG_STUDENT_LESSON_PROBLEM, handleFlagStudentLessonProblem);
+}
+
+function* handleFlagStudentLessonProblem(action) {
+  try {
+    const response = yield call(addStudentLessonProblemFlagApi, action.lesson);
+    console.log('log: saga res', response);
+    // const newSubjectObject = {};
+    // response.forEach(subject => {
+    //   newSubjectObject[subject.id] = subject.name;
+    // });
+    // yield put({
+    //   type: FETCH_SUBJECTS_SUCCESS,
+    //   payload: newSubjectObject,
+    // });
+  } catch (error) {
+    console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -916,5 +937,6 @@ export default function* defaultSaga() {
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
     watchForFilterLessons(),
+    watchForFlagStudentLessonProblem(),
   ]);
 }

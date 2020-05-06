@@ -34,7 +34,7 @@ export const renderLessonIcon = subject => {
   }
 };
 
-export const renderDropdownOptions = (status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, listOfCardIds) => {
+export const renderDropdownOptions = (status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleMarkFlagsReviewed, handleResetLesson, listOfCardIds) => {
   if (status === "NOTASSIGNED") {
     return (
       <React.Fragment>
@@ -75,7 +75,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         <a href="#!" onClick={() => handleResetLesson(listOfCardIds)}>Reset</a>
       </li>
       <li>
-        <a href="#!" className="disabled">Mark Flags Reviewed</a>
+        <a href="#!" onClick={() => handleMarkFlagsReviewed(listOfCardIds)}>Mark Flags Reviewed</a>
       </li>
       <li>
         <a href="#!" onClick={() => handleUnassignLesson(listOfCardIds)}>Unassign</a>
@@ -128,7 +128,6 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
     );
   }
   if (status === "NOTASSIGNED") return;
-  // const percentage = Math.floor(score / problems) * 100;
   return (
     <span
       className="chart-value"

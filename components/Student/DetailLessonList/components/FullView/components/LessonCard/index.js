@@ -21,9 +21,8 @@ import {
   gradeColorMap,
 } from "./utils";
 import Checkbox from "./components/Checkbox";
-import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus, setOpenActivePage } from "../../../../../index/actions";
+import { setIsVisibleTopBar, setActiveLesson, setOpenActivePage } from "../../../../../index/actions";
 import {makeSelectSubjects,makeSelectUnitFilterOptions} from '../../../../../index/selectors'
-import lessonSortOptions from "../../../../utils/lessonSortOptions";
 
 const data = (current, target, status) => ({
   datasets: [
@@ -59,7 +58,6 @@ const LessonCard = props => {
       completionDate,
       challenge_page,
       practice_page,
-      lesson_problems,
       due_date,
       completed_at,
       assignment_date,
@@ -141,6 +139,17 @@ const LessonCard = props => {
     return data(0, 1, "ASSIGNED")
   }
 
+  const areProblemsFlagged = () => {
+    if (lesson.problems && lesson.problems.length > 0) {
+      const hasFlaggedProblems = lesson.problems.filter(problem => problem.flag_status === 'FLAGGED')
+      if (hasFlaggedProblems.length > 0) {
+        return (
+          <i style={{ color: "#c0272d" }} className="icon-flag"></i>
+        )
+      }
+    }
+  }
+
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -173,6 +182,7 @@ const LessonCard = props => {
               </div>
               <div className="col s1 right-align">
                 <div className="row icons-row">
+                  {areProblemsFlagged()}
                   <div className="dropdown-block col">
                     <a
                       className="dropdown-trigger btn"

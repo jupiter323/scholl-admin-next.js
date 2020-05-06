@@ -46,6 +46,7 @@ import {
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
   FILTER_LESSONS,
+  FLAG_STUDENT_LESSON_PROBLEM,
 } from "./constants";
 
 export function fetchStudents() {
@@ -332,4 +333,9 @@ export const updateStudentActivation = (studentInfo) => ({
 export const filterLessons = (filters) => ({
   type: FILTER_LESSONS,
   filters,
+});
+
+export const flagStudentLessonProblem = (lesson) => ({
+  type: FLAG_STUDENT_LESSON_PROBLEM,
+  lesson,
 });
