@@ -94,7 +94,7 @@ class BubbleGroup extends React.Component {
     if (correctAnswerIndex === index && !is_correct) {
       return styles.greenBorderOnly;
     }
-    if (index === studentAnswerIndex && index === !correctAnswerIndex) {
+    if (index === studentAnswerIndex && !is_correct) {
       return styles.red;
     }
     if (index !== studentAnswerIndex && index !== correctAnswerIndex) {

@@ -162,7 +162,7 @@ const LessonCard = props => {
                     {getUnitName()}
                   </div>
                   <div className="text-large">
-                    <a href="#" onClick={lesson.lesson_id ? (e) => onOpenDetailModal(e) : (e) => e.preventDefault()}>
+                    <a href="#" onClick={(e) => onOpenDetailModal(e)}>
                       {lesson.name}
                     </a>
                   </div>
