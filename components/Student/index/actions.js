@@ -46,6 +46,7 @@ import {
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
   FILTER_LESSONS,
+  SET_TESTS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -333,3 +334,8 @@ export const filterLessons = (filters) => ({
   type: FILTER_LESSONS,
   filters,
 });
+
+export const setTests = (tests) => ({
+  type: SET_TESTS,
+  tests
+})

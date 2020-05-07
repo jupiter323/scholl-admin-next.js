@@ -192,7 +192,7 @@ class DetailTestList extends React.Component {
     } = this.props;
     const postBody = {
       student_id: id,
-      test_id: uuidGenerator(),
+      test_id: test.version,
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
       due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
     };

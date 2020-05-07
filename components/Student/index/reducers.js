@@ -35,6 +35,7 @@ import {
   RESCHEDULE_STUDENT_LESSONS_SUCCESS,
   FETCH_SUBJECTS_SUCCESS,
   SET_OPEN_ANSWERSHEET_STATUS,
+  SET_TESTS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -61,6 +62,7 @@ const initialState = fromJS({
   openAnswerSheet: false,
   subjects: {},
   activeShowPage: "",
+  tests: [],
 });
 
 function studentReducer(state = initialState, action) {
@@ -226,6 +228,9 @@ function studentReducer(state = initialState, action) {
 
     case FETCH_SUBJECTS_SUCCESS:
       return state.set('subjects', action.payload);
+
+    case SET_TESTS:
+      return state.set('tests', action.tests);
 
     default:
       return state;
