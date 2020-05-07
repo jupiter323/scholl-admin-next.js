@@ -38,15 +38,19 @@ class NewTestModal extends React.Component {
     const { tests, onSetTests } = this.props;
     if (tests.length === 0) {
       const { data: { tests } } = await fetchAllTestsApi();
-      const formattedVersions = tests.map(test => ({
+      onSetTests(tests)
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if(this.state.versionOptions.length === 0){
+      const formattedVersions = nextProps.tests.map(test => ({
         label: test.name,
         value: test.id,
       }));
-      console.log('formattedVersions:', formattedVersions)
       this.setState({
         versionOptions: formattedVersions
       })
-      onSetTests(tests)
     }
   }
 
@@ -447,7 +451,7 @@ NewTestModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  tests: PropTypes.func.isRequired,
+  tests: PropTypes.array.isRequired,
 };
 
 
