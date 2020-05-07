@@ -109,9 +109,15 @@ class DropDownMenu extends React.Component {
                 transform: "scaleX(1) scaleY(1)",
               }}
             >
-              {renderDropdownOptions(lesson.status, this.handleAssignLesson, this.handleRescheduleModalOpen, this.handleUnassignLesson, this.handleResetLesson, [
-                lesson.id,
-              ])}
+              {renderDropdownOptions(
+                lesson.status,
+                this.handleAssignLesson,
+                this.handleRescheduleModalOpen,
+                this.handleUnassignLesson,
+                this.props.handleMarkAllFlagsReviewed,
+                this.handleResetLesson,
+                [lesson.id],
+              )}
             </ul>
           </ClickOffComponentWrapper>
         </If>

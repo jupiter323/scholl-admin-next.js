@@ -108,6 +108,7 @@ const {
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
   filterLessonListApi,
+  addStudentLessonProblemFlagApi,
 } = studentApi;
 const {
   fetchClassesApi,

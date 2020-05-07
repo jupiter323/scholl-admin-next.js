@@ -114,6 +114,7 @@ class ReadWorkBook extends React.Component {
                       onCloseDetailModal={this.props.onCloseDetailModal}
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
+                      handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
                     />
                   </div>
                   <div className="close-block">

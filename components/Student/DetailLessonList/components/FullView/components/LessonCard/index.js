@@ -66,7 +66,8 @@ const LessonCard = props => {
     onOpenModal,
     onCloseDropdown,
     handleRescheduleModalOpen,
-    handleResetLesson
+    handleResetLesson,
+    handleMarkAllFlagsReviewed
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
@@ -211,6 +212,7 @@ const LessonCard = props => {
                             handleAssignLesson,
                             handleRescheduleModalOpen,
                             props.handleUnassignLesson,
+                            handleMarkAllFlagsReviewed,
                             handleResetLesson,
                             [lesson.id]
                           )}

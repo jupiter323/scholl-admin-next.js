@@ -532,7 +532,14 @@ class DetailLessonList extends React.Component {
       this.getMappableLessons().forEach(lesson => {
         if (lesson.problems && lesson.problems.length > 0 && studentLessonIds.includes(lesson.id)) {
           lesson.problems.forEach(problem => {
-            if (problem.flag_status === "FLAGGED") console.log('hi');
+            if (problem.flag_status === "FLAGGED") {
+              const payload = {
+                student_lesson_id: lesson.id,
+                problem_id: problem.problem.id,
+                flag_status: 'REVIEWED',
+              };
+              onFlagStudentLessonProblem(payload);
+            }
           });
         }
       });
@@ -565,6 +572,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
@@ -576,6 +584,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
             />
           </When>
           <Otherwise>
