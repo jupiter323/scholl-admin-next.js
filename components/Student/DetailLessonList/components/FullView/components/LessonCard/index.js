@@ -174,6 +174,11 @@ const LessonCard = props => {
     return data(0, 1, "ASSIGNED")
   }
 
+  const startMarkFlagsReviewed = (lessonIds) => {
+    handleMarkAllFlagsReviewed(lessonIds)
+    setHasFlaggedProblems(false)
+  }
+
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -235,7 +240,7 @@ const LessonCard = props => {
                             handleAssignLesson,
                             handleRescheduleModalOpen,
                             props.handleUnassignLesson,
-                            handleMarkAllFlagsReviewed,
+                            startMarkFlagsReviewed,
                             handleResetLesson,
                             [lesson.id]
                           )}

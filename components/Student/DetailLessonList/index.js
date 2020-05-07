@@ -541,9 +541,7 @@ class DetailLessonList extends React.Component {
                 onFlagStudentLessonProblem(payload);
               }
             });
-          }
-          // else if for sections
-          else if (lesson.sections && lesson.sections.length > 0) {
+          } else if (lesson.sections && lesson.sections.length > 0) {
             const section1 = fetchStudentLessonSectionApi(
               this.props.user.id,
               lesson.id,

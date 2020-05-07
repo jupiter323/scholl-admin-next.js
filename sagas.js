@@ -878,16 +878,7 @@ function* watchForFlagStudentLessonProblem() {
 
 function* handleFlagStudentLessonProblem(action) {
   try {
-    const response = yield call(addStudentLessonProblemFlagApi, action.lesson);
-    console.log('log: saga res', response);
-    // const newSubjectObject = {};
-    // response.forEach(subject => {
-    //   newSubjectObject[subject.id] = subject.name;
-    // });
-    // yield put({
-    //   type: FETCH_SUBJECTS_SUCCESS,
-    //   payload: newSubjectObject,
-    // });
+    yield call(addStudentLessonProblemFlagApi, action.lesson);
   } catch (error) {
     console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
   }
