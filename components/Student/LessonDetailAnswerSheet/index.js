@@ -186,6 +186,21 @@ class LessonDetailAnswerSheet extends React.Component {
     onAddCheckedLesson(lesson.id);
   }
 
+  updateProblemList = (problemsType, updatedProblem) => {
+    const problems = this.state[problemsType];
+    const newProblems = problems.map(problem => {
+      if (problem.id === updatedProblem.id) return updatedProblem;
+      return problem;
+    });
+    this.setState({ [problemsType]: [...newProblems] });
+  }
+
+  getCurrentProblemList = () => {
+    const { currentType, drillProblems, practiceProlems, challengeProblems } = this.state;
+    if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
+    if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProlems, type: "practiceProlems" }];
+  }
+
   render() {
     const { challengeProblems, practiceProlems, drillProblems } = this.state;
     const { onCloseDetailModal, user,
@@ -287,6 +302,8 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
                       handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
+                      updateProblemList={this.updateProblemList}
+                      problems={this.getCurrentProblemList()}
                     />
                   </div>
                   <div className="close-block">

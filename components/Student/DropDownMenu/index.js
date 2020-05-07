@@ -88,6 +88,20 @@ class DropDownMenu extends React.Component {
     }
   };
 
+  startMarkFlagsReviewed = (lessonIds) => {
+    const { problems, updateProblemList } = this.props;
+    this.props.handleMarkAllFlagsReviewed(lessonIds);
+    problems.map(problemList => {
+      problemList.problems.map(problem => {
+        if (problem.flag_status === 'FLAGGED') {
+          console.log('log: problemList', problemList);
+          console.log('log: newproblem', { ...problem, flag_status: 'REVIEWED' });
+          updateProblemList(problemList.type, { ...problem, flag_status: 'REVIEWED' });
+        }
+      });
+    });
+  }
+
   render() {
     const { lesson } = this.props;
     return (
@@ -114,7 +128,7 @@ class DropDownMenu extends React.Component {
                 this.handleAssignLesson,
                 this.handleRescheduleModalOpen,
                 this.handleUnassignLesson,
-                this.props.handleMarkAllFlagsReviewed,
+                this.startMarkFlagsReviewed,
                 this.handleResetLesson,
                 [lesson.id],
               )}
