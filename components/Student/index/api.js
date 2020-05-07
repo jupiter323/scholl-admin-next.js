@@ -691,3 +691,18 @@ export const addVideoWatchedTime = (body) =>
   })
     .then((res) => res.json())
     .catch((err) => err);
+
+export const fetchAllTestsApi = () =>
+  fetch(`${API_URL}/api/tests`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      return { data };
+    })
+    .catch(err => err);
