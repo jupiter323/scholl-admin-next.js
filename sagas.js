@@ -181,7 +181,7 @@ export function* watchForFetchStudentTestSections() {
 export function* fetchStudentTestSections(studentTestId, studentToken) {
   try {
     const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.test.sections));
+    yield put(setStudentSections(formattedData.data.test.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
