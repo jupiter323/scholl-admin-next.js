@@ -57,6 +57,7 @@ import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStud
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
+import { fetchStudentLessonSectionApi } from "../index/api";
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -194,7 +195,6 @@ class DetailLessonList extends React.Component {
   // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
-    console.log('log: sort', sort);
     switch (sort) {
       case "subjectAscending":
         return lessons.sort(subjectAscending);
@@ -527,20 +527,49 @@ class DetailLessonList extends React.Component {
 
   handleMarkAllFlagsReviewed = (studentLessonIds) => {
     const { onFlagStudentLessonProblem } = this.props;
-    console.log('log: studentLessonIds', studentLessonIds);
     if (studentLessonIds && studentLessonIds.length > 0) {
       this.getMappableLessons().forEach(lesson => {
-        if (lesson.problems && lesson.problems.length > 0 && studentLessonIds.includes(lesson.id)) {
-          lesson.problems.forEach(problem => {
-            if (problem.flag_status === "FLAGGED") {
-              const payload = {
-                student_lesson_id: lesson.id,
-                problem_id: problem.problem.id,
-                flag_status: 'REVIEWED',
-              };
-              onFlagStudentLessonProblem(payload);
-            }
-          });
+        if (studentLessonIds.includes(lesson.id)) {
+          if (lesson.problems && lesson.problems.length > 0) {
+            lesson.problems.forEach(problem => {
+              if (problem.flag_status === "FLAGGED") {
+                const payload = {
+                  student_lesson_id: lesson.id,
+                  problem_id: problem.problem.id,
+                  flag_status: 'REVIEWED',
+                };
+                onFlagStudentLessonProblem(payload);
+              }
+            });
+          }
+          // else if for sections
+          else if (lesson.sections && lesson.sections.length > 0) {
+            const section1 = fetchStudentLessonSectionApi(
+              this.props.user.id,
+              lesson.id,
+              lesson.sections[0].id,
+            );
+            const section2 = fetchStudentLessonSectionApi(
+              this.props.user.id,
+              lesson.id,
+              lesson.sections[1].id,
+            );
+            Promise.all([section1, section2]).then((sections) => {
+              const filteredSections = sections.filter((section) => section);
+              filteredSections.map((section) => {
+                section.lesson_problems.map((problem) => {
+                  if (problem.flag_status === "FLAGGED") {
+                    const payload = {
+                      student_lesson_id: lesson.id,
+                      problem_id: problem.problem.id,
+                      flag_status: 'REVIEWED',
+                    };
+                    onFlagStudentLessonProblem(payload);
+                  }
+                });
+              });
+            });
+          }
         }
       });
       this.resetLessonSelections();

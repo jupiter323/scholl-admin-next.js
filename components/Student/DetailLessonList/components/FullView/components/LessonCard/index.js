@@ -22,6 +22,7 @@ import {
 } from "./utils";
 import Checkbox from "./components/Checkbox";
 import { setIsVisibleTopBar, setActiveLesson, setOpenActivePage } from "../../../../../index/actions";
+import { fetchStudentLessonSectionApi } from "../../../../../index/api";
 import {makeSelectSubjects,makeSelectUnitFilterOptions} from '../../../../../index/selectors'
 
 const data = (current, target, status) => ({
@@ -73,6 +74,39 @@ const LessonCard = props => {
   const completedAt = completed_at || completionDate
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
+  const [hasFlaggedProblems, setHasFlaggedProblems] = useState(false)
+
+  useEffect(() => {
+    if (lesson.problems && lesson.problems.length > 0) {
+      const hasFlaggedProblems = lesson.problems.filter(
+        (problem) => problem.flag_status === "FLAGGED"
+      );
+      if (hasFlaggedProblems.length > 0) {
+        return setHasFlaggedProblems(true);
+      }
+    } else if (lesson.sections && lesson.sections.length > 0) {
+      const section1 = fetchStudentLessonSectionApi(
+        props.user.id,
+        lesson.id,
+        lesson.sections[0].id
+      );
+      const section2 = fetchStudentLessonSectionApi(
+        props.user.id,
+        lesson.id,
+        lesson.sections[1].id
+      );
+      Promise.all([section1, section2]).then((sections) => {
+        const filteredSections = sections.filter((section) => section);
+        filteredSections.map((section) => {
+          section.lesson_problems.map((problem) => {
+            if (problem.flag_status === "FLAGGED") {
+              setHasFlaggedProblems(true);
+            }
+          });
+        });
+      });
+    }
+  }, []);
 
   const onOpenDetailModal = async (e) => {
     e.preventDefault()
@@ -140,17 +174,6 @@ const LessonCard = props => {
     return data(0, 1, "ASSIGNED")
   }
 
-  const areProblemsFlagged = () => {
-    if (lesson.problems && lesson.problems.length > 0) {
-      const hasFlaggedProblems = lesson.problems.filter(problem => problem.flag_status === 'FLAGGED')
-      if (hasFlaggedProblems.length > 0) {
-        return (
-          <i style={{ color: "#c0272d" }} className="icon-flag"></i>
-        )
-      }
-    }
-  }
-
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -183,7 +206,7 @@ const LessonCard = props => {
               </div>
               <div className="col s1 right-align">
                 <div className="row icons-row">
-                  {areProblemsFlagged()}
+                  {hasFlaggedProblems && <i style={{ color: "#c0272d" }} className="icon-flag"></i>}
                   <div className="dropdown-block col">
                     <a
                       className="dropdown-trigger btn"
