@@ -441,6 +441,7 @@ class DetailLessonList extends React.Component {
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
+          resetLessonSelections={this.resetLessonSelections}
         />
       );
     }

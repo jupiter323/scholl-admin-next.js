@@ -37,6 +37,7 @@ const FullView = props => {
     onCloseDropdown,
     renderDropdownOptions,
     checkedCardIds,
+    resetLessonSelections,
   } = props;
 
   const mapLessons = () => lessons.map((lesson, index) => (
@@ -91,6 +92,7 @@ const FullView = props => {
     if (Object.keys(payload).length > 0 && typeof payload === 'object') {
       dispathRescheduleStudentLessons(payload);
       toggleRescheduleModal(!openRescheduleModal);
+      resetLessonSelections();
     }
   };
 
@@ -108,6 +110,7 @@ const FullView = props => {
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathUnAssignLessonToStudent(lessonIds);
       onCloseDropdown();
+      resetLessonSelections();
     }
   };
 
@@ -125,6 +128,7 @@ const FullView = props => {
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathResetStudentLessons(lessonIds);
       onCloseDropdown();
+      resetLessonSelections();
     }
   };
 
