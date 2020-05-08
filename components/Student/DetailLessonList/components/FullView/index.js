@@ -16,6 +16,7 @@ import RescheduleModal from "../RescheduleModal";
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
   const [activeLesson, setActiveLesson] = useState([]);
+  const [lessonIdFlags, setLessonIdFlags] = useState([]);
   const {
     lessons = [],
     onCloneLesson,
@@ -96,6 +97,12 @@ const FullView = props => {
     }
   };
 
+  const startMarkFlagsReviewed = (lessonIds) => {
+    handleMarkAllFlagsReviewed(lessonIds);
+    // setLessonIdFlags([...checkedCardIds])
+    onCloseDropdown();
+  };
+
   return (
     <div className="content-section">
       <div className="d-flex justify-content-between">
@@ -150,9 +157,9 @@ const FullView = props => {
                   handleAssignLesson,
                   handleRescheduleModalOpen,
                   handleUnassignLesson,
-                  handleMarkAllFlagsReviewed,
+                  startMarkFlagsReviewed,
                   handleResetLesson,
-                  props.checkedCardIds)}
+                  checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>
