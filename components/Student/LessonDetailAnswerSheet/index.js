@@ -105,9 +105,8 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: "Drill",
         hasDrill: true,
       });
-      let updatedLesson = lesson;
       if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
-        updatedLesson = lesson.problems.map(problem => {
+        lesson.problems.map(problem => {
           if (problem.flag_status === 'FLAGGED') {
             problem.flag_status = 'REVIEWED';
             return problem;
@@ -115,7 +114,7 @@ class LessonDetailAnswerSheet extends React.Component {
           return problem;
         });
       }
-      console.log('log: updatedLesson', updatedLesson);
+      // console.log('log: updatedLesson', updatedLesson);
       this.setState({
         drillProblems: lesson.problems,
       });

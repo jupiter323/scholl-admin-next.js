@@ -49,18 +49,20 @@ class AnswerRow extends React.Component {
               <span className="status-info">E</span>
             </div>
             <div className="col col-auto">
-              <If condition={status === 'FLAGGED' || this.props.problem.flag_status === 'FLAGGED'}>
-                <span className="status-answer" style={{ color: "#c0272d" }}>
-                  <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
-                </span>
-              </If>
-              <If condition={this.props.problem.flag_status === 'REVIEWED'}>
-                <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
-                  <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
-                </span>
-              </If>
+              <Choose>
+                <When condition={status === 'FLAGGED' || this.props.problem.flag_status === 'FLAGGED'}>
+                  <span className="status-answer" style={{ color: "#c0272d" }}>
+                    <i className="icon-flag"></i>
+                    <b className="status-text">Review</b>
+                  </span>
+                </When>
+                <When condition={this.props.problem.flag_status === 'REVIEWED'}>
+                  <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
+                    <i className="icon-flag"></i>
+                    <b className="status-text">Review</b>
+                  </span>
+                </When>
+              </Choose>
             </div>
             <div className="dropdown-block col col-35">
               <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
