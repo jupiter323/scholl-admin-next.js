@@ -211,7 +211,7 @@ const LessonCard = props => {
               </div>
               <div className="col s1 right-align">
                 <div className="row icons-row">
-                  {hasFlaggedProblems && <i style={{ color: "#c0272d" }} className="icon-flag"></i>}
+                  {hasFlaggedProblems && !props.flagRemoved && <i style={{ color: "#c0272d" }} className="icon-flag"></i>}
                   <div className="dropdown-block col">
                     <a
                       className="dropdown-trigger btn"

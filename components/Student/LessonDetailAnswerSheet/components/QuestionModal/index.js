@@ -114,7 +114,7 @@ class QuestionModal extends React.Component {
                   </div></div>
                   <div className="card-panel">
                     <div className="panel-block">
-                      <strong className="subtitle">Review with My Instructor</strong>
+                      <strong className="subtitle">Review With Student</strong>
                       <form action="#" className="answer-form review-form">
                         <ul>
                           <li>

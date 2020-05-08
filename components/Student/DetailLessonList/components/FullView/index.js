@@ -16,7 +16,6 @@ import RescheduleModal from "../RescheduleModal";
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
   const [activeLesson, setActiveLesson] = useState([]);
-  const [lessonIdFlags, setLessonIdFlags] = useState([]);
   const {
     lessons = [],
     onCloneLesson,
@@ -33,6 +32,7 @@ const FullView = props => {
     renderDropdownOptions,
     checkedCardIds,
     handleMarkAllFlagsReviewed,
+    lessonIdsToUnFlag,
   } = props;
 
   const mapLessons = () => lessons.map((lesson, index) => (
@@ -56,6 +56,7 @@ const FullView = props => {
       handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
       handleMarkAllFlagsReviewed={handleMarkAllFlagsReviewed}
+      flagRemoved={lessonIdsToUnFlag.includes(lesson.id)}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -99,7 +100,6 @@ const FullView = props => {
 
   const startMarkFlagsReviewed = (lessonIds) => {
     handleMarkAllFlagsReviewed(lessonIds);
-    // setLessonIdFlags([...checkedCardIds])
     onCloseDropdown();
   };
 

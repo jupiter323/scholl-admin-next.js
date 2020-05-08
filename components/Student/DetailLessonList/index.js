@@ -58,6 +58,7 @@ import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
 import { fetchStudentLessonSectionApi } from "../index/api";
+import { mergeArrays } from './utils/mergeArrays';
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -87,6 +88,7 @@ class DetailLessonList extends React.Component {
         nameFilter: '',
         unitFilter: '',
       },
+      lessonIdsToUnFlag: [],
     };
   }
 
@@ -442,6 +444,7 @@ class DetailLessonList extends React.Component {
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
           handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
+          lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
         />
       );
     }
@@ -570,6 +573,7 @@ class DetailLessonList extends React.Component {
           }
         }
       });
+      this.setState({ lessonIdsToUnFlag: mergeArrays(this.state.lessonIdsToUnFlag, studentLessonIds) });
       this.resetLessonSelections();
     }
   }
@@ -600,6 +604,7 @@ class DetailLessonList extends React.Component {
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
               handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
+              lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
