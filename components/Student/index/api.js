@@ -706,3 +706,17 @@ export const fetchAllTestsApi = () =>
       return { data };
     })
     .catch(err => err);
+
+export const updateStudentTestStatusApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-test-status`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res)
+    .catch(err => err);

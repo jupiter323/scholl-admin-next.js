@@ -22,7 +22,7 @@ class AssignedTestCard extends React.Component {
       dropdownIndex,
       index,
       dropdownIsOpen,
-      test: { test_name, test_description, dueDate, completion_date, test_id },
+      test: { test_name, test_description, dueDate, completion_date, student_test_id },
       onEnterAnswers,
       handleTestSettingModalOpen,
     } = this.props;
@@ -75,7 +75,7 @@ class AssignedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={() => onEnterAnswers(test_id)}>
+                                  <a href="#" onClick={() => onEnterAnswers(student_test_id)}>
                                     Edit/Enter Answers
                                   </a>
                                 </li>
