@@ -114,7 +114,6 @@ class LessonDetailAnswerSheet extends React.Component {
           return problem;
         });
       }
-      // console.log('log: updatedLesson', updatedLesson);
       this.setState({
         drillProblems: lesson.problems,
       });

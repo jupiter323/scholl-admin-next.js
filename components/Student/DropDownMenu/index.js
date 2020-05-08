@@ -94,8 +94,6 @@ class DropDownMenu extends React.Component {
     problems.map(problemList => {
       problemList.problems.map(problem => {
         if (problem.flag_status === 'FLAGGED') {
-          console.log('log: problemList', problemList);
-          console.log('log: newproblem', { ...problem, flag_status: 'REVIEWED' });
           updateProblemList(problemList.type, { ...problem, flag_status: 'REVIEWED' });
         }
       });
