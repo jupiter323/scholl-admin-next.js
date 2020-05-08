@@ -20,7 +20,7 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
 } from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi, updateStudentTestStatusApi } from "../index/api";
+import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
 
 // import sampleTests from "./utils/sampleTests";
 
@@ -85,15 +85,10 @@ class DetailTestList extends React.Component {
     console.warn("Pending implementation of create test UI and functionality");
   };
 
-  onEnterAnswers = async (currentTestId) => {
-    const postBody = {
-      student_test_id: currentTestId,
-      status: "STARTED"
-    }
-    await updateStudentTestStatusApi(postBody)
+  onEnterAnswers = currentTestId => {
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    const activeTest = this.props.tests.find(test => test.test_id === currentTestId);
+    const activeTest = this.props.tests.find(test => test.student_test_id === currentTestId);
     this.setState({ openEnterAnswerWrapper: true, activeTest });
   };
 
@@ -200,6 +195,12 @@ class DetailTestList extends React.Component {
       test_id: test.version,
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
       due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
+      test_section_ids: [
+        "3c660d9f-6e3c-4b66-9028-ffb6890c6c3a",
+        "5c430ac1-63f5-4418-88a9-6fa3526eafd6",
+        "f1ccfcc7-dc9a-40b7-b555-b432aeede73a",
+        "fe459162-5190-42dd-b67d-2b9baff55500"
+      ]
     };
     assignTestToStudentApi(postBody);
   };

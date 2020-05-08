@@ -30,7 +30,8 @@ class NewTestModal extends React.Component {
       isAllowed: false,
       isIncluded: false,
       isTimed: false,
-      versionOptions: []
+      versionOptions: [],
+      sectionIds:[],
     };
   }
 
