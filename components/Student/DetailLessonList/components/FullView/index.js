@@ -78,15 +78,13 @@ const FullView = props => {
       setRescheduleModalState(modalState);
       return setConfirmationFunc('reschedule');
     }
-    onSubmitScheduleChanges(modalState);
+    onSubmitScheduleChanges(modalState, activeLesson);
   };
 
-  const onSubmitScheduleChanges = (modalState) => {
-    console.log('log: modalState', modalState);
-    console.log('log: activeLesson', lessonIdsToEdit);
+  const onSubmitScheduleChanges = (modalState, activeLesson) => {
     const { dispathRescheduleStudentLessons } = props;
     const payload = {
-      student_lesson_ids: lessonIdsToEdit,
+      student_lesson_ids: activeLesson,
       assignment_date: moment(modalState.assignDate).format('YYYY-MM-DD'),
       due_date: !modalState.isTimed ? moment(modalState.dueDate).format('YYYY-MM-DD') : null,
     };
@@ -133,7 +131,7 @@ const FullView = props => {
   const onConfirmModalFunction = () => {
     switch (confirmationFunc) {
       case 'reschedule':
-        onSubmitScheduleChanges(rescheduleModalState);
+        onSubmitScheduleChanges(rescheduleModalState, lessonIdsToEdit);
         break;
       case 'unassign':
         onSubmitUnassignLesson(lessonIdsToEdit);
