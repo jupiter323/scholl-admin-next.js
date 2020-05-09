@@ -1147,3 +1147,16 @@ export const addVideoWatchedTime = (body) =>
   })
     .then((res) => res.json())
     .catch((err) => err);
+
+export const excuseStudentLessonLatenessApi = (body) =>
+  fetch(`${API_URL}/api/commands/excuse-student-lesson-lateness`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
