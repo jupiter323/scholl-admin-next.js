@@ -52,8 +52,8 @@ class DetailTestList extends React.Component {
   };
 
   onToggleEditTestModal = async (activeTest = null) => {
-    const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
-    if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
+    // const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
+    // if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
       const { onSetActiveStudentTestId } = this.props;
       onSetActiveStudentTestId(activeTest.student_test_id);
       this.onSetIsVisibleTopBar(false);
@@ -65,40 +65,40 @@ class DetailTestList extends React.Component {
         }),
         this.onCloseDropdown,
       );
-    } else {
-      const sectionName = activeTest.name;
-      switch (sectionName) {
-        case "Reading":
-          this.setState({
-            readingSectionCompleted: true,
-          });
-          break;
-        case "Writing":
-          this.setState({
-            writingSectionCompleted: true,
-          });
-          break;
-        case "Math (No Calculator)":
-          this.setState({
-            mathNoCalcSectionCompleted: true,
-          });
-          break;
-        case "Math (Calculator)":
-          this.setState({
-            mathCalcSectionCompleted: true,
-          });
-          break;
-        default:
-          this.setState({
-            readingSectionCompleted: true,
-          });
-      }
-      const postBody = {
-        test_section_id: activeTest.test_section_id,
-        student_test_section_status: "COMPLETED",
-      };
-      await updateStudentTestSectionStatusApi(postBody);
-    }
+    // } else {
+    //   const sectionName = activeTest.name;
+    //   switch (sectionName) {
+    //     case "Reading":
+    //       this.setState({
+    //         readingSectionCompleted: true,
+    //       })
+    //       break;
+    //     case "Writing":
+    //       this.setState({
+    //         writingSectionCompleted: true,
+    //       });
+    //       break;
+    //     case "Math (No Calculator)":
+    //       this.setState({
+    //         mathNoCalcSectionCompleted: true
+    //       });
+    //       break;
+    //     case "Math (Calculator)":
+    //       this.setState({
+    //         mathCalcSectionCompleted: true
+    //       });
+    //       break;
+    //     default:
+    //       this.setState({
+    //         readingSectionCompleted: true,
+    //       })
+    //   }
+    //   const postBody = {
+    //     test_section_id: activeTest.test_section_id,
+    //     student_test_section_status: "COMPLETED"
+    //   };
+    //   await updateStudentTestSectionStatusApi(postBody);
+    // }
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
@@ -200,6 +200,25 @@ class DetailTestList extends React.Component {
       />
     ));
   };
+  mapOverDueTests = () => {
+    const { dropdownIndex, dropdownIsOpen } = this.state;
+    const { overdues } = this.props;
+    return overdues.map((test, index) => (
+      <AssignedTestCard
+        test={test}
+        key={`future-${index}`}
+        handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
+        onDeleteTest={this.onDeleteTest}
+        onSetDropdown={this.onSetDropdown}
+        onEnterAnswers={this.onEnterAnswers}
+        onCloseDropdown={this.onCloseDropdown}
+        onDownloadReport={this.onDownloadReport}
+        dropdownIndex={dropdownIndex}
+        dropdownIsOpen={dropdownIsOpen}
+        index={overdues.length + index}
+      />
+    ));
+  };
 
   onCloseTestModal = () => this.setState({ openCreateTestModal: false });
   onCloaseAnswerWrapper = async () => {
@@ -265,7 +284,7 @@ class DetailTestList extends React.Component {
       activeTest,
       opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds } = this.props;
+    const { user, completes, assigneds,overdues } = this.props;
     return (
       <React.Fragment>
         <Choose>
@@ -302,7 +321,15 @@ class DetailTestList extends React.Component {
             />
             <div className="content-section">
               <div className="section-holder">
-
+                
+                {overdues.length !== 0 && (
+                  <div className="content-container">
+                    <CardHeader title="OverDue" amount={overdues.length} />
+                    <div className="row d-flex-content card-width-366">
+                      {this.mapOverDueTests()}
+                    </div>
+                  </div>
+                )}
                 {assigneds.length !== 0 && (
                   <div className="content-container">
                     <CardHeader title="Assigned" amount={assigneds.length} />
