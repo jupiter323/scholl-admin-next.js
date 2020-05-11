@@ -105,6 +105,15 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: "Drill",
         hasDrill: true,
       });
+      if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
+        lesson.problems.map(problem => {
+          if (problem.flag_status === 'FLAGGED') {
+            problem.flag_status = 'REVIEWED';
+            return problem;
+          }
+          return problem;
+        });
+      }
       this.setState({
         drillProblems: lesson.problems,
       });
@@ -184,6 +193,21 @@ class LessonDetailAnswerSheet extends React.Component {
     const { onOpenModal, onAddCheckedLesson, lesson } = this.props;
     onOpenModal();
     onAddCheckedLesson(lesson.id);
+  }
+
+  updateProblemList = (problemsType, updatedProblem) => {
+    const problems = this.state[problemsType];
+    const newProblems = problems.map(problem => {
+      if (problem.id === updatedProblem.id) return updatedProblem;
+      return problem;
+    });
+    this.setState({ [problemsType]: [...newProblems] });
+  }
+
+  getCurrentProblemList = () => {
+    const { currentType, drillProblems, practiceProlems, challengeProblems } = this.state;
+    if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
+    if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProlems, type: "practiceProlems" }];
   }
 
   render() {
@@ -286,6 +310,10 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDetailModal={this.props.onCloseDetailModal}
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
+                      handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
+                      updateProblemList={this.updateProblemList}
+                      problems={this.getCurrentProblemList()}
+                      handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
                   </div>
                   <div className="close-block">
@@ -454,17 +482,17 @@ class LessonDetailAnswerSheet extends React.Component {
                           <div className="card-block" style={{ margin: "0 auto" }}>
                             {challengeProblems.length !== 0 && (
                               <div className="main-row row">
-                                <ChallengeQuestions questions={challengeProblems} />
+                                <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
                               </div>
                             )}
                             {practiceProlems.length !== 0 && (
                               <div className="main-row row">
-                                <PracticeQuestions questions={practiceProlems} />
+                                <PracticeQuestions questions={practiceProlems} updateProblemList={this.updateProblemList} problemType={'practiceProlems'} />
                               </div>
                             )}
                             {drillProblems.length !== 0 && (
                               <div className="main-row row">
-                                <ChallengeQuestions questions={drillProblems} />
+                                <DrillQuestions questions={drillProblems} updateProblemList={this.updateProblemList} problemType={'drillProblems'} />
                               </div>
                             )}
                           </div>
@@ -475,20 +503,20 @@ class LessonDetailAnswerSheet extends React.Component {
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {challengeProblems.length !== 0 && (
                           <div className="main-row row">
-                            <ChallengeQuestions questions={challengeProblems} />
+                            <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
                           </div>
                         )}
                       </div>
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {practiceProlems.length !== 0 && (
                           <div className="main-row row">
-                            <PracticeQuestions questions={practiceProlems} />
+                            <PracticeQuestions questions={practiceProlems} updateProblemList={this.updateProblemList} problemType={'practiceProlems'} />
                           </div>
                         )}
                       </div>
                       {drillProblems.length !== 0 && (
                         <div className="main-row row">
-                          <DrillQuestions questions={drillProblems} />
+                          <DrillQuestions questions={drillProblems} updateProblemList={this.updateProblemList} problemType={'drillProblems'} />
                         </div>
                       )}
                     </Otherwise>

@@ -45,7 +45,10 @@ import {
   SET_OPEN_ACTIVE_PAGE,
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
+  EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
+  FLAG_STUDENT_LESSON_PROBLEM,
+  SET_TESTS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -329,7 +332,22 @@ export const updateStudentActivation = (studentInfo) => ({
   studentInfo,
 });
 
+export const excuseStudentLateness = (lessons) => ({
+  type: EXCUSE_STUDENT_LATENESS,
+  lessons,
+});
+
 export const filterLessons = (filters) => ({
   type: FILTER_LESSONS,
   filters,
+});
+
+export const flagStudentLessonProblem = (lesson) => ({
+  type: FLAG_STUDENT_LESSON_PROBLEM,
+  lesson,
+});
+
+export const setTests = (tests) => ({
+  type: SET_TESTS,
+  tests,
 });

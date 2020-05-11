@@ -11,7 +11,7 @@ import getValueFromState from "../../../../utils/getValueFromState";
 import timeOptions from "../../utils/timeOptions";
 
 const DatePicker = dynamic(() => import("../../../../FormComponents/DatePicker"), {
-  ssr: false
+  ssr: false,
 });
 
 const AssignDatesModal = props => {
@@ -24,19 +24,11 @@ const AssignDatesModal = props => {
   const { open, onAssignLesson } = props;
 
   const onAssignDates = () => {
-    // assgin dates here
-    // console.log({
-    //   assignDate: moment(assignDate).format("DD/MM/YYYY"),
-    //   assignTime,
-    //   dueDate: moment(dueDate).format("DD/MM/YYYY"),
-    //   dueTime
-    // });
-
     onAssignLesson({
       assignDate: moment(assignDate).format("YYYY-MM-DD"),
       assignTime,
       dueDate: dueDate ? moment(dueDate).format("YYYY-MM-DD") : "",
-      dueTime
+      dueTime,
     });
 
     closeModal();
@@ -65,48 +57,48 @@ const AssignDatesModal = props => {
   // }
 
   return (
-    <Portal selector='#modal'>
+    <Portal selector="#modal">
       {open && (
-        <div className='outer-overlay'>
+        <div className="outer-overlay">
           <ClickOffComponentWrapper onOuterClick={closeModal}>
-            <div id='datesModal' className='modal modal-custom modal-assignDates'>
-              <div className='card-modal card' style={{ overflow: "auto" }}>
+            <div id="datesModal" className="modal modal-custom modal-assignDates">
+              <div className="card-modal card" style={{ overflow: "auto" }}>
                 <div
-                  className='owner-box card-panel card-panel-title'
+                  className="owner-box card-panel card-panel-title"
                   style={{ backgroundColor: "rgb(24,181,233)", color: "#fff" }}
                 >
-                  <div className='card-panel-row row'>
-                    <div className=' icon-col'>
-                      <i className='icon-calendar'></i>
+                  <div className="card-panel-row row">
+                    <div className=" icon-col">
+                      <i className="icon-calendar"></i>
                     </div>
-                    <div className='col'>
+                    <div className="col">
                       <h4 style={{ padding: "8px 0px 0px 20px" }}>Select Dates</h4>
                     </div>
                   </div>
                 </div>
-                <div className='card-content'>
-                  <div className='card-body' style={{ height: "300px", padding: "10px 37px" }}>
-                    <div className='row justify-center' style={{ marginTop: "18px" }}>
-                      <div className='col s6'>
-                        <label htmlFor='assignDate'>Assignment Date</label>
-                        <div className='datepicker-field input-field'>
+                <div className="card-content">
+                  <div className="card-body" style={{ height: "300px", padding: "10px 37px" }}>
+                    <div className="row justify-center" style={{ marginTop: "18px" }}>
+                      <div className="col s6">
+                        <label htmlFor="assignDate">Assignment Date</label>
+                        <div className="datepicker-field input-field">
                           <i
-                            className='icon-calendar-dark'
+                            className="icon-calendar-dark"
                             style={{ marginRight: "20px", zIndex: "1001" }}
                           ></i>
                           <DatePicker
-                            id='assignDate'
+                            id="assignDate"
                             selected={assignDate}
                             onChange={event =>
                               setAssignDate(event.target ? event.target.value : event)
                             }
-                            name='assignDate'
+                            name="assignDate"
                           />
                         </div>
                       </div>
-                      <div className='col s6'>
+                      <div className="col s6">
                         <div
-                          className='input-field focus-blue'
+                          className="input-field focus-blue"
                           style={{ marginTop: "-15px", zIndex: "1001" }}
                         >
                           <Dropdown
@@ -114,72 +106,72 @@ const AssignDatesModal = props => {
                             onChange={event =>
                               setAssignTime(event.target ? event.target.value : event)
                             }
-                            label='Time'
+                            label="Time"
                             options={timeOptions}
-                            stateKey='assignmentDate'
-                            dropdownKey='assignmentDate'
-                            name='assignTime'
-                            id='assignTime'
+                            stateKey="assignmentDate"
+                            dropdownKey="assignmentDate"
+                            name="assignTime"
+                            id="assignTime"
                           />
                         </div>
                       </div>
                     </div>
 
                     {openDueDate && (
-                      <div className='row'>
-                        <div className='col s6'>
-                          <label htmlFor='dueDate' style={{ marginTop: "50px" }}>
-                            Due Date 
+                      <div className="row">
+                        <div className="col s6">
+                          <label htmlFor="dueDate" style={{ marginTop: "50px" }}>
+                            Due Date
                           </label>
-                          <div className='datepicker-field input-field'>
+                          <div className="datepicker-field input-field">
                             <i
-                              className='icon-calendar-dark'
+                              className="icon-calendar-dark"
                               style={{ marginRight: "20px", zIndex: "1001" }}
                             ></i>
                             <DatePicker
-                              id='dueDate'
+                              id="dueDate"
                               selected={dueDate}
                               onChange={event =>
                                 setDueDate(event.target ? event.target.value : event)
                               }
-                              name='dueDate'
+                              name="dueDate"
                             />
                           </div>
                         </div>
-                        <div className='col s6'>
-                          <div className='input-field focus-blue' style={{ marginTop: "35px" }}>
+                        <div className="col s6">
+                          <div className="input-field focus-blue" style={{ marginTop: "35px" }}>
                             <Dropdown
                               value={getValueFromState(dueTime, timeOptions)}
                               onChange={event =>
                                 setDueTime(event.target ? event.target.value : event)
                               }
-                              label='Time'
+                              label="Time"
                               options={timeOptions}
-                              stateKey='dueTime'
-                              dropdownKey='dueTime'
-                              name='dueTime'
+                              stateKey="dueTime"
+                              dropdownKey="dueTime"
+                              name="dueTime"
                             />
                           </div>
                         </div>
                       </div>
                     )}
-                    <div className='row'>
-                      <div className='col s6'>
-                        <a className='btn' onClick={hanldeDueDate}>
+                    <div className="row">
+                      <div className="col s6">
+                        <a className="btn" onClick={hanldeDueDate}>
                           {openDueDate ? "Remove Due Date" : "Add Due Dute"}
                         </a>
                       </div>
                     </div>
                   </div>
-                  <div className='modal-footer'>
+                  <div className="modal-footer">
                     <a
-                      href='#'
+                      href="#"
                       onClick={closeModal}
-                      className='modal-close waves-effect waves-teal btn-flat pink-text text-darken-1'
+                      className="modal-close waves-effect waves-teal btn-flat pink-text text-darken-1"
                     >
                       Cancel
                     </a>
-                    <a href='#' className='btn' onClick={onAssignDates}>
+                    <a href="#" className="btn" onClick={onAssignDates}>
                       Assign Dates
                     </a>
                   </div>
@@ -240,7 +232,7 @@ const AssignDatesModal = props => {
 AssignDatesModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onCloseDatesModal: PropTypes.func.isRequired,
-  onHandleDates: PropTypes.func.isRequired
+  onHandleDates: PropTypes.func.isRequired,
 };
 
 export default AssignDatesModal;

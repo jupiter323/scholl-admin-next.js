@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
+import FreeResponse from '../FreeResponse';
 
 class AnswerRow extends React.Component {
   constructor(props) {
@@ -21,6 +22,11 @@ class AnswerRow extends React.Component {
   onOpenQuestionModal = () => this.setState({ open: true });
   onCloseQuestionModal = () => this.setState({ open: false });
 
+  isFreeResponse = () => {
+    if (this.props.problem.problem.answers.length === 0) return true;
+    return false;
+  }
+
 
   render() {
     const { problem } = this.props;
@@ -33,6 +39,8 @@ class AnswerRow extends React.Component {
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
           onChangeFlagState={this.onChangeFlagState}
+          updateProblemList={this.props.updateProblemList}
+          problemType={this.props.problemType}
         />
         <li
           className="answers-list-holder"
@@ -42,25 +50,27 @@ class AnswerRow extends React.Component {
           <div className="answer-row row mb-0">
             <div className="col col-120">
               <ul className="answer-list">
-                <BubbleGroup lesson={problem} />
+                {this.isFreeResponse() ? <FreeResponse lesson={problem} /> : <BubbleGroup lesson={problem} />}
               </ul>
             </div>
             <div className="col col-30">
               <span className="status-info">E</span>
             </div>
             <div className="col col-auto">
-              <If condition={status === 'FLAGGED' || this.props.problem.flag_status === 'FLAGGED'}>
-                <span className="status-answer" style={{ color: "#c0272d" }}>
-                  <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
-                </span>
-              </If>
-              <If condition={this.props.problem.flag_status === 'REVIEWED'}>
-                <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
-                  <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
-                </span>
-              </If>
+              <Choose>
+                <When condition={status === 'FLAGGED' || this.props.problem.flag_status === 'FLAGGED'}>
+                  <span className="status-answer" style={{ color: "#c0272d" }}>
+                    <i className="icon-flag"></i>
+                    <b className="status-text">Review</b>
+                  </span>
+                </When>
+                <When condition={this.props.problem.flag_status === 'REVIEWED'}>
+                  <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
+                    <i className="icon-flag"></i>
+                    <b className="status-text">Review</b>
+                  </span>
+                </When>
+              </Choose>
             </div>
             <div className="dropdown-block col col-35">
               <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>

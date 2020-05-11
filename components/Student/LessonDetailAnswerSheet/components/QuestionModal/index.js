@@ -10,6 +10,7 @@ import { makeSelectActiveLesson } from "../../../index/selectors";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
+import EditProblemRow from '../EditProblemRow';
 import {
   addVideoWatchedTime,
 } from '../../../index/api';
@@ -48,7 +49,7 @@ class QuestionModal extends React.Component {
     } = this.props;
     onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
-    const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: 'FLAGGED' };
+    const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
     await addStudentLessonProblemFlagApi(postBody);
   };
 
@@ -87,7 +88,7 @@ class QuestionModal extends React.Component {
 
 
   render() {
-    const { open, question: { problem: { reference_number, video: { url: videoURL, duration } } } } = this.props;
+    const { open, question: { problem: { reference_number, video } } } = this.props;
     const { videoWatchedTime } = this.state;
     return (
       <Portal selector="#modal">
@@ -109,12 +110,12 @@ class QuestionModal extends React.Component {
                 <div className="modal-content">
                   <div className="card-panel">  <div className="panel-block">
                     <div className="embed-responsive">
-                      <VideoPlayer url={videoURL} onHandleWatchedVideo={this.onHandleWatchedVideo} />
+                      <VideoPlayer url={video ? video.url.videoURL : ''} onHandleWatchedVideo={this.onHandleWatchedVideo} />
                     </div>
                   </div></div>
                   <div className="card-panel">
                     <div className="panel-block">
-                      <strong className="subtitle">Review with My Instructor</strong>
+                      <strong className="subtitle">Review With Student</strong>
                       <form action="#" className="answer-form review-form">
                         <ul>
                           <li>
@@ -123,6 +124,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
                               />
                               <span>Nope. Got it.</span>
                             </label>
@@ -204,7 +206,7 @@ class QuestionModal extends React.Component {
                           svgWidth={150}
                           svgHeight={150}
                           strokeWidth={10}
-                          maxValue={duration}
+                          maxValue={video ? video.duration : 0}
                           currentValue={20}
                           strokeColor="#00BBF7"
                         />
@@ -212,10 +214,16 @@ class QuestionModal extends React.Component {
                           <span className="value" style={{ fontSize: '32px', color: 'rgb(0, 187, 247)' }}>{ConvertSecondsToMinutesSeconds(videoWatchedTime)}</span>
                           <span className="title" style={{ fontSize: '14px' }}>out of</span>
                           <span className="description" style={{ fontSize: '32px' }}>
-                            {ConvertSecondsToMinutesSeconds(duration)}
+                            {ConvertSecondsToMinutesSeconds(video ? video.duration : 0)}
                           </span>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="card-panel">
+                    <div className="panel-block">
+                      <strong className="subtitle">Edit Student's Answer</strong>
+                      <EditProblemRow activeLesson={this.props.activeLesson} question={this.props.question} updateProblemList={this.props.updateProblemList} problemType={this.props.problemType} />
                     </div>
                   </div>
                 </div>

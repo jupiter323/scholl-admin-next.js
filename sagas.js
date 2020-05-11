@@ -22,7 +22,6 @@ import {
   FETCH_STUDENT_LESSON_LIST_FAIL,
   FETCH_STUDENT_LESSSON_LIST_SUCCESS,
   ASSIGN_STUDENT_LESSON,
-  ASSIGN_STUDENT_LESSON_SUCCESS,
   ASSIGN_STUDENT_LESSON_FAIL,
   RESET_STUDENT_LESSONS,
   RESET_STUDENT_LESSONS_SUCCESS,
@@ -39,7 +38,11 @@ import {
   UPDATE_STUDENT_ACTIVATION_FAIL,
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
+  FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
+  EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
+  FLAG_STUDENT_LESSON_PROBLEM,
+  SET_EXCUSE_STUDENT_LATENESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -66,7 +69,7 @@ import {
 } from "./components/Instructor/index/constants";
 import {
   SET_CURRENT_USER,
-  SET_USER_IS_LOGGED,
+  FETCH_CURRENT_USER,
 } from './components/User/index/constants';
 import {
   setStudents,
@@ -107,7 +110,9 @@ const {
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
+  excuseStudentLessonLatenessApi,
   filterLessonListApi,
+  addStudentLessonProblemFlagApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -181,7 +186,7 @@ export function* watchForFetchStudentTestSections() {
 export function* fetchStudentTestSections(studentTestId, studentToken) {
   try {
     const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.test.sections));
+    yield put(setStudentSections(formattedData.data.test.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
@@ -196,7 +201,7 @@ export function* watchForFetchStudentTests() {
 
 export function* fetchStudentTests(user) {
   try {
-    const { formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    const { data: formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
       overdues: [],
@@ -207,7 +212,7 @@ export function* fetchStudentTests(user) {
     //* * using for development purposes pushing :STARTED to assigneds */
     yield formattedStudentTests.forEach(test => {
       switch (test.status) {
-        case "OVERDUED":
+        case "OVERDUE":
           sortedTests.overdues.push(test);
           break;
         //* commented out for development purposes  */
@@ -696,6 +701,10 @@ function* watchForFetchStudentLesson() {
   yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList);
 }
 
+function* watchForFetchStudentLessonDebounce() {
+  yield debounce(1000, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
+}
+
 function* handleFetchStudentLessonList(action) {
   try {
     const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
@@ -721,7 +730,7 @@ function* watchForAssignLesson() {
 function* handleAssignLesson(action) {
   try {
     yield call(assignLessonToStudentApi, action.lesson);
-    yield put({ type: FETCH_STUDENT_LESSON_LIST, postBody: { id: action.lesson.student_id } });
+    yield put({ type: FETCH_STUDENT_LESSON_LIST_DEBOUNCE, postBody: { id: action.lesson.student_id } });
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({
@@ -824,14 +833,10 @@ function* handleFetchSubjects() {
 
 export function* watchForFetchCurrentUser() {
   while (true) {
-    const payload = yield take(SET_USER_IS_LOGGED);
-    const { value: status } = payload;
-    if (status) {
-      yield call(handleFetchCurrentUser);
-    }
+    yield take(FETCH_CURRENT_USER);
+    yield call(handleFetchCurrentUser);
   }
 }
-
 function* handleFetchCurrentUser() {
   try {
     const response = yield call(fetchCurrentUserApi);
@@ -843,6 +848,23 @@ function* handleFetchCurrentUser() {
     }
   } catch (error) {
     console.warn("Error occurred in the handleFetchCurrentUser saga", error);
+  }
+}
+
+function* watchForExcuseStudentLateness() {
+  yield takeEvery(EXCUSE_STUDENT_LATENESS, handleExcuseStudentLateness);
+}
+
+function* handleExcuseStudentLateness(action) {
+  try {
+    yield call(excuseStudentLessonLatenessApi, action.lessons);
+    console.log('log: action.lessons', action.lessons);
+    yield put({
+      type: SET_EXCUSE_STUDENT_LATENESS,
+      payload: action.lessons,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleExcuseStudentLateness saga", error);
   }
 }
 
@@ -868,6 +890,18 @@ function* handleFilterLessons(action) {
     }
   } catch (error) {
     console.warn("Error occurred in the handleFilterLessons saga", error);
+  }
+}
+
+function* watchForFlagStudentLessonProblem() {
+  yield takeEvery(FLAG_STUDENT_LESSON_PROBLEM, handleFlagStudentLessonProblem);
+}
+
+function* handleFlagStudentLessonProblem(action) {
+  try {
+    yield call(addStudentLessonProblemFlagApi, action.lesson);
+  } catch (error) {
+    console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
   }
 }
 
@@ -915,6 +949,9 @@ export default function* defaultSaga() {
     watchForRescheduleStudentLessons(),
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
+    watchForFetchStudentLessonDebounce(),
+    watchForExcuseStudentLateness(),
     watchForFilterLessons(),
+    watchForFlagStudentLessonProblem(),
   ]);
 }

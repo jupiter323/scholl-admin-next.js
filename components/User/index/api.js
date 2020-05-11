@@ -20,7 +20,6 @@ export const oAuthTokenApi = (data) =>
     },
     body: JSON.stringify(data),
   })
-    .then(_checkStatus)
     .then(response => response.json())
     .then(data => data)
     .catch(err => err);
