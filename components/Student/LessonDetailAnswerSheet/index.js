@@ -105,6 +105,15 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: "Drill",
         hasDrill: true,
       });
+      if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
+        lesson.problems.map(problem => {
+          if (problem.flag_status === 'FLAGGED') {
+            problem.flag_status = 'REVIEWED';
+            return problem;
+          }
+          return problem;
+        });
+      }
       this.setState({
         drillProblems: lesson.problems,
       });
@@ -193,6 +202,12 @@ class LessonDetailAnswerSheet extends React.Component {
       return problem;
     });
     this.setState({ [problemsType]: [...newProblems] });
+  }
+
+  getCurrentProblemList = () => {
+    const { currentType, drillProblems, practiceProlems, challengeProblems } = this.state;
+    if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
+    if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProlems, type: "practiceProlems" }];
   }
 
   render() {
@@ -295,6 +310,9 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDetailModal={this.props.onCloseDetailModal}
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
+                      handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
+                      updateProblemList={this.updateProblemList}
+                      problems={this.getCurrentProblemList()}
                       handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
                   </div>

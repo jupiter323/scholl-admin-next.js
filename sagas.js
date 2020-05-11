@@ -41,6 +41,7 @@ import {
   FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
   EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
+  FLAG_STUDENT_LESSON_PROBLEM,
   SET_EXCUSE_STUDENT_LATENESS,
 } from "./components/Student/index/constants";
 import {
@@ -111,6 +112,7 @@ const {
   fetchSubjectsApi,
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
+  addStudentLessonProblemFlagApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -199,7 +201,7 @@ export function* watchForFetchStudentTests() {
 
 export function* fetchStudentTests(user) {
   try {
-    const { data:formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    const { data: formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
       overdues: [],
@@ -891,6 +893,18 @@ function* handleFilterLessons(action) {
   }
 }
 
+function* watchForFlagStudentLessonProblem() {
+  yield takeEvery(FLAG_STUDENT_LESSON_PROBLEM, handleFlagStudentLessonProblem);
+}
+
+function* handleFlagStudentLessonProblem(action) {
+  try {
+    yield call(addStudentLessonProblemFlagApi, action.lesson);
+  } catch (error) {
+    console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -938,5 +952,6 @@ export default function* defaultSaga() {
     watchForFetchStudentLessonDebounce(),
     watchForExcuseStudentLateness(),
     watchForFilterLessons(),
+    watchForFlagStudentLessonProblem(),
   ]);
 }

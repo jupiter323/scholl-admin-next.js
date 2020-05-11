@@ -22,9 +22,9 @@ import {
   formatStatus
 } from "./utils";
 import Checkbox from "./components/Checkbox";
-import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus, setOpenActivePage } from "../../../../../index/actions";
+import { setIsVisibleTopBar, setActiveLesson, setOpenActivePage } from "../../../../../index/actions";
+import { fetchStudentLessonSectionApi } from "../../../../../index/api";
 import {makeSelectSubjects,makeSelectUnitFilterOptions} from '../../../../../index/selectors'
-import lessonSortOptions from "../../../../utils/lessonSortOptions";
 
 const data = (current, target, status) => ({
   datasets: [
@@ -55,7 +55,6 @@ const LessonCard = props => {
       completionDate,
       challenge_page,
       practice_page,
-      lesson_problems,
       due_date,
       completed_at,
       assignment_date,
@@ -65,11 +64,46 @@ const LessonCard = props => {
     onCloseDropdown,
     handleRescheduleModalOpen,
     handleResetLesson,
+    handleMarkAllFlagsReviewed
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
+  const [hasFlaggedProblems, setHasFlaggedProblems] = useState(false)
+
+  useEffect(() => {
+    if (lesson.problems && lesson.problems.length > 0) {
+      const hasFlaggedProblems = lesson.problems.filter(
+        (problem) => problem.flag_status === "FLAGGED"
+      );
+      if (hasFlaggedProblems.length > 0) {
+        return setHasFlaggedProblems(true);
+      }
+    } else if (lesson.sections && lesson.sections.length > 0) {
+      const section1 = fetchStudentLessonSectionApi(
+        props.user.id,
+        lesson.id,
+        lesson.sections[0].id
+      );
+      const section2 = fetchStudentLessonSectionApi(
+        props.user.id,
+        lesson.id,
+        lesson.sections[1].id
+      );
+      Promise.all([section1, section2]).then((sections) => {
+        const filteredSections = sections.filter((section) => section);
+        filteredSections.map((section) => {
+          section.lesson_problems.map((problem) => {
+            if (problem.flag_status === "FLAGGED") {
+              setHasFlaggedProblems(true);
+            }
+          });
+        });
+      });
+    }
+  }, []);
+
   const onOpenDetailModal = async (e) => {
     e.preventDefault()
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
@@ -132,6 +166,11 @@ const LessonCard = props => {
     return data(0, 1, "ASSIGNED")
   }
 
+  const startMarkFlagsReviewed = (lessonIds) => {
+    handleMarkAllFlagsReviewed(lessonIds)
+    setHasFlaggedProblems(false)
+  }
+
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -164,6 +203,7 @@ const LessonCard = props => {
               </div>
               <div className="col s1 right-align">
                 <div className="row icons-row">
+                  {hasFlaggedProblems && !props.flagRemoved && <i style={{ color: "#c0272d" }} className="icon-flag"></i>}
                   <div className="dropdown-block col">
                     <a
                       className="dropdown-trigger btn"
@@ -191,9 +231,10 @@ const LessonCard = props => {
                             status,
                             handleAssignLesson,
                             handleRescheduleModalOpen,
-                            props.handleUnassignLesson,
-                            handleResetLesson,
                             props.handleExcuseLessonLateness,
+                            handleResetLesson,
+                            startMarkFlagsReviewed,
+                            props.handleUnassignLesson,
                             [lesson.id]
                           )}
                         </ul>

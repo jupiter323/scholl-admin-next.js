@@ -30,8 +30,8 @@ class EnterAnswerWrapper extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: ""
-      }
+        activeSection: "",
+      },
     };
   }
 
@@ -40,7 +40,7 @@ class EnterAnswerWrapper extends React.Component {
       onFetchStudentTestSections,
       sections,
       studentToken,
-      test: { student_test_id }
+      test: { student_test_id },
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
@@ -67,44 +67,44 @@ class EnterAnswerWrapper extends React.Component {
       testMathCalcProblems: sections[2],
       testMathNoCalcProblems: sections[3],
       testSections: sections,
-      studentTestId
+      studentTestId,
     });
   };
 
-  onSetActivePage = async(name) => {
-  const currentSection = this.state.updatedState.activeSection;
-  const updatedState = update(this.state.updatedState, {
-    [name]: { $set: true },
-    [currentSection]: { $set: false },
-    activeSection: { $set: name }
-  });
-  this.setState({ updatedState });
-  if (name === "showInCompleteTest") {
-    const currentSection = this.getCurrentTestProblems();
-    const test_section_id = currentSection.test_section_id;
-    const postBody = {
-      test_section_id,
-      student_test_section_status: "STARTED"
-    };
-    await updateStudentTestSectionStatusApi(postBody);
-    this.setState({
-      previewTest: false,
-      startedTest: true
+  onSetActivePage = async (name) => {
+    const currentSection = this.state.updatedState.activeSection;
+    const updatedState = update(this.state.updatedState, {
+      [name]: { $set: true },
+      [currentSection]: { $set: false },
+      activeSection: { $set: name },
     });
-  } else {
-    this.setState({
-      previewTest: true,
-      startedTest: false
-    });
-  }
-};
+    this.setState({ updatedState });
+    if (name === "showInCompleteTest") {
+      const currentSection = this.getCurrentTestProblems();
+      const test_section_id = currentSection.test_section_id;
+      const postBody = {
+        test_section_id,
+        student_test_section_status: "STARTED",
+      };
+      await updateStudentTestSectionStatusApi(postBody);
+      this.setState({
+        previewTest: false,
+        startedTest: true,
+      });
+    } else {
+      this.setState({
+        previewTest: true,
+        startedTest: false,
+      });
+    }
+  };
 
 onAddStudentAnswerToTest = async (test_problem_id, answer) => {
   const { studentTestId } = this.state;
   const postBody = {
     student_test_id: studentTestId,
-    test_problem_id: test_problem_id,
-    answer: answer
+    test_problem_id,
+    answer,
   };
   await addStudentAnswerToTestApi(postBody);
 };
@@ -115,7 +115,7 @@ getCurrentTestProblems = () => {
     testReadingProblems,
     testWritingProblems,
     testMathCalcProblems,
-    testMathNoCalcProblems
+    testMathNoCalcProblems,
   } = this.state;
   switch (activeSection) {
     case "activeReadingSection":
@@ -138,7 +138,7 @@ render() {
     open,
     test: { test_description },
     onAddStudentAnswerToTest,
-    onEditTest
+    onEditTest,
   } = this.props;
   return (
     <React.Fragment>
@@ -184,7 +184,7 @@ const mapStateToProps = createStructuredSelector({
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody))
+    onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

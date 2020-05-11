@@ -31,6 +31,8 @@ const FullView = props => {
     onCloseDropdown,
     renderDropdownOptions,
     checkedCardIds,
+    handleMarkAllFlagsReviewed,
+    lessonIdsToUnFlag,
   } = props;
   const mapLessons = () => lessons.map((lesson, index) => (
     <LessonCard
@@ -52,6 +54,8 @@ const FullView = props => {
       onAddAssignLessonIds={props.onAddAssignLessonIds}
       handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
+      handleMarkAllFlagsReviewed={handleMarkAllFlagsReviewed}
+      flagRemoved={lessonIdsToUnFlag.includes(lesson.id)}
       handleExcuseLessonLateness={props.handleExcuseLessonLateness}
     />
   ));
@@ -92,6 +96,11 @@ const FullView = props => {
       dispathResetStudentLessons(lessonIds);
       onCloseDropdown();
     }
+  };
+
+  const startMarkFlagsReviewed = (lessonIds) => {
+    handleMarkAllFlagsReviewed(lessonIds);
+    onCloseDropdown();
   };
 
   return (
@@ -143,7 +152,15 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.handleExcuseLessonLateness, props.checkedCardIds)}
+                {renderDropdownOptions(
+                  status,
+                  handleAssignLesson,
+                  handleRescheduleModalOpen,
+                  props.handleExcuseLessonLateness,
+                  handleResetLesson,
+                  startMarkFlagsReviewed,
+                  handleUnassignLesson,
+                  checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

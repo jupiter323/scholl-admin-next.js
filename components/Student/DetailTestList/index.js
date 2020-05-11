@@ -258,8 +258,8 @@ class DetailTestList extends React.Component {
         "3c660d9f-6e3c-4b66-9028-ffb6890c6c3a",
         "5c430ac1-63f5-4418-88a9-6fa3526eafd6",
         "f1ccfcc7-dc9a-40b7-b555-b432aeede73a",
-        "fe459162-5190-42dd-b67d-2b9baff55500"
-      ]
+        "fe459162-5190-42dd-b67d-2b9baff55500",
+      ],
     };
     assignTestToStudentApi(postBody);
   };

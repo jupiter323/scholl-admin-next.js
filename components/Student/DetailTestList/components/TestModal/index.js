@@ -31,7 +31,7 @@ class NewTestModal extends React.Component {
       isIncluded: false,
       isTimed: false,
       versionOptions: [],
-      sectionIds:[],
+      sectionIds: [],
     };
   }
 
@@ -39,19 +39,19 @@ class NewTestModal extends React.Component {
     const { tests, onSetTests } = this.props;
     if (tests.length === 0) {
       const { data: { tests } } = await fetchAllTestsApi();
-      onSetTests(tests)
+      onSetTests(tests);
     }
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if(this.state.versionOptions.length === 0){
+    if (this.state.versionOptions.length === 0) {
       const formattedVersions = nextProps.tests.map(test => ({
         label: test.name,
         value: test.id,
       }));
       this.setState({
-        versionOptions: formattedVersions
-      })
+        versionOptions: formattedVersions,
+      });
     }
   }
 
@@ -59,11 +59,11 @@ class NewTestModal extends React.Component {
     const value = event.target ? event.target.value : event;
     if (checkBox) {
       this.setState({
-        [name]: !this.state[name]
+        [name]: !this.state[name],
       });
     } else {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -88,7 +88,7 @@ class NewTestModal extends React.Component {
       mathWithCalc,
       isAllowed,
       isIncluded,
-      isTimed
+      isTimed,
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -135,7 +135,7 @@ class NewTestModal extends React.Component {
                                   <Dropdown
                                     value={getValueFromState(
                                       version,
-                                      versionOptions
+                                      versionOptions,
                                     )}
                                     onChange={event =>
                                       this.handleDetailsChange(event, "version")
@@ -171,7 +171,7 @@ class NewTestModal extends React.Component {
                                     onChange={date =>
                                       this.handleDetailsChange(
                                         date,
-                                        "assignTime"
+                                        "assignTime",
                                       )
                                     }
                                     showTimeSelect
@@ -189,7 +189,7 @@ class NewTestModal extends React.Component {
                                     htmlFor="assignTime"
                                   >
                                     Time
-                                </label>
+                                  </label>
                                 </div>
                               </div>
                             </div>
@@ -228,7 +228,7 @@ class NewTestModal extends React.Component {
                                     htmlFor="dueTime"
                                   >
                                     Time
-                                </label>
+                                  </label>
                                 </div>
                               </div>
                             </div>
@@ -247,7 +247,7 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "reading",
-                                            "checkBox"
+                                            "checkBox",
                                           )
                                         }
                                       />
@@ -265,7 +265,7 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "mathNoCalc",
-                                            "checkbox"
+                                            "checkbox",
                                           )
                                         }
                                       />
@@ -285,7 +285,7 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "writing",
-                                            "checkbox"
+                                            "checkbox",
                                           )
                                         }
                                       />
@@ -303,7 +303,7 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "mathWithCalc",
-                                            "checkbox"
+                                            "checkbox",
                                           )
                                         }
                                       />
@@ -314,7 +314,7 @@ class NewTestModal extends React.Component {
                                 <label>
                                   Note: scaled test scores may require
                                   combinations of sections
-                              </label>
+                                </label>
                               </div>
                             </div>
                             <div className="check-holder">
@@ -331,7 +331,7 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "isAllowed",
-                                            "checkbox"
+                                            "checkbox",
                                           )
                                         }
                                       />
@@ -351,13 +351,13 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "isIncluded",
-                                            "checkbox"
+                                            "checkbox",
                                           )
                                         }
                                       />
                                       <span>
                                         Include Score in Improvement Metrics
-                                    </span>
+                                      </span>
                                     </label>
                                   </p>
                                 </div>
@@ -373,7 +373,7 @@ class NewTestModal extends React.Component {
                                           this.handleDetailsChange(
                                             event,
                                             "isTimed",
-                                            "checkbox"
+                                            "checkbox",
                                           )
                                         }
                                       />
@@ -391,10 +391,10 @@ class NewTestModal extends React.Component {
                               onClick={onClose}
                             >
                               Cancel
-                          </a>
+                            </a>
                             <a href="#" className="btn" onClick={this.onSave}>
                               Save
-                          </a>
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -456,15 +456,14 @@ NewTestModal.propTypes = {
 };
 
 
-
 const mapStateToProps = createStructuredSelector({
   tests: makeSelectTests(),
-})
+});
 
 function mapDispatchToProps(dispatch) {
   return {
     onSetTests: tests => dispatch(setTests(tests)),
-  }
+  };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 export default compose(withConnect)(NewTestModal);

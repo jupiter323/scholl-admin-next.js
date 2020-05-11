@@ -52,11 +52,14 @@ import {
   removeAllLessons,
   excuseStudentLateness,
   filterLessons,
+  flagStudentLessonProblem,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
 import AssignDatesModal from "./components/AssignDatesModal";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
+import { fetchStudentLessonSectionApi } from "../index/api";
+import { mergeArrays } from './utils/mergeArrays';
 
 // TODO: compare updatedlessons to lessons and update lesson list
 class DetailLessonList extends React.Component {
@@ -86,6 +89,7 @@ class DetailLessonList extends React.Component {
         nameFilter: '',
         unitFilter: '',
       },
+      lessonIdsToUnFlag: [],
     };
   }
 
@@ -446,6 +450,8 @@ class DetailLessonList extends React.Component {
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
+          handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
+          lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
           handleExcuseLessonLateness={this.handleExcuseLessonLateness}
         />
       );
@@ -531,6 +537,56 @@ class DetailLessonList extends React.Component {
     onSetOpenActivePage("");
   }
 
+  handleMarkAllFlagsReviewed = (studentLessonIds) => {
+    const { onFlagStudentLessonProblem } = this.props;
+    if (studentLessonIds && studentLessonIds.length > 0) {
+      this.getMappableLessons().forEach(lesson => {
+        if (studentLessonIds.includes(lesson.id)) {
+          if (lesson.problems && lesson.problems.length > 0) {
+            lesson.problems.forEach(problem => {
+              if (problem.flag_status === "FLAGGED") {
+                const payload = {
+                  student_lesson_id: lesson.id,
+                  problem_id: problem.problem.id,
+                  flag_status: 'REVIEWED',
+                };
+                onFlagStudentLessonProblem(payload);
+              }
+            });
+          } else if (lesson.sections && lesson.sections.length > 0) {
+            const section1 = fetchStudentLessonSectionApi(
+              this.props.user.id,
+              lesson.id,
+              lesson.sections[0].id,
+            );
+            const section2 = fetchStudentLessonSectionApi(
+              this.props.user.id,
+              lesson.id,
+              lesson.sections[1].id,
+            );
+            Promise.all([section1, section2]).then((sections) => {
+              const filteredSections = sections.filter((section) => section);
+              filteredSections.map((section) => {
+                section.lesson_problems.map((problem) => {
+                  if (problem.flag_status === "FLAGGED") {
+                    const payload = {
+                      student_lesson_id: lesson.id,
+                      problem_id: problem.problem.id,
+                      flag_status: 'REVIEWED',
+                    };
+                    onFlagStudentLessonProblem(payload);
+                  }
+                });
+              });
+            });
+          }
+        }
+      });
+      this.setState({ lessonIdsToUnFlag: mergeArrays(this.state.lessonIdsToUnFlag, studentLessonIds) });
+      this.resetLessonSelections();
+    }
+  }
+
   handleExcuseLessonLateness = (lessonCardIds) => {
     const { onExcuseStudentLateness } = this.props;
     if (lessonCardIds && lessonCardIds.length > 0) {
@@ -573,6 +629,8 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
+              lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
               handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>
@@ -585,6 +643,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
               handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>
@@ -648,6 +707,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
   onExcuseStudentLateness: bindActionCreators(excuseStudentLateness, dispatch),
   dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
+  onFlagStudentLessonProblem: bindActionCreators(flagStudentLessonProblem, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({
