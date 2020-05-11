@@ -407,7 +407,7 @@ export const fetchTestsByStudentIdApi = student_id =>
     .catch(err => err);
 
 export const fetchTestByTestIdApi = (student_id, test_id) => {
-  fetch(`${API_URL}/students/${student_id}/tests/${test_id}`, {
+  fetch(`${API_URL}/students/${student_id}/student_tests/${test_id}`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
