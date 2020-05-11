@@ -25,10 +25,11 @@ class CompletedTestCard extends React.Component {
     const { scores, onSetScores } = this.props;
     if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
+      console.log('formattedScores:', formattedScores.subjects)
       onSetScores(formattedScores);
-      this.setScores(formattedScores.section_scores);
+      this.setScores(formattedScores.subjects);
     } else {
-      this.setScores(scores.section_scores);
+      this.setScores(scores.subjects);
     }
   };
 
@@ -49,6 +50,7 @@ class CompletedTestCard extends React.Component {
           break;
         default:
           this.setState({ NA: 0 });
+          break;
       }
     });
   };
@@ -81,6 +83,7 @@ class CompletedTestCard extends React.Component {
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
     const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
+    console.log('ReadingScore', ReadingScore)
     return (
       <React.Fragment>
         <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
@@ -223,11 +226,7 @@ class CompletedTestCard extends React.Component {
                         <h2 style={{ marginBottom: "5px" }}>Math</h2>
                       </strong>
                       <h2
-                        style={
-                          MathScore.previous_score
-                            ? { marginBottom: "5px" }
-                            : { marginBottom: "20px" }
-                        }
+                        style={{ marginBottom: MathScore.previous_score ? "5px" : "20px" }}
                       >
                         {MathScore.current_score}
                         <br />
@@ -237,17 +236,17 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                <li>
-                  <span className="badge-circle">
-                    <span className="badge-text">
-                      <strong>
-                        <h2 style={{ marginBottom: "10px" }}>Math</h2>
-                      </strong>
-                      <h2 style={{ marginBottom: "15px" }}>n/a</h2>
+                  <li>
+                    <span className="badge-circle">
+                      <span className="badge-text">
+                        <strong>
+                          <h2 style={{ marginBottom: "10px" }}>Math</h2>
+                        </strong>
+                        <h2 style={{ marginBottom: "15px" }}>n/a</h2>
+                      </span>
                     </span>
-                  </span>
-                </li>
-              )}
+                  </li>
+                )}
               {ReadingAndWrigingScore ? (
                 <li>
                   <span
@@ -264,11 +263,7 @@ class CompletedTestCard extends React.Component {
                         &amp; Writing
                       </strong>
                       <h2
-                        style={
-                          ReadingAndWrigingScore.previous_score === null
-                            ? { marginBottom: "15px" }
-                            : ""
-                        }
+                        style={{ marginBottom: ReadingAndWrigingScore.previous_score ? "" : "15px" }}
                       >
                         {ReadingAndWrigingScore.current_score}
                         <br />
@@ -280,19 +275,19 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                <li>
-                  <span className="badge-circle">
-                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
-                      <strong>
-                        Reading
+                  <li>
+                    <span className="badge-circle">
+                      <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
+                        <strong>
+                          Reading
                         <br />
                         &amp; Writing
                       </strong>
-                      <h2>n/a</h2>
+                        <h2>n/a</h2>
+                      </span>
                     </span>
-                  </span>
-                </li>
-              )}
+                  </li>
+                )}
 
               {ReadingScore ? (
                 <li>
@@ -309,7 +304,7 @@ class CompletedTestCard extends React.Component {
                       Reading
                       <br />
                       <h3
-                        style={ReadingScore.previous_score === null ? { marginBottom: "20px" } : ""}
+                        style={{ marginBottom: ReadingScore.previous_score ? "" : '20px' }}
                       >
                         {ReadingScore.current_score}
                         <br />
@@ -319,22 +314,22 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                <li>
-                  <span
-                    className="badge-circle"
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                    }}
-                  >
-                    <span className="badge-text" style={{ fontSize: "16px" }}>
-                      Reading
+                  <li>
+                    <span
+                      className="badge-circle"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                      }}
+                    >
+                      <span className="badge-text" style={{ fontSize: "16px" }}>
+                        Reading
                       <br />
-                      <h3 style={{ marginTop: "10px" }}>n/a</h3>
+                        <h3 style={{ marginTop: "10px" }}>n/a</h3>
+                      </span>
                     </span>
-                  </span>
-                </li>
-              )}
+                  </li>
+                )}
               {WritingScore ? (
                 <li>
                   <span
@@ -358,22 +353,22 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                <li>
-                  <span
-                    className="badge-circle"
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                    }}
-                  >
-                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
-                      Writing
+                  <li>
+                    <span
+                      className="badge-circle"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                      }}
+                    >
+                      <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
+                        Writing
                       <br />
-                      <h2>n/a</h2>
+                        <h2>n/a</h2>
+                      </span>
                     </span>
-                  </span>
-                </li>
-              )}
+                  </li>
+                )}
             </ul>
           </div>
         </div>

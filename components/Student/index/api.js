@@ -392,7 +392,7 @@ export const assignTestToStudentApi = test => {
 };
 
 export const fetchTestsByStudentIdApi = student_id =>
-  fetch(`${API_URL}/api/students/${student_id}/tests`, {
+  fetch(`${API_URL}/api/students/${student_id}/student_tests`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
