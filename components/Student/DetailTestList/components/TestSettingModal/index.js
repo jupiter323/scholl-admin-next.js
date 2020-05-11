@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import PropTypes from "prop-types";
 import Portal from "../../../../Portal";
 import getValueFromState from "../../../../utils/getValueFromState";
@@ -7,11 +10,15 @@ import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { makeSelectTests } from "../../../index/selectors";
+import { setTests } from "../../../index/actions";
+import { fetchAllTestsApi } from "../../../index/api";
+
 class TestSettingModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      version: "SAT Pratice Test #1",
+      version: "1734df3c-8a1e-48e4-aafc-31e3134efd40",
       assignTime: new Date(),
       dueTime: new Date(),
       assignDate: new Date(),
@@ -23,22 +30,32 @@ class TestSettingModal extends React.Component {
       isAllowed: false,
       isIncluded: false,
       isTimed: false,
-      versionOptions: [
-        {
-          label: "SAT Pratice Test #1",
-          value: "SAT Pratice Test #1"
-        },
-        {
-          label: "SAT Pratice Test #2",
-          value: "SAT Pratice Test #2"
-        },
-        {
-          label: "SAT Pratice Test #3",
-          value: "SAT Pratice Test #3"
-        }
-      ]
+      versionOptions: [],
     };
   }
+
+  componentDidMount = async () => {
+    const { tests, onSetTests } = this.props;
+    if (tests.length === 0) {
+      const { data: { tests } } = await fetchAllTestsApi();
+      onSetTests(tests);
+    } else {
+      const formattedVersions = tests.map(test => ({
+        label: test.name,
+        value: test.id,
+      }));
+      this.setState({
+        versionOptions: formattedVersions,
+      });
+    }
+    if (this.props.test) {
+      const { test: { test_id } } = this.props
+      this.setState({
+        version: test_id
+      });
+    }
+  }
+
   handleDetailsChange = (event, name, checkBox = false) => {
     const value = event.target ? event.target.value : event;
     if (checkBox) {
@@ -389,4 +406,16 @@ TestSettingModal.propTypes = {
   onSave: PropTypes.func.isRequired
 };
 
-export default TestSettingModal;
+const mapStateToProps = createStructuredSelector({
+  tests: makeSelectTests(),
+})
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetTests: tests => dispatch(setTests(tests))
+  }
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(TestSettingModal);

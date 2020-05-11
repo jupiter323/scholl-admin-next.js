@@ -49,17 +49,17 @@ class DetailTestList extends React.Component {
   };
 
   onToggleEditTestModal = async (activeTest = null) => {
-      const { onSetActiveStudentTestId } = this.props;
-      onSetActiveStudentTestId(activeTest.student_test_id);
-      this.onSetIsVisibleTopBar(false);
-      this.setState(
-        ({ openEditTestModal }) => ({
-          openEditTestModal: !openEditTestModal,
-          openEnterAnswerWrapper: false,
-          activeTest,
-        }),
-        this.onCloseDropdown,
-      );
+    const { onSetActiveStudentTestId } = this.props;
+    onSetActiveStudentTestId(activeTest.student_test_id);
+    this.onSetIsVisibleTopBar(false);
+    this.setState(
+      ({ openEditTestModal }) => ({
+        openEditTestModal: !openEditTestModal,
+        openEnterAnswerWrapper: false,
+        activeTest,
+      }),
+      this.onCloseDropdown,
+    );
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
@@ -245,7 +245,7 @@ class DetailTestList extends React.Component {
       activeTest,
       opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds,overdues } = this.props;
+    const { user, completes, assigneds, overdues } = this.props;
     return (
       <React.Fragment>
         <Choose>
@@ -268,24 +268,26 @@ class DetailTestList extends React.Component {
               onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
             />
           </When>
-          <Otherwise>
-            <NewTestModal
-              open={openCreateTestModal}
-              onClose={this.onCloseTestModal}
-              onSave={this.onSaveNewTest}
-            />
+          <When condition={opentTestSettingModal}>
             <TestSettingModal
               open={opentTestSettingModal}
               test={activeTest}
               onClose={this.handleTestSettingModalOpen}
               onSave={this.onSaveNewTest}
             />
+          </When>
+          <Otherwise>
+            <NewTestModal
+              open={openCreateTestModal}
+              onClose={this.onCloseTestModal}
+              onSave={this.onSaveNewTest}
+            />
             <div className="content-section">
               <div className="section-holder">
-                
+
                 {overdues.length !== 0 && (
                   <div className="content-container">
-                    <CardHeader title="OverDue" amount={overdues.length} themeColor = "#e94319"/>
+                    <CardHeader title="OverDue" amount={overdues.length} themeColor="#e94319" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapOverDueTests()}
                     </div>
@@ -293,7 +295,7 @@ class DetailTestList extends React.Component {
                 )}
                 {assigneds.length !== 0 && (
                   <div className="content-container">
-                    <CardHeader title="Assigned" amount={assigneds.length} themeColor = "#39b44a"/>
+                    <CardHeader title="Assigned" amount={assigneds.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapAssignedTests()}
                     </div>
@@ -301,7 +303,7 @@ class DetailTestList extends React.Component {
                 )}
                 {completes.length !== 0 && (
                   <div className="content-container">
-                    <CardHeader title="Completed" amount={completes.length} themeColor = "#39b44a"/>
+                    <CardHeader title="Completed" amount={completes.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapCompletedTests()}
                     </div>
