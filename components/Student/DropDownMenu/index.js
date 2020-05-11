@@ -88,6 +88,18 @@ class DropDownMenu extends React.Component {
     }
   };
 
+  startMarkFlagsReviewed = (lessonIds) => {
+    const { problems, updateProblemList } = this.props;
+    this.props.handleMarkAllFlagsReviewed(lessonIds);
+    problems.map(problemList => {
+      problemList.problems.map(problem => {
+        if (problem.flag_status === 'FLAGGED') {
+          updateProblemList(problemList.type, { ...problem, flag_status: 'REVIEWED' });
+        }
+      });
+    });
+  }
+
   render() {
     const { lesson } = this.props;
     return (
@@ -109,9 +121,16 @@ class DropDownMenu extends React.Component {
                 transform: "scaleX(1) scaleY(1)",
               }}
             >
-              {renderDropdownOptions(lesson.status, this.handleAssignLesson, this.handleRescheduleModalOpen, this.handleUnassignLesson, this.handleResetLesson, this.props.handleExcuseLessonLateness, [
-                lesson.id,
-              ])}
+              {renderDropdownOptions(
+                lesson.status,
+                this.handleAssignLesson,
+                this.handleRescheduleModalOpen,
+                this.props.handleExcuseLessonLateness,
+                this.handleResetLesson,
+                this.startMarkFlagsReviewed,
+                this.handleUnassignLesson,
+                [lesson.id],
+              )}
             </ul>
           </ClickOffComponentWrapper>
         </If>

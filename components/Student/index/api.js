@@ -401,9 +401,7 @@ export const fetchTestsByStudentIdApi = student_id =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      return { data };
-    })
+    .then(({ data }) => ({ data }))
     .catch(err => err);
 
 export const fetchTestByTestIdApi = (student_id, test_id) => {
@@ -700,12 +698,10 @@ export const fetchAllTestsApi = () =>
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
-    }
+    },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      return { data };
-    })
+    .then(({ data }) => ({ data }))
     .catch(err => err);
 export const addStudentLessonProblemAnswerApi = (body) =>
   fetch(`${API_URL}/api/commands/add-student-lesson-problem-answer`, {

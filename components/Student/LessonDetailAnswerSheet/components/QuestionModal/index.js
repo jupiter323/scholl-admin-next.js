@@ -49,7 +49,7 @@ class QuestionModal extends React.Component {
     } = this.props;
     onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
-    const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: 'FLAGGED' };
+    const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
     await addStudentLessonProblemFlagApi(postBody);
   };
 
@@ -115,7 +115,7 @@ class QuestionModal extends React.Component {
                   </div></div>
                   <div className="card-panel">
                     <div className="panel-block">
-                      <strong className="subtitle">Review with My Instructor</strong>
+                      <strong className="subtitle">Review With Student</strong>
                       <form action="#" className="answer-form review-form">
                         <ul>
                           <li>
@@ -124,6 +124,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
                               />
                               <span>Nope. Got it.</span>
                             </label>
