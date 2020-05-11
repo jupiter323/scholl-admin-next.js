@@ -20,7 +20,7 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
 } from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
+import { assignTestToStudentApi, addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../index/api";
 
 // import sampleTests from "./utils/sampleTests";
 
@@ -37,6 +37,10 @@ class DetailTestList extends React.Component {
       openCreateTestModal: false,
       opentTestSettingModal: false,
       openEnterAnswerWrapper: false,
+      readingSectionCompleted: false,
+      writingSectionCompleted: false,
+      mathCalcSectionCompleted: false,
+      mathNoCalcSectionCompleted: false,
     };
   }
 
@@ -47,18 +51,53 @@ class DetailTestList extends React.Component {
     }
   };
 
-  onToggleEditTestModal = (activeTest = null) => {
-    const { onSetActiveStudentTestId } = this.props;
-    onSetActiveStudentTestId(activeTest.student_test_id);
-    this.onSetIsVisibleTopBar(false);
-    this.setState(
-      ({ openEditTestModal }) => ({
-        // openEditTestModal: !openEditTestModal,
-        openEnterAnswerWrapper: false,
-        activeTest,
-      }),
-      this.onCloseDropdown,
-    );
+  onToggleEditTestModal = async (activeTest = null) => {
+    if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
+      const { onSetActiveStudentTestId } = this.props;
+      onSetActiveStudentTestId(activeTest.student_test_id);
+      this.onSetIsVisibleTopBar(false);
+      this.setState(
+        ({ openEditTestModal }) => ({
+          openEditTestModal: !openEditTestModal,
+          openEnterAnswerWrapper: false,
+          activeTest,
+        }),
+        this.onCloseDropdown,
+      );
+    } else {
+      const sectionName = activeTest.name;
+      switch (sectionName) {
+        case "Reading":
+          this.setState({
+            readingSectionCompleted: true,
+          })
+          break;
+        case "Writing":
+          this.setState({
+            writingSectionCompleted: true,
+          });
+          break;
+        case "Math (No Calculator)":
+          this.setState({
+            mathNoCalcSectionCompleted: true
+          });
+          break;
+        case "Math (Calculator)":
+          this.setState({
+            mathCalcSectionCompleted: true
+          });
+          break;
+        default:
+          this.setState({
+            readingSectionCompleted: true,
+          })
+      }
+      const postBody = {
+        test_section_id: activeTest.test_section_id,
+        student_test_section_status: "COMPLETED"
+      };
+      await updateStudentTestSectionStatusApi(postBody);
+    }
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
