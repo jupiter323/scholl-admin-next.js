@@ -8,15 +8,15 @@ import NavBar from "./common/NavBar";
 import InCompleteTestSection from "./components/InCompleteSection";
 import PreStartTestSection from "./components/StartSection";
 
-import { addStudentAnswerToTestApi } from "../../../index/api";
-import { makeSelectStudentSections,makeSelectActiveStudentToken } from "../../../index/selectors";
+import { addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../../../index/api";
+import { makeSelectStudentSections, makeSelectActiveStudentToken } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 
 class EnterAnswerWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      previewTest: true,
+      previewTest: false,
       startedTest: false,
       testSections: [],
       studentTestId: "",
@@ -71,91 +71,103 @@ class EnterAnswerWrapper extends React.Component {
     });
   };
 
-  onSetActivePage = name => {
-    const currentSection = this.state.updatedState.activeSection;
-    const updatedState = update(this.state.updatedState, {
-      [name]: { $set: true },
-      [currentSection]: { $set: false },
-      activeSection: { $set: name }
-    });
-    this.setState({ updatedState });
-    if (name === "showInCompleteTest") {
-      this.setState({
-        previewTest: false,
-        startedTest: true
-      });
-    }
-  };
-
-  onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const { studentTestId } = this.state;
+  onSetActivePage = async(name) => {
+  const currentSection = this.state.updatedState.activeSection;
+  const updatedState = update(this.state.updatedState, {
+    [name]: { $set: true },
+    [currentSection]: { $set: false },
+    activeSection: { $set: name }
+  });
+  this.setState({ updatedState });
+  if (name === "showInCompleteTest") {
+    const currentSection = this.getCurrentTestProblems();
+    const test_section_id = currentSection.test_section_id;
     const postBody = {
-      student_test_id: studentTestId,
-      test_problem_id: test_problem_id,
-      answer: answer
+      test_section_id,
+      student_test_section_status: "STARTED"
     };
-    await addStudentAnswerToTestApi(postBody);
-  };
-
-  getCurrentTestProblems = () => {
-    const { activeSection } = this.state.updatedState;
-    const {
-      testReadingProblems,
-      testWritingProblems,
-      testMathCalcProblems,
-      testMathNoCalcProblems
-    } = this.state;
-    switch (activeSection) {
-      case "activeReadingSection":
-        return testReadingProblems;
-      case "activeWritingSection":
-        return testWritingProblems;
-      case "activeMathWithCalcSection":
-        return testMathCalcProblems;
-      case "activeMathNoCalcSection":
-        return testMathNoCalcProblems;
-      default:
-        return testReadingProblems;
-    }
-  };
-
-  render() {
-    const { startedTest, previewTest } = this.state;
-    const {
-      onCloaseAnswerWrapper,
-      open,
-      test: { test_description },
-      onAddStudentAnswerToTest,
-      onEditTest
-    } = this.props;
-    return (
-      <React.Fragment>
-        {open && (
-          <div className="starting">
-            <div className="main-holder grey lighten-5">
-              <NavBar
-                onCloaseAnswerWrapper={onCloaseAnswerWrapper}
-                onSetActivePage={this.onSetActivePage}
-                testDescription={test_description}
-              />
-              <PreStartTestSection
-                open={previewTest}
-                onSetActivePage={this.onSetActivePage}
-                testSection={this.getCurrentTestProblems()}
-              />
-              <InCompleteTestSection
-                open={startedTest}
-                onAddStudentAnswerToTest={onAddStudentAnswerToTest}
-                testSection={this.getCurrentTestProblems()}
-                onStudentTestScore={onCloaseAnswerWrapper}
-                onEditTest={onEditTest}
-              />
-            </div>
-          </div>
-        )}
-      </React.Fragment>
-    );
+    await updateStudentTestSectionStatusApi(postBody);
+    this.setState({
+      previewTest: false,
+      startedTest: true
+    });
+  } else {
+    this.setState({
+      previewTest: true,
+      startedTest: false
+    });
   }
+};
+
+onAddStudentAnswerToTest = async (test_problem_id, answer) => {
+  const { studentTestId } = this.state;
+  const postBody = {
+    student_test_id: studentTestId,
+    test_problem_id: test_problem_id,
+    answer: answer
+  };
+  await addStudentAnswerToTestApi(postBody);
+};
+
+getCurrentTestProblems = () => {
+  const { activeSection } = this.state.updatedState;
+  const {
+    testReadingProblems,
+    testWritingProblems,
+    testMathCalcProblems,
+    testMathNoCalcProblems
+  } = this.state;
+  switch (activeSection) {
+    case "activeReadingSection":
+      return testReadingProblems;
+    case "activeWritingSection":
+      return testWritingProblems;
+    case "activeMathWithCalcSection":
+      return testMathCalcProblems;
+    case "activeMathNoCalcSection":
+      return testMathNoCalcProblems;
+    default:
+      return testReadingProblems;
+  }
+};
+
+render() {
+  const { startedTest, previewTest } = this.state;
+  const {
+    onCloaseAnswerWrapper,
+    open,
+    test: { test_description },
+    onAddStudentAnswerToTest,
+    onEditTest
+  } = this.props;
+  return (
+    <React.Fragment>
+      {open && (
+        <div className="starting">
+          <div className="main-holder grey lighten-5">
+            <NavBar
+              onCloaseAnswerWrapper={onCloaseAnswerWrapper}
+              onSetActivePage={this.onSetActivePage}
+              testDescription={test_description}
+            />
+            <PreStartTestSection
+              open={previewTest}
+              onSetActivePage={this.onSetActivePage}
+              testSection={this.getCurrentTestProblems()}
+            />
+            <InCompleteTestSection
+              open={startedTest}
+              onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+              testSection={this.getCurrentTestProblems()}
+              onStudentTestScore={onCloaseAnswerWrapper}
+              onEditTest={onEditTest}
+            />
+          </div>
+        </div>
+      )}
+    </React.Fragment>
+  );
+}
 }
 
 EnterAnswerWrapper.propTypes = {

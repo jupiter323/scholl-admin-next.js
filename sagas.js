@@ -184,7 +184,7 @@ export function* watchForFetchStudentTestSections() {
 export function* fetchStudentTestSections(studentTestId, studentToken) {
   try {
     const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.test.sections));
+    yield put(setStudentSections(formattedData.data.test.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
@@ -199,7 +199,7 @@ export function* watchForFetchStudentTests() {
 
 export function* fetchStudentTests(user) {
   try {
-    const { formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    const { data:formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
       overdues: [],
@@ -210,7 +210,7 @@ export function* fetchStudentTests(user) {
     //* * using for development purposes pushing :STARTED to assigneds */
     yield formattedStudentTests.forEach(test => {
       switch (test.status) {
-        case "OVERDUED":
+        case "OVERDUE":
           sortedTests.overdues.push(test);
           break;
         //* commented out for development purposes  */

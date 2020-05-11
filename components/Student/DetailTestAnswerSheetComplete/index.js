@@ -57,7 +57,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         const currentImg = await this.onHandleTargetImage(item.id);
         resolve(currentImg);
       });
-    });
+    }); 
   };
 
   onHandleTargetImage = async currentRef => {

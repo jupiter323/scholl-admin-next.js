@@ -47,6 +47,7 @@ import {
   FETCH_SUBJECTS,
   EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
+  SET_TESTS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -339,3 +340,8 @@ export const filterLessons = (filters) => ({
   type: FILTER_LESSONS,
   filters,
 });
+
+export const setTests = (tests) => ({
+  type: SET_TESTS,
+  tests
+})

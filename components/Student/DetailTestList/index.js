@@ -20,7 +20,7 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
 } from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
+import { assignTestToStudentApi, addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../index/api";
 
 // import sampleTests from "./utils/sampleTests";
 
@@ -37,6 +37,10 @@ class DetailTestList extends React.Component {
       openCreateTestModal: false,
       opentTestSettingModal: false,
       openEnterAnswerWrapper: false,
+      readingSectionCompleted: false,
+      writingSectionCompleted: false,
+      mathCalcSectionCompleted: false,
+      mathNoCalcSectionCompleted: false,
     };
   }
 
@@ -47,18 +51,54 @@ class DetailTestList extends React.Component {
     }
   };
 
-  onToggleEditTestModal = (activeTest = null) => {
-    const { onSetActiveStudentTestId } = this.props;
-    onSetActiveStudentTestId(activeTest.student_test_id);
-    this.onSetIsVisibleTopBar(false);
-    this.setState(
-      ({ openEditTestModal }) => ({
-        openEditTestModal: !openEditTestModal,
-        openEnterAnswerWrapper: false,
-        activeTest,
-      }),
-      this.onCloseDropdown,
-    );
+  onToggleEditTestModal = async (activeTest = null) => {
+    const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
+    if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
+      const { onSetActiveStudentTestId } = this.props;
+      onSetActiveStudentTestId(activeTest.student_test_id);
+      this.onSetIsVisibleTopBar(false);
+      this.setState(
+        ({ openEditTestModal }) => ({
+          openEditTestModal: !openEditTestModal,
+          openEnterAnswerWrapper: false,
+          activeTest,
+        }),
+        this.onCloseDropdown,
+      );
+    } else {
+      const sectionName = activeTest.name;
+      switch (sectionName) {
+        case "Reading":
+          this.setState({
+            readingSectionCompleted: true,
+          })
+          break;
+        case "Writing":
+          this.setState({
+            writingSectionCompleted: true,
+          });
+          break;
+        case "Math (No Calculator)":
+          this.setState({
+            mathNoCalcSectionCompleted: true
+          });
+          break;
+        case "Math (Calculator)":
+          this.setState({
+            mathCalcSectionCompleted: true
+          });
+          break;
+        default:
+          this.setState({
+            readingSectionCompleted: true,
+          })
+      }
+      const postBody = {
+        test_section_id: activeTest.test_section_id,
+        student_test_section_status: "COMPLETED"
+      };
+      await updateStudentTestSectionStatusApi(postBody);
+    }
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
@@ -88,7 +128,7 @@ class DetailTestList extends React.Component {
   onEnterAnswers = currentTestId => {
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    const activeTest = this.props.tests.find(test => test.test_id === currentTestId);
+    const activeTest = this.props.tests.find(test => test.student_test_id === currentTestId);
     this.setState({ openEnterAnswerWrapper: true, activeTest });
   };
 
@@ -192,9 +232,15 @@ class DetailTestList extends React.Component {
     } = this.props;
     const postBody = {
       student_id: id,
-      test_id: uuidGenerator(),
+      test_id: test.version,
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
       due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
+      test_section_ids: [
+        "3c660d9f-6e3c-4b66-9028-ffb6890c6c3a",
+        "5c430ac1-63f5-4418-88a9-6fa3526eafd6",
+        "f1ccfcc7-dc9a-40b7-b555-b432aeede73a",
+        "fe459162-5190-42dd-b67d-2b9baff55500"
+      ]
     };
     assignTestToStudentApi(postBody);
   };
@@ -256,6 +302,7 @@ class DetailTestList extends React.Component {
             />
             <div className="content-section">
               <div className="section-holder">
+                
                 {assigneds.length !== 0 && (
                   <div className="content-container">
                     <CardHeader title="Assigned" amount={assigneds.length} />
