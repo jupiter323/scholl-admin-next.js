@@ -692,7 +692,6 @@ export const addVideoWatchedTime = (body) =>
     .then((res) => res.json())
     .catch((err) => err);
 
-<<<<<<< HEAD
 export const fetchAllTestsApi = () =>
   fetch(`${API_URL}/api/tests`, {
     headers: {
@@ -714,22 +713,20 @@ export const updateStudentTestStatusApi = (body) =>
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-=======
+    }
+  })
+    .then(res => res)
+    .catch(err => err);
+
 export const excuseStudentLessonLatenessApi = (body) =>
   fetch(`${API_URL}/api/commands/excuse-student-lesson-lateness`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",
->>>>>>> a8790bf013c6090d290bb53e30acee19107885d7
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
-<<<<<<< HEAD
-    .then(res => res)
-    .catch(err => err);
-=======
     .then((res) => res.json())
     .catch((err) => err);
->>>>>>> a8790bf013c6090d290bb53e30acee19107885d7
