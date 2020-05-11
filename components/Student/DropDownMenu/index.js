@@ -109,7 +109,7 @@ class DropDownMenu extends React.Component {
                 transform: "scaleX(1) scaleY(1)",
               }}
             >
-              {renderDropdownOptions(lesson.status, this.handleAssignLesson, this.handleRescheduleModalOpen, this.handleUnassignLesson, this.handleResetLesson, [
+              {renderDropdownOptions(lesson.status, this.handleAssignLesson, this.handleRescheduleModalOpen, this.handleUnassignLesson, this.handleResetLesson, this.props.handleExcuseLessonLateness, [
                 lesson.id,
               ])}
             </ul>

@@ -19,6 +19,7 @@ import {
   statusColorMap,
   chartColorMap,
   gradeColorMap,
+  formatStatus
 } from "./utils";
 import Checkbox from "./components/Checkbox";
 import { setIsVisibleTopBar, setActiveLesson, setOpenAnswerSheetStatus, setOpenActivePage } from "../../../../../index/actions";
@@ -63,18 +64,17 @@ const LessonCard = props => {
       due_date,
       completed_at,
       assignment_date,
-      scoring = ""
+      scoring = {}
     },
     onOpenModal,
     onCloseDropdown,
     handleRescheduleModalOpen,
-    handleResetLesson
+    handleResetLesson,
   } = props;
   const dueAt = due_date || dueDate
   const completedAt = completed_at || completionDate
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
-
   const onOpenDetailModal = async (e) => {
     e.preventDefault()
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
@@ -202,6 +202,7 @@ const LessonCard = props => {
                             handleRescheduleModalOpen,
                             props.handleUnassignLesson,
                             handleResetLesson,
+                            props.handleExcuseLessonLateness,
                             [lesson.id]
                           )}
                         </ul>
@@ -232,15 +233,15 @@ const LessonCard = props => {
                         />
                         {lesson.type === 'drill' && renderProblemCount(
                           status,
-                          scoring.grade ? scoring.grade : "POOR",
-                          scoring.percentage_correct,
+                          scoring ? scoring.grade : "POOR",
+                          scoring && scoring.percentage_correct,
                           problems.length,
                           lesson.problems.filter(problem => problem.answered).length
                         )}
                         {lesson.type === 'module' && renderProblemCount(
                           status,
-                          scoring.grade ? scoring.grade : "POOR",
-                          scoring.percentage_correct,
+                          scoring ? scoring.grade : "POOR",
+                          scoring && scoring.percentage_correct,
                           lesson.sections.length,
                           lesson.sections.filter(section => section.status === 'COMPLETED').length
                         )}
@@ -256,13 +257,15 @@ const LessonCard = props => {
                   <div className="chart-row">
                     <div className="chart-col chart-start"></div>
                     <div className="chart-col chart-end">
-                      <span className="amount" style={{ color: chartColorMap[scoring.grade || 'POOR'] }}>
-                        <Choose>
+                    <Choose>
                           <When condition={status === "COMPLETED" && (lesson.type === "drill" || lesson.type === 'module')}>
+                      <span className="amount" style={{ color: chartColorMap[scoring.grade ? scoring.grade : 'POOR'] }}>
+                        
                             {scoring.correct_count} of {scoring.question_count}
+                            </span>
                           </When>
                         </Choose>
-                      </span>
+                      
                     </div>
                   </div>
                   <div className="chart-description" style={{ marginTop: "10px" }}>
@@ -340,21 +343,21 @@ const LessonCard = props => {
                             }}
                             className={`badge badge-rounded-md white-text`}
                           >
-                            {status}
+                            {formatStatus(status)}
                           </span>
                         </When>
                         <When condition={status === "COMPLETED"}>
                           <span
                             style={{
                               backgroundColor: `${
-                                props.scoring
-                                  ? gradeColorMap[props.scoring.grade]
-                                  : gradeColorMap["POOR"]
+                                scoring
+                                  ? gradeColorMap[scoring.grade]
+                                  : gradeColorMap["GREAT"]
                               }`,
                             }}
-                            className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                            className={`badge badge-rounded-md white-text`}
                           >
-                            {scoring.grade ? scoring.grade : "POOR"}
+                            {formatStatus(scoring.grade)}
                           </span>
                         </When>
                         <When condition={status === "OVERDUE"}>
@@ -370,7 +373,7 @@ const LessonCard = props => {
                             }
                             className={`badge badge-rounded-md ${statusColorMap[status]} `}
                           >
-                            {status}
+                            {formatStatus(status)}
                           </span>
                         </When>
                         <Otherwise>
@@ -378,7 +381,7 @@ const LessonCard = props => {
                             style={{ backgroundColor: `#212121`, color: "white" }}
                             className={`badge badge-rounded-md ${statusColorMap[status]} `}
                           >
-                            {status}
+                            {formatStatus(status)}
                           </span>
                         </Otherwise>
                       </Choose>

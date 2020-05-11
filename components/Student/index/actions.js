@@ -45,6 +45,7 @@ import {
   SET_OPEN_ACTIVE_PAGE,
   UPDATE_STUDENT_ACTIVATION,
   FETCH_SUBJECTS,
+  EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
 } from "./constants";
 
@@ -327,6 +328,11 @@ export const setOpenActivePage = (value) => ({
 export const updateStudentActivation = (studentInfo) => ({
   type: UPDATE_STUDENT_ACTIVATION,
   studentInfo,
+});
+
+export const excuseStudentLateness = (lessons) => ({
+  type: EXCUSE_STUDENT_LATENESS,
+  lessons,
 });
 
 export const filterLessons = (filters) => ({

@@ -1159,6 +1159,16 @@ export const addStudentLessonProblemAnswerApi = (body) =>
       Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
+  }).then((res) => res.status);
+export const excuseStudentLessonLatenessApi = (body) =>
+  fetch(`${API_URL}/api/commands/excuse-student-lesson-lateness`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
   })
-    .then((res) => res.status)
+    .then((res) => res.json())
     .catch((err) => err);
