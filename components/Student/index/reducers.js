@@ -36,6 +36,7 @@ import {
   FETCH_SUBJECTS_SUCCESS,
   SET_OPEN_ANSWERSHEET_STATUS,
   SET_TESTS,
+  SET_EXCUSE_STUDENT_LATENESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -231,6 +232,11 @@ function studentReducer(state = initialState, action) {
 
     case SET_TESTS:
       return state.set('tests', action.tests);
+    case SET_EXCUSE_STUDENT_LATENESS:
+      return state.set('lessonList', state.get('lessonList').map(lesson => {
+        if (action.payload.student_lesson_id === lesson.id) return { ...lesson, lateness_excused: action.payload.was_excused };
+        return lesson;
+      }));
 
     default:
       return state;

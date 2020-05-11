@@ -83,6 +83,8 @@ class SideNav extends Component {
   }
 
   handleLogout = () => {
+    const { onSetUserIsLogged } = this.props;
+    onSetUserIsLogged(false);
     LogoutApi();
     Router.push("/login");
   }

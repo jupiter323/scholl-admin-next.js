@@ -32,7 +32,6 @@ const FullView = props => {
     renderDropdownOptions,
     checkedCardIds,
   } = props;
-
   const mapLessons = () => lessons.map((lesson, index) => (
     <LessonCard
       // eslint-disable-next-line react/no-array-index-key
@@ -53,6 +52,7 @@ const FullView = props => {
       onAddAssignLessonIds={props.onAddAssignLessonIds}
       handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
+      handleExcuseLessonLateness={props.handleExcuseLessonLateness}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -143,7 +143,7 @@ const FullView = props => {
                   transform: "scaleX(1) scaleY(1)",
                 }}
               >
-                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.checkedCardIds)}
+                {renderDropdownOptions(status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleResetLesson, props.handleExcuseLessonLateness, props.checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
           </If>

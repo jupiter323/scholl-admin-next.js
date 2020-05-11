@@ -50,6 +50,7 @@ import {
   assignLessonToStudent,
   addAllLessons,
   removeAllLessons,
+  excuseStudentLateness,
   filterLessons,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
@@ -107,10 +108,16 @@ class DetailLessonList extends React.Component {
     }
   };
 
+  // deSelectAllLessons = async (selectedLessonIds) => {
+  //   await this.props.dispatchUnCheckAllLesson(selectedLessonIds);
+  //   await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
+  //   this.setState({ selectAll: false });
+  // }
+
   /**
    * @param checked {bool}
    */
-  onCheckAll = async (checked) => {
+  onCheckAllClicked = async (checked) => {
     const selectedLessonIds = this.getMappableLessons().map(lesson => lesson.id);
     if (!checked) {
       await this.props.dispatchCheckAllLesson(selectedLessonIds);
@@ -193,7 +200,6 @@ class DetailLessonList extends React.Component {
   // eslint-disable-next-line consistent-return
   onSortLessons = (lessons) => {
     const { sort } = this.state;
-    console.log('log: sort', sort);
     switch (sort) {
       case "subjectAscending":
         return lessons.sort(subjectAscending);
@@ -430,7 +436,7 @@ class DetailLessonList extends React.Component {
           selectAll={this.state.selectAll}
           onDeleteLesson={this.onDeleteLesson}
           onCloneLesson={this.onCloneLesson}
-          onCheckAll={this.onCheckAll}
+          onCheckAll={this.onCheckAllClicked}
           onAddCheckedLesson={this.onAddCheckedLesson}
           onRemoveCheckedLesson={this.onRemoveCheckedLesson}
           dropdownIsOpen={this.state.dropdownIsOpen}
@@ -440,6 +446,7 @@ class DetailLessonList extends React.Component {
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
+          handleExcuseLessonLateness={this.handleExcuseLessonLateness}
         />
       );
     }
@@ -495,6 +502,7 @@ class DetailLessonList extends React.Component {
     this.resetLessonSelections();
   }
 
+  // Resets redux store, unchecks lessons, resets checked state
   resetLessonSelections = () => {
     const {
       dispatchRemoveAllLessons,
@@ -523,6 +531,23 @@ class DetailLessonList extends React.Component {
     onSetOpenActivePage("");
   }
 
+  handleExcuseLessonLateness = (lessonCardIds) => {
+    const { onExcuseStudentLateness } = this.props;
+    if (lessonCardIds && lessonCardIds.length > 0) {
+      this.getMappableLessons().forEach(lesson => {
+        if (lessonCardIds.includes(lesson.id)) {
+          const payload = {
+            student_lesson_id: lesson.id,
+            was_excused: !lesson.lateness_excused,
+          };
+          onExcuseStudentLateness(payload);
+        }
+      });
+      // Deselect all checks and lessons
+      this.resetLessonSelections();
+    }
+  }
+
   render() {
     const {
       currentView,
@@ -548,6 +573,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>
           <When condition={activeShowPage === "ReadWorkBook"}>
@@ -559,6 +585,7 @@ class DetailLessonList extends React.Component {
               onAddCheckedLesson={this.onAddCheckedLesson}
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
+              handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>
           <Otherwise>
@@ -619,6 +646,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchRemoveAllLessons: bindActionCreators(removeAllLessons, dispatch),
   onSetOpenActivePage: bindActionCreators(setOpenActivePage, dispatch),
   onSetIsVisibleTopBar: bindActionCreators(setIsVisibleTopBar, dispatch),
+  onExcuseStudentLateness: bindActionCreators(excuseStudentLateness, dispatch),
   dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
 });
 
