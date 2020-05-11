@@ -136,26 +136,19 @@ const FullView = props => {
     }
   };
 
-  const onConfirmModalFunction = () => {
-    switch (confirmationFunc) {
-      case 'reschedule':
-        onSubmitScheduleChanges(rescheduleModalState, lessonIdsToEdit);
-        break;
-      case 'unassign':
-        onSubmitUnassignLesson(lessonIdsToEdit);
-        break;
-      case 'reset':
-        onSubmitResetLesson(lessonIdsToEdit);
-        break;
-      case 'excuse':
-        break;
-      case 'review flagged':
-        break;
-      default:
-        break;
+  const onHandleExcuseLesson = (lessonIds) => {
+    if (checkForDifferentStatus(lessonIds)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(lessonIds);
+      return setConfirmationFunc('excuse/unexcuse');
     }
-    setIsConfirmModalOpen(false);
-    toggleRescheduleModal(false);
+    onSubmitExcuseLesson(lessonIds);
+  };
+
+  const onSubmitExcuseLesson = (lessonIds) => {
+    const { handleExcuseLessonLateness } = props;
+    handleExcuseLessonLateness(lessonIds);
+    onCloseDropdown();
   };
 
   const checkForDifferentStatus = (lessonIds) => {
@@ -169,8 +162,41 @@ const FullView = props => {
   };
 
   const startMarkFlagsReviewed = (lessonIds) => {
+    if (checkForDifferentStatus(lessonIds)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(lessonIds);
+      return setConfirmationFunc('review flagged');
+    }
+    onSubmitMarkFlagsReviewed(lessonIds);
+  };
+
+  const onSubmitMarkFlagsReviewed = (lessonIds) => {
     handleMarkAllFlagsReviewed(lessonIds);
     onCloseDropdown();
+  };
+
+  const onConfirmModalFunction = () => {
+    switch (confirmationFunc) {
+      case 'reschedule':
+        onSubmitScheduleChanges(rescheduleModalState, lessonIdsToEdit);
+        break;
+      case 'unassign':
+        onSubmitUnassignLesson(lessonIdsToEdit);
+        break;
+      case 'reset':
+        onSubmitResetLesson(lessonIdsToEdit);
+        break;
+      case 'excuse/unexcuse':
+        onSubmitExcuseLesson(lessonIdsToEdit);
+        break;
+      case 'review flagged':
+        onSubmitMarkFlagsReviewed(lessonIdsToEdit);
+        break;
+      default:
+        break;
+    }
+    setIsConfirmModalOpen(false);
+    toggleRescheduleModal(false);
   };
 
   return (
@@ -233,7 +259,7 @@ const FullView = props => {
                   status,
                   handleAssignLesson,
                   handleRescheduleModalOpen,
-                  props.handleExcuseLessonLateness,
+                  onHandleExcuseLesson,
                   handleResetLesson,
                   startMarkFlagsReviewed,
                   handleUnassignLesson,
