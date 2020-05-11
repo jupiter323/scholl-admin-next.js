@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect'
+import { createStructuredSelector } from 'reselect';
 import PropTypes from "prop-types";
 import { logIn, loggedIn, logout, setToken } from "../utils/AuthService";
 import Router from "next/router";
@@ -48,13 +48,13 @@ class Login extends Component {
     } else {
       this.setState({
         loginError: true,
-      })
+      });
     }
   };
 
   componentWillReceiveProps = (nextProps) => {
     const { onSetUserIsLogged } = this.props;
-    const{currentUser} = nextProps;
+    const { currentUser } = nextProps;
     if (currentUser && currentUser.type === "INSTRUCTOR") {
       onSetUserIsLogged(true);
       Router.push("/dashboard");
@@ -62,9 +62,9 @@ class Login extends Component {
       onSetUserIsLogged(false);
       this.setState({
         loginError: true,
-      })
+      });
     }
-}
+  }
 
 
 handleChangeForm = event => {
@@ -74,7 +74,7 @@ handleChangeForm = event => {
 };
 
 handleForgotPassword = () => {
-  console.log('this.recoverEmail', this.state.recoverEmail)
+  console.log('this.recoverEmail', this.state.recoverEmail);
 }
 onSetForgotPassword = () => {
   this.setState({
@@ -125,7 +125,7 @@ render() {
                           <p>
                             For security purposes, you need to enter a current your
                             email and password for this account.
-                        </p></>}
+                          </p></>}
                     </div>
                     <div className="formsec">
                       <ul className="clearfix">
@@ -380,7 +380,7 @@ Login.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: makeSelectCurrentUser(),
-})
+});
 
 function mapDispatchToProps(dispatch) {
   return {

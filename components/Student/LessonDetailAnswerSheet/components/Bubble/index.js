@@ -5,8 +5,7 @@ const styles = {
   red: {
     position: "relative",
     color: "#fff",
-    borderColor: "#fff",
-    border: "1px solid",
+    border: "1px solid #fff",
     backgroundColor: "#db1d41",
     height: "19px",
     width: "19px",
@@ -15,8 +14,7 @@ const styles = {
   greenFilled: {
     position: "relative",
     color: "#fff",
-    borderColor: "#32955c",
-    border: "1px solid",
+    border: "1px solid #32955c",
     backgroundColor: "#32955c",
     height: "19px",
     width: "19px",
@@ -25,8 +23,7 @@ const styles = {
   greenBorderOnly: {
     position: "relative",
     color: "#32955c",
-    borderColor: "#32955c",
-    border: "1px solid",
+    border: "1px solid #32955c",
     backgroundColor: "#fff",
     height: "19px",
     width: "19px",
@@ -35,8 +32,7 @@ const styles = {
   plain: {
     position: "relative",
     color: "#a6a8ab",
-    border: "1px solid",
-    borderColor: "#a6a8ab",
+    border: "1px solid #a6a8ab",
     height: "19px",
     width: "19px",
     borderRadius: "50%",
@@ -50,9 +46,6 @@ class BubbleGroup extends React.Component {
 
   mapEmptyBubbles = id => {
     const letters = ["A", "B", "C", "D"];
-    const {
-      lesson: { answered },
-    } = this.props;
     return letters.map((letter, index) => (
       <li key={letter}>
         <form>
@@ -94,7 +87,7 @@ class BubbleGroup extends React.Component {
     if (correctAnswerIndex === index && !is_correct) {
       return styles.greenBorderOnly;
     }
-    if (index === studentAnswerIndex && index === !correctAnswerIndex) {
+    if (index === studentAnswerIndex && !is_correct) {
       return styles.red;
     }
     if (index !== studentAnswerIndex && index !== correctAnswerIndex) {
