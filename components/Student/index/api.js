@@ -664,6 +664,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
     .then((res) => res.json())
     .then((res) => res)
     .then(({ data }) => data);
+
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
     method: 'POST',
@@ -699,13 +700,24 @@ export const fetchAllTestsApi = () =>
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
-    },
+    }
   })
     .then(res => res.json())
     .then(({ data }) => {
       return { data };
     })
     .catch(err => err);
+export const addStudentLessonProblemAnswerApi = (body) =>
+  fetch(`${API_URL}/api/commands/add-student-lesson-problem-answer`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  }).then((res) => res.status);
 
 export const updateStudentTestStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-status`, {
@@ -720,6 +732,7 @@ export const updateStudentTestStatusApi = (body) =>
     .then(res => res)
     .catch(err => err);
 
+
 export const excuseStudentLessonLatenessApi = (body) =>
   fetch(`${API_URL}/api/commands/excuse-student-lesson-lateness`, {
     method: "PATCH",
@@ -733,15 +746,15 @@ export const excuseStudentLessonLatenessApi = (body) =>
     .then((res) => res.json())
     .catch((err) => err);
 
-    export const updateStudentTestSectionStatusApi = (body) =>
-    fetch(`${API_URL}/api/commands/update-student-test-section-status`, {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
-      },
-      body: JSON.stringify(body),
-    })
-      .then(res => res)
-      .catch(err => err);
+export const updateStudentTestSectionStatusApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-test-section-status`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res)
+    .catch(err => err);

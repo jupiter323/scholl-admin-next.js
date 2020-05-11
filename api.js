@@ -24,6 +24,7 @@ import {
   fetchSubjectsApi,
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
+  addStudentLessonProblemAnswerApi,
 } from "./components/Student/index/api";
 
 import {
@@ -87,6 +88,7 @@ export const studentApi = {
   fetchSubjectsApi,
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
+  addStudentLessonProblemAnswerApi,
 };
 
 export const instructorApi = {

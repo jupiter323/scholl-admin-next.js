@@ -161,17 +161,17 @@ function studentReducer(state = initialState, action) {
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
-      const getStudentLessonList = (studentLessonList) => studentLessonList.map(lesson => {
-        if (lesson.problems && lesson.problems.length > 0) {
-          lesson = { ...lesson, type: 'drill', selected: false };
-        } else if (lesson.sections) {
-          lesson = { ...lesson, type: 'module', selected: false };
-        } else if (lesson.problems && lesson.problems.length <= 0) {
-          lesson = { ...lesson, type: 'reading', selected: false };
-        }
-        return lesson;
-      });
-      return state.set("lessonList", [...getStudentLessonList(state.get('studentLessonList')), ...state.get("unassignedLessonList")]);
+      // const getStudentLessonList = (studentLessonList) => studentLessonList.map(lesson => {
+      //   if (lesson.problems && lesson.problems.length > 0) {
+      //     lesson = { ...lesson, type: 'drill', selected: false };
+      //   } else if (lesson.sections) {
+      //     lesson = { ...lesson, type: 'module', selected: false };
+      //   } else if (lesson.problems && lesson.problems.length <= 0) {
+      //     lesson = { ...lesson, type: 'reading', selected: false };
+      //   }
+      //   return lesson;
+      // });
+      return state.set("lessonList", [...state.get('studentLessonList'), ...state.get("unassignedLessonList")]);
 
     case SET_ACTIVE_LESSON:
       return state.set('activeLesson', action.activeLesson);
