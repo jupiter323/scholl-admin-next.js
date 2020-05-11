@@ -206,7 +206,7 @@ const FullView = props => {
         onConfirm={() => onConfirmModalFunction()}
         onClose={() => setIsConfirmModalOpen(false)}
         header={`Are you sure you want to ${confirmationFunc} lesson(s)?`}
-        body={"Some of the lessons are you are trying to edit have a different completion status. Edit lesson anyways?"}
+        body={"Some of the lessons are you are trying to edit have a different completion status. Edit lesson(s) anyways?"}
       />
       <div className="d-flex justify-content-between">
         <div>
