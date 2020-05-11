@@ -17,7 +17,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     super(props);
     this.state = {
       activeSlide: "reading",
-      isOpened: false
+      isOpened: false,
     };
   }
 
@@ -28,37 +28,31 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.props.onRef(undefined);
   }
 
-  getComponentImages = () => {
-    return new Promise(resolve => {
-      let imgDataList = [];
-      const componentRefs = [
-        { id: "readingAnswerSheetImg", state: "reading" },
-        { id: "writingAnswerSheetImg", state: "writing" },
-        { id: "mathNoCalcAnswerSheetImg", state: "math (no calc)" },
-        { id: "mathCalcAnswerSheetImg", state: "math (calculator)" }
-      ];
-      const getImgListPromise = componentRefs.reduce((accumulatorPromise, item) => {
-        return accumulatorPromise
-          .then(async () => {
-            const result = await this.getData(item);
-            return imgDataList.push(result);
-          })
-          .catch(console.error);
-      }, Promise.resolve());
-      getImgListPromise.then(() => {
-        resolve(imgDataList);
-      });
+  getComponentImages = () => new Promise(resolve => {
+    const imgDataList = [];
+    const componentRefs = [
+      { id: "readingAnswerSheetImg", state: "reading" },
+      { id: "writingAnswerSheetImg", state: "writing" },
+      { id: "mathNoCalcAnswerSheetImg", state: "math (no calc)" },
+      { id: "mathCalcAnswerSheetImg", state: "math (calculator)" },
+    ];
+    const getImgListPromise = componentRefs.reduce((accumulatorPromise, item) => accumulatorPromise
+      .then(async () => {
+        const result = await this.getData(item);
+        return imgDataList.push(result);
+      })
+      .catch(console.error), Promise.resolve());
+    getImgListPromise.then(() => {
+      resolve(imgDataList);
     });
-  };
+  });
 
-  getData = item => {
-    return new Promise(resolve => {
-      this.setState({ activeSlide: item.state }, async () => {
-        const currentImg = await this.onHandleTargetImage(item.id);
-        resolve(currentImg);
-      });
+  getData = item => new Promise(resolve => {
+    this.setState({ activeSlide: item.state }, async () => {
+      const currentImg = await this.onHandleTargetImage(item.id);
+      resolve(currentImg);
     });
-  };
+  });
 
   onHandleTargetImage = async currentRef => {
     const { getTargetImage } = this.props;
@@ -109,11 +103,11 @@ class DetailTestAnswerSheetComplete extends React.Component {
 }
 
 DetailTestAnswerSheetComplete.propTypes = {
-  getTargetImage: PropTypes.func.isRequired
+  getTargetImage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  sections: makeSelectStudentSections()
+  sections: makeSelectStudentSections(),
 });
 
 const withConnect = connect(mapStateToProps, null);

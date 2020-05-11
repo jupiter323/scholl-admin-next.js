@@ -56,6 +56,8 @@ const makeSelectOpenAnswerSheetStatus = () => createSelector(makeSelectStudentPa
 const makeSelectSubjects = () => createSelector(makeSelectStudentPageState(), substate => substate.subjects);
 
 const makeSelectOpenActivePage = () => createSelector(makeSelectStudentPageState(), substate => substate.activeShowPage);
+
+const makeSelectTests = () => createSelector(makeSelectStudentPageState(), substate => substate.tests);
 export default selectStudentsDomain;
 export {
   makeSelectStudentPageState,
@@ -80,4 +82,5 @@ export {
   makeSelectOpenAnswerSheetStatus,
   makeSelectSubjects,
   makeSelectOpenActivePage,
+  makeSelectTests,
 };
