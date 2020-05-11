@@ -10322,6 +10322,10 @@ input[type="submit"] {
 .assigned .info-list {
   color: #39b44a;
 }
+.info-list.overdue,
+.overdue .info-list {
+  color: #e94319;
+}
 
 ul:not(.browser-default) {
   padding-left: 0;
@@ -10391,6 +10395,10 @@ ul:not(.browser-default) > li {
 .assigned .ico-mark,
 .ico-mark.assigned {
   background-color: #39b44a;
+}
+.overdue .ico-mark,
+.ico-mark.overdue {
+  background-color: #e94319;
 }
 
 .list-status .ico-mark {

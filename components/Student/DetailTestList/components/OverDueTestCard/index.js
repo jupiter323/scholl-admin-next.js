@@ -107,7 +107,7 @@ class OverDueTestCard extends React.Component {
                     </div>
                     <div className="row">
                       <div className="col s12 m8">
-                        <ul className="info-list info-list-gray  assigned">
+                        <ul className="info-list info-list-gray  overdue">
                           <li>
                             <span className="list-status">
                               <span className="ico-mark" />

@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import AssignedTestCard from "./components/AssignedTestCard";
+import OverDueTestCard from "./components/OverDueTestCard";
 import CompletedTestCard from "./components/CompletedTestCard";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
@@ -164,7 +165,7 @@ class DetailTestList extends React.Component {
     const { dropdownIndex, dropdownIsOpen } = this.state;
     const { overdues } = this.props;
     return overdues.map((test, index) => (
-      <AssignedTestCard
+      <OverDueTestCard
         test={test}
         key={`future-${index}`}
         handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
@@ -284,7 +285,7 @@ class DetailTestList extends React.Component {
                 
                 {overdues.length !== 0 && (
                   <div className="content-container">
-                    <CardHeader title="OverDue" amount={overdues.length} />
+                    <CardHeader title="OverDue" amount={overdues.length} themeColor = "#e94319"/>
                     <div className="row d-flex-content card-width-366">
                       {this.mapOverDueTests()}
                     </div>
@@ -292,7 +293,7 @@ class DetailTestList extends React.Component {
                 )}
                 {assigneds.length !== 0 && (
                   <div className="content-container">
-                    <CardHeader title="Assigned" amount={assigneds.length} />
+                    <CardHeader title="Assigned" amount={assigneds.length} themeColor = "#39b44a"/>
                     <div className="row d-flex-content card-width-366">
                       {this.mapAssignedTests()}
                     </div>
@@ -300,7 +301,7 @@ class DetailTestList extends React.Component {
                 )}
                 {completes.length !== 0 && (
                   <div className="content-container">
-                    <CardHeader title="Completed" amount={completes.length} />
+                    <CardHeader title="Completed" amount={completes.length} themeColor = "#39b44a"/>
                     <div className="row d-flex-content card-width-366">
                       {this.mapCompletedTests()}
                     </div>
