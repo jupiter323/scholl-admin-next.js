@@ -37,10 +37,6 @@ class DetailTestList extends React.Component {
       openCreateTestModal: false,
       opentTestSettingModal: false,
       openEnterAnswerWrapper: false,
-      readingSectionCompleted: false,
-      writingSectionCompleted: false,
-      mathCalcSectionCompleted: false,
-      mathNoCalcSectionCompleted: false,
     };
   }
 
@@ -52,8 +48,6 @@ class DetailTestList extends React.Component {
   };
 
   onToggleEditTestModal = async (activeTest = null) => {
-    // const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
-    // if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
       const { onSetActiveStudentTestId } = this.props;
       onSetActiveStudentTestId(activeTest.student_test_id);
       this.onSetIsVisibleTopBar(false);
@@ -65,40 +59,6 @@ class DetailTestList extends React.Component {
         }),
         this.onCloseDropdown,
       );
-    // } else {
-    //   const sectionName = activeTest.name;
-    //   switch (sectionName) {
-    //     case "Reading":
-    //       this.setState({
-    //         readingSectionCompleted: true,
-    //       })
-    //       break;
-    //     case "Writing":
-    //       this.setState({
-    //         writingSectionCompleted: true,
-    //       });
-    //       break;
-    //     case "Math (No Calculator)":
-    //       this.setState({
-    //         mathNoCalcSectionCompleted: true
-    //       });
-    //       break;
-    //     case "Math (Calculator)":
-    //       this.setState({
-    //         mathCalcSectionCompleted: true
-    //       });
-    //       break;
-    //     default:
-    //       this.setState({
-    //         readingSectionCompleted: true,
-    //       })
-    //   }
-    //   const postBody = {
-    //     test_section_id: activeTest.test_section_id,
-    //     student_test_section_status: "COMPLETED"
-    //   };
-    //   await updateStudentTestSectionStatusApi(postBody);
-    // }
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
@@ -304,7 +264,7 @@ class DetailTestList extends React.Component {
               onCloaseAnswerWrapper={this.onCloaseAnswerWrapper}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               test={activeTest}
-              onEditTest={() => this.onToggleEditTestModal(activeTest)}
+              onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
             />
           </When>
           <Otherwise>

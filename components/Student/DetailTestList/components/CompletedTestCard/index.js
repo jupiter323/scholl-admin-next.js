@@ -25,7 +25,6 @@ class CompletedTestCard extends React.Component {
     const { scores, onSetScores } = this.props;
     if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
-      console.log('formattedScores:', formattedScores.subjects)
       onSetScores(formattedScores);
       this.setScores(formattedScores.subjects);
     } else {
@@ -83,7 +82,6 @@ class CompletedTestCard extends React.Component {
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
     const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
-    console.log('ReadingScore', ReadingScore)
     return (
       <React.Fragment>
         <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
