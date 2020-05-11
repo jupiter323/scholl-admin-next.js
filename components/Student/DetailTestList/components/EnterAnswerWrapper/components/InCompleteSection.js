@@ -62,7 +62,7 @@ class InCompleteReadingTest extends React.Component {
                       <a
                         href="#"
                         className="btn btn-xlarge waves-effect waves-light bg-blue"
-                        onClick={onEditTest}
+                        // onClick={onEditTest}
                       >
                         Score Test
                       </a>
