@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
+import FreeResponse from '../FreeResponse';
 
 class AnswerRow extends React.Component {
   constructor(props) {
@@ -21,6 +22,11 @@ class AnswerRow extends React.Component {
   onOpenQuestionModal = () => this.setState({ open: true });
   onCloseQuestionModal = () => this.setState({ open: false });
 
+  isFreeResponse = () => {
+    if (this.props.problem.problem.answers.length === 0) return true;
+    return false;
+  }
+
 
   render() {
     const { problem } = this.props;
@@ -33,6 +39,8 @@ class AnswerRow extends React.Component {
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
           onChangeFlagState={this.onChangeFlagState}
+          updateProblemList={this.props.updateProblemList}
+          problemType={this.props.problemType}
         />
         <li
           className="answers-list-holder"
@@ -42,7 +50,7 @@ class AnswerRow extends React.Component {
           <div className="answer-row row mb-0">
             <div className="col col-120">
               <ul className="answer-list">
-                <BubbleGroup lesson={problem} />
+                {this.isFreeResponse() ? <FreeResponse lesson={problem} /> : <BubbleGroup lesson={problem} />}
               </ul>
             </div>
             <div className="col col-30">

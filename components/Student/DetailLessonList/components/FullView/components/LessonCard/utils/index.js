@@ -34,18 +34,17 @@ export const renderLessonIcon = subject => {
   }
 };
 
-export const renderDropdownOptions = (status, handleAssignLesson, handleRescheduleModalOpen, handleUnassignLesson, handleMarkFlagsReviewed, handleResetLesson, listOfCardIds) => {
+export const renderDropdownOptions = (
+  status,
+  handleAssignLesson,
+  handleRescheduleModalOpen,
+  handleExcuseLessonLateness,
+  handleResetLesson,
+  handleMarkFlagsReviewed,
+  handleUnassignLesson,
+  listOfCardIds,
+) => {
   if (status === "NOTASSIGNED") {
-    return (
-      <React.Fragment>
-        <li>
-          <a href="#" onClick={() => handleAssignLesson()}>
-            Assign
-          </a>
-        </li>
-      </React.Fragment>
-    );
-  } else if (status === "NOTASSIGNED") {
     return (
       <React.Fragment>
         <li>
@@ -69,7 +68,7 @@ export const renderDropdownOptions = (status, handleAssignLesson, handleReschedu
         </a>
       </li>
       <li>
-        <a href="#!" className="disabled">Excuse/ Unexcuse Lateness</a>
+        <a href="#!" onClick={() => handleExcuseLessonLateness(listOfCardIds)}>Excuse/ Unexcuse Lateness</a>
       </li>
       <li>
         <a href="#!" onClick={() => handleResetLesson(listOfCardIds)}>Reset</a>
@@ -128,6 +127,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
     );
   }
   if (status === "NOTASSIGNED") return;
+  const percentScore = score ? score.toFixed(0) : "0";
   return (
     <span
       className="chart-value"
@@ -139,10 +139,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
       }}
     >
       <span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
-      <If condition={score !== ""}>
-        <span className="percentage">{score || 0}%</span>
-        {/* <span className='percentage'>{0}%</span> */}
-      </If>
+      <span className="percentage">{percentScore}%</span>
     </span>
   );
 };
@@ -182,17 +179,21 @@ export const chartColorMap = {
   EXEMPLARY: 'rgb(0, 100, 244)',
   DEVELOPING: '#c10078',
   GREAT: '#74b287',
-  ABOVE_AVERAGE: 'a9c466',
-  AVERAGE: 'd8c539',
-  BELOW_AVERAGE: 'e89258',
+  ABOVE_AVERAGE: '#a9c466',
+  AVERAGE: '#d8c539',
+  BELOW_AVERAGE: '#e89258',
   POOR: '#f27c7c',
 };
 
 export const gradeColorMap = {
   GREAT: '#74b287',
-  ABOVE_AVERAGE: 'a9c466',
-  AVERAGE: 'd8c539',
-  BELOW_AVERAGE: 'e89258',
+  ABOVE_AVERAGE: '#a9c466',
+  AVERAGE: '#d8c539',
+  BELOW_AVERAGE: '#e89258',
   POOR: '#f27c7c',
 };
 
+export const formatStatus = (status) => {
+  if (!status) return "";
+  return status.replace('_', ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};

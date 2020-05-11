@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { setOpenActivePage, setIsVisibleTopBar } from "../index/actions";
 import { makeSelectActiveLesson, makeSelectUnitFilterOptions } from "../index/selectors";
 import moment from "moment";
-import DropDownMenu from '../DropDownMenu/';
+import DropDownMenu from '../DropDownMenu';
 
 
 class ReadWorkBook extends React.Component {
@@ -115,6 +115,7 @@ class ReadWorkBook extends React.Component {
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
                       handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
+                      handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
                   </div>
                   <div className="close-block">

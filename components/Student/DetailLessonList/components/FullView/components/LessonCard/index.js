@@ -19,6 +19,7 @@ import {
   statusColorMap,
   chartColorMap,
   gradeColorMap,
+  formatStatus
 } from "./utils";
 import Checkbox from "./components/Checkbox";
 import { setIsVisibleTopBar, setActiveLesson, setOpenActivePage } from "../../../../../index/actions";
@@ -50,11 +51,6 @@ const LessonCard = props => {
       subject_id: subjectId,
       unit_id: unitId,
       lesson_problems: lessonProblems,
-      scoreStatus,
-      score,
-      assigned,
-      problems = [],
-      passage,
       dueDate,
       completionDate,
       challenge_page,
@@ -62,7 +58,7 @@ const LessonCard = props => {
       due_date,
       completed_at,
       assignment_date,
-      scoring = ""
+      scoring = {}
     },
     onOpenModal,
     onCloseDropdown,
@@ -150,25 +146,21 @@ const LessonCard = props => {
 
   const graphData = () => {
     // Determines the graph progress of a completed or started lesson
-    const {type} = lesson;
+    const {label: type} = lesson.type;
     if (status === 'COMPLETED') {
-
       return data(
         scoring.correct_count,
         scoring.question_count,
         scoring.grade ? scoring.grade : "POOR"
       )
 
-    } else if (status === 'STARTED' && type === 'drill') {
-
+    } else if (status === 'STARTED' && lesson.problems) {
       const completedProblems = lesson.problems.filter(problem => problem.answered).length
       return data(completedProblems, lesson.problems.length, status)
 
-    } else if (status === 'STARTED' && type === 'module') {
-
+    } else if (status === 'STARTED' && lesson.sections) {
       const completedSections = lesson.sections.filter(section => section.status === 'COMPLETED').length
       return data(completedSections, lesson.sections.length, status)
-
     }
 
     return data(0, 1, "ASSIGNED")
@@ -200,7 +192,7 @@ const LessonCard = props => {
                     {getUnitName()}
                   </div>
                   <div className="text-large">
-                    <a href="#" onClick={lesson.lesson_id ? (e) => onOpenDetailModal(e) : (e) => e.preventDefault()}>
+                    <a href="#" onClick={(e) => onOpenDetailModal(e)}>
                       {lesson.name}
                     </a>
                   </div>
@@ -239,9 +231,10 @@ const LessonCard = props => {
                             status,
                             handleAssignLesson,
                             handleRescheduleModalOpen,
-                            props.handleUnassignLesson,
-                            startMarkFlagsReviewed,
+                            props.handleExcuseLessonLateness,
                             handleResetLesson,
+                            startMarkFlagsReviewed,
+                            props.handleUnassignLesson,
                             [lesson.id]
                           )}
                         </ul>
@@ -258,7 +251,7 @@ const LessonCard = props => {
                 <div className="chart-container">
                   <div className="chart-holder" style={{ width: "140px", height: "95px" }}>
                     <Choose>
-                      <When condition={lesson.type !== "reading"}>
+                      <When condition={lesson.type.label !== "Reading"}>
                         <Doughnut
                           data={
                             graphData()
@@ -270,17 +263,17 @@ const LessonCard = props => {
                             tooltips: false,
                           }}
                         />
-                        {lesson.type === 'drill' && renderProblemCount(
+                        {lesson.problems && renderProblemCount(
                           status,
                           scoring.grade ? scoring.grade : "POOR",
-                          scoring.percentage_correct,
-                          problems.length,
+                          scoring && scoring.percentage_correct,
+                          lesson.problems.length,
                           lesson.problems.filter(problem => problem.answered).length
                         )}
-                        {lesson.type === 'module' && renderProblemCount(
+                        {lesson.sections && renderProblemCount(
                           status,
                           scoring.grade ? scoring.grade : "POOR",
-                          scoring.percentage_correct,
+                          scoring && scoring.percentage_correct,
                           lesson.sections.length,
                           lesson.sections.filter(section => section.status === 'COMPLETED').length
                         )}
@@ -296,13 +289,15 @@ const LessonCard = props => {
                   <div className="chart-row">
                     <div className="chart-col chart-start"></div>
                     <div className="chart-col chart-end">
-                      <span className="amount" style={{ color: chartColorMap[scoring.grade || 'POOR'] }}>
-                        <Choose>
-                          <When condition={status === "COMPLETED" && (lesson.type === "drill" || lesson.type === 'module')}>
+                    <Choose>
+                          <When condition={status === "COMPLETED" && (lesson.type.label === "Drill" || lesson.type.label === 'Module')}>
+                      <span className="amount" style={{ color: chartColorMap[scoring.grade ? scoring.grade : 'POOR'] }}>
+                        
                             {scoring.correct_count} of {scoring.question_count}
+                            </span>
                           </When>
                         </Choose>
-                      </span>
+                      
                     </div>
                   </div>
                   <div className="chart-description" style={{ marginTop: "10px" }}>
@@ -312,9 +307,9 @@ const LessonCard = props => {
                     </dl>
                     <Choose>
                       <When
-                        condition={lesson.type === "reading" || lesson.type === "module"}
+                        condition={lesson.type.label === "Reading" || lesson.type.label === "Module"}
                       ></When>
-                      <When condition={lesson.type === "drill"}>
+                      <When condition={lesson.type.label === "Drill"}>
                         <dl className="dl-horizontal">
                           <dt>Problems:</dt>
                           <dd>{lesson.problems.length}</dd>
@@ -373,28 +368,28 @@ const LessonCard = props => {
                     {/* If this is an assigned student lesson */}
                     <When condition={lesson.lesson_id}>
                       <Choose>
-                        <When condition={status === "COMPLETED" && lesson.type === "reading"}>
+                        <When condition={status === "COMPLETED" && lesson.type.label === "Reading"}>
                           <span
                             style={{
                               backgroundColor: `#74b287`,
                             }}
                             className={`badge badge-rounded-md white-text`}
                           >
-                            {status}
+                            {formatStatus(status)}
                           </span>
                         </When>
                         <When condition={status === "COMPLETED"}>
                           <span
                             style={{
                               backgroundColor: `${
-                                props.scoring
-                                  ? gradeColorMap[props.scoring.grade]
+                                scoring.grade
+                                  ? gradeColorMap[scoring.grade]
                                   : gradeColorMap["POOR"]
                               }`,
                             }}
-                            className={`badge badge-rounded-md ${statusColorMap[scoreStatus]} white-text`}
+                            className={`badge badge-rounded-md white-text`}
                           >
-                            {scoring.grade ? scoring.grade : "POOR"}
+                            {formatStatus(scoring.grade ? scoring.grade : 'POOR')}
                           </span>
                         </When>
                         <When condition={status === "OVERDUE"}>
@@ -410,7 +405,7 @@ const LessonCard = props => {
                             }
                             className={`badge badge-rounded-md ${statusColorMap[status]} `}
                           >
-                            {status}
+                            {formatStatus(status)}
                           </span>
                         </When>
                         <Otherwise>
@@ -418,7 +413,7 @@ const LessonCard = props => {
                             style={{ backgroundColor: `#212121`, color: "white" }}
                             className={`badge badge-rounded-md ${statusColorMap[status]} `}
                           >
-                            {status}
+                            {formatStatus(status)}
                           </span>
                         </Otherwise>
                       </Choose>
@@ -442,9 +437,14 @@ const LessonCard = props => {
               <dl className="dl-horizontal">
                 <dt>p.</dt>
                 <Choose>
-                  <When condition={lesson.type === "module"}>
+                  <When condition={lesson.type.label === "Module"}>
                     <dd>
                       ({challenge_page} - {practice_page}) ({"Challenge"} + {"Practice"})
+                    </dd>
+                  </When>
+                  <When condition={lesson.type.label === "Drill"}>
+                    <dd>
+                      ({drillPage} - {drillPage}) ({"Drill"})
                     </dd>
                   </When>
                   <Otherwise>

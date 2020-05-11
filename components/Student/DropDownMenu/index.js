@@ -125,9 +125,10 @@ class DropDownMenu extends React.Component {
                 lesson.status,
                 this.handleAssignLesson,
                 this.handleRescheduleModalOpen,
-                this.handleUnassignLesson,
-                this.startMarkFlagsReviewed,
+                this.props.handleExcuseLessonLateness,
                 this.handleResetLesson,
+                this.startMarkFlagsReviewed,
+                this.handleUnassignLesson,
                 [lesson.id],
               )}
             </ul>

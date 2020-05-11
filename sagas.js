@@ -38,8 +38,11 @@ import {
   UPDATE_STUDENT_ACTIVATION_FAIL,
   FETCH_SUBJECTS,
   FETCH_SUBJECTS_SUCCESS,
+  FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
+  EXCUSE_STUDENT_LATENESS,
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
+  SET_EXCUSE_STUDENT_LATENESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -66,7 +69,7 @@ import {
 } from "./components/Instructor/index/constants";
 import {
   SET_CURRENT_USER,
-  SET_USER_IS_LOGGED,
+  FETCH_CURRENT_USER,
 } from './components/User/index/constants';
 import {
   setStudents,
@@ -107,6 +110,7 @@ const {
   unAssignLessonFromStudentApi,
   rescheduleStudentLessonsApi,
   fetchSubjectsApi,
+  excuseStudentLessonLatenessApi,
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
 } = studentApi;
@@ -697,6 +701,10 @@ function* watchForFetchStudentLesson() {
   yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList);
 }
 
+function* watchForFetchStudentLessonDebounce() {
+  yield debounce(1000, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
+}
+
 function* handleFetchStudentLessonList(action) {
   try {
     const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
@@ -722,7 +730,7 @@ function* watchForAssignLesson() {
 function* handleAssignLesson(action) {
   try {
     yield call(assignLessonToStudentApi, action.lesson);
-    yield put({ type: FETCH_STUDENT_LESSON_LIST, postBody: { id: action.lesson.student_id } });
+    yield put({ type: FETCH_STUDENT_LESSON_LIST_DEBOUNCE, postBody: { id: action.lesson.student_id } });
   } catch (error) {
     console.warn("Error occurred in the handleFetchLesson saga", error);
     yield put({
@@ -825,14 +833,10 @@ function* handleFetchSubjects() {
 
 export function* watchForFetchCurrentUser() {
   while (true) {
-    const payload = yield take(SET_USER_IS_LOGGED);
-    const { value: status } = payload;
-    if (status) {
-      yield call(handleFetchCurrentUser);
-    }
+    yield take(FETCH_CURRENT_USER);
+    yield call(handleFetchCurrentUser);
   }
 }
-
 function* handleFetchCurrentUser() {
   try {
     const response = yield call(fetchCurrentUserApi);
@@ -844,6 +848,23 @@ function* handleFetchCurrentUser() {
     }
   } catch (error) {
     console.warn("Error occurred in the handleFetchCurrentUser saga", error);
+  }
+}
+
+function* watchForExcuseStudentLateness() {
+  yield takeEvery(EXCUSE_STUDENT_LATENESS, handleExcuseStudentLateness);
+}
+
+function* handleExcuseStudentLateness(action) {
+  try {
+    yield call(excuseStudentLessonLatenessApi, action.lessons);
+    console.log('log: action.lessons', action.lessons);
+    yield put({
+      type: SET_EXCUSE_STUDENT_LATENESS,
+      payload: action.lessons,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleExcuseStudentLateness saga", error);
   }
 }
 
@@ -928,6 +949,8 @@ export default function* defaultSaga() {
     watchForRescheduleStudentLessons(),
     watchForFetchSubjects(),
     watchForFetchCurrentUser(),
+    watchForFetchStudentLessonDebounce(),
+    watchForExcuseStudentLateness(),
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
   ]);

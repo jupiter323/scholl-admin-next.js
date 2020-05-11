@@ -34,7 +34,6 @@ const FullView = props => {
     handleMarkAllFlagsReviewed,
     lessonIdsToUnFlag,
   } = props;
-
   const mapLessons = () => lessons.map((lesson, index) => (
     <LessonCard
       // eslint-disable-next-line react/no-array-index-key
@@ -57,6 +56,7 @@ const FullView = props => {
       handleUnassignLesson={handleUnassignLesson}
       handleMarkAllFlagsReviewed={handleMarkAllFlagsReviewed}
       flagRemoved={lessonIdsToUnFlag.includes(lesson.id)}
+      handleExcuseLessonLateness={props.handleExcuseLessonLateness}
     />
   ));
   const handleRescheduleModalOpen = activeLesson => {
@@ -156,9 +156,10 @@ const FullView = props => {
                   status,
                   handleAssignLesson,
                   handleRescheduleModalOpen,
-                  handleUnassignLesson,
-                  startMarkFlagsReviewed,
+                  props.handleExcuseLessonLateness,
                   handleResetLesson,
+                  startMarkFlagsReviewed,
+                  handleUnassignLesson,
                   checkedCardIds)}
               </ul>
             </ClickOffComponentWrapper>
