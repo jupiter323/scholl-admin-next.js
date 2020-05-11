@@ -118,6 +118,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
     );
   }
   if (status === "NOTASSIGNED") return;
+  const percentScore = score ? score.toFixed(0) : "0";
   return (
     <span
       className="chart-value"
@@ -129,9 +130,7 @@ export const renderProblemCount = (status, scoreStatus, score, problems, complet
       }}
     >
       <span data-count-up data-start-val="0" data-end-val="96" data-duration="1"></span>
-      <If condition={score && score !== ""}>
-        <span className="percentage">{score.toFixed(0) || 0}%</span>
-      </If>
+      <span className="percentage">{percentScore}%</span>
     </span>
   );
 };
