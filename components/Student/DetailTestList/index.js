@@ -302,6 +302,7 @@ class DetailTestList extends React.Component {
             />
             <div className="content-section">
               <div className="section-holder">
+                
                 {assigneds.length !== 0 && (
                   <div className="content-container">
                     <CardHeader title="Assigned" amount={assigneds.length} />

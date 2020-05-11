@@ -210,7 +210,7 @@ export function* fetchStudentTests(user) {
     //* * using for development purposes pushing :STARTED to assigneds */
     yield formattedStudentTests.forEach(test => {
       switch (test.status) {
-        case "OVERDUED":
+        case "OVERDUE":
           sortedTests.overdues.push(test);
           break;
         //* commented out for development purposes  */
