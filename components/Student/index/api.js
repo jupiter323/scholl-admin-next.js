@@ -712,8 +712,10 @@ export const updateStudentTestStatusApi = (body) =>
     method: "PATCH",
     headers: {
       Accept: "application/json",
-      "Access-Control-Allow-Origin": "*",
-    }
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
   })
     .then(res => res)
     .catch(err => err);
@@ -730,3 +732,16 @@ export const excuseStudentLessonLatenessApi = (body) =>
   })
     .then((res) => res.json())
     .catch((err) => err);
+
+    export const updateStudentTestSectionStatusApi = (body) =>
+    fetch(`${API_URL}/api/commands/update-student-test-section-status`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(body),
+    })
+      .then(res => res)
+      .catch(err => err);

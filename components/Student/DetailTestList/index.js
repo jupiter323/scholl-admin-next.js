@@ -53,7 +53,7 @@ class DetailTestList extends React.Component {
     this.onSetIsVisibleTopBar(false);
     this.setState(
       ({ openEditTestModal }) => ({
-        openEditTestModal: !openEditTestModal,
+        // openEditTestModal: !openEditTestModal,
         openEnterAnswerWrapper: false,
         activeTest,
       }),
