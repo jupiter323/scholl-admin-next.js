@@ -52,6 +52,7 @@ class DetailTestList extends React.Component {
   };
 
   onToggleEditTestModal = async (activeTest = null) => {
+    const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
     if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
       const { onSetActiveStudentTestId } = this.props;
       onSetActiveStudentTestId(activeTest.student_test_id);
