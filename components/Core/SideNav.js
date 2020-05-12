@@ -13,7 +13,7 @@ import {
 } from "../User/index/selectors";
 import { loggedIn } from "../../utils/AuthService";
 
-import { setUserIsLogged } from "../User/index/actions";
+import { setUserIsLogged,getCurrentUser } from "../User/index/actions";
 import { LogoutApi } from "../User/index/api";
 import $ from "jquery";
 import Router from "next/router";
@@ -76,8 +76,10 @@ class SideNav extends Component {
   }
 
   componentDidMount() {
+    console.log('OK')
     const isLogged = loggedIn();
-    const { onSetUserIsLogged } = this.props;
+    const { onSetUserIsLogged,onFetchCurrentUser } = this.props;
+    onFetchCurrentUser();
     onSetUserIsLogged(isLogged);
     $(".sidenav").sidenav();
   }
@@ -145,6 +147,7 @@ SideNav.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     onSetUserIsLogged: (value) => dispatch(setUserIsLogged(value)),
+    onFetchCurrentUser: () => dispatch(getCurrentUser()),
   };
 }
 
