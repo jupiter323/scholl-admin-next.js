@@ -452,7 +452,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                   <div className="col s6 badge-block-column red-text">
                                     <span className="badge-rounded-xlg badge red darken-2 white-text">
                                       <b className="badge-text">
-                                        {this.getReviewedAndFlaggedProblemAmount("FLAGGED")}
+                                        {this.getReviewedAndFlaggedProblemAmount("REVIEWED")}
                                       </b>{" "}
                                       <i className="icon-flag"></i>
                                     </span>
@@ -461,7 +461,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                   <div className="col s6 badge-block-column">
                                     <span className="badge-rounded-xlg badge grey darken-2 white-text">
                                       <b className="badge-text">
-                                        {this.getReviewedAndFlaggedProblemAmount("REVIEWED")}
+                                        {this.getReviewedAndFlaggedProblemAmount("FLAGGED")}
                                       </b>{" "}
                                       <i className="icon-flag"></i>
                                     </span>
