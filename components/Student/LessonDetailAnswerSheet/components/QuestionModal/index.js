@@ -108,11 +108,13 @@ class QuestionModal extends React.Component {
                   </div>
                 </div>
                 <div className="modal-content">
-                  <div className="card-panel">  <div className="panel-block">
-                    <div className="embed-responsive">
-                      <VideoPlayer url={video ? video.url.videoURL : ''} onHandleWatchedVideo={this.onHandleWatchedVideo} />
-                    </div>
-                  </div></div>
+                  {video &&
+                    <div className="card-panel">  <div className="panel-block">
+                      <div className="embed-responsive">
+                        <VideoPlayer url={video ? video.url : ''} onHandleWatchedVideo={this.onHandleWatchedVideo} />
+                      </div>
+                    </div></div>
+                  }
                   <div className="card-panel">
                     <div className="panel-block">
                       <strong className="subtitle">Review With Student</strong>
