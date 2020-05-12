@@ -460,8 +460,8 @@ export const addStudentTestQuestionFlagApi = (body, studentToken) =>
     .then(res => res.json())
     .catch(err => err);
 
-export const fetchStudentTestScoreApi = student_test_id =>
-  fetch(`${API_URL}/api/student_tests/${student_test_id}/score`, {
+export const fetchStudentTestScoreApi = (student_id,student_test_id) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/score`, {
     headers: {
       Accept: "application/json",
       "Allow-Control-Allow-Origin": "*",

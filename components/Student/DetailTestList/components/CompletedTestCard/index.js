@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 
 import { setActiveTestScores } from "../../../index/actions";
-import { makeSelectActiveTestScores } from "../../../index/selectors";
+import { makeSelectActiveTestScores, makeSelectActiveStudent } from "../../../index/selectors";
 
 import { fetchStudentTestScoreApi } from "../../../index/api";
 class CompletedTestCard extends React.Component {
@@ -56,7 +56,8 @@ class CompletedTestCard extends React.Component {
 
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    const { activeStudent: { id } } = this.props;
+    const { formattedTestScores } = await fetchStudentTestScoreApi(id, student_test_id);
     return formattedTestScores;
   };
 
@@ -387,6 +388,7 @@ CompletedTestCard.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   scores: makeSelectActiveTestScores(),
+  activeStudent: makeSelectActiveStudent(),
 });
 
 const mapDispatchToProps = dispatch => ({

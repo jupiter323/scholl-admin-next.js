@@ -37,6 +37,7 @@ import {
   SET_OPEN_ANSWERSHEET_STATUS,
   SET_TESTS,
   SET_EXCUSE_STUDENT_LATENESS,
+  SET_ACTIVE_STUDENT,
 } from "./constants";
 
 const initialState = fromJS({
@@ -64,6 +65,7 @@ const initialState = fromJS({
   subjects: {},
   activeShowPage: "",
   tests: [],
+  activeStudent:null,
 });
 
 function studentReducer(state = initialState, action) {
@@ -238,6 +240,8 @@ function studentReducer(state = initialState, action) {
         return lesson;
       }));
 
+    case SET_ACTIVE_STUDENT:
+      return state.set('activeStudent',action.student);
     default:
       return state;
   }
