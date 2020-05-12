@@ -148,7 +148,7 @@ class DetailTestList extends React.Component {
     return assigneds.map((test, index) => (
       <AssignedTestCard
         test={test}
-        key={`future-${index}`}
+        key={`assigned-${index}`}
         handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
@@ -157,7 +157,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={assigneds.length + index}
+        index={'assigned' + index}
       />
     ));
   };
@@ -167,7 +167,7 @@ class DetailTestList extends React.Component {
     return overdues.map((test, index) => (
       <OverDueTestCard
         test={test}
-        key={`future-${index}`}
+        key={`overdue-${index}`}
         handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
@@ -176,7 +176,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={overdues.length + index}
+        index={'overdue' + index}
       />
     ));
   };
