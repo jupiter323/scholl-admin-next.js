@@ -11,11 +11,17 @@ import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons 
 import moment from 'moment';
 import { makeSelectCheckedLessons } from '../../../index/selectors';
 import RescheduleModal from "../RescheduleModal";
+import Modal from '../../../../Modal/index';
 
 
 const FullView = props => {
   const [openRescheduleModal, toggleRescheduleModal] = useState(false);
   const [activeLesson, setActiveLesson] = useState([]);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [confirmationFunc, setConfirmationFunc] = useState("");
+  const [lessonIdsToEdit, setLessonIdsToEdit] = useState([]);
+  const [rescheduleModalState, setRescheduleModalState] = useState({});
+
   const {
     lessons = [],
     onCloneLesson,
@@ -31,6 +37,7 @@ const FullView = props => {
     onCloseDropdown,
     renderDropdownOptions,
     checkedCardIds,
+    resetLessonSelections,
     handleMarkAllFlagsReviewed,
     lessonIdsToUnFlag,
   } = props;
@@ -70,6 +77,16 @@ const FullView = props => {
   };
 
   const onSaveScheduleChanges = (modalState) => {
+    if (checkForDifferentStatus(activeLesson)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(activeLesson);
+      setRescheduleModalState(modalState);
+      return setConfirmationFunc('reschedule');
+    }
+    onSubmitScheduleChanges(modalState, activeLesson);
+  };
+
+  const onSubmitScheduleChanges = (modalState, activeLesson) => {
     const { dispathRescheduleStudentLessons } = props;
     const payload = {
       student_lesson_ids: activeLesson,
@@ -79,32 +96,118 @@ const FullView = props => {
     if (Object.keys(payload).length > 0 && typeof payload === 'object') {
       dispathRescheduleStudentLessons(payload);
       toggleRescheduleModal(!openRescheduleModal);
+      resetLessonSelections();
     }
   };
 
   const handleUnassignLesson = lessonIds => {
+    if (checkForDifferentStatus(lessonIds)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(lessonIds);
+      return setConfirmationFunc('unassign');
+    }
+    onSubmitUnassignLesson(lessonIds);
+  };
+
+  const onSubmitUnassignLesson = (lessonIds) => {
     const { dispathUnAssignLessonToStudent } = props;
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathUnAssignLessonToStudent(lessonIds);
       onCloseDropdown();
+      resetLessonSelections();
     }
   };
 
   const handleResetLesson = lessonIds => {
+    if (checkForDifferentStatus(lessonIds)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(lessonIds);
+      return setConfirmationFunc('reset');
+    }
+    onSubmitResetLesson(lessonIds);
+  };
+
+  const onSubmitResetLesson = (lessonIds) => {
     const { dispathResetStudentLessons } = props;
     if (lessonIds && typeof lessonIds === 'object' && lessonIds.length > 0) {
       dispathResetStudentLessons(lessonIds);
       onCloseDropdown();
+      resetLessonSelections();
     }
   };
 
+  const onHandleExcuseLesson = (lessonIds) => {
+    if (checkForDifferentStatus(lessonIds)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(lessonIds);
+      return setConfirmationFunc('excuse/unexcuse');
+    }
+    onSubmitExcuseLesson(lessonIds);
+  };
+
+  const onSubmitExcuseLesson = (lessonIds) => {
+    const { handleExcuseLessonLateness } = props;
+    handleExcuseLessonLateness(lessonIds);
+    onCloseDropdown();
+  };
+
+  const checkForDifferentStatus = (lessonIds) => {
+    const relevantLessons = lessons.filter(lesson => lessonIds.includes(lesson.id));
+    const statusList = [];
+    relevantLessons.map(lesson => !statusList.includes(lesson.status) && statusList.push(lesson.status));
+    if (statusList.length > 1) {
+      return true;
+    }
+    return false;
+  };
+
   const startMarkFlagsReviewed = (lessonIds) => {
+    if (checkForDifferentStatus(lessonIds)) {
+      setIsConfirmModalOpen(true);
+      setLessonIdsToEdit(lessonIds);
+      return setConfirmationFunc('review flagged');
+    }
+    onSubmitMarkFlagsReviewed(lessonIds);
+  };
+
+  const onSubmitMarkFlagsReviewed = (lessonIds) => {
     handleMarkAllFlagsReviewed(lessonIds);
     onCloseDropdown();
   };
 
+  const onConfirmModalFunction = () => {
+    switch (confirmationFunc) {
+      case 'reschedule':
+        onSubmitScheduleChanges(rescheduleModalState, lessonIdsToEdit);
+        break;
+      case 'unassign':
+        onSubmitUnassignLesson(lessonIdsToEdit);
+        break;
+      case 'reset':
+        onSubmitResetLesson(lessonIdsToEdit);
+        break;
+      case 'excuse/unexcuse':
+        onSubmitExcuseLesson(lessonIdsToEdit);
+        break;
+      case 'review flagged':
+        onSubmitMarkFlagsReviewed(lessonIdsToEdit);
+        break;
+      default:
+        break;
+    }
+    setIsConfirmModalOpen(false);
+    toggleRescheduleModal(false);
+  };
+
   return (
     <div className="content-section">
+      <Modal
+        open={isConfirmModalOpen}
+        onConfirm={() => onConfirmModalFunction()}
+        onClose={() => setIsConfirmModalOpen(false)}
+        header={`Are you sure you want to ${confirmationFunc} lesson(s)?`}
+        body={"Some of the lessons are you are trying to edit have a different completion status. Edit lesson(s) anyways?"}
+      />
       <div className="d-flex justify-content-between">
         <div>
           <Checkbox
@@ -156,7 +259,7 @@ const FullView = props => {
                   status,
                   handleAssignLesson,
                   handleRescheduleModalOpen,
-                  props.handleExcuseLessonLateness,
+                  onHandleExcuseLesson,
                   handleResetLesson,
                   startMarkFlagsReviewed,
                   handleUnassignLesson,

@@ -89,6 +89,7 @@ class DetailLessonList extends React.Component {
         nameFilter: '',
         unitFilter: '',
       },
+      confirmationModalMessage: '',
       lessonIdsToUnFlag: [],
     };
   }
@@ -450,6 +451,7 @@ class DetailLessonList extends React.Component {
           renderDropdownOptions={renderDropdownOptions}
           checkedCardIds={this.state.checkedCardIds}
           onAddAssignLessonIds={this.onAddAssignLessonIds}
+          resetLessonSelections={this.resetLessonSelections}
           handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
           lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
           handleExcuseLessonLateness={this.handleExcuseLessonLateness}
@@ -487,6 +489,7 @@ class DetailLessonList extends React.Component {
       return this.setState({
         prevAssignedLessons,
         lessonsToAssign: payload,
+        confirmationModalMessage: 'One or more lessons you are assigning to this student have previously been assigned. Assign Lessons anyways?',
       });
     }
     // Move onto sending request
@@ -526,7 +529,7 @@ class DetailLessonList extends React.Component {
         onConfirm={() => this.submitAssignedLesson()}
         onClose={this.onCloseConfirmModal}
         header="Are you sure?"
-        body={`One or more lessons you are assigning to this student have previously been assigned. Assign Lessons anyways?`}
+        body={this.state.confirmationModalMessage}
       />
     );
   }

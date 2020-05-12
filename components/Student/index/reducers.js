@@ -212,7 +212,6 @@ function studentReducer(state = initialState, action) {
           if (sentLessonId === lesson.id) {
             let status = 'ASSIGNED';
             if (moment().isAfter(lesson.due_date)) status = 'OVERDUE';
-            if (moment().isBefore(lesson.assigned_date)) status = 'SCHEDULED';
             return (updatedLesson = {
               ...lesson,
               status,
