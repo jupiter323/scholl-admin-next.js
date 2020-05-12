@@ -9,7 +9,7 @@ import InCompleteTestSection from "./components/InCompleteSection";
 import PreStartTestSection from "./components/StartSection";
 
 import { addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../../../index/api";
-import { makeSelectStudentSections, makeSelectActiveStudentToken } from "../../../index/selectors";
+import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectActiveStudent } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 
 class EnterAnswerWrapper extends React.Component {
@@ -45,9 +45,11 @@ class EnterAnswerWrapper extends React.Component {
       sections,
       studentToken,
       test: { student_test_id },
+      activeStudent:{id}
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
+        id,
         student_test_id,
         studentToken,
       };
@@ -135,7 +137,7 @@ class EnterAnswerWrapper extends React.Component {
     }
   };
 
-  handleTestScore = async(activeTest) => {
+  handleTestScore = async (activeTest) => {
     const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
     if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
       const { onOpentTestScore } = this.props;
@@ -225,6 +227,7 @@ EnterAnswerWrapper.propTypes = {
 const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
+  activeStudent: makeSelectActiveStudent(),
 });
 function mapDispatchToProps(dispatch) {
   return {

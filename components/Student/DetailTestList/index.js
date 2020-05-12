@@ -21,9 +21,7 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
 } from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../index/api";
-
-// import sampleTests from "./utils/sampleTests";
+import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
 
 const uuidGenerator = require("uuid/v4");
 
