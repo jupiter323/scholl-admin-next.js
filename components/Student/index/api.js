@@ -418,7 +418,7 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
 };
 
 export const fetchProblemsByStudentTestIdApi = (student_id,student_test_id, student_token) =>
-  fetch(`${API_URL}/api/students/${student_id}/studentTests/${student_test_id}/problems`, {
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
