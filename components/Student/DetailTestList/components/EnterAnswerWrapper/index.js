@@ -9,7 +9,7 @@ import InCompleteTestSection from "./components/InCompleteSection";
 import PreStartTestSection from "./components/StartSection";
 
 import { addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../../../index/api";
-import { makeSelectStudentSections, makeSelectActiveStudentToken } from "../../../index/selectors";
+import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectActiveStudent } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 
 class EnterAnswerWrapper extends React.Component {
@@ -32,6 +32,10 @@ class EnterAnswerWrapper extends React.Component {
         activeMathWithCalcSection: false,
         activeSection: "",
       },
+      readingSectionCompleted: false,
+      writingSectionCompleted: false,
+      mathCalcSectionCompleted: false,
+      mathNoCalcSectionCompleted: false,
     };
   }
 
@@ -41,9 +45,11 @@ class EnterAnswerWrapper extends React.Component {
       sections,
       studentToken,
       test: { student_test_id },
+      activeStudent:{id}
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
+        id,
         student_test_id,
         studentToken,
       };
@@ -99,88 +105,129 @@ class EnterAnswerWrapper extends React.Component {
     }
   };
 
-onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-  const { studentTestId } = this.state;
-  const postBody = {
-    student_test_id: studentTestId,
-    test_problem_id,
-    answer,
+  onAddStudentAnswerToTest = async (test_problem_id, answer) => {
+    const { studentTestId } = this.state;
+    const postBody = {
+      student_test_id: studentTestId,
+      test_problem_id,
+      answer,
+    };
+    await addStudentAnswerToTestApi(postBody);
   };
-  await addStudentAnswerToTestApi(postBody);
-};
 
-getCurrentTestProblems = () => {
-  const { activeSection } = this.state.updatedState;
-  const {
-    testReadingProblems,
-    testWritingProblems,
-    testMathCalcProblems,
-    testMathNoCalcProblems,
-  } = this.state;
-  switch (activeSection) {
-    case "activeReadingSection":
-      return testReadingProblems;
-    case "activeWritingSection":
-      return testWritingProblems;
-    case "activeMathWithCalcSection":
-      return testMathCalcProblems;
-    case "activeMathNoCalcSection":
-      return testMathNoCalcProblems;
-    default:
-      return testReadingProblems;
+  getCurrentTestProblems = () => {
+    const { activeSection } = this.state.updatedState;
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = this.state;
+    switch (activeSection) {
+      case "activeReadingSection":
+        return testReadingProblems;
+      case "activeWritingSection":
+        return testWritingProblems;
+      case "activeMathWithCalcSection":
+        return testMathCalcProblems;
+      case "activeMathNoCalcSection":
+        return testMathNoCalcProblems;
+      default:
+        return testReadingProblems;
+    }
+  };
+
+  handleTestScore = async (activeTest) => {
+    const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
+    if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
+      const { onOpentTestScore } = this.props;
+      onOpentTestScore(activeTest)
+    } else {
+      const sectionName = activeTest.name;
+      switch (sectionName) {
+        case "Reading":
+          this.setState({
+            readingSectionCompleted: true,
+          })
+          break;
+        case "Writing":
+          this.setState({
+            writingSectionCompleted: true,
+          });
+          break;
+        case "Math (No Calculator)":
+          this.setState({
+            mathNoCalcSectionCompleted: true
+          });
+          break;
+        case "Math (Calculator)":
+          this.setState({
+            mathCalcSectionCompleted: true
+          });
+          break;
+        default:
+          this.setState({
+            readingSectionCompleted: true,
+          })
+      }
+      const postBody = {
+        test_section_id: activeTest.test_section_id,
+        student_test_section_status: "COMPLETED"
+      };
+      await updateStudentTestSectionStatusApi(postBody);
+    }
   }
-};
 
-render() {
-  const { startedTest, previewTest } = this.state;
-  const {
-    onCloaseAnswerWrapper,
-    open,
-    test: { test_description },
-    onAddStudentAnswerToTest,
-    onEditTest,
-  } = this.props;
-  return (
-    <React.Fragment>
-      {open && (
-        <div className="starting">
-          <div className="main-holder grey lighten-5">
-            <NavBar
-              onCloaseAnswerWrapper={onCloaseAnswerWrapper}
-              onSetActivePage={this.onSetActivePage}
-              testDescription={test_description}
-            />
-            <PreStartTestSection
-              open={previewTest}
-              onSetActivePage={this.onSetActivePage}
-              testSection={this.getCurrentTestProblems()}
-            />
-            <InCompleteTestSection
-              open={startedTest}
-              onAddStudentAnswerToTest={onAddStudentAnswerToTest}
-              testSection={this.getCurrentTestProblems()}
-              onStudentTestScore={onCloaseAnswerWrapper}
-              onEditTest={onEditTest}
-            />
+  render() {
+    const { startedTest, previewTest } = this.state;
+    const {
+      onCloaseAnswerWrapper,
+      open,
+      test: { test_description },
+      onAddStudentAnswerToTest,
+    } = this.props;
+    return (
+      <React.Fragment>
+        {open && (
+          <div className="starting">
+            <div className="main-holder grey lighten-5">
+              <NavBar
+                onCloaseAnswerWrapper={onCloaseAnswerWrapper}
+                onSetActivePage={this.onSetActivePage}
+                testDescription={test_description}
+              />
+              <PreStartTestSection
+                open={previewTest}
+                onSetActivePage={this.onSetActivePage}
+                testSection={this.getCurrentTestProblems()}
+              />
+              <InCompleteTestSection
+                open={startedTest}
+                onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+                testSection={this.getCurrentTestProblems()}
+                onStudentTestScore={onCloaseAnswerWrapper}
+                handleTestScore={this.handleTestScore}
+              />
+            </div>
           </div>
-        </div>
-      )}
-    </React.Fragment>
-  );
-}
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
 EnterAnswerWrapper.propTypes = {
   onCloaseAnswerWrapper: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   test: PropTypes.object,
-  onEditTest: PropTypes.func.isRequired,
+  onOpentTestScore: PropTypes.func.isRequired,
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
+  activeStudent: makeSelectActiveStudent(),
 });
 function mapDispatchToProps(dispatch) {
   return {

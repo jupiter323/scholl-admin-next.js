@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import { fetchStudentTestScoreApi } from "../../../index/api";
 class AssignedTestCard extends React.Component {
   constructor(props) {
     super(props);

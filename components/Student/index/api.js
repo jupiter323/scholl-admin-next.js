@@ -417,8 +417,8 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
     .catch(err => err);
 };
 
-export const fetchProblemsByStudentTestIdApi = (student_test_id, student_token) =>
-  fetch(`${API_URL}/api/studentTests/${student_test_id}/problems`, {
+export const fetchProblemsByStudentTestIdApi = (student_id,student_test_id, student_token) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -460,8 +460,8 @@ export const addStudentTestQuestionFlagApi = (body, studentToken) =>
     .then(res => res.json())
     .catch(err => err);
 
-export const fetchStudentTestScoreApi = student_test_id =>
-  fetch(`${API_URL}/api/student_tests/${student_test_id}/score`, {
+export const fetchStudentTestScoreApi = (student_id,student_test_id) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/score`, {
     headers: {
       Accept: "application/json",
       "Allow-Control-Allow-Origin": "*",

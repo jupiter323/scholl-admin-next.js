@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 
 import { setActiveTestScores } from "../../../index/actions";
-import { makeSelectActiveTestScores } from "../../../index/selectors";
+import { makeSelectActiveTestScores, makeSelectActiveStudent } from "../../../index/selectors";
 
 import { fetchStudentTestScoreApi } from "../../../index/api";
 class CompletedTestCard extends React.Component {
@@ -25,7 +25,6 @@ class CompletedTestCard extends React.Component {
     const { scores, onSetScores } = this.props;
     if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
-      console.log('formattedScores:', formattedScores.subjects)
       onSetScores(formattedScores);
       this.setScores(formattedScores.subjects);
     } else {
@@ -57,7 +56,8 @@ class CompletedTestCard extends React.Component {
 
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
+    const { activeStudent: { id } } = this.props;
+    const { formattedTestScores } = await fetchStudentTestScoreApi(id, student_test_id);
     return formattedTestScores;
   };
 
@@ -83,7 +83,6 @@ class CompletedTestCard extends React.Component {
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
     const formattedDueDate = moment(dueDate).format("MM/DD/YY");
     const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
-    console.log('ReadingScore', ReadingScore)
     return (
       <React.Fragment>
         <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
@@ -230,7 +229,7 @@ class CompletedTestCard extends React.Component {
                       >
                         {MathScore.current_score}
                         <br />
-                        {MathScore.previous_score === null ? "" : `+${MathScore.delta}`}
+                        {MathScore.previous_score === null ? "" : `${MathScore.delta}`}
                       </h2>
                     </span>
                   </span>
@@ -269,7 +268,7 @@ class CompletedTestCard extends React.Component {
                         <br />
                         {ReadingAndWrigingScore.previous_score === null
                           ? ""
-                          : `+${ReadingAndWrigingScore.delta}`}
+                          : `${ReadingAndWrigingScore.delta}`}
                       </h2>
                     </span>
                   </span>
@@ -308,7 +307,7 @@ class CompletedTestCard extends React.Component {
                       >
                         {ReadingScore.current_score}
                         <br />
-                        {ReadingScore.previous_score === null ? "" : `+${ReadingScore.delta}`}
+                        {ReadingScore.previous_score === null ? "" : `${ReadingScore.delta}`}
                       </h3>
                     </span>
                   </span>
@@ -347,7 +346,7 @@ class CompletedTestCard extends React.Component {
                       <h4>
                         {WritingScore.current_score}
                         <br />
-                        {WritingScore.previous_score === null ? "" : `+${WritingScore.delta}`}
+                        {WritingScore.previous_score === null ? "" : `${WritingScore.delta}`}
                       </h4>
                     </span>
                   </span>
@@ -389,6 +388,7 @@ CompletedTestCard.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   scores: makeSelectActiveTestScores(),
+  activeStudent: makeSelectActiveStudent(),
 });
 
 const mapDispatchToProps = dispatch => ({

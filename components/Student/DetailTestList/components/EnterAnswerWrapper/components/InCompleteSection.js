@@ -34,7 +34,7 @@ class InCompleteReadingTest extends React.Component {
     const {
       open,
       testSection: { problems },
-      onEditTest,
+      handleTestScore,
     } = this.props;
     return (
       <div>
@@ -62,7 +62,7 @@ class InCompleteReadingTest extends React.Component {
                       <a
                         href="#"
                         className="btn btn-xlarge waves-effect waves-light bg-blue"
-                        onClick={() => onEditTest(this.props.testSection)}
+                        onClick={() => handleTestScore(this.props.testSection)}
                       >
                         Score Test
                       </a>
@@ -83,7 +83,7 @@ InCompleteReadingTest.propTypes = {
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
   testSection: PropTypes.object.isRequired,
   onStudentTestScore: PropTypes.func.isRequired,
-  onEditTest: PropTypes.func.isRequired,
+  handleTestScore: PropTypes.func.isRequired,
 };
 
 export default InCompleteReadingTest;

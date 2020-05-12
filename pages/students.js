@@ -14,6 +14,7 @@ import {
   deleteStudent,
   setStudents,
   setActiveStudentToken,
+  setActiveStudent,
 } from "../components/Student/index/actions";
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
@@ -201,7 +202,8 @@ class Students extends Component {
 
   onHandleStudentCard = async index => {
     const { students } = this.state;
-    const { onSetActiveStudentToken } = this.props;
+    const { onSetActiveStudentToken,onSetActiveStudent } = this.props;
+    onSetActiveStudent(students[index])
     this.setState({ selectedStudent: students[index] });
     const { emailAddress: { email } } = students[index];
     const password = "password";
@@ -419,6 +421,7 @@ const mapDispatchToProps = dispatch => ({
   onSetStudents: students => dispatch(setStudents(students)),
   onCreateStudent: student => dispatch(createStudent(student)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
+  onSetActiveStudent: student => dispatch(setActiveStudent(student)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
