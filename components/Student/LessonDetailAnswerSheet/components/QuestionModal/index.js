@@ -33,6 +33,7 @@ class QuestionModal extends React.Component {
       const { question: { flag_status } } = this.props;
       this.setState({
         status: flag_status,
+        originalTestProblemId:id,
       });
     }
     if (video_watched_seconds) {
@@ -93,7 +94,6 @@ class QuestionModal extends React.Component {
   render() {
     const { open, question: { problem: { reference_number, video } } } = this.props;
     const { videoWatchedTime } = this.state;
-    console.log('status', this.state.status)
     return (
       <Portal selector="#modal">
         {open && (

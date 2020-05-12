@@ -10,9 +10,21 @@ class AnswerRow extends React.Component {
     this.state = {
       open: false,
       status: '',
+      originalTestProblemId: "",
     };
   }
 
+  componentDidMount = () => {
+    const { problem: { id } } = this.props;
+    const { originalTestProblemId } = this.state;
+    if (id !== originalTestProblemId && this.props.problem.flag_status) {
+      const { problem: { flag_status } } = this.props;
+      this.setState({
+        status: flag_status,
+        originalTestProblemId: id,
+      });
+    }
+  }
   onChangeFlagState = (status) => {
     this.setState({
       status,
@@ -58,13 +70,13 @@ class AnswerRow extends React.Component {
             </div>
             <div className="col col-auto">
               <Choose>
-                <When condition={status === 'FLAGGED' || this.props.problem.flag_status === 'FLAGGED'}>
+                <When condition={status === 'FLAGGED'}>
                   <span className="status-answer" style={{ color: "#c0272d" }}>
                     <i className="icon-flag"></i>
                     <b className="status-text">Review</b>
                   </span>
                 </When>
-                <When condition={this.props.problem.flag_status === 'REVIEWED'}>
+                <When condition={status === 'REVIEWED'}>
                   <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                     <i className="icon-flag"></i>
                     <b className="status-text">Review</b>
