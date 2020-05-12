@@ -27,12 +27,12 @@ class QuestionModal extends React.Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const { question: { test_problem_id, video_watched_seconds } } = nextProps;
+    const { question: { id, video_watched_seconds } } = nextProps;
     const { originalTestProblemId } = this.state;
-    if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
-      const { question: { flag: { status } } } = this.props;
+    if (id !== originalTestProblemId && this.props.question.flag_status) {
+      const { question: { flag_status } } = this.props;
       this.setState({
-        status,
+        status: flag_status,
       });
     }
     if (video_watched_seconds) {
@@ -47,6 +47,9 @@ class QuestionModal extends React.Component {
       activeLesson: { id: lessonId },
       onChangeFlagState,
     } = this.props;
+    this.setState({
+      status
+    })
     onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
     const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
@@ -90,6 +93,7 @@ class QuestionModal extends React.Component {
   render() {
     const { open, question: { problem: { reference_number, video } } } = this.props;
     const { videoWatchedTime } = this.state;
+    console.log('status', this.state.status)
     return (
       <Portal selector="#modal">
         {open && (
@@ -126,6 +130,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                checked={this.state.status === "UN_FLAGGED" ? true : false}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
                               />
                               <span>Nope. Got it.</span>
@@ -137,11 +142,27 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
+                                checked={this.state.status === "FLAGGED" ? true : false}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
                               />
                               <span>
                                 <i className="icon-flag red-text text-darken-3" />
                                 Flag for Review
+                              </span>
+                            </label>
+                          </li>
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                                checked={this.state.status === "REVIEWED" ? true : false}
+                                onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
+                              />
+                              <span>
+                                <i className="icon-flag gray-text text-darken-3" />
+                                Mark Reviewed
                               </span>
                             </label>
                           </li>

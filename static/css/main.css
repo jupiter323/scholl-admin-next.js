@@ -20432,7 +20432,9 @@ a.collapsible-opener:hover {
 .card-description .gray-text {
   color: #989898;
 }
-
+.gray-text {
+  color: #989898 !important;
+}
 .row-cards {
   margin-left: -12px;
   margin-right: -12px;
