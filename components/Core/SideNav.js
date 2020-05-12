@@ -76,10 +76,11 @@ class SideNav extends Component {
   }
 
   componentDidMount() {
-    console.log('OK')
     const isLogged = loggedIn();
-    const { onSetUserIsLogged,onFetchCurrentUser } = this.props;
-    onFetchCurrentUser();
+    const { onSetUserIsLogged,onFetchCurrentUser,currentUser } = this.props;
+    if(!currentUser){
+      onFetchCurrentUser();
+    }
     onSetUserIsLogged(isLogged);
     $(".sidenav").sidenav();
   }
@@ -93,7 +94,6 @@ class SideNav extends Component {
 
   render() {
     const { isLogged, currentUser } = this.props;
-    const { first_name: firstName, last_name: lastName } = currentUser;
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
@@ -126,7 +126,7 @@ class SideNav extends Component {
               <Link href="/account">
                 <a>
                   <div className="block white-text">
-                    {isLogged ? `${firstName} ${lastName}` : ""}
+                    {isLogged && currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Loading..."}
                   </div>
                 </a>
               </Link>
