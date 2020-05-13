@@ -126,6 +126,7 @@ class Students extends Component {
   // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const { newStudent: previousStudentState } = this.state;
+    const {onFetchStudents,} = this.props;
     const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
     if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
@@ -177,6 +178,7 @@ class Students extends Component {
       },
     });
     this.setState({ newStudent });
+    onFetchStudents();
     this.onCloseStudentModal();
   };
 
