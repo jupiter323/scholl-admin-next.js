@@ -76,13 +76,13 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      test: { test_name, test_description, dueDate, completion_date, test_id },
+      test: { test_name, test_description, due_date, completion_date, test_id },
       onEditTest,
       onEnterAnswers,
     } = this.props;
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
-    const formattedDueDate = moment(dueDate).format("MM/DD/YY");
-    const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
+    const formattedDueDate = moment(due_date).format("MM/DD/YY");
+    const formattedCompletedDate = moment(completion_date.date).format("MM/DD/YY");
     return (
       <React.Fragment>
         <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
