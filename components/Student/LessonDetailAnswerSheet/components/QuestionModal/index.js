@@ -4,16 +4,12 @@ import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import Portal from "../../../../common/Portal";
 import ClickOffComponentWrapper from "../../../../common/ClickOffComponentWrapper";
-
-import { addStudentLessonProblemFlagApi } from "../../../index/api";
+import { addStudentLessonProblemFlagApi, addVideoWatchedTime } from "../../../index/api";
 import { makeSelectActiveLesson } from "../../../index/selectors";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
 import EditProblemRow from '../EditProblemRow';
-import {
-  addVideoWatchedTime,
-} from '../../../index/api';
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);

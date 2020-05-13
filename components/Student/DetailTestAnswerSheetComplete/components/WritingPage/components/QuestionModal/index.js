@@ -93,7 +93,7 @@ class QuestionModal extends React.Component {
                         </ul>
                       </form>
                     </div>
-                    {/* <div className="panel-block">
+                    <div className="panel-block">
                       <ul className="informers-list">
                         <li className="informer-block">
                           <div
@@ -146,7 +146,7 @@ class QuestionModal extends React.Component {
                           <b className="informer-value">8%</b>
                         </li>
                       </ul>
-                    </div> */}
+                    </div>
                     <div className="panel-block">
                       <strong className="subtitle">Student’s Notes:</strong>
                       <div
