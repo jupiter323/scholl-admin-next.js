@@ -155,7 +155,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={'assigned' + index}
+        index={`assigned${index}`}
       />
     ));
   };
@@ -174,7 +174,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={'overdue' + index}
+        index={`overdue${index}`}
       />
     ));
   };
@@ -232,6 +232,7 @@ class DetailTestList extends React.Component {
       test_problem_id,
       answer,
     };
+    console.log('log: activeTest', this.state.activeTest);
     await addStudentAnswerToTestApi(postBody);
   };
 

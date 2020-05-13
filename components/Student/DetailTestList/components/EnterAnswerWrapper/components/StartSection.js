@@ -12,7 +12,7 @@ class StartReadingTest extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
-    console.log('log: testSection', testSection);
+
     if (!testSection.problems) return;
     const updatedProblems = update(this.state.sampleProblems, {
       $set: testSection.problems.problems,

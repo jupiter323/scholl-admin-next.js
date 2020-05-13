@@ -865,7 +865,6 @@ function* watchForExcuseStudentLateness() {
 function* handleExcuseStudentLateness(action) {
   try {
     yield call(excuseStudentLessonLatenessApi, action.lessons);
-    console.log('log: action.lessons', action.lessons);
     yield put({
       type: SET_EXCUSE_STUDENT_LATENESS,
       payload: action.lessons,

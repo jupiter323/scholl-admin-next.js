@@ -433,7 +433,7 @@ export const fetchSectionsByTestIdApi = (student_id, test_id) =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => { console.log(data.sections); return data.sections; })
+    .then(({ data }) => data.sections)
     .catch(err => err);
 
 export const fetchProblemsByStudentTestIdApi = (student_id, student_test_id, student_token, section_id) =>

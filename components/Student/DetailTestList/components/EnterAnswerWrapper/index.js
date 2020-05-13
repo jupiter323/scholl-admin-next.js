@@ -86,11 +86,12 @@ class EnterAnswerWrapper extends React.Component {
     });
     this.setState({ updatedState });
     if (name === "showInCompleteTest") {
-      console.log('log: currentSection', currentSection);
       const currentSection = this.getCurrentTestProblems();
-      const test_section_id = currentSection.test_section_id;
+      const test_section_id = currentSection.id;
+
       const postBody = {
-        test_section_id,
+        student_test_id: currentSection.student_test_id,
+        student_test_section_id: test_section_id,
         student_test_section_status: "STARTED",
       };
       await updateStudentTestSectionStatusApi(postBody);
@@ -172,7 +173,8 @@ class EnterAnswerWrapper extends React.Component {
           });
       }
       const postBody = {
-        test_section_id: activeTest.id,
+        student_test_id: activeTest.student_test_id,
+        student_test_section_id: activeTest.id,
         student_test_section_status: "COMPLETED",
       };
       console.log('log: activeTest', activeTest);
