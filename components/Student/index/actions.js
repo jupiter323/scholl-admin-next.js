@@ -2,7 +2,6 @@ import {
   FETCH_STUDENTS,
   SET_STUDENTS,
   SEARCH_STUDENTS,
-  CREATE_STUDENT,
   DELETE_STUDENT,
   UPDATE_STUDENT_ADDRESS,
   UPDATE_STUDENT_CITY,
@@ -149,13 +148,6 @@ export function setStudents(students) {
   return {
     type: SET_STUDENTS,
     students,
-  };
-}
-
-export function createStudent(student) {
-  return {
-    type: CREATE_STUDENT,
-    student,
   };
 }
 

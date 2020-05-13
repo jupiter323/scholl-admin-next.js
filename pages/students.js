@@ -10,12 +10,15 @@ import PropTypes from "prop-types";
 import { createStructuredSelector } from "reselect";
 import {
   fetchStudents,
-  createStudent,
   deleteStudent,
   setStudents,
   setActiveStudentToken,
   setActiveStudent,
 } from "../components/Student/index/actions";
+
+
+import { createStudentApi } from "../components/Student/index/api";
+
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
 import FilterSection from "../components/Student/ListPage/Components/FilterSection";
@@ -121,14 +124,13 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = () => {
+  onSaveNewStudent = async() => {
     const { newStudent: previousStudentState } = this.state;
     const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
-    const { onCreateStudent, onFetchStudents } = this.props;
+    const { onFetchStudents } = this.props;
     if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
-    onCreateStudent(previousStudentState);
-
+    createStudentApi(previousStudentState);
     const newStudent = update(previousStudentState, {
       $set: {
         active: false,
@@ -153,7 +155,7 @@ class Students extends Component {
       },
     });
     this.setState({ newStudent });
-    onFetchStudents();
+    // onFetchStudents();
     this.onCloseStudentModal();
   };
 
@@ -432,7 +434,6 @@ const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
   onSetActiveStudent: student => dispatch(setActiveStudent(student)),
   onFetchAllLocationns: () => dispatch(fetchAllLocationns())

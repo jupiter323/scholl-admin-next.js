@@ -1,7 +1,6 @@
 import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
-  CREATE_STUDENT,
   DELETE_STUDENT,
   UPDATE_STUDENT_ADDRESS,
   UPDATE_STUDENT_CITY,
@@ -258,21 +257,6 @@ export function* searchStudents(filters) {
     }
   } catch (err) {
     console.warn("Error occurred in searchStudents saga", err);
-  }
-}
-
-export function* watchForCreateStudent() {
-  while (true) {
-    try {
-      const { student } = yield take(CREATE_STUDENT);
-      const response = yield call(createStudentApi, student);
-      if (response && response.message) {
-        return console.warn("Something went wrong with adding a new student!");
-      }
-      yield call(fetchStudents);
-    } catch (err) {
-      console.warn("Error occurred in watchForAddStudent", err);
-    }
   }
 }
 
@@ -937,7 +921,6 @@ export default function* defaultSaga() {
     watchForFetchStudentTests(),
     watchForFetchStudentTestSections(),
     watchForSearchStudents(),
-    watchForCreateStudent(),
     watchForDeleteStudent(),
     watchForUpdateStudentFirstName(),
     watchForUpdateStudentLastName(),
