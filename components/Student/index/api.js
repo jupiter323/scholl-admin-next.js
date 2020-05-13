@@ -14,27 +14,27 @@ export const fetchStudentsApi = () =>
     .then(res => res.json())
     .then(({ data }) => {
       const formattedStudents = data.students.map(student => ({
-        id: student.user_address.user_id,
+        id: student.id,
         active: false,
         studentInformation: {
           firstName: student.first_name,
           lastName: student.last_name,
         },
         contactInformation: {
-          phone: student.user_address.phone,
-          addressLine1: student.user_address.address,
+          phone: student.user_address && student.user_address.phone ? student.user_address.phone : "",
+          addressLine1: student.user_address && student.user_address.address ? student.user_address.address : "",
           addressLine2: "",
-          city: student.user_address.city,
-          state: student.user_address.state,
-          zipCode: student.user_address.zip,
+          city: student.user_address && student.user_address.city ? student.user_address.city : "",
+          state: student.user_address && student.user_address.state ? student.user_address.state : "",
+          zipCode: student.user_address && student.user_address.zip ? student.user_address.zip : "",
         },
         emailAddress: {
-          email: student.email,
+          email: student.email ? student.email : "",
         },
         location: {
-          locations: student.user_locations,
+          locations: student.user_locations ? student.user_locations : [],
         },
-        stats: student.stats,
+        stats: student.stats ? student.stats : "",
         tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
         testScores: {
           initialScore: !student.hasOwnProperty("testScores")
@@ -189,42 +189,19 @@ export const searchStudentsApi = filters => {
     .catch(err => err);
 };
 
-export const createStudentApi = student => {
-  const { firstName: first_name, lastName: last_name } = student.studentInformation;
-  const { email } = student.emailAddress;
-  const {
-    state,
-    addressLine1,
-    addressLine2,
-    city,
-    phone,
-    zipCode: zip,
-  } = student.contactInformation;
-  const { locations } = student.location;
-  const studentPayload = {
-    first_name,
-    last_name,
-    email,
-    state,
-    locations,
-    phone,
-    address: `${addressLine1}\n${addressLine2}`,
-    city,
-    zip,
-  };
+export const createStudentApi = student =>
   fetch(`${API_URL}/api/commands/create-student`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: JSON.stringify(studentPayload),
+    body: JSON.stringify(student),
   })
     .then(res => res.json())
     .catch(err => err);
-};
-
 export const updateStudentActivationApi = body =>
   fetch(`${API_URL}/api/commands/update-student-activation`, {
     method: "PATCH",
@@ -417,7 +394,7 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
     .catch(err => err);
 };
 
-export const fetchStudentTestSectionsApi = (student_id,student_test_id,student_token) =>
+export const fetchStudentTestSectionsApi = (student_id, student_test_id, student_token) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections`, {
     headers: {
       Accept: "application/json",
@@ -432,7 +409,7 @@ export const fetchStudentTestSectionsApi = (student_id,student_test_id,student_t
       return { formattedData };
     })
     .catch(err => err);
-export const fetchStudentTestSectionProblemsApi = (student_id,student_test_id, section,student_token) =>
+export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, section, student_token) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section}/problems`, {
     headers: {
       Accept: "application/json",
@@ -475,7 +452,7 @@ export const addStudentTestQuestionFlagApi = (body, studentToken) =>
     .then(res => res.json())
     .catch(err => err);
 
-export const fetchStudentTestScoreApi = (student_id,student_test_id) =>
+export const fetchStudentTestScoreApi = (student_id, student_test_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/score`, {
     headers: {
       Accept: "application/json",

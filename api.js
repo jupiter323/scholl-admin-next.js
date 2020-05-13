@@ -1,7 +1,6 @@
 import {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -71,7 +70,6 @@ export const classApi = {
 export const studentApi = {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,

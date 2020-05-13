@@ -94,7 +94,6 @@ import { studentApi, classApi, instructorApi, lessonApi, userApi, locationsApi }
 const {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,

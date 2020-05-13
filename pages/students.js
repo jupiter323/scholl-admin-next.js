@@ -102,14 +102,14 @@ class Students extends Component {
     }
   };
 
-  componentDidUpdate() {
-    const { students: studentState } = this.state;
-    const { students } = this.props;
-    if (studentState.length === 0 && students.length > 0) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ students });
-    }
-  }
+  // componentDidUpdate() {
+  //   const { students: studentState } = this.state;
+  //   const { students } = this.props;
+  //   if (studentState.length === 0 && students.length > 0) {
+  //     // eslint-disable-next-line react/no-did-update-set-state
+  //     this.setState({ students });
+  //   }
+  // }
 
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
@@ -124,13 +124,35 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = async() => {
+  onSaveNewStudent = async () => {
     const { newStudent: previousStudentState } = this.state;
     const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
-    const { onFetchStudents } = this.props;
     if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
-    createStudentApi(previousStudentState);
+    const { firstName: first_name, lastName: last_name } = previousStudentState.studentInformation;
+    const { email } = previousStudentState.emailAddress;
+    const {
+      state,
+      addressLine1,
+      addressLine2,
+      city,
+      phone,
+      zipCode: zip,
+    } = previousStudentState.contactInformation;
+    const { locations } = previousStudentState.location;
+    const formattedLocations = locations.map(location => location.id);
+    const studentPayload = {
+      first_name,
+      last_name,
+      email,
+      state,
+      locations: formattedLocations,
+      phone,
+      address: `${addressLine1}\n${addressLine2}`,
+      city,
+      zip,
+    };
+    await createStudentApi(studentPayload);
     const newStudent = update(previousStudentState, {
       $set: {
         active: false,
@@ -155,7 +177,6 @@ class Students extends Component {
       },
     });
     this.setState({ newStudent });
-    // onFetchStudents();
     this.onCloseStudentModal();
   };
 
