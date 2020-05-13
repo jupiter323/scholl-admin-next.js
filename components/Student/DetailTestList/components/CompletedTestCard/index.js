@@ -76,7 +76,7 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      test: { test_name, test_description, due_date, completion_date, test_id },
+      test: { test_name, test_description, due_date, completion_date, student_test_id },
       onEditTest,
       onEnterAnswers,
     } = this.props;
@@ -132,7 +132,7 @@ class CompletedTestCard extends React.Component {
                                 className="dropdown-content"
                               >
                                 <li>
-                                  <a href="#" onClick={() => onEnterAnswers(test_id)}>
+                                  <a href="#" onClick={() => onEnterAnswers(student_test_id)}>
                                     Edit/Enter Answers
                                   </a>
                                 </li>
