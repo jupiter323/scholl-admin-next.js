@@ -38,7 +38,8 @@ import {
   updateClassExcludeFromStatisticsApi,
 } from './components/Classes/index/api';
 
-import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
+import {
+  fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
@@ -52,6 +53,10 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
 import {
   fetchCurrentUserApi,
 } from './components/User/index/api';
+
+import {
+  fetchAllLocationsApi,
+} from './components/Location/index/api';
 
 export const classApi = {
   createClassApi,
@@ -110,3 +115,8 @@ export const instructorApi = {
 export const userApi = {
   fetchCurrentUserApi,
 };
+
+
+export const locationsApi = {
+  fetchAllLocationsApi,
+}

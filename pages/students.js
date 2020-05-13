@@ -30,6 +30,14 @@ import {
   studentLastNameDescending,
 } from "../components/utils/sortFunctions";
 import { loggedIn, logIn } from "../utils/AuthService";
+
+
+import {
+  fetchAllLocationns
+} from '../components/Location/index/actions';
+
+import { makeSelectLocations } from "../components/Location/index/selectors";
+
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
@@ -81,9 +89,12 @@ class Students extends Component {
     if (!loggedIn()) {
       Router.push("/login");
     } else {
-      const { onFetchStudents, students } = this.props;
+      const { onFetchStudents, students, locations, onFetchAllLocationns } = this.props;
       if (students.length === 0) {
         onFetchStudents();
+      }
+      if (locations.length === 0) {
+        onFetchAllLocationns();
       }
     }
   };
@@ -202,7 +213,7 @@ class Students extends Component {
 
   onHandleStudentCard = async index => {
     const { students } = this.state;
-    const { onSetActiveStudentToken,onSetActiveStudent } = this.props;
+    const { onSetActiveStudentToken, onSetActiveStudent } = this.props;
     onSetActiveStudent(students[index])
     this.setState({ selectedStudent: students[index] });
     const { emailAddress: { email } } = students[index];
@@ -409,10 +420,12 @@ Students.propTypes = {
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
   onSetStudents: PropTypes.func.isRequired,
+  locations: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   students: makeSelectStudents(),
+  locations: makeSelectLocations(),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -422,6 +435,7 @@ const mapDispatchToProps = dispatch => ({
   onCreateStudent: student => dispatch(createStudent(student)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
   onSetActiveStudent: student => dispatch(setActiveStudent(student)),
+  onFetchAllLocationns: () => dispatch(fetchAllLocationns())
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
