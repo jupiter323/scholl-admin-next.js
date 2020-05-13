@@ -13,7 +13,7 @@ import {
 } from "../User/index/selectors";
 import { loggedIn } from "../../utils/AuthService";
 
-import { setUserIsLogged } from "../User/index/actions";
+import { setUserIsLogged,getCurrentUser } from "../User/index/actions";
 import { LogoutApi } from "../User/index/api";
 import $ from "jquery";
 import Router from "next/router";
@@ -77,7 +77,10 @@ class SideNav extends Component {
 
   componentDidMount() {
     const isLogged = loggedIn();
-    const { onSetUserIsLogged } = this.props;
+    const { onSetUserIsLogged,onFetchCurrentUser,currentUser } = this.props;
+    if(!currentUser){
+      onFetchCurrentUser();
+    }
     onSetUserIsLogged(isLogged);
     $(".sidenav").sidenav();
   }
@@ -91,7 +94,6 @@ class SideNav extends Component {
 
   render() {
     const { isLogged, currentUser } = this.props;
-    const { first_name: firstName, last_name: lastName } = currentUser;
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
@@ -124,7 +126,7 @@ class SideNav extends Component {
               <Link href="/account">
                 <a>
                   <div className="block white-text">
-                    {isLogged ? `${firstName} ${lastName}` : ""}
+                    {isLogged && currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Loading..."}
                   </div>
                 </a>
               </Link>
@@ -145,6 +147,7 @@ SideNav.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     onSetUserIsLogged: (value) => dispatch(setUserIsLogged(value)),
+    onFetchCurrentUser: () => dispatch(getCurrentUser()),
   };
 }
 

@@ -11,7 +11,6 @@ import DetailLessonList from "../DetailLessonList";
 import DetailTestList from "../DetailTestList";
 import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
 import StudentNavBar from "../components/StudentNavBar";
-import ScoredTestListPage from "../ScoredTestListPage";
 import SessionCalendar from "../Calendar";
 
 import {
@@ -80,9 +79,6 @@ class IndividualStudentPage extends React.Component {
     }
     if (activePage === "test") {
       return <DetailTestList user={student} />;
-    }
-    if (activePage === "scored-tests") {
-      return <ScoredTestListPage />;
     }
     if (activePage === "calendar") {
       return <SessionCalendar user={student} />;

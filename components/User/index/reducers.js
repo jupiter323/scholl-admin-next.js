@@ -6,7 +6,7 @@ import {
 
 const initialState = fromJS({
   isLogged: false,
-  user: {},
+  user: null,
 });
 
 function userReducer(state = initialState, action) {
