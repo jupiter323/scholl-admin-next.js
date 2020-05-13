@@ -186,9 +186,11 @@ class EnterAnswerWrapper extends React.Component {
     const {
       onCloaseAnswerWrapper,
       open,
-      test: { test_description },
+      // test: { test_description },
+      test,
       onAddStudentAnswerToTest,
     } = this.props;
+    if (!test) return;
     return (
       <React.Fragment>
         {open && (
@@ -197,7 +199,7 @@ class EnterAnswerWrapper extends React.Component {
               <NavBar
                 onCloaseAnswerWrapper={onCloaseAnswerWrapper}
                 onSetActivePage={this.onSetActivePage}
-                testDescription={test_description}
+                testDescription={""}
               />
               <PreStartTestSection
                 open={previewTest}

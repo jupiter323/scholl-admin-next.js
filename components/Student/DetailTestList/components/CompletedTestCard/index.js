@@ -77,6 +77,7 @@ class CompletedTestCard extends React.Component {
       dropdownIsOpen,
       onDownloadReport,
       test: { test_name, test_description, dueDate, completion_date, test_id },
+      test,
       onEditTest,
       onEnterAnswers,
     } = this.props;
@@ -132,7 +133,7 @@ class CompletedTestCard extends React.Component {
                                 className="dropdown-content"
                               >
                                 <li>
-                                  <a href="#" onClick={() => onEnterAnswers(test_id)}>
+                                  <a href="#" onClick={() => onEnterAnswers(test.student_test_id)}>
                                     Edit/Enter Answers
                                   </a>
                                 </li>
@@ -235,17 +236,17 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                  <li>
-                    <span className="badge-circle">
-                      <span className="badge-text">
-                        <strong>
-                          <h2 style={{ marginBottom: "10px" }}>Math</h2>
-                        </strong>
-                        <h2 style={{ marginBottom: "15px" }}>n/a</h2>
-                      </span>
+                <li>
+                  <span className="badge-circle">
+                    <span className="badge-text">
+                      <strong>
+                        <h2 style={{ marginBottom: "10px" }}>Math</h2>
+                      </strong>
+                      <h2 style={{ marginBottom: "15px" }}>n/a</h2>
                     </span>
-                  </li>
-                )}
+                  </span>
+                </li>
+              )}
               {ReadingAndWrigingScore ? (
                 <li>
                   <span
@@ -274,19 +275,19 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                  <li>
-                    <span className="badge-circle">
-                      <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
-                        <strong>
+                <li>
+                  <span className="badge-circle">
+                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
+                      <strong>
                           Reading
                         <br />
                         &amp; Writing
                       </strong>
-                        <h2>n/a</h2>
-                      </span>
+                      <h2>n/a</h2>
                     </span>
-                  </li>
-                )}
+                  </span>
+                </li>
+              )}
 
               {ReadingScore ? (
                 <li>
@@ -313,22 +314,22 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                  <li>
-                    <span
-                      className="badge-circle"
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                      }}
-                    >
-                      <span className="badge-text" style={{ fontSize: "16px" }}>
+                <li>
+                  <span
+                    className="badge-circle"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                    }}
+                  >
+                    <span className="badge-text" style={{ fontSize: "16px" }}>
                         Reading
                       <br />
-                        <h3 style={{ marginTop: "10px" }}>n/a</h3>
-                      </span>
+                      <h3 style={{ marginTop: "10px" }}>n/a</h3>
                     </span>
-                  </li>
-                )}
+                  </span>
+                </li>
+              )}
               {WritingScore ? (
                 <li>
                   <span
@@ -352,22 +353,22 @@ class CompletedTestCard extends React.Component {
                   </span>
                 </li>
               ) : (
-                  <li>
-                    <span
-                      className="badge-circle"
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                      }}
-                    >
-                      <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
+                <li>
+                  <span
+                    className="badge-circle"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                    }}
+                  >
+                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
                         Writing
                       <br />
-                        <h2>n/a</h2>
-                      </span>
+                      <h2>n/a</h2>
                     </span>
-                  </li>
-                )}
+                  </span>
+                </li>
+              )}
             </ul>
           </div>
         </div>
