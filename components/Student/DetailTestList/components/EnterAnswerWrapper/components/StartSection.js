@@ -6,17 +6,19 @@ class StartReadingTest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sampleProblems: []
+      sampleProblems: [],
     };
   }
 
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
+    console.log('log: testSection', testSection);
+    if (!testSection.problems) return;
     const updatedProblems = update(this.state.sampleProblems, {
-      $set: testSection.problems
+      $set: testSection.problems.problems,
     });
     this.setState({
-      sampleProblems: updatedProblems
+      sampleProblems: updatedProblems,
     });
   };
 
@@ -34,7 +36,7 @@ class StartReadingTest extends React.Component {
               style={{
                 color: "#fff",
                 borderColor: "#19b4e9",
-                backgroundColor: "#19b4e9"
+                backgroundColor: "#19b4e9",
               }}
             >
               B
@@ -52,7 +54,7 @@ class StartReadingTest extends React.Component {
   };
 
   render() {
-    const { open, onSetActivePage, testSection:{problems,time_limit}  } = this.props;
+    const { open, onSetActivePage, testSection: { problems, time_limit } } = this.props;
     return (
       <React.Fragment>
         {open && problems && (
@@ -100,7 +102,7 @@ class StartReadingTest extends React.Component {
 StartReadingTest.propTypes = {
   open: PropTypes.bool.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
-  testSection: PropTypes.object.isRequired
+  testSection: PropTypes.object.isRequired,
 };
 
 export default StartReadingTest;

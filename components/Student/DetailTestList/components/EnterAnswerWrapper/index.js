@@ -45,7 +45,7 @@ class EnterAnswerWrapper extends React.Component {
       sections,
       studentToken,
       test: { student_test_id },
-      activeStudent:{id}
+      activeStudent: { id },
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
@@ -86,6 +86,7 @@ class EnterAnswerWrapper extends React.Component {
     });
     this.setState({ updatedState });
     if (name === "showInCompleteTest") {
+      console.log('log: currentSection', currentSection);
       const currentSection = this.getCurrentTestProblems();
       const test_section_id = currentSection.test_section_id;
       const postBody = {
@@ -141,14 +142,14 @@ class EnterAnswerWrapper extends React.Component {
     const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
     if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
       const { onOpentTestScore } = this.props;
-      onOpentTestScore(activeTest)
+      onOpentTestScore(activeTest);
     } else {
       const sectionName = activeTest.name;
       switch (sectionName) {
         case "Reading":
           this.setState({
             readingSectionCompleted: true,
-          })
+          });
           break;
         case "Writing":
           this.setState({
@@ -157,23 +158,24 @@ class EnterAnswerWrapper extends React.Component {
           break;
         case "Math (No Calculator)":
           this.setState({
-            mathNoCalcSectionCompleted: true
+            mathNoCalcSectionCompleted: true,
           });
           break;
         case "Math (Calculator)":
           this.setState({
-            mathCalcSectionCompleted: true
+            mathCalcSectionCompleted: true,
           });
           break;
         default:
           this.setState({
             readingSectionCompleted: true,
-          })
+          });
       }
       const postBody = {
-        test_section_id: activeTest.test_section_id,
-        student_test_section_status: "COMPLETED"
+        test_section_id: activeTest.id,
+        student_test_section_status: "COMPLETED",
       };
+      console.log('log: activeTest', activeTest);
       await updateStudentTestSectionStatusApi(postBody);
     }
   }

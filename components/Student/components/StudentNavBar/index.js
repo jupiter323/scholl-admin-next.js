@@ -46,7 +46,7 @@ const StudentNavBar = ({ activePage, onSetActivePage }) => (
           onClick={() => onSetActivePage('test')}
           href="#"
         >
-          Test Sections
+          Tests
         </a>
       </li>
       <li>

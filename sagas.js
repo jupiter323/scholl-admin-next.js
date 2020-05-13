@@ -113,6 +113,7 @@ const {
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
+  fetchSectionsByTestIdApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -178,15 +179,21 @@ export function* fetchUnits() {
 export function* watchForFetchStudentTestSections() {
   while (true) {
     const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    const { postBody: { id,student_test_id, studentToken } } = payload;
-    yield call(fetchStudentTestSections, id,student_test_id, studentToken);
+    const { postBody: { id, student_test_id, studentToken } } = payload;
+    yield call(fetchStudentTestSections, id, student_test_id, studentToken);
   }
 }
 
-export function* fetchStudentTestSections(id,studentTestId, studentToken) {
+export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, id,studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.data.test.sections));
+    const testSections = yield call(fetchSectionsByTestIdApi, id, studentTestId);
+    let count = 0;
+    while (count < testSections.length) {
+      const problems = yield call(fetchProblemsByStudentTestIdApi, id, studentTestId, studentToken, testSections[count].id);
+      testSections[count].problems = problems;
+      count++;
+    }
+    yield put(setStudentSections(testSections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
