@@ -17,7 +17,7 @@ export const fetchStudentsApi = () =>
         const { user_address } = student;
         return ({
           id: student.id,
-          active: false,
+          active: student.active,
           studentInformation: {
             firstName: student.first_name,
             lastName: student.last_name,
@@ -154,7 +154,7 @@ export const searchStudentsApi = filters => {
         const { user_address } = student;
         return ({
           id: student.id,
-          active: false,
+          active: student.active,
           studentInformation: {
             firstName: student.first_name,
             lastName: student.last_name,

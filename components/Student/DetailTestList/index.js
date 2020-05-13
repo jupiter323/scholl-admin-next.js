@@ -232,7 +232,6 @@ class DetailTestList extends React.Component {
       test_problem_id,
       answer,
     };
-    console.log('log: activeTest', this.state.activeTest);
     await addStudentAnswerToTestApi(postBody);
   };
 

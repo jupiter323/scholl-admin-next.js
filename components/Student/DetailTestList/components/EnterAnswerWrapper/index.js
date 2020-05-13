@@ -177,7 +177,6 @@ class EnterAnswerWrapper extends React.Component {
         student_test_section_id: activeTest.id,
         student_test_section_status: "COMPLETED",
       };
-      console.log('log: activeTest', activeTest);
       await updateStudentTestSectionStatusApi(postBody);
     }
   }
