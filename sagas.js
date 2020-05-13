@@ -100,7 +100,7 @@ const {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi,
+  fetchStudentTestSectionsApi,
   fetchLessonListApi,
   fetchUnitsApi,
   fetchStudentLessonListApi,
@@ -185,8 +185,8 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id,studentTestId, studentToken) {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, id,studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.data.test.sections));
+    const { formattedData } = yield call(fetchStudentTestSectionsApi, id,studentTestId, studentToken);
+    yield put(setStudentSections(formattedData.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }

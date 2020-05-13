@@ -526,7 +526,6 @@ class LessonDetailAnswerSheet extends React.Component {
             </div>
           </div>
         </div>
-        Î{" "}
       </React.Fragment>
     );
   }

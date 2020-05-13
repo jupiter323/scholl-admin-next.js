@@ -417,8 +417,23 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
     .catch(err => err);
 };
 
-export const fetchProblemsByStudentTestIdApi = (student_id,student_test_id, student_token) =>
-  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/problems`, {
+export const fetchStudentTestSectionsApi = (student_id,student_test_id,student_token) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections`, {
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${student_token}`,
+    },
+  })
+    .then(res => res.json())
+    .then(({ data }) => {
+      const formattedData = data;
+      return { formattedData };
+    })
+    .catch(err => err);
+export const fetchStudentTestSectionProblemsApi = (student_id,student_test_id, section,student_token) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
