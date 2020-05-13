@@ -102,14 +102,14 @@ class Students extends Component {
     }
   };
 
-  // componentDidUpdate() {
-  //   const { students: studentState } = this.state;
-  //   const { students } = this.props;
-  //   if (studentState.length === 0 && students.length > 0) {
-  //     // eslint-disable-next-line react/no-did-update-set-state
-  //     this.setState({ students });
-  //   }
-  // }
+  componentDidUpdate() {
+    const { students: studentState } = this.state;
+    const { students } = this.props;
+    if (studentState.length === 0 && students.length > 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ students });
+    }
+  }
 
   onOpenStudentModal = () => this.setState({ studentModalOpen: true });
   onCloseStudentModal = () => this.setState({ studentModalOpen: false });
