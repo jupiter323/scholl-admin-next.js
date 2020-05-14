@@ -76,7 +76,7 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      test: { test_name, test_description, due_date, completion_date, student_test_id },
+      test: { test_name, test_description, due_date, completion_date, student_test_id, student_id },
       onEditTest,
       onEnterAnswers,
       onDeleteTest,
@@ -148,7 +148,7 @@ class CompletedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="disabled">
+                                  <a href="#" onClick={() => {}}>
                                     Mark flags reviewed
                                   </a>
                                 </li>
@@ -158,7 +158,7 @@ class CompletedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="red-text text-darken-3">
+                                  <a href="#" onClick={() => onDeleteTest(student_test_id, student_id)} className="red-text text-darken-3">
                                     Unassign
                                   </a>
                                 </li>

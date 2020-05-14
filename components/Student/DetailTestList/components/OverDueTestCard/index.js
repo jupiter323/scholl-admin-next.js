@@ -85,7 +85,7 @@ class OverDueTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="disabled">
+                                  <a href="#" onClick={() => {}}>
                                     Mark flags reviewed
                                   </a>
                                 </li>
