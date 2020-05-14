@@ -87,7 +87,7 @@ class BubbleGroup extends React.Component {
     console.log('log: is correct', is_correct);
     console.log('log:lesson', lesson);
     const matchingAnswers = correctAnswerIndex === studentAnswerIndex;
-    const condition = matchingAnswers || is_correct;
+    const condition = correctAnswerIndex ? matchingAnswers : is_correct;
     if (correctAnswerIndex === index && condition) {
       return styles.greenFilled;
     }
