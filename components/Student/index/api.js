@@ -400,13 +400,12 @@ export const fetchStudentTestSectionsApi = (student_id, student_test_id, student
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${student_token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedData = data;
-      return { formattedData };
+      return data.sections
     })
     .catch(err => err);
 export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, section, student_token) =>
@@ -415,13 +414,12 @@ export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, 
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${student_token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedData = data;
-      return { formattedData };
+      return data;
     })
     .catch(err => err);
 
