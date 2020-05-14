@@ -124,10 +124,10 @@ class DetailTestList extends React.Component {
   mapCompletedTests = () => {
     const { dropdownIndex, dropdownIsOpen } = this.state;
     const { completes } = this.props;
-    return completes.map(test => (
+    return completes.map((test, index) => (
       <CompletedTestCard
         test={test}
-        index={test.test_id}
+        index={'completed' + index}
         key={test.test_id}
         onEnterAnswers={this.onEnterAnswers}
         onEditTest={() => this.onToggleEditTestModal(test)}
