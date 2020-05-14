@@ -77,17 +77,24 @@ class BubbleGroup extends React.Component {
   renderBubbleStyle = index => {
     const {
       lesson: { is_correct },
+      lesson,
     } = this.props;
     const answerIds = this.props.lesson.problem.answers.map(answer => answer.id);
     const correctAnswerIndex = this.getCorrectAnswerIndex(answerIds);
     const studentAnswerIndex = this.getStudentAnswerIndex(answerIds);
-    if (correctAnswerIndex === index && is_correct) {
+    console.log('log: correctAnswerIndex', correctAnswerIndex);
+    console.log('log: studentAnswerIndex', studentAnswerIndex);
+    console.log('log: is correct', is_correct);
+    console.log('log:lesson', lesson);
+    const matchingAnswers = correctAnswerIndex === studentAnswerIndex;
+    const condition = matchingAnswers || is_correct;
+    if (correctAnswerIndex === index && condition) {
       return styles.greenFilled;
     }
-    if (correctAnswerIndex === index && !is_correct) {
+    if (correctAnswerIndex === index && !condition) {
       return styles.greenBorderOnly;
     }
-    if (index === studentAnswerIndex && !is_correct) {
+    if (index === studentAnswerIndex && !condition) {
       return styles.red;
     }
     if (index !== studentAnswerIndex && index !== correctAnswerIndex) {
