@@ -1,7 +1,6 @@
 import {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -12,7 +11,7 @@ import {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi,
+  fetchStudentTestSectionsApi,
   fetchLessonListApi,
   fetchUnitsApi,
   fetchStudentLessonListApi,
@@ -26,7 +25,8 @@ import {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   addStudentLessonProblemAnswerApi,
-  fetchSectionsByTestIdApi,
+  fetchProblemsByStudentTestIdApi,
+  // fetchSectionsByTestIdApi,
 } from "./components/Student/index/api";
 
 import {
@@ -39,7 +39,8 @@ import {
   updateClassExcludeFromStatisticsApi,
 } from './components/Classes/index/api';
 
-import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
+import {
+  fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
@@ -54,6 +55,10 @@ import {
   fetchCurrentUserApi,
 } from './components/User/index/api';
 
+import {
+  fetchAllLocationsApi,
+} from './components/Location/index/api';
+
 export const classApi = {
   createClassApi,
   fetchClassesApi,
@@ -67,7 +72,6 @@ export const classApi = {
 export const studentApi = {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -78,7 +82,7 @@ export const studentApi = {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi,
+  fetchStudentTestSectionsApi,
   fetchLessonListApi,
   fetchUnitsApi,
   fetchStudentLessonListApi,
@@ -92,7 +96,8 @@ export const studentApi = {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   addStudentLessonProblemAnswerApi,
-  fetchSectionsByTestIdApi,
+  fetchProblemsByStudentTestIdApi,
+  // fetchSectionsByTestIdApi,
 };
 
 export const instructorApi = {
@@ -111,4 +116,9 @@ export const instructorApi = {
 
 export const userApi = {
   fetchCurrentUserApi,
+};
+
+
+export const locationsApi = {
+  fetchAllLocationsApi,
 };

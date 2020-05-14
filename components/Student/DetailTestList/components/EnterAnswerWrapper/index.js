@@ -55,7 +55,7 @@ class EnterAnswerWrapper extends React.Component {
       };
       onFetchStudentTestSections(postBody);
     } else {
-      this.onSetProblems(sections, student_test_id);
+      // this.onSetProblems(sections, student_test_id);
     }
   };
 

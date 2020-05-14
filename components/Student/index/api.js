@@ -195,42 +195,19 @@ export const searchStudentsApi = filters => {
     .catch(err => err);
 };
 
-export const createStudentApi = student => {
-  const { firstName: first_name, lastName: last_name } = student.studentInformation;
-  const { email } = student.emailAddress;
-  const {
-    state,
-    addressLine1,
-    addressLine2,
-    city,
-    phone,
-    zipCode: zip,
-  } = student.contactInformation;
-  const { locations } = student.location;
-  const studentPayload = {
-    first_name,
-    last_name,
-    email,
-    state,
-    locations,
-    phone,
-    address: `${addressLine1}\n${addressLine2}`,
-    city,
-    zip,
-  };
+export const createStudentApi = student =>
   fetch(`${API_URL}/api/commands/create-student`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: JSON.stringify(studentPayload),
+    body: JSON.stringify(student),
   })
     .then(res => res.json())
     .catch(err => err);
-};
-
 export const updateStudentActivationApi = body =>
   fetch(`${API_URL}/api/commands/update-student-activation`, {
     method: "PATCH",
@@ -423,8 +400,8 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
     .catch(err => err);
 };
 
-export const fetchSectionsByTestIdApi = (student_id, test_id) =>
-  fetch(`${API_URL}/api/students/${student_id}/student_tests/${test_id}/sections`, {
+export const fetchStudentTestSectionsApi = (student_id, student_test_id, student_token) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",

@@ -10,12 +10,15 @@ import PropTypes from "prop-types";
 import { createStructuredSelector } from "reselect";
 import {
   fetchStudents,
-  createStudent,
   deleteStudent,
   setStudents,
   setActiveStudentToken,
   setActiveStudent,
 } from "../components/Student/index/actions";
+
+
+import { createStudentApi } from "../components/Student/index/api";
+
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
 import FilterSection from "../components/Student/ListPage/Components/FilterSection";
@@ -30,6 +33,14 @@ import {
   studentLastNameDescending,
 } from "../components/utils/sortFunctions";
 import { loggedIn, logIn } from "../utils/AuthService";
+
+
+import {
+  fetchAllLocationns,
+} from '../components/Location/index/actions';
+
+import { makeSelectLocations } from "../components/Location/index/selectors";
+
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
@@ -81,9 +92,12 @@ class Students extends Component {
     if (!loggedIn()) {
       Router.push("/login");
     } else {
-      const { onFetchStudents, students } = this.props;
+      const { onFetchStudents, students, locations, onFetchAllLocationns } = this.props;
       if (students.length === 0) {
         onFetchStudents();
+      }
+      if (locations.length === 0) {
+        onFetchAllLocationns();
       }
     }
   };
@@ -110,14 +124,36 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = () => {
+  onSaveNewStudent = async () => {
     const { newStudent: previousStudentState } = this.state;
+    const { onFetchStudents } = this.props;
     const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
-    const { onCreateStudent, onFetchStudents } = this.props;
     if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
-    onCreateStudent(previousStudentState);
-
+    const { firstName: first_name, lastName: last_name } = previousStudentState.studentInformation;
+    const { email } = previousStudentState.emailAddress;
+    const {
+      state,
+      addressLine1,
+      addressLine2,
+      city,
+      phone,
+      zipCode: zip,
+    } = previousStudentState.contactInformation;
+    const { locations } = previousStudentState.location;
+    const formattedLocations = locations.map(location => location.id);
+    const studentPayload = {
+      first_name,
+      last_name,
+      email,
+      state,
+      locations: formattedLocations,
+      phone,
+      address: `${addressLine1}\n${addressLine2}`,
+      city,
+      zip,
+    };
+    await createStudentApi(studentPayload);
     const newStudent = update(previousStudentState, {
       $set: {
         active: false,
@@ -202,8 +238,8 @@ class Students extends Component {
 
   onHandleStudentCard = async index => {
     const { students } = this.state;
-    const { onSetActiveStudentToken,onSetActiveStudent } = this.props;
-    onSetActiveStudent(students[index])
+    const { onSetActiveStudentToken, onSetActiveStudent } = this.props;
+    onSetActiveStudent(students[index]);
     this.setState({ selectedStudent: students[index] });
     const { emailAddress: { email } } = students[index];
     const password = "password";
@@ -409,19 +445,21 @@ Students.propTypes = {
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
   onSetStudents: PropTypes.func.isRequired,
+  locations: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   students: makeSelectStudents(),
+  locations: makeSelectLocations(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
   onSetActiveStudent: student => dispatch(setActiveStudent(student)),
+  onFetchAllLocationns: () => dispatch(fetchAllLocationns()),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

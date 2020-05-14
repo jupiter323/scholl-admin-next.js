@@ -2,7 +2,6 @@ import {
   FETCH_STUDENTS,
   SET_STUDENTS,
   SEARCH_STUDENTS,
-  CREATE_STUDENT,
   DELETE_STUDENT,
   UPDATE_STUDENT_ADDRESS,
   UPDATE_STUDENT_CITY,
@@ -49,7 +48,7 @@ import {
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_TESTS,
-  SET_ACTIVE_STUDENT
+  SET_ACTIVE_STUDENT,
 } from "./constants";
 
 export function fetchStudents() {
@@ -149,13 +148,6 @@ export function setStudents(students) {
   return {
     type: SET_STUDENTS,
     students,
-  };
-}
-
-export function createStudent(student) {
-  return {
-    type: CREATE_STUDENT,
-    student,
   };
 }
 
@@ -356,5 +348,5 @@ export const setTests = (tests) => ({
 
 export const setActiveStudent = (student) => ({
   type: SET_ACTIVE_STUDENT,
-  student
-})
+  student,
+});
