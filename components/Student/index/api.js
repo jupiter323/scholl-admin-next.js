@@ -13,107 +13,110 @@ export const fetchStudentsApi = () =>
   })
     .then(res => res.json())
     .then(({ data }) => {
-      const formattedStudents = data.students.map(student => ({
-        id: student.id,
-        active: false,
-        studentInformation: {
-          firstName: student.first_name,
-          lastName: student.last_name,
-        },
-        contactInformation: {
-          phone: student.user_address && student.user_address.phone ? student.user_address.phone : "",
-          addressLine1: student.user_address && student.user_address.address ? student.user_address.address : "",
-          addressLine2: "",
-          city: student.user_address && student.user_address.city ? student.user_address.city : "",
-          state: student.user_address && student.user_address.state ? student.user_address.state : "",
-          zipCode: student.user_address && student.user_address.zip ? student.user_address.zip : "",
-        },
-        emailAddress: {
-          email: student.email ? student.email : "",
-        },
-        location: {
-          locations: student.user_locations ? student.user_locations : [],
-        },
-        stats: student.stats ? student.stats : "",
-        tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
-        testScores: {
-          initialScore: !student.hasOwnProperty("testScores")
-            ? "0"
-            : student.testScores.initialScore,
-          currentScore: !student.hasOwnProperty("testScores")
-            ? "0"
-            : student.testScores.currentScore,
-        },
-        // courseContext: {
-        //   targetScore: !student.hasOwnProperty("courseContext")
-        //     ? "0"
-        //     : student.courseContext.targetScore
-        // }
-        courseContext: {
-          courseStartDateOption: "secondOption",
-          courseStartDate: "",
-          courseEndDateOption: "secondOption",
-          courseEndDate: "",
-          targetTestDate: "12/12/2019",
-          targetScore: "1400",
-          highSchool: "Everglades High",
-          graduationYear: "2018",
-        },
-        courseProgress: {
-          startDate: "6/03/18",
-          testDate: "10/14/18",
-          progress: "77",
-          improvement: "82",
-          lessons: "73",
-          instruction: "68",
-          practiceTests: "47",
-        },
-        overdueWork: {
-          lessons: "12",
-          worksheets: "3",
-          quizzes: "1",
-          practiceTests: "5",
-        },
-        summary: {
-          questionsAnswered: "791",
-          videoWatched: "416",
-          notesTaken: "52",
-          totalTimeLoggedIn: "220",
-          lastLogIn: "3:12",
-          loginTimeCode: "pm",
-          onTimePercentage: "77",
-        },
-        testScores: {
-          initialScore: "1040",
-          currentScore: "1300",
-          compositeScore: {
-            reading: "83",
-            writing: "31",
-            math: "105",
-            composite: "218",
+      const formattedStudents = data.students.map(student => {
+        const { user_address } = student;
+        return ({
+          id: student.id,
+          active: student.active,
+          studentInformation: {
+            firstName: student.first_name,
+            lastName: student.last_name,
           },
-          subjectScores: {
-            reading: "58",
-            writing: "44",
-            math: "91",
-            composite: "195",
+          contactInformation: {
+            phone: user_address ? user_address.phone : "",
+            addressLine1: user_address ? user_address.address : "",
+            addressLine2: "",
+            city: user_address ? user_address.city : "",
+            state: user_address ? user_address.state : "",
+            zipCode: user_address ? user_address.zip : "",
           },
-        },
-        strengthsAndWeaknesses: {
-          reading: {
-            correctAnswers: "32",
-            totalAnswers: "52",
+          emailAddress: {
+            email: student.email,
           },
-          writing: {
-            correctAnswers: "35",
-            totalAnswers: "52",
+          location: {
+            locations: student.user_locations,
           },
-          math: {
-            correctAnswers: "37",
-            totalAnswers: "52",
+          stats: student.stats,
+          tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
+          testScores: {
+            initialScore: !student.hasOwnProperty("testScores")
+              ? "0"
+              : student.testScores.initialScore,
+            currentScore: !student.hasOwnProperty("testScores")
+              ? "0"
+              : student.testScores.currentScore,
           },
-        },
-      }));
+          // courseContext: {
+          //   targetScore: !student.hasOwnProperty("courseContext")
+          //     ? "0"
+          //     : student.courseContext.targetScore
+          // }
+          courseContext: {
+            courseStartDateOption: "secondOption",
+            courseStartDate: "",
+            courseEndDateOption: "secondOption",
+            courseEndDate: "",
+            targetTestDate: "12/12/2019",
+            targetScore: "1400",
+            highSchool: "Everglades High",
+            graduationYear: "2018",
+          },
+          courseProgress: {
+            startDate: "6/03/18",
+            testDate: "10/14/18",
+            progress: "77",
+            improvement: "82",
+            lessons: "73",
+            instruction: "68",
+            practiceTests: "47",
+          },
+          overdueWork: {
+            lessons: "12",
+            worksheets: "3",
+            quizzes: "1",
+            practiceTests: "5",
+          },
+          summary: {
+            questionsAnswered: "791",
+            videoWatched: "416",
+            notesTaken: "52",
+            totalTimeLoggedIn: "220",
+            lastLogIn: "3:12",
+            loginTimeCode: "pm",
+            onTimePercentage: "77",
+          },
+          testScores: {
+            initialScore: "1040",
+            currentScore: "1300",
+            compositeScore: {
+              reading: "83",
+              writing: "31",
+              math: "105",
+              composite: "218",
+            },
+            subjectScores: {
+              reading: "58",
+              writing: "44",
+              math: "91",
+              composite: "195",
+            },
+          },
+          strengthsAndWeaknesses: {
+            reading: {
+              correctAnswers: "32",
+              totalAnswers: "52",
+            },
+            writing: {
+              correctAnswers: "35",
+              totalAnswers: "52",
+            },
+            math: {
+              correctAnswers: "37",
+              totalAnswers: "52",
+            },
+          },
+        });
+      });
       return formattedStudents;
     });
 
@@ -147,43 +150,46 @@ export const searchStudentsApi = filters => {
       if (data.students.length < 1) {
         return [];
       }
-      const formattedStudents = data.students.map(student => ({
-        id: student.user_address.user_id,
-        active: false,
-        studentInformation: {
-          firstName: student.first_name,
-          lastName: student.last_name,
-        },
-        contactInformation: {
-          phone: student.user_address.phone,
-          addressLine1: student.user_address.address,
-          addressLine2: "",
-          city: student.user_address.city,
-          state: student.user_address.state,
-          zipCode: student.user_address.zip,
-        },
-        emailAddress: {
-          email: student.email,
-        },
-        location: {
-          locations: student.user_locations,
-        },
-        stats: student.stats,
-        tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
-        testScores: {
-          initialScore: !student.hasOwnProperty("testScores")
-            ? "0"
-            : student.testScores.initialScore,
-          currentScore: !student.hasOwnProperty("testScores")
-            ? "0"
-            : student.testScores.currentScore,
-        },
-        courseContext: {
-          targetScore: !student.hasOwnProperty("courseContext")
-            ? "0"
-            : student.courseContext.targetScore,
-        },
-      }));
+      const formattedStudents = data.students.map(student => {
+        const { user_address } = student;
+        return ({
+          id: student.id,
+          active: student.active,
+          studentInformation: {
+            firstName: student.first_name,
+            lastName: student.last_name,
+          },
+          contactInformation: {
+            phone: user_address ? user_address.phone : "",
+            addressLine1: user_address ? user_address.address : "",
+            addressLine2: "",
+            city: user_address ? user_address.city : "",
+            state: user_address ? user_address.state : "",
+            zipCode: user_address ? user_address.zip : "",
+          },
+          emailAddress: {
+            email: student.email,
+          },
+          location: {
+            locations: student.user_locations,
+          },
+          stats: student.stats,
+          tutor: !student.hasOwnProperty("tutor") ? "" : student.tutor,
+          testScores: {
+            initialScore: !student.hasOwnProperty("testScores")
+              ? "0"
+              : student.testScores.initialScore,
+            currentScore: !student.hasOwnProperty("testScores")
+              ? "0"
+              : student.testScores.currentScore,
+          },
+          courseContext: {
+            targetScore: !student.hasOwnProperty("courseContext")
+              ? "0"
+              : student.courseContext.targetScore,
+          },
+        });
+      });
       return formattedStudents;
     })
     .catch(err => err);
@@ -382,7 +388,7 @@ export const fetchTestsByStudentIdApi = student_id =>
     .catch(err => err);
 
 export const fetchTestByTestIdApi = (student_id, test_id) => {
-  fetch(`${API_URL}/students/${student_id}/student_tests/${test_id}`, {
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${test_id}`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -400,17 +406,15 @@ export const fetchStudentTestSectionsApi = (student_id, student_test_id, student
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${student_token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      const formattedData = data;
-      return { formattedData };
-    })
+    .then(({ data }) => data.sections)
     .catch(err => err);
-export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, section, student_token) =>
-  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section}/problems`, {
+
+export const fetchProblemsByStudentTestIdApi = (student_id, student_test_id, student_token, section_id) =>
+  fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section_id}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -419,10 +423,7 @@ export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, 
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      const formattedData = data;
-      return { formattedData };
-    })
+    .then(({ data }) => data)
     .catch(err => err);
 
 export const addStudentAnswerToTestApi = answer =>

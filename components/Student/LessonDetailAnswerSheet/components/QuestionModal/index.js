@@ -4,16 +4,12 @@ import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import Portal from "../../../../common/Portal";
 import ClickOffComponentWrapper from "../../../../common/ClickOffComponentWrapper";
-
-import { addStudentLessonProblemFlagApi } from "../../../index/api";
+import { addStudentLessonProblemFlagApi, addVideoWatchedTime } from "../../../index/api";
 import { makeSelectActiveLesson } from "../../../index/selectors";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
 import EditProblemRow from '../EditProblemRow';
-import {
-  addVideoWatchedTime,
-} from '../../../index/api';
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +29,7 @@ class QuestionModal extends React.Component {
       const { question: { flag_status } } = this.props;
       this.setState({
         status: flag_status,
-        originalTestProblemId:id,
+        originalTestProblemId: id,
       });
     }
     if (video_watched_seconds) {
@@ -49,8 +45,8 @@ class QuestionModal extends React.Component {
       onChangeFlagState,
     } = this.props;
     this.setState({
-      status
-    })
+      status,
+    });
     onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
     const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
@@ -130,7 +126,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={this.state.status === "UN_FLAGGED" ? true : false}
+                                checked={this.state.status === "UN_FLAGGED"}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
                               />
                               <span>Nope. Got it.</span>
@@ -142,7 +138,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={this.state.status === "FLAGGED" ? true : false}
+                                checked={this.state.status === "FLAGGED"}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
                               />
                               <span>
@@ -157,7 +153,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={this.state.status === "REVIEWED" ? true : false}
+                                checked={this.state.status === "REVIEWED"}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
                               />
                               <span>
@@ -169,7 +165,7 @@ class QuestionModal extends React.Component {
                         </ul>
                       </form>
                     </div>
-                    <div className="panel-block" style={{ width: '60%', float: 'left' }}>
+                    {/* <div className="panel-block" style={{ width: '60%', float: 'left' }}>
                       <ul className="informers-list">
                         <li className="informer-block">
                           <div
@@ -222,7 +218,7 @@ class QuestionModal extends React.Component {
                           <b className="informer-value">8%</b>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                     <div className="col panel-block">
                       <div className="chart-block chart-block-test">
                         <RadialBar

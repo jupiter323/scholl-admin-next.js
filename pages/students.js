@@ -36,7 +36,7 @@ import { loggedIn, logIn } from "../utils/AuthService";
 
 
 import {
-  fetchAllLocationns
+  fetchAllLocationns,
 } from '../components/Location/index/actions';
 
 import { makeSelectLocations } from "../components/Location/index/selectors";
@@ -126,7 +126,7 @@ class Students extends Component {
   // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const { newStudent: previousStudentState } = this.state;
-    const {onFetchStudents,} = this.props;
+    const { onFetchStudents } = this.props;
     const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
     if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
@@ -239,7 +239,7 @@ class Students extends Component {
   onHandleStudentCard = async index => {
     const { students } = this.state;
     const { onSetActiveStudentToken, onSetActiveStudent } = this.props;
-    onSetActiveStudent(students[index])
+    onSetActiveStudent(students[index]);
     this.setState({ selectedStudent: students[index] });
     const { emailAddress: { email } } = students[index];
     const password = "password";
@@ -459,7 +459,7 @@ const mapDispatchToProps = dispatch => ({
   onSetStudents: students => dispatch(setStudents(students)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
   onSetActiveStudent: student => dispatch(setActiveStudent(student)),
-  onFetchAllLocationns: () => dispatch(fetchAllLocationns())
+  onFetchAllLocationns: () => dispatch(fetchAllLocationns()),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

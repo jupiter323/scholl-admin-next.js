@@ -1,10 +1,10 @@
 import { fromJS } from "immutable";
 import {
-  SET_ALL_LOCATIONS
+  SET_ALL_LOCATIONS,
 } from "./constants";
 
 const initialState = fromJS({
-    locations: [],
+  locations: [],
 });
 
 function locationsReducer(state = initialState, action) {
