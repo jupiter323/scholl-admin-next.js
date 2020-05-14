@@ -24,6 +24,7 @@ class AssignedTestCard extends React.Component {
       test: { test_name, test_description, due_date, assignment_date, student_test_id },
       onEnterAnswers,
       handleTestSettingModalOpen,
+      onDeleteTest,
     } = this.props;
     const formattedDueDate = moment(due_date).format("MM/DD/YY");
     const formattedAssignedDate = moment(assignment_date).format("MM/DD/YY");

@@ -14,7 +14,12 @@ import NewTestModal from "./components/TestModal";
 import TestSettingModal from "./components/TestSettingModal";
 import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
 import CardHeader from "./components/CardHeader";
-import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId } from "../index/actions";
+import {
+  setIsVisibleTopBar,
+  fetchStudentTests,
+  setActiveStudentTestId,
+  deleteStudentTest,
+} from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
@@ -105,10 +110,12 @@ class DetailTestList extends React.Component {
       },
     );
   };
-  onDeleteTest = () => {
+  onDeleteTest = (student_test_id) => {
+    // things needed for successful delete
+    // student_test_id
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
-      console.warn("Pending implementation of delete test UI and functionality"),
+      this.props.onDeleteStudentTest(student_test_id),
     );
   };
   onSetIsVisibleTopBar = value => {
@@ -155,7 +162,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={'assigned' + index}
+        index={`assigned${index}`}
       />
     ));
   };
@@ -174,7 +181,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={'overdue' + index}
+        index={`overdue${index}`}
       />
     ));
   };
@@ -343,6 +350,7 @@ function mapDispatchToProps(dispatch) {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
+    onDeleteStudentTest: (studentTestInfo) => dispatch(deleteStudentTest(studentTestInfo)),
   };
 }
 

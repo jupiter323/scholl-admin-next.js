@@ -746,3 +746,16 @@ export const updateStudentTestSectionStatusApi = (body) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const deleteStudentTestApi = (body) =>
+  fetch(`${API_URL}/api/commands/delete-student-test`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);

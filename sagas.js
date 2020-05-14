@@ -42,6 +42,7 @@ import {
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_EXCUSE_STUDENT_LATENESS,
+  DELETE_STUDENT_TEST,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -117,6 +118,7 @@ const {
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
+  deleteStudentTestApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -914,6 +916,25 @@ function* handleFetchAllLocations() {
   }
 }
 
+function* watchForDeleteStudentTest() {
+  yield takeEvery(DELETE_STUDENT_TEST, handleDeleteStudentTest);
+}
+
+function* handleDeleteStudentTest(action) {
+  try {
+    console.log('log: from saga', action.studentTestInfo);
+    const payload = { student_test_id: action.studentTestInfo };
+    yield call(deleteStudentTestApi, payload);
+    // const locations = yield call(fetchAllLocationsApi);
+    // yield put({
+    //   type: SET_ALL_LOCATIONS,
+    //   payload: locations,
+    // });
+  } catch (error) {
+    console.warn("Error occurred in the handleDeleteStudentTest saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -962,5 +983,6 @@ export default function* defaultSaga() {
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
     watchForFetchAllLocations(),
+    watchForDeleteStudentTest(),
   ]);
 }

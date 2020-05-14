@@ -25,6 +25,7 @@ import {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   addStudentLessonProblemAnswerApi,
+  deleteStudentTestApi,
 } from "./components/Student/index/api";
 
 import {
@@ -94,6 +95,7 @@ export const studentApi = {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   addStudentLessonProblemAnswerApi,
+  deleteStudentTestApi,
 };
 
 export const instructorApi = {
@@ -117,4 +119,4 @@ export const userApi = {
 
 export const locationsApi = {
   fetchAllLocationsApi,
-}
+};

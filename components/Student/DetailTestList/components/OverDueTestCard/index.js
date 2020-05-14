@@ -24,6 +24,7 @@ class OverDueTestCard extends React.Component {
       test: { test_name, test_description, due_date, assignment_date, student_test_id },
       onEnterAnswers,
       handleTestSettingModalOpen,
+      onDeleteTest,
     } = this.props;
     const formattedDueDate = moment(due_date).format("MM/DD/YY");
     const formattedCompletedDate = moment(assignment_date).format("MM/DD/YY");
@@ -94,7 +95,7 @@ class OverDueTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="red-text text-darken-3">
+                                  <a href="#" onClick={() => onDeleteTest(student_test_id)} className="red-text text-darken-3">
                                     Unassign
                                   </a>
                                 </li>
