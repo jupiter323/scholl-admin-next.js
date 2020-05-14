@@ -207,6 +207,7 @@ export const createStudentApi = student =>
     body: JSON.stringify(student),
   })
     .then(res => res.json())
+    .then(result => { return result })
     .catch(err => err);
 export const updateStudentActivationApi = body =>
   fetch(`${API_URL}/api/commands/update-student-activation`, {

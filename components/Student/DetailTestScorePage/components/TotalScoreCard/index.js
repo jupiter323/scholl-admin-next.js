@@ -11,35 +11,18 @@ const data = (totalScore, totalPossible) => ({
   ]
 });
 // eslint-disable-next-line react/prop-types
-const TotalScoreCard = ({ totalScore, totalPossible }) => (
+const TotalScoreCard = ({ totalScore, initialScore, currentScore }) => (
   <div className="col s12 l6 card-width-546">
     <div className="card-block">
       <h2>
         Your Score <span className="separator">|</span>{" "}
-        <span className="quantity">400 to 1600</span>
+        <span className="quantity">400 to {parseInt(totalScore)}</span>
       </h2>
       <div className="card-main-full card">
         <div className="card-content center-align">
-          {/* <div className="chart-block chart-block-total">
-            <RadialBar
-              svgWidth={320}
-              svgHeight={320}
-              strokeWidth={32}
-              maxValue={totalScore}
-              currentValue={totalPossible*0.8}
-              strokeColor="#CE237A"
-            />
-            <div className="chart-text">
-              <span className="title">TotalScore</span>
-              <span className="value">{totalScore}</span>
-              <span className="description">
-              (+220)
-              </span>
-            </div>
-          </div> */}
           <div className="chart-block chart-block-total">
             <Doughnut
-              data={() => data(totalScore, totalPossible)}
+              data={() => data(parseInt(currentScore), 1600)}
               width={320}
               height={320}
               options={{
@@ -48,8 +31,8 @@ const TotalScoreCard = ({ totalScore, totalPossible }) => (
             />
             <div className="chart-text">
               <span className="title">TotalScore</span>
-              <span className="value">{totalScore}</span>
-              <span className="description">(+220)</span>
+              <span className="value">{parseInt(currentScore)}</span>
+              <span className="description">({parseInt(currentScore) - parseInt(initialScore)})</span>
             </div>
           </div>
         </div>
@@ -59,8 +42,6 @@ const TotalScoreCard = ({ totalScore, totalPossible }) => (
 );
 
 TotalScoreCard.propTypes = {
-  totalScore: PropTypes.string.isRequired,
-  totalPossible: PropTypes.string.isRequired
 };
 
 export default TotalScoreCard;
