@@ -48,7 +48,7 @@ import {
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_TESTS,
-  SET_ACTIVE_STUDENT
+  SET_ACTIVE_STUDENT,
 } from "./constants";
 
 export function fetchStudents() {
@@ -348,5 +348,5 @@ export const setTests = (tests) => ({
 
 export const setActiveStudent = (student) => ({
   type: SET_ACTIVE_STUDENT,
-  student
-})
+  student,
+});

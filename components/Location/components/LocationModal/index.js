@@ -155,10 +155,10 @@ LocationModal.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   locations: makeSelectLocations(),
-})
+});
 
 
-const withConnect = connect(mapStateToProps, null)
+const withConnect = connect(mapStateToProps, null);
 
 
 export default compose(withConnect)(LocationModal);

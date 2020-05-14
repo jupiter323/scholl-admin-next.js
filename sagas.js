@@ -117,6 +117,8 @@ const {
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
+  fetchSectionsByTestIdApi,
+  fetchProblemsByStudentTestIdApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -191,8 +193,14 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
-    const { formattedData } = yield call(fetchStudentTestSectionsApi, id, studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.sections));
+    const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
+    let count = 0;
+    while (count < testSections.length) {
+      const problems = yield call(fetchProblemsByStudentTestIdApi, id, studentTestId, studentToken, testSections[count].id);
+      testSections[count].problems = problems;
+      count++;
+    }
+    yield put(setStudentSections(testSections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
@@ -849,7 +857,6 @@ function* watchForExcuseStudentLateness() {
 function* handleExcuseStudentLateness(action) {
   try {
     yield call(excuseStudentLessonLatenessApi, action.lessons);
-    console.log('log: action.lessons', action.lessons);
     yield put({
       type: SET_EXCUSE_STUDENT_LATENESS,
       payload: action.lessons,
