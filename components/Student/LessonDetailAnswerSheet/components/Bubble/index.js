@@ -82,10 +82,6 @@ class BubbleGroup extends React.Component {
     const answerIds = this.props.lesson.problem.answers.map(answer => answer.id);
     const correctAnswerIndex = this.getCorrectAnswerIndex(answerIds);
     const studentAnswerIndex = this.getStudentAnswerIndex(answerIds);
-    console.log('log: correctAnswerIndex', correctAnswerIndex);
-    console.log('log: studentAnswerIndex', studentAnswerIndex);
-    console.log('log: is correct', is_correct);
-    console.log('log:lesson', lesson);
     const matchingAnswers = correctAnswerIndex === studentAnswerIndex;
     const condition = correctAnswerIndex ? matchingAnswers : is_correct;
     if (correctAnswerIndex === index && condition) {
