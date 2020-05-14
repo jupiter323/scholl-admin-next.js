@@ -9,7 +9,7 @@ const Location = ({ locations, onOpenLocationModal, onRemoveLocation }) => (
 
       {locations.length > 0 && (
         locations.map((location, index) => (
-          <LcoationCard location={location} onRemoveLocation={() => onRemoveLocation(index)} />
+          <LcoationCard location={location} onRemoveLocation={() => onRemoveLocation(index)} key={location.id} />
         ))
       )}
     </div>

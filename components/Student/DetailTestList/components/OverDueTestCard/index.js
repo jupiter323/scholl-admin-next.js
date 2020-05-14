@@ -21,12 +21,12 @@ class OverDueTestCard extends React.Component {
       dropdownIndex,
       index,
       dropdownIsOpen,
-      test: { test_name, test_description, dueDate, completion_date, student_test_id },
+      test: { test_name, test_description, due_date, assignment_date, student_test_id },
       onEnterAnswers,
       handleTestSettingModalOpen,
     } = this.props;
-    const formattedDueDate = moment(dueDate).format("MM/DD/YY");
-    const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
+    const formattedDueDate = moment(due_date).format("MM/DD/YY");
+    const formattedCompletedDate = moment(assignment_date).format("MM/DD/YY");
     return (
       <React.Fragment>
         <div

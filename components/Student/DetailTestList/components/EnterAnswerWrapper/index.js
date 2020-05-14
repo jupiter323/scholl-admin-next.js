@@ -45,7 +45,7 @@ class EnterAnswerWrapper extends React.Component {
       sections,
       studentToken,
       test: { student_test_id },
-      activeStudent:{id}
+      activeStudent: { id }
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
@@ -55,7 +55,7 @@ class EnterAnswerWrapper extends React.Component {
       };
       onFetchStudentTestSections(postBody);
     } else {
-      this.onSetProblems(sections, student_test_id);
+      // this.onSetProblems(sections, student_test_id);
     }
   };
 

@@ -38,6 +38,7 @@ import {
   SET_TESTS,
   SET_EXCUSE_STUDENT_LATENESS,
   SET_ACTIVE_STUDENT,
+  SET_STUDENT_TEST_SECTION_PROBLEMS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -65,7 +66,8 @@ const initialState = fromJS({
   subjects: {},
   activeShowPage: "",
   tests: [],
-  activeStudent:null,
+  activeStudent: null,
+  testSectionProblems: [],
 });
 
 function studentReducer(state = initialState, action) {
@@ -240,7 +242,10 @@ function studentReducer(state = initialState, action) {
       }));
 
     case SET_ACTIVE_STUDENT:
-      return state.set('activeStudent',action.student);
+      return state.set('activeStudent', action.student);
+
+    case SET_STUDENT_TEST_SECTION_PROBLEMS:
+      return state.set('testSectionProblems',action.problems)
     default:
       return state;
   }

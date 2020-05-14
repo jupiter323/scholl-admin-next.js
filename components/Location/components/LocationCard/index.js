@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LocationCard = ({ location: { locationNickname, locationName }, onRemoveLocation }) => (
+const LocationCard = ({ location: { nickname: locationNickname, name: locationName }, onRemoveLocation }) => (
   <div className="card-panel card-panel-panel card-panel-large" style={{ backgroundColor: '#62b771', color: '#fff' }}>
     <a
       href="#"

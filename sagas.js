@@ -1,7 +1,6 @@
 import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
-  CREATE_STUDENT,
   DELETE_STUDENT,
   UPDATE_STUDENT_ADDRESS,
   UPDATE_STUDENT_CITY,
@@ -71,6 +70,12 @@ import {
   SET_CURRENT_USER,
   FETCH_CURRENT_USER,
 } from './components/User/index/constants';
+
+import {
+  FETCH_ALL_LOCATIONS,
+  SET_ALL_LOCATIONS,
+} from './components/Location/index/constants';
+
 import {
   setStudents,
   setStudentTests,
@@ -84,12 +89,11 @@ import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
 
 
-import { studentApi, classApi, instructorApi, lessonApi, userApi } from "./api";
+import { studentApi, classApi, instructorApi, lessonApi, userApi, locationsApi } from "./api";
 
 const {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -100,7 +104,7 @@ const {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi,
+  fetchStudentTestSectionsApi,
   fetchLessonListApi,
   fetchUnitsApi,
   fetchStudentLessonListApi,
@@ -137,6 +141,8 @@ const {
   createNewInstructorApi,
 } = instructorApi;
 const { fetchCurrentUserApi } = userApi;
+
+const { fetchAllLocationsApi } = locationsApi;
 
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
@@ -178,15 +184,15 @@ export function* fetchUnits() {
 export function* watchForFetchStudentTestSections() {
   while (true) {
     const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    const { postBody: { id,student_test_id, studentToken } } = payload;
-    yield call(fetchStudentTestSections, id,student_test_id, studentToken);
+    const { postBody: { id, student_test_id, studentToken } } = payload;
+    yield call(fetchStudentTestSections, id, student_test_id, studentToken);
   }
 }
 
-export function* fetchStudentTestSections(id,studentTestId, studentToken) {
+export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, id,studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.data.test.sections));
+    const { formattedData } = yield call(fetchStudentTestSectionsApi, id, studentTestId, studentToken);
+    yield put(setStudentSections(formattedData.sections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
@@ -250,21 +256,6 @@ export function* searchStudents(filters) {
     }
   } catch (err) {
     console.warn("Error occurred in searchStudents saga", err);
-  }
-}
-
-export function* watchForCreateStudent() {
-  while (true) {
-    try {
-      const { student } = yield take(CREATE_STUDENT);
-      const response = yield call(createStudentApi, student);
-      if (response && response.message) {
-        return console.warn("Something went wrong with adding a new student!");
-      }
-      yield call(fetchStudents);
-    } catch (err) {
-      console.warn("Error occurred in watchForAddStudent", err);
-    }
   }
 }
 
@@ -905,13 +896,30 @@ function* handleFlagStudentLessonProblem(action) {
   }
 }
 
+
+function* watchForFetchAllLocations() {
+  yield takeEvery(FETCH_ALL_LOCATIONS, handleFetchAllLocations);
+}
+
+
+function* handleFetchAllLocations() {
+  try {
+    const locations = yield call(fetchAllLocationsApi);
+    yield put({
+      type: SET_ALL_LOCATIONS,
+      payload: locations,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchAllLocations saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
     watchForFetchStudentTests(),
     watchForFetchStudentTestSections(),
     watchForSearchStudents(),
-    watchForCreateStudent(),
     watchForDeleteStudent(),
     watchForUpdateStudentFirstName(),
     watchForUpdateStudentLastName(),
@@ -953,5 +961,6 @@ export default function* defaultSaga() {
     watchForExcuseStudentLateness(),
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
+    watchForFetchAllLocations(),
   ]);
 }
