@@ -970,7 +970,6 @@ function* handleUpdateFlagStatus(action) {
     }
     // Dispatch to update redux store
     if (reviewedTestIds.length !== 0) {
-      console.log('log: refreshing page');
       yield put({
         type: GET_TESTS_DEBOUNCE,
         id: action.studentId,
