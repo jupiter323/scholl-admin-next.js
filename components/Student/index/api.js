@@ -404,9 +404,7 @@ export const fetchStudentTestSectionsApi = (student_id, student_test_id, student
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      return data.sections
-    })
+    .then(({ data }) => data.sections)
     .catch(err => err);
 export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, section, student_token) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section}/problems`, {
@@ -418,9 +416,7 @@ export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, 
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      return data;
-    })
+    .then(({ data }) => data)
     .catch(err => err);
 
 export const addStudentAnswerToTestApi = answer =>

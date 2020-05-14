@@ -951,26 +951,26 @@ function* handleUpdateFlagStatus(action) {
 
     const reviewedTestIds = [];
     let count = 0;
-    while(count < sections.length) {
-      const problems = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id)
-      
-      const problemAmount = problems.problems.length
+    while (count < sections.length) {
+      const problems = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
+
+      const problemAmount = problems.problems.length;
       let problemCount = 0;
       while (problemCount < problemAmount) {
-        const flagData = problems.problems[problemCount].flag
+        const flagData = problems.problems[problemCount].flag;
         if (flagData.id && flagData.status === 'FLAGGED') {
-          const payload = {status: 'REVIEWED', flag_id: flagData.id, student_test_id: action.studentTestId}
+          const payload = { status: 'REVIEWED', flag_id: flagData.id, student_test_id: action.studentTestId };
 
-          yield call(updateStudentTestQuestionFlagStatusApi, payload)
-          reviewedTestIds.push(action.studentTestId)
+          yield call(updateStudentTestQuestionFlagStatusApi, payload);
+          reviewedTestIds.push(action.studentTestId);
         }
-        problemCount++
+        problemCount++;
       }
-      count++
+      count++;
     }
     // Dispatch to update redux store
     if (reviewedTestIds.length !== 0) {
-      console.log('log: refreshing page')
+      console.log('log: refreshing page');
       yield put({
         type: GET_TESTS_DEBOUNCE,
         id: action.studentId,
