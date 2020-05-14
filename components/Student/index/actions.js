@@ -352,7 +352,8 @@ export const setActiveStudent = (student) => ({
   student,
 });
 
-export const deleteStudentTest = (studentTestInfo) => ({
+export const deleteStudentTest = (studentTestId, studentId) => ({
   type: DELETE_STUDENT_TEST,
-  studentTestInfo,
+  studentTestId,
+  studentId,
 });

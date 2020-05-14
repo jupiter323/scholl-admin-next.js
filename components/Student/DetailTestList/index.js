@@ -110,12 +110,11 @@ class DetailTestList extends React.Component {
       },
     );
   };
-  onDeleteTest = (student_test_id) => {
-    // things needed for successful delete
-    // student_test_id
+  onDeleteTest = (student_test_id, student_id) => {
+    console.log('log: studentId', student_id);
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
-      this.props.onDeleteStudentTest(student_test_id),
+      this.props.onDeleteStudentTest(student_test_id, student_id),
     );
   };
   onSetIsVisibleTopBar = value => {
@@ -350,7 +349,7 @@ function mapDispatchToProps(dispatch) {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
-    onDeleteStudentTest: (studentTestInfo) => dispatch(deleteStudentTest(studentTestInfo)),
+    onDeleteStudentTest: (studentTestId, studentId) => dispatch(deleteStudentTest(studentTestId, studentId)),
   };
 }
 
