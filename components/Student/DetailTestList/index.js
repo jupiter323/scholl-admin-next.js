@@ -19,6 +19,7 @@ import {
   fetchStudentTests,
   setActiveStudentTestId,
   deleteStudentTest,
+  updateTestFlag,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -111,12 +112,14 @@ class DetailTestList extends React.Component {
     );
   };
   onDeleteTest = (student_test_id, student_id) => {
-    console.log('log: studentId', student_id);
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
       this.props.onDeleteStudentTest(student_test_id, student_id),
     );
   };
+  onTestFlagReviewed = (student_test_id, student_id) => {
+    this.props.onUpdateTestFlag(student_test_id, student_id);
+  }
   onSetIsVisibleTopBar = value => {
     const { onSetIsVisibleTopBar } = this.props;
     onSetIsVisibleTopBar(value);
@@ -142,6 +145,7 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
+        onTestFlagReviewed={this.onTestFlagReviewed}
       />
     ));
   };
@@ -162,6 +166,7 @@ class DetailTestList extends React.Component {
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
         index={`assigned${index}`}
+        onTestFlagReviewed={this.onTestFlagReviewed}
       />
     ));
   };
@@ -181,6 +186,7 @@ class DetailTestList extends React.Component {
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
         index={`overdue${index}`}
+        onTestFlagReviewed={this.onTestFlagReviewed}
       />
     ));
   };
@@ -350,6 +356,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
     onDeleteStudentTest: (studentTestId, studentId) => dispatch(deleteStudentTest(studentTestId, studentId)),
+    onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
   };
 }
 

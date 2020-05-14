@@ -44,6 +44,7 @@ import {
   SET_EXCUSE_STUDENT_LATENESS,
   DELETE_STUDENT_TEST,
   GET_TESTS_DEBOUNCE,
+  UPDATE_TEST_FLAG,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -120,6 +121,8 @@ const {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -213,7 +216,6 @@ export function* watchForFetchStudentTestsDebounce() {
 
 export function* fetchStudentTests(user) {
   try {
-    console.log('log: saga user', user);
     const { data: formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
@@ -939,6 +941,25 @@ function* handleDeleteStudentTest(action) {
   }
 }
 
+function* watchForUpdateTestFlagStatus() {
+  yield takeEvery(UPDATE_TEST_FLAG, handleUpdateFlagStatus);
+}
+
+function* handleUpdateFlagStatus(action) {
+  try {
+    console.log('log: flag saga', action);
+    // console.log('log: from saga', action);
+    // const payload = { student_test_id: action.studentTestId };
+    // yield call(deleteStudentTestApi, payload);
+    // yield put({
+    //   type: GET_TESTS_DEBOUNCE,
+    //   id: action.studentId,
+    // });
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateFlagStatus saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -989,5 +1010,6 @@ export default function* defaultSaga() {
     watchForFetchAllLocations(),
     watchForDeleteStudentTest(),
     watchForFetchStudentTestsDebounce(),
+    watchForUpdateTestFlagStatus(),
   ]);
 }

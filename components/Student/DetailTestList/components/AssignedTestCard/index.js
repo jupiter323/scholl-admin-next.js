@@ -25,6 +25,7 @@ class AssignedTestCard extends React.Component {
       onEnterAnswers,
       handleTestSettingModalOpen,
       onDeleteTest,
+      onTestFlagReviewed,
     } = this.props;
     const formattedDueDate = moment(due_date).format("MM/DD/YY");
     const formattedAssignedDate = moment(assignment_date).format("MM/DD/YY");
@@ -85,7 +86,7 @@ class AssignedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={() => {}}>
+                                  <a href="#" onClick={() => onTestFlagReviewed(student_test_id, student_id)}>
                                     Mark flags reviewed
                                   </a>
                                 </li>
