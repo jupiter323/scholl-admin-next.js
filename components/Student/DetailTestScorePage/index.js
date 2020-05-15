@@ -48,7 +48,6 @@ class DetailTestScorePage extends React.Component {
           currentScore },
       },
     } = this.props;
-    console.log('testscore:', initialScore);
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">

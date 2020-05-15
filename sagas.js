@@ -933,11 +933,8 @@ function* watchForDeleteStudentTest() {
 
 function* handleDeleteStudentTest(action) {
   try {
-    console.log('log: from saga', action);
     const payload = { student_test_id: action.studentTestId };
     const response = yield call(deleteStudentTestApi, payload);
-    // Remove from redux
-    console.log('log: response redux', response);
     if (response && response.message) {
       return console.warn("Error occurred in the handleDeleteStudentTest saga", error);
     }
