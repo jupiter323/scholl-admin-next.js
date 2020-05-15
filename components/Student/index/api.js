@@ -207,7 +207,7 @@ export const createStudentApi = student =>
     body: JSON.stringify(student),
   })
     .then(res => res.json())
-    .then(result => { return result })
+    .then(result => result)
     .catch(err => err);
 export const updateStudentActivationApi = body =>
   fetch(`${API_URL}/api/commands/update-student-activation`, {
@@ -413,13 +413,13 @@ export const fetchStudentTestSectionsApi = (student_id, student_test_id, student
     .then(({ data }) => data.sections)
     .catch(err => err);
 
-export const fetchProblemsByStudentTestIdApi = (student_id, student_test_id, student_token, section_id) =>
+export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, section_id, student_token) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section_id}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${student_token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -747,3 +747,16 @@ export const updateStudentTestSectionStatusApi = (body) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const deleteStudentTestApi = (body) =>
+  fetch(`${API_URL}/api/commands/delete-student-test`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);

@@ -76,10 +76,11 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      test: { test_name, test_description, due_date, completion_date, student_test_id },
-      test,
+      test: { test_name, test_description, due_date, completion_date, student_test_id, student_id },
       onEditTest,
       onEnterAnswers,
+      onDeleteTest,
+      onTestFlagReviewed,
     } = this.props;
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
     const formattedDueDate = moment(due_date).format("MM/DD/YY");
@@ -148,7 +149,13 @@ class CompletedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="disabled">
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onTestFlagReviewed(student_test_id, student_id);
+                                    }}
+                                  >
                                     Mark flags reviewed
                                   </a>
                                 </li>
@@ -158,7 +165,14 @@ class CompletedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="red-text text-darken-3">
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onDeleteTest(student_test_id, student_id, "completedStudentTests");
+                                    }}
+                                    className="red-text text-darken-3"
+                                  >
                                     Unassign
                                   </a>
                                 </li>

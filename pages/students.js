@@ -164,7 +164,7 @@ class Students extends Component {
       studentInformation,
       contactInformation,
       emailAddress,
-      location
+      location,
     } = previousStudentState;
     const newTestStudent = {
       id,
@@ -247,8 +247,8 @@ class Students extends Component {
         math: {
           correctAnswers: "37",
           totalAnswers: "52",
-        }
-      }
+        },
+      },
     };
     const newStudent = update(previousStudentState, {
       $set: {
@@ -276,8 +276,8 @@ class Students extends Component {
     });
     this.setState({ newStudent });
     const updatedStudents = update(this.state.students, {
-      $push: [newTestStudent]
-    })
+      $push: [newTestStudent],
+    });
     this.setState({ students: updatedStudents });
     // const { onSetStudents } = this.props;
     // onSetStudents(updatedStudents);

@@ -14,7 +14,13 @@ import NewTestModal from "./components/TestModal";
 import TestSettingModal from "./components/TestSettingModal";
 import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
 import CardHeader from "./components/CardHeader";
-import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId } from "../index/actions";
+import {
+  setIsVisibleTopBar,
+  fetchStudentTests,
+  setActiveStudentTestId,
+  deleteStudentTest,
+  updateTestFlag,
+} from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
@@ -105,12 +111,15 @@ class DetailTestList extends React.Component {
       },
     );
   };
-  onDeleteTest = () => {
+  onDeleteTest = (student_test_id, student_id, type) => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
-      console.warn("Pending implementation of delete test UI and functionality"),
+      this.props.onDeleteStudentTest(student_test_id, student_id, type),
     );
   };
+  onTestFlagReviewed = (student_test_id, student_id) => {
+    this.props.onUpdateTestFlag(student_test_id, student_id);
+  }
   onSetIsVisibleTopBar = value => {
     const { onSetIsVisibleTopBar } = this.props;
     onSetIsVisibleTopBar(value);
@@ -127,8 +136,8 @@ class DetailTestList extends React.Component {
     return completes.map((test, index) => (
       <CompletedTestCard
         test={test}
-        index={'completed' + index}
-        key={test.test_id}
+        index={`completed${index}`}
+        key={`completed-${index}`}
         onEnterAnswers={this.onEnterAnswers}
         onEditTest={() => this.onToggleEditTestModal(test)}
         onSetDropdown={this.onSetDropdown}
@@ -136,6 +145,8 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
+        onTestFlagReviewed={this.onTestFlagReviewed}
+        onDeleteTest={this.onDeleteTest}
       />
     ));
   };
@@ -156,6 +167,7 @@ class DetailTestList extends React.Component {
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
         index={`assigned${index}`}
+        onTestFlagReviewed={this.onTestFlagReviewed}
       />
     ));
   };
@@ -175,6 +187,7 @@ class DetailTestList extends React.Component {
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
         index={`overdue${index}`}
+        onTestFlagReviewed={this.onTestFlagReviewed}
       />
     ));
   };
@@ -344,6 +357,8 @@ function mapDispatchToProps(dispatch) {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
+    onDeleteStudentTest: (studentTestId, studentId, type) => dispatch(deleteStudentTest(studentTestId, studentId, type)),
+    onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
   };
 }
 
