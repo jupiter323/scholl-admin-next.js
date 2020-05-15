@@ -42,6 +42,8 @@ import {
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_EXCUSE_STUDENT_LATENESS,
+  ADD_LESSON_ANSWER,
+  ADD_LESSON_ANSWER_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -119,6 +121,8 @@ const {
   addStudentLessonProblemFlagApi,
   fetchSectionsByTestIdApi,
   fetchProblemsByStudentTestIdApi,
+  addStudentLessonProblemAnswerApi,
+  rescoreStudentLessonApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -921,6 +925,26 @@ function* handleFetchAllLocations() {
   }
 }
 
+function* watchForAnswerStudentLessonProblem() {
+  yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
+}
+
+
+function* handleAnswerStudentLessonProblem(action) {
+  try {
+    console.log('log: saga action', action);
+    // const addAnswerResponse = yield call(addStudentLessonProblemAnswerApi);
+    console.log('log: saga res', response);
+    // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
+    // yield put({
+    //   type: ADD_LESSON_ANSWER,
+    //   payload: locations,
+    // });
+  } catch (error) {
+    console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -969,5 +993,6 @@ export default function* defaultSaga() {
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
     watchForFetchAllLocations(),
+    watchForAnswerStudentLessonProblem(),
   ]);
 }

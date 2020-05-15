@@ -207,7 +207,7 @@ export const createStudentApi = student =>
     body: JSON.stringify(student),
   })
     .then(res => res.json())
-    .then(result => { return result })
+    .then(result => result)
     .catch(err => err);
 export const updateStudentActivationApi = body =>
   fetch(`${API_URL}/api/commands/update-student-activation`, {
@@ -748,3 +748,16 @@ export const updateStudentTestSectionStatusApi = (body) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const rescoreStudentLessonApi = (body) =>
+  fetch(`${API_URL}/api/commands/rescore-student-lesson`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);

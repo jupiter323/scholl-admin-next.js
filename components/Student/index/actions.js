@@ -49,6 +49,7 @@ import {
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_TESTS,
   SET_ACTIVE_STUDENT,
+  ADD_LESSON_ANSWER,
 } from "./constants";
 
 export function fetchStudents() {
@@ -349,4 +350,9 @@ export const setTests = (tests) => ({
 export const setActiveStudent = (student) => ({
   type: SET_ACTIVE_STUDENT,
   student,
+});
+
+export const answerStudentLessonProblem = (payload) => ({
+  type: ADD_LESSON_ANSWER,
+  payload,
 });

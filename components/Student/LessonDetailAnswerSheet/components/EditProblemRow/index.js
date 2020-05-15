@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import styled from 'styled-components';
 import { addStudentLessonProblemAnswerApi } from '../../../index/api';
+import { answerStudentLessonProblem } from '../../../index/actions';
 
 class ProblemRow extends React.Component {
   constructor(props) {
@@ -102,6 +103,7 @@ class ProblemRow extends React.Component {
       problem_id: question.problem.id,
       answer_text: this.state.answer_text,
     };
+    // convert API call to action dispatch answerStudentLessonProblem
     const res = await addStudentLessonProblemAnswerApi(payload);
     if (res === 202) {
       this.props.updateProblemList(this.props.problemType, { ...question, answer_id: null, answer_text: this.state.answer_text, answered: true });
