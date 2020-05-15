@@ -109,7 +109,8 @@ const LessonCard = props => {
     const { onSetIsVisibleTopbar, onSetActiveLesson, onSetOpenActivePage, lesson } = props;
     onSetIsVisibleTopbar(false);
     onSetActiveLesson(lesson);
-    if (lesson.sections && lesson.sections.length !== 0 || lesson.problems && lesson.problems.length !== 0) {
+    const condition = lesson.type.label === 'Drill' || lesson.type.label === "Module"
+    if (condition) {
       onSetOpenActivePage("AnswerSheet")
     } else {
       onSetOpenActivePage("ReadWorkBook")
@@ -146,7 +147,6 @@ const LessonCard = props => {
 
   const graphData = () => {
     // Determines the graph progress of a completed or started lesson
-    const {label: type} = lesson.type;
     if (status === 'COMPLETED') {
       return data(
         scoring.correct_count,

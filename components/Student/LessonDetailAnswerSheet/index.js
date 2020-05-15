@@ -85,7 +85,7 @@ class LessonDetailAnswerSheet extends React.Component {
             hasChallenge: true,
           });
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          console.log('log: challengeProblems', challengeProblems);
+          // console.log('log: challengeProblems', challengeProblems);
           this.setState({
             challengeProblems: challengeProblems.lesson_problems,
           });
@@ -94,7 +94,7 @@ class LessonDetailAnswerSheet extends React.Component {
             hasPractice: true,
           });
           const practiceProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          console.log('log: practiceProblems', practiceProblems);
+          // console.log('log: practiceProblems', practiceProblems);
           if (!practiceProblems) return;
           this.setState({
             practiceProlems: practiceProblems.lesson_problems,
