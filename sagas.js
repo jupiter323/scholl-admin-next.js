@@ -123,6 +123,8 @@ const {
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
+  // fetchSectionsByTestIdApi,
+  // fetchProblemsByStudentTestIdApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -197,8 +199,14 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
-    const { formattedData } = yield call(fetchStudentTestSectionsApi, id, studentTestId, studentToken);
-    yield put(setStudentSections(formattedData.sections));
+    const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
+    let count = 0;
+    while (count < testSections.length) {
+      const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id, studentToken);
+      testSections[count].problems = problems;
+      count++;
+    }
+    yield put(setStudentSections(testSections));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
@@ -837,10 +845,10 @@ export function* watchForFetchCurrentUser() {
 function* handleFetchCurrentUser() {
   try {
     const response = yield call(fetchCurrentUserApi);
-    if (response && response.user) {
+    if (response) {
       yield put({
         type: SET_CURRENT_USER,
-        value: response.user,
+        value: response,
       });
     }
   } catch (error) {
@@ -855,7 +863,6 @@ function* watchForExcuseStudentLateness() {
 function* handleExcuseStudentLateness(action) {
   try {
     yield call(excuseStudentLessonLatenessApi, action.lessons);
-    console.log('log: action.lessons', action.lessons);
     yield put({
       type: SET_EXCUSE_STUDENT_LATENESS,
       payload: action.lessons,

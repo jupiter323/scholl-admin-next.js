@@ -36,7 +36,7 @@ import { loggedIn, logIn } from "../utils/AuthService";
 
 
 import {
-  fetchAllLocationns
+  fetchAllLocationns,
 } from '../components/Location/index/actions';
 
 import { makeSelectLocations } from "../components/Location/index/selectors";
@@ -71,8 +71,7 @@ class Students extends Component {
         },
         contactInformation: {
           phone: "",
-          addressLine1: "",
-          addressLine2: "",
+          addressLine: "",
           city: "",
           state: "",
           zipCode: "",
@@ -126,7 +125,7 @@ class Students extends Component {
   // TODO add a toas or some notification that a student has been saved
   onSaveNewStudent = async () => {
     const { newStudent: previousStudentState } = this.state;
-    const {onFetchStudents,} = this.props;
+    const { onFetchStudents } = this.props;
     const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
     if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
@@ -134,8 +133,7 @@ class Students extends Component {
     const { email } = previousStudentState.emailAddress;
     const {
       state,
-      addressLine1,
-      addressLine2,
+      addressLine,
       city,
       phone,
       zipCode: zip,
@@ -149,11 +147,101 @@ class Students extends Component {
       state,
       locations: formattedLocations,
       phone,
-      address: `${addressLine1}\n${addressLine2}`,
+      address: `${addressLine}`,
       city,
       zip,
     };
-    await createStudentApi(studentPayload);
+    const { user_id: id } = await createStudentApi(studentPayload);
+    const {
+      studentInformation,
+      contactInformation,
+      emailAddress,
+      location,
+    } = previousStudentState;
+    const newTestStudent = {
+      id,
+      active: false,
+      studentInformation,
+      contactInformation,
+      emailAddress,
+      location,
+      stats: {
+        complete: 0,
+        overdue: 0,
+        practice_tests: 0,
+        sessions_complete: 0,
+        total_sessions: 0,
+      },
+      tutor: "",
+      testScores: {
+        initialScore: "0",
+        currentScore: "0",
+      },
+      courseContext: {
+        courseStartDateOption: "secondOption",
+        courseStartDate: "",
+        courseEndDateOption: "secondOption",
+        courseEndDate: "",
+        targetTestDate: "12/12/2019",
+        targetScore: "1400",
+        highSchool: "Everglades High",
+        graduationYear: "2018",
+      },
+      courseProgress: {
+        startDate: "6/03/18",
+        testDate: "10/14/18",
+        progress: "77",
+        improvement: "82",
+        lessons: "73",
+        instruction: "68",
+        practiceTests: "47",
+      },
+      overdueWork: {
+        lessons: "12",
+        worksheets: "3",
+        quizzes: "1",
+        practiceTests: "5",
+      },
+      summary: {
+        questionsAnswered: "791",
+        videoWatched: "416",
+        notesTaken: "52",
+        totalTimeLoggedIn: "220",
+        lastLogIn: "3:12",
+        loginTimeCode: "pm",
+        onTimePercentage: "77",
+      },
+      testScores: {
+        initialScore: "1040",
+        currentScore: "1300",
+        compositeScore: {
+          reading: "83",
+          writing: "31",
+          math: "105",
+          composite: "218",
+        },
+        subjectScores: {
+          reading: "58",
+          writing: "44",
+          math: "91",
+          composite: "195",
+        },
+      },
+      strengthsAndWeaknesses: {
+        reading: {
+          correctAnswers: "32",
+          totalAnswers: "52",
+        },
+        writing: {
+          correctAnswers: "35",
+          totalAnswers: "52",
+        },
+        math: {
+          correctAnswers: "37",
+          totalAnswers: "52",
+        },
+      },
+    };
     const newStudent = update(previousStudentState, {
       $set: {
         active: false,
@@ -163,8 +251,7 @@ class Students extends Component {
         },
         contactInformation: {
           phone: "",
-          addressLine1: "",
-          addressLine2: "",
+          addressLine: "",
           city: "",
           state: "",
           zipCode: "",
@@ -175,10 +262,17 @@ class Students extends Component {
         location: {
           locations: [],
         },
+
+
       },
     });
     this.setState({ newStudent });
-    onFetchStudents();
+    const updatedStudents = update(this.state.students, {
+      $push: [newTestStudent],
+    });
+    this.setState({ students: updatedStudents });
+    // const { onSetStudents } = this.props;
+    // onSetStudents(updatedStudents);
     this.onCloseStudentModal();
   };
 
@@ -193,8 +287,7 @@ class Students extends Component {
         },
         contactInformation: {
           phone: "",
-          addressLine1: "",
-          addressLine2: "",
+          addressLine: "",
           city: "",
           state: "",
           zipCode: "",
@@ -239,7 +332,7 @@ class Students extends Component {
   onHandleStudentCard = async index => {
     const { students } = this.state;
     const { onSetActiveStudentToken, onSetActiveStudent } = this.props;
-    onSetActiveStudent(students[index])
+    onSetActiveStudent(students[index]);
     this.setState({ selectedStudent: students[index] });
     const { emailAddress: { email } } = students[index];
     const password = "password";
@@ -459,7 +552,7 @@ const mapDispatchToProps = dispatch => ({
   onSetStudents: students => dispatch(setStudents(students)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
   onSetActiveStudent: student => dispatch(setActiveStudent(student)),
-  onFetchAllLocationns: () => dispatch(fetchAllLocationns())
+  onFetchAllLocationns: () => dispatch(fetchAllLocationns()),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

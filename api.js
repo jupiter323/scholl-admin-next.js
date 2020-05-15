@@ -28,6 +28,8 @@ import {
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
+  // fetchProblemsByStudentTestIdApi,
+  // fetchSectionsByTestIdApi,
 } from "./components/Student/index/api";
 
 import {
@@ -100,6 +102,8 @@ export const studentApi = {
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
+  // fetchProblemsByStudentTestIdApi,
+  // fetchSectionsByTestIdApi,
 };
 
 export const instructorApi = {

@@ -12,8 +12,9 @@ class InCompleteReadingTest extends React.Component {
   }
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
+    if (!testSection.problems) return;
     const updatedProblems = update(this.state.problems, {
-      $set: testSection.problems,
+      $set: testSection.problems.problems,
     });
     this.setState({
       problems: updatedProblems,

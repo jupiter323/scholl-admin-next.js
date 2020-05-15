@@ -70,7 +70,7 @@ class SectionScoreCard extends React.Component {
           <div className="card-main-full card">
             <div className="card-content">
               <div className="several-charts-row row mb-0">
-                {this.mapSectionScores()}
+                {this.props.sectionScores && this.mapSectionScores()}
               </div>
             </div>
           </div>

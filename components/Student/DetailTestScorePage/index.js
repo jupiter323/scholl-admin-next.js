@@ -9,7 +9,7 @@ import TestScoreCard from "./components/TestScoreCard";
 import EssayScoresCard from "./components/EssayScoresCard";
 import CrossTestScoresCard from "./components/CrossTestScoresCard";
 import SubScoresCard from "./components/SubscoresCard";
-import { makeSelectActiveTestScores } from "../index/selectors";
+import { makeSelectActiveTestScores, makeSelectActiveStudent } from "../index/selectors";
 class DetailTestScorePage extends React.Component {
   constructor(props) {
     super(props);
@@ -35,33 +35,38 @@ class DetailTestScorePage extends React.Component {
   render() {
     const {
       test: {
-        subjectScores,
         totalScore,
         totalPossible,
         essayScores },
       scores: {
-        section_scores,
-        cross_section_scores,
-        sub_section_scores,
+        subjects,
+        cross_test_score,
+        sub_section_score,
+      },
+      activeStudent: {
+        testScores: { subjectScores, initialScore,
+          currentScore },
       },
     } = this.props;
+    console.log('testscore:', initialScore);
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
           <div className="d-flex-content same-height justify-center row mb-0">
             <TotalScoreCard
-              totalScore={totalScore}
-              totalPossible={totalPossible}
+              totalScore={1600}
+              initialScore={initialScore}
+              currentScore={currentScore}
             />
-            <SectionScoreCard sectionScores={section_scores} />
+            {/* <SectionScoreCard sectionScores={section_scores} /> */}
           </div>
           <div className="d-flex-content same-height justify-center row mb-0">
             <TestScoreCard subjectScores={subjectScores} />
-            <EssayScoresCard essayScores={essayScores} />
+            {/*  <EssayScoresCard essayScores={essayScores} /> */}
           </div>
           <div className="d-flex-content justify-center row mb-0">
-            <CrossTestScoresCard crossTestScores={cross_section_scores} />
-            <SubScoresCard subScores={sub_section_scores} />
+            {/* <CrossTestScoresCard crossTestScores={cross_test_score} />
+            <SubScoresCard subScores={sub_section_score} /> */}
           </div>
         </div>
       </div>
@@ -76,6 +81,7 @@ DetailTestScorePage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   scores: makeSelectActiveTestScores(),
+  activeStudent: makeSelectActiveStudent(),
 });
 
 const withConnect = connect(mapStateToProps, null);

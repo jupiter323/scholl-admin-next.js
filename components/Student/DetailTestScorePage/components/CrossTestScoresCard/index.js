@@ -8,7 +8,7 @@ class CrossTestScoresCard extends React.Component {
 
   mapProgressBar = () => {
     const { crossTestScores } = this.props;
-    return crossTestScores.map(item => (
+    return crossTestScores && crossTestScores.map(item => (
       <div className="progress-block progress-block-md">
         <div className="progress-legend">
           <div className="legend-block">
