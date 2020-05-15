@@ -839,10 +839,10 @@ export function* watchForFetchCurrentUser() {
 function* handleFetchCurrentUser() {
   try {
     const response = yield call(fetchCurrentUserApi);
-    if (response && response.user) {
+    if (response) {
       yield put({
         type: SET_CURRENT_USER,
-        value: response.user,
+        value: response,
       });
     }
   } catch (error) {
