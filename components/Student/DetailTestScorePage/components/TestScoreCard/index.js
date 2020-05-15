@@ -7,19 +7,19 @@ const readingData = (totalScore, totalPossible) => ({
     data: [totalPossible, totalPossible - totalScore],
     backgroundColor: ["#32A6AF", "rgb(234, 234, 234)"],
   }],
-})
+});
 const writingData = (totalScore, totalPossible) => ({
   datasets: [{
     data: [totalPossible, totalPossible - totalScore],
     backgroundColor: ["#3b9f85", "rgb(234, 234, 234)"],
   }],
-})
+});
 const mathData = (totalScore, totalPossible) => ({
   datasets: [{
     data: [totalPossible, totalPossible - totalScore],
     backgroundColor: ["#567EBF", "rgb(234, 234, 234)"],
   }],
-})
+});
 
 const TestScoreCard = ({ subjectScores }) => (
   <div className="col s12 l8 card-width-772">
@@ -89,6 +89,6 @@ const TestScoreCard = ({ subjectScores }) => (
 
 TestScoreCard.propTypes = {
   subjectScores: PropTypes.object.isRequired,
-}
+};
 
 export default TestScoreCard;

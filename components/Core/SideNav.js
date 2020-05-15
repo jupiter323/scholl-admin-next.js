@@ -13,7 +13,7 @@ import {
 } from "../User/index/selectors";
 import { loggedIn } from "../../utils/AuthService";
 
-import { setUserIsLogged,getCurrentUser } from "../User/index/actions";
+import { setUserIsLogged, getCurrentUser } from "../User/index/actions";
 import { LogoutApi } from "../User/index/api";
 import $ from "jquery";
 import Router from "next/router";
@@ -77,8 +77,9 @@ class SideNav extends Component {
 
   componentDidMount() {
     const isLogged = loggedIn();
-    const { onSetUserIsLogged,onFetchCurrentUser,currentUser } = this.props;
-    if(!currentUser){
+    const { onSetUserIsLogged, onFetchCurrentUser, currentUser } = this.props;
+    if (!currentUser && isLogged) {
+      console.log('fetchCurrentUser');
       onFetchCurrentUser();
     }
     onSetUserIsLogged(isLogged);

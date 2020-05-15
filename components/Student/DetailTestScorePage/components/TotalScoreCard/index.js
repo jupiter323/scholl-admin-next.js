@@ -6,9 +6,9 @@ const data = (totalScore, totalPossible) => ({
   datasets: [
     {
       data: [totalPossible, totalPossible - totalScore],
-      backgroundColor: ["#32b9ec", "rgb(234, 234, 234)"]
-    }
-  ]
+      backgroundColor: ["#32b9ec", "rgb(234, 234, 234)"],
+    },
+  ],
 });
 // eslint-disable-next-line react/prop-types
 const TotalScoreCard = ({ totalScore, initialScore, currentScore }) => (

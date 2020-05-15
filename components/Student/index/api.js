@@ -361,7 +361,7 @@ export const deleteStudentApi = id =>
     .then(res => res.json())
     .catch(err => err);
 
-export const assignTestToStudentApi = test => {
+export const assignTestToStudentApi = test =>
   fetch(`${API_URL}/api/commands/assign-test-to-student`, {
     method: "POST",
     headers: {
@@ -373,7 +373,6 @@ export const assignTestToStudentApi = test => {
   })
     .then(res => res.json())
     .catch(err => err);
-};
 
 export const fetchTestsByStudentIdApi = student_id =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests`, {
@@ -414,13 +413,13 @@ export const fetchStudentTestSectionsApi = (student_id, student_test_id, student
     .then(({ data }) => data.sections)
     .catch(err => err);
 
-export const fetchProblemsByStudentTestIdApi = (student_id, student_test_id, student_token, section_id) =>
+export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, section_id, student_token) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections/${section_id}/problems`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${student_token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -646,7 +645,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     .then(({ data }) => data);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
-  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/section/${section_id}`, {
+  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/sections/${section_id}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
@@ -752,6 +751,19 @@ export const updateStudentTestSectionStatusApi = (body) =>
 export const rescoreStudentLessonApi = (body) =>
   fetch(`${API_URL}/api/commands/rescore-student-lesson`, {
     method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);
+
+export const deleteStudentTestApi = (body) =>
+  fetch(`${API_URL}/api/commands/delete-student-test`, {
+    method: "DELETE",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

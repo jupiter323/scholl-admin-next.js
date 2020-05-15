@@ -25,8 +25,10 @@ import {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   addStudentLessonProblemAnswerApi,
-  fetchProblemsByStudentTestIdApi,
   rescoreStudentLessonApi,
+  deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
 } from "./components/Student/index/api";
 
 import {
@@ -96,8 +98,9 @@ export const studentApi = {
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
   addStudentLessonProblemAnswerApi,
-  fetchProblemsByStudentTestIdApi,
-  // fetchSectionsByTestIdApi,
+  deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
   rescoreStudentLessonApi,
 };
 
