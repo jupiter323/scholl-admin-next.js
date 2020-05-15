@@ -905,13 +905,15 @@ function* handleFlagStudentLessonProblem(action) {
 
 
 function* watchForFetchAllLocations() {
-  yield takeEvery(FETCH_ALL_LOCATIONS, handleFetchAllLocations);
+  const value = yield take(FETCH_ALL_LOCATIONS);
+  yield call(handleFetchAllLocations, value.user_id);
+
 }
 
 
-function* handleFetchAllLocations() {
+function* handleFetchAllLocations(id) {
   try {
-    const locations = yield call(fetchAllLocationsApi);
+    const locations = yield call(fetchAllLocationsApi,id);
     yield put({
       type: SET_ALL_LOCATIONS,
       payload: locations,

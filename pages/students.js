@@ -40,6 +40,7 @@ import {
 } from '../components/Location/index/actions';
 
 import { makeSelectLocations } from "../components/Location/index/selectors";
+import { makeSelectCurrentUser } from "../components/User/index/selectors";
 
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
@@ -95,11 +96,18 @@ class Students extends Component {
       if (students.length === 0) {
         onFetchStudents();
       }
-      if (locations.length === 0) {
-        onFetchAllLocationns();
-      }
+
     }
   };
+
+  componentWillReceiveProps = (nextProps) => {
+    const { onFetchAllLocationns } = this.props;
+    const{ locations} = nextProps;
+    if (!locations&& nextProps.currentUser) {
+      const { currentUser: { id } } = nextProps;
+      onFetchAllLocationns(id);
+    }
+  }
 
   componentDidUpdate() {
     const { students: studentState } = this.state;
@@ -544,6 +552,7 @@ Students.propTypes = {
 const mapStateToProps = createStructuredSelector({
   students: makeSelectStudents(),
   locations: makeSelectLocations(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -552,7 +561,7 @@ const mapDispatchToProps = dispatch => ({
   onSetStudents: students => dispatch(setStudents(students)),
   onSetActiveStudentToken: token => dispatch(setActiveStudentToken(token)),
   onSetActiveStudent: student => dispatch(setActiveStudent(student)),
-  onFetchAllLocationns: () => dispatch(fetchAllLocationns()),
+  onFetchAllLocationns: (user_id) => dispatch(fetchAllLocationns(user_id)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

@@ -361,7 +361,7 @@ export const deleteStudentApi = id =>
     .then(res => res.json())
     .catch(err => err);
 
-export const assignTestToStudentApi = test => {
+export const assignTestToStudentApi = test =>
   fetch(`${API_URL}/api/commands/assign-test-to-student`, {
     method: "POST",
     headers: {
@@ -373,7 +373,6 @@ export const assignTestToStudentApi = test => {
   })
     .then(res => res.json())
     .catch(err => err);
-};
 
 export const fetchTestsByStudentIdApi = student_id =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests`, {
