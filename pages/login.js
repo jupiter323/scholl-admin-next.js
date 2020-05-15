@@ -67,153 +67,153 @@ class Login extends Component {
   }
 
 
-handleChangeForm = event => {
-  this.setState({
-    [event.target.name]: event.target.value,
-  });
-};
+  handleChangeForm = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
 
-handleForgotPassword = () => {
-  console.log('this.recoverEmail', this.state.recoverEmail);
-}
-onSetForgotPassword = () => {
-  this.setState({
-    forgotPassword: true,
-  });
-}
+  handleForgotPassword = () => {
+    console.log('this.recoverEmail', this.state.recoverEmail);
+  }
+  onSetForgotPassword = () => {
+    this.setState({
+      forgotPassword: true,
+    });
+  }
 
-render() {
-  const { email, password, forgotPassword, loginError, recoverEmail } = this.state;
+  render() {
+    const { email, password, forgotPassword, loginError, recoverEmail } = this.state;
 
-  return (
-    <React.Fragment>
-      <div className="wrapper forgot_account_number">
-        <div className="container-fluid clearfix">
-          <div className="rightsec padleft clearfix">
-            <div className="boxgroup">
-              <div className="choicelogo">
-                <a href="#">
-                  <img src="./static/images/choice_logo_big.png" alt="" />
-                </a>
-              </div>
-              <Choose>
-                <When condition={forgotPassword}>
-                  <div className="forgot_account">
-                    <div className="discrption">
-                      <h5>Forgot Account Number</h5>
-                      <p>If you’ve lost or forgotten your Account Number, we can sendt it to your email address. To receive your Account Number by email, enter your email address below and click “Send Account Number”.</p>
+    return (
+      <React.Fragment>
+        <div className="wrapper forgot_account_number">
+          <div className="container-fluid clearfix">
+            <div className="rightsec padleft clearfix">
+              <div className="boxgroup">
+                <div className="choicelogo">
+                  <a href="#">
+                    <img src="./static/images/choice_logo_big.png" alt="" />
+                  </a>
+                </div>
+                <Choose>
+                  <When condition={forgotPassword}>
+                    <div className="forgot_account">
+                      <div className="discrption">
+                        <h5>Forgot Account Number</h5>
+                        <p>If you’ve lost or forgotten your Account Number, we can sendt it to your email address. To receive your Account Number by email, enter your email address below and click “Send Account Number”.</p>
+                      </div>
+                      <div className="formsec">
+                        <ul className="clearfix">
+                          <li>
+                            <div className="input-field input-field-icon">
+                              <input type="email" name="recoverEmail" placeholder="Enter your Email Addres" value={recoverEmail} onChange={this.handleChangeForm} />
+                              <span className="input-icon icon-letter2"></span>
+                            </div>
+                          </li>
+                          <li><button className="btn waves-effect read" onClick={this.handleForgotPassword}>Send Account Number</button></li>
+                        </ul>
+                      </div>
                     </div>
-                    <div className="formsec">
-                      <ul className="clearfix">
-                        <li>
-                          <div className="input-field input-field-icon">
-                            <input type="email" name="recoverEmail" placeholder="Enter your Email Addres" value={recoverEmail} onChange={this.handleChangeForm} />
-                            <span className="input-icon icon-letter2"></span>
-                          </div>
-                        </li>
-                        <li><button className="btn waves-effect read" onClick={this.handleForgotPassword}>Send Account Number</button></li>
-                      </ul>
-                    </div>
-                  </div>
-                </When>
-                <Otherwise>
-                  <div className="forgot_account">
-                    <div className="discrption">
-                      {loginError ? <h5 style={{ color: 'red' }}>Please Enter valid email and password</h5> :
-                        <>
-                          <h5>Please Enter your email and password</h5>
-                          <p>
-                            For security purposes, you need to enter a current your
-                            email and password for this account.
+                  </When>
+                  <Otherwise>
+                    <div className="forgot_account">
+                      <div className="discrption">
+                        {loginError ? <h5 style={{ color: 'red' }}>Please Enter valid email and password</h5> :
+                          <>
+                            <h5>Please Enter your email and password</h5>
+                            <p>
+                              For security purposes, you need to enter a current your
+                              email and password for this account.
                           </p></>}
-                    </div>
-                    <div className="formsec">
-                      <ul className="clearfix">
-                        <li>
-                          <div className="input-field input-field-icon">
-                            <input
-                              type="text"
-                              name="email"
-                              placeholder="email"
-                              value={email}
-                              onChange={this.handleChangeForm}
-                              className="email"
-                              autoFocus
-                              ref={this.textFieldForUserEmailRef}
-                              onKeyPress={event => {
-                                if (event.key === "Enter") {
-                                  this.textFieldForPasswordRef.current.focus();
-                                }
-                              }}
-                            />
-                            <span className="input-icon icon-letter2"></span>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="input-field input-field-icon">
-                            <input
-                              type="password"
-                              name="password"
-                              placeholder="password"
-                              value={password}
-                              onChange={this.handleChangeForm}
-                              className="password"
-                              autoFocus
-                              ref={this.textFieldForPasswordRef}
-                              onKeyPress={event => {
-                                if (event.key === "Enter") {
-                                  this.chkRememberRef.current.focus();
-                                }
-                              }}
-                            />
-                            <span className="input-icon icon-key"></span>
-                          </div>
-                        </li>
-                        <div className="course-context_two-col" style={{ marginBottom: 20 }}>
-                          <div className="column">
-                            <div className="checkbox-block" style={{ textAlign: 'left', paddingLeft: 20 }}>
-                              <div className="checkbox-holder">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    className="filled-in"
-                                    name="chk_remember"
-                                    id="chk_remember"
-                                    value
-                                    autoFocus
-                                    ref={this.chkRememberRef}
-                                    onKeyPress={event => {
-                                      if (event.key === "Enter") {
-                                        this.buttonForLoginRef.current.click();
-                                      }
-                                    }}
+                      </div>
+                      <div className="formsec">
+                        <ul className="clearfix">
+                          <li>
+                            <div className="input-field input-field-icon">
+                              <input
+                                type="text"
+                                name="email"
+                                placeholder="email"
+                                value={email}
+                                onChange={this.handleChangeForm}
+                                className="email"
+                                autoFocus
+                                ref={this.textFieldForUserEmailRef}
+                                onKeyPress={event => {
+                                  if (event.key === "Enter") {
+                                    this.textFieldForPasswordRef.current.focus();
+                                  }
+                                }}
+                              />
+                              <span className="input-icon icon-letter2"></span>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="input-field input-field-icon">
+                              <input
+                                type="password"
+                                name="password"
+                                placeholder="password"
+                                value={password}
+                                onChange={this.handleChangeForm}
+                                className="password"
+                                autoFocus
+                                ref={this.textFieldForPasswordRef}
+                                onKeyPress={event => {
+                                  if (event.key === "Enter") {
+                                    this.chkRememberRef.current.focus();
+                                  }
+                                }}
+                              />
+                              <span className="input-icon icon-key"></span>
+                            </div>
+                          </li>
+                          <div className="course-context_two-col" style={{ marginBottom: 20 }}>
+                            <div className="column">
+                              <div className="checkbox-block" style={{ textAlign: 'left', paddingLeft: 20 }}>
+                                <div className="checkbox-holder">
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      className="filled-in"
+                                      name="chk_remember"
+                                      id="chk_remember"
+                                      value
+                                      autoFocus
+                                      ref={this.chkRememberRef}
+                                      onKeyPress={event => {
+                                        if (event.key === "Enter") {
+                                          this.buttonForLoginRef.current.click();
+                                        }
+                                      }}
 
-                                  />
-                                  <span className="large-label">Remember Me</span>
-                                </label>
+                                    />
+                                    <span className="large-label">Remember Me</span>
+                                  </label>
+                                </div>
+
                               </div>
-
+                            </div>
+                            <div style={{ textAlign: "right", width: '100%', paddingRight: 20 }}>
+                              <a onClick={this.onSetForgotPassword} style={{ cursor: 'pointer' }}>Forgot Password?</a>
                             </div>
                           </div>
-                          <div style={{ textAlign: "right", width: '100%', paddingRight: 20 }}>
-                            <a onClick={this.onSetForgotPassword} style={{ cursor: 'pointer' }}>Forgot Password?</a>
-                          </div>
-                        </div>
 
-                        <li>
-                          <button className="btn waves-effect read" onClick={this.handleSubmit} ref={this.buttonForLoginRef}>LogIn</button>
-                        </li>
-                      </ul>
+                          <li>
+                            <button className="btn waves-effect read" onClick={this.handleSubmit} ref={this.buttonForLoginRef}>LogIn</button>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </Otherwise>
-              </Choose>
+                  </Otherwise>
+                </Choose>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <style jsx>
-        {`
+        <style jsx>
+          {`
             .container-fluid {
               width: 100%;
               padding: 0 15px;
@@ -368,10 +368,10 @@ render() {
               font-size: 14px;
             }
           `}
-      </style>
-    </React.Fragment>
-  );
-}
+        </style>
+      </React.Fragment>
+    );
+  }
 }
 
 Login.propTypes = {

@@ -3,9 +3,10 @@ import {
   SET_ALL_LOCATIONS,
 } from "./constants";
 
-export function fetchAllLocationns() {
+export function fetchAllLocationns(user_id) {
   return {
     type: FETCH_ALL_LOCATIONS,
+    user_id
   };
 }
 

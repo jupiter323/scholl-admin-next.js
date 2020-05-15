@@ -3,8 +3,8 @@
 const API_URL = process.env.API_URL;
 import { getToken } from "../../../utils/AuthService";
 
-export const fetchAllLocationsApi = () =>
-  fetch(`${API_URL}/api/locations`, {
+export const fetchAllLocationsApi = (user_id) =>
+  fetch(`${API_URL}/api/users/${user_id}/locations`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
@@ -12,4 +12,4 @@ export const fetchAllLocationsApi = () =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => data.locations);
+    .then(({data}) => data);

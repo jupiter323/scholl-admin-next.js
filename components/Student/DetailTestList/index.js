@@ -188,7 +188,7 @@ class DetailTestList extends React.Component {
     this.onCloseDropdown();
   };
 
-  onSaveNewTest = test => {
+  onSaveNewTest = async(test) => {
     this.onCloseTestModal();
     const { tests: prevTestsState } = this.props;
     const newTestNumber = prevTestsState.length + 1;
@@ -220,7 +220,8 @@ class DetailTestList extends React.Component {
         "fe459162-5190-42dd-b67d-2b9baff55500",
       ],
     };
-    assignTestToStudentApi(postBody);
+    const newTestId = await assignTestToStudentApi(postBody);
+    console.log('newTestId:',newTestId)
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {

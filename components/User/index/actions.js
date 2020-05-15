@@ -10,9 +10,8 @@ export function setUserIsLogged(value) {
   };
 }
 
-export function getCurrentUser(value) {
+export function getCurrentUser() {
   return {
     type: FETCH_CURRENT_USER,
-    value,
   };
 }

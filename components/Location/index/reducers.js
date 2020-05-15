@@ -4,7 +4,7 @@ import {
 } from "./constants";
 
 const initialState = fromJS({
-  locations: [],
+  locations: null,
 });
 
 function locationsReducer(state = initialState, action) {

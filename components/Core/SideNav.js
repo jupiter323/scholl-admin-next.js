@@ -78,7 +78,8 @@ class SideNav extends Component {
   componentDidMount() {
     const isLogged = loggedIn();
     const { onSetUserIsLogged,onFetchCurrentUser,currentUser } = this.props;
-    if(!currentUser){
+    if(!currentUser && isLogged){
+      console.log('fetchCurrentUser')
       onFetchCurrentUser();
     }
     onSetUserIsLogged(isLogged);
