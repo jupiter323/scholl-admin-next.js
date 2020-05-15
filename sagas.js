@@ -932,9 +932,10 @@ function* watchForAnswerStudentLessonProblem() {
 
 function* handleAnswerStudentLessonProblem(action) {
   try {
-    console.log('log: saga action', action);
+    // @TODO will come back to this after fix/edit-answer-bubbles-rescoring gets merged
+    // console.log('log: saga action', action);
     // const addAnswerResponse = yield call(addStudentLessonProblemAnswerApi);
-    console.log('log: saga res', response);
+    // console.log('log: saga res', response);
     // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
     // yield put({
     //   type: ADD_LESSON_ANSWER,
