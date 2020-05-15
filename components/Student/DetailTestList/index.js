@@ -111,10 +111,10 @@ class DetailTestList extends React.Component {
       },
     );
   };
-  onDeleteTest = (student_test_id, student_id) => {
+  onDeleteTest = (student_test_id, student_id, type) => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
-      this.props.onDeleteStudentTest(student_test_id, student_id),
+      this.props.onDeleteStudentTest(student_test_id, student_id, type),
     );
   };
   onTestFlagReviewed = (student_test_id, student_id) => {
@@ -133,11 +133,11 @@ class DetailTestList extends React.Component {
   mapCompletedTests = () => {
     const { dropdownIndex, dropdownIsOpen } = this.state;
     const { completes } = this.props;
-    return completes.map(test => (
+    return completes.map((test, index) => (
       <CompletedTestCard
         test={test}
-        index={test.test_id}
-        key={test.test_id}
+        index={`completed${index}`}
+        key={`completed-${index}`}
         onEnterAnswers={this.onEnterAnswers}
         onEditTest={() => this.onToggleEditTestModal(test)}
         onSetDropdown={this.onSetDropdown}
@@ -146,6 +146,7 @@ class DetailTestList extends React.Component {
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
         onTestFlagReviewed={this.onTestFlagReviewed}
+        onDeleteTest={this.onDeleteTest}
       />
     ));
   };
@@ -355,7 +356,7 @@ function mapDispatchToProps(dispatch) {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
-    onDeleteStudentTest: (studentTestId, studentId) => dispatch(deleteStudentTest(studentTestId, studentId)),
+    onDeleteStudentTest: (studentTestId, studentId, type) => dispatch(deleteStudentTest(studentTestId, studentId, type)),
     onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
   };
 }

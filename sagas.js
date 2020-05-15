@@ -43,8 +43,8 @@ import {
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_EXCUSE_STUDENT_LATENESS,
   DELETE_STUDENT_TEST,
-  GET_TESTS_DEBOUNCE,
   UPDATE_TEST_FLAG,
+  REMOVE_TEST,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -209,9 +209,6 @@ export function* watchForFetchStudentTests() {
     const { user } = yield take(GET_TESTS);
     yield call(fetchStudentTests, user);
   }
-}
-export function* watchForFetchStudentTestsDebounce() {
-  yield debounce(200, GET_TESTS_DEBOUNCE, fetchStudentTests);
 }
 
 export function* fetchStudentTests(user) {
@@ -931,10 +928,16 @@ function* handleDeleteStudentTest(action) {
   try {
     console.log('log: from saga', action);
     const payload = { student_test_id: action.studentTestId };
-    yield call(deleteStudentTestApi, payload);
+    const response = yield call(deleteStudentTestApi, payload);
+    // Remove from redux
+    console.log('log: response redux', response);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleDeleteStudentTest saga", error);
+    }
     yield put({
-      type: GET_TESTS_DEBOUNCE,
-      id: action.studentId,
+      type: REMOVE_TEST,
+      testType: action.testType,
+      studentTestId: action.studentTestId,
     });
   } catch (error) {
     console.warn("Error occurred in the handleDeleteStudentTest saga", error);
@@ -969,12 +972,6 @@ function* handleUpdateFlagStatus(action) {
       count++;
     }
     // Dispatch to update redux store
-    if (reviewedTestIds.length !== 0) {
-      yield put({
-        type: GET_TESTS_DEBOUNCE,
-        id: action.studentId,
-      });
-    }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateFlagStatus saga", error);
   }
@@ -1029,7 +1026,6 @@ export default function* defaultSaga() {
     watchForFlagStudentLessonProblem(),
     watchForFetchAllLocations(),
     watchForDeleteStudentTest(),
-    watchForFetchStudentTestsDebounce(),
     watchForUpdateTestFlagStatus(),
   ]);
 }

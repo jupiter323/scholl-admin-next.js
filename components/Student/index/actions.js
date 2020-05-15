@@ -353,10 +353,11 @@ export const setActiveStudent = (student) => ({
   student,
 });
 
-export const deleteStudentTest = (studentTestId, studentId) => ({
+export const deleteStudentTest = (studentTestId, studentId, testType) => ({
   type: DELETE_STUDENT_TEST,
   studentTestId,
   studentId,
+  testType,
 });
 
 export const updateTestFlag = (studentTestId, studentId) => ({

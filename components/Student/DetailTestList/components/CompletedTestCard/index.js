@@ -149,7 +149,13 @@ class CompletedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={() => onTestFlagReviewed(student_test_id, student_id)}>
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onTestFlagReviewed(student_test_id, student_id);
+                                    }}
+                                  >
                                     Mark flags reviewed
                                   </a>
                                 </li>
@@ -159,7 +165,14 @@ class CompletedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={() => onDeleteTest(student_test_id, student_id)} className="red-text text-darken-3">
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onDeleteTest(student_test_id, student_id, "completedStudentTests");
+                                    }}
+                                    className="red-text text-darken-3"
+                                  >
                                     Unassign
                                   </a>
                                 </li>
