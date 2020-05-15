@@ -245,7 +245,7 @@ function studentReducer(state = initialState, action) {
       return state.set('activeStudent', action.student);
 
     case SET_STUDENT_TEST_SECTION_PROBLEMS:
-      return state.set('testSectionProblems',action.problems)
+      return state.set('testSectionProblems', action.problems);
     default:
       return state;
   }

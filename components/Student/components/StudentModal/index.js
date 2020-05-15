@@ -113,8 +113,8 @@ class StudentModal extends React.Component {
                                         type="text"
                                         id="address"
                                         name="address"
-                                        value={state.contactInformation.addressLine1}
-                                        onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')}
+                                        value={state.contactInformation.addressLine}
+                                        onChange={(event) => handleChange(event, 'addressLine', 'contactInformation')}
                                       />
                                       <label className="label" htmlFor="address">Street Address (optional)</label>
                                     </div>

@@ -11,24 +11,24 @@ class ProblemRow extends React.Component {
         {
           id: 0,
           label: "A",
-          selected: false
+          selected: false,
         },
         {
           id: 1,
           label: "B",
-          selected: false
+          selected: false,
         },
         {
           id: 2,
           label: "C",
-          selected: false
+          selected: false,
         },
         {
           id: 3,
           label: "D",
-          selected: false
-        }
-      ]
+          selected: false,
+        },
+      ],
     };
   }
 
@@ -37,13 +37,13 @@ class ProblemRow extends React.Component {
     const selectedIndex = this.state.selectedIndex;
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
-        [index]: { selected: { $set: !currentBadge.selected } }
+        [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
-        [selectedIndex]: { selected: { $set: false } }
+        [selectedIndex]: { selected: { $set: false } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
     }
@@ -52,18 +52,18 @@ class ProblemRow extends React.Component {
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     const {
       onAddStudentAnswerToTest,
-      problem: { test_problem_id }
+      problem,
     } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
-    onAddStudentAnswerToTest(test_problem_id, label);
+    onAddStudentAnswerToTest(problem.id, label);
   };
   render() {
     const { problemCells } = this.state;
     return (
       <li className="answers-list-holder">
         {/* we are not using input box for now */}
-        {/* {this.props.problem.answerInput === true ? (<input type="text" className="answer-input" tabIndex={0} />):(*/}
+        {/* {this.props.problem.answerInput === true ? (<input type="text" className="answer-input" tabIndex={0} />):( */}
         <ul className="answer-list">
           {problemCells.map((cell, index) => (
             <li
@@ -76,7 +76,7 @@ class ProblemRow extends React.Component {
                 style={{
                   color: cell.selected ? "#fff" : "",
                   borderColor: cell.selected ? "#19b4e9" : "",
-                  backgroundColor: cell.selected ? "#19b4e9" : ""
+                  backgroundColor: cell.selected ? "#19b4e9" : "",
                 }}
               >
                 {cell.label}
@@ -92,7 +92,7 @@ class ProblemRow extends React.Component {
 
 ProblemRow.propTypes = {
   problem: PropTypes.object.isRequired,
-  onAddStudentAnswerToTest: PropTypes.func.isRequired
+  onAddStudentAnswerToTest: PropTypes.func.isRequired,
 };
 
 export default ProblemRow;
