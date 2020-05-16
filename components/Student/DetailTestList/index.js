@@ -3,6 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import update from "immutability-helper";
 import Moment from "moment";
+import { toast } from 'react-toastify';
+import Toast from '../../Toast';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
@@ -14,12 +16,13 @@ import NewTestModal from "./components/TestModal";
 import TestSettingModal from "./components/TestSettingModal";
 import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
 import CardHeader from "./components/CardHeader";
-import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId } from "../index/actions";
+import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId, setStudentAssignedTests } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
+  makeSelectTests,
 } from "../index/selectors";
 import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
 
@@ -87,7 +90,7 @@ class DetailTestList extends React.Component {
   onEnterAnswers = currentTestId => {
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    const activeTest = this.props.tests.find(test => test.student_test_id === currentTestId);
+    const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
     this.setState({ openEnterAnswerWrapper: true, activeTest });
   };
 
@@ -188,23 +191,14 @@ class DetailTestList extends React.Component {
     this.onCloseDropdown();
   };
 
-  onSaveNewTest = async(test) => {
+  onSaveNewTest = async (test) => {
     this.onCloseTestModal();
-    const { tests: prevTestsState } = this.props;
+    const { studentTests: prevTestsState, tests } = this.props;
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test.version);
+    const currentTest = tests[currentTestIndex];
     const newTestNumber = prevTestsState.length + 1;
-    const sampleNewTest = {
-      id: uuidGenerator(),
-      status: "future",
-      title: `Practice Test ${newTestNumber}`,
-      testDate: Moment(test.assignDate).format("YYYY-MM-DD"),
-      dueDate: Moment(test.dueDate).format("YYYY-MM-DD"),
-      completionDate: "",
-      completionTime: "",
-      weekNumber: "3",
-      subjects: [{}, {}],
-    };
-    const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
-    this.setState({ tests: updatedTests });
+
     const {
       user: { id },
     } = this.props;
@@ -213,15 +207,32 @@ class DetailTestList extends React.Component {
       test_id: test.version,
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
       due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
-      test_section_ids: [
-        "3c660d9f-6e3c-4b66-9028-ffb6890c6c3a",
-        "5c430ac1-63f5-4418-88a9-6fa3526eafd6",
-        "f1ccfcc7-dc9a-40b7-b555-b432aeede73a",
-        "fe459162-5190-42dd-b67d-2b9baff55500",
-      ],
+      test_section_ids: currentTest.test_sections.map(testSection => testSection.id)
     };
-    const newTestId = await assignTestToStudentApi(postBody);
-    console.log('newTestId:',newTestId)
+    const { student_test_id } = await assignTestToStudentApi(postBody);
+    if (student_test_id) {
+      const formattedNewTest = {
+        assignment_date: test.assignDate,
+        due_date: test.dueDate,
+        due_status: "",
+        status: "ASSIGNED",
+        student_id: id,
+        student_test_id,
+        test_description: currentTest.description,
+        test_form: "3",
+        test_id: test.version,
+        test_name: currentTest.name,
+      };
+      const updatedTests = update(prevTestsState, { $push: [formattedNewTest] });
+      const { onSetStudentAssignedTests } = this.props;
+      onSetStudentAssignedTests(updatedTests)
+    } else {
+      toast.error( `Not that the student is not activated that the Free Student Account can only be assigned one free test.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
+
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
@@ -247,6 +258,7 @@ class DetailTestList extends React.Component {
     const { user, completes, assigneds, overdues } = this.props;
     return (
       <React.Fragment>
+        <Toast/>
         <Choose>
           <When condition={openEditTestModal}>
             <EditTestModal
@@ -330,13 +342,15 @@ DetailTestList.propTypes = {
   completes: PropTypes.array,
   overdues: PropTypes.array,
   assigneds: PropTypes.array,
+  onSetStudentAssignedTests: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   completes: makeSelectCompletedStudentTests(),
   assigneds: makeSelectAssignedStudentTests(),
   overdues: makeSelectOverDueStudentTests(),
-  tests: makeSelectStudentTests(),
+  studentTests: makeSelectStudentTests(),
+  tests: makeSelectTests(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -344,6 +358,7 @@ function mapDispatchToProps(dispatch) {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
+    onSetStudentAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
   };
 }
 
