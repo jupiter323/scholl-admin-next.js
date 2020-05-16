@@ -42,6 +42,9 @@ import {
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_EXCUSE_STUDENT_LATENESS,
+  DELETE_STUDENT_TEST,
+  UPDATE_TEST_FLAG,
+  REMOVE_TEST,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -117,8 +120,11 @@ const {
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
-  fetchSectionsByTestIdApi,
-  fetchProblemsByStudentTestIdApi,
+  deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
+  // fetchSectionsByTestIdApi,
+  // fetchProblemsByStudentTestIdApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -196,7 +202,7 @@ export function* fetchStudentTestSections(id, studentTestId, studentToken) {
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     let count = 0;
     while (count < testSections.length) {
-      const problems = yield call(fetchProblemsByStudentTestIdApi, id, studentTestId, studentToken, testSections[count].id);
+      const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id, studentToken);
       testSections[count].problems = problems;
       count++;
     }
@@ -923,6 +929,60 @@ function* handleFetchAllLocations(id) {
   }
 }
 
+function* watchForDeleteStudentTest() {
+  yield takeEvery(DELETE_STUDENT_TEST, handleDeleteStudentTest);
+}
+
+function* handleDeleteStudentTest(action) {
+  try {
+    const payload = { student_test_id: action.studentTestId };
+    const response = yield call(deleteStudentTestApi, payload);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleDeleteStudentTest saga", error);
+    }
+    yield put({
+      type: REMOVE_TEST,
+      testType: action.testType,
+      studentTestId: action.studentTestId,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleDeleteStudentTest saga", error);
+  }
+}
+
+function* watchForUpdateTestFlagStatus() {
+  yield takeEvery(UPDATE_TEST_FLAG, handleUpdateFlagStatus);
+}
+
+function* handleUpdateFlagStatus(action) {
+  try {
+    const sections = yield call(fetchStudentTestSectionsApi, action.studentId, action.studentTestId);
+
+    const reviewedTestIds = [];
+    let count = 0;
+    while (count < sections.length) {
+      const problems = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
+
+      const problemAmount = problems.problems.length;
+      let problemCount = 0;
+      while (problemCount < problemAmount) {
+        const flagData = problems.problems[problemCount].flag;
+        if (flagData.id && flagData.status === 'FLAGGED') {
+          const payload = { status: 'REVIEWED', flag_id: flagData.id, student_test_id: action.studentTestId };
+
+          yield call(updateStudentTestQuestionFlagStatusApi, payload);
+          reviewedTestIds.push(action.studentTestId);
+        }
+        problemCount++;
+      }
+      count++;
+    }
+    // Dispatch to update redux store
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateFlagStatus saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -971,5 +1031,7 @@ export default function* defaultSaga() {
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
     watchForFetchAllLocations(),
+    watchForDeleteStudentTest(),
+    watchForUpdateTestFlagStatus(),
   ]);
 }

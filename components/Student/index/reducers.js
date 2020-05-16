@@ -39,6 +39,7 @@ import {
   SET_EXCUSE_STUDENT_LATENESS,
   SET_ACTIVE_STUDENT,
   SET_STUDENT_TEST_SECTION_PROBLEMS,
+  REMOVE_TEST,
 } from "./constants";
 
 const initialState = fromJS({
@@ -246,6 +247,11 @@ function studentReducer(state = initialState, action) {
 
     case SET_STUDENT_TEST_SECTION_PROBLEMS:
       return state.set('testSectionProblems', action.problems);
+
+    case REMOVE_TEST:
+      return state.set(action.testType, state.get(action.testType).filter(test => test.student_test_id !== action.studentTestId,
+      ));
+
     default:
       return state;
   }

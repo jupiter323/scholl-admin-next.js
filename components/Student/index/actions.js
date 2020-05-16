@@ -49,6 +49,8 @@ import {
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_TESTS,
   SET_ACTIVE_STUDENT,
+  DELETE_STUDENT_TEST,
+  UPDATE_TEST_FLAG,
 } from "./constants";
 
 export function fetchStudents() {
@@ -349,4 +351,17 @@ export const setTests = (tests) => ({
 export const setActiveStudent = (student) => ({
   type: SET_ACTIVE_STUDENT,
   student,
+});
+
+export const deleteStudentTest = (studentTestId, studentId, testType) => ({
+  type: DELETE_STUDENT_TEST,
+  studentTestId,
+  studentId,
+  testType,
+});
+
+export const updateTestFlag = (studentTestId, studentId) => ({
+  type: UPDATE_TEST_FLAG,
+  studentTestId,
+  studentId,
 });
