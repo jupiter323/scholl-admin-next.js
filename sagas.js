@@ -42,6 +42,8 @@ import {
   FILTER_LESSONS,
   FLAG_STUDENT_LESSON_PROBLEM,
   SET_EXCUSE_STUDENT_LATENESS,
+  ADD_LESSON_ANSWER,
+  ADD_LESSON_ANSWER_SUCCESS,
   DELETE_STUDENT_TEST,
   UPDATE_TEST_FLAG,
   REMOVE_TEST,
@@ -120,11 +122,11 @@ const {
   excuseStudentLessonLatenessApi,
   filterLessonListApi,
   addStudentLessonProblemFlagApi,
+  addStudentLessonProblemAnswerApi,
+  rescoreStudentLessonApi,
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
-  // fetchSectionsByTestIdApi,
-  // fetchProblemsByStudentTestIdApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -913,19 +915,39 @@ function* handleFlagStudentLessonProblem(action) {
 function* watchForFetchAllLocations() {
   const value = yield take(FETCH_ALL_LOCATIONS);
   yield call(handleFetchAllLocations, value.user_id);
-
 }
 
 
 function* handleFetchAllLocations(id) {
   try {
-    const locations = yield call(fetchAllLocationsApi,id);
+    const locations = yield call(fetchAllLocationsApi, id);
     yield put({
       type: SET_ALL_LOCATIONS,
       payload: locations,
     });
   } catch (error) {
     console.warn("Error occurred in the handleFetchAllLocations saga", error);
+  }
+}
+
+function* watchForAnswerStudentLessonProblem() {
+  yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
+}
+
+
+function* handleAnswerStudentLessonProblem(action) {
+  try {
+    // @TODO will come back to this after fix/edit-answer-bubbles-rescoring gets merged
+    // console.log('log: saga action', action);
+    // const addAnswerResponse = yield call(addStudentLessonProblemAnswerApi);
+    // console.log('log: saga res', response);
+    // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
+    // yield put({
+    //   type: ADD_LESSON_ANSWER,
+    //   payload: locations,
+    // });
+  } catch (error) {
+    console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
   }
 }
 
@@ -1031,6 +1053,7 @@ export default function* defaultSaga() {
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
     watchForFetchAllLocations(),
+    watchForAnswerStudentLessonProblem(),
     watchForDeleteStudentTest(),
     watchForUpdateTestFlagStatus(),
   ]);

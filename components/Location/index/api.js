@@ -12,4 +12,4 @@ export const fetchAllLocationsApi = (user_id) =>
     },
   })
     .then(res => res.json())
-    .then(({data}) => data);
+    .then(({ data }) => data);

@@ -242,7 +242,12 @@ class QuestionModal extends React.Component {
                   <div className="card-panel">
                     <div className="panel-block">
                       <strong className="subtitle">Edit Student's Answer</strong>
-                      <EditProblemRow activeLesson={this.props.activeLesson} question={this.props.question} updateProblemList={this.props.updateProblemList} problemType={this.props.problemType} />
+                      <EditProblemRow
+                        activeLesson={this.props.activeLesson}
+                        question={this.props.question}
+                        updateProblemList={this.props.updateProblemList}
+                        problemType={this.props.problemType}
+                      />
                     </div>
                   </div>
                 </div>

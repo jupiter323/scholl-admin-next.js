@@ -43,7 +43,7 @@ class LocationModal extends React.Component {
 
   render() {
     const { open } = this.props;
-    const { locations} = this.props;
+    const { locations } = this.props;
     return (
       <Portal selector="#modal">
         {open && (
