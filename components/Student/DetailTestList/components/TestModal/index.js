@@ -18,7 +18,7 @@ class NewTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      version: "SAT Pratice Test #1",
+      version: "",
       assignTime: new Date(),
       dueTime: new Date(),
       assignDate: new Date(),
@@ -44,15 +44,20 @@ class NewTestModal extends React.Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    console.log("OK")
     if (this.state.versionOptions.length === 0) {
       const formattedVersions = nextProps.tests.map(test => ({
         label: test.name,
         value: test.id,
       }));
+     
       this.setState({
         versionOptions: formattedVersions,
       });
+      if(formattedVersions.length !== 0) {
+        this.setState({
+          version:formattedVersions[0].value
+        })
+      }
     }
   }
 
