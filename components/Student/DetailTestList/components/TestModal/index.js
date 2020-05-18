@@ -44,6 +44,7 @@ class NewTestModal extends React.Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
+    console.log("OK")
     if (this.state.versionOptions.length === 0) {
       const formattedVersions = nextProps.tests.map(test => ({
         label: test.name,
