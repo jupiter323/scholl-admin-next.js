@@ -8,11 +8,16 @@ import NavBar from './common/NavBar';
 import InCompleteTestSection from './components/InCompleteSection';
 import PreStartTestSection from './components/StartSection';
 
-import {addStudentAnswerToTestApi, updateStudentTestSectionStatusApi} from '../../../index/api';
+import {
+  addStudentAnswerToTestApi,
+  updateStudentTestSectionStatusApi,
+  updateStudentTestStatusApi,
+} from '../../../index/api';
 import {
   makeSelectStudentSections,
   makeSelectActiveStudentToken,
   makeSelectActiveStudent,
+  makeSelectTests,
 } from '../../../index/selectors';
 import {fetchStudentTestSections} from '../../../index/actions';
 
@@ -59,24 +64,56 @@ class EnterAnswerWrapper extends React.Component {
       };
       onFetchStudentTestSections(postBody);
     } else {
-      // this.onSetProblems(sections, student_test_id);
+      this.onSetProblems(sections, student_test_id);
     }
   };
 
   componentWillReceiveProps = nextProps => {
     const {sections, student_test_id} = nextProps;
     if (sections.length !== 0) {
-      console.log('sections:', sections);
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
+    const {tests, test: {test_id}} = this.props;
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    sections.map(section => {
+      const testSectionIds = currentTestSections.map(testSection => testSection.id);
+      const currentTestSectionIndex = testSectionIds.findIndex(
+        testSectionId => testSectionId === section.test_section_id
+      );
+      const currentTestSection = currentTestSections[currentTestSectionIndex];
+      switch (currentTestSection.name) {
+        case 'Math (Calculator)':
+          this.setState({
+            testMathCalcProblems: section,
+          });
+          break;
+        case 'Writing':
+          this.setState({
+            testWritingProblems: section,
+          });
+          break;
+        case 'Math (No Calculator)':
+          this.setState({
+            testMathNoCalcProblems: section,
+          });
+          break;
+        case 'Reading':
+          this.setState({
+            testReadingProblems: section,
+          });
+          break;
+        default:
+          this.setState({
+            testReadingProblems: section,
+          });
+      }
+    });
     this.setState({
-      testReadingProblems: sections[0],
-      testWritingProblems: sections[1],
-      testMathCalcProblems: sections[2],
-      testMathNoCalcProblems: sections[3],
       testSections: sections,
       studentTestId,
     });
@@ -157,6 +194,11 @@ class EnterAnswerWrapper extends React.Component {
       mathCalcSectionCompleted &&
       mathNoCalcSectionCompleted
     ) {
+      const postBody = {
+        student_test_id: activeTest.student_test_id,
+        status: 'COMPLETED',
+      };
+      await updateStudentTestStatusApi(postBody);
       const {onOpentTestScore} = this.props;
       onOpentTestScore(activeTest);
     } else {
@@ -187,12 +229,14 @@ class EnterAnswerWrapper extends React.Component {
             readingSectionCompleted: true,
           });
       }
-      const postBody = {
-        student_test_id: activeTest.student_test_id,
-        student_test_section_id: activeTest.id,
-        student_test_section_status: 'COMPLETED',
-      };
-      await updateStudentTestSectionStatusApi(postBody);
+      if (activeTest.test_section_status === 'STARTED') {
+        const postBody = {
+          student_test_id: activeTest.student_test_id,
+          student_test_section_id: activeTest.id,
+          student_test_section_status: 'COMPLETED',
+        };
+        await updateStudentTestSectionStatusApi(postBody);
+      }
     }
   };
 
@@ -247,6 +291,7 @@ const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
   activeStudent: makeSelectActiveStudent(),
+  tests: makeSelectTests(),
 });
 function mapDispatchToProps(dispatch) {
   return {
