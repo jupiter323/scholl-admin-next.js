@@ -63,16 +63,18 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onSetProblems = (sections, studentTestId) => {
-    console.log('log: start onSetProblems');
+    // console.log('log: start onSetProblems', sections);
     const { tests, test: { test_id } } = this.props;
     let testReading = null; let testWriting = null; let testMathCalc = null; let
       testMathNoCalc = null;
     tests.map(test => {
       if (test.id === test_id) {
+        console.log('log: matching test id');
         sections.map((section, index) => {
+          console.log('log: entered here');
+          console.log('log: section.test_section_id', section);
+          console.log('log: test.test_sections[index].id', test.test_sections);
           if (section.test_section_id === test.test_sections[index].id) {
-            console.log('log: name to set', test.test_sections[index].name);
-            console.log('log: section to set', section);
             switch (test.test_sections[index].name) {
               case "Reading":
                 testReading = section;
@@ -105,11 +107,19 @@ class EnterAnswerWrapper extends React.Component {
 
   onSetActivePage = async (name) => {
     const currentSection = this.state.updatedState.activeSection;
-    const updatedState = update(this.state.updatedState, {
-      [name]: { $set: true },
-      [currentSection]: { $set: false },
-      activeSection: { $set: name },
-    });
+    let updatedState;
+    if (name === 'showInCompleteTest') {
+      updatedState = update(this.state.updatedState, {
+        [name]: { $set: true },
+        [currentSection]: { $set: false },
+      });
+    } else {
+      updatedState = update(this.state.updatedState, {
+        [name]: { $set: true },
+        [currentSection]: { $set: false },
+        activeSection: { $set: name },
+      });
+    }
     this.setState({ updatedState });
     const currentProblems = this.getCurrentTestProblems(name);
     console.log('log: currentProblems', currentProblems);
