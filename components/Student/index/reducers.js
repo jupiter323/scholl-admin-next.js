@@ -40,6 +40,7 @@ import {
   SET_ACTIVE_STUDENT,
   SET_STUDENT_TEST_SECTION_PROBLEMS,
   REMOVE_TEST,
+  ASSIGN_NEW_TEST,
 } from "./constants";
 
 const initialState = fromJS({
@@ -251,6 +252,9 @@ function studentReducer(state = initialState, action) {
     case REMOVE_TEST:
       return state.set(action.testType, state.get(action.testType).filter(test => test.student_test_id !== action.studentTestId,
       ));
+
+    case ASSIGN_NEW_TEST:
+      return state.set('assignedStudentTests', [...state.get('assignedStudentTests'), action.newTest]);
 
     default:
       return state;
