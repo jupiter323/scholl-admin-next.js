@@ -9,7 +9,7 @@ import InCompleteTestSection from "./components/InCompleteSection";
 import PreStartTestSection from "./components/StartSection";
 
 import { addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../../../index/api";
-import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectActiveStudent } from "../../../index/selectors";
+import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectActiveStudent, makeSelectTests } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
 
 class EnterAnswerWrapper extends React.Component {
@@ -63,11 +63,41 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onSetProblems = (sections, studentTestId) => {
+    console.log('log: start onSetProblems');
+    const { tests, test: { test_id } } = this.props;
+    let testReading = null; let testWriting = null; let testMathCalc = null; let
+      testMathNoCalc = null;
+    tests.map(test => {
+      if (test.id === test_id) {
+        sections.map((section, index) => {
+          if (section.test_section_id === test.test_sections[index].id) {
+            console.log('log: name to set', test.test_sections[index].name);
+            console.log('log: section to set', section);
+            switch (test.test_sections[index].name) {
+              case "Reading":
+                testReading = section;
+                break;
+              case "Writing":
+                testWriting = section;
+                break;
+              case "Math (Calculator)":
+                testMathCalc = section;
+                break;
+              case "Math (No Calculator)":
+                testMathNoCalc = section;
+                break;
+              default:
+                break;
+            }
+          }
+        });
+      }
+    });
     this.setState({
-      testReadingProblems: sections[0],
-      testWritingProblems: sections[1],
-      testMathCalcProblems: sections[2],
-      testMathNoCalcProblems: sections[3],
+      testReadingProblems: testReading,
+      testWritingProblems: testWriting,
+      testMathCalcProblems: testMathCalc,
+      testMathNoCalcProblems: testMathNoCalc,
       testSections: sections,
       studentTestId,
     });
@@ -113,7 +143,8 @@ class EnterAnswerWrapper extends React.Component {
     await addStudentAnswerToTestApi(postBody);
   };
 
-  getCurrentTestProblems = (activeSection) => {
+  getCurrentTestProblems = (name) => {
+    const activeSection = name || this.state.updatedState.activeSection;
     const {
       testReadingProblems,
       testWritingProblems,
@@ -240,6 +271,7 @@ const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
   activeStudent: makeSelectActiveStudent(),
+  tests: makeSelectTests(),
 });
 function mapDispatchToProps(dispatch) {
   return {

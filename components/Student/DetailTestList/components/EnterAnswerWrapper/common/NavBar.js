@@ -42,12 +42,12 @@ class NavBar extends React.Component {
                 <b>Writing</b>
               </a>
             </li>}
-            {mathCalc && <li className="tab col s3">
+            {mathNoCalc && <li className="tab col s3">
               <a onClick={() => onSetActivePage("activeMathNoCalcSection")}>
                 <b>Math (no calc)</b>
               </a>
             </li>}
-            {mathNoCalc && <li className="tab col s3">
+            {mathCalc && <li className="tab col s3">
               <a onClick={() => onSetActivePage("activeMathWithCalcSection")}>
                 <b>Math (calculator)</b>
               </a>
