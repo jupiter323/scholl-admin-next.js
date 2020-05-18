@@ -99,8 +99,6 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = async currentTestId => {
-    console.log('log: user', this.props.user);
-    console.log('log: currentTestId', currentTestId);
     this.props.onFetchStudentTestSections({ id: this.props.user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
