@@ -239,7 +239,6 @@ class DetailTestList extends React.Component {
         progressClassName: 'progress-bar-error',
       });
     }
-
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {

@@ -125,7 +125,7 @@ class Login extends Component {
                             <p>
                               For security purposes, you need to enter a current your
                               email and password for this account.
-                          </p></>}
+                            </p></>}
                       </div>
                       <div className="formsec">
                         <ul className="clearfix">

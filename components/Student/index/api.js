@@ -645,7 +645,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     .then(({ data }) => data);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
-  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/section/${section_id}`, {
+  fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/sections/${section_id}`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
@@ -747,6 +747,19 @@ export const updateStudentTestSectionStatusApi = (body) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const rescoreStudentLessonApi = (body) =>
+  fetch(`${API_URL}/api/commands/rescore-student-lesson`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);
 
 export const deleteStudentTestApi = (body) =>
   fetch(`${API_URL}/api/commands/delete-student-test`, {

@@ -96,14 +96,13 @@ class Students extends Component {
       if (students.length === 0) {
         onFetchStudents();
       }
-
     }
   };
 
   componentWillReceiveProps = (nextProps) => {
     const { onFetchAllLocationns } = this.props;
-    const{ locations} = nextProps;
-    if (!locations&& nextProps.currentUser) {
+    const { locations } = nextProps;
+    if (!locations && nextProps.currentUser) {
       const { currentUser: { id } } = nextProps;
       onFetchAllLocationns(id);
     }

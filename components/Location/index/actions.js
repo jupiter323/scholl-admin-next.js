@@ -6,7 +6,7 @@ import {
 export function fetchAllLocationns(user_id) {
   return {
     type: FETCH_ALL_LOCATIONS,
-    user_id
+    user_id,
   };
 }
 
