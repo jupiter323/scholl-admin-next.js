@@ -24,7 +24,7 @@ import {
   makeSelectStudentTests,
   makeSelectTests,
 } from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
+import { assignTestToStudentApi, addStudentAnswerToTestApi,updateStudentTestStatusApi } from "../index/api";
 
 const uuidGenerator = require("uuid/v4");
 
@@ -87,9 +87,14 @@ class DetailTestList extends React.Component {
     console.warn("Pending implementation of create test UI and functionality");
   };
 
-  onEnterAnswers = currentTestId => {
+  onEnterAnswers = async(currentTestId) => {
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
+    const postBody = {
+      student_test_id:currentTestId,
+      status:"STARTED",
+    }
+    await updateStudentTestStatusApi(postBody);
     const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
     this.setState({ openEnterAnswerWrapper: true, activeTest });
   };
