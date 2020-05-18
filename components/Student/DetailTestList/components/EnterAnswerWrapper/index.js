@@ -47,16 +47,12 @@ class EnterAnswerWrapper extends React.Component {
       test: { student_test_id },
       activeStudent: { id },
     } = this.props;
-    if (sections.length === 0) {
-      const postBody = {
-        id,
-        student_test_id,
-        studentToken,
-      };
-      onFetchStudentTestSections(postBody);
-    } else {
-      // this.onSetProblems(sections, student_test_id);
-    }
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
   };
 
   componentWillReceiveProps = nextProps => {
