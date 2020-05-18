@@ -198,6 +198,7 @@ class DetailTestList extends React.Component {
 
   onSaveNewTest = async (test) => {
     this.onCloseTestModal();
+    let test_sections = [];
     const { tests } = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test.version);
@@ -206,12 +207,26 @@ class DetailTestList extends React.Component {
     const {
       user: { id },
     } = this.props;
+    currentTest.test_sections.map(testSection => {
+      if(testSection.name === "Reading" && test.reading){
+        test_sections.push(testSection)
+      }
+      if(testSection.name === "Writing" && test.writing){
+        test_sections.push(testSection)
+      }
+       if (testSection.name === "Math (No Calculator)" && test.mathNoCalc){
+        test_sections.push(testSection)
+      }
+      if(testSection.name === "Math (Calculator)" && test.mathWithCalc){
+          test_sections.push(testSection)
+      }
+    })
     const postBody = {
       student_id: id,
       test_id: test.version,
       assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
       due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
-      test_section_ids: currentTest.test_sections.map(testSection => testSection.id),
+      test_section_ids: test_sections.map(testSection => testSection.id)
     };
     const { student_test_id } = await assignTestToStudentApi(postBody);
     if (student_test_id) {
