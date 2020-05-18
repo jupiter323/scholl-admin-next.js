@@ -400,7 +400,7 @@ export const fetchTestByTestIdApi = (student_id, test_id) => {
     .catch(err => err);
 };
 
-export const fetchStudentTestSectionsApi = (student_id, student_test_id, student_token) =>
+export const fetchStudentTestSectionsApi = (student_id, student_test_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_tests/${student_test_id}/sections`, {
     headers: {
       Accept: "application/json",
