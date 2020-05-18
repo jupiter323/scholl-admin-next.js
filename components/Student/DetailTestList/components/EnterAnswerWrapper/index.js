@@ -29,10 +29,10 @@ class EnterAnswerWrapper extends React.Component {
       startedTest: false,
       testSections: [],
       studentTestId: '',
-      testReadingProblems: {},
-      testWritingProblems: {},
-      testMathCalcProblems: {},
-      testMathNoCalcProblems: {},
+      testReadingProblems: null,
+      testWritingProblems: null,
+      testMathCalcProblems: null,
+      testMathNoCalcProblems: null,
       updatedState: {
         activeReadingSection: true,
         showInCompleteTest: false,
@@ -111,6 +111,7 @@ class EnterAnswerWrapper extends React.Component {
           this.setState({
             testReadingProblems: section,
           });
+          break;
       }
     });
     this.setState({
@@ -126,7 +127,21 @@ class EnterAnswerWrapper extends React.Component {
       [currentSection]: {$set: false},
       activeSection: {$set: name},
     });
-    this.setState({updatedState});
+    if (name === 'showInCompleteTest') {
+      const updatedState = update(this.state.updatedState, {
+        [name]: {$set: true},
+        [currentSection]: {$set: false},
+      });
+      this.setState({updatedState});
+    } else {
+      const updatedState = update(this.state.updatedState, {
+        [name]: {$set: true},
+        [currentSection]: {$set: false},
+        activeSection: {$set: name},
+      });
+      this.setState({updatedState});
+    }
+    
     if (name === 'showInCompleteTest') {
       const currentSection = this.getCurrentTestProblems();
       const test_section_id = currentSection.id;
@@ -202,11 +217,20 @@ class EnterAnswerWrapper extends React.Component {
       const {onOpentTestScore} = this.props;
       onOpentTestScore(activeTest);
     } else {
-      const sectionName = activeTest.name;
-      switch (sectionName) {
-        case 'Reading':
+      const {tests, test: {test_id}} = this.props;
+      const currentTestSectionId = activeTest.test_section_id;
+      const testIds = tests.map(test => test.id);
+      const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+      const currentTestSections = tests[currentTestIndex].test_sections;
+      const testSectionIds = currentTestSections.map(testSection => testSection.id);
+      const currentTestSectionIndex = testSectionIds.findIndex(
+        testSectionId => testSectionId === currentTestSectionId
+      );
+      const currentTestSection = currentTestSections[currentTestSectionIndex];
+      switch (currentTestSection.name) {
+        case 'Math (Calculator)':
           this.setState({
-            readingSectionCompleted: true,
+            mathCalcSectionCompleted: true,
           });
           break;
         case 'Writing':
@@ -219,9 +243,9 @@ class EnterAnswerWrapper extends React.Component {
             mathNoCalcSectionCompleted: true,
           });
           break;
-        case 'Math (Calculator)':
+        case 'Reading':
           this.setState({
-            mathCalcSectionCompleted: true,
+            readingSectionCompleted: true,
           });
           break;
         default:
@@ -261,12 +285,12 @@ class EnterAnswerWrapper extends React.Component {
                 testDescription={test_description}
               />
               <PreStartTestSection
-                open={previewTest}
+                open={previewTest && this.getCurrentTestProblems()}
                 onSetActivePage={this.onSetActivePage}
                 testSection={this.getCurrentTestProblems()}
               />
               <InCompleteTestSection
-                open={startedTest}
+                open={startedTest && this.getCurrentTestProblems()}
                 onAddStudentAnswerToTest={onAddStudentAnswerToTest}
                 testSection={this.getCurrentTestProblems()}
                 onStudentTestScore={onCloaseAnswerWrapper}
