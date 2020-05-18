@@ -30,7 +30,7 @@ class EnterAnswerWrapper extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: "",
+        activeSection: "activeReadingSection",
       },
       readingSectionCompleted: false,
       writingSectionCompleted: false,
@@ -63,6 +63,7 @@ class EnterAnswerWrapper extends React.Component {
     const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
+      this.onSetActivePage("activeReadingSection")
     }
   };
 
@@ -182,7 +183,7 @@ class EnterAnswerWrapper extends React.Component {
   }
 
   render() {
-    const { startedTest, previewTest } = this.state;
+    const { startedTest, previewTest, updatedState } = this.state;
     const {
       onCloaseAnswerWrapper,
       open,
@@ -200,6 +201,7 @@ class EnterAnswerWrapper extends React.Component {
                 onCloaseAnswerWrapper={onCloaseAnswerWrapper}
                 onSetActivePage={this.onSetActivePage}
                 testDescription={test_description}
+                active={updatedState.activeSection}
               />
               <PreStartTestSection
                 open={previewTest}

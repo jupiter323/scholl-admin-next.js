@@ -7,7 +7,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { onCloaseAnswerWrapper, onSetActivePage, testDescription } = this.props;
+    const { onCloaseAnswerWrapper, onSetActivePage, testDescription, active } = this.props;
     return (
       <React.Fragment>
         <div className="header-row card-panel light-blue lighten-1 white-text">
@@ -26,29 +26,31 @@ class NavBar extends React.Component {
             </div>
           </div>
         </div>
-        <div className="nav-header white" style={{ cursor: "pointer" }}>
+        <div className="nav-header" style={{cursor: "pointer", background:"white"}}>
           {/* tabs switcher */}
           <ul className="tabs tabs-flex">
             <li className="tab col s3">
-              <a
-                className="active"
+              <a className={active === 'activeReadingSection' ? 'active' : ''}
                 onClick={() => onSetActivePage("activeReadingSection")}
               >
                 <b>Reading</b>
               </a>
             </li>
             <li className="tab col s3">
-              <a onClick={() => onSetActivePage("activeWritingSection")}>
+              <a className={active === 'activeWritingSection' ? 'active' : '' }
+                onClick={() => onSetActivePage("activeWritingSection")}>
                 <b>Writing</b>
               </a>
             </li>
             <li className="tab col s3">
-              <a onClick={() => onSetActivePage("activeMathNoCalcSection")}>
+              <a className={active === 'activeMathNoCalcSection' ? 'active' : ''}
+              onClick={() => onSetActivePage("activeMathNoCalcSection")}>
                 <b>Math (no calc)</b>
               </a>
             </li>
             <li className="tab col s3">
-              <a onClick={() => onSetActivePage("activeMathWithCalcSection")}>
+              <a className={active === 'activeMathWithCalcSection' ? 'active' : ''}
+              onClick={() => onSetActivePage("activeMathWithCalcSection")}>
                 <b>Math (calculator)</b>
               </a>
             </li>
