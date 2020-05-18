@@ -38,7 +38,6 @@ class ProblemRow extends React.Component {
       return;
     }
     const studentAnswer = problem.student_answer;
-    console.log("log: answer choice here");
     let index = -1;
     switch (studentAnswer) {
       case "A":

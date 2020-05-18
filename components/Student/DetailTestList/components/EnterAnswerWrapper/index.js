@@ -81,16 +81,16 @@ class EnterAnswerWrapper extends React.Component {
       activeSection: { $set: name },
     });
     this.setState({ updatedState });
+    const currentProblems = this.getCurrentTestProblems(name);
+    console.log('log: currentProblems', currentProblems);
+    const test_section_id = currentProblems.id;
+    const postBody = {
+      student_test_id: currentProblems.student_test_id,
+      student_test_section_id: test_section_id,
+      student_test_section_status: "STARTED",
+    };
+    await updateStudentTestSectionStatusApi(postBody);
     if (name === "showInCompleteTest") {
-      const currentSection = this.getCurrentTestProblems();
-      const test_section_id = currentSection.id;
-
-      const postBody = {
-        student_test_id: currentSection.student_test_id,
-        student_test_section_id: test_section_id,
-        student_test_section_status: "STARTED",
-      };
-      await updateStudentTestSectionStatusApi(postBody);
       this.setState({
         previewTest: false,
         startedTest: true,
@@ -113,14 +113,14 @@ class EnterAnswerWrapper extends React.Component {
     await addStudentAnswerToTestApi(postBody);
   };
 
-  getCurrentTestProblems = () => {
-    const { activeSection } = this.state.updatedState;
+  getCurrentTestProblems = (activeSection) => {
     const {
       testReadingProblems,
       testWritingProblems,
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
+    console.log('log: state again', this.state);
     switch (activeSection) {
       case "activeReadingSection":
         return testReadingProblems;
@@ -177,6 +177,16 @@ class EnterAnswerWrapper extends React.Component {
     }
   }
 
+  getExistingSections = () => {
+    const { testReadingProblems, testWritingProblems, testMathCalcProblems, testMathNoCalcProblems } = this.state;
+    return {
+      reading: !!testReadingProblems,
+      writing: !!testWritingProblems,
+      mathCalc: !!testMathCalcProblems,
+      mathNoCalc: !!testMathNoCalcProblems,
+    };
+  }
+
   render() {
     const { startedTest, previewTest } = this.state;
     const {
@@ -196,6 +206,7 @@ class EnterAnswerWrapper extends React.Component {
                 onCloaseAnswerWrapper={onCloaseAnswerWrapper}
                 onSetActivePage={this.onSetActivePage}
                 testDescription={test_description}
+                existingSections={this.getExistingSections()}
               />
               <PreStartTestSection
                 open={previewTest}

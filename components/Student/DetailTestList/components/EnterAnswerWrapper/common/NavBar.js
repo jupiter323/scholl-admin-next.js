@@ -7,7 +7,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { onCloaseAnswerWrapper, onSetActivePage, testDescription } = this.props;
+    const { onCloaseAnswerWrapper, onSetActivePage, testDescription, existingSections: { reading, writing, mathCalc, mathNoCalc } } = this.props;
     return (
       <React.Fragment>
         <div className="header-row card-panel light-blue lighten-1 white-text">
@@ -29,29 +29,29 @@ class NavBar extends React.Component {
         <div className="nav-header white" style={{ cursor: "pointer" }}>
           {/* tabs switcher */}
           <ul className="tabs tabs-flex">
-            <li className="tab col s3">
+            {reading && <li className="tab col s3">
               <a
                 className="active"
                 onClick={() => onSetActivePage("activeReadingSection")}
               >
                 <b>Reading</b>
               </a>
-            </li>
-            <li className="tab col s3">
+            </li>}
+            {writing && <li className="tab col s3">
               <a onClick={() => onSetActivePage("activeWritingSection")}>
                 <b>Writing</b>
               </a>
-            </li>
-            <li className="tab col s3">
+            </li>}
+            {mathCalc && <li className="tab col s3">
               <a onClick={() => onSetActivePage("activeMathNoCalcSection")}>
                 <b>Math (no calc)</b>
               </a>
-            </li>
-            <li className="tab col s3">
+            </li>}
+            {mathNoCalc && <li className="tab col s3">
               <a onClick={() => onSetActivePage("activeMathWithCalcSection")}>
                 <b>Math (calculator)</b>
               </a>
-            </li>
+            </li>}
           </ul>
         </div>
       </React.Fragment>
@@ -62,7 +62,7 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
   onCloaseAnswerWrapper: PropTypes.func.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
-  testDescription: PropTypes.string.isRequired
+  testDescription: PropTypes.string.isRequired,
 };
 
 export default NavBar;
