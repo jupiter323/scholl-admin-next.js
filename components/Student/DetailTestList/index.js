@@ -1,32 +1,41 @@
 /* eslint-disable no-console */
-import React from "react";
-import PropTypes from "prop-types";
-import update from "immutability-helper";
-import Moment from "moment";
-import { toast } from 'react-toastify';
+import React from 'react';
+import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import Moment from 'moment';
+import {toast} from 'react-toastify';
 import Toast from '../../Toast';
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { createStructuredSelector } from "reselect";
-import AssignedTestCard from "./components/AssignedTestCard";
-import OverDueTestCard from "./components/OverDueTestCard";
-import CompletedTestCard from "./components/CompletedTestCard";
-import EditTestModal from "./components/EditTestModal";
-import NewTestModal from "./components/TestModal";
-import TestSettingModal from "./components/TestSettingModal";
-import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
-import CardHeader from "./components/CardHeader";
-import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId, setStudentAssignedTests,deleteStudentTest,updateTestFlag } from "../index/actions";
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {createStructuredSelector} from 'reselect';
+import AssignedTestCard from './components/AssignedTestCard';
+import OverDueTestCard from './components/OverDueTestCard';
+import CompletedTestCard from './components/CompletedTestCard';
+import EditTestModal from './components/EditTestModal';
+import NewTestModal from './components/TestModal';
+import TestSettingModal from './components/TestSettingModal';
+import EnterAnswerWrapper from './components/EnterAnswerWrapper';
+import CardHeader from './components/CardHeader';
+import {
+  setIsVisibleTopBar,
+  fetchStudentTests,
+  setActiveStudentTestId,
+  setStudentAssignedTests,
+  deleteStudentTest,
+  updateTestFlag,
+} from '../index/actions';
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
   makeSelectTests,
-} from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
-
-const uuidGenerator = require("uuid/v4");
+} from '../index/selectors';
+import {
+  assignTestToStudentApi,
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
+} from '../index/api';
 
 class DetailTestList extends React.Component {
   constructor(props) {
@@ -43,39 +52,39 @@ class DetailTestList extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { onFetchStudentTests, overdues, completes, assigneds, user } = this.props;
+    const {onFetchStudentTests, overdues, completes, assigneds, user} = this.props;
     if (overdues.length === 0 && completes.length === 0 && assigneds.length === 0) {
       onFetchStudentTests(user);
     }
   };
 
   onToggleEditTestModal = async (activeTest = null) => {
-    const { onSetActiveStudentTestId } = this.props;
+    const {onSetActiveStudentTestId} = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
     this.setState(
-      ({ openEditTestModal }) => ({
+      ({openEditTestModal}) => ({
         openEditTestModal: !openEditTestModal,
         openEnterAnswerWrapper: false,
         activeTest,
       }),
-      this.onCloseDropdown,
+      this.onCloseDropdown
     );
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
-    this.setState(({ openEditTestModal }) => ({
+    this.setState(({openEditTestModal}) => ({
       openEditTestModal: !openEditTestModal,
       openEnterAnswerWrapper: false,
     }));
   };
 
-  onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onSetDropdown = dropdownIndex => this.setState({dropdownIndex, dropdownIsOpen: true});
+  onCloseDropdown = () => this.setState({dropdownIsOpen: false, dropdownIndex: null});
 
   handleTestSettingModalOpen = activeTest => {
     this.onCloseDropdown();
-    this.setState(({ opentTestSettingModal }) => ({
+    this.setState(({opentTestSettingModal}) => ({
       activeTest,
       opentTestSettingModal: !opentTestSettingModal,
     }));
@@ -83,19 +92,26 @@ class DetailTestList extends React.Component {
 
   onCreateTest = event => {
     event.preventDefault();
-    this.setState({ openCreateTestModal: true });
-    console.warn("Pending implementation of create test UI and functionality");
+    this.setState({openCreateTestModal: true});
+    console.warn('Pending implementation of create test UI and functionality');
   };
 
-  onEnterAnswers = currentTestId => {
+  onEnterAnswers = async currentTestId => {
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
     const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
-    this.setState({ openEnterAnswerWrapper: true, activeTest });
+    if (activeTest.status === 'ASSIGNED') {
+      const postBody = {
+        student_test_id: currentTestId,
+        status: 'STARTED',
+      };
+      await updateStudentTestStatusApi(postBody);
+    }
+    this.setState({openEnterAnswerWrapper: true, activeTest});
   };
 
   onDownloadReport = activeTest => {
-    console.log("downloading...");
+    console.log('downloading...');
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
     this.setState(
@@ -105,32 +121,32 @@ class DetailTestList extends React.Component {
       },
       async () => {
         await this.editTestModal.generateScoreReportPdf();
-      },
+      }
     );
   };
   onDeleteTest = (student_test_id, student_id, type) => {
     this.onSetIsVisibleTopBar(true);
-    this.setState({ openEditTestModal: false }, () =>
-      this.props.onDeleteStudentTest(student_test_id, student_id, type),
+    this.setState({openEditTestModal: false}, () =>
+      this.props.onDeleteStudentTest(student_test_id, student_id, type)
     );
   };
   onTestFlagReviewed = (student_test_id, student_id) => {
     this.props.onUpdateTestFlag(student_test_id, student_id);
-  }
+  };
   onSetIsVisibleTopBar = value => {
-    const { onSetIsVisibleTopBar } = this.props;
+    const {onSetIsVisibleTopBar} = this.props;
     onSetIsVisibleTopBar(value);
   };
   onSaveTestChanges = (testVersion, settings) => {
     this.onToggleEditTestModal();
     this.onSetIsVisibleTopBar(true);
-    console.warn("Pending save test changes functionality", testVersion, settings);
+    console.warn('Pending save test changes functionality', testVersion, settings);
   };
 
   mapCompletedTests = () => {
-    const { dropdownIndex, dropdownIsOpen } = this.state;
-    const { completes } = this.props;
-    return completes.map((test, index) => (
+    const {dropdownIndex, dropdownIsOpen} = this.state;
+    const {completes} = this.props;
+    return completes.map((test, index) =>
       <CompletedTestCard
         test={test}
         index={`completed${index}`}
@@ -145,13 +161,13 @@ class DetailTestList extends React.Component {
         onTestFlagReviewed={this.onTestFlagReviewed}
         onDeleteTest={this.onDeleteTest}
       />
-    ));
+    );
   };
 
   mapAssignedTests = () => {
-    const { dropdownIndex, dropdownIsOpen } = this.state;
-    const { assigneds } = this.props;
-    return assigneds.map((test, index) => (
+    const {dropdownIndex, dropdownIsOpen} = this.state;
+    const {assigneds} = this.props;
+    return assigneds.map((test, index) =>
       <AssignedTestCard
         test={test}
         key={`assigned-${index}`}
@@ -166,12 +182,12 @@ class DetailTestList extends React.Component {
         index={`assigned${index}`}
         onTestFlagReviewed={this.onTestFlagReviewed}
       />
-    ));
+    );
   };
   mapOverDueTests = () => {
-    const { dropdownIndex, dropdownIsOpen } = this.state;
-    const { overdues } = this.props;
-    return overdues.map((test, index) => (
+    const {dropdownIndex, dropdownIsOpen} = this.state;
+    const {overdues} = this.props;
+    return overdues.map((test, index) =>
       <OverDueTestCard
         test={test}
         key={`overdue-${index}`}
@@ -186,10 +202,10 @@ class DetailTestList extends React.Component {
         index={`overdue${index}`}
         onTestFlagReviewed={this.onTestFlagReviewed}
       />
-    ));
+    );
   };
 
-  onCloseTestModal = () => this.setState({ openCreateTestModal: false });
+  onCloseTestModal = () => this.setState({openCreateTestModal: false});
   onCloaseAnswerWrapper = async () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({
@@ -198,68 +214,67 @@ class DetailTestList extends React.Component {
     this.onCloseDropdown();
   };
 
-  onSaveNewTest = async (test) => {
+  onSaveNewTest = async test => {
     this.onCloseTestModal();
     let test_sections = [];
-    const { studentTests: prevTestsState, tests } = this.props;
+    const {studentTests: prevTestsState, tests} = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test.version);
     const currentTest = tests[currentTestIndex];
     const newTestNumber = prevTestsState.length + 1;
 
-    const {
-      user: { id },
-    } = this.props;
+    const {user: {id}} = this.props;
     currentTest.test_sections.map(testSection => {
-      if(testSection.name === "Reading" && test.reading){
-        test_sections.push(testSection)
+      if (testSection.name === 'Reading' && test.reading) {
+        test_sections.push(testSection);
       }
-      if(testSection.name === "Writing" && test.writing){
-        test_sections.push(testSection)
+      if (testSection.name === 'Writing' && test.writing) {
+        test_sections.push(testSection);
       }
-       if (testSection.name === "Math (No Calculator)" && test.mathNoCalc){
-        test_sections.push(testSection)
+      if (testSection.name === 'Math (No Calculator)' && test.mathNoCalc) {
+        test_sections.push(testSection);
       }
-      if(testSection.name === "Math (Calculator)" && test.mathWithCalc){
-          test_sections.push(testSection)
+      if (testSection.name === 'Math (Calculator)' && test.mathWithCalc) {
+        test_sections.push(testSection);
       }
-    })
+    });
     const postBody = {
       student_id: id,
       test_id: test.version,
-      assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
-      due_date: Moment(test.dueDate).format("YYYY-MM-DD"),
-      test_section_ids: test_sections.map(testSection => testSection.id)
+      assignment_date: Moment(test.assignDate).format('YYYY-MM-DD'),
+      due_date: Moment(test.dueDate).format('YYYY-MM-DD'),
+      test_section_ids: test_sections.map(testSection => testSection.id),
     };
-    const { student_test_id } = await assignTestToStudentApi(postBody);
+    const {student_test_id} = await assignTestToStudentApi(postBody);
     if (student_test_id) {
       const formattedNewTest = {
         assignment_date: test.assignDate,
         due_date: test.dueDate,
-        due_status: "",
-        status: "ASSIGNED",
+        due_status: '',
+        status: 'ASSIGNED',
         student_id: id,
         student_test_id,
         test_description: currentTest.description,
-        test_form: "3",
+        test_form: '3',
         test_id: test.version,
         test_name: currentTest.name,
       };
-      const updatedTests = update(prevTestsState, { $push: [formattedNewTest] });
-      const { onSetStudentAssignedTests } = this.props;
-      onSetStudentAssignedTests(updatedTests)
+      const updatedTests = update(prevTestsState, {$push: [formattedNewTest]});
+      const {onSetStudentAssignedTests} = this.props;
+      onSetStudentAssignedTests(updatedTests);
     } else {
-      toast.error( `Not that the student is not activated that the Free Student Account can only be assigned one free test.`, {
-        className: 'update-error',
-        progressClassName: 'progress-bar-error',
-      });
+      toast.error(
+        `Not that the student is not activated that the Free Student Account can only be assigned one free test.`,
+        {
+          className: 'update-error',
+          progressClassName: 'progress-bar-error',
+        }
+      );
     }
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const {
-      activeTest: { student_test_id },
-    } = this.state;
+    const {activeTest: {student_test_id}} = this.state;
     const postBody = {
       student_test_id,
       test_problem_id,
@@ -276,10 +291,10 @@ class DetailTestList extends React.Component {
       activeTest,
       opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds, overdues } = this.props;
+    const {user, completes, assigneds, overdues} = this.props;
     return (
       <React.Fragment>
-        <Toast/>
+        <Toast />
         <Choose>
           <When condition={openEditTestModal}>
             <EditTestModal
@@ -316,31 +331,27 @@ class DetailTestList extends React.Component {
             />
             <div className="content-section">
               <div className="section-holder">
-
-                {overdues.length !== 0 && (
+                {overdues.length !== 0 &&
                   <div className="content-container">
                     <CardHeader title="OverDue" amount={overdues.length} themeColor="#e94319" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapOverDueTests()}
                     </div>
-                  </div>
-                )}
-                {assigneds.length !== 0 && (
+                  </div>}
+                {assigneds.length !== 0 &&
                   <div className="content-container">
                     <CardHeader title="Assigned" amount={assigneds.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapAssignedTests()}
                     </div>
-                  </div>
-                )}
-                {completes.length !== 0 && (
+                  </div>}
+                {completes.length !== 0 &&
                   <div className="content-container">
                     <CardHeader title="Completed" amount={completes.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapCompletedTests()}
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
               <a
                 href="#"
@@ -380,8 +391,10 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
     onSetStudentAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
-    onDeleteStudentTest: (studentTestId, studentId, type) => dispatch(deleteStudentTest(studentTestId, studentId, type)),
-    onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
+    onDeleteStudentTest: (studentTestId, studentId, type) =>
+      dispatch(deleteStudentTest(studentTestId, studentId, type)),
+    onUpdateTestFlag: (studentTestId, studentId) =>
+      dispatch(updateTestFlag(studentTestId, studentId)),
   };
 }
 
