@@ -1,16 +1,20 @@
-import React from "react";
-import update from "immutability-helper";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { createStructuredSelector } from "reselect";
-import PropTypes from "prop-types";
-import NavBar from "./common/NavBar";
-import InCompleteTestSection from "./components/InCompleteSection";
-import PreStartTestSection from "./components/StartSection";
+import React from 'react';
+import update from 'immutability-helper';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {createStructuredSelector} from 'reselect';
+import PropTypes from 'prop-types';
+import NavBar from './common/NavBar';
+import InCompleteTestSection from './components/InCompleteSection';
+import PreStartTestSection from './components/StartSection';
 
-import { addStudentAnswerToTestApi, updateStudentTestSectionStatusApi } from "../../../index/api";
-import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectActiveStudent } from "../../../index/selectors";
-import { fetchStudentTestSections } from "../../../index/actions";
+import {addStudentAnswerToTestApi, updateStudentTestSectionStatusApi} from '../../../index/api';
+import {
+  makeSelectStudentSections,
+  makeSelectActiveStudentToken,
+  makeSelectActiveStudent,
+} from '../../../index/selectors';
+import {fetchStudentTestSections} from '../../../index/actions';
 
 class EnterAnswerWrapper extends React.Component {
   constructor(props) {
@@ -19,7 +23,7 @@ class EnterAnswerWrapper extends React.Component {
       previewTest: false,
       startedTest: false,
       testSections: [],
-      studentTestId: "",
+      studentTestId: '',
       testReadingProblems: {},
       testWritingProblems: {},
       testMathCalcProblems: {},
@@ -30,7 +34,7 @@ class EnterAnswerWrapper extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: "",
+        activeSection: '',
       },
       readingSectionCompleted: false,
       writingSectionCompleted: false,
@@ -44,8 +48,8 @@ class EnterAnswerWrapper extends React.Component {
       onFetchStudentTestSections,
       sections,
       studentToken,
-      test: { student_test_id },
-      activeStudent: { id },
+      test: {student_test_id},
+      activeStudent: {id},
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
@@ -60,8 +64,9 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id } = nextProps;
+    const {sections, student_test_id} = nextProps;
     if (sections.length !== 0) {
+      console.log('sections:', sections);
       this.onSetProblems(sections, student_test_id);
     }
   };
@@ -77,22 +82,22 @@ class EnterAnswerWrapper extends React.Component {
     });
   };
 
-  onSetActivePage = async (name) => {
+  onSetActivePage = async name => {
     const currentSection = this.state.updatedState.activeSection;
     const updatedState = update(this.state.updatedState, {
-      [name]: { $set: true },
-      [currentSection]: { $set: false },
-      activeSection: { $set: name },
+      [name]: {$set: true},
+      [currentSection]: {$set: false},
+      activeSection: {$set: name},
     });
-    this.setState({ updatedState });
-    if (name === "showInCompleteTest") {
+    this.setState({updatedState});
+    if (name === 'showInCompleteTest') {
       const currentSection = this.getCurrentTestProblems();
       const test_section_id = currentSection.id;
 
       const postBody = {
         student_test_id: currentSection.student_test_id,
         student_test_section_id: test_section_id,
-        student_test_section_status: "STARTED",
+        student_test_section_status: 'STARTED',
       };
       await updateStudentTestSectionStatusApi(postBody);
       this.setState({
@@ -108,7 +113,7 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const { studentTestId } = this.state;
+    const {studentTestId} = this.state;
     const postBody = {
       student_test_id: studentTestId,
       test_problem_id,
@@ -118,7 +123,7 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   getCurrentTestProblems = () => {
-    const { activeSection } = this.state.updatedState;
+    const {activeSection} = this.state.updatedState;
     const {
       testReadingProblems,
       testWritingProblems,
@@ -126,43 +131,53 @@ class EnterAnswerWrapper extends React.Component {
       testMathNoCalcProblems,
     } = this.state;
     switch (activeSection) {
-      case "activeReadingSection":
+      case 'activeReadingSection':
         return testReadingProblems;
-      case "activeWritingSection":
+      case 'activeWritingSection':
         return testWritingProblems;
-      case "activeMathWithCalcSection":
+      case 'activeMathWithCalcSection':
         return testMathCalcProblems;
-      case "activeMathNoCalcSection":
+      case 'activeMathNoCalcSection':
         return testMathNoCalcProblems;
       default:
         return testReadingProblems;
     }
   };
 
-  handleTestScore = async (activeTest) => {
-    const { readingSectionCompleted, writingSectionCompleted, mathCalcSectionCompleted, mathNoCalcSectionCompleted } = this.state;
-    if (readingSectionCompleted && writingSectionCompleted && mathCalcSectionCompleted && mathNoCalcSectionCompleted) {
-      const { onOpentTestScore } = this.props;
+  handleTestScore = async activeTest => {
+    const {
+      readingSectionCompleted,
+      writingSectionCompleted,
+      mathCalcSectionCompleted,
+      mathNoCalcSectionCompleted,
+    } = this.state;
+    if (
+      readingSectionCompleted &&
+      writingSectionCompleted &&
+      mathCalcSectionCompleted &&
+      mathNoCalcSectionCompleted
+    ) {
+      const {onOpentTestScore} = this.props;
       onOpentTestScore(activeTest);
     } else {
       const sectionName = activeTest.name;
       switch (sectionName) {
-        case "Reading":
+        case 'Reading':
           this.setState({
             readingSectionCompleted: true,
           });
           break;
-        case "Writing":
+        case 'Writing':
           this.setState({
             writingSectionCompleted: true,
           });
           break;
-        case "Math (No Calculator)":
+        case 'Math (No Calculator)':
           this.setState({
             mathNoCalcSectionCompleted: true,
           });
           break;
-        case "Math (Calculator)":
+        case 'Math (Calculator)':
           this.setState({
             mathCalcSectionCompleted: true,
           });
@@ -175,25 +190,25 @@ class EnterAnswerWrapper extends React.Component {
       const postBody = {
         student_test_id: activeTest.student_test_id,
         student_test_section_id: activeTest.id,
-        student_test_section_status: "COMPLETED",
+        student_test_section_status: 'COMPLETED',
       };
       await updateStudentTestSectionStatusApi(postBody);
     }
-  }
+  };
 
   render() {
-    const { startedTest, previewTest } = this.state;
+    const {startedTest, previewTest} = this.state;
     const {
       onCloaseAnswerWrapper,
       open,
-      test: { test_description },
+      test: {test_description},
       test,
       onAddStudentAnswerToTest,
     } = this.props;
     if (!test) return;
     return (
       <React.Fragment>
-        {open && (
+        {open &&
           <div className="starting">
             <div className="main-holder grey lighten-5">
               <NavBar
@@ -214,8 +229,7 @@ class EnterAnswerWrapper extends React.Component {
                 handleTestScore={this.handleTestScore}
               />
             </div>
-          </div>
-        )}
+          </div>}
       </React.Fragment>
     );
   }
