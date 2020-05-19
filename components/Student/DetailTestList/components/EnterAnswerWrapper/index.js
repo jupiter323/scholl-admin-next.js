@@ -39,7 +39,7 @@ class EnterAnswerWrapper extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: '',
+        activeSection: "",
       },
       readingSectionCompleted: false,
       writingSectionCompleted: false,
@@ -194,7 +194,7 @@ class EnterAnswerWrapper extends React.Component {
       case 'activeMathNoCalcSection':
         return testMathNoCalcProblems;
       default:
-        return testReadingProblems;
+        return '';
     }
   };
 
@@ -266,8 +266,22 @@ class EnterAnswerWrapper extends React.Component {
     }
   };
 
+  getExistingSections = () => {
+    const { testReadingProblems, testWritingProblems, testMathCalcProblems, testMathNoCalcProblems } = this.state;
+    return {
+      reading: !!testReadingProblems,
+      writing: !!testWritingProblems,
+      mathCalc: !!testMathCalcProblems,
+      mathNoCalc: !!testMathNoCalcProblems,
+    };
+  }
+
   render() {
-    const { startedTest, previewTest } = this.state;
+    const { 
+      startedTest,
+      previewTest, 
+      updatedState, 
+    } = this.state;
     const {
       onCloaseAnswerWrapper,
       open,
@@ -285,6 +299,8 @@ class EnterAnswerWrapper extends React.Component {
                 onCloaseAnswerWrapper={onCloaseAnswerWrapper}
                 onSetActivePage={this.onSetActivePage}
                 testDescription={test_description}
+                active={updatedState.activeSection}
+                existingSections={this.getExistingSections()}
               />
               <PreStartTestSection
                 open={previewTest && this.getCurrentTestProblems()}
