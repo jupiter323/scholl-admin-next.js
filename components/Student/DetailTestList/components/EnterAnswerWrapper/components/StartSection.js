@@ -54,7 +54,6 @@ class StartReadingTest extends React.Component {
 
   render() {
     const { open, onSetActivePage, testSection: { problems } } = this.props;
-    console.log('log: props on preview page', this.props);
     return (
       <React.Fragment>
         {open && problems && (

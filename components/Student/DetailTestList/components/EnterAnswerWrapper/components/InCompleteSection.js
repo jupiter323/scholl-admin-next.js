@@ -37,7 +37,6 @@ class InCompleteReadingTest extends React.Component {
       testSection: { problems },
       handleTestScore,
     } = this.props;
-    console.log('log: incomplete section props', this.props);
     return (
       <div>
         {open && (

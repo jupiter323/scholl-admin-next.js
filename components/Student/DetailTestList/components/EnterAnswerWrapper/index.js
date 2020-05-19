@@ -125,7 +125,6 @@ class EnterAnswerWrapper extends React.Component {
     }
     this.setState({ updatedState });
     const currentProblems = this.getCurrentTestProblems(name);
-    console.log('log: currentProblems', currentProblems);
     const test_section_id = currentProblems.id;
     const postBody = {
       student_test_id: currentProblems.student_test_id,
@@ -164,7 +163,6 @@ class EnterAnswerWrapper extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    console.log('log: state again', this.state);
     switch (activeSection) {
       case "activeReadingSection":
         return testReadingProblems;
