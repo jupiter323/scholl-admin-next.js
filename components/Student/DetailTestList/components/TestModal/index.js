@@ -49,14 +49,14 @@ class NewTestModal extends React.Component {
         label: test.name,
         value: test.id,
       }));
-     
+
       this.setState({
         versionOptions: formattedVersions,
       });
-      if(formattedVersions.length !== 0) {
+      if (formattedVersions.length !== 0) {
         this.setState({
-          version:formattedVersions[0].value
-        })
+          version: formattedVersions[0].value,
+        });
       }
     }
   }

@@ -32,31 +32,54 @@ class ProblemRow extends React.Component {
     };
   }
 
-  handleClickBadge = index => {
+  componentDidMount = () => {
+    const { problem } = this.props;
+    if (!problem && !problem.student_answer) {
+      return;
+    }
+    const studentAnswer = problem.student_answer;
+    let index = -1;
+    switch (studentAnswer) {
+      case "A":
+        index = 0;
+        break;
+      case "B":
+        index = 1;
+        break;
+      case "C":
+        index = 2;
+        break;
+      case "D":
+        index = 3;
+        break;
+      default:
+        break;
+    }
+    if (index !== -1) this.handleClickBadge(index, false);
+  };
+
+  handleClickBadge = (index, isSavingStudentAns) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index);
+      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
         [selectedIndex]: { selected: { $set: false } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index);
+      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
     }
   };
 
-  onSaveStudentAnswer = (updatedProblemCells, index) => {
-    const {
-      onAddStudentAnswerToTest,
-      problem,
-    } = this.props;
+  onSaveStudentAnswer = (updatedProblemCells, index, isSavingStudentAns) => {
+    const { onAddStudentAnswerToTest, problem } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
-    onAddStudentAnswerToTest(problem.id, label);
+    if (isSavingStudentAns) onAddStudentAnswerToTest(problem.id, label);
   };
   render() {
     const { problemCells } = this.state;
@@ -68,7 +91,7 @@ class ProblemRow extends React.Component {
           {problemCells.map((cell, index) => (
             <li
               style={{ cursor: "pointer" }}
-              onClick={() => this.handleClickBadge(index)}
+              onClick={() => this.handleClickBadge(index, true)}
               key={index}
             >
               <span

@@ -12,8 +12,7 @@ class StartReadingTest extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
-
-    if (!testSection) return;
+    if (!testSection || !testSection.hasOwnProperty('problems')) return;
     const updatedProblems = update(this.state.sampleProblems, {
       $set: testSection.problems.problems,
     });
