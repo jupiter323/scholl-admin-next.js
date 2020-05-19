@@ -63,43 +63,46 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onSetProblems = (sections, studentTestId) => {
-    // console.log('log: start onSetProblems', sections);
     const { tests, test: { test_id } } = this.props;
-    let testReading = null; let testWriting = null; let testMathCalc = null; let
-      testMathNoCalc = null;
-    tests.map(test => {
-      if (test.id === test_id) {
-        console.log('log: matching test id');
-        sections.map((section, index) => {
-          console.log('log: entered here');
-          console.log('log: section.test_section_id', section);
-          console.log('log: test.test_sections[index].id', test.test_sections);
-          if (section.test_section_id === test.test_sections[index].id) {
-            switch (test.test_sections[index].name) {
-              case "Reading":
-                testReading = section;
-                break;
-              case "Writing":
-                testWriting = section;
-                break;
-              case "Math (Calculator)":
-                testMathCalc = section;
-                break;
-              case "Math (No Calculator)":
-                testMathNoCalc = section;
-                break;
-              default:
-                break;
-            }
-          }
-        });
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    sections.map(section => {
+      const testSectionIds = currentTestSections.map(testSection => testSection.id);
+      const currentTestSectionIndex = testSectionIds.findIndex(
+        testSectionId => testSectionId === section.test_section_id,
+      );
+      const currentTestSection = currentTestSections[currentTestSectionIndex];
+      if (!currentTestSection) return;
+      switch (currentTestSection.name) {
+        case 'Math (Calculator)':
+          this.setState({
+            testMathCalcProblems: section,
+          });
+          break;
+        case 'Writing':
+          this.setState({
+            testWritingProblems: section,
+          });
+          break;
+        case 'Math (No Calculator)':
+          this.setState({
+            testMathNoCalcProblems: section,
+          });
+          break;
+        case 'Reading':
+          this.setState({
+            testReadingProblems: section,
+          });
+          break;
+        default:
+          this.setState({
+            testReadingProblems: section,
+          });
+          break;
       }
     });
     this.setState({
-      testReadingProblems: testReading,
-      testWritingProblems: testWriting,
-      testMathCalcProblems: testMathCalc,
-      testMathNoCalcProblems: testMathNoCalc,
       testSections: sections,
       studentTestId,
     });
