@@ -61,12 +61,11 @@ class EnterAnswerWrapper extends React.Component {
       student_test_id,
       studentToken,
     };
-    onFetchStudentTestSections(postBody);
-    // if (sections.length === 0) {
-
-    // } else {
-    //   this.onSetProblems(sections, student_test_id);
-    // }
+    if (sections.length === 0) {
+      onFetchStudentTestSections(postBody);
+    } else {
+      this.onSetProblems(sections, student_test_id);
+    }
   };
 
   componentWillReceiveProps = nextProps => {
@@ -124,11 +123,6 @@ class EnterAnswerWrapper extends React.Component {
 
   onSetActivePage = async name => {
     const currentSection = this.state.updatedState.activeSection;
-    const updatedState = update(this.state.updatedState, {
-      [name]: {$set: true},
-      [currentSection]: {$set: false},
-      activeSection: {$set: name},
-    });
     if (name === 'showInCompleteTest') {
       const updatedState = update(this.state.updatedState, {
         [name]: {$set: true},
