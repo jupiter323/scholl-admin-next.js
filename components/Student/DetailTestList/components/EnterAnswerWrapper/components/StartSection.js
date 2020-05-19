@@ -13,7 +13,7 @@ class StartReadingTest extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
 
-    if (!testSection.problems) return;
+    if (!testSection) return;
     const updatedProblems = update(this.state.sampleProblems, {
       $set: testSection.problems.problems,
     });
@@ -54,10 +54,10 @@ class StartReadingTest extends React.Component {
   };
 
   render() {
-    const { open, onSetActivePage, testSection: { problems, time_limit } } = this.props;
+    const { open, onSetActivePage, testSection } = this.props;
     return (
       <React.Fragment>
-        {open && problems && (
+        {open && testSection.problems && (
           <div className="tabs-content">
             <div id="tab_reading" className="tab-content">
               <div className="content-section content-section-simulated">
@@ -74,7 +74,7 @@ class StartReadingTest extends React.Component {
                       <div className="starting-block">
                         <div className="holder">
                           <span className="title">
-                            This section has {problems.length} questions and is {time_limit} minutes
+                            This section has {testSection ? testSection.problems.problems.length : "0"} questions and is {testSection ? testSection.problems.time_limit : "0"} minutes
                             total
                           </span>
                           <a

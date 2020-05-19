@@ -1,8 +1,8 @@
 import React from 'react';
 import update from 'immutability-helper';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {createStructuredSelector} from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import NavBar from './common/NavBar';
 import InCompleteTestSection from './components/InCompleteSection';
@@ -19,7 +19,7 @@ import {
   makeSelectActiveStudent,
   makeSelectTests,
 } from '../../../index/selectors';
-import {fetchStudentTestSections} from '../../../index/actions';
+import { fetchStudentTestSections } from '../../../index/actions';
 
 class EnterAnswerWrapper extends React.Component {
   constructor(props) {
@@ -53,39 +53,41 @@ class EnterAnswerWrapper extends React.Component {
       onFetchStudentTestSections,
       sections,
       studentToken,
-      test: {student_test_id},
-      activeStudent: {id},
+      test: { student_test_id },
+      activeStudent: { id },
     } = this.props;
-    if (sections.length === 0) {
-      const postBody = {
-        id,
-        student_test_id,
-        studentToken,
-      };
-      onFetchStudentTestSections(postBody);
-    } else {
-      this.onSetProblems(sections, student_test_id);
-    }
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
+    // if (sections.length === 0) {
+
+    // } else {
+    //   this.onSetProblems(sections, student_test_id);
+    // }
   };
 
   componentWillReceiveProps = nextProps => {
-    const {sections, student_test_id} = nextProps;
+    const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
-    const {tests, test: {test_id}} = this.props;
+    const { tests, test: { test_id } } = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
     sections.map(section => {
       const testSectionIds = currentTestSections.map(testSection => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === section.test_section_id
+        testSectionId => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
+      if (!currentTestSection) return;
       switch (currentTestSection.name) {
         case 'Math (Calculator)':
           this.setState({
@@ -123,25 +125,25 @@ class EnterAnswerWrapper extends React.Component {
   onSetActivePage = async name => {
     const currentSection = this.state.updatedState.activeSection;
     const updatedState = update(this.state.updatedState, {
-      [name]: {$set: true},
-      [currentSection]: {$set: false},
-      activeSection: {$set: name},
+      [name]: { $set: true },
+      [currentSection]: { $set: false },
+      activeSection: { $set: name },
     });
     if (name === 'showInCompleteTest') {
       const updatedState = update(this.state.updatedState, {
-        [name]: {$set: true},
-        [currentSection]: {$set: false},
+        [name]: { $set: true },
+        [currentSection]: { $set: false },
       });
-      this.setState({updatedState});
+      this.setState({ updatedState });
     } else {
       const updatedState = update(this.state.updatedState, {
-        [name]: {$set: true},
-        [currentSection]: {$set: false},
-        activeSection: {$set: name},
+        [name]: { $set: true },
+        [currentSection]: { $set: false },
+        activeSection: { $set: name },
       });
-      this.setState({updatedState});
+      this.setState({ updatedState });
     }
-    
+
     if (name === 'showInCompleteTest') {
       const currentSection = this.getCurrentTestProblems();
       const test_section_id = currentSection.id;
@@ -165,7 +167,7 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const {studentTestId} = this.state;
+    const { studentTestId } = this.state;
     const postBody = {
       student_test_id: studentTestId,
       test_problem_id,
@@ -175,7 +177,7 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   getCurrentTestProblems = () => {
-    const {activeSection} = this.state.updatedState;
+    const { activeSection } = this.state.updatedState;
     const {
       testReadingProblems,
       testWritingProblems,
@@ -214,17 +216,17 @@ class EnterAnswerWrapper extends React.Component {
         status: 'COMPLETED',
       };
       await updateStudentTestStatusApi(postBody);
-      const {onOpentTestScore} = this.props;
+      const { onOpentTestScore } = this.props;
       onOpentTestScore(activeTest);
     } else {
-      const {tests, test: {test_id}} = this.props;
+      const { tests, test: { test_id } } = this.props;
       const currentTestSectionId = activeTest.test_section_id;
       const testIds = tests.map(test => test.id);
       const currentTestIndex = testIds.findIndex(testId => testId === test_id);
       const currentTestSections = tests[currentTestIndex].test_sections;
       const testSectionIds = currentTestSections.map(testSection => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === currentTestSectionId
+        testSectionId => testSectionId === currentTestSectionId,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
       switch (currentTestSection.name) {
@@ -265,11 +267,11 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   render() {
-    const {startedTest, previewTest} = this.state;
+    const { startedTest, previewTest } = this.state;
     const {
       onCloaseAnswerWrapper,
       open,
-      test: {test_description},
+      test: { test_description },
       test,
       onAddStudentAnswerToTest,
     } = this.props;
