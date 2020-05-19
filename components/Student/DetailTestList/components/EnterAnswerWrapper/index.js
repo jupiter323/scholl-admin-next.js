@@ -133,15 +133,15 @@ class EnterAnswerWrapper extends React.Component {
       });
     }
     this.setState({ updatedState });
-    const currentProblems = this.getCurrentTestProblems(name);
-    const test_section_id = currentProblems.id;
-    const postBody = {
-      student_test_id: currentProblems.student_test_id,
-      student_test_section_id: test_section_id,
-      student_test_section_status: "STARTED",
-    };
-    await updateStudentTestSectionStatusApi(postBody);
     if (name === "showInCompleteTest") {
+      const currentProblems = this.getCurrentTestProblems(name);
+      const test_section_id = currentProblems.id;
+      const postBody = {
+        student_test_id: currentProblems.student_test_id,
+        student_test_section_id: test_section_id,
+        student_test_section_status: "STARTED",
+      };
+      await updateStudentTestSectionStatusApi(postBody);
       this.setState({
         previewTest: false,
         startedTest: true,
