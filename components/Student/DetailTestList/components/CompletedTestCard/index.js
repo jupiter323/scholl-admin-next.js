@@ -1,14 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { createStructuredSelector } from "reselect";
-import PropTypes from "prop-types";
-import moment from "moment";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
-import { setActiveTestScores } from "../../../index/actions";
-import { makeSelectActiveTestScores, makeSelectActiveStudent } from "../../../index/selectors";
+import { setActiveTestScores } from '../../../index/actions';
+import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../../../index/selectors';
 
-import { fetchStudentTestScoreApi } from "../../../index/api";
+import { fetchStudentTestScoreApi } from '../../../index/api';
 class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,9 @@ class CompletedTestCard extends React.Component {
     if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
       onSetScores(formattedScores);
-      this.setScores(formattedScores.subjects);
+      if (formattedScores) {
+        this.setScores(formattedScores.subjects);
+      }
     } else {
       this.setScores(scores.subjects);
     }
@@ -35,16 +37,16 @@ class CompletedTestCard extends React.Component {
   setScores = scores => {
     Object.values(scores).map(score => {
       switch (score.name) {
-        case "Reading":
+        case 'Reading':
           this.setState({ ReadingScore: score });
           break;
-        case "Writing and Language":
+        case 'Writing and Language':
           this.setState({ ReadingAndWrigingScore: score });
           break;
-        case "Math":
+        case 'Math':
           this.setState({ MathScore: score });
           break;
-        case "Writing":
+        case 'Writing':
           this.setState({ WritingScore: score });
           break;
         default:
@@ -83,11 +85,11 @@ class CompletedTestCard extends React.Component {
       onTestFlagReviewed,
     } = this.props;
     const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
-    const formattedDueDate = moment(due_date).format("MM/DD/YY");
-    const formattedCompletedDate = moment(completion_date.date).format("MM/DD/YY");
+    const formattedDueDate = moment(due_date).format('MM/DD/YY');
+    const formattedCompletedDate = moment(completion_date.date).format('MM/DD/YY');
     return (
       <React.Fragment>
-        <div className="card-full-width card-scored card" style={{ margin: "10px" }}>
+        <div className="card-full-width card-scored card" style={{ margin: '10px' }}>
           <div className="card-content">
             <div className=" card-panel-row row mb-0">
               <div className="col s12">
@@ -95,22 +97,24 @@ class CompletedTestCard extends React.Component {
                   <li>
                     <div
                       className="row"
-                      style={{ marginBottom: "0px !important", marginTop: "20px" }}
+                      style={{ marginBottom: '0px !important', marginTop: '20px' }}
                     >
                       <div className="col s12 m6">
-                        <strong className="list-title">{test_name}</strong>
+                        <strong className="list-title">
+                          {test_name}
+                        </strong>
                       </div>
                       <div className="col s12 m6 right-align">
-                        <div className="row icons-row" style={{ marginBottom: "10px" }}>
+                        <div className="row icons-row" style={{ marginBottom: '10px' }}>
                           <span
                             className="badge-rounded-xs badge red darken-2 white-text"
                             style={{
-                              minWidth: "20px",
-                              minHeight: "20px",
-                              borderRadius: "50%",
+                              minWidth: '20px',
+                              minHeight: '20px',
+                              borderRadius: '50%',
                             }}
                           >
-                            <i className="icon-flag"></i>
+                            <i className="icon-flag" />
                           </span>
                           <div className="dropdown-block col">
                             <a
@@ -124,12 +128,12 @@ class CompletedTestCard extends React.Component {
                               <ul
                                 id="dropdown01"
                                 style={{
-                                  display: "block",
-                                  minWidth: "160px",
-                                  transformOrigin: "0px 0px 0px",
-                                  opacity: "1",
-                                  transform: "scaleX(1) scaleY(1)",
-                                  width: "210px",
+                                  display: 'block',
+                                  minWidth: '160px',
+                                  transformOrigin: '0px 0px 0px',
+                                  opacity: '1',
+                                  transform: 'scaleX(1) scaleY(1)',
+                                  width: '210px',
                                 }}
                                 className="dropdown-content"
                               >
@@ -151,7 +155,7 @@ class CompletedTestCard extends React.Component {
                                 <li>
                                   <a
                                     href="#"
-                                    onClick={(e) => {
+                                    onClick={e => {
                                       e.preventDefault();
                                       onTestFlagReviewed(student_test_id, student_id);
                                     }}
@@ -167,9 +171,13 @@ class CompletedTestCard extends React.Component {
                                 <li>
                                   <a
                                     href="#"
-                                    onClick={(e) => {
+                                    onClick={e => {
                                       e.preventDefault();
-                                      onDeleteTest(student_test_id, student_id, "completedStudentTests");
+                                      onDeleteTest(
+                                        student_test_id,
+                                        student_id,
+                                        'completedStudentTests',
+                                      );
                                     }}
                                     className="red-text text-darken-3"
                                   >
@@ -188,23 +196,29 @@ class CompletedTestCard extends React.Component {
                           <li>
                             <span className="list-status">
                               <span className="ico-mark" />
-                              <span className="status-text">Complete {formattedCompletedDate}</span>
+                              <span className="status-text">
+                                Complete {formattedCompletedDate}
+                              </span>
                             </span>
                           </li>
                           <li>
                             <span className="list-date">
                               <i className="icon-calendar" />
-                              <span className="date">Due {formattedDueDate}</span>
+                              <span className="date">
+                                Due {formattedDueDate}
+                              </span>
                             </span>
                           </li>
                         </ul>
                         <div
                           className="card-meta-block"
-                          style={{ padding: "0px", marginTop: "10px" }}
+                          style={{ padding: '0px', marginTop: '10px' }}
                         >
                           <dl className="dl-horizontal">
                             <dt>Version:</dt>
-                            <dd>{test_description}</dd>
+                            <dd>
+                              {test_description}
+                            </dd>
                           </dl>
                         </div>
                       </div>
@@ -218,171 +232,161 @@ class CompletedTestCard extends React.Component {
                 <span
                   className="badge-circle"
                   style={{
-                    width: "120px",
-                    height: "120px",
-                    fontSize: "55px",
+                    width: '120px',
+                    height: '120px',
+                    fontSize: '55px',
                   }}
                 >
                   n/a
                 </span>
               </li>
-              {MathScore ? (
-                <li>
+              {MathScore
+                ? <li>
                   <span
                     className="badge-circle"
                     style={{
-                      backgroundColor: "#4785f4",
-                      borderColor: "#4785f4",
+                      backgroundColor: '#4785f4',
+                      borderColor: '#4785f4',
                     }}
                   >
                     <span className="badge-text">
                       <strong>
-                        <h2 style={{ marginBottom: "5px" }}>Math</h2>
+                        <h2 style={{ marginBottom: '5px' }}>Math</h2>
                       </strong>
-                      <h2
-                        style={{ marginBottom: MathScore.previous_score ? "5px" : "20px" }}
-                      >
+                      <h2 style={{ marginBottom: MathScore.previous_score ? '5px' : '20px' }}>
                         {MathScore.current_score}
                         <br />
-                        {MathScore.previous_score === null ? "" : `${MathScore.delta}`}
+                        {MathScore.previous_score === null ? '' : `${MathScore.delta}`}
                       </h2>
                     </span>
                   </span>
                 </li>
-              ) : (
-                <li>
+                : <li>
                   <span className="badge-circle">
                     <span className="badge-text">
                       <strong>
-                        <h2 style={{ marginBottom: "10px" }}>Math</h2>
+                        <h2 style={{ marginBottom: '10px' }}>Math</h2>
                       </strong>
-                      <h2 style={{ marginBottom: "15px" }}>n/a</h2>
+                      <h2 style={{ marginBottom: '15px' }}>n/a</h2>
                     </span>
                   </span>
-                </li>
-              )}
-              {ReadingAndWrigingScore ? (
-                <li>
+                </li>}
+              {ReadingAndWrigingScore
+                ? <li>
                   <span
                     className="badge-circle"
                     style={{
-                      backgroundColor: "#55b24b",
-                      borderColor: "#55b24b",
+                      backgroundColor: '#55b24b',
+                      borderColor: '#55b24b',
                     }}
                   >
-                    <span className="badge-text" style={{ fontSize: "16px" }}>
+                    <span className="badge-text" style={{ fontSize: '16px' }}>
                       <strong>
-                        Reading
+                          Reading
                         <br />
-                        &amp; Writing
+                          &amp; Writing
                       </strong>
                       <h2
-                        style={{ marginBottom: ReadingAndWrigingScore.previous_score ? "" : "15px" }}
+                        style={{
+                          marginBottom: ReadingAndWrigingScore.previous_score ? '' : '15px',
+                        }}
                       >
                         {ReadingAndWrigingScore.current_score}
                         <br />
                         {ReadingAndWrigingScore.previous_score === null
-                          ? ""
+                          ? ''
                           : `${ReadingAndWrigingScore.delta}`}
                       </h2>
                     </span>
                   </span>
                 </li>
-              ) : (
-                <li>
+                : <li>
                   <span className="badge-circle">
-                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
+                    <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
                       <strong>
                           Reading
                         <br />
-                        &amp; Writing
+                          &amp; Writing
                       </strong>
                       <h2>n/a</h2>
                     </span>
                   </span>
-                </li>
-              )}
+                </li>}
 
-              {ReadingScore ? (
-                <li>
+              {ReadingScore
+                ? <li>
                   <span
                     className="badge-circle"
                     style={{
-                      backgroundColor: "#35a6af",
-                      borderColor: "#35a6af",
-                      width: "80px",
-                      height: "80px",
+                      backgroundColor: '#35a6af',
+                      borderColor: '#35a6af',
+                      width: '80px',
+                      height: '80px',
                     }}
                   >
-                    <span className="badge-text" style={{ fontSize: "16px" }}>
-                      Reading
+                    <span className="badge-text" style={{ fontSize: '16px' }}>
+                        Reading
                       <br />
-                      <h3
-                        style={{ marginBottom: ReadingScore.previous_score ? "" : '20px' }}
-                      >
+                      <h3 style={{ marginBottom: ReadingScore.previous_score ? '' : '20px' }}>
                         {ReadingScore.current_score}
                         <br />
-                        {ReadingScore.previous_score === null ? "" : `${ReadingScore.delta}`}
+                        {ReadingScore.previous_score === null ? '' : `${ReadingScore.delta}`}
                       </h3>
                     </span>
                   </span>
                 </li>
-              ) : (
-                <li>
+                : <li>
                   <span
                     className="badge-circle"
                     style={{
-                      width: "80px",
-                      height: "80px",
+                      width: '80px',
+                      height: '80px',
                     }}
                   >
-                    <span className="badge-text" style={{ fontSize: "16px" }}>
+                    <span className="badge-text" style={{ fontSize: '16px' }}>
                         Reading
                       <br />
-                      <h3 style={{ marginTop: "10px" }}>n/a</h3>
+                      <h3 style={{ marginTop: '10px' }}>n/a</h3>
                     </span>
                   </span>
-                </li>
-              )}
-              {WritingScore ? (
-                <li>
+                </li>}
+              {WritingScore
+                ? <li>
                   <span
                     className="badge-circle"
                     style={{
-                      backgroundColor: "#389b7d",
-                      borderColor: "#389b7d",
-                      width: "80px",
-                      height: "80px",
+                      backgroundColor: '#389b7d',
+                      borderColor: '#389b7d',
+                      width: '80px',
+                      height: '80px',
                     }}
                   >
-                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
-                      Writing
+                    <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
+                        Writing
                       <br />
                       <h4>
                         {WritingScore.current_score}
                         <br />
-                        {WritingScore.previous_score === null ? "" : `${WritingScore.delta}`}
+                        {WritingScore.previous_score === null ? '' : `${WritingScore.delta}`}
                       </h4>
                     </span>
                   </span>
                 </li>
-              ) : (
-                <li>
+                : <li>
                   <span
                     className="badge-circle"
                     style={{
-                      width: "80px",
-                      height: "80px",
+                      width: '80px',
+                      height: '80px',
                     }}
                   >
-                    <span className="badge-text" style={{ fontSize: "16px", marginBottom: "10px" }}>
+                    <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
                         Writing
                       <br />
                       <h2>n/a</h2>
                     </span>
                   </span>
-                </li>
-              )}
+                </li>}
             </ul>
           </div>
         </div>
