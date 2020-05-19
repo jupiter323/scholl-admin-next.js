@@ -34,7 +34,7 @@ class InCompleteReadingTest extends React.Component {
   render() {
     const {
       open,
-      testSection: { problems },
+      testSection,
       handleTestScore,
     } = this.props;
     return (
@@ -52,7 +52,7 @@ class InCompleteReadingTest extends React.Component {
                             className="answers-list answers-list-columns"
                             style={{ marginBottom: "20px" }}
                           >
-                            {problems && this.mapProblems()}
+                            {testSection && testSection.problems && this.mapProblems()}
                           </ol>
                         </div>
                       </div>
