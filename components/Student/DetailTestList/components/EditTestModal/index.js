@@ -51,20 +51,6 @@ class EditTestModal extends React.Component {
 
   componentDidMount() {
     this.props.onRef(this);
-    const {
-      onFetchStudentTestSections,
-      studentToken,
-      sections,
-      test: { student_test_id },
-    } = this.props;
-    const postBody = {
-      student_test_id,
-      studentToken,
-    };
-    onFetchStudentTestSections(postBody);
-    // if (sections.length === 0) {
-
-    // }
   }
   componentWillUnmount() {
     this.props.onRef(undefined);
@@ -260,7 +246,7 @@ class EditTestModal extends React.Component {
     if (activePage === "answerSheet") {
       return (
         <DetailTestAnswerSheetComplete
-          testScoreDetails={test.testScoreDetails}
+          testScoreDetails={test}
           getTargetImage={this.getTargetImage}
           onRef={ref => (this.AnswerSheetChild = ref)}
         />

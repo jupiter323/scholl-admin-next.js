@@ -201,6 +201,7 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
+    console.log('studentId:',id)
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     let count = 0;
     while (count < testSections.length) {

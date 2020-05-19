@@ -62,6 +62,7 @@ class DetailTestList extends React.Component {
 
   onToggleEditTestModal = async (activeTest = null) => {
     const { onSetActiveStudentTestId } = this.props;
+    console.log('activeTest:',activeTest)
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
     this.setState(

@@ -1,23 +1,25 @@
-import React from "react";
-import PropTypes from "prop-types";
-import AnswerRow from "../WritingPage/components/AnswerRow";
+import React from 'react';
+import PropTypes from 'prop-types';
+import AnswerRow from '../WritingPage/components/AnswerRow';
 
 class ReadingPage extends React.Component {
   mapAnswers = () => {
-    const {
-      testSection: { problems }
-    } = this.props;
+    const {testSection: {problems: problemsSection}} = this.props;
     return (
-      problems &&
-      problems.map(problem => <AnswerRow key={problem.test_problem_id} problem={problem} />)
+      problemsSection.problems &&
+      problemsSection.problems.map(problem =>
+        <AnswerRow key={problem.test_problem_id} problem={problem} />
+      )
     );
   };
 
   render() {
     return (
       <div className="slide" id="readingAnswerSheetImg">
-        <div className="row" style={{ columns: "3 auto", marginLeft: "10px", marginRight: "10px" }}>
-          <ol className="answers-list">{this.mapAnswers()}</ol>
+        <div className="row" style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
+          <ol className="answers-list">
+            {this.mapAnswers()}
+          </ol>
         </div>
       </div>
     );
@@ -25,7 +27,7 @@ class ReadingPage extends React.Component {
 }
 
 ReadingPage.propTypes = {
-  testSection: PropTypes.object
+  testSection: PropTypes.object,
 };
 
 export default ReadingPage;
