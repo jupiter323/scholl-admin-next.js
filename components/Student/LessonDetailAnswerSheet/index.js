@@ -85,7 +85,6 @@ class LessonDetailAnswerSheet extends React.Component {
             hasChallenge: true,
           });
           const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          // console.log('log: challengeProblems', challengeProblems);
           this.setState({
             challengeProblems: challengeProblems.lesson_problems,
           });
@@ -94,7 +93,6 @@ class LessonDetailAnswerSheet extends React.Component {
             hasPractice: true,
           });
           const practiceProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          // console.log('log: practiceProblems', practiceProblems);
           if (!practiceProblems) return;
           this.setState({
             practiceProlems: practiceProblems.lesson_problems,
@@ -217,7 +215,6 @@ class LessonDetailAnswerSheet extends React.Component {
     const { onCloseDetailModal, user,
       lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
-    console.log('log: state', this.state);
     return (
       <React.Fragment>
         <div className="wrapper">
