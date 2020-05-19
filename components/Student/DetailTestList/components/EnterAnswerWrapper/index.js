@@ -39,7 +39,7 @@ class EnterAnswerWrapper extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: '',
+        activeSection: "",
       },
       readingSectionCompleted: false,
       writingSectionCompleted: false,
@@ -134,7 +134,7 @@ class EnterAnswerWrapper extends React.Component {
     }
     this.setState({ updatedState });
     if (name === "showInCompleteTest") {
-      const currentProblems = this.getCurrentTestProblems(name);
+      const currentProblems = this.getCurrentTestProblems();
       const test_section_id = currentProblems.id;
       const postBody = {
         student_test_id: currentProblems.student_test_id,
@@ -164,8 +164,8 @@ class EnterAnswerWrapper extends React.Component {
     await addStudentAnswerToTestApi(postBody);
   };
 
-  getCurrentTestProblems = (name) => {
-    const activeSection = name || this.state.updatedState.activeSection;
+  getCurrentTestProblems = () => {
+    const activeSection = this.state.updatedState.activeSection;
     const {
       testReadingProblems,
       testWritingProblems,
@@ -182,7 +182,7 @@ class EnterAnswerWrapper extends React.Component {
       case 'activeMathNoCalcSection':
         return testMathNoCalcProblems;
       default:
-        return testReadingProblems;
+        return '';
     }
   };
 
@@ -265,7 +265,11 @@ class EnterAnswerWrapper extends React.Component {
   }
 
   render() {
-    const { startedTest, previewTest } = this.state;
+    const {
+      startedTest,
+      previewTest,
+      updatedState,
+    } = this.state;
     const {
       onCloaseAnswerWrapper,
       open,
@@ -283,6 +287,7 @@ class EnterAnswerWrapper extends React.Component {
                 onCloaseAnswerWrapper={onCloaseAnswerWrapper}
                 onSetActivePage={this.onSetActivePage}
                 testDescription={test_description}
+                active={updatedState.activeSection}
                 existingSections={this.getExistingSections()}
               />
               <PreStartTestSection
