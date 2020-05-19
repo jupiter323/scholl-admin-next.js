@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import NavBar from './common/NavBar';
 import InCompleteTestSection from './components/InCompleteSection';
 import PreStartTestSection from './components/StartSection';
-
+import { toast } from 'react-toastify';
+import Toast from '../../../../Toast';
 import {
   addStudentAnswerToTestApi,
   updateStudentTestSectionStatusApi,
@@ -21,6 +22,7 @@ import {
 } from '../../../index/selectors';
 import { fetchStudentTestSections } from '../../../index/actions';
 
+
 class EnterAnswerWrapper extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,7 @@ class EnterAnswerWrapper extends React.Component {
       previewTest: false,
       startedTest: false,
       testSections: [],
-      studentTestId: '',
+      studentTestId: "",
       testReadingProblems: null,
       testWritingProblems: null,
       testMathCalcProblems: null,
@@ -64,7 +66,7 @@ class EnterAnswerWrapper extends React.Component {
     onFetchStudentTestSections(postBody);
   };
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
@@ -72,34 +74,37 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onSetProblems = (sections, studentTestId) => {
-    const { tests, test: { test_id } } = this.props;
-    const testIds = tests.map(test => test.id);
-    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+    const {
+      tests,
+      test: { test_id },
+    } = this.props;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
-    sections.map(section => {
-      const testSectionIds = currentTestSections.map(testSection => testSection.id);
+    sections.map((section) => {
+      const testSectionIds = currentTestSections.map((testSection) => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === section.test_section_id,
+        (testSectionId) => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
       if (!currentTestSection) return;
       switch (currentTestSection.name) {
-        case 'Math (Calculator)':
+        case "Math (Calculator)":
           this.setState({
             testMathCalcProblems: section,
           });
           break;
-        case 'Writing':
+        case "Writing":
           this.setState({
             testWritingProblems: section,
           });
           break;
-        case 'Math (No Calculator)':
+        case "Math (No Calculator)":
           this.setState({
             testMathNoCalcProblems: section,
           });
           break;
-        case 'Reading':
+        case "Reading":
           this.setState({
             testReadingProblems: section,
           });
@@ -117,7 +122,7 @@ class EnterAnswerWrapper extends React.Component {
     });
   };
 
-  onSetActivePage = async name => {
+  onSetActivePage = async (name) => {
     const currentSection = this.state.updatedState.activeSection;
     let updatedState;
     if (name === 'showInCompleteTest') {
@@ -141,11 +146,15 @@ class EnterAnswerWrapper extends React.Component {
         student_test_section_id: test_section_id,
         student_test_section_status: "STARTED",
       };
-      await updateStudentTestSectionStatusApi(postBody);
-      this.setState({
-        previewTest: false,
-        startedTest: true,
-      });
+      const response = await updateStudentTestSectionStatusApi(postBody);
+      if (response && response.ok === true) {
+        // Check for successful response before starting test or no answers will get recorded
+        toast.success("Test section is now STARTED.");
+        this.setState({
+          previewTest: false,
+          startedTest: true,
+        });
+      }
     } else {
       this.setState({
         previewTest: true,
@@ -173,20 +182,80 @@ class EnterAnswerWrapper extends React.Component {
       testMathNoCalcProblems,
     } = this.state;
     switch (activeSection) {
-      case 'activeReadingSection':
+      case "activeReadingSection":
         return testReadingProblems;
-      case 'activeWritingSection':
+      case "activeWritingSection":
         return testWritingProblems;
-      case 'activeMathWithCalcSection':
+      case "activeMathWithCalcSection":
         return testMathCalcProblems;
-      case 'activeMathNoCalcSection':
+      case "activeMathNoCalcSection":
         return testMathNoCalcProblems;
       default:
         return '';
     }
   };
 
-  handleTestScore = async activeTest => {
+  handleTestScore = async (activeTest) => {
+    // Check for non-existing sections and set them to completed
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = this.state;
+    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
+    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
+    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
+    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
+
+    // Update current section as completed
+    const {
+      tests,
+      test: { test_id },
+    } = this.props;
+    const currentTestSectionId = activeTest.test_section_id;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    const testSectionIds = currentTestSections.map((testSection) => testSection.id);
+    const currentTestSectionIndex = testSectionIds.findIndex(
+      (testSectionId) => testSectionId === currentTestSectionId,
+    );
+    const currentTestSection = currentTestSections[currentTestSectionIndex];
+    switch (currentTestSection.name) {
+      case "Math (Calculator)":
+        this.setState({
+          mathCalcSectionCompleted: true,
+        });
+        break;
+      case "Writing":
+        this.setState({
+          writingSectionCompleted: true,
+        });
+        break;
+      case "Math (No Calculator)":
+        this.setState({
+          mathNoCalcSectionCompleted: true,
+        });
+        break;
+      case "Reading":
+        this.setState({
+          readingSectionCompleted: true,
+        });
+        break;
+      default:
+        this.setState({
+          readingSectionCompleted: true,
+        });
+    }
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
+    const postBody = {
+      student_test_id: activeTest.student_test_id,
+      student_test_section_id: activeTest.id,
+      student_test_section_status: "COMPLETED",
+    };
+    await updateStudentTestSectionStatusApi(postBody);
     const {
       readingSectionCompleted,
       writingSectionCompleted,
@@ -195,63 +264,23 @@ class EnterAnswerWrapper extends React.Component {
     } = this.state;
     if (
       readingSectionCompleted &&
-      writingSectionCompleted &&
-      mathCalcSectionCompleted &&
-      mathNoCalcSectionCompleted
+        writingSectionCompleted &&
+        mathCalcSectionCompleted &&
+        mathNoCalcSectionCompleted
     ) {
       const postBody = {
         student_test_id: activeTest.student_test_id,
-        status: 'COMPLETED',
+        status: "COMPLETED",
       };
       await updateStudentTestStatusApi(postBody);
+      toast.success("All test sections have been COMPLETED.");
       const { onOpentTestScore } = this.props;
       onOpentTestScore(activeTest);
     } else {
-      const { tests, test: { test_id } } = this.props;
-      const currentTestSectionId = activeTest.test_section_id;
-      const testIds = tests.map(test => test.id);
-      const currentTestIndex = testIds.findIndex(testId => testId === test_id);
-      const currentTestSections = tests[currentTestIndex].test_sections;
-      const testSectionIds = currentTestSections.map(testSection => testSection.id);
-      const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === currentTestSectionId,
-      );
-      const currentTestSection = currentTestSections[currentTestSectionIndex];
-      switch (currentTestSection.name) {
-        case 'Math (Calculator)':
-          this.setState({
-            mathCalcSectionCompleted: true,
-          });
-          break;
-        case 'Writing':
-          this.setState({
-            writingSectionCompleted: true,
-          });
-          break;
-        case 'Math (No Calculator)':
-          this.setState({
-            mathNoCalcSectionCompleted: true,
-          });
-          break;
-        case 'Reading':
-          this.setState({
-            readingSectionCompleted: true,
-          });
-          break;
-        default:
-          this.setState({
-            readingSectionCompleted: true,
-          });
-      }
-      if (activeTest.test_section_status === 'STARTED') {
-        const postBody = {
-          student_test_id: activeTest.student_test_id,
-          student_test_section_id: activeTest.id,
-          student_test_section_status: 'COMPLETED',
-        };
-        await updateStudentTestSectionStatusApi(postBody);
-      }
+      toast.success("Test section is now COMPLETED.");
     }
+    // }
+    // }
   };
 
   getExistingSections = () => {
@@ -280,7 +309,7 @@ class EnterAnswerWrapper extends React.Component {
     if (!test) return;
     return (
       <React.Fragment>
-        {open &&
+        {open && (
           <div className="starting">
             <div className="main-holder grey lighten-5">
               <NavBar
@@ -302,8 +331,10 @@ class EnterAnswerWrapper extends React.Component {
                 onStudentTestScore={onCloaseAnswerWrapper}
                 handleTestScore={this.handleTestScore}
               />
+              <Toast />
             </div>
-          </div>}
+          </div>
+        )}
       </React.Fragment>
     );
   }
