@@ -57,13 +57,14 @@ class EditTestModal extends React.Component {
       sections,
       test: { student_test_id },
     } = this.props;
-    if (sections.length === 0) {
-      const postBody = {
-        student_test_id,
-        studentToken,
-      };
-      onFetchStudentTestSections(postBody);
-    }
+    const postBody = {
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
+    // if (sections.length === 0) {
+
+    // }
   }
   componentWillUnmount() {
     this.props.onRef(undefined);

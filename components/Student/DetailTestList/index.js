@@ -5,17 +5,17 @@ import update from 'immutability-helper';
 import Moment from 'moment';
 import { toast } from 'react-toastify';
 import Toast from '../../Toast';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import AssignedTestCard from './components/AssignedTestCard';
-import OverDueTestCard from './components/OverDueTestCard';
-import CompletedTestCard from './components/CompletedTestCard';
-import EditTestModal from './components/EditTestModal';
-import NewTestModal from './components/TestModal';
-import TestSettingModal from './components/TestSettingModal';
-import EnterAnswerWrapper from './components/EnterAnswerWrapper';
-import CardHeader from './components/CardHeader';
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import AssignedTestCard from "./components/AssignedTestCard";
+import OverDueTestCard from "./components/OverDueTestCard";
+import CompletedTestCard from "./components/CompletedTestCard";
+import EditTestModal from "./components/EditTestModal";
+import NewTestModal from "./components/TestModal";
+import TestSettingModal from "./components/TestSettingModal";
+import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
+import CardHeader from "./components/CardHeader";
 import {
   setIsVisibleTopBar,
   fetchStudentTests,
@@ -23,7 +23,9 @@ import {
   setStudentAssignedTests,
   deleteStudentTest,
   updateTestFlag,
-} from '../index/actions';
+  assignNewTest,
+  fetchStudentTestSections,
+} from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
@@ -97,6 +99,7 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = async currentTestId => {
+    this.props.onFetchStudentTestSections({ id: this.props.user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
     const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
@@ -217,11 +220,10 @@ class DetailTestList extends React.Component {
   onSaveNewTest = async test => {
     this.onCloseTestModal();
     const test_sections = [];
-    const { studentTests: prevTestsState, tests } = this.props;
+    const { tests } = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test.version);
     const currentTest = tests[currentTestIndex];
-    const newTestNumber = prevTestsState.length + 1;
 
     const { user: { id } } = this.props;
     currentTest.test_sections.map(testSection => {
@@ -259,17 +261,13 @@ class DetailTestList extends React.Component {
         test_id: test.version,
         test_name: currentTest.name,
       };
-      const updatedTests = update(prevTestsState, { $push: [formattedNewTest] });
-      const { onSetStudentAssignedTests } = this.props;
-      onSetStudentAssignedTests(updatedTests);
+      const { onAssignNewTest } = this.props;
+      onAssignNewTest(formattedNewTest);
     } else {
-      toast.error(
-        `Not that the student is not activated that the Free Student Account can only be assigned one free test.`,
-        {
-          className: 'update-error',
-          progressClassName: 'progress-bar-error',
-        },
-      );
+      toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
     }
   };
 
@@ -390,11 +388,10 @@ function mapDispatchToProps(dispatch) {
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
-    onSetStudentAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
-    onDeleteStudentTest: (studentTestId, studentId, type) =>
-      dispatch(deleteStudentTest(studentTestId, studentId, type)),
-    onUpdateTestFlag: (studentTestId, studentId) =>
-      dispatch(updateTestFlag(studentTestId, studentId)),
+    onDeleteStudentTest: (studentTestId, studentId, type) => dispatch(deleteStudentTest(studentTestId, studentId, type)),
+    onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
+    onAssignNewTest: (newTest) => dispatch(assignNewTest(newTest)),
+    onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
   };
 }
 

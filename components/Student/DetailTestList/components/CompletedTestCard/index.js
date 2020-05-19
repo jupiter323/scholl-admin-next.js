@@ -25,6 +25,7 @@ class CompletedTestCard extends React.Component {
     const { scores, onSetScores } = this.props;
     if (!scores) {
       const formattedScores = await this.getScoresByStudentTest(this.props.test);
+      if (!formattedScores) return;
       onSetScores(formattedScores);
       if (formattedScores) {
         this.setScores(formattedScores.subjects);
