@@ -53,11 +53,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       student_test_id,
       studentToken,
     };
-    if (sections.length === 0) {
-      onFetchStudentTestSections(postBody);
-    } else {
-      this.onSetProblems(sections, student_test_id);
-    }
+    onFetchStudentTestSections(postBody);
     this.props.onRef(this);
   }
   componentWillUnmount() {
@@ -82,8 +78,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testSectionId => testSectionId === section.test_section_id
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
-      console.log('currentTestSection:',currentTestSection);
-      console.log('section:',section);
+      console.log('currentTestSection:', currentTestSection);
+      console.log('section:', section);
       if (!currentTestSection) return;
       switch (currentTestSection.name) {
         case 'Math (Calculator)':
@@ -163,7 +159,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const {activeSlide} = this.state;
     const {sections} = this.props;
     if (sections) {
-     
       const {
         testReadingProblems,
         testWritingProblems,

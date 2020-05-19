@@ -61,11 +61,7 @@ class EnterAnswerWrapper extends React.Component {
       student_test_id,
       studentToken,
     };
-    if (sections.length === 0) {
-      onFetchStudentTestSections(postBody);
-    } else {
-      this.onSetProblems(sections, student_test_id);
-    }
+    onFetchStudentTestSections(postBody);
   };
 
   componentWillReceiveProps = nextProps => {
@@ -126,24 +122,24 @@ class EnterAnswerWrapper extends React.Component {
     let updatedState;
     if (name === 'showInCompleteTest') {
       updatedState = update(this.state.updatedState, {
-        [name]: { $set: true },
-        [currentSection]: { $set: false },
+        [name]: {$set: true},
+        [currentSection]: {$set: false},
       });
     } else {
       updatedState = update(this.state.updatedState, {
-        [name]: { $set: true },
-        [currentSection]: { $set: false },
-        activeSection: { $set: name },
+        [name]: {$set: true},
+        [currentSection]: {$set: false},
+        activeSection: {$set: name},
       });
     }
-    this.setState({ updatedState });
-    if (name === "showInCompleteTest") {
+    this.setState({updatedState});
+    if (name === 'showInCompleteTest') {
       const currentProblems = this.getCurrentTestProblems(name);
       const test_section_id = currentProblems.id;
       const postBody = {
         student_test_id: currentProblems.student_test_id,
         student_test_section_id: test_section_id,
-        student_test_section_status: "STARTED",
+        student_test_section_status: 'STARTED',
       };
       await updateStudentTestSectionStatusApi(postBody);
       this.setState({
@@ -168,7 +164,7 @@ class EnterAnswerWrapper extends React.Component {
     await addStudentAnswerToTestApi(postBody);
   };
 
-  getCurrentTestProblems = (name) => {
+  getCurrentTestProblems = name => {
     const activeSection = name || this.state.updatedState.activeSection;
     const {
       testReadingProblems,
@@ -259,14 +255,19 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   getExistingSections = () => {
-    const { testReadingProblems, testWritingProblems, testMathCalcProblems, testMathNoCalcProblems } = this.state;
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = this.state;
     return {
       reading: !!testReadingProblems,
       writing: !!testWritingProblems,
       mathCalc: !!testMathCalcProblems,
       mathNoCalc: !!testMathNoCalcProblems,
     };
-  }
+  };
 
   render() {
     const {
