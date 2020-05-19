@@ -208,6 +208,66 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   handleTestScore = async (activeTest) => {
+    // Check for non-existing sections and set them to completed
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = this.state;
+    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
+    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
+    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
+    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
+
+    // Update current section as completed
+    const {
+      tests,
+      test: { test_id },
+    } = this.props;
+    const currentTestSectionId = activeTest.test_section_id;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    const testSectionIds = currentTestSections.map((testSection) => testSection.id);
+    const currentTestSectionIndex = testSectionIds.findIndex(
+      (testSectionId) => testSectionId === currentTestSectionId,
+    );
+    const currentTestSection = currentTestSections[currentTestSectionIndex];
+    switch (currentTestSection.name) {
+      case "Math (Calculator)":
+        this.setState({
+          mathCalcSectionCompleted: true,
+        });
+        break;
+      case "Writing":
+        this.setState({
+          writingSectionCompleted: true,
+        });
+        break;
+      case "Math (No Calculator)":
+        this.setState({
+          mathNoCalcSectionCompleted: true,
+        });
+        break;
+      case "Reading":
+        this.setState({
+          readingSectionCompleted: true,
+        });
+        break;
+      default:
+        this.setState({
+          readingSectionCompleted: true,
+        });
+    }
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
+    const postBody = {
+      student_test_id: activeTest.student_test_id,
+      student_test_section_id: activeTest.id,
+      student_test_section_status: "COMPLETED",
+    };
+    await updateStudentTestSectionStatusApi(postBody);
     const {
       readingSectionCompleted,
       writingSectionCompleted,
@@ -216,9 +276,9 @@ class EnterAnswerWrapper extends React.Component {
     } = this.state;
     if (
       readingSectionCompleted &&
-      writingSectionCompleted &&
-      mathCalcSectionCompleted &&
-      mathNoCalcSectionCompleted
+        writingSectionCompleted &&
+        mathCalcSectionCompleted &&
+        mathNoCalcSectionCompleted
     ) {
       const postBody = {
         student_test_id: activeTest.student_test_id,
@@ -229,90 +289,10 @@ class EnterAnswerWrapper extends React.Component {
       const { onOpentTestScore } = this.props;
       onOpentTestScore(activeTest);
     } else {
-      // Check for non-existing sections and set them to completed
-      const {
-        testReadingProblems,
-        testWritingProblems,
-        testMathCalcProblems,
-        testMathNoCalcProblems,
-      } = this.state;
-      if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
-      if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
-      if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
-      if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
-
-      // Update current section as completed
-      const {
-        tests,
-        test: { test_id },
-      } = this.props;
-      const currentTestSectionId = activeTest.test_section_id;
-      const testIds = tests.map((test) => test.id);
-      const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
-      const currentTestSections = tests[currentTestIndex].test_sections;
-      const testSectionIds = currentTestSections.map((testSection) => testSection.id);
-      const currentTestSectionIndex = testSectionIds.findIndex(
-        (testSectionId) => testSectionId === currentTestSectionId,
-      );
-      const currentTestSection = currentTestSections[currentTestSectionIndex];
-      switch (currentTestSection.name) {
-        case "Math (Calculator)":
-          this.setState({
-            mathCalcSectionCompleted: true,
-          });
-          break;
-        case "Writing":
-          this.setState({
-            writingSectionCompleted: true,
-          });
-          break;
-        case "Math (No Calculator)":
-          this.setState({
-            mathNoCalcSectionCompleted: true,
-          });
-          break;
-        case "Reading":
-          this.setState({
-            readingSectionCompleted: true,
-          });
-          break;
-        default:
-          this.setState({
-            readingSectionCompleted: true,
-          });
-      }
-      // if (activeTest.test_section_status === 'STARTED') {
-      const postBody = {
-        student_test_id: activeTest.student_test_id,
-        student_test_section_id: activeTest.id,
-        student_test_section_status: "COMPLETED",
-      };
-      await updateStudentTestSectionStatusApi(postBody);
-      const {
-        readingSectionCompleted,
-        writingSectionCompleted,
-        mathCalcSectionCompleted,
-        mathNoCalcSectionCompleted,
-      } = this.state;
-      if (
-        readingSectionCompleted &&
-        writingSectionCompleted &&
-        mathCalcSectionCompleted &&
-        mathNoCalcSectionCompleted
-      ) {
-        const postBody = {
-          student_test_id: activeTest.student_test_id,
-          status: "COMPLETED",
-        };
-        await updateStudentTestStatusApi(postBody);
-        toast.success("All test sections have been COMPLETED.");
-        const { onOpentTestScore } = this.props;
-        onOpentTestScore(activeTest);
-      } else {
-        toast.success("Test section is now COMPLETED.");
-      }
-      // }
+      toast.success("Test section is now COMPLETED.");
     }
+    // }
+    // }
   };
 
   render() {
