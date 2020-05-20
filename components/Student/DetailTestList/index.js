@@ -45,6 +45,7 @@ class DetailTestList extends React.Component {
     super(props);
     this.state = {
       activeTest: {},
+      activePage: "scores",
       dropdownIndex: null,
       dropdownIsOpen: false,
       openEditTestModal: false,
@@ -63,7 +64,6 @@ class DetailTestList extends React.Component {
 
   onToggleEditTestModal = async (activeTest = null) => {
     const { onSetActiveStudentTestId } = this.props;
-    console.log('activeTest:',activeTest)
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
     this.setState(
@@ -104,9 +104,7 @@ class DetailTestList extends React.Component {
     this.props.onFetchStudentTestSections({ id: this.props.user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    console.log('log: studentTests', this.props.studentTests);
     const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
-    console.log('log: activeTest from on enter answers', activeTest);
     if (activeTest.status === 'ASSIGNED') {
       const postBody = {
         student_test_id: currentTestId,
@@ -114,7 +112,8 @@ class DetailTestList extends React.Component {
       };
       await updateStudentTestStatusApi(postBody);
     }
-    this.setState({ openEnterAnswerWrapper: true, activeTest });
+    // this.setState({ openEnterAnswerWrapper: true, activeTest });
+    this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
   onDownloadReport = activeTest => {
@@ -307,6 +306,8 @@ class DetailTestList extends React.Component {
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
               onCloseEditTestModal={this.onCloseEditTestModal}
+              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+              activePage={this.state.activePage}
             />
           </When>
           <When condition={openEnterAnswerWrapper}>

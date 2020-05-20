@@ -17,7 +17,7 @@ class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores",
+      activePage: props.activePage,
       scoresImages: null,
       analysisBarImages: [],
       analysisCicleImages: [],
@@ -268,10 +268,11 @@ class EditTestModal extends React.Component {
   render() {
     const { test, user, onCloseEditTestModal } = this.props;
     const { activePage, enablePublish } = this.state;
-    const { title, version: testVersion } = test;
+    const { title, version: testVersion, test_name } = test;
     const {
       studentInformation: { firstName, lastName },
     } = user;
+    console.log('log: props', this.props);
     return (
       <div className="wrapper">
         <div
@@ -293,7 +294,7 @@ class EditTestModal extends React.Component {
               <div className="col s9">
                 <div className="card-panel-text center-align">
                   <div className="text-xlarge">{title}</div>
-                  <div className="text-small">Version: SAT Practice Test #{testVersion}</div>
+                  <div className="text-small">Version: {test_name}</div>
                 </div>
               </div>
               <div className="col s1 right-align">
