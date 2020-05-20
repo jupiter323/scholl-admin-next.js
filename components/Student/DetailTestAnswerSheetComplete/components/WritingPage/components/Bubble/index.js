@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import update from "immutability-helper";
+import {addStudentAnswerToTestApi} from '../../../../../index/api';
 
 const styles = {
   red: {
@@ -46,19 +48,88 @@ const styles = {
 class BubbleGroup extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectedIndex: -1,
+      problemCells: [
+        {
+          id: 0,
+          label: "A",
+          selected: false,
+        },
+        {
+          id: 1,
+          label: "B",
+          selected: false,
+        },
+        {
+          id: 2,
+          label: "C",
+          selected: false,
+        },
+        {
+          id: 3,
+          label: "D",
+          selected: false,
+        },
+      ],
+    };
   }
+
+  handleClickBadge = (index, isSavingStudentAns) => {
+    const currentBadge = this.state.problemCells[index];
+    const selectedIndex = this.state.selectedIndex;
+    if (selectedIndex === -1) {
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+      });
+      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
+    } else {
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+        [selectedIndex]: { selected: { $set: false } },
+      });
+      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
+    }
+  };
+
+  onSaveStudentAnswer = (updatedProblemCells, index, isSavingStudentAns) => {
+    const { problem } = this.props;
+    this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
+    const { label } = this.state.problemCells[index];
+    this.onAddStudentAnswerToTest(problem.id, label);
+  };
+
+  onAddStudentAnswerToTest = async (test_problem_id, answer) => {
+    const { testSection } = this.props;
+    // console.log('log: testScoreDetails');
+    const postBody = {
+      student_test_id: testSection.student_test_id,
+      test_problem_id,
+      answer,
+    };
+    console.log('log: test_problem_id', test_problem_id)
+    console.log('log: answer', answer)
+    console.log('log: postBody', postBody)
+    await addStudentAnswerToTestApi(postBody);
+  };
 
   mapEmptyBubbles = id => {
     const letters = ["A", "B", "C", "D"];
     const {
       problem: { student_answer }
     } = this.props;
-    return letters.map(letter => (
-      <li key={letter}>
+    console.log('log: props for each problem', this.props);
+    const {selectedIndex} = this.state;
+    return letters.map((letter, index) => (
+      <li 
+        key={letter}
+        style={{ cursor: "pointer" }}
+        onClick={() => this.handleClickBadge(index, true)}
+      >
         <form>
           <label
             htmlFor={`${id}${letter}`}
-            style={student_answer ? this.renderBubbleStyle(letter) : styles.plain}
+            style={student_answer || selectedIndex === index ? this.renderBubbleStyle(letter) : styles.plain}
           >
             <span style={{ display: "block", marginTop: "2px", paddingLeft: "4.5px" }}>
               {letter}
@@ -73,16 +144,18 @@ class BubbleGroup extends React.Component {
     const {
       problem: { correct_answer, student_answer }
     } = this.props;
-    if (student_answer === letter && student_answer === correct_answer) {
+    const {selectedIndex, problemCells} = this.state;
+    const studentAnswer = student_answer || problemCells[selectedIndex].label
+    if (studentAnswer === letter && studentAnswer === correct_answer) {
       return styles.greenFilled;
     }
-    if (student_answer === letter && student_answer !== correct_answer) {
+    if (studentAnswer === letter && studentAnswer !== correct_answer) {
       return styles.red;
     }
-    if (letter !== student_answer && letter === !correct_answer) {
+    if (letter !== studentAnswer && letter === !correct_answer) {
       return styles.plain;
     }
-    if (letter !== student_answer && letter === correct_answer) {
+    if (letter !== studentAnswer && letter === correct_answer) {
       return styles.greenBorderOnly;
     }
     return styles.plain;

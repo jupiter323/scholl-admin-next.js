@@ -306,7 +306,6 @@ class DetailTestList extends React.Component {
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
               onCloseEditTestModal={this.onCloseEditTestModal}
-              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               activePage={this.state.activePage}
             />
           </When>

@@ -164,17 +164,17 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testMathNoCalcProblems,
       } = this.state;
       if (activeSlide === 'reading') {
-        return testReadingProblems && <ReadingPage testSection={testReadingProblems} />;
+        return testReadingProblems && <ReadingPage testSection={testReadingProblems}/>;
       }
       if (activeSlide === 'writing') {
-        return testWritingProblems && <WritingPage testSection={testWritingProblems} />;
+        return testWritingProblems && <WritingPage testSection={testWritingProblems}/>;
       }
       if (activeSlide === 'math (no calc)') {
-        return testMathCalcProblems && <MathNoCalcPage testSection={testMathCalcProblems} />;
+        return testMathCalcProblems && <MathNoCalcPage testSection={testMathCalcProblems}/>;
       }
       if (activeSlide === 'math (calculator)') {
         return (
-          testMathNoCalcProblems && <MathCalculatorPage testSection={testMathNoCalcProblems} />
+          testMathNoCalcProblems && <MathCalculatorPage testSection={testMathNoCalcProblems}/>
         );
       }
       if (activeSlide === 'essay') {
