@@ -65,7 +65,7 @@ class ProblemRow extends React.Component {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index);
+      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },

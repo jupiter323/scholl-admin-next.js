@@ -25,6 +25,7 @@ import {
   updateTestFlag,
   assignNewTest,
   fetchStudentTestSections,
+  addNewTestToStudentTests,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -103,7 +104,9 @@ class DetailTestList extends React.Component {
     this.props.onFetchStudentTestSections({ id: this.props.user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
+    console.log('log: studentTests', this.props.studentTests);
     const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
+    console.log('log: activeTest from on enter answers', activeTest);
     if (activeTest.status === 'ASSIGNED') {
       const postBody = {
         student_test_id: currentTestId,
@@ -262,8 +265,9 @@ class DetailTestList extends React.Component {
         test_id: test.version,
         test_name: currentTest.name,
       };
-      const { onAssignNewTest } = this.props;
+      const { onAssignNewTest, onAddNewTestToStudentTests } = this.props;
       onAssignNewTest(formattedNewTest);
+      onAddNewTestToStudentTests(formattedNewTest);
     } else {
       toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
         className: 'update-error',
@@ -393,6 +397,7 @@ function mapDispatchToProps(dispatch) {
     onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
     onAssignNewTest: (newTest) => dispatch(assignNewTest(newTest)),
     onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
+    onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
   };
 }
 

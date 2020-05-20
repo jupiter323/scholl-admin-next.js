@@ -53,6 +53,7 @@ import {
   DELETE_STUDENT_TEST,
   UPDATE_TEST_FLAG,
   ASSIGN_NEW_TEST,
+  ADD_NEW_TEST_TO_STUDENT_TESTS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -375,5 +376,10 @@ export const updateTestFlag = (studentTestId, studentId) => ({
 
 export const assignNewTest = (newTest) => ({
   type: ASSIGN_NEW_TEST,
+  newTest,
+});
+
+export const addNewTestToStudentTests = (newTest) => ({
+  type: ADD_NEW_TEST_TO_STUDENT_TESTS,
   newTest,
 });
