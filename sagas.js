@@ -47,6 +47,7 @@ import {
   DELETE_STUDENT_TEST,
   UPDATE_TEST_FLAG,
   REMOVE_TEST,
+  ADD_STUDENT_ANSWER_TO_TEST 
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -127,6 +128,7 @@ const {
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
+  addStudentAnswerToTestApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1003,6 +1005,19 @@ function* handleUpdateFlagStatus(action) {
   }
 }
 
+function* watchForAddStudentAnswerToTest() {
+  yield takeEvery(ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+}
+
+function* handleAddStudentAnswerToTest(action) {
+  try {
+    console.log(action.payload);
+    yield call(addStudentAnswerToTestApi, action.payload);
+  } catch (error) {
+    console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1054,5 +1069,6 @@ export default function* defaultSaga() {
     watchForAnswerStudentLessonProblem(),
     watchForDeleteStudentTest(),
     watchForUpdateTestFlagStatus(),
+    watchForAddStudentAnswerToTest(),
   ]);
 }

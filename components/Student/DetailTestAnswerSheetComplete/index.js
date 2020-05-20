@@ -15,13 +15,14 @@ import {
   makeSelectActiveStudent,
   makeSelectTests,
 } from '../index/selectors';
-import {fetchStudentTestSections} from '../index/actions';
+import {fetchStudentTestSections, addStudentAnswerToTest} from '../index/actions';
+import {fetchStudentTestSectionsApi} from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSlide: 'reading',
+      activeSlide: '',
       isOpened: false,
       testSections: [],
       studentTestId: '',
@@ -110,7 +111,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.setState({
       testSections: sections,
       studentTestId,
-    });
+    }, this.updateSectionStatus);
   };
 
   getComponentImages = () =>
@@ -185,27 +186,72 @@ class DetailTestAnswerSheetComplete extends React.Component {
     }
   };
 
-  onAddStudentAnswerToTest = (test_problem_id, answer, student_test_id) => {
+  onAddStudentAnswerToTest = async (test_problem_id, answer, student_test_id) => {
+    const {dispatchAddStudentAnswerToTest} = this.props;
     const postBody = {
       student_test_id,
       test_problem_id,
       answer,
     };
-    console.log('log: test_problem_id', test_problem_id)
-    console.log('log: answer', answer)
-    console.log('log: postBody', postBody)
-    // @ TODO check if action is needed here
-    // Check if test is started here. If not set it to started.
-    // await addStudentAnswerToTestApi(postBody);
-    // }
+    dispatchAddStudentAnswerToTest(postBody, student_test_id);
   };
+
+  updateSectionStatus = async () => {
+    let currentSection;
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+      activeSlide
+    } = this.state;
+    const {activeStudent} = this.props;
+    switch(activeSlide) {
+      case 'reading':
+        currentSection = testReadingProblems
+        break;
+      case 'writing':
+        currentSection = testWritingProblems
+      case "math (no calc)":
+        currentSection = testMathNoCalcProblems
+      case "math (calculator)":
+        currentSection = testMathCalcProblems
+      default:
+        break;
+    }
+    if (!currentSection) return;
+    // make API requset to check current status
+    const currentSectionStatus = await fetchStudentTestSectionsApi(activeStudent.id, currentSection.student_test_id);
+    console.log('log: currentSectionStatus', currentSectionStatus)
+    // const postBody = {
+    //   student_test_id: currentProblems.student_test_id,
+    //   student_test_section_id: test_section_id,
+    //   student_test_section_status: 'STARTED',
+    // };
+    // const response = await updateStudentTestSectionStatusApi(postBody);
+  }
+
+  getExistingSections = () => {
+    const { testReadingProblems, testWritingProblems, testMathCalcProblems, testMathNoCalcProblems } = this.state;
+    return {
+      reading: !!testReadingProblems,
+      writing: !!testWritingProblems,
+      mathCalc: !!testMathCalcProblems,
+      mathNoCalc: !!testMathNoCalcProblems,
+    };
+  }
 
   render() {
     const {activeSlide} = this.state;
     return (
       <div className="card-main-full card">
         <div className="slick-tabs-gallery">
-          <AnswerSheetNavBar activeSlide={activeSlide} onSetActiveSlide={this.onSetActiveSlide} />
+          <AnswerSheetNavBar 
+            activeSlide={activeSlide} 
+            onSetActiveSlide={this.onSetActiveSlide} 
+            updateSectionStatus={this.updateSectionStatus}
+            getExistingSections={this.getExistingSections()}
+          />
         </div>
         <div className="card-content">
           <div className="main-slick">
@@ -230,6 +276,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
+    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId))
   };
 }
 
