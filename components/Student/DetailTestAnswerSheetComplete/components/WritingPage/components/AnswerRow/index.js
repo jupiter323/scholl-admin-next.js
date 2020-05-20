@@ -98,7 +98,11 @@ class AnswerRow extends React.Component {
                 <Choose>
                   <When condition={this.getAnswerType(problem)}>{this.mapNumberBubbles()}</When>
                   <Otherwise>
-                    <BubbleGroup id={problem.id} testSection={this.props.testSection} problem={problem} />
+                    <BubbleGroup 
+                      id={problem.id} 
+                      testSection={this.props.testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} 
+                      problem={problem} 
+                    />
                   </Otherwise>
                 </Choose>
               </ul>

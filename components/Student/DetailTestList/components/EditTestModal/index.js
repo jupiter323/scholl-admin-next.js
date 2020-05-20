@@ -272,7 +272,6 @@ class EditTestModal extends React.Component {
     const {
       studentInformation: { firstName, lastName },
     } = user;
-    console.log('log: props', this.props);
     return (
       <div className="wrapper">
         <div

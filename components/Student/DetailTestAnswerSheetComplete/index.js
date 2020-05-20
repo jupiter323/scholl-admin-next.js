@@ -164,17 +164,17 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testMathNoCalcProblems,
       } = this.state;
       if (activeSlide === 'reading') {
-        return testReadingProblems && <ReadingPage testSection={testReadingProblems}/>;
+        return testReadingProblems && <ReadingPage testSection={testReadingProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>;
       }
       if (activeSlide === 'writing') {
-        return testWritingProblems && <WritingPage testSection={testWritingProblems}/>;
+        return testWritingProblems && <WritingPage testSection={testWritingProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>;
       }
       if (activeSlide === 'math (no calc)') {
-        return testMathCalcProblems && <MathNoCalcPage testSection={testMathCalcProblems}/>;
+        return testMathNoCalcProblems && <MathNoCalcPage testSection={testMathNoCalcProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>;
       }
       if (activeSlide === 'math (calculator)') {
         return (
-          testMathNoCalcProblems && <MathCalculatorPage testSection={testMathNoCalcProblems}/>
+          testMathCalcProblems && <MathCalculatorPage testSection={testMathCalcProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>
         );
       }
       if (activeSlide === 'essay') {
@@ -183,6 +183,21 @@ class DetailTestAnswerSheetComplete extends React.Component {
     } else {
       return null;
     }
+  };
+
+  onAddStudentAnswerToTest = (test_problem_id, answer, student_test_id) => {
+    const postBody = {
+      student_test_id,
+      test_problem_id,
+      answer,
+    };
+    console.log('log: test_problem_id', test_problem_id)
+    console.log('log: answer', answer)
+    console.log('log: postBody', postBody)
+    // @ TODO check if action is needed here
+    // Check if test is started here. If not set it to started.
+    // await addStudentAnswerToTestApi(postBody);
+    // }
   };
 
   render() {

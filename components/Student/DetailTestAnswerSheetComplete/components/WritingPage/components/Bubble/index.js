@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import update from "immutability-helper";
-import {addStudentAnswerToTestApi} from '../../../../../index/api';
 
 const styles = {
   red: {
@@ -75,42 +74,28 @@ class BubbleGroup extends React.Component {
     };
   }
 
-  handleClickBadge = (index, isSavingStudentAns) => {
+  handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
+      this.onSaveStudentAnswer(updatedProblemCells, index);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
         [selectedIndex]: { selected: { $set: false } },
       });
-      this.onSaveStudentAnswer(updatedProblemCells, index, isSavingStudentAns);
+      this.onSaveStudentAnswer(updatedProblemCells, index);
     }
   };
 
-  onSaveStudentAnswer = (updatedProblemCells, index, isSavingStudentAns) => {
-    const { problem } = this.props;
+  onSaveStudentAnswer = (updatedProblemCells, index) => {
+    const { onAddStudentAnswerToTest, problem, testSection } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
-    this.onAddStudentAnswerToTest(problem.id, label);
-  };
-
-  onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const { testSection } = this.props;
-    // console.log('log: testScoreDetails');
-    const postBody = {
-      student_test_id: testSection.student_test_id,
-      test_problem_id,
-      answer,
-    };
-    console.log('log: test_problem_id', test_problem_id)
-    console.log('log: answer', answer)
-    console.log('log: postBody', postBody)
-    await addStudentAnswerToTestApi(postBody);
+    onAddStudentAnswerToTest(problem.id, label, testSection.student_test_id);
   };
 
   mapEmptyBubbles = id => {
@@ -118,13 +103,12 @@ class BubbleGroup extends React.Component {
     const {
       problem: { student_answer }
     } = this.props;
-    console.log('log: props for each problem', this.props);
     const {selectedIndex} = this.state;
     return letters.map((letter, index) => (
       <li 
         key={letter}
         style={{ cursor: "pointer" }}
-        onClick={() => this.handleClickBadge(index, true)}
+        onClick={() => this.handleClickBadge(index)}
       >
         <form>
           <label
