@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const WritingPage = ({
-  reading: {
-    questionType: {}
-  }
-}) => (
+const WritingPage = () => (
   <div className="slide">
     <div className="container-sm">
       <div className="graphs-section graphs-students" id="writingAnalysisBarImg">

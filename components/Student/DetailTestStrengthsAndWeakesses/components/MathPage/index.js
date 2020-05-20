@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const MathPage = ({
-  reading: {
-    questionType: {}
-  }
-}) => (
+const MathPage = () => (
   <div className="slide">
     <div className="container-sm">
       <div className="graphs-section graphs-students" id = "mathAnalysisBarImg">
