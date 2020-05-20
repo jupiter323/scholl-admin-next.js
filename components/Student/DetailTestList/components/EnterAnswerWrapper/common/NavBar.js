@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -50,7 +50,9 @@ class NavBar extends React.Component {
           <div className="card-panel-row row">
             <div className="col s10">
               <div className="card-panel-text">
-                <h1 className="text-large">{testDescription}</h1>
+                <h1 className="text-large">
+                  {testDescription}
+                </h1>
               </div>
             </div>
             <div className="col s2 right-align">

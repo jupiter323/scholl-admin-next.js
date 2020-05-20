@@ -1,8 +1,8 @@
 import React from 'react';
 import update from 'immutability-helper';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {createStructuredSelector} from 'reselect';
 import PropTypes from 'prop-types';
 import NavBar from './common/NavBar';
 import InCompleteTestSection from './components/InCompleteSection';
@@ -20,7 +20,7 @@ import {
   makeSelectActiveStudent,
   makeSelectTests,
 } from '../../../index/selectors';
-import { fetchStudentTestSections } from '../../../index/actions';
+import {fetchStudentTestSections} from '../../../index/actions';
 
 
 class EnterAnswerWrapper extends React.Component {
@@ -55,8 +55,8 @@ class EnterAnswerWrapper extends React.Component {
       onFetchStudentTestSections,
       sections,
       studentToken,
-      test: { student_test_id },
-      activeStudent: { id },
+      test: {student_test_id},
+      activeStudent: {id},
     } = this.props;
     const postBody = {
       id,
@@ -127,14 +127,14 @@ class EnterAnswerWrapper extends React.Component {
     let updatedState;
     if (name === 'showInCompleteTest') {
       updatedState = update(this.state.updatedState, {
-        [name]: { $set: true },
-        [currentSection]: { $set: false },
+        [name]: {$set: true},
+        [currentSection]: {$set: false},
       });
     } else {
       updatedState = update(this.state.updatedState, {
-        [name]: { $set: true },
-        [currentSection]: { $set: false },
-        activeSection: { $set: name },
+        [name]: {$set: true},
+        [currentSection]: {$set: false},
+        activeSection: {$set: name},
       });
     }
     this.setState({ updatedState });
@@ -144,7 +144,7 @@ class EnterAnswerWrapper extends React.Component {
       const postBody = {
         student_test_id: currentProblems.student_test_id,
         student_test_section_id: test_section_id,
-        student_test_section_status: "STARTED",
+        student_test_section_status: 'STARTED',
       };
       const response = await updateStudentTestSectionStatusApi(postBody);
       if (response && response.ok === true) {
@@ -164,7 +164,7 @@ class EnterAnswerWrapper extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-    const { studentTestId } = this.state;
+    const {studentTestId} = this.state;
     const postBody = {
       student_test_id: studentTestId,
       test_problem_id,
@@ -302,7 +302,7 @@ class EnterAnswerWrapper extends React.Component {
     const {
       onCloaseAnswerWrapper,
       open,
-      test: { test_description },
+      test: {test_description},
       test,
       onAddStudentAnswerToTest,
     } = this.props;
