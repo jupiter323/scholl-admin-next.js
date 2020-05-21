@@ -13,6 +13,7 @@ class CompletedTestCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      scores: null,
       ReadingScore: null,
       WritingScore: null,
       ReadingAndWrigingScore: null,
@@ -25,16 +26,17 @@ class CompletedTestCard extends React.Component {
     const formattedScores = await this.getScoresByStudentTest(this.props.test);
     if (!formattedScores) return;
     if (formattedScores) {
+      this.setState({
+        scores: formattedScores,
+      });
       this.setScores(formattedScores.subjects);
     }
   };
 
   onEditTest = async () => {
-    const {onEditTest} = this.props;
-    const {onSetScores} = this.props;
-    const formattedScores = await this.getScoresByStudentTest(this.props.test);
-    if (!formattedScores) return;
-    onSetScores(formattedScores);
+    const {onEditTest, onSetScores} = this.props;
+    const {scores} = this.state;
+    onSetScores(scores);
     onEditTest();
   };
 
