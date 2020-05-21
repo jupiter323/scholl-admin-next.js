@@ -16,16 +16,16 @@ import {
   makeSelectTests,
 } from '../index/selectors';
 import {fetchStudentTestSections, addStudentAnswerToTest} from '../index/actions';
-import {fetchStudentTestSectionsApi} from '../index/api';
+import {updateStudentTestSectionStatusApi} from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSlide: '',
+      activeSlide: "",
       isOpened: false,
       testSections: [],
-      studentTestId: '',
+      studentTestId: "",
       testReadingProblems: null,
       testWritingProblems: null,
       testMathCalcProblems: null,
@@ -36,8 +36,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: '',
+        activeSection: "",
       },
+      updatedSectionStatus: {},
     };
   }
 
@@ -46,8 +47,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
       onFetchStudentTestSections,
       sections,
       studentToken,
-      testScoreDetails: {student_test_id},
-      activeStudent: {id},
+      testScoreDetails: { student_test_id },
+      activeStudent: { id },
     } = this.props;
     const postBody = {
       id,
@@ -61,42 +62,45 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.props.onRef(undefined);
   }
 
-  componentWillReceiveProps = nextProps => {
-    const {sections, student_test_id} = nextProps;
+  componentWillReceiveProps = (nextProps) => {
+    const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
-    const {tests, testScoreDetails: {test_id}} = this.props;
-    const testIds = tests.map(test => test.id);
-    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+    const {
+      tests,
+      testScoreDetails: { test_id },
+    } = this.props;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
-    sections.map(section => {
-      const testSectionIds = currentTestSections.map(testSection => testSection.id);
+    sections.map((section) => {
+      const testSectionIds = currentTestSections.map((testSection) => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === section.test_section_id
+        (testSectionId) => testSectionId === section.test_section_id
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
       if (!currentTestSection) return;
       switch (currentTestSection.name) {
-        case 'Math (Calculator)':
+        case "Math (Calculator)":
           this.setState({
             testMathCalcProblems: section,
           });
           break;
-        case 'Writing':
+        case "Writing":
           this.setState({
             testWritingProblems: section,
           });
           break;
-        case 'Math (No Calculator)':
+        case "Math (No Calculator)":
           this.setState({
             testMathNoCalcProblems: section,
           });
           break;
-        case 'Reading':
+        case "Reading":
           this.setState({
             testReadingProblems: section,
           });
@@ -111,17 +115,17 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.setState({
       testSections: sections,
       studentTestId,
-    }, this.updateSectionStatus);
+    });
   };
 
   getComponentImages = () =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
       const imgDataList = [];
       const componentRefs = [
-        {id: 'readingAnswerSheetImg', state: 'reading'},
-        {id: 'writingAnswerSheetImg', state: 'writing'},
-        {id: 'mathNoCalcAnswerSheetImg', state: 'math (no calc)'},
-        {id: 'mathCalcAnswerSheetImg', state: 'math (calculator)'},
+        { id: "readingAnswerSheetImg", state: "reading" },
+        { id: "writingAnswerSheetImg", state: "writing" },
+        { id: "mathNoCalcAnswerSheetImg", state: "math (no calc)" },
+        { id: "mathCalcAnswerSheetImg", state: "math (calculator)" },
       ];
       const getImgListPromise = componentRefs.reduce(
         (accumulatorPromise, item) =>
@@ -138,25 +142,25 @@ class DetailTestAnswerSheetComplete extends React.Component {
       });
     });
 
-  getData = item =>
-    new Promise(resolve => {
-      this.setState({activeSlide: item.state}, async () => {
+  getData = (item) =>
+    new Promise((resolve) => {
+      this.setState({ activeSlide: item.state }, async () => {
         const currentImg = await this.onHandleTargetImage(item.id);
         resolve(currentImg);
       });
     });
 
-  onHandleTargetImage = async currentRef => {
-    const {getTargetImage} = this.props;
+  onHandleTargetImage = async (currentRef) => {
+    const { getTargetImage } = this.props;
     const currentImg = await getTargetImage(document.getElementById(currentRef));
     return currentImg;
   };
 
-  onSetActiveSlide = activeSlide => this.setState({activeSlide});
+  onSetActiveSlide = (activeSlide) => this.setState({ activeSlide });
 
   renderCurrentSlide = () => {
-    const {activeSlide} = this.state;
-    const {sections} = this.props;
+    const { activeSlide } = this.state;
+    const { sections } = this.props;
     if (sections) {
       const {
         testReadingProblems,
@@ -164,21 +168,51 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testMathCalcProblems,
         testMathNoCalcProblems,
       } = this.state;
-      if (activeSlide === 'reading') {
-        return testReadingProblems && <ReadingPage testSection={testReadingProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>;
-      }
-      if (activeSlide === 'writing') {
-        return testWritingProblems && <WritingPage testSection={testWritingProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>;
-      }
-      if (activeSlide === 'math (no calc)') {
-        return testMathNoCalcProblems && <MathNoCalcPage testSection={testMathNoCalcProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>;
-      }
-      if (activeSlide === 'math (calculator)') {
+      if (activeSlide === "reading") {
+        this.updateSectionStatus(activeSlide, testReadingProblems);
         return (
-          testMathCalcProblems && <MathCalculatorPage testSection={testMathCalcProblems} onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}/>
+          testReadingProblems && (
+            <ReadingPage
+              testSection={testReadingProblems}
+              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            />
+          )
         );
       }
-      if (activeSlide === 'essay') {
+      if (activeSlide === "writing") {
+        this.updateSectionStatus(activeSlide, testWritingProblems);
+        return (
+          testWritingProblems && (
+            <WritingPage
+              testSection={testWritingProblems}
+              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            />
+          )
+        );
+      }
+      if (activeSlide === "math (no calc)") {
+        this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
+        return (
+          testMathNoCalcProblems && (
+            <MathNoCalcPage
+              testSection={testMathNoCalcProblems}
+              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            />
+          )
+        );
+      }
+      if (activeSlide === "math (calculator)") {
+        this.updateSectionStatus(activeSlide, testMathCalcProblems);
+        return (
+          testMathCalcProblems && (
+            <MathCalculatorPage
+              testSection={testMathCalcProblems}
+              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            />
+          )
+        );
+      }
+      if (activeSlide === "essay") {
         return <EssayPage />;
       }
     } else {
@@ -187,7 +221,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer, student_test_id) => {
-    const {dispatchAddStudentAnswerToTest} = this.props;
+    const { dispatchAddStudentAnswerToTest } = this.props;
     const postBody = {
       student_test_id,
       test_problem_id,
@@ -196,67 +230,55 @@ class DetailTestAnswerSheetComplete extends React.Component {
     dispatchAddStudentAnswerToTest(postBody, student_test_id);
   };
 
-  updateSectionStatus = async () => {
-    let currentSection;
+  updateSectionStatus = async (activeSlide, currentSection) => {
+    if (!currentSection) return;
+    if (currentSection.test_section_status === "CREATED") {
+      if (!this.state.updatedSectionStatus[`${activeSlide}Section`]) {
+        const postBody = {
+          student_test_id: currentSection.student_test_id,
+          student_test_section_id: currentSection.id,
+          student_test_section_status: "STARTED",
+        };
+        await updateStudentTestSectionStatusApi(postBody);
+        this.setState({
+          updatedSectionStatus: {
+            ...this.state.updatedSectionStatus,
+            [`${activeSlide}Section`]: "STARTED",
+          },
+        });
+      }
+    }
+  };
+
+  getExistingSections = () => {
     const {
       testReadingProblems,
       testWritingProblems,
       testMathCalcProblems,
       testMathNoCalcProblems,
-      activeSlide
     } = this.state;
-    const {activeStudent} = this.props;
-    switch(activeSlide) {
-      case 'reading':
-        currentSection = testReadingProblems
-        break;
-      case 'writing':
-        currentSection = testWritingProblems
-      case "math (no calc)":
-        currentSection = testMathNoCalcProblems
-      case "math (calculator)":
-        currentSection = testMathCalcProblems
-      default:
-        break;
-    }
-    if (!currentSection) return;
-    // make API requset to check current status
-    const currentSectionStatus = await fetchStudentTestSectionsApi(activeStudent.id, currentSection.student_test_id);
-    console.log('log: currentSectionStatus', currentSectionStatus)
-    // const postBody = {
-    //   student_test_id: currentProblems.student_test_id,
-    //   student_test_section_id: test_section_id,
-    //   student_test_section_status: 'STARTED',
-    // };
-    // const response = await updateStudentTestSectionStatusApi(postBody);
-  }
-
-  getExistingSections = () => {
-    const { testReadingProblems, testWritingProblems, testMathCalcProblems, testMathNoCalcProblems } = this.state;
     return {
       reading: !!testReadingProblems,
       writing: !!testWritingProblems,
       mathCalc: !!testMathCalcProblems,
       mathNoCalc: !!testMathNoCalcProblems,
     };
-  }
+  };
 
   render() {
-    const {activeSlide} = this.state;
+    const { activeSlide } = this.state;
     return (
       <div className="card-main-full card">
         <div className="slick-tabs-gallery">
-          <AnswerSheetNavBar 
-            activeSlide={activeSlide} 
-            onSetActiveSlide={this.onSetActiveSlide} 
+          <AnswerSheetNavBar
+            activeSlide={activeSlide}
+            onSetActiveSlide={this.onSetActiveSlide}
             updateSectionStatus={this.updateSectionStatus}
             getExistingSections={this.getExistingSections()}
           />
         </div>
         <div className="card-content">
-          <div className="main-slick">
-            {this.renderCurrentSlide()}
-          </div>
+          <div className="main-slick">{this.renderCurrentSlide()}</div>
         </div>
       </div>
     );

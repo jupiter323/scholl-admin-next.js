@@ -4,18 +4,14 @@ import PropTypes from 'prop-types';
 const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide, updateSectionStatus, getExistingSections}) => {
   // Constants
   const {reading, writing, mathCalc, mathNoCalc} = getExistingSections;
-  const onChangeSlide = (slide) => {
-    onSetActiveSlide(slide);
-    updateSectionStatus();
-  }
-
+  
   // UseEffects
   useEffect(() => {
     console.log('log: getExistingSections from effect', getExistingSections)
-    if (reading) onSetActiveSlide('reading');
-    else if (writing) onSetActiveSlide('writing');
-    else if (mathNoCalc) onSetActiveSlide('math (no calc)');
-    else if (mathCalc) onSetActiveSlide('math (calculator)');
+    if (reading) return onSetActiveSlide('reading');
+    else if (writing) return onSetActiveSlide('writing');
+    else if (mathNoCalc) return onSetActiveSlide('math (no calc)');
+    else if (mathCalc) return onSetActiveSlide('math (calculator)');
   },[reading, writing, mathCalc, mathNoCalc]);
 
   return (
@@ -28,7 +24,7 @@ const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide, updateSectionStatus, 
         {reading && <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
            className={activeSlide === 'reading' ? 'active' : ''}
-           onClick={() => onChangeSlide('reading')}
+           onClick={() => onSetActiveSlide('reading')}
            href="#"
           >
             Reading
@@ -37,7 +33,7 @@ const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide, updateSectionStatus, 
         {writing && <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
            className={activeSlide === 'writing' ? 'active' : ''}
-           onClick={() => onChangeSlide('writing')}
+           onClick={() => onSetActiveSlide('writing')}
            href="#"
           >
             Writing
@@ -46,7 +42,7 @@ const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide, updateSectionStatus, 
         {mathNoCalc && <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
             className={activeSlide === 'math (no calc)' ? 'active' : ''}
-            onClick={() => onChangeSlide('math (no calc)')}
+            onClick={() => onSetActiveSlide('math (no calc)')}
             href="#"
           >
             Math <span className="block-sm">(no calc)</span>
@@ -55,7 +51,7 @@ const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide, updateSectionStatus, 
         {mathCalc && <div className="tab slide col 3" style={{padding: '0px 70px'}}>
           <a
             className={activeSlide === 'math (calculator)' ? 'active' : ''}
-            onClick={() => onChangeSlide('math (calculator)')}
+            onClick={() => onSetActiveSlide('math (calculator)')}
             href="#"
           >
             Math <span className="block-sm">(calculator)</span>
