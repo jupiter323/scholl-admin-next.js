@@ -30,8 +30,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testWritingProblems: null,
       testMathCalcProblems: null,
       testMathNoCalcProblems: null,
+      activeTestSection: null,
       updatedState: {
-        activeReadingSection: true,
+        activeReadingSection: false,
         showInCompleteTest: false,
         activeWritingSection: false,
         activeMathNoCalcSection: false,
@@ -87,34 +88,34 @@ class DetailTestAnswerSheetComplete extends React.Component {
       switch (currentTestSection.name) {
         case "Math (Calculator)":
           this.setState({
-            testMathCalcProblems: section,
+            testMathCalcProblems: section
           });
           break;
         case "Writing":
           this.setState({
-            testWritingProblems: section,
+            testWritingProblems: section
           });
           break;
         case "Math (No Calculator)":
           this.setState({
-            testMathNoCalcProblems: section,
+            testMathNoCalcProblems: section
           });
           break;
         case "Reading":
           this.setState({
-            testReadingProblems: section,
+            testReadingProblems: section
           });
           break;
         default:
           this.setState({
-            testReadingProblems: section,
+            testReadingProblems: section
           });
           break;
       }
     });
     this.setState({
       testSections: sections,
-      studentTestId,
+      studentTestId
     });
   };
 
@@ -156,7 +157,33 @@ class DetailTestAnswerSheetComplete extends React.Component {
     return currentImg;
   };
 
-  onSetActiveSlide = (activeSlide) => this.setState({ activeSlide });
+  onSetActiveSlide = (activeSlide) => {
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = this.state;
+    let currentSection;
+    switch (activeSlide) {
+      case 'reading':
+      currentSection = testReadingProblems
+      break;
+      case 'writing':
+      currentSection = testWritingProblems
+      break;
+      case 'math (no calc)':
+      currentSection = testMathNoCalcProblems
+      break;
+      case 'math (calculator)':
+      currentSection = testMathCalcProblems
+      break;
+      default:
+      currentSection = testReadingProblems
+      break;
+    }
+    this.setState({ activeSlide, activeTestSection: currentSection });
+  }
 
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
@@ -266,7 +293,14 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   render() {
-    const { activeSlide } = this.state;
+    const { 
+      activeSlide, 
+      activeTestSection, 
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems, 
+    } = this.state;
     return (
       <div className="card-main-full card">
         <div className="slick-tabs-gallery">
@@ -279,6 +313,17 @@ class DetailTestAnswerSheetComplete extends React.Component {
         </div>
         <div className="card-content">
           <div className="main-slick">{this.renderCurrentSlide()}</div>
+          <div className="row">
+            <div className="btn-holder right-align">
+              <a
+                href="#"
+                className="btn btn-xlarge waves-effect waves-light bg-blue"
+                onClick={() => this.props.handleTestScore(activeTestSection, {testReadingProblems, testWritingProblems, testMathNoCalcProblems, testMathCalcProblems})}
+              >
+                Score Test Section
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     );

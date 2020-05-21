@@ -7,7 +7,6 @@ const AnswerSheetNavBar = ({activeSlide, onSetActiveSlide, updateSectionStatus, 
   
   // UseEffects
   useEffect(() => {
-    console.log('log: getExistingSections from effect', getExistingSections)
     if (reading) return onSetActiveSlide('reading');
     else if (writing) return onSetActiveSlide('writing');
     else if (mathNoCalc) return onSetActiveSlide('math (no calc)');

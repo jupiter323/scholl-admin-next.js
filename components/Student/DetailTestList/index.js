@@ -68,9 +68,10 @@ class DetailTestList extends React.Component {
     this.onSetIsVisibleTopBar(false);
     this.setState(
       ({ openEditTestModal }) => ({
-        openEditTestModal: !openEditTestModal,
+        openEditTestModal: true,
         openEnterAnswerWrapper: false,
         activeTest,
+        activePage: 'scores'
       }),
       this.onCloseDropdown,
     );
@@ -307,6 +308,7 @@ class DetailTestList extends React.Component {
               onSaveTestChanges={this.onSaveTestChanges}
               onCloseEditTestModal={this.onCloseEditTestModal}
               activePage={this.state.activePage}
+              onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
             />
           </When>
           <When condition={openEnterAnswerWrapper}>

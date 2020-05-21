@@ -100,10 +100,10 @@ class BubbleGroup extends React.Component {
 
   mapEmptyBubbles = id => {
     const letters = ["A", "B", "C", "D"];
-    const {
-      problem: { student_answer }
-    } = this.props;
-    const {selectedIndex} = this.state;
+    // const {
+    //   problem: { student_answer, correct_answer }
+    // } = this.props;
+    // const {selectedIndex} = this.state;
     return letters.map((letter, index) => (
       <li 
         key={letter}
@@ -113,7 +113,7 @@ class BubbleGroup extends React.Component {
         <form>
           <label
             htmlFor={`${id}${letter}`}
-            style={student_answer || selectedIndex === index ? this.renderBubbleStyle(letter) : styles.plain}
+            style={this.renderBubbleStyle(letter)}
           >
             <span style={{ display: "block", marginTop: "2px", paddingLeft: "4.5px" }}>
               {letter}
@@ -129,7 +129,8 @@ class BubbleGroup extends React.Component {
       problem: { correct_answer, student_answer }
     } = this.props;
     const {selectedIndex, problemCells} = this.state;
-    const studentAnswer = student_answer || problemCells[selectedIndex].label
+    const selectedAnswer = problemCells[selectedIndex] ? problemCells[selectedIndex].label : null;
+    const studentAnswer = student_answer || selectedAnswer
     if (studentAnswer === letter && studentAnswer === correct_answer) {
       return styles.greenFilled;
     }

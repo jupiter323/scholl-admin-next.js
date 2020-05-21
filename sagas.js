@@ -1012,8 +1012,10 @@ function* watchForAddStudentAnswerToTest() {
 
 function* handleAddStudentAnswerToTest(action) {
   try {
-    console.log('log: ',action);
-    yield call(addStudentAnswerToTestApi, action.payload);
+    const response = yield call(addStudentAnswerToTestApi, action.payload);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleAddStudentAnswerToTest saga", response.message);
+    }
     yield put({
       type: UPDATE_STUDENT_TEST_ANSWER,
       sectionId: action.sectionId,

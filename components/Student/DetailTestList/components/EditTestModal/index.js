@@ -10,9 +10,10 @@ import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
-
-import { makeSelectStudentSections, makeSelectActiveStudentToken } from "../../../index/selectors";
+import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectTests } from "../../../index/selectors";
 import { fetchStudentTestSections } from "../../../index/actions";
+import {updateStudentTestSectionStatusApi, updateStudentTestStatusApi} from '../../../index/api';
+
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +47,10 @@ class EditTestModal extends React.Component {
       ],
       adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
       headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"],
+      readingSectionCompleted: false,
+      writingSectionCompleted: false,
+      mathNoCalcSectionCompleted: false,
+      mathCalcSectionCompleted: false,
     };
   }
 
@@ -54,6 +59,13 @@ class EditTestModal extends React.Component {
   }
   componentWillUnmount() {
     this.props.onRef(undefined);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {activePage} = nextProps;
+    if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
+      this.setState({activePage})
+    }
   }
 
   getBase64ImageFromURL = url => new Promise((resolve, reject) => {
@@ -249,6 +261,7 @@ class EditTestModal extends React.Component {
           testScoreDetails={test}
           getTargetImage={this.getTargetImage}
           onRef={ref => (this.AnswerSheetChild = ref)}
+          handleTestScore={this.handleTestScore}
         />
       );
     }
@@ -263,6 +276,94 @@ class EditTestModal extends React.Component {
       );
     }
     return null;
+  };
+
+  handleTestScore = async (activeTest, problemsByTest) => {
+    // Check for non-existing sections and set them to completed
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = problemsByTest;
+    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
+    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
+    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
+    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
+
+    // Update current section as completed
+    const {
+      tests,
+      test: { test_id },
+    } = this.props;
+    const currentTestSectionId = activeTest.test_section_id;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    const testSectionIds = currentTestSections.map((testSection) => testSection.id);
+    const currentTestSectionIndex = testSectionIds.findIndex(
+      (testSectionId) => testSectionId === currentTestSectionId,
+    );
+    const currentTestSection = currentTestSections[currentTestSectionIndex];
+    switch (currentTestSection.name) {
+      case "Math (Calculator)":
+        this.setState({
+          mathCalcSectionCompleted: true,
+        });
+        break;
+      case "Writing":
+        this.setState({
+          writingSectionCompleted: true,
+        });
+        break;
+      case "Math (No Calculator)":
+        this.setState({
+          mathNoCalcSectionCompleted: true,
+        });
+        break;
+      case "Reading":
+        this.setState({
+          readingSectionCompleted: true,
+        });
+        break;
+      default:
+        this.setState({
+          readingSectionCompleted: true,
+        });
+    }
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
+    const postBody = {
+      student_test_id: activeTest.student_test_id,
+      student_test_section_id: activeTest.id,
+      student_test_section_status: "COMPLETED",
+    };
+    await updateStudentTestSectionStatusApi(postBody);
+    const {
+      readingSectionCompleted,
+      writingSectionCompleted,
+      mathCalcSectionCompleted,
+      mathNoCalcSectionCompleted,
+    } = this.state;
+    if (
+      readingSectionCompleted &&
+        writingSectionCompleted &&
+        mathCalcSectionCompleted &&
+        mathNoCalcSectionCompleted
+    ) {
+      const postBody = {
+        student_test_id: activeTest.student_test_id,
+        status: "COMPLETED",
+      };
+      await updateStudentTestStatusApi(postBody);
+      // toast.success("All test sections have been COMPLETED.");
+      const { onOpentTestScore } = this.props;
+      onOpentTestScore(activeTest);
+    } else {
+      // toast.success("Test section is now COMPLETED.");
+    }
+    // }
+    // }
   };
 
   render() {
@@ -374,6 +475,7 @@ EditTestModal.propTypes = {
 const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
+  tests: makeSelectTests(),
 });
 function mapDispatchToProps(dispatch) {
   return {
