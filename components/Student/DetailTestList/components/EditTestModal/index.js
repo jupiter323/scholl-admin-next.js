@@ -256,7 +256,6 @@ class EditTestModal extends React.Component {
     if (activePage === "StrengthsAndWeaknesses") {
       return (
         <StrengthsAndWeaknesses
-          testScoreDetails={test.testScoreDetails}
           getTargetImage={this.getTargetImage}
           onRef={ref => (this.AnalysisChild = ref)}
         />
