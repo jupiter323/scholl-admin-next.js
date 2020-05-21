@@ -55,6 +55,7 @@ import {
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
   ADD_STUDENT_ANSWER_TO_TEST,
+  UPDATE_TEST_STATUS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -389,4 +390,9 @@ export const addStudentAnswerToTest = (payload, sectionId) => ({
   type: ADD_STUDENT_ANSWER_TO_TEST,
   payload,
   sectionId,
+})
+
+export const updateTestStaus = (payload) => ({
+  type: UPDATE_TEST_STATUS,
+  payload
 })

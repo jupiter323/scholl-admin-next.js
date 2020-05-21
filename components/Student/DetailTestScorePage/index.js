@@ -34,15 +34,6 @@ class DetailTestScorePage extends React.Component {
 
   render() {
     const {
-      test: {
-        totalScore,
-        totalPossible,
-        essayScores },
-      scores: {
-        subjects,
-        cross_test_score,
-        sub_section_score,
-      },
       activeStudent: {
         testScores: { subjectScores, initialScore,
           currentScore },

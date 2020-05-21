@@ -29,7 +29,8 @@ import {
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
-  addStudentAnswerToTestApi
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
 } from "./components/Student/index/api";
 
 import {
@@ -103,7 +104,8 @@ export const studentApi = {
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
   rescoreStudentLessonApi,
-  addStudentAnswerToTestApi
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
 };
 
 export const instructorApi = {

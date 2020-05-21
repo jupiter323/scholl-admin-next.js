@@ -43,6 +43,9 @@ import {
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
   UPDATE_STUDENT_TEST_ANSWER,
+  UPDATE_TEST_STATUS_SUCCESS,
+  REMOVE_TEST_FROM_ASSIGNED,
+  ADD_TEST_TO_COMPLETED,
 } from "./constants";
 
 const initialState = fromJS({
@@ -72,6 +75,7 @@ const initialState = fromJS({
   tests: [],
   activeStudent: null,
   testSectionProblems: [],
+  studentTests: []
 });
 
 function studentReducer(state = initialState, action) {
@@ -273,6 +277,21 @@ function studentReducer(state = initialState, action) {
         }
         return section;
       }));
+
+    case UPDATE_TEST_STATUS_SUCCESS:
+      return state.set('studentTests', state.get('studentTests').map(test => {
+        if (test.student_test_id === action.payload.student_test_id) {
+          return {...test, status: action.payload.status};
+        }
+        return test;
+      }))
+
+    case REMOVE_TEST_FROM_ASSIGNED:
+      return state.set('assignedStudentTests', state.get('assignedStudentTests').filter(test => test.student_test_id !== action.payload.student_test_id))
+    
+    case ADD_TEST_TO_COMPLETED:
+      // Grabs the test info from assignStudentTests and adds on completion date
+      return state.set('completedStudentTests', [...state.get('completedStudentTests'), {...state.get('assignedStudentTests').filter(test => test.student_test_id === action.payload.student_test_id)[0], completion_date: Date.now()}])
 
     default:
       return state;

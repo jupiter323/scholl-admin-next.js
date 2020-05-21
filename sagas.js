@@ -48,7 +48,11 @@ import {
   UPDATE_TEST_FLAG,
   REMOVE_TEST,
   ADD_STUDENT_ANSWER_TO_TEST,
-  UPDATE_STUDENT_TEST_ANSWER
+  UPDATE_STUDENT_TEST_ANSWER,
+  UPDATE_TEST_STATUS,
+  UPDATE_TEST_STATUS_SUCCESS,
+  ADD_TEST_TO_COMPLETED,
+  REMOVE_TEST_FROM_ASSIGNED,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -129,7 +133,8 @@ const {
   deleteStudentTestApi,
   fetchStudentTestSectionProblemsApi,
   updateStudentTestQuestionFlagStatusApi,
-  addStudentAnswerToTestApi
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1026,6 +1031,37 @@ function* handleAddStudentAnswerToTest(action) {
   }
 }
 
+function* watchForUpdateTestStatus() {
+  yield takeEvery(UPDATE_TEST_STATUS, handleUpdateTestStatus);
+}
+
+function* handleUpdateTestStatus(action) {
+  try {
+    const response = yield call(updateStudentTestStatusApi, action.payload);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
+    }
+    console.log('log: action', action);
+    console.log('log: response', response);
+    yield put({
+      type: UPDATE_TEST_STATUS_SUCCESS,
+      payload: action.payload,
+    })
+    if (action.payload.status === "COMPLETED") {
+      yield put({
+        type: ADD_TEST_TO_COMPLETED,
+        payload: action.payload
+      })
+      yield put({
+        type: REMOVE_TEST_FROM_ASSIGNED,
+        payload: action.payload,
+      })
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateTestStatus saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1078,5 +1114,6 @@ export default function* defaultSaga() {
     watchForDeleteStudentTest(),
     watchForUpdateTestFlagStatus(),
     watchForAddStudentAnswerToTest(),
+    watchForUpdateTestStatus(),
   ]);
 }

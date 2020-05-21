@@ -11,7 +11,7 @@ import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplet
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectTests, makeSelectAssignedStudentTests, makeSelectActiveStudent } from "../../../index/selectors";
-import { fetchStudentTestSections, setStudentAssignedTests, setStudentCompletedTests } from "../../../index/actions";
+import { fetchStudentTestSections, setStudentAssignedTests, setStudentCompletedTests, updateTestStaus } from "../../../index/actions";
 import {updateStudentTestSectionStatusApi, updateStudentTestStatusApi, fetchTestsByStudentIdApi } from '../../../index/api';
 
 class EditTestModal extends React.Component {
@@ -388,23 +388,10 @@ class EditTestModal extends React.Component {
         student_test_id: activeTest.student_test_id,
         status: "COMPLETED",
       };
-      await updateStudentTestStatusApi(postBody);
-      const {onOpentTestScore} = this.props;
-      // toast.success("All test sections have been COMPLETED.");
-      // const { onOpentTestScore, activeStudent: { id }, assignedTests, onSetAssignedTests, onSetCompletedTests} = this.props;
+      // await updateStudentTestStatusApi(postBody);
+      const {onOpentTestScore, onUpdateTestStatus} = this.props;
+      onUpdateTestStatus(postBody)
       onOpentTestScore(activeTest);
-      // const { data } = await fetchTestsByStudentIdApi(id);
-      // const completedTests = data.filter(test => test.status === "COMPLETED");
-      // if (completedTests) {
-      //   const completedItem = completedTests.filter(assigned => assignedTests.find(item => item.test_id === assigned.test_id));
-      //   if (completedItem) {
-      //     const updatedTests = assignedTests.filter(completed => completed.test_id !== completedItem[0].test_id);
-      //     onSetAssignedTests(updatedTests);
-      //   }
-      // }
-      // onSetCompletedTests(completedTests);
-    } else {
-      // toast.success("Test section is now COMPLETED.");
     }
     // }
     // }
@@ -529,6 +516,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
+    onUpdateTestStatus: (payload) => dispatch(updateTestStaus(payload)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
