@@ -27,6 +27,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const {activeTestScores: {categories}} = this.props;
     if (categories && categories.length !== 0) {
       categories.map(category => {
+        console.log('name:', category.name);
         switch (category.name) {
           case 'Writing':
             this.setState({
@@ -100,7 +101,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const {activeSlide, readingScores, mathScores, writingScores} = this.state;
-    console.log('readingScores:', readingScores);
+    console.log('writingScores:', writingScores);
     if (activeSlide === 'reading' && readingScores) {
       return <ReadingPage scores={readingScores} />;
     }
