@@ -14,6 +14,8 @@ import {
   makeSelectActiveStudentToken,
   makeSelectActiveStudent,
   makeSelectTests,
+  makeSelectActiveStudentTestId,
+  makeSelectActiveTestScores
 } from '../index/selectors';
 import {fetchStudentTestSections} from '../index/actions';
 
@@ -157,7 +159,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const {activeSlide} = this.state;
-    const {sections} = this.props;
+    const {sections, activeStudentTestId, activeTestScores} = this.props;
     if (sections) {
       const {
         testReadingProblems,
@@ -180,7 +182,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         );
       }
       if (activeSlide === 'essay') {
-        return <EssayPage />;
+        return <EssayPage testId={activeStudentTestId} testScores={activeTestScores} />;
       }
     } else {
       return null;
@@ -213,6 +215,8 @@ const mapStateToProps = createStructuredSelector({
   studentToken: makeSelectActiveStudentToken(),
   activeStudent: makeSelectActiveStudent(),
   tests: makeSelectTests(),
+  activeStudentTestId: makeSelectActiveStudentTestId(),
+  activeTestScores: makeSelectActiveTestScores(),
 });
 function mapDispatchToProps(dispatch) {
   return {
