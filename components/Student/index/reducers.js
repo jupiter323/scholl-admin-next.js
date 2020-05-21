@@ -42,6 +42,7 @@ import {
   REMOVE_TEST,
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
+  UPDATE_STUDENT_TEST_ANSWER,
 } from "./constants";
 
 const initialState = fromJS({
@@ -259,6 +260,19 @@ function studentReducer(state = initialState, action) {
 
     case ADD_NEW_TEST_TO_STUDENT_TESTS:
       return state.set("studentTests", [...state.get('studentTests'), action.newTest]);
+
+    case UPDATE_STUDENT_TEST_ANSWER:
+      return state.set('sections', state.get('sections').map(section => {
+        if (section.test_section_id === action.sectionId) {
+          section.problems.problems.map(problem => {
+            if (problem.id === action.payload.test_problem_id) {
+              problem.student_answer = action.payload.answer;
+              return problem
+            }
+          });
+        }
+        return section;
+      }));
 
     default:
       return state;

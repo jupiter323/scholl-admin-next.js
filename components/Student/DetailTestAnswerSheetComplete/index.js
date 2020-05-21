@@ -220,14 +220,14 @@ class DetailTestAnswerSheetComplete extends React.Component {
     }
   };
 
-  onAddStudentAnswerToTest = async (test_problem_id, answer, student_test_id) => {
+  onAddStudentAnswerToTest = async (problem, answer, student_test_id) => {
     const { dispatchAddStudentAnswerToTest } = this.props;
     const postBody = {
       student_test_id,
-      test_problem_id,
+      test_problem_id: problem.id,
       answer,
     };
-    dispatchAddStudentAnswerToTest(postBody, student_test_id);
+    dispatchAddStudentAnswerToTest(postBody, problem.test_section_id);
   };
 
   updateSectionStatus = async (activeSlide, currentSection) => {

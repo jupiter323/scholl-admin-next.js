@@ -95,7 +95,7 @@ class BubbleGroup extends React.Component {
     const { onAddStudentAnswerToTest, problem, testSection } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const { label } = this.state.problemCells[index];
-    onAddStudentAnswerToTest(problem.id, label, testSection.student_test_id);
+    onAddStudentAnswerToTest(problem, label, testSection.student_test_id);
   };
 
   mapEmptyBubbles = id => {

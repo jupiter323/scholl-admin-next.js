@@ -47,7 +47,8 @@ import {
   DELETE_STUDENT_TEST,
   UPDATE_TEST_FLAG,
   REMOVE_TEST,
-  ADD_STUDENT_ANSWER_TO_TEST 
+  ADD_STUDENT_ANSWER_TO_TEST,
+  UPDATE_STUDENT_TEST_ANSWER
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1011,8 +1012,13 @@ function* watchForAddStudentAnswerToTest() {
 
 function* handleAddStudentAnswerToTest(action) {
   try {
-    console.log(action.payload);
+    console.log('log: ',action);
     yield call(addStudentAnswerToTestApi, action.payload);
+    yield put({
+      type: UPDATE_STUDENT_TEST_ANSWER,
+      sectionId: action.sectionId,
+      payload: action.payload,
+    })
   } catch (error) {
     console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
   }
