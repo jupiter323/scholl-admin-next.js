@@ -1,6 +1,8 @@
 import React from 'react';
 import GroupRow from './GroupRow';
 
+import {getScoreStatus} from '../common/GetScoreStatus';
+
 class SubBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -15,13 +17,14 @@ class SubBlock extends React.Component {
   };
 
   renderSubBlock = data => {
+    console.log("OK:",getScoreStatus(data.score.percent_correct * 100))
     return (
       <React.Fragment>
         <div className="graph-row-block">
           <div className="graph-row graph-row-subtitle">
             <div className="graph-col text-column">
               <strong className="graph-subtitle">
-                <span className="badge-rounded-sm light-green lighten-1 darken-2 badge white-text">
+                <span className={getScoreStatus(data.score.percent_correct * 100)}>
                   {data.score.percent_correct * 100}%
                 </span>
                 {data.name}
