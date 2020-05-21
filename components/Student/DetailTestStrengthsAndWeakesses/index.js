@@ -27,7 +27,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const {activeTestScores: {categories}} = this.props;
     if (categories && categories.length !== 0) {
       categories.map(category => {
-        console.log('name:', category.name);
         switch (category.name) {
           case 'Writing':
             this.setState({
@@ -101,7 +100,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const {activeSlide, readingScores, mathScores, writingScores} = this.state;
-    console.log('writingScores:', writingScores);
     if (activeSlide === 'reading' && readingScores) {
       return <ReadingPage scores={readingScores} />;
     }
@@ -115,10 +113,14 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   render() {
-    const {activeSlide} = this.state;
+    const {activeSlide, readingScores, mathScores, writingScores} = this.state;
     return (
       <React.Fragment>
-        <SubjectsCard />
+        <SubjectsCard
+          readingScores={readingScores}
+          writingScores={writingScores}
+          mathScores={mathScores}
+        />
         <div className="card-block">
           <h2>Details</h2>
           <div className="card-main-full card">
