@@ -10,9 +10,9 @@ import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
-import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectTests } from "../../../index/selectors";
-import { fetchStudentTestSections } from "../../../index/actions";
-import {updateStudentTestSectionStatusApi, updateStudentTestStatusApi} from '../../../index/api';
+import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectTests, makeSelectAssignedStudentTests, makeSelectActiveStudent } from "../../../index/selectors";
+import { fetchStudentTestSections, setStudentAssignedTests, setStudentCompletedTests } from "../../../index/actions";
+import {updateStudentTestSectionStatusApi, updateStudentTestStatusApi, fetchTestsByStudentIdApi } from '../../../index/api';
 
 class EditTestModal extends React.Component {
   constructor(props) {
@@ -62,9 +62,37 @@ class EditTestModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {activePage} = nextProps;
+    const {activePage, sections} = nextProps;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
       this.setState({activePage})
+    }
+    if (sections.length !== 0) {
+      const {
+        tests,
+        test,
+        test: {test_id}
+      } = this.props;
+      sections.map(section => {
+        if (section.test_section_status === 'COMPLETED') {
+        const testIds = tests.map((test) => test.id);
+        const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+        const currentTestSections = tests[currentTestIndex].test_sections;
+        const testSectionIndex = currentTestSections.findIndex(testSection => testSection.id === section.test_section_id);
+        const sectionType = currentTestSections[testSectionIndex].name
+        switch (sectionType) {
+          case "Reading":
+            return this.setState({ readingSectionCompleted: true });
+          case "Writing":
+            return this.setState({ writingSectionCompleted: true });
+          case "Math (Calculator)":
+            return this.setState({ mathCalcSectionCompleted: true });
+          case "Math (No Calculator)":
+            return this.setState({ mathNoCalcSectionCompleted: true });
+          default:
+            return;
+        }
+      }
+      })
     }
   }
 
@@ -256,12 +284,17 @@ class EditTestModal extends React.Component {
       );
     }
     if (activePage === "answerSheet") {
+      const {readingSectionCompleted,
+        writingSectionCompleted,
+        mathNoCalcSectionCompleted,
+        mathCalcSectionCompleted} = this.state;
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test}
           getTargetImage={this.getTargetImage}
           onRef={ref => (this.AnswerSheetChild = ref)}
           handleTestScore={this.handleTestScore}
+          completedSections={{readingSectionCompleted, writingSectionCompleted, mathNoCalcSectionCompleted, mathCalcSectionCompleted}}
         />
       );
     }
@@ -356,9 +389,20 @@ class EditTestModal extends React.Component {
         status: "COMPLETED",
       };
       await updateStudentTestStatusApi(postBody);
+      const {onOpentTestScore} = this.props;
       // toast.success("All test sections have been COMPLETED.");
-      const { onOpentTestScore } = this.props;
+      // const { onOpentTestScore, activeStudent: { id }, assignedTests, onSetAssignedTests, onSetCompletedTests} = this.props;
       onOpentTestScore(activeTest);
+      // const { data } = await fetchTestsByStudentIdApi(id);
+      // const completedTests = data.filter(test => test.status === "COMPLETED");
+      // if (completedTests) {
+      //   const completedItem = completedTests.filter(assigned => assignedTests.find(item => item.test_id === assigned.test_id));
+      //   if (completedItem) {
+      //     const updatedTests = assignedTests.filter(completed => completed.test_id !== completedItem[0].test_id);
+      //     onSetAssignedTests(updatedTests);
+      //   }
+      // }
+      // onSetCompletedTests(completedTests);
     } else {
       // toast.success("Test section is now COMPLETED.");
     }
@@ -369,10 +413,11 @@ class EditTestModal extends React.Component {
   render() {
     const { test, user, onCloseEditTestModal } = this.props;
     const { activePage, enablePublish } = this.state;
-    const { title, version: testVersion, test_name } = test;
+    const { title, test_name } = test;
     const {
       studentInformation: { firstName, lastName },
     } = user;
+    const completedTest = test.status === "COMPLETED"
     return (
       <div className="wrapper">
         <div
@@ -419,7 +464,7 @@ class EditTestModal extends React.Component {
           <div className="nav-header white">
             <div className="nav-additional">
               <ul className="menu-additional">
-                <li className="col s3">
+                {completedTest && <li className="col s3">
                   <a
                     className={activePage === "scores" ? "active" : ""}
                     onClick={() => enablePublish && this.onSetActivePage("scores")}
@@ -427,7 +472,7 @@ class EditTestModal extends React.Component {
                   >
                     Scores
                   </a>
-                </li>
+                </li>}
                 <li className="col s3">
                   <a
                     className={activePage === "answerSheet" ? "active" : ""}
@@ -437,7 +482,7 @@ class EditTestModal extends React.Component {
                     Answer Sheet
                   </a>
                 </li>
-                <li className="col s3">
+                {completedTest && <li className="col s3">
                   <a
                     className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
                     onClick={() => enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")}
@@ -445,13 +490,13 @@ class EditTestModal extends React.Component {
                   >
                     Strengths &amp; Weaknesses
                   </a>
-                </li>
-                <li className="menu-special col s3">
+                </li>}
+                {completedTest && <li className="menu-special col s3">
                   <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
                     Download Score Report
                     <i className="icon-download-file"></i>
                   </a>
-                </li>
+                </li>}
               </ul>
             </div>
           </div>
@@ -476,10 +521,14 @@ const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
   tests: makeSelectTests(),
+  assignedTests: makeSelectAssignedStudentTests(),
+  activeStudent: makeSelectActiveStudent(),
 });
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
+    onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
+    onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

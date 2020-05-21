@@ -301,6 +301,28 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems, 
     } = this.state;
+    const {completedSections} = this.props;
+    let showSectionMessage = false; 
+    switch(activeSlide) {
+      case 'reading':
+        if (completedSections.readingSectionCompleted) {
+          showSectionMessage = true;
+        }
+        case 'writing':
+        if (completedSections.writingSectionCompleted) {
+          showSectionMessage = true;
+        }
+        case 'math (no calc)':
+        if (completedSections.mathNoCalcSectionCompleted) {
+          showSectionMessage = true;
+        }
+        case 'math (calculator)':
+        if (completedSections.mathCalcSectionCompleted) {
+          showSectionMessage = true;
+        }
+        default:
+          break;
+    }
     return (
       <div className="card-main-full card">
         <div className="slick-tabs-gallery">
@@ -312,6 +334,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
           />
         </div>
         <div className="card-content">
+          {showSectionMessage && <p
+          style={{
+            "color": 'white',
+            "backgroundColor": '#28a745',
+            "fontSize": "16px"
+          }} 
+          className="center-align">This test section is completed.</p>}
           <div className="main-slick">{this.renderCurrentSlide()}</div>
           <div className="row">
             <div className="btn-holder right-align">
