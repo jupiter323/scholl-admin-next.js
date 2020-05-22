@@ -5,7 +5,7 @@ import {Doughnut} from 'react-chartjs-2';
 const data = (totalScore, totalPossible) => ({
   datasets: [
     {
-      data: [totalPossible, totalPossible - totalScore],
+      data: [totalScore, totalPossible - totalScore],
       backgroundColor: ['#32b9ec', 'rgb(234, 234, 234)'],
     },
   ],

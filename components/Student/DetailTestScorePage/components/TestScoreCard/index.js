@@ -5,7 +5,7 @@ import {Doughnut} from 'react-chartjs-2';
 const readingData = (totalScore, totalPossible) => ({
   datasets: [
     {
-      data: [totalPossible, totalPossible - totalScore],
+      data: [totalScore, totalPossible - totalScore],
       backgroundColor: ['#32A6AF', 'rgb(234, 234, 234)'],
     },
   ],
@@ -13,7 +13,7 @@ const readingData = (totalScore, totalPossible) => ({
 const writingData = (totalScore, totalPossible) => ({
   datasets: [
     {
-      data: [totalPossible, totalPossible - totalScore],
+      data: [totalScore, totalPossible - totalScore],
       backgroundColor: ['#3b9f85', 'rgb(234, 234, 234)'],
     },
   ],
@@ -21,7 +21,7 @@ const writingData = (totalScore, totalPossible) => ({
 const mathData = (totalScore, totalPossible) => ({
   datasets: [
     {
-      data: [totalPossible, totalPossible - totalScore],
+      data: [totalScore, totalPossible - totalScore],
       backgroundColor: ['#567EBF', 'rgb(234, 234, 234)'],
     },
   ],
@@ -80,7 +80,7 @@ class TestScoreCard extends React.Component {
                   {readingScores &&
                     <div className="chart-block chart-block-182">
                       <Doughnut
-                        data={() => readingData(readingScores.current_score, 100)}
+                        data={() => readingData(readingScores.current_score, 40)}
                         width={182}
                         height={182}
                         options={{
@@ -102,7 +102,7 @@ class TestScoreCard extends React.Component {
                   {writingScores &&
                     <div className="chart-block chart-block-182">
                       <Doughnut
-                        data={() => writingData(writingScores.current_score, 100)}
+                        data={() => writingData(writingScores.current_score, 40)}
                         width={182}
                         height={182}
                         options={{
@@ -124,7 +124,7 @@ class TestScoreCard extends React.Component {
                   {mathScores &&
                     <div className="chart-block chart-block-182">
                       <Doughnut
-                        data={() => mathData(mathScores.current_score, 100)}
+                        data={() => mathData(mathScores.current_score, 40)}
                         width={182}
                         height={182}
                         options={{
