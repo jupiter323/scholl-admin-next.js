@@ -1,7 +1,9 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import sampleEssayScores from '../../utils/sampleEssayScores';
+import { updateStudentEssayScoreApi } from '../../../index/api';
 
 
 class EssayPage extends React.Component {
@@ -13,6 +15,66 @@ class EssayPage extends React.Component {
       writingScore: "",
     }
   }
+
+  static getDerivedStateFromProps(props, state) {
+    const { readingScore, writingScore, analysisScore} = state
+    if(props.testScores.essay){
+      const { reading, writing, analysis } = props.testScores.essay
+      if ( !readingScore && !writingScore && !analysisScore) {
+      return {
+        readingScore: reading,
+        analysisScore: writing,
+        writingScore: analysis,
+      };
+    }
+    return null;
+    }
+  }
+
+  onSubmitScores = async () => {
+    const { readingScore, writingScore, analysisScore } = this.state
+    const { testId, setEssayScore, testScores : {essay: { reading, writing, analysis } } } = this.props
+    if ( readingScore && writingScore && analysisScore && testId){
+      if( readingScore === reading && writingScore === writing && analysisScore === analysis){
+        toast.warning(`No scoring changes were made, to score again change scores`, {
+          className: 'update-error',
+          progressClassName: 'progress-bar-error',
+        });
+      } else {
+        const scores = {
+          student_test_id: testId,
+          score:{
+            reading: readingScore,
+            analysis: analysisScore,
+            writing: writingScore
+          }
+        };
+        const response = await updateStudentEssayScoreApi(scores);
+        const essay = {
+          reading: readingScore,
+          analysis: analysisScore,
+          writing: writingScore
+        }
+        setEssayScore(essay);
+        if(response.ok){
+          toast.success(`All scores has been successfully saved!`, {
+            className: 'update-success',
+            progressClassName: 'progress-bar-success',
+          });
+        }else{
+          toast.error(`There was an error saving the scores`, {
+            className: 'update-error',
+            progressClassName: 'progress-bar-error',
+          });
+        }
+      }
+    } else {
+      toast.warning(`All three essay scores are required for scoring`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
+  };
 
   onSetReadingScore = (readingScore) => this.setState({readingScore});
   onSetAnalysisScore= (analysisScore) => this.setState({analysisScore});
@@ -190,6 +252,17 @@ class EssayPage extends React.Component {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="btn-holder right-align">
+              <a
+                href="#"
+                className="btn btn-xlarge waves-effect waves-light bg-blue"
+                onClick={() => this.onSubmitScores()}
+              >
+                Score Essay
+              </a>
             </div>
           </div>
         </div>

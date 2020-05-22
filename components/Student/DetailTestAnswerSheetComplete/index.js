@@ -14,9 +14,12 @@ import {
   makeSelectActiveStudentToken,
   makeSelectActiveStudent,
   makeSelectTests,
+  makeSelectActiveStudentTestId,
+  makeSelectActiveTestScores
 } from '../index/selectors';
-import { fetchStudentTestSections, addStudentAnswerToTest } from '../index/actions';
-import { updateStudentTestSectionStatusApi } from '../index/api';
+
+import {fetchStudentTestSections, addStudentAnswerToTest, setEssayScore} from '../index/actions';
+import {updateStudentTestSectionStatusApi} from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -188,8 +191,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 
   renderCurrentSlide = () => {
-    const { activeSlide } = this.state;
-    const { sections } = this.props;
+    const {activeSlide} = this.state;
+    const {sections, activeStudentTestId, activeTestScores, onSetEssayScore} = this.props;
     if (sections) {
       const {
         testReadingProblems,
@@ -241,8 +244,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
           )
         );
       }
-      if (activeSlide === "essay") {
-        return <EssayPage />;
+      if (activeSlide === 'essay') {
+        return <EssayPage testId={activeStudentTestId} testScores={activeTestScores} setEssayScore={onSetEssayScore}/>;
       }
     } else {
       return null;
@@ -350,7 +353,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
             className="center-align"
           >This test section is complete.</p>}
           <div className="main-slick">{this.renderCurrentSlide()}</div>
-          <div className="row">
+          {activeSlide !== "essay" && (
+            <div className="row">
             <div className="btn-holder right-align">
               <a
                 href="#"
@@ -360,7 +364,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 Score Test Section
               </a>
             </div>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -376,11 +381,14 @@ const mapStateToProps = createStructuredSelector({
   studentToken: makeSelectActiveStudentToken(),
   activeStudent: makeSelectActiveStudent(),
   tests: makeSelectTests(),
+  activeStudentTestId: makeSelectActiveStudentTestId(),
+  activeTestScores: makeSelectActiveTestScores(),
 });
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
-    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId)),
+    onSetEssayScore: (score) => dispatch(setEssayScore(score)),
+    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId))
   };
 }
 

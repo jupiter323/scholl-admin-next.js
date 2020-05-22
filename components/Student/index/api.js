@@ -465,6 +465,10 @@ export const fetchStudentTestScoreApi = (student_id, student_test_id) =>
     .then(res => res.json())
     .then(({ data }) => {
       const formattedTestScores = data;
+      if (!formattedTestScores.essay) {
+        formattedTestScores.essay = { analysis: "", reading: "", writing: "" };
+        return formattedTestScores;
+      }
       return { formattedTestScores };
     })
     .catch(err => err);
@@ -773,3 +777,17 @@ export const deleteStudentTestApi = (body) =>
   })
     .then((res) => res)
     .catch((err) => err);
+
+export const updateStudentEssayScoreApi = (scores) =>
+  fetch(`${API_URL}/api/commands/update-student-test-essay-score`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(scores),
+  })
+    .then(res => res)
+    .catch(err => err);

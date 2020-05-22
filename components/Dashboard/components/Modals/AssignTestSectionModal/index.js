@@ -119,7 +119,7 @@ class AssignTestSectionModal extends React.Component {
       student_id: id,
       test_id: uuidGenerator(),
       assignment_date: moment(unformattedAssignDate).format("YYYY-MM-DD"),
-      due_date: moment(unformattedDueDate).format("YYYY-MM-DD")
+      due_date: moment(unformattedDueDate).format("YYYY-MM-DD"),
     };
     assignTestToStudentApi(postBody);
   };
