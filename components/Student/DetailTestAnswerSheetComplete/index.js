@@ -344,7 +344,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
           }} 
           className="center-align">This test section is complete.</p>}
           <div className="main-slick">{this.renderCurrentSlide()}</div>
-          <div className="row">
+          {activeSlide !== "essay" && (
+            <div className="row">
             <div className="btn-holder right-align">
               <a
                 href="#"
@@ -354,7 +355,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 Score Test Section
               </a>
             </div>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     );
