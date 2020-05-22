@@ -345,7 +345,8 @@ class NewTestModal extends React.Component {
                                     </label>
                                   </p>
                                 </div>
-                                <div className="col s12">
+                                {/* @TODO this is taken out for now */}
+                                {/* <div className="col s12">
                                   <p>
                                     <label>
                                       <input
@@ -366,7 +367,7 @@ class NewTestModal extends React.Component {
                                       </span>
                                     </label>
                                   </p>
-                                </div>
+                                </div> */}
                                 <div className="col s12">
                                   <p>
                                     <label>

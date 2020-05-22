@@ -172,6 +172,7 @@ class DetailTestList extends React.Component {
         dropdownIsOpen={dropdownIsOpen}
         onTestFlagReviewed={this.onTestFlagReviewed}
         onDeleteTest={this.onDeleteTest}
+        handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
       />),
     );
   };
