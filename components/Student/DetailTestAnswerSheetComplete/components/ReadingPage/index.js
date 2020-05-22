@@ -4,11 +4,11 @@ import AnswerRow from '../WritingPage/components/AnswerRow';
 
 class ReadingPage extends React.Component {
   mapAnswers = () => {
-    const {testSection: {problems: problemsSection}} = this.props;
+    const {testSection: {problems: problemsSection}, testSection} = this.props;
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>
-        <AnswerRow key={problem.test_problem_id} problem={problem} />
+        <AnswerRow key={problem.test_problem_id} testSection={testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} problem={problem} />
       )
     );
   };
