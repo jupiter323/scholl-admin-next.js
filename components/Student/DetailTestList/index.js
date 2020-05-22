@@ -45,6 +45,7 @@ class DetailTestList extends React.Component {
     super(props);
     this.state = {
       activeTest: {},
+      activePage: "scores",
       dropdownIndex: null,
       dropdownIsOpen: false,
       openEditTestModal: false,
@@ -61,15 +62,18 @@ class DetailTestList extends React.Component {
     }
   };
 
-  onToggleEditTestModal = async (activeTest = null) => {
+  onSetActiveTestComplete = () => this.setState({ activeTest: { ...this.state.activeTest, status: "COMPLETED" } })
+
+  onToggleEditTestModal = async (activeTest) => {
     const { onSetActiveStudentTestId } = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
     this.setState(
       ({ openEditTestModal }) => ({
-        openEditTestModal: !openEditTestModal,
+        openEditTestModal: true,
         openEnterAnswerWrapper: false,
         activeTest,
+        activePage: 'scores',
       }),
       this.onCloseDropdown,
     );
@@ -111,7 +115,8 @@ class DetailTestList extends React.Component {
       };
       await updateStudentTestStatusApi(postBody);
     }
-    this.setState({ openEnterAnswerWrapper: true, activeTest });
+    // this.setState({ openEnterAnswerWrapper: true, activeTest });
+    this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
   onDownloadReport = activeTest => {
@@ -156,7 +161,7 @@ class DetailTestList extends React.Component {
         index={`completed${index}`}
         key={`completed-${index}`}
         onEnterAnswers={this.onEnterAnswers}
-        onEditTest={() => this.onToggleEditTestModal(test)}
+        onEditTest={() => this.onToggleEditTestModal({ ...test, status: 'COMPLETED' })}
         onSetDropdown={this.onSetDropdown}
         onCloseDropdown={this.onCloseDropdown}
         onDownloadReport={this.onDownloadReport}
@@ -247,6 +252,7 @@ class DetailTestList extends React.Component {
       assignment_date: Moment(test.assignDate).format('YYYY-MM-DD'),
       due_date: Moment(test.dueDate).format('YYYY-MM-DD'),
       test_section_ids: test_sections.map(testSection => testSection.id),
+      is_timed: test.isTimed,
     };
     const { student_test_id } = await assignTestToStudentApi(postBody);
     if (student_test_id) {
@@ -304,16 +310,18 @@ class DetailTestList extends React.Component {
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
               onCloseEditTestModal={this.onCloseEditTestModal}
+              activePage={this.state.activePage}
+              onOpentTestScore={this.onToggleEditTestModal}
             />
           </When>
           <When condition={openEnterAnswerWrapper}>
-            <EnterAnswerWrapper
+            {/* <EnterAnswerWrapper
               open={openEnterAnswerWrapper}
               onCloaseAnswerWrapper={this.onCloaseAnswerWrapper}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               test={activeTest}
               onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
-            />
+            /> */}
           </When>
           <When condition={opentTestSettingModal}>
             <TestSettingModal

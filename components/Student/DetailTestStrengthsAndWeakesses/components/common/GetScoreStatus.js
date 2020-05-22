@@ -11,6 +11,5 @@ export const getScoreStatus = score => {
   } else {
     scoreStyle = 'badge-rounded-sm red darken-5 badge white-text';
   }
-  console.log('scoreStyle:', scoreStyle);
   return scoreStyle;
 };
