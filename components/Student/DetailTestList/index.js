@@ -33,6 +33,7 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectStudentTests,
   makeSelectTests,
+  makeSelectActiveStudent,
 } from '../index/selectors';
 import {
   assignTestToStudentApi,
@@ -56,8 +57,10 @@ class DetailTestList extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { onFetchStudentTests, overdues, completes, assigneds, user } = this.props;
-    if (overdues.length === 0 && completes.length === 0 && assigneds.length === 0) {
+    const { onFetchStudentTests, studentTests, activeStudent, user } = this.props;
+    if (studentTests.length === 0) {
+      onFetchStudentTests(user);
+    } else if (studentTests.length > 0 && studentTests[0].student_id !== activeStudent.id) {
       onFetchStudentTests(user);
     }
   };
@@ -169,6 +172,7 @@ class DetailTestList extends React.Component {
         dropdownIsOpen={dropdownIsOpen}
         onTestFlagReviewed={this.onTestFlagReviewed}
         onDeleteTest={this.onDeleteTest}
+        handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
       />),
     );
   };
@@ -224,9 +228,15 @@ class DetailTestList extends React.Component {
   };
 
   onSaveNewTest = async test => {
+    const { tests } = this.props;
+    if (!this.props.activeStudent.active && tests.length >= 1) {
+      return toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
     this.onCloseTestModal();
     const test_sections = [];
-    const { tests } = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test.version);
     const currentTest = tests[currentTestIndex];
@@ -246,6 +256,12 @@ class DetailTestList extends React.Component {
         test_sections.push(testSection);
       }
     });
+    if (test_sections.length === 0) {
+      return toast.error(`Cannot assign a test without selecting one or more sections.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
     const postBody = {
       student_id: id,
       test_id: test.version,
@@ -391,6 +407,7 @@ const mapStateToProps = createStructuredSelector({
   overdues: makeSelectOverDueStudentTests(),
   studentTests: makeSelectStudentTests(),
   tests: makeSelectTests(),
+  activeStudent: makeSelectActiveStudent(),
 });
 
 function mapDispatchToProps(dispatch) {
