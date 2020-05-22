@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {createStructuredSelector} from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import AnswerSheetNavBar from './components/AnswerSheetNavBar';
 import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
@@ -15,8 +15,8 @@ import {
   makeSelectActiveStudent,
   makeSelectTests,
 } from '../index/selectors';
-import {fetchStudentTestSections, addStudentAnswerToTest} from '../index/actions';
-import {updateStudentTestSectionStatusApi} from '../index/api';
+import { fetchStudentTestSections, addStudentAnswerToTest } from '../index/actions';
+import { updateStudentTestSectionStatusApi } from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -82,7 +82,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     sections.map((section) => {
       const testSectionIds = currentTestSections.map((testSection) => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        (testSectionId) => testSectionId === section.test_section_id
+        (testSectionId) => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
       if (!currentTestSection) return;
@@ -94,22 +94,22 @@ class DetailTestAnswerSheetComplete extends React.Component {
           break;
         case "Writing":
           this.setState({
-            testWritingProblems: section
+            testWritingProblems: section,
           });
           break;
         case "Math (No Calculator)":
           this.setState({
-            testMathNoCalcProblems: section
+            testMathNoCalcProblems: section,
           });
           break;
         case "Reading":
           this.setState({
-            testReadingProblems: section
+            testReadingProblems: section,
           });
           break;
         default:
           this.setState({
-            testReadingProblems: section
+            testReadingProblems: section,
           });
           break;
       }
@@ -138,7 +138,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               return imgDataList.push(result);
             })
             .catch(console.error),
-        Promise.resolve()
+        Promise.resolve(),
       );
       getImgListPromise.then(() => {
         resolve(imgDataList);
@@ -169,20 +169,20 @@ class DetailTestAnswerSheetComplete extends React.Component {
     let currentSection;
     switch (activeSlide) {
       case 'reading':
-      currentSection = testReadingProblems
-      break;
+        currentSection = testReadingProblems;
+        break;
       case 'writing':
-      currentSection = testWritingProblems
-      break;
+        currentSection = testWritingProblems;
+        break;
       case 'math (no calc)':
-      currentSection = testMathNoCalcProblems
-      break;
+        currentSection = testMathNoCalcProblems;
+        break;
       case 'math (calculator)':
-      currentSection = testMathCalcProblems
-      break;
+        currentSection = testMathCalcProblems;
+        break;
       default:
-      currentSection = testReadingProblems
-      break;
+        currentSection = testReadingProblems;
+        break;
     }
     this.setState({ activeSlide, activeTestSection: currentSection });
   }
@@ -295,39 +295,39 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   render() {
-    const { 
-      activeSlide, 
-      activeTestSection, 
+    const {
+      activeSlide,
+      activeTestSection,
       testReadingProblems,
       testWritingProblems,
       testMathCalcProblems,
-      testMathNoCalcProblems, 
+      testMathNoCalcProblems,
     } = this.state;
-    const {completedSections} = this.props;
-    let showSectionMessage = this.state.showSectionMessage; 
-    switch(activeSlide) {
+    const { completedSections } = this.props;
+    let showSectionMessage = this.state.showSectionMessage;
+    switch (activeSlide) {
       case 'reading':
         if (completedSections.readingSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-        case 'writing':
+      case 'writing':
         if (completedSections.writingSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-        case 'math (no calc)':
+      case 'math (no calc)':
         if (completedSections.mathNoCalcSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-        case 'math (calculator)':
+      case 'math (calculator)':
         if (completedSections.mathCalcSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-        default:
-          break;
+      default:
+        break;
     }
     return (
       <div className="card-main-full card">
@@ -341,19 +341,20 @@ class DetailTestAnswerSheetComplete extends React.Component {
         </div>
         <div className="card-content">
           {showSectionMessage && <p
-          style={{
-            "color": 'white',
-            "backgroundColor": '#28a745',
-            "fontSize": "14px"
-          }} 
-          className="center-align">This test section is complete.</p>}
+            style={{
+              color: 'white',
+              backgroundColor: '#28a745',
+              fontSize: "14px",
+            }}
+            className="center-align"
+          >This test section is complete.</p>}
           <div className="main-slick">{this.renderCurrentSlide()}</div>
           <div className="row">
             <div className="btn-holder right-align">
               <a
                 href="#"
                 className="btn btn-xlarge waves-effect waves-light bg-blue"
-                onClick={() => this.props.handleTestScore(activeTestSection, {testReadingProblems, testWritingProblems, testMathNoCalcProblems, testMathCalcProblems})}
+                onClick={() => this.props.handleTestScore(activeTestSection, { testReadingProblems, testWritingProblems, testMathNoCalcProblems, testMathCalcProblems })}
               >
                 Score Test Section
               </a>
@@ -378,7 +379,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
-    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId))
+    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId)),
   };
 }
 
