@@ -31,11 +31,11 @@ const SubjectsCard = ({readingScores, writingScores, mathScores}) =>
   <div className="col s12 l8 card-width-772">
     <div className="card-block">
       <h2>Subjects</h2>
-      <div className="card-main-full card"> 
+      <div className="card-main-full card">
         <div className="card-content">
           <div className="several-charts-row row mb-0">
-            {readingScores &&
-              <div className="col s4 center-align" id="analysisReadingCicleImg">
+            <div className="col s4 center-align" id="analysisReadingCicleImg">
+              {readingScores &&
                 <div className="chart-block chart-block-182">
                   <Doughnut
                     data={() => readingData(readingScores.score.correct, readingScores.score.total)}
@@ -54,10 +54,11 @@ const SubjectsCard = ({readingScores, writingScores, mathScores}) =>
                       <b>{readingScores.score.correct}</b> of <b>{readingScores.score.total}</b>
                     </span>
                   </div>
-                </div>
-              </div>}
-            {writingScores &&
-              <div className="col s4 center-align" id="analysisWritingCircleImg">
+                </div>}
+            </div>
+
+            <div className="col s4 center-align" id="analysisWritingCircleImg">
+              {writingScores &&
                 <div className="chart-block chart-block-182">
                   <Doughnut
                     data={() => writingData(writingScores.score.correct, writingScores.score.total)}
@@ -76,10 +77,11 @@ const SubjectsCard = ({readingScores, writingScores, mathScores}) =>
                       <b>{writingScores.score.correct}</b> of <b>{writingScores.score.total}</b>
                     </span>
                   </div>
-                </div>
-              </div>}
-            {mathScores &&
-              <div className="col s4 center-align" id="analysisMathCircleImg">
+                </div>}
+            </div>
+
+            <div className="col s4 center-align" id="analysisMathCircleImg">
+              {mathScores &&
                 <div className="chart-block chart-block-182">
                   <Doughnut
                     data={() => mathData(mathScores.score.correct, mathScores.score.total)}
@@ -98,8 +100,8 @@ const SubjectsCard = ({readingScores, writingScores, mathScores}) =>
                       <b>{mathScores.score.correct}</b> of <b>{mathScores.score.total}</b>
                     </span>
                   </div>
-                </div>
-              </div>}
+                </div>}
+            </div>
           </div>
         </div>
       </div>
