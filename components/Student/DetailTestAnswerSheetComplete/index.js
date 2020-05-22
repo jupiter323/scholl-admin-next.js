@@ -40,6 +40,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         activeSection: "",
       },
       updatedSectionStatus: {},
+      showSectionMessage: false,
     };
   }
 
@@ -88,7 +89,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       switch (currentTestSection.name) {
         case "Math (Calculator)":
           this.setState({
-            testMathCalcProblems: section
+            testMathCalcProblems: section,
           });
           break;
         case "Writing":
@@ -115,7 +116,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
     });
     this.setState({
       testSections: sections,
-      studentTestId
+      studentTestId,
+      showSectionMessage: false,
     });
   };
 
@@ -302,24 +304,28 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathNoCalcProblems, 
     } = this.state;
     const {completedSections} = this.props;
-    let showSectionMessage = false; 
+    let showSectionMessage = this.state.showSectionMessage; 
     switch(activeSlide) {
       case 'reading':
         if (completedSections.readingSectionCompleted) {
           showSectionMessage = true;
         }
+        break;
         case 'writing':
         if (completedSections.writingSectionCompleted) {
           showSectionMessage = true;
         }
+        break;
         case 'math (no calc)':
         if (completedSections.mathNoCalcSectionCompleted) {
           showSectionMessage = true;
         }
+        break;
         case 'math (calculator)':
         if (completedSections.mathCalcSectionCompleted) {
           showSectionMessage = true;
         }
+        break;
         default:
           break;
     }
