@@ -14,7 +14,6 @@ class TotalScoreCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      prevTotalScore: 0,
       currentTotalScore: 0,
       deltaScore: 0,
     };
@@ -22,17 +21,14 @@ class TotalScoreCard extends React.Component {
 
   componentDidMount = () => {
     const {subjectScores} = this.props;
-    let prevTotalScore = 0;
     let currentTotalScore = 0;
     let deltaScore = 0;
     if (subjectScores && subjectScores instanceof Array) {
       subjectScores.map(subjectScore => {
-        prevTotalScore = prevTotalScore + subjectScore.previous_score;
         currentTotalScore = currentTotalScore + subjectScore.current_score;
         deltaScore = deltaScore + subjectScore.delta;
       });
       this.setState({
-        prevTotalScore,
         currentTotalScore,
         deltaScore,
       });
@@ -40,14 +36,14 @@ class TotalScoreCard extends React.Component {
   };
 
   render() {
-    const {prevTotalScore, currentTotalScore, deltaScore} = this.state;
+    const {currentTotalScore, deltaScore} = this.state;
     return (
       <div className="col s12 l6 card-width-546">
         <div className="card-block">
           <h2>
-            Your Score <span className="separator">|</span>{' '}
+            Your Score <span className="separator">|</span>
             <span className="quantity">
-              {prevTotalScore} to {currentTotalScore}{' '}
+              400 to 1600
             </span>
           </h2>
           <div className="card-main-full card">
