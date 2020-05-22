@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Doughnut} from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 const data = (totalScore, totalPossible) => ({
   datasets: [
@@ -20,13 +20,13 @@ class TotalScoreCard extends React.Component {
   }
 
   componentDidMount = () => {
-    const {subjectScores} = this.props;
+    const { subjectScores } = this.props;
     let currentTotalScore = 0;
     let deltaScore = 0;
     if (subjectScores && subjectScores instanceof Array) {
       subjectScores.map(subjectScore => {
-        currentTotalScore = currentTotalScore + subjectScore.current_score;
-        deltaScore = deltaScore + subjectScore.delta;
+        currentTotalScore += subjectScore.current_score;
+        deltaScore += subjectScore.delta;
       });
       this.setState({
         currentTotalScore,
@@ -36,7 +36,7 @@ class TotalScoreCard extends React.Component {
   };
 
   render() {
-    const {currentTotalScore, deltaScore} = this.state;
+    const { currentTotalScore, deltaScore } = this.state;
     return (
       <div className="col s12 l6 card-width-546">
         <div className="card-block">

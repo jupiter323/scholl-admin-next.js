@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Doughnut} from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 const readingData = (totalScore, totalPossible) => ({
   datasets: [
@@ -27,8 +27,8 @@ const mathData = (totalScore, totalPossible) => ({
   ],
 });
 
-const SubjectsCard = ({readingScores, writingScores, mathScores}) =>
-  <div className="col s12 l8 card-width-772">
+const SubjectsCard = ({ readingScores, writingScores, mathScores }) =>
+  (<div className="col s12 l8 card-width-772">
     <div className="card-block">
       <h2>Subjects</h2>
       <div className="card-main-full card">
@@ -106,7 +106,7 @@ const SubjectsCard = ({readingScores, writingScores, mathScores}) =>
         </div>
       </div>
     </div>
-  </div>;
+  </div>);
 
 SubjectsCard.propTypes = {};
 

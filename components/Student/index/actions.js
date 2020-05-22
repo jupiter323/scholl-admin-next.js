@@ -257,11 +257,11 @@ export function setActiveTestScores(scores) {
   };
 }
 
-export function setEssayScore(score){
+export function setEssayScore(score) {
   return {
     type: SET_ESSAY_SCORE,
-    score
-  }
+    score,
+  };
 }
 
 export const getLessonList = () => ({
@@ -398,9 +398,10 @@ export const addStudentAnswerToTest = (payload, sectionId) => ({
   type: ADD_STUDENT_ANSWER_TO_TEST,
   payload,
   sectionId,
-})
+});
 
-export const updateTestStaus = (payload) => ({
+export const updateTestStaus = (payload, currentStatus) => ({
   type: UPDATE_TEST_STATUS,
-  payload
-})
+  payload,
+  currentStatus,
+});

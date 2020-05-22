@@ -13,7 +13,7 @@ const sampleEssayScores = [
   },
   {
     value: 8,
-    label: "8"},
-]
+    label: "8" },
+];
 
 export default sampleEssayScores;

@@ -7,10 +7,10 @@ class EssayScoresCard extends React.Component {
   }
 
   mapProgressBar = () => {
-    const {essayScores} = this.props;
+    const { essayScores } = this.props;
     if (essayScores) {
       return Object.entries(essayScores).map(item =>
-        <div className="progress-block progress-block-lg">
+        (<div className="progress-block progress-block-lg">
           <div className="progress-legend">
             <div className="legend-block">
               <span className="text">
@@ -18,7 +18,7 @@ class EssayScoresCard extends React.Component {
               </span>
             </div>
           </div>
-          <div className="progress progress-rounded-lg" style={{borderRadius: '13px'}}>
+          <div className="progress progress-rounded-lg" style={{ borderRadius: '13px' }}>
             <div
               className="determinate"
               style={{
@@ -32,7 +32,7 @@ class EssayScoresCard extends React.Component {
               </span>
             </div>
           </div>
-        </div>
+        </div>),
       );
     }
   };

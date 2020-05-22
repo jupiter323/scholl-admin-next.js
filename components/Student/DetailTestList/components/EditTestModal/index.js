@@ -4,9 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import moment from 'moment';
-import {connect} from 'react-redux';
-import {createStructuredSelector} from 'reselect';
-import {compose} from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import TestVersionPage from '../TestVersionPage';
 import DetailTestScorePage from '../../../DetailTestScorePage';
 import DetailTestAnswerSheetComplete from '../../../DetailTestAnswerSheetComplete';
@@ -74,8 +74,8 @@ class EditTestModal extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
     const {
-      activeStudent: {studentInformation: {firstName, lastName}},
-      test: {test_description, completion_date},
+      activeStudent: { studentInformation: { firstName, lastName } },
+      test: { test_description, completion_date },
     } = this.props;
     const updatedUserInfo = update(this.state.userInfo, {
       $merge: {
@@ -93,19 +93,22 @@ class EditTestModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {activePage, sections} = nextProps;
+    const { activePage, sections } = nextProps;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
-      this.setState({activePage});
+      this.setState({ activePage });
     }
     if (sections.length !== 0) {
-      const {tests, test: {test_id}} = this.props;
-      sections.map(section => {
-        if (section.test_section_status === 'COMPLETED') {
-          const testIds = tests.map(test => test.id);
-          const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+      const {
+        tests,
+        test: { test_id },
+      } = this.props;
+      sections.map((section) => {
+        if (section.test_section_status === "COMPLETED") {
+          const testIds = tests.map((test) => test.id);
+          const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
           const currentTestSections = tests[currentTestIndex].test_sections;
           const testSectionIndex = currentTestSections.findIndex(
-            testSection => testSection.id === section.test_section_id
+            testSection => testSection.id === section.test_section_id,
           );
           // If no match return and wait for new props
           if (!currentTestSections[testSectionIndex]) return;
@@ -113,15 +116,14 @@ class EditTestModal extends React.Component {
           const sectionType = currentTestSections[testSectionIndex].name;
           switch (sectionType) {
             case 'Reading':
-              return this.setState({readingSectionCompleted: true});
+              return this.setState({ readingSectionCompleted: true });
             case 'Writing':
-              return this.setState({writingSectionCompleted: true});
+              return this.setState({ writingSectionCompleted: true });
             case 'Math (Calculator)':
-              return this.setState({mathCalcSectionCompleted: true});
+              return this.setState({ mathCalcSectionCompleted: true });
             case 'Math (No Calculator)':
-              return this.setState({mathNoCalcSectionCompleted: true});
+              return this.setState({ mathNoCalcSectionCompleted: true });
             default:
-              return;
           }
         }
       });
@@ -197,7 +199,7 @@ class EditTestModal extends React.Component {
               break;
           }
           resolve();
-        }
+        },
       );
     });
 
@@ -206,14 +208,14 @@ class EditTestModal extends React.Component {
       enablePublish: false,
     });
     const imgDataLists = [];
-    const {userInfo, subjects, adminInfo, headerGradient} = this.state;
+    const { userInfo, subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = './static/images/sunset.jpg';
     const logoImg = './static/images/study-hut-logo.png';
     const backgroundImage = await this.getBase64ImageFromURL(
-      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const logo = await this.getBase64ImageFromURL(
-      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const pageStates = [
       {
@@ -236,14 +238,14 @@ class EditTestModal extends React.Component {
             const images = await this.getData(item);
           })
           .catch(console.error),
-      Promise.resolve()
+      Promise.resolve(),
     );
 
     getImagesPromise.then(() => {
       this.setState({
         enablePublish: true,
       });
-      const {scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages} = this.state;
+      const { scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages } = this.state;
       imgDataLists.push({
         image: scoresImages,
         width: 550,
@@ -287,14 +289,14 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo
+        logo,
       );
     });
   };
 
   renderCurrentPage = () => {
-    const {activePage} = this.state;
-    const {test, user, onDeleteTest, onSaveTestChanges} = this.props;
+    const { activePage } = this.state;
+    const { test, user, onDeleteTest, onSaveTestChanges } = this.props;
     if (activePage === 'testVersion') {
       return (
         <TestVersionPage
@@ -362,20 +364,20 @@ class EditTestModal extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = problemsByTest;
-    if (!testReadingProblems) this.setState({readingSectionCompleted: true});
-    if (!testWritingProblems) this.setState({writingSectionCompleted: true});
-    if (!testMathCalcProblems) this.setState({mathCalcSectionCompleted: true});
-    if (!testMathNoCalcProblems) this.setState({mathNoCalcSectionCompleted: true});
+    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
+    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
+    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
+    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
 
     // Update current section as completed
-    const {tests, test: {test_id}, test} = this.props;
+    const { tests, test: { test_id }, test } = this.props;
     const currentTestSectionId = activeSection.test_section_id;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
     const testSectionIds = currentTestSections.map(testSection => testSection.id);
     const currentTestSectionIndex = testSectionIds.findIndex(
-      testSectionId => testSectionId === currentTestSectionId
+      (testSectionId) => testSectionId === currentTestSectionId,
     );
     const currentTestSection = currentTestSections[currentTestSectionIndex];
     switch (currentTestSection.name) {
@@ -429,19 +431,20 @@ class EditTestModal extends React.Component {
         status: 'COMPLETED',
       };
       // await updateStudentTestStatusApi(postBody);
-      const {onOpentTestScore, onUpdateTestStatus} = this.props;
-      onUpdateTestStatus(postBody);
-      onOpentTestScore({...test, status: 'COMPLETED'});
+      const { onOpentTestScore, onUpdateTestStatus } = this.props;
+      const currentTestStatus = test.due_status === 'OVERDUE' ? "overdueStudentTests" : "assignedStudentTests";
+      onUpdateTestStatus(postBody, currentTestStatus);
+      onOpentTestScore({ ...test, status: "COMPLETED" });
     }
     // }
     // }
   };
 
   render() {
-    const {test, user, onCloseEditTestModal} = this.props;
-    const {activePage, enablePublish} = this.state;
-    const {title, test_name} = test;
-    const {studentInformation: {firstName, lastName}} = user;
+    const { test, user, onCloseEditTestModal } = this.props;
+    const { activePage, enablePublish } = this.state;
+    const { title, test_name } = test;
+    const { studentInformation: { firstName, lastName } } = user;
     const completedTest = test.status === 'COMPLETED';
     return (
       <div className="wrapper">
@@ -564,7 +567,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: payload => dispatch(updateTestStaus(payload)),
+    onUpdateTestStatus: (payload, currentStatus) => dispatch(updateTestStaus(payload, currentStatus)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

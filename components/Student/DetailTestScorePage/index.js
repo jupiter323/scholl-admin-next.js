@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {createStructuredSelector} from 'reselect';
-import {compose} from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import TotalScoreCard from './components/TotalScoreCard';
 import SectionScoreCard from './components/SectionScoreCard';
 import TestScoreCard from './components/TestScoreCard';
 import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
 import SubScoresCard from './components/SubscoresCard';
-import {makeSelectActiveTestScores, makeSelectActiveStudent} from '../index/selectors';
+import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../index/selectors';
 
 class DetailTestScorePage extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class DetailTestScorePage extends React.Component {
   }
 
   getComponentImages = async () => {
-    const {getTargetImage} = this.props;
+    const { getTargetImage } = this.props;
     const [scoresImages] = await Promise.all([
       getTargetImage(document.getElementById('scoresRef')),
     ]);
@@ -32,7 +32,7 @@ class DetailTestScorePage extends React.Component {
   };
 
   render() {
-    const {scores: {subjects, cross_test_score, sub_section_score,essay}} = this.props;
+    const { scores: { subjects, cross_test_score, sub_section_score, essay } } = this.props;
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
@@ -42,11 +42,11 @@ class DetailTestScorePage extends React.Component {
           </div>
           <div className="d-flex-content same-height justify-center row mb-0">
             <TestScoreCard subjectScores={subjects} />
-             <EssayScoresCard essayScores={essay} />
+            <EssayScoresCard essayScores={essay} />
           </div>
           <div className="d-flex-content justify-center row mb-0">
             <CrossTestScoresCard crossTestScores={cross_test_score} />
-             <SubScoresCard subScores={sub_section_score} />
+            <SubScoresCard subScores={sub_section_score} />
           </div>
         </div>
       </div>

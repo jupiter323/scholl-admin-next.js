@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Doughnut} from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 const readingData = (totalScore, totalPossible) => ({
   datasets: [
@@ -38,7 +38,7 @@ class TestScoreCard extends React.Component {
   }
 
   componentDidMount = () => {
-    const {subjectScores} = this.props;
+    const { subjectScores } = this.props;
     if (subjectScores) {
       subjectScores.map(subject => {
         switch (subject.name) {
@@ -58,14 +58,13 @@ class TestScoreCard extends React.Component {
             });
             break;
           default:
-            return;
         }
       });
     }
   };
 
   render() {
-    const {readingScores, mathScores, writingScores} = this.state;
+    const { readingScores, mathScores, writingScores } = this.state;
     return (
       <div className="col s12 l8 card-width-772">
         <div className="card-block">

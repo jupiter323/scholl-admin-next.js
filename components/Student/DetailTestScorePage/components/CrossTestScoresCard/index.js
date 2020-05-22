@@ -6,10 +6,10 @@ class CrossTestScoresCard extends React.Component {
   }
 
   mapProgressBar = () => {
-    const {crossTestScores} = this.props;
+    const { crossTestScores } = this.props;
     if (crossTestScores) {
       return Object.entries(crossTestScores).map(item =>
-        <div className="progress-block progress-block-md">
+        (<div className="progress-block progress-block-md">
           <div className="progress-legend">
             <div className="legend-block">
               <span className="text">
@@ -20,14 +20,14 @@ class CrossTestScoresCard extends React.Component {
           <div className="progress progress-rounded-md">
             <div
               className="determinate"
-              style={{width: `${item[1] / 40 * 100}%`, backgroundColor: '#f5883f'}}
+              style={{ width: `${item[1] / 40 * 100}%`, backgroundColor: '#f5883f' }}
             >
               <span className="progress-label">
                 {item[1]}
               </span>
             </div>
           </div>
-        </div>
+        </div>),
       );
     }
   };

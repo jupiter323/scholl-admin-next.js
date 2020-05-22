@@ -15,11 +15,11 @@ import {
   makeSelectActiveStudent,
   makeSelectTests,
   makeSelectActiveStudentTestId,
-  makeSelectActiveTestScores
+  makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import {fetchStudentTestSections, addStudentAnswerToTest, setEssayScore} from '../index/actions';
-import {updateStudentTestSectionStatusApi} from '../index/api';
+import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
+import { updateStudentTestSectionStatusApi } from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -191,8 +191,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 
   renderCurrentSlide = () => {
-    const {activeSlide} = this.state;
-    const {sections, activeStudentTestId, activeTestScores, onSetEssayScore} = this.props;
+    const { activeSlide } = this.state;
+    const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
     if (sections) {
       const {
         testReadingProblems,
@@ -245,7 +245,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         );
       }
       if (activeSlide === 'essay') {
-        return <EssayPage testId={activeStudentTestId} testScores={activeTestScores} setEssayScore={onSetEssayScore}/>;
+        return <EssayPage testId={activeStudentTestId} testScores={activeTestScores} setEssayScore={onSetEssayScore} />;
       }
     } else {
       return null;
@@ -355,15 +355,15 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <div className="main-slick">{this.renderCurrentSlide()}</div>
           {activeSlide !== "essay" && (
             <div className="row">
-            <div className="btn-holder right-align">
-              <a
-                href="#"
-                className="btn btn-xlarge waves-effect waves-light bg-blue"
-                onClick={() => this.props.handleTestScore(activeTestSection, { testReadingProblems, testWritingProblems, testMathNoCalcProblems, testMathCalcProblems })}
-              >
+              <div className="btn-holder right-align">
+                <a
+                  href="#"
+                  className="btn btn-xlarge waves-effect waves-light bg-blue"
+                  onClick={() => this.props.handleTestScore(activeTestSection, { testReadingProblems, testWritingProblems, testMathNoCalcProblems, testMathCalcProblems })}
+                >
                 Score Test Section
-              </a>
-            </div>
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -388,7 +388,7 @@ function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
     onSetEssayScore: (score) => dispatch(setEssayScore(score)),
-    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId))
+    dispatchAddStudentAnswerToTest: (payload, sectionId) => dispatch(addStudentAnswerToTest(payload, sectionId)),
   };
 }
 

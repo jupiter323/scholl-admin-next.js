@@ -15,35 +15,35 @@ import { assignTestToStudentApi } from "../../../../Student/index/api";
 const sampleVersions = [
   {
     label: "SAT Practice Test #1",
-    value: "SAT Practice Test #1"
+    value: "SAT Practice Test #1",
   },
   {
     label: "SAT Practice Test #2",
-    value: "SAT Practice Test #2"
+    value: "SAT Practice Test #2",
   },
   {
     label: "SAT Practice Test #3",
-    value: "SAT Practice Test #3"
-  }
+    value: "SAT Practice Test #3",
+  },
 ];
 
 const sampleSections = [
   {
     label: "Math (no calc)",
-    value: "Math (no calc)"
+    value: "Math (no calc)",
   },
   {
     label: "Reading",
-    value: "Reading"
+    value: "Reading",
   },
   {
     label: "Writing",
-    value: "Writing"
+    value: "Writing",
   },
   {
     label: "Math (calculator)",
-    value: "Math (calculator)"
-  }
+    value: "Math (calculator)",
+  },
 ];
 
 const uuidGenerator = require("uuid/v4");
@@ -58,7 +58,7 @@ class AssignTestSectionModal extends React.Component {
       assignTime: "",
       dueDate: "",
       dueTime: "",
-      timed: false
+      timed: false,
     };
   }
 
@@ -78,7 +78,7 @@ class AssignTestSectionModal extends React.Component {
       assignTime: "",
       dueDate: "",
       dueTime: "",
-      timed: false
+      timed: false,
     });
 
   onCloseModal = () => {
@@ -96,7 +96,7 @@ class AssignTestSectionModal extends React.Component {
       assignTime: unformattedAssignTime,
       dueDate: unformattedDueDate,
       dueTime: unformattedDueTime,
-      timed
+      timed,
     } = this.state;
     const assignDate = moment(unformattedAssignDate).format("MM/DD/YY");
     const assignTime = moment(unformattedAssignTime).format("hh:mm");
@@ -109,11 +109,11 @@ class AssignTestSectionModal extends React.Component {
       assignTime,
       dueDate,
       dueTime,
-      timed
+      timed,
     });
     this.onResetModal();
     const {
-      user: { id }
+      user: { id },
     } = this.props;
     const postBody = {
       student_id: id,
@@ -143,7 +143,7 @@ class AssignTestSectionModal extends React.Component {
       assignTime,
       dueDate,
       dueTime,
-      timed
+      timed,
     } = this.state;
     return (
       <Portal selector="#modal">
@@ -190,11 +190,11 @@ class AssignTestSectionModal extends React.Component {
                             className="input-field"
                             style={{ marginBottom: "0", marginTop: "0" }}
                           >
-                            <div className="select-wrapper" style = {{overflow:'visible'}}>
+                            <div className="select-wrapper" style={{ overflow: 'visible' }}>
                               <Dropdown
                                 value={getValueFromState(
                                   version,
-                                  sampleVersions
+                                  sampleVersions,
                                 )}
                                 onChange={event =>
                                   this.handleDetailsChange(event, "version")
@@ -219,7 +219,7 @@ class AssignTestSectionModal extends React.Component {
                               <Dropdown
                                 value={getValueFromState(
                                   section,
-                                  sampleSections
+                                  sampleSections,
                                 )}
                                 onChange={event =>
                                   this.handleDetailsChange(event, "section")
@@ -406,7 +406,7 @@ AssignTestSectionModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onAssignTestSection: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 export default AssignTestSectionModal;

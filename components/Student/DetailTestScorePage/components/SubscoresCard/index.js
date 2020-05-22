@@ -6,7 +6,7 @@ class SubScoresCard extends React.Component {
     super(props);
   }
   renderProgressElement = item =>
-    <div className="progress-block progress-block-md">
+    (<div className="progress-block progress-block-md">
       <div className="progress-legend">
         <div className="legend-block">
           <span className="text">
@@ -14,7 +14,7 @@ class SubScoresCard extends React.Component {
           </span>
         </div>
       </div>
-      <div className="progress progress-rounded-md" style={{borderRadius: '13px'}}>
+      <div className="progress progress-rounded-md" style={{ borderRadius: '13px' }}>
         <div
           className="determinate"
           style={{
@@ -28,9 +28,9 @@ class SubScoresCard extends React.Component {
           </span>
         </div>
       </div>
-    </div>;
+    </div>);
   mapProgressBar = () => {
-    const {subScores} = this.props;
+    const { subScores } = this.props;
     const newRowIndex = Math.floor(Object.entries(subScores).length / 2);
     return (
       <React.Fragment>

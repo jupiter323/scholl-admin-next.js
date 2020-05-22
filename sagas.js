@@ -52,7 +52,8 @@ import {
   UPDATE_TEST_STATUS,
   UPDATE_TEST_STATUS_SUCCESS,
   ADD_TEST_TO_COMPLETED,
-  REMOVE_TEST_FROM_ASSIGNED,
+  REMOVE_TEST_FROM_PREV_LIST,
+  REMOVE_TEST_FROM_LIST,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -241,19 +242,14 @@ export function* fetchStudentTests(user) {
     // sort test into assisend, incompletes
     //* * using for development purposes pushing :STARTED to assigneds */
     yield formattedStudentTests.forEach(test => {
-      switch (test.status) {
-        case "OVERDUE":
+      if (test.status === "ASSIGNED" || test.status === 'STARTED') {
+        if (test.due_status === 'OVERDUE') {
           sortedTests.overdues.push(test);
-          break;
-        //* commented out for development purposes  */
-        case "COMPLETED":
-          sortedTests.completes.push(test);
-          break;
-        case "ASSIGNED":
+        } else {
           sortedTests.assigneds.push(test);
-          break;
-        default:
-          sortedTests.assigneds.push(test);
+        }
+      } else if (test.status === 'COMPLETED') {
+        sortedTests.completes.push(test);
       }
     });
     // Dispatch Action
@@ -973,6 +969,10 @@ function* handleDeleteStudentTest(action) {
       testType: action.testType,
       studentTestId: action.studentTestId,
     });
+    yield put({
+      type: REMOVE_TEST_FROM_LIST,
+      studentTestId: action.studentTestId,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleDeleteStudentTest saga", error);
   }
@@ -1025,7 +1025,7 @@ function* handleAddStudentAnswerToTest(action) {
       type: UPDATE_STUDENT_TEST_ANSWER,
       sectionId: action.sectionId,
       payload: action.payload,
-    })
+    });
   } catch (error) {
     console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
   }
@@ -1044,16 +1044,18 @@ function* handleUpdateTestStatus(action) {
     yield put({
       type: UPDATE_TEST_STATUS_SUCCESS,
       payload: action.payload,
-    })
+    });
     if (action.payload.status === "COMPLETED") {
       yield put({
         type: ADD_TEST_TO_COMPLETED,
-        payload: action.payload
-      })
-      yield put({
-        type: REMOVE_TEST_FROM_ASSIGNED,
         payload: action.payload,
-      })
+        testList: action.currentStatus,
+      });
+      yield put({
+        type: REMOVE_TEST_FROM_PREV_LIST,
+        payload: action.payload,
+        testList: action.currentStatus,
+      });
     }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateTestStatus saga", error);
