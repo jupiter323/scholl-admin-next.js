@@ -10,14 +10,15 @@ import DetailTestScorePage from "../../../DetailTestScorePage";
 import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
 import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
+import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectTests, makeSelectAssignedStudentTests, makeSelectActiveStudent } from "../../../index/selectors";
+import { fetchStudentTestSections, setStudentAssignedTests, setStudentCompletedTests, updateTestStaus } from "../../../index/actions";
+import {updateStudentTestSectionStatusApi, updateStudentTestStatusApi, fetchTestsByStudentIdApi } from '../../../index/api';
 
-import { makeSelectStudentSections, makeSelectActiveStudentToken } from "../../../index/selectors";
-import { fetchStudentTestSections } from "../../../index/actions";
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores",
+      activePage: props.activePage,
       scoresImages: null,
       analysisBarImages: [],
       analysisCicleImages: [],
@@ -46,6 +47,10 @@ class EditTestModal extends React.Component {
       ],
       adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
       headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"],
+      readingSectionCompleted: false,
+      writingSectionCompleted: false,
+      mathNoCalcSectionCompleted: false,
+      mathCalcSectionCompleted: false,
     };
   }
 
@@ -56,31 +61,71 @@ class EditTestModal extends React.Component {
     this.props.onRef(undefined);
   }
 
-  getBase64ImageFromURL = url => new Promise((resolve, reject) => {
-    const img = new Image();
-    img.setAttribute("crossOrigin", "anonymous");
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0);
-      const dataURL = canvas.toDataURL("image/png");
-      resolve(dataURL);
-    };
-    img.onerror = error => {
-      reject(error);
-    };
-    img.src = url;
-  });
+  componentWillReceiveProps(nextProps) {
+    const { activePage, sections } = nextProps;
+    if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
+      this.setState({ activePage });
+    }
+    if (sections.length !== 0) {
+      const {
+        tests,
+        test: {test_id},
+      } = this.props;
+      sections.map((section) => {
+        if (section.test_section_status === "COMPLETED") {
+          const testIds = tests.map((test) => test.id);
+          const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+          const currentTestSections = tests[currentTestIndex].test_sections;
+          const testSectionIndex = currentTestSections.findIndex(
+            (testSection) => testSection.id === section.test_section_id
+          );
+          // If no match return and wait for new props
+          if (!currentTestSections[testSectionIndex]) return;
 
-  onSetActivePage = activePage => {
+          const sectionType = currentTestSections[testSectionIndex].name;
+          switch (sectionType) {
+            case "Reading":
+              return this.setState({ readingSectionCompleted: true });
+            case "Writing":
+              return this.setState({ writingSectionCompleted: true });
+            case "Math (Calculator)":
+              return this.setState({ mathCalcSectionCompleted: true });
+            case "Math (No Calculator)":
+              return this.setState({ mathNoCalcSectionCompleted: true });
+            default:
+              return;
+          }
+        }
+      });
+    }
+  }
+
+  getBase64ImageFromURL = (url) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = (error) => {
+        reject(error);
+      };
+      img.src = url;
+    });
+
+  onSetActivePage = (activePage) => {
     this.setState({
       activePage,
     });
   };
 
-  getTargetImage = currentRef => {
+  getTargetImage = (currentRef) => {
     const html2canvas = require("html2canvas");
     const defaultCanvasSetting = {
       scale: 2,
@@ -89,43 +134,44 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true,
     };
-    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(canvas => {
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then((canvas) => {
       const imgData = canvas.toDataURL("image/png", 1.0);
       return imgData;
     });
     return targetImg;
   };
 
-  getData = item => new Promise(async resolve => {
-    const currentChild = item.child;
-    this.setState(
-      {
-        activePage: item.state,
-      },
-      async () => {
-        const data = await this[currentChild].getComponentImages();
-        switch (item.state) {
-          case "StrengthsAndWeaknesses":
-            this.setState({
-              analysisCicleImages: data.circleImageList,
-              analysisBarImages: data.barImageList,
-            });
-            break;
-          case "answerSheet":
-            this.setState({
-              answerSheetImages: data,
-            });
-            break;
-          case "scores":
-            this.setState({
-              scoresImages: data,
-            });
-            break;
+  getData = (item) =>
+    new Promise(async (resolve) => {
+      const currentChild = item.child;
+      this.setState(
+        {
+          activePage: item.state,
+        },
+        async () => {
+          const data = await this[currentChild].getComponentImages();
+          switch (item.state) {
+            case "StrengthsAndWeaknesses":
+              this.setState({
+                analysisCicleImages: data.circleImageList,
+                analysisBarImages: data.barImageList,
+              });
+              break;
+            case "answerSheet":
+              this.setState({
+                answerSheetImages: data,
+              });
+              break;
+            case "scores":
+              this.setState({
+                scoresImages: data,
+              });
+              break;
+          }
+          resolve();
         }
-        resolve();
-      },
-    );
-  });
+      );
+    });
 
   generateScoreReportPdf = async () => {
     this.setState({
@@ -136,10 +182,10 @@ class EditTestModal extends React.Component {
     const coverBackgroundImg = "./static/images/sunset.jpg";
     const logoImg = "./static/images/study-hut-logo.png";
     const backgroundImage = await this.getBase64ImageFromURL(
-      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
     );
     const logo = await this.getBase64ImageFromURL(
-      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
     );
     const pageStates = [
       {
@@ -155,11 +201,15 @@ class EditTestModal extends React.Component {
         child: "AnswerSheetChild",
       },
     ];
-    const getImagesPromise = pageStates.reduce((accumulatorPromise, item) => accumulatorPromise
-      .then(async () => {
-        const images = await this.getData(item);
-      })
-      .catch(console.error), Promise.resolve());
+    const getImagesPromise = pageStates.reduce(
+      (accumulatorPromise, item) =>
+        accumulatorPromise
+          .then(async () => {
+            const images = await this.getData(item);
+          })
+          .catch(console.error),
+      Promise.resolve()
+    );
 
     getImagesPromise.then(() => {
       this.setState({
@@ -214,7 +264,7 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo,
+        logo
       );
     });
   };
@@ -238,17 +288,32 @@ class EditTestModal extends React.Component {
           <DetailTestScorePage
             test={test}
             getTargetImage={this.getTargetImage}
-            onRef={ref => (this.ScoresChild = ref)}
+            onRef={(ref) => (this.ScoresChild = ref)}
           />
         </div>
       );
     }
     if (activePage === "answerSheet") {
+      const {
+        readingSectionCompleted,
+        writingSectionCompleted,
+        mathNoCalcSectionCompleted,
+        mathCalcSectionCompleted,
+        setIsCompleted,
+      } = this.state;
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test}
           getTargetImage={this.getTargetImage}
-          onRef={ref => (this.AnswerSheetChild = ref)}
+          onRef={(ref) => (this.AnswerSheetChild = ref)}
+          handleTestScore={this.handleTestScore}
+          completedSections={{
+            readingSectionCompleted,
+            writingSectionCompleted,
+            mathNoCalcSectionCompleted,
+            mathCalcSectionCompleted,
+          }}
+          setIsCompleted={setIsCompleted}
         />
       );
     }
@@ -257,20 +322,110 @@ class EditTestModal extends React.Component {
       return (
         <StrengthsAndWeaknesses
           getTargetImage={this.getTargetImage}
-          onRef={ref => (this.AnalysisChild = ref)}
+          onRef={(ref) => (this.AnalysisChild = ref)}
+          test={this.props.test}
+          activeStudent={this.props.activeStudent}
         />
       );
     }
     return null;
   };
 
+  handleTestScore = async (activeSection, problemsByTest) => {
+    // Check for non-existing sections and set them to completed
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = problemsByTest;
+    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
+    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
+    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
+    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
+
+    // Update current section as completed
+    const {
+      tests,
+      test: { test_id },
+      test,
+    } = this.props;
+    const currentTestSectionId = activeSection.test_section_id;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    const testSectionIds = currentTestSections.map((testSection) => testSection.id);
+    const currentTestSectionIndex = testSectionIds.findIndex(
+      (testSectionId) => testSectionId === currentTestSectionId
+    );
+    const currentTestSection = currentTestSections[currentTestSectionIndex];
+    switch (currentTestSection.name) {
+      case "Math (Calculator)":
+        this.setState({
+          mathCalcSectionCompleted: true,
+        });
+        break;
+      case "Writing":
+        this.setState({
+          writingSectionCompleted: true,
+        });
+        break;
+      case "Math (No Calculator)":
+        this.setState({
+          mathNoCalcSectionCompleted: true,
+        });
+        break;
+      case "Reading":
+        this.setState({
+          readingSectionCompleted: true,
+        });
+        break;
+      default:
+        this.setState({
+          readingSectionCompleted: true,
+        });
+    }
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
+    const postBody = {
+      student_test_id: activeSection.student_test_id,
+      student_test_section_id: activeSection.id,
+      student_test_section_status: "COMPLETED",
+    };
+    await updateStudentTestSectionStatusApi(postBody);
+    const {
+      readingSectionCompleted,
+      writingSectionCompleted,
+      mathCalcSectionCompleted,
+      mathNoCalcSectionCompleted,
+    } = this.state;
+    if (
+      readingSectionCompleted &&
+      writingSectionCompleted &&
+      mathCalcSectionCompleted &&
+      mathNoCalcSectionCompleted
+    ) {
+      const postBody = {
+        student_test_id: activeSection.student_test_id,
+        status: "COMPLETED",
+      };
+      // await updateStudentTestStatusApi(postBody);
+      const { onOpentTestScore, onUpdateTestStatus } = this.props;
+      onUpdateTestStatus(postBody);
+      onOpentTestScore({ ...test, status: "COMPLETED" });
+    }
+    // }
+    // }
+  };
+
   render() {
     const { test, user, onCloseEditTestModal } = this.props;
     const { activePage, enablePublish } = this.state;
-    const { title, version: testVersion } = test;
+    const { title, test_name } = test;
     const {
       studentInformation: { firstName, lastName },
     } = user;
+    const completedTest = test.status === "COMPLETED";
     return (
       <div className="wrapper">
         <div
@@ -292,7 +447,7 @@ class EditTestModal extends React.Component {
               <div className="col s9">
                 <div className="card-panel-text center-align">
                   <div className="text-xlarge">{title}</div>
-                  <div className="text-small">Version: SAT Practice Test #{testVersion}</div>
+                  <div className="text-small">Version: {test_name}</div>
                 </div>
               </div>
               <div className="col s1 right-align">
@@ -317,15 +472,17 @@ class EditTestModal extends React.Component {
           <div className="nav-header white">
             <div className="nav-additional">
               <ul className="menu-additional">
-                <li className="col s3">
-                  <a
-                    className={activePage === "scores" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("scores")}
-                    href="#"
-                  >
-                    Scores
-                  </a>
-                </li>
+                {completedTest && (
+                  <li className="col s3">
+                    <a
+                      className={activePage === "scores" ? "active" : ""}
+                      onClick={() => enablePublish && this.onSetActivePage("scores")}
+                      href="#"
+                    >
+                      Scores
+                    </a>
+                  </li>
+                )}
                 <li className="col s3">
                   <a
                     className={activePage === "answerSheet" ? "active" : ""}
@@ -335,21 +492,27 @@ class EditTestModal extends React.Component {
                     Answer Sheet
                   </a>
                 </li>
-                <li className="col s3">
-                  <a
-                    className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")}
-                    href="#"
-                  >
-                    Strengths &amp; Weaknesses
-                  </a>
-                </li>
-                <li className="menu-special col s3">
-                  <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
-                    Download Score Report
-                    <i className="icon-download-file"></i>
-                  </a>
-                </li>
+                {completedTest && (
+                  <li className="col s3">
+                    <a
+                      className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
+                      onClick={() =>
+                        enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
+                      }
+                      href="#"
+                    >
+                      Strengths &amp; Weaknesses
+                    </a>
+                  </li>
+                )}
+                {completedTest && (
+                  <li className="menu-special col s3">
+                    <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
+                      Download Score Report
+                      <i className="icon-download-file"></i>
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -373,10 +536,16 @@ EditTestModal.propTypes = {
 const mapStateToProps = createStructuredSelector({
   sections: makeSelectStudentSections(),
   studentToken: makeSelectActiveStudentToken(),
+  tests: makeSelectTests(),
+  assignedTests: makeSelectAssignedStudentTests(),
+  activeStudent: makeSelectActiveStudent(),
 });
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
+    onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
+    onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
+    onUpdateTestStatus: (payload) => dispatch(updateTestStaus(payload)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

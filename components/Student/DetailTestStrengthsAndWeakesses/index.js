@@ -10,6 +10,7 @@ import MathPage from './components/MathPage';
 import SubjectsCard from './components/SubjectsCard';
 
 import {makeSelectActiveTestScores} from '../index/selectors';
+import {fetchStudentTestScoreApi} from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -22,9 +23,18 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.onRef(this);
-    const {activeTestScores: {categories}} = this.props;
+    const {activeTestScores} = this.props;
+    let fetchedScores = {};
+    if (!this.props.activeTestScores) {
+      const {test, activeStudent} = this.props;
+      const response = await fetchStudentTestScoreApi(activeStudent.id, test.student_test_id);
+      if (response && !response.message) {
+        fetchedScores = response.formattedTestScores.categories
+      }
+    }
+    const categories = activeTestScores ? activeTestScores.categories : fetchedScores;
     if (categories && categories.length !== 0) {
       categories.map(category => {
         switch (category.name) {

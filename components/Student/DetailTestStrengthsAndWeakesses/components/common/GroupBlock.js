@@ -26,16 +26,16 @@ class GroupBlock extends React.Component {
           <div className="graph-col text-column">
             <h3 className="graph-title">
               <span className={getScoreStatus(percent_correct * 100)}>
-                {percent_correct * 100}%
+                {(percent_correct * 100).toFixed(0)}%
               </span>
               {name}
             </h3>
           </div>
           <div className="graph-col graph-container">
             <div className="graph-linear-students">
-              <div className="graph-holder" style={{width: `${correct / total * 100}%`}}>
+              <div className="graph-holder" style={{width: `${(correct / total * 100).toFixed()}%`}}>
                 <div className="graph-admin">
-                  <div className="part-red" style={{width: `${incorrect / total * 100}%`}} />
+                  <div className="part-red" style={{width: `${(incorrect / total * 100).toFixed()}%`}} />
                 </div>
               </div>
             </div>
