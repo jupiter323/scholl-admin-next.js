@@ -465,6 +465,10 @@ export const fetchStudentTestScoreApi = (student_id, student_test_id) =>
     .then(res => res.json())
     .then(({ data }) => {
       const formattedTestScores = data;
+      if (!formattedTestScores.essay) {
+        formattedTestScores.essay = { analysis: "", reading: "", writing: "" };
+        return formattedTestScores;
+      }
       return { formattedTestScores };
     })
     .catch(err => err);
