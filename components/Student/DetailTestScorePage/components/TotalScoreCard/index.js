@@ -14,23 +14,47 @@ class TotalScoreCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalScore: 0,
+      prevTotalScore: 0,
+      currentTotalScore: 0,
       deltaScore: 0,
     };
   }
+
+  componentDidMount = () => {
+    const {subjectScores} = this.props;
+    let prevTotalScore = 0;
+    let currentTotalScore = 0;
+    let deltaScore = 0;
+    if (subjectScores && subjectScores instanceof Array) {
+      subjectScores.map(subjectScore => {
+        prevTotalScore = prevTotalScore + subjectScore.previous_score;
+        currentTotalScore = currentTotalScore + subjectScore.current_score;
+        deltaScore = deltaScore + subjectScore.delta;
+      });
+      this.setState({
+        prevTotalScore,
+        currentTotalScore,
+        deltaScore,
+      });
+    }
+  };
+
   render() {
+    const {prevTotalScore, currentTotalScore, deltaScore} = this.state;
     return (
       <div className="col s12 l6 card-width-546">
         <div className="card-block">
           <h2>
             Your Score <span className="separator">|</span>{' '}
-            <span className="quantity">400 to 1600 </span>
+            <span className="quantity">
+              {prevTotalScore} to {currentTotalScore}{' '}
+            </span>
           </h2>
           <div className="card-main-full card">
             <div className="card-content center-align">
               <div className="chart-block chart-block-total">
                 <Doughnut
-                  data={() => data(200, 1600)}
+                  data={() => data(currentTotalScore, 1600)}
                   width={320}
                   height={320}
                   options={{
@@ -39,8 +63,12 @@ class TotalScoreCard extends React.Component {
                 />
                 <div className="chart-text">
                   <span className="title">TotalScore</span>
-                  <span className="value">200</span>
-                  <span className="description">(100)</span>
+                  <span className="value">
+                    {currentTotalScore}
+                  </span>
+                  <span className="description">
+                    ({deltaScore})
+                  </span>
                 </div>
               </div>
             </div>
