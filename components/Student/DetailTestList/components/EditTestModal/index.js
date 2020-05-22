@@ -323,6 +323,8 @@ class EditTestModal extends React.Component {
         <StrengthsAndWeaknesses
           getTargetImage={this.getTargetImage}
           onRef={(ref) => (this.AnalysisChild = ref)}
+          test={this.props.test}
+          activeStudent={this.props.activeStudent}
         />
       );
     }
