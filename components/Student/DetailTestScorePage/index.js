@@ -32,9 +32,7 @@ class DetailTestScorePage extends React.Component {
   };
 
   render() {
-    const {
-      scores: {subjects, cross_test_score, sub_section_score},
-    } = this.props;
+    const {scores: {subjects, cross_test_score, sub_section_score,essay}} = this.props;
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
@@ -44,11 +42,11 @@ class DetailTestScorePage extends React.Component {
           </div>
           <div className="d-flex-content same-height justify-center row mb-0">
             <TestScoreCard subjectScores={subjects} />
-            {/*  <EssayScoresCard essayScores={essayScores} /> */}
+             <EssayScoresCard essayScores={essay} />
           </div>
           <div className="d-flex-content justify-center row mb-0">
-            {/* <CrossTestScoresCard crossTestScores={cross_test_score} />
-            <SubScoresCard subScores={sub_section_score} /> */}
+            <CrossTestScoresCard crossTestScores={cross_test_score} />
+            {/*  <SubScoresCard subScores={sub_section_score} /> */}
           </div>
         </div>
       </div>
