@@ -68,7 +68,6 @@ class DetailTestList extends React.Component {
     const { onSetActiveStudentTestId } = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
-    console.log('log: 1', activeTest)
     this.setState(
       ({ openEditTestModal }) => ({
         openEditTestModal: true,
@@ -92,7 +91,6 @@ class DetailTestList extends React.Component {
 
   handleTestSettingModalOpen = activeTest => {
     this.onCloseDropdown();
-    console.log('log: 2', activeTest)
     this.setState(({ opentTestSettingModal }) => ({
       activeTest,
       opentTestSettingModal: !opentTestSettingModal,
@@ -118,7 +116,6 @@ class DetailTestList extends React.Component {
       await updateStudentTestStatusApi(postBody);
     }
     // this.setState({ openEnterAnswerWrapper: true, activeTest });
-    console.log('log: 3', activeTest)
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
@@ -126,7 +123,6 @@ class DetailTestList extends React.Component {
     console.log('downloading...');
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    console.log('log: 4', activeTest)
     this.setState(
       {
         activeTest,
@@ -301,7 +297,6 @@ class DetailTestList extends React.Component {
       opentTestSettingModal,
     } = this.state;
     const { user, completes, assigneds, overdues } = this.props;
-    console.log('log: activeTest', this.state.activeTest);
     return (
       <React.Fragment>
         <Toast />
