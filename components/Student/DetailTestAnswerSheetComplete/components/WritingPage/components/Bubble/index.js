@@ -11,7 +11,7 @@ const styles = {
     backgroundColor: "#db1d41",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   greenFilled: {
     position: "relative",
@@ -21,7 +21,7 @@ const styles = {
     backgroundColor: "#32955c",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   greenBorderOnly: {
     position: "relative",
@@ -31,7 +31,7 @@ const styles = {
     backgroundColor: "#fff",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   plain: {
     position: "relative",
@@ -40,8 +40,18 @@ const styles = {
     borderColor: "#a6a8ab",
     height: "19px",
     width: "19px",
-    borderRadius: "50%"
-  }
+    borderRadius: "50%",
+  },
+  blueFilled: {
+    position: "relative",
+    color: "#fff",
+    borderColor: "#40c4ff",
+    border: "1px solid",
+    backgroundColor: "#40c4ff",
+    height: "19px",
+    width: "19px",
+    borderRadius: "50%",
+  },
 };
 
 class BubbleGroup extends React.Component {
@@ -105,7 +115,7 @@ class BubbleGroup extends React.Component {
     // } = this.props;
     // const {selectedIndex} = this.state;
     return letters.map((letter, index) => (
-      <li 
+      <li
         key={letter}
         style={{ cursor: "pointer" }}
         onClick={() => this.handleClickBadge(index)}
@@ -126,36 +136,36 @@ class BubbleGroup extends React.Component {
 
   renderBubbleStyle = letter => {
     const {
-      problem: { correct_answer, student_answer }
+      problem: { correct_answer, student_answer },
     } = this.props;
-    const {selectedIndex, problemCells} = this.state;
+    const { selectedIndex, problemCells } = this.state;
     const selectedAnswer = problemCells[selectedIndex] ? problemCells[selectedIndex].label : null;
-    const studentAnswer = student_answer || selectedAnswer
+    const studentAnswer = student_answer || selectedAnswer;
     if (studentAnswer === letter && studentAnswer === correct_answer) {
       return styles.greenFilled;
     }
-    if (studentAnswer === letter && studentAnswer !== correct_answer) {
+    if (studentAnswer === letter && studentAnswer !== correct_answer && correct_answer) {
       return styles.red;
-    }
-    if (letter !== studentAnswer && letter === !correct_answer) {
-      return styles.plain;
     }
     if (letter !== studentAnswer && letter === correct_answer) {
       return styles.greenBorderOnly;
+    }
+    if (!correct_answer && studentAnswer === letter) {
+      return styles.blueFilled;
     }
     return styles.plain;
   };
 
   render() {
     const {
-      problem: { test_problem_id }
+      problem: { test_problem_id },
     } = this.props;
     return <React.Fragment>{this.mapEmptyBubbles(test_problem_id)}</React.Fragment>;
   }
 }
 
 BubbleGroup.propTypes = {
-  problem: PropTypes.object.isRequired
+  problem: PropTypes.object.isRequired,
 };
 
 export default BubbleGroup;
