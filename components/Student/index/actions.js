@@ -54,6 +54,7 @@ import {
   UPDATE_TEST_FLAG,
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
+  SET_ESSAY_SCORE,
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_TEST_STATUS,
 } from "./constants";
@@ -253,6 +254,13 @@ export function setActiveTestScores(scores) {
   return {
     type: SET_ACTIVE_TEST_SCORES,
     scores,
+  };
+}
+
+export function setEssayScore(score) {
+  return {
+    type: SET_ESSAY_SCORE,
+    score,
   };
 }
 
