@@ -345,6 +345,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               color: 'white',
               backgroundColor: '#28a745',
               fontSize: "14px",
+              borderRadius: "25px",
             }}
             className="center-align"
           >This test section is complete.</p>}
