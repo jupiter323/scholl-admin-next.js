@@ -7,6 +7,7 @@ import {
   SET_STUDENTS_CALENDAR_CALENDAR_ROWS,
   SET_IS_VISIBLE_TOP_BAR,
   SET_ACTIVE_TEST_SCORES,
+  SET_ESSAY_SCORE,
   SET_STUDENT_COMPLETED_TESTS,
   SET_STUDENT_OVERDUE_TESTS,
   SET_STUDENT_ASSIGNED_TESTS,
@@ -87,6 +88,8 @@ function studentReducer(state = initialState, action) {
       return state.set("isVisibleTopBar", action.value);
     case SET_ACTIVE_TEST_SCORES:
       return state.set("activeTestScores", action.scores);
+    case SET_ESSAY_SCORE:
+      return state.set("activeTestScores", {...state.get("activeTestScores"), essay: action.score});
     case SET_STUDENT_COMPLETED_TESTS:
       return state.set("completedStudentTests", action.tests);
     case SET_STUDENT_OVERDUE_TESTS:

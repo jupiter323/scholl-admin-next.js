@@ -247,6 +247,7 @@ class DetailTestList extends React.Component {
       assignment_date: Moment(test.assignDate).format('YYYY-MM-DD'),
       due_date: Moment(test.dueDate).format('YYYY-MM-DD'),
       test_section_ids: test_sections.map(testSection => testSection.id),
+      is_timed: test.isTimed
     };
     const { student_test_id } = await assignTestToStudentApi(postBody);
     if (student_test_id) {

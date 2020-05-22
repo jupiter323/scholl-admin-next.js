@@ -54,6 +54,7 @@ import {
   UPDATE_TEST_FLAG,
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
+  SET_ESSAY_SCORE
 } from "./constants";
 
 export function fetchStudents() {
@@ -252,6 +253,13 @@ export function setActiveTestScores(scores) {
     type: SET_ACTIVE_TEST_SCORES,
     scores,
   };
+}
+
+export function setEssayScore(score){
+  return {
+    type: SET_ESSAY_SCORE,
+    score
+  }
 }
 
 export const getLessonList = () => ({

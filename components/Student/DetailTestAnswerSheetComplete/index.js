@@ -17,7 +17,7 @@ import {
   makeSelectActiveStudentTestId,
   makeSelectActiveTestScores
 } from '../index/selectors';
-import {fetchStudentTestSections} from '../index/actions';
+import {fetchStudentTestSections, setEssayScore} from '../index/actions';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -80,8 +80,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testSectionId => testSectionId === section.test_section_id
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
-      console.log('currentTestSection:', currentTestSection);
-      console.log('section:', section);
       if (!currentTestSection) return;
       switch (currentTestSection.name) {
         case 'Math (Calculator)':
@@ -159,7 +157,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const {activeSlide} = this.state;
-    const {sections, activeStudentTestId, activeTestScores} = this.props;
+    const {sections, activeStudentTestId, activeTestScores, onSetEssayScore} = this.props;
     if (sections) {
       const {
         testReadingProblems,
@@ -182,7 +180,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         );
       }
       if (activeSlide === 'essay') {
-        return <EssayPage testId={activeStudentTestId} testScores={activeTestScores} />;
+        return <EssayPage testId={activeStudentTestId} testScores={activeTestScores} setEssayScore={onSetEssayScore}/>;
       }
     } else {
       return null;
@@ -221,6 +219,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
+    onSetEssayScore: (score) => dispatch(setEssayScore(score))
   };
 }
 
