@@ -11,17 +11,22 @@ class ReadingPage extends React.Component {
   }
 
   componentDidMount = () => {
-    const {scores: {children}} = this.props;
-    this.setState({
-      parentScores: children,
-    });
+    if (this.props.scores) {
+      const {scores: {children}} = this.props;
+      this.setState({
+        parentScores: children,
+      });
+    }
   };
 
   mapGroupBlcok = () => {
     const {parentScores} = this.state;
-    return parentScores.map(group => {
-      return <GroupBlock data={group} />;
-    });
+    return (
+      parentScores instanceof Array &&
+      parentScores.map(group => {
+        return <GroupBlock data={group} />;
+      })
+    );
   };
 
   render() {

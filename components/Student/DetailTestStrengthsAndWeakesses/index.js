@@ -31,7 +31,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       const {test, activeStudent} = this.props;
       const response = await fetchStudentTestScoreApi(activeStudent.id, test.student_test_id);
       if (response && !response.message) {
-        fetchedScores = response.formattedTestScores.categories
+        fetchedScores = response.formattedTestScores.categories;
       }
     }
     const categories = activeTestScores ? activeTestScores.categories : fetchedScores;
@@ -65,7 +65,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   getComponentImages = () => {
     return new Promise(async resolve => {
-      const circleImageList = [];
+      let circleImageList = [];
       let barImageList = [];
       const circleRefs = [
         {id: 'analysisReadingCicleImg'},
@@ -77,12 +77,11 @@ class DetailTestAnswerSheetComplete extends React.Component {
         {id: 'writingAnalysisBarImg', state: 'writing'},
         {id: 'mathAnalysisBarImg', state: 'math'},
       ];
-      barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
       circleRefs.map(async (circleRef, index) => {
         const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
         circleImageList.push(currentImg);
       });
-
+      barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
       const imgList = {circleImageList, barImageList};
       resolve(imgList);
     });
@@ -110,13 +109,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const {activeSlide, readingScores, mathScores, writingScores} = this.state;
-    if (activeSlide === 'reading' && readingScores) {
+    if (activeSlide === 'reading') {
       return <ReadingPage scores={readingScores} />;
     }
-    if (activeSlide === 'writing' && writingScores) {
+    if (activeSlide === 'writing') {
       return <WritingPage scores={writingScores} />;
     }
-    if (activeSlide === 'math' && mathScores) {
+    if (activeSlide === 'math') {
       return <MathPage scores={mathScores} />;
     }
     return null;
