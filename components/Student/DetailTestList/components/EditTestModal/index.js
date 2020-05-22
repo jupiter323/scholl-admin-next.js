@@ -62,65 +62,70 @@ class EditTestModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {activePage, sections} = nextProps;
+    const { activePage, sections } = nextProps;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
-      this.setState({activePage})
+      this.setState({ activePage });
     }
     if (sections.length !== 0) {
       const {
         tests,
-        test,
-        test: {test_id}
+        test: {test_id},
       } = this.props;
-      sections.map(section => {
-        if (section.test_section_status === 'COMPLETED') {
-        const testIds = tests.map((test) => test.id);
-        const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
-        const currentTestSections = tests[currentTestIndex].test_sections;
-        const testSectionIndex = currentTestSections.findIndex(testSection => testSection.id === section.test_section_id);
-        const sectionType = currentTestSections[testSectionIndex].name
-        switch (sectionType) {
-          case "Reading":
-            return this.setState({ readingSectionCompleted: true });
-          case "Writing":
-            return this.setState({ writingSectionCompleted: true });
-          case "Math (Calculator)":
-            return this.setState({ mathCalcSectionCompleted: true });
-          case "Math (No Calculator)":
-            return this.setState({ mathNoCalcSectionCompleted: true });
-          default:
-            return;
+      sections.map((section) => {
+        if (section.test_section_status === "COMPLETED") {
+          const testIds = tests.map((test) => test.id);
+          const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+          const currentTestSections = tests[currentTestIndex].test_sections;
+          const testSectionIndex = currentTestSections.findIndex(
+            (testSection) => testSection.id === section.test_section_id
+          );
+          // If no match return and wait for new props
+          if (!currentTestSections[testSectionIndex]) return;
+
+          const sectionType = currentTestSections[testSectionIndex].name;
+          switch (sectionType) {
+            case "Reading":
+              return this.setState({ readingSectionCompleted: true });
+            case "Writing":
+              return this.setState({ writingSectionCompleted: true });
+            case "Math (Calculator)":
+              return this.setState({ mathCalcSectionCompleted: true });
+            case "Math (No Calculator)":
+              return this.setState({ mathNoCalcSectionCompleted: true });
+            default:
+              return;
+          }
         }
-      }
-      })
+      });
     }
   }
 
-  getBase64ImageFromURL = url => new Promise((resolve, reject) => {
-    const img = new Image();
-    img.setAttribute("crossOrigin", "anonymous");
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0);
-      const dataURL = canvas.toDataURL("image/png");
-      resolve(dataURL);
-    };
-    img.onerror = error => {
-      reject(error);
-    };
-    img.src = url;
-  });
+  getBase64ImageFromURL = (url) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = (error) => {
+        reject(error);
+      };
+      img.src = url;
+    });
 
-  onSetActivePage = activePage => {
+  onSetActivePage = (activePage) => {
     this.setState({
       activePage,
     });
   };
 
-  getTargetImage = currentRef => {
+  getTargetImage = (currentRef) => {
     const html2canvas = require("html2canvas");
     const defaultCanvasSetting = {
       scale: 2,
@@ -129,43 +134,44 @@ class EditTestModal extends React.Component {
       backgroundColor: "rgba(0,0,0,0)",
       removeContainer: true,
     };
-    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(canvas => {
+    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then((canvas) => {
       const imgData = canvas.toDataURL("image/png", 1.0);
       return imgData;
     });
     return targetImg;
   };
 
-  getData = item => new Promise(async resolve => {
-    const currentChild = item.child;
-    this.setState(
-      {
-        activePage: item.state,
-      },
-      async () => {
-        const data = await this[currentChild].getComponentImages();
-        switch (item.state) {
-          case "StrengthsAndWeaknesses":
-            this.setState({
-              analysisCicleImages: data.circleImageList,
-              analysisBarImages: data.barImageList,
-            });
-            break;
-          case "answerSheet":
-            this.setState({
-              answerSheetImages: data,
-            });
-            break;
-          case "scores":
-            this.setState({
-              scoresImages: data,
-            });
-            break;
+  getData = (item) =>
+    new Promise(async (resolve) => {
+      const currentChild = item.child;
+      this.setState(
+        {
+          activePage: item.state,
+        },
+        async () => {
+          const data = await this[currentChild].getComponentImages();
+          switch (item.state) {
+            case "StrengthsAndWeaknesses":
+              this.setState({
+                analysisCicleImages: data.circleImageList,
+                analysisBarImages: data.barImageList,
+              });
+              break;
+            case "answerSheet":
+              this.setState({
+                answerSheetImages: data,
+              });
+              break;
+            case "scores":
+              this.setState({
+                scoresImages: data,
+              });
+              break;
+          }
+          resolve();
         }
-        resolve();
-      },
-    );
-  });
+      );
+    });
 
   generateScoreReportPdf = async () => {
     this.setState({
@@ -176,10 +182,10 @@ class EditTestModal extends React.Component {
     const coverBackgroundImg = "./static/images/sunset.jpg";
     const logoImg = "./static/images/study-hut-logo.png";
     const backgroundImage = await this.getBase64ImageFromURL(
-      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
     );
     const logo = await this.getBase64ImageFromURL(
-      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
     );
     const pageStates = [
       {
@@ -195,11 +201,15 @@ class EditTestModal extends React.Component {
         child: "AnswerSheetChild",
       },
     ];
-    const getImagesPromise = pageStates.reduce((accumulatorPromise, item) => accumulatorPromise
-      .then(async () => {
-        const images = await this.getData(item);
-      })
-      .catch(console.error), Promise.resolve());
+    const getImagesPromise = pageStates.reduce(
+      (accumulatorPromise, item) =>
+        accumulatorPromise
+          .then(async () => {
+            const images = await this.getData(item);
+          })
+          .catch(console.error),
+      Promise.resolve()
+    );
 
     getImagesPromise.then(() => {
       this.setState({
@@ -254,7 +264,7 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo,
+        logo
       );
     });
   };
@@ -278,23 +288,32 @@ class EditTestModal extends React.Component {
           <DetailTestScorePage
             test={test}
             getTargetImage={this.getTargetImage}
-            onRef={ref => (this.ScoresChild = ref)}
+            onRef={(ref) => (this.ScoresChild = ref)}
           />
         </div>
       );
     }
     if (activePage === "answerSheet") {
-      const {readingSectionCompleted,
+      const {
+        readingSectionCompleted,
         writingSectionCompleted,
         mathNoCalcSectionCompleted,
-        mathCalcSectionCompleted} = this.state;
+        mathCalcSectionCompleted,
+        setIsCompleted,
+      } = this.state;
       return (
         <DetailTestAnswerSheetComplete
           testScoreDetails={test}
           getTargetImage={this.getTargetImage}
-          onRef={ref => (this.AnswerSheetChild = ref)}
+          onRef={(ref) => (this.AnswerSheetChild = ref)}
           handleTestScore={this.handleTestScore}
-          completedSections={{readingSectionCompleted, writingSectionCompleted, mathNoCalcSectionCompleted, mathCalcSectionCompleted}}
+          completedSections={{
+            readingSectionCompleted,
+            writingSectionCompleted,
+            mathNoCalcSectionCompleted,
+            mathCalcSectionCompleted,
+          }}
+          setIsCompleted={setIsCompleted}
         />
       );
     }
@@ -304,14 +323,14 @@ class EditTestModal extends React.Component {
         <StrengthsAndWeaknesses
           testScoreDetails={test.testScoreDetails}
           getTargetImage={this.getTargetImage}
-          onRef={ref => (this.AnalysisChild = ref)}
+          onRef={(ref) => (this.AnalysisChild = ref)}
         />
       );
     }
     return null;
   };
 
-  handleTestScore = async (activeTest, problemsByTest) => {
+  handleTestScore = async (activeSection, problemsByTest) => {
     // Check for non-existing sections and set them to completed
     const {
       testReadingProblems,
@@ -328,14 +347,15 @@ class EditTestModal extends React.Component {
     const {
       tests,
       test: { test_id },
+      test,
     } = this.props;
-    const currentTestSectionId = activeTest.test_section_id;
+    const currentTestSectionId = activeSection.test_section_id;
     const testIds = tests.map((test) => test.id);
     const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
     const testSectionIds = currentTestSections.map((testSection) => testSection.id);
     const currentTestSectionIndex = testSectionIds.findIndex(
-      (testSectionId) => testSectionId === currentTestSectionId,
+      (testSectionId) => testSectionId === currentTestSectionId
     );
     const currentTestSection = currentTestSections[currentTestSectionIndex];
     switch (currentTestSection.name) {
@@ -367,8 +387,8 @@ class EditTestModal extends React.Component {
     // @TODO bring back started check for a test that was just created
     // if (activeTest.test_section_status === 'STARTED') {
     const postBody = {
-      student_test_id: activeTest.student_test_id,
-      student_test_section_id: activeTest.id,
+      student_test_id: activeSection.student_test_id,
+      student_test_section_id: activeSection.id,
       student_test_section_status: "COMPLETED",
     };
     await updateStudentTestSectionStatusApi(postBody);
@@ -380,18 +400,18 @@ class EditTestModal extends React.Component {
     } = this.state;
     if (
       readingSectionCompleted &&
-        writingSectionCompleted &&
-        mathCalcSectionCompleted &&
-        mathNoCalcSectionCompleted
+      writingSectionCompleted &&
+      mathCalcSectionCompleted &&
+      mathNoCalcSectionCompleted
     ) {
       const postBody = {
-        student_test_id: activeTest.student_test_id,
+        student_test_id: activeSection.student_test_id,
         status: "COMPLETED",
       };
       // await updateStudentTestStatusApi(postBody);
-      const {onOpentTestScore, onUpdateTestStatus} = this.props;
-      onUpdateTestStatus(postBody)
-      onOpentTestScore(activeTest);
+      const { onOpentTestScore, onUpdateTestStatus } = this.props;
+      onUpdateTestStatus(postBody);
+      onOpentTestScore({ ...test, status: "COMPLETED" });
     }
     // }
     // }
@@ -404,7 +424,7 @@ class EditTestModal extends React.Component {
     const {
       studentInformation: { firstName, lastName },
     } = user;
-    const completedTest = test.status === "COMPLETED"
+    const completedTest = test.status === "COMPLETED";
     return (
       <div className="wrapper">
         <div
@@ -451,15 +471,17 @@ class EditTestModal extends React.Component {
           <div className="nav-header white">
             <div className="nav-additional">
               <ul className="menu-additional">
-                {completedTest && <li className="col s3">
-                  <a
-                    className={activePage === "scores" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("scores")}
-                    href="#"
-                  >
-                    Scores
-                  </a>
-                </li>}
+                {completedTest && (
+                  <li className="col s3">
+                    <a
+                      className={activePage === "scores" ? "active" : ""}
+                      onClick={() => enablePublish && this.onSetActivePage("scores")}
+                      href="#"
+                    >
+                      Scores
+                    </a>
+                  </li>
+                )}
                 <li className="col s3">
                   <a
                     className={activePage === "answerSheet" ? "active" : ""}
@@ -469,21 +491,27 @@ class EditTestModal extends React.Component {
                     Answer Sheet
                   </a>
                 </li>
-                {completedTest && <li className="col s3">
-                  <a
-                    className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")}
-                    href="#"
-                  >
-                    Strengths &amp; Weaknesses
-                  </a>
-                </li>}
-                {completedTest && <li className="menu-special col s3">
-                  <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
-                    Download Score Report
-                    <i className="icon-download-file"></i>
-                  </a>
-                </li>}
+                {completedTest && (
+                  <li className="col s3">
+                    <a
+                      className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
+                      onClick={() =>
+                        enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
+                      }
+                      href="#"
+                    >
+                      Strengths &amp; Weaknesses
+                    </a>
+                  </li>
+                )}
+                {completedTest && (
+                  <li className="menu-special col s3">
+                    <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
+                      Download Score Report
+                      <i className="icon-download-file"></i>
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

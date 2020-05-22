@@ -338,9 +338,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
           style={{
             "color": 'white',
             "backgroundColor": '#28a745',
-            "fontSize": "16px"
+            "fontSize": "14px"
           }} 
-          className="center-align">This test section is completed.</p>}
+          className="center-align">This test section is complete.</p>}
           <div className="main-slick">{this.renderCurrentSlide()}</div>
           <div className="row">
             <div className="btn-holder right-align">

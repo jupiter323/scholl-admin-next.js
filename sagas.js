@@ -1041,8 +1041,6 @@ function* handleUpdateTestStatus(action) {
     if (response && response.message) {
       return console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
     }
-    console.log('log: action', action);
-    console.log('log: response', response);
     yield put({
       type: UPDATE_TEST_STATUS_SUCCESS,
       payload: action.payload,

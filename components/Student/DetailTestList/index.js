@@ -62,10 +62,13 @@ class DetailTestList extends React.Component {
     }
   };
 
-  onToggleEditTestModal = async (activeTest = null) => {
+  onSetActiveTestComplete = () => this.setState({activeTest: {...this.state.activeTest, status: "COMPLETED"}})
+
+  onToggleEditTestModal = async (activeTest) => {
     const { onSetActiveStudentTestId } = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
+    console.log('log: 1', activeTest)
     this.setState(
       ({ openEditTestModal }) => ({
         openEditTestModal: true,
@@ -89,6 +92,7 @@ class DetailTestList extends React.Component {
 
   handleTestSettingModalOpen = activeTest => {
     this.onCloseDropdown();
+    console.log('log: 2', activeTest)
     this.setState(({ opentTestSettingModal }) => ({
       activeTest,
       opentTestSettingModal: !opentTestSettingModal,
@@ -114,6 +118,7 @@ class DetailTestList extends React.Component {
       await updateStudentTestStatusApi(postBody);
     }
     // this.setState({ openEnterAnswerWrapper: true, activeTest });
+    console.log('log: 3', activeTest)
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
@@ -121,6 +126,7 @@ class DetailTestList extends React.Component {
     console.log('downloading...');
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
+    console.log('log: 4', activeTest)
     this.setState(
       {
         activeTest,
@@ -159,7 +165,7 @@ class DetailTestList extends React.Component {
         index={`completed${index}`}
         key={`completed-${index}`}
         onEnterAnswers={this.onEnterAnswers}
-        onEditTest={() => this.onToggleEditTestModal(test)}
+        onEditTest={() => this.onToggleEditTestModal({...test, status: 'COMPLETED'})}
         onSetDropdown={this.onSetDropdown}
         onCloseDropdown={this.onCloseDropdown}
         onDownloadReport={this.onDownloadReport}
@@ -295,6 +301,7 @@ class DetailTestList extends React.Component {
       opentTestSettingModal,
     } = this.state;
     const { user, completes, assigneds, overdues } = this.props;
+    console.log('log: activeTest', this.state.activeTest);
     return (
       <React.Fragment>
         <Toast />
@@ -308,17 +315,17 @@ class DetailTestList extends React.Component {
               onSaveTestChanges={this.onSaveTestChanges}
               onCloseEditTestModal={this.onCloseEditTestModal}
               activePage={this.state.activePage}
-              onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
+              onOpentTestScore={this.onToggleEditTestModal}
             />
           </When>
           <When condition={openEnterAnswerWrapper}>
-            <EnterAnswerWrapper
+            {/* <EnterAnswerWrapper
               open={openEnterAnswerWrapper}
               onCloaseAnswerWrapper={this.onCloaseAnswerWrapper}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               test={activeTest}
               onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
-            />
+            /> */}
           </When>
           <When condition={opentTestSettingModal}>
             <TestSettingModal
