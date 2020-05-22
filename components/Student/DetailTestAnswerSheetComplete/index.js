@@ -78,8 +78,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testSectionId => testSectionId === section.test_section_id
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
-      console.log('currentTestSection:', currentTestSection);
-      console.log('section:', section);
       if (!currentTestSection) return;
       switch (currentTestSection.name) {
         case 'Math (Calculator)':
