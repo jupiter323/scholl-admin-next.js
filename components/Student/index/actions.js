@@ -390,9 +390,10 @@ export const addStudentAnswerToTest = (payload, sectionId) => ({
   type: ADD_STUDENT_ANSWER_TO_TEST,
   payload,
   sectionId,
-})
+});
 
-export const updateTestStaus = (payload) => ({
+export const updateTestStaus = (payload, currentStatus) => ({
   type: UPDATE_TEST_STATUS,
-  payload
-})
+  payload,
+  currentStatus,
+});

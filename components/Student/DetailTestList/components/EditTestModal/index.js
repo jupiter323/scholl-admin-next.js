@@ -12,7 +12,7 @@ import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
 import pdfMakeReport from "./pdfMakeReport";
 import { makeSelectStudentSections, makeSelectActiveStudentToken, makeSelectTests, makeSelectAssignedStudentTests, makeSelectActiveStudent } from "../../../index/selectors";
 import { fetchStudentTestSections, setStudentAssignedTests, setStudentCompletedTests, updateTestStaus } from "../../../index/actions";
-import {updateStudentTestSectionStatusApi, updateStudentTestStatusApi, fetchTestsByStudentIdApi } from '../../../index/api';
+import { updateStudentTestSectionStatusApi, updateStudentTestStatusApi, fetchTestsByStudentIdApi } from '../../../index/api';
 
 class EditTestModal extends React.Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class EditTestModal extends React.Component {
     if (sections.length !== 0) {
       const {
         tests,
-        test: {test_id},
+        test: { test_id },
       } = this.props;
       sections.map((section) => {
         if (section.test_section_status === "COMPLETED") {
@@ -77,7 +77,7 @@ class EditTestModal extends React.Component {
           const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
           const currentTestSections = tests[currentTestIndex].test_sections;
           const testSectionIndex = currentTestSections.findIndex(
-            (testSection) => testSection.id === section.test_section_id
+            (testSection) => testSection.id === section.test_section_id,
           );
           // If no match return and wait for new props
           if (!currentTestSections[testSectionIndex]) return;
@@ -93,7 +93,6 @@ class EditTestModal extends React.Component {
             case "Math (No Calculator)":
               return this.setState({ mathNoCalcSectionCompleted: true });
             default:
-              return;
           }
         }
       });
@@ -169,7 +168,7 @@ class EditTestModal extends React.Component {
               break;
           }
           resolve();
-        }
+        },
       );
     });
 
@@ -182,10 +181,10 @@ class EditTestModal extends React.Component {
     const coverBackgroundImg = "./static/images/sunset.jpg";
     const logoImg = "./static/images/study-hut-logo.png";
     const backgroundImage = await this.getBase64ImageFromURL(
-      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const logo = await this.getBase64ImageFromURL(
-      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const pageStates = [
       {
@@ -208,7 +207,7 @@ class EditTestModal extends React.Component {
             const images = await this.getData(item);
           })
           .catch(console.error),
-      Promise.resolve()
+      Promise.resolve(),
     );
 
     getImagesPromise.then(() => {
@@ -264,7 +263,7 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo
+        logo,
       );
     });
   };
@@ -356,7 +355,7 @@ class EditTestModal extends React.Component {
     const currentTestSections = tests[currentTestIndex].test_sections;
     const testSectionIds = currentTestSections.map((testSection) => testSection.id);
     const currentTestSectionIndex = testSectionIds.findIndex(
-      (testSectionId) => testSectionId === currentTestSectionId
+      (testSectionId) => testSectionId === currentTestSectionId,
     );
     const currentTestSection = currentTestSections[currentTestSectionIndex];
     switch (currentTestSection.name) {
@@ -411,7 +410,8 @@ class EditTestModal extends React.Component {
       };
       // await updateStudentTestStatusApi(postBody);
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
-      onUpdateTestStatus(postBody);
+      const currentTestStatus = test.due_status === 'OVERDUE' ? "overdueStudentTests" : "assignedStudentTests";
+      onUpdateTestStatus(postBody, currentTestStatus);
       onOpentTestScore({ ...test, status: "COMPLETED" });
     }
     // }
@@ -545,7 +545,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: (payload) => dispatch(updateTestStaus(payload)),
+    onUpdateTestStatus: (payload, currentStatus) => dispatch(updateTestStaus(payload, currentStatus)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
