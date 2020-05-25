@@ -65,6 +65,7 @@ class TestScoreCard extends React.Component {
 
   render() {
     const { readingScores, mathScores, writingScores } = this.state;
+    console.log('log: this.state from score card', this.state);
     return (
       <div className="col s12 l8 card-width-772">
         <div className="card-block">
