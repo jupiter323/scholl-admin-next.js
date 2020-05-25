@@ -226,10 +226,10 @@ class EditTestModal extends React.Component {
         state: 'StrengthsAndWeaknesses',
         child: 'AnalysisChild',
       },
-      // {
-      //   state: 'answerSheet',
-      //   child: 'AnswerSheetChild',
-      // },
+      {
+        state: 'answerSheet',
+        child: 'AnswerSheetChild',
+      },
     ];
     const getImagesPromise = pageStates.reduce(
       (accumulatorPromise, item) =>
@@ -270,18 +270,18 @@ class EditTestModal extends React.Component {
           margin: [0, 20, 0, 0],
           pageBreak: 'after',
         });
-        // imgDataLists.push({
-        //   image: answerSheetImages[i],
-        //   width: 550,
-        //   margin: [0, 20, 0, 0],
-        //   pageBreak: 'after',
-        // });
+        imgDataLists.push({
+          image: answerSheetImages[i],
+          width: 550,
+          margin: [0, 20, 0, 0],
+          pageBreak: 'after',
+        });
       }
-      // imgDataLists.push({
-      //   image: answerSheetImages[3],
-      //   width: 550,
-      //   margin: [0, 20, 0, 0],
-      // });
+      imgDataLists.push({
+        image: answerSheetImages[3],
+        width: 550,
+        margin: [0, 20, 0, 0],
+      });
       pdfMakeReport(
         imgDataLists,
         userInfo,
