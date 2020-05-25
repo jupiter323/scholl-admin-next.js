@@ -16,7 +16,7 @@ class CompletedTestCard extends React.Component {
       scores: null,
       ReadingScore: null,
       WritingScore: null,
-      ReadingAndWrigingScore: null,
+      ReadingAndWritingScore: null,
       MathScore: null,
       NA: 0,
     };
@@ -49,7 +49,7 @@ class CompletedTestCard extends React.Component {
           this.setState({ ReadingScore: score });
           break;
         case 'Writing and Language':
-          this.setState({ ReadingAndWrigingScore: score });
+          this.setState({ ReadingAndWritingScore: score });
           break;
         case 'Math':
           this.setState({ MathScore: score });
@@ -67,7 +67,7 @@ class CompletedTestCard extends React.Component {
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
     const { activeStudent: { id } } = this.props;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(id, student_test_id);
+    const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
     return formattedTestScores;
   };
 
@@ -92,7 +92,7 @@ class CompletedTestCard extends React.Component {
       onTestFlagReviewed,
       handleTestSettingModalOpen,
     } = this.props;
-    const { ReadingScore, WritingScore, ReadingAndWrigingScore, MathScore } = this.state;
+    const { ReadingScore, WritingScore, ReadingAndWritingScore, MathScore } = this.state;
     const formattedDueDate = moment(due_date).format('MM/DD/YY');
     const formattedCompletedDate = moment(completion_date.date).format('MM/DD/YY');
     return (
@@ -147,22 +147,22 @@ class CompletedTestCard extends React.Component {
                               >
                                 <li>
                                   <a href="#" onClick={handleTestSettingModalOpen}>
-                                    Edit Test Settings
+                                          Edit Test Settings
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" onClick={() => onEnterAnswers(student_test_id)}>
-                                    Edit/Enter Answers
+                                          Edit/Enter Answers
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" onClick={() => onDownloadReport(this.props.test)}>
-                                    Download score report
+                                          Download score report
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" className="disabled">
-                                    Excuse/Unexcuse lateness
+                                          Excuse/Unexcuse lateness
                                   </a>
                                 </li>
                                 <li>
@@ -173,12 +173,12 @@ class CompletedTestCard extends React.Component {
                                       onTestFlagReviewed(student_test_id, student_id);
                                     }}
                                   >
-                                    Mark flags reviewed
+                                          Mark flags reviewed
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" className="disabled">
-                                    Reset
+                                          Reset
                                   </a>
                                 </li>
                                 <li>
@@ -194,7 +194,7 @@ class CompletedTestCard extends React.Component {
                                     }}
                                     className="red-text text-darken-3"
                                   >
-                                    Unassign
+                                          Unassign
                                   </a>
                                 </li>
                               </ul>
@@ -210,7 +210,7 @@ class CompletedTestCard extends React.Component {
                             <span className="list-status">
                               <span className="ico-mark" />
                               <span className="status-text">
-                                Complete {formattedCompletedDate}
+                                      Complete {formattedCompletedDate}
                               </span>
                             </span>
                           </li>
@@ -218,7 +218,7 @@ class CompletedTestCard extends React.Component {
                             <span className="list-date">
                               <i className="icon-calendar" />
                               <span className="date">
-                                Due {formattedDueDate}
+                                      Due {formattedDueDate}
                               </span>
                             </span>
                           </li>
@@ -241,18 +241,45 @@ class CompletedTestCard extends React.Component {
               </div>
             </div>
             <ul className="points-list-custom" onClick={e => this.onEditTest(e)}>
-              <li className="point-custom-large">
-                <span
-                  className="badge-circle"
-                  style={{
-                    width: '120px',
-                    height: '120px',
-                    fontSize: '55px',
-                  }}
-                >
-                  n/a
-                </span>
-              </li>
+              {MathScore && ReadingAndWritingScore && ReadingScore
+                ? <li>
+                  <span
+                    className="badge-circle"
+                    style={{
+                      backgroundColor: '#00BBFF',
+                      borderColor: '#00BBFF',
+                      width: '120px',
+                      height: '120px',
+                      fontSize: '55px',
+                    }}
+                  >
+                    <span className="badge-text">
+                      <strong>
+                        <h2 style={{ marginBottom: '5px' }}>SAT Score</h2>
+                      </strong>
+                      <h2 style={{ marginBottom: '20px' }}>
+                        {MathScore.current_score + ReadingScore.current_score + ReadingAndWritingScore.current_score}
+                      </h2>
+                    </span>
+                  </span>
+                </li>
+                : <li>
+                  <span
+                    className="badge-circle"
+                    style={{
+                      width: '120px',
+                      height: '120px',
+                      fontSize: '55px',
+                    }}
+                  >
+                    <span className="badge-text">
+                      <strong>
+                        <h2 style={{ marginBottom: '10px' }}>SAT Score</h2>
+                      </strong>
+                      <h2 style={{ marginBottom: '15px' }}>n/a</h2>
+                    </span>
+                  </span>
+                </li>}
               {MathScore
                 ? <li>
                   <span
@@ -284,7 +311,7 @@ class CompletedTestCard extends React.Component {
                     </span>
                   </span>
                 </li>}
-              {ReadingAndWrigingScore
+              {ReadingAndWritingScore
                 ? <li>
                   <span
                     className="badge-circle"
@@ -295,20 +322,20 @@ class CompletedTestCard extends React.Component {
                   >
                     <span className="badge-text" style={{ fontSize: '16px' }}>
                       <strong>
-                          Reading
-                        <br />
-                          &amp; Writing
+                                Writing
+                        {/* <br />
+                                &amp; Language */}
                       </strong>
                       <h2
                         style={{
-                          marginBottom: ReadingAndWrigingScore.previous_score ? '' : '15px',
+                          marginBottom: ReadingAndWritingScore.previous_score ? '' : '15px',
                         }}
                       >
-                        {ReadingAndWrigingScore.current_score}
+                        {ReadingAndWritingScore.current_score}
                         <br />
-                        {ReadingAndWrigingScore.previous_score === null
+                        {ReadingAndWritingScore.previous_score === null
                           ? ''
-                          : `${ReadingAndWrigingScore.delta}`}
+                          : `${ReadingAndWritingScore.delta}`}
                       </h2>
                     </span>
                   </span>
@@ -317,9 +344,9 @@ class CompletedTestCard extends React.Component {
                   <span className="badge-circle">
                     <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
                       <strong>
-                          Reading
-                        <br />
-                          &amp; Writing
+                                Writing
+                        {/* <br />
+                                &amp; Language */}
                       </strong>
                       <h2>n/a</h2>
                     </span>
@@ -338,7 +365,7 @@ class CompletedTestCard extends React.Component {
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: '16px' }}>
-                        Reading
+                              Reading
                       <br />
                       <h3 style={{ marginBottom: ReadingScore.previous_score ? '' : '20px' }}>
                         {ReadingScore.current_score}
@@ -357,46 +384,9 @@ class CompletedTestCard extends React.Component {
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: '16px' }}>
-                        Reading
+                              Reading
                       <br />
                       <h3 style={{ marginTop: '10px' }}>n/a</h3>
-                    </span>
-                  </span>
-                </li>}
-              {WritingScore
-                ? <li>
-                  <span
-                    className="badge-circle"
-                    style={{
-                      backgroundColor: '#389b7d',
-                      borderColor: '#389b7d',
-                      width: '80px',
-                      height: '80px',
-                    }}
-                  >
-                    <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
-                        Writing
-                      <br />
-                      <h4>
-                        {WritingScore.current_score}
-                        <br />
-                        {WritingScore.previous_score === null ? '' : `${WritingScore.delta}`}
-                      </h4>
-                    </span>
-                  </span>
-                </li>
-                : <li>
-                  <span
-                    className="badge-circle"
-                    style={{
-                      width: '80px',
-                      height: '80px',
-                    }}
-                  >
-                    <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
-                        Writing
-                      <br />
-                      <h2>n/a</h2>
                     </span>
                   </span>
                 </li>}

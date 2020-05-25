@@ -469,7 +469,7 @@ export const fetchStudentTestScoreApi = (student_id, student_test_id) =>
         formattedTestScores.essay = { analysis: "", reading: "", writing: "" };
         return formattedTestScores;
       }
-      return { formattedTestScores };
+      return formattedTestScores;
     })
     .catch(err => err);
 export const updateStudentTestQuestionFlagStatusApi = (body) =>
