@@ -32,13 +32,10 @@ class DetailTestScorePage extends React.Component {
   };
 
   render() {
-    const {scores, test} = this.props
-    console.log('log: scores', scores);
-    console.log('log: test', test);
+    const { scores, test } = this.props;
     if (!scores) return (<div>Loading...</div>);
     if (scores.student_test_id !== test.student_test_id) return (<div>Loading...</div>);
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
-    console.log('log: subjects', subjects);
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">

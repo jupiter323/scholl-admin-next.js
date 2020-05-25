@@ -70,12 +70,17 @@ class DetailTestAnswerSheetComplete extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
+      this.setState({ testReadingProblems: null,
+        testWritingProblems: null,
+        testMathCalcProblems: null,
+        testMathNoCalcProblems: null });
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
     const {
+      test,
       tests,
       testScoreDetails: { test_id },
     } = this.props;
