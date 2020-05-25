@@ -430,14 +430,12 @@ class EditTestModal extends React.Component {
         student_test_id: activeSection.student_test_id,
         status: 'COMPLETED',
       };
-      // await updateStudentTestStatusApi(postBody);
+      console.log('log: test', test);
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
       const currentTestStatus = test.due_status === 'OVERDUE' ? "overdueStudentTests" : "assignedStudentTests";
-      onUpdateTestStatus(postBody, currentTestStatus);
+      onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
       onOpentTestScore({ ...test, status: "COMPLETED" });
     }
-    // }
-    // }
   };
 
   render() {
@@ -567,7 +565,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: (payload, currentStatus) => dispatch(updateTestStaus(payload, currentStatus)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStaus(payload, currentStatus, studentId)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

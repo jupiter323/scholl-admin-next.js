@@ -1046,6 +1046,8 @@ function* handleUpdateTestStatus(action) {
       payload: action.payload,
     });
     if (action.payload.status === "COMPLETED") {
+      console.log('log: action', action);
+      // yield call(fetchStudentTestScoreApi, )
       yield put({
         type: ADD_TEST_TO_COMPLETED,
         payload: action.payload,

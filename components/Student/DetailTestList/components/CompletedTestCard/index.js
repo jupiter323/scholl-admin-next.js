@@ -67,8 +67,9 @@ class CompletedTestCard extends React.Component {
   getScoresByStudentTest = async test => {
     const { student_test_id } = test;
     const { activeStudent: { id } } = this.props;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(id, student_test_id);
-    return formattedTestScores;
+    const response = await fetchStudentTestScoreApi(id, student_test_id);
+    console.log('log: formattedTestScores', response);
+    return response;
   };
 
   handleDropdownClick = event => {
