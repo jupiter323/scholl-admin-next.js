@@ -410,7 +410,7 @@ class EditTestModal extends React.Component {
     // @TODO bring back started check for a test that was just created
     // if (activeTest.test_section_status === 'STARTED') {
     const postBody = {
-      student_test_id: activeSection.student_test_id,
+      student_test_id: test.student_test_id,
       student_test_section_id: activeSection.id,
       student_test_section_status: 'COMPLETED',
     };
@@ -428,7 +428,7 @@ class EditTestModal extends React.Component {
       mathNoCalcSectionCompleted
     ) {
       const postBody = {
-        student_test_id: activeSection.student_test_id,
+        student_test_id: test.student_test_id,
         status: 'COMPLETED',
       };
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
