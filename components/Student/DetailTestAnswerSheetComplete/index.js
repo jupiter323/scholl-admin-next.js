@@ -193,16 +193,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
     const { sections, activeStudentTestId, activeTestScores, onSetEssayScore, test } = this.props;
-    if (sections) {
+    if (sections && test && sections[0].student_test_id === test.student_test_id) {
       const {
         testReadingProblems,
         testWritingProblems,
         testMathCalcProblems,
         testMathNoCalcProblems,
       } = this.state;
-      console.log('log: test', test);
-      console.log('log: sections', sections);
-      console.log('log: testReadingProblems', testReadingProblems);
       if (activeSlide === "reading") {
         this.updateSectionStatus(activeSlide, testReadingProblems);
         return (

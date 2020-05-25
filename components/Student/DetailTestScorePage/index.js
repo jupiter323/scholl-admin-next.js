@@ -18,7 +18,6 @@ class DetailTestScorePage extends React.Component {
 
   componentDidMount() {
     this.props.onRef(this);
-    console.log('log: props', this.props);
   }
   componentWillUnmount() {
     this.props.onRef(undefined);
@@ -33,9 +32,8 @@ class DetailTestScorePage extends React.Component {
   };
 
   render() {
-    if (!this.props.scores) return (<div>Loading...</div>)
+    if (!this.props.scores) return (<div>Loading...</div>);
     const { scores: { subjects, cross_test_score, sub_section_score, essay } } = this.props;
-    console.log('log: scores', this.props.scores);
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">

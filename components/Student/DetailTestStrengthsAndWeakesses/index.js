@@ -31,7 +31,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
       const { test, activeStudent } = this.props;
       const response = await fetchStudentTestScoreApi(activeStudent.id, test.student_test_id);
       if (response && !response.message) {
-        console.log('log: response', response);
         fetchedScores = response.categories;
       }
     }
@@ -117,9 +116,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   render() {
     const { activeSlide, readingScores, mathScores, writingScores } = this.state;
-    console.log('log: readingScores', readingScores);
-    console.log('log: mathScores', mathScores);
-    console.log('log: writingScores', writingScores);
     return (
       <React.Fragment>
         <SubjectsCard

@@ -431,7 +431,6 @@ class EditTestModal extends React.Component {
         student_test_id: activeSection.student_test_id,
         status: 'COMPLETED',
       };
-      console.log('log: test', test);
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
       const currentTestStatus = test.due_status === 'OVERDUE' ? "overdueStudentTests" : "assignedStudentTests";
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);

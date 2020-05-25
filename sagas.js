@@ -1058,9 +1058,7 @@ function* handleUpdateTestStatus(action) {
         payload: action.payload,
         testList: action.currentStatus,
       });
-      console.log('log: action', action);
       const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
-      console.log('log: response', response);
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
         scores: response,

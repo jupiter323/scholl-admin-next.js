@@ -68,7 +68,6 @@ class CompletedTestCard extends React.Component {
     const { student_test_id } = test;
     const { activeStudent: { id } } = this.props;
     const response = await fetchStudentTestScoreApi(id, student_test_id);
-    console.log('log: formattedTestScores', response);
     return response;
   };
 
