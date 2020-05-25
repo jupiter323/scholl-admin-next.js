@@ -33,7 +33,7 @@ class DetailTestScorePage extends React.Component {
   };
 
   render() {
-    console.log('log: props', this.props);
+    if (!this.props.scores) return <div>Loading...</div>;
     const { scores: { subjects, cross_test_score, sub_section_score, essay } } = this.props;
     return (
       <div className="container" id="scoresRef">
