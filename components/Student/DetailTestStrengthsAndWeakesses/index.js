@@ -62,41 +62,44 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.props.onRef(undefined);
   }
 
-  getComponentImages = () => new Promise(async resolve => {
-    const circleImageList = [];
-    let barImageList = [];
-    const circleRefs = [
-      { id: 'analysisReadingCicleImg' },
-      { id: 'analysisWritingCircleImg' },
-      { id: 'analysisMathCircleImg' },
-    ];
-    const barRefs = [
-      { id: 'readingAnalysisBarImg', state: 'reading' },
-      { id: 'writingAnalysisBarImg', state: 'writing' },
-      { id: 'mathAnalysisBarImg', state: 'math' },
-    ];
-    circleRefs.map(async (circleRef, index) => {
-      const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
-      circleImageList.push(currentImg);
-    });
-    barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
-    const imgList = { circleImageList, barImageList };
-    resolve(imgList);
-  });
-  getData = item => new Promise(async resolve => {
-    setTimeout(() => {
-      this.setState({ activeSlide: item.state }, async () => {
-        const [currentImg] = await Promise.all([this.onHandleTargetImage(item.id)]);
-        resolve(currentImg);
+  getComponentImages = () =>
+    new Promise(async resolve => {
+      const circleImageList = [];
+      let barImageList = [];
+      const circleRefs = [
+        { id: 'analysisReadingCicleImg' },
+        { id: 'analysisWritingCircleImg' },
+        { id: 'analysisMathCircleImg' },
+      ];
+      const barRefs = [
+        { id: 'readingAnalysisBarImg', state: 'reading' },
+        { id: 'writingAnalysisBarImg', state: 'writing' },
+        { id: 'mathAnalysisBarImg', state: 'math' },
+      ];
+      circleRefs.map(async (circleRef, index) => {
+        const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
+        circleImageList.push(currentImg);
       });
-    }, 1000);
-  });
+      barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
+      const imgList = { circleImageList, barImageList };
+      resolve(imgList);
+    });
+  getData = item =>
+    new Promise(async resolve => {
+      setTimeout(() => {
+        this.setState({ activeSlide: item.state }, async () => {
+          const [currentImg] = await Promise.all([this.onHandleTargetImage(item.id)]);
+          resolve(currentImg);
+        });
+      }, 1000);
+    });
 
-  onHandleTargetImage = async currentRef => new Promise(async resolve => {
-    const { getTargetImage } = this.props;
-    const [currentImg] = await Promise.all([getTargetImage(document.getElementById(currentRef))]);
-    resolve(currentImg);
-  });
+  onHandleTargetImage = async currentRef =>
+    new Promise(async resolve => {
+      const { getTargetImage } = this.props;
+      const [currentImg] = await Promise.all([getTargetImage(document.getElementById(currentRef))]);
+      resolve(currentImg);
+    });
 
   onSetActiveSlide = activeSlide => this.setState({ activeSlide });
 

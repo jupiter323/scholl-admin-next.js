@@ -26,6 +26,7 @@ import {
   assignNewTest,
   fetchStudentTestSections,
   addNewTestToStudentTests,
+  setActiveTestScores,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -39,6 +40,7 @@ import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
 } from '../index/api';
 
 class DetailTestList extends React.Component {
@@ -117,6 +119,10 @@ class DetailTestList extends React.Component {
         status: 'STARTED',
       };
       await updateStudentTestStatusApi(postBody);
+    } else if (activeTest.status === 'COMPLETED') {
+      const { onSetScores, activeStudent: { id } } = this.props;
+      const response = await fetchStudentTestScoreApi(id, currentTestId);
+      onSetScores(response);
     }
     // this.setState({ openEnterAnswerWrapper: true, activeTest });
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
@@ -420,6 +426,7 @@ function mapDispatchToProps(dispatch) {
     onAssignNewTest: (newTest) => dispatch(assignNewTest(newTest)),
     onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
     onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
   };
 }
 
