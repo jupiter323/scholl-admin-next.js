@@ -79,7 +79,7 @@ class AnswerRow extends React.Component {
     const { problem } = this.props;
     const { open } = this.state;
     const { status } = problem.flag;
-    console.log('log: problem', problem);
+    if (status === "REVIEWED") console.log('log: problem', problem);
     return (
       <React.Fragment>
         <QuestionModal

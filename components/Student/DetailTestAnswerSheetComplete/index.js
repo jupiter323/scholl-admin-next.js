@@ -298,6 +298,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   updateSectionStatus = async (activeSlide, currentSection) => {
+    console.log('log: currentSection', currentSection);
     if (!currentSection) return;
     if (currentSection.test_section_status === 'CREATED') {
       if (!this.state.updatedSectionStatus[`${activeSlide}Section`]) {
