@@ -24,7 +24,7 @@ class SubBlock extends React.Component {
             <div className="graph-col text-column">
               <strong className="graph-subtitle">
                 <span className={getScoreStatus(data.score.percent_correct * 100)}>
-                  {data.score.percent_correct * 100}%
+                  {(data.score.percent_correct * 100).toFixed(0)}%
                 </span>
                 {data.name}
               </strong>
@@ -33,12 +33,12 @@ class SubBlock extends React.Component {
               <div className="graph-linear-students">
                 <div
                   className="graph-holder"
-                  style={{width: `${data.score.correct / data.score.total * 100}%`}}
+                  style={{width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%`}}
                 >
                   <div className="graph-admin">
                     <div
                       className="part-red"
-                      style={{width: `${data.score.incorrect / data.score.total * 100}%`}}
+                      style={{width: `${(data.score.incorrect / data.score.total * 100).toFixed(0)}%`}}
                     />
                   </div>
                 </div>

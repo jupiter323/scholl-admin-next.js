@@ -25,7 +25,7 @@ class GroupBlock extends React.Component {
         <div className="graph-row graph-row-title">
           <div className="graph-col text-column">
             <h3 className="graph-title">
-              <span className={getScoreStatus(percent_correct * 100)}>
+              <span className={getScoreStatus((percent_correct * 100).toFixed(0))}>
                 {(percent_correct * 100).toFixed(0)}%
               </span>
               {name}
@@ -33,9 +33,9 @@ class GroupBlock extends React.Component {
           </div>
           <div className="graph-col graph-container">
             <div className="graph-linear-students">
-              <div className="graph-holder" style={{width: `${(correct / total * 100).toFixed()}%`}}>
+              <div className="graph-holder" style={{width: `${(correct / total * 100).toFixed(0)}%`}}>
                 <div className="graph-admin">
-                  <div className="part-red" style={{width: `${(incorrect / total * 100).toFixed()}%`}} />
+                  <div className="part-red" style={{width: `${(incorrect / total * 100).toFixed(0)}%`}} />
                 </div>
               </div>
             </div>
