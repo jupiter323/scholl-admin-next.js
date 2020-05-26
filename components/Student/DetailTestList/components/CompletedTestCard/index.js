@@ -23,11 +23,12 @@ class CompletedTestCard extends React.Component {
   }
 
   componentDidMount = async () => {
+    const { test } = this.props;
     const formattedScores = await this.getScoresByStudentTest(this.props.test);
     if (!formattedScores) return;
     if (formattedScores) {
       this.setState({
-        scores: formattedScores,
+        scores: { ...formattedScores, student_test_id: test.student_test_id },
       });
       this.setScores(formattedScores.subjects);
     }

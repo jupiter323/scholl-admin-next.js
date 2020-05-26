@@ -339,6 +339,7 @@ class EditTestModal extends React.Component {
             mathCalcSectionCompleted,
           }}
           setIsCompleted={setIsCompleted}
+          test={this.props.test}
         />
       );
     }
@@ -409,7 +410,7 @@ class EditTestModal extends React.Component {
     // @TODO bring back started check for a test that was just created
     // if (activeTest.test_section_status === 'STARTED') {
     const postBody = {
-      student_test_id: activeSection.student_test_id,
+      student_test_id: test.student_test_id,
       student_test_section_id: activeSection.id,
       student_test_section_status: 'COMPLETED',
     };
@@ -427,17 +428,14 @@ class EditTestModal extends React.Component {
       mathNoCalcSectionCompleted
     ) {
       const postBody = {
-        student_test_id: activeSection.student_test_id,
+        student_test_id: test.student_test_id,
         status: 'COMPLETED',
       };
-      // await updateStudentTestStatusApi(postBody);
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
       const currentTestStatus = test.due_status === 'OVERDUE' ? "overdueStudentTests" : "assignedStudentTests";
-      onUpdateTestStatus(postBody, currentTestStatus);
+      onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
       onOpentTestScore({ ...test, status: "COMPLETED" });
     }
-    // }
-    // }
   };
 
   render() {
@@ -567,7 +565,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: (payload, currentStatus) => dispatch(updateTestStaus(payload, currentStatus)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStaus(payload, currentStatus, studentId)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

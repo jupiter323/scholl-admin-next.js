@@ -31,6 +31,7 @@ import {
   updateStudentTestQuestionFlagStatusApi,
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
 } from "./components/Student/index/api";
 
 import {
@@ -106,6 +107,7 @@ export const studentApi = {
   rescoreStudentLessonApi,
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
 };
 
 export const instructorApi = {

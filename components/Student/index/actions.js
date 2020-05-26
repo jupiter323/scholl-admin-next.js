@@ -400,8 +400,9 @@ export const addStudentAnswerToTest = (payload, sectionId) => ({
   sectionId,
 });
 
-export const updateTestStaus = (payload, currentStatus) => ({
+export const updateTestStaus = (payload, currentStatus, studentId) => ({
   type: UPDATE_TEST_STATUS,
   payload,
   currentStatus,
+  studentId,
 });

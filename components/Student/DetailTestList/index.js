@@ -26,7 +26,7 @@ import {
   assignNewTest,
   fetchStudentTestSections,
   addNewTestToStudentTests,
-  setActiveTestScores
+  setActiveTestScores,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -40,7 +40,7 @@ import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
-  fetchStudentTestScoreApi
+  fetchStudentTestScoreApi,
 } from '../index/api';
 
 class DetailTestList extends React.Component {
@@ -119,10 +119,10 @@ class DetailTestList extends React.Component {
         status: 'STARTED',
       };
       await updateStudentTestStatusApi(postBody);
-    } else if(activeTest.status === 'COMPLETED' ){
-      const { onSetScores, activeStudent : { id } } = this.props;
+    } else if (activeTest.status === 'COMPLETED') {
+      const { onSetScores, activeStudent: { id } } = this.props;
       const response = await fetchStudentTestScoreApi(id, currentTestId);
-        onSetScores(response);
+      onSetScores(response);
     }
     // this.setState({ openEnterAnswerWrapper: true, activeTest });
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });

@@ -54,6 +54,7 @@ import {
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
+  SET_ACTIVE_TEST_SCORES,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -136,6 +137,7 @@ const {
   updateStudentTestQuestionFlagStatusApi,
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1055,6 +1057,11 @@ function* handleUpdateTestStatus(action) {
         type: REMOVE_TEST_FROM_PREV_LIST,
         payload: action.payload,
         testList: action.currentStatus,
+      });
+      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
+      yield put({
+        type: SET_ACTIVE_TEST_SCORES,
+        scores: { ...response, student_test_id: action.payload.student_test_id },
       });
     }
   } catch (error) {

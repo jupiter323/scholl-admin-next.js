@@ -55,17 +55,18 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testScoreDetails: { student_test_id },
       activeStudent: { id },
     } = this.props;
-    if (sections.length === 0) {
-      const postBody = {
-        id,
-        student_test_id,
-        studentToken,
-      };
-      onFetchStudentTestSections(postBody);
-    } else {
-      this.onSetProblems(sections, student_test_id);
-    }
-
+    // @TODO we need another solution than checking for sections
+    // The problem is that sections will always exist after clicking the first test and no new test will ever get fetched.
+    // if (sections.length === 0) {
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
+    // } else {
+    //   this.onSetProblems(sections, student_test_id);
+    // }
     this.props.onRef(this);
   }
   componentWillUnmount() {
@@ -76,14 +77,22 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
       console.log('log: ran setting problems', sections);
+      this.setState({ testReadingProblems: null,
+        testWritingProblems: null,
+        testMathCalcProblems: null,
+        testMathNoCalcProblems: null });
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
-    const { tests, testScoreDetails: { test_id } } = this.props;
-    const testIds = tests.map(test => test.id);
-    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+    const {
+      test,
+      tests,
+      testScoreDetails: { test_id },
+    } = this.props;
+    const testIds = tests.map((test) => test.id);
+    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
     sections.map(section => {
       const testSectionIds = currentTestSections.map(testSection => testSection.id);
@@ -212,8 +221,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
-    const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
-    if (sections) {
+    const { sections, activeStudentTestId, activeTestScores, onSetEssayScore, test } = this.props;
+    if (sections.length > 0 && test && sections[0].student_test_id === test.student_test_id) {
       const {
         testReadingProblems,
         testWritingProblems,
