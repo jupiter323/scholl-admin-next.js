@@ -123,7 +123,7 @@ class AnswerRow extends React.Component {
               <If condition={status === 'REVIEWED'}>
                 <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
+                  <b className="status-text">Reviewed</b>
                 </span>
               </If>
             </div>

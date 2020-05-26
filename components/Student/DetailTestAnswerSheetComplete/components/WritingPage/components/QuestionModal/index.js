@@ -13,36 +13,66 @@ class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'UN_FLAGGED',
-      originalTestProblemId: '',
+      status: "UN_FLAGGED",
+      originalTestProblemId: "",
+      subject: "",
     };
   }
 
+  componentDidMount = () => {
+    const { question: { problem_type_id } } = this.props;
+    console.log('log: problem_type_id', problem_type_id);
+    switch (problem_type_id) {
+      case 1:
+        this.setState({ subject: "Reading" });
+        break;
+      case 2:
+        this.setState({ subject: "Writing" });
+        break;
+      case 3:
+        this.setState({ subject: "Math (no calc)" });
+        break;
+      case 4:
+        this.setState({ subject: "Math (calculator)" });
+        break;
+      default:
+        break;
+    }
+  };
+
   componentWillReceiveProps = (nextProps) => {
-    const { question: { test_problem_id } } = nextProps;
+    const {
+      question: { test_problem_id },
+    } = nextProps;
     const { originalTestProblemId } = this.state;
     if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
-      const { question: { flag: { status } } } = this.props;
+      const {
+        question: {
+          flag: { status },
+        },
+      } = this.props;
       this.setState({
         status,
       });
     }
-  }
+  };
 
   onHandleQuestionFlagStatus = async (_e, status) => {
-    const {
-      studentTestId,
-      onChangeFlagState,
-    } = this.props;
+    const { studentTestId, onChangeFlagState } = this.props;
     onChangeFlagState(status);
-    const { question: { flag: { id } } } = this.props;
+    const {
+      question: {
+        flag: { id },
+      },
+    } = this.props;
+    console.log("log: question", this.props.question);
     const postBody = { student_test_id: studentTestId, flag_id: id, status };
     await updateStudentTestQuestionFlagStatusApi(postBody);
   };
 
-
   render() {
     const { open, onCloseQuestionModal, question } = this.props;
+    // console.log('log: state', this.state.subject)
     return (
       <Portal selector="#modal">
         {open && (
@@ -55,7 +85,7 @@ class QuestionModal extends React.Component {
               >
                 <div className="modal-header row mb-0">
                   <div className="col s10">
-                    <span className="subtitle">Reading</span>
+                    <span className="subtitle">{this.state.subject}</span>
                     <span className="title">Problem {question.question_number}</span>
                   </div>
                   <div className="col s2 right-align">
@@ -82,7 +112,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
+                                onClick={(e) => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
                               />
                               <span>
                                 <i className="icon-flag grey-text text-lighten-1" />
@@ -93,7 +123,8 @@ class QuestionModal extends React.Component {
                         </ul>
                       </form>
                     </div>
-                    <div className="panel-block">
+                    {/* @ TODO going to comment out hardcoded data for now */}
+                    {/* <div className="panel-block">
                       <ul className="informers-list">
                         <li className="informer-block">
                           <div
@@ -146,8 +177,8 @@ class QuestionModal extends React.Component {
                           <b className="informer-value">8%</b>
                         </li>
                       </ul>
-                    </div>
-                    <div className="panel-block">
+                    </div> */}
+                    {/* <div className="panel-block">
                       <strong className="subtitle">Student’s Notes:</strong>
                       <div
                         className="text-content custom-form"
@@ -176,7 +207,7 @@ class QuestionModal extends React.Component {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
