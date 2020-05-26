@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {createStructuredSelector} from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import AnswerSheetNavBar from './components/AnswerSheetNavBar';
 import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
@@ -18,8 +18,8 @@ import {
   makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import {fetchStudentTestSections, addStudentAnswerToTest, setEssayScore} from '../index/actions';
-import {updateStudentTestSectionStatusApi} from '../index/api';
+import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
+import { updateStudentTestSectionStatusApi } from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -52,8 +52,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
       onFetchStudentTestSections,
       sections,
       studentToken,
-      testScoreDetails: {student_test_id},
-      activeStudent: {id},
+      testScoreDetails: { student_test_id },
+      activeStudent: { id },
     } = this.props;
     if (sections.length === 0) {
       const postBody = {
@@ -73,21 +73,22 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    const {sections, student_test_id} = nextProps;
+    const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
+      console.log('log: ran setting problems', sections);
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
-    const {tests, testScoreDetails: {test_id}} = this.props;
+    const { tests, testScoreDetails: { test_id } } = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
     sections.map(section => {
       const testSectionIds = currentTestSections.map(testSection => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === section.test_section_id
+        testSectionId => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
       if (!currentTestSection) return;
@@ -136,7 +137,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     return new Promise(resolve =>
       setTimeout(() => {
         resolve();
-      }, delayTime)
+      }, delayTime),
     );
   }
 
@@ -146,10 +147,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
         new Promise(resolve => {
           const imgDataList = [];
           const componentRefs = [
-            {id: 'readingAnswerSheetImg', state: 'reading'},
-            {id: 'writingAnswerSheetImg', state: 'writing'},
-            {id: 'mathNoCalcAnswerSheetImg', state: 'math (no calc)'},
-            {id: 'mathCalcAnswerSheetImg', state: 'math (calculator)'},
+            { id: 'readingAnswerSheetImg', state: 'reading' },
+            { id: 'writingAnswerSheetImg', state: 'writing' },
+            { id: 'mathNoCalcAnswerSheetImg', state: 'math (no calc)' },
+            { id: 'mathCalcAnswerSheetImg', state: 'math (calculator)' },
           ];
           const getImgListPromise = componentRefs.reduce(
             (accumulatorPromise, item) =>
@@ -159,24 +160,24 @@ class DetailTestAnswerSheetComplete extends React.Component {
                   return imgDataList.push(result);
                 })
                 .catch(console.error),
-            Promise.resolve()
+            Promise.resolve(),
           );
           getImgListPromise.then(() => {
             resolve(imgDataList);
           });
-        })
+        }),
     );
 
   getData = item =>
     new Promise(resolve => {
-      this.setState({activeSlide: item.state}, async () => {
+      this.setState({ activeSlide: item.state }, async () => {
         const currentImg = await this.onHandleTargetImage(item.id);
         resolve(currentImg);
       });
     });
 
   onHandleTargetImage = async currentRef => {
-    const {getTargetImage} = this.props;
+    const { getTargetImage } = this.props;
     const currentImg = await getTargetImage(document.getElementById(currentRef));
     return currentImg;
   };
@@ -206,12 +207,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
         currentSection = testReadingProblems;
         break;
     }
-    this.setState({activeSlide, activeTestSection: currentSection});
+    this.setState({ activeSlide, activeTestSection: currentSection });
   };
 
   renderCurrentSlide = () => {
-    const {activeSlide} = this.state;
-    const {sections, activeStudentTestId, activeTestScores, onSetEssayScore} = this.props;
+    const { activeSlide } = this.state;
+    const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
     if (sections) {
       const {
         testReadingProblems,
@@ -274,7 +275,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   onAddStudentAnswerToTest = async (problem, answer, student_test_id) => {
-    const {dispatchAddStudentAnswerToTest} = this.props;
+    const { dispatchAddStudentAnswerToTest } = this.props;
     const postBody = {
       student_test_id,
       test_problem_id: problem.id,
@@ -327,7 +328,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const {completedSections} = this.props;
+    const { completedSections } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
       case 'reading':

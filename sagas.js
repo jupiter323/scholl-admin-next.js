@@ -978,11 +978,11 @@ function* handleDeleteStudentTest(action) {
   }
 }
 
-function* watchForUpdateTestFlagStatus() {
-  yield takeEvery(UPDATE_TEST_FLAG, handleUpdateFlagStatus);
+function* watchForMarkAllTestFlagsReviewed() {
+  yield takeEvery(UPDATE_TEST_FLAG, handleMarkAllFlagsReviewed);
 }
 
-function* handleUpdateFlagStatus(action) {
+function* handleMarkAllFlagsReviewed(action) {
   try {
     const sections = yield call(fetchStudentTestSectionsApi, action.studentId, action.studentTestId);
 
@@ -1062,6 +1062,18 @@ function* handleUpdateTestStatus(action) {
   }
 }
 
+// function* watchForUpdateTestFlagStatus() {
+//   yield takeEvery(UPDATE_FLAG_STATUS, handleUpdateTestFlagStatus);
+// }
+
+// function* handleUpdateTestFlagStatus(action) {
+//   try {
+
+//   } catch (error) {
+//     console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
+//   }
+// }
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1112,7 +1124,7 @@ export default function* defaultSaga() {
     watchForFetchAllLocations(),
     watchForAnswerStudentLessonProblem(),
     watchForDeleteStudentTest(),
-    watchForUpdateTestFlagStatus(),
+    watchForMarkAllTestFlagsReviewed(),
     watchForAddStudentAnswerToTest(),
     watchForUpdateTestStatus(),
   ]);
