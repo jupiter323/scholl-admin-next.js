@@ -77,7 +77,9 @@ class AnswerRow extends React.Component {
 
   render() {
     const { problem } = this.props;
-    const { open, status } = this.state;
+    const { open } = this.state;
+    const { status } = problem.flag;
+    console.log('log: problem', problem);
     return (
       <React.Fragment>
         <QuestionModal
@@ -98,10 +100,11 @@ class AnswerRow extends React.Component {
                 <Choose>
                   <When condition={this.getAnswerType(problem)}>{this.mapNumberBubbles()}</When>
                   <Otherwise>
-                    <BubbleGroup 
-                      id={problem.id} 
-                      testSection={this.props.testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} 
-                      problem={problem} 
+                    <BubbleGroup
+                      id={problem.id}
+                      testSection={this.props.testSection}
+                      onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest}
+                      problem={problem}
                     />
                   </Otherwise>
                 </Choose>
