@@ -23,7 +23,7 @@ import {
   fetchStudentTestSections,
   setStudentAssignedTests,
   setStudentCompletedTests,
-  updateTestStaus,
+  updateTestStatus,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
@@ -565,7 +565,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStaus(payload, currentStatus, studentId)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

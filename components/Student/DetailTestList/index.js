@@ -27,6 +27,8 @@ import {
   fetchStudentTestSections,
   addNewTestToStudentTests,
   setActiveTestScores,
+  updateTestStatus,
+  setStudentSections,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -109,16 +111,20 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = async currentTestId => {
-    this.props.onFetchStudentTestSections({ id: this.props.user.id, student_test_id: currentTestId });
+    const { onFetchStudentTestSections, onSetStudentSections, user, studentTests } = this.props;
+    // Have to clear all sections to have no side effects for now
+    onSetStudentSections([]);
+    onFetchStudentTestSections({ id: user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    const activeTest = this.props.studentTests.find(test => test.student_test_id === currentTestId);
+    const activeTest = studentTests.find(test => test.student_test_id === currentTestId);
     if (activeTest.status === 'ASSIGNED') {
       const postBody = {
         student_test_id: currentTestId,
         status: 'STARTED',
       };
-      await updateStudentTestStatusApi(postBody);
+      const { onUpdateTestStatus } = this.props;
+      await onUpdateTestStatus(postBody, 'STARTED', user.id);
     } else if (activeTest.status === 'COMPLETED') {
       const { onSetScores, activeStudent: { id } } = this.props;
       const response = await fetchStudentTestScoreApi(id, currentTestId);
@@ -234,8 +240,8 @@ class DetailTestList extends React.Component {
   };
 
   onSaveNewTest = async test => {
-    const { tests } = this.props;
-    if (!this.props.activeStudent.active && tests.length >= 1) {
+    const { tests, studentTests } = this.props;
+    if (!this.props.activeStudent.active && studentTests.length >= 1) {
       return toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
         className: 'update-error',
         progressClassName: 'progress-bar-error',
@@ -427,6 +433,8 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
     onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
+    onSetStudentSections: (sections) => dispatch(setStudentSections(sections)),
   };
 }
 
