@@ -319,6 +319,16 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   };
 
+  updateProblemView = (updatedProblem, sectionType) => {
+    const updatedProblems = this.state[sectionType].map(problem => {
+      if (problem.id === updatedProblem.id) {
+        return updatedProblem;
+      }
+      return problem;
+    });
+    return this.setState({ [sectionType]: [...updatedProblems] });
+  }
+
   render() {
     const {
       activeSlide,
