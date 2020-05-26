@@ -227,6 +227,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <ReadingPage
             testSection={testReadingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            updateProblemView={this.updateProblemView}
           />
         );
       }
@@ -237,6 +238,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <WritingPage
             testSection={testWritingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            updateProblemView={this.updateProblemView}
           />
         );
       }
@@ -247,6 +249,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <MathNoCalcPage
             testSection={testMathNoCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            updateProblemView={this.updateProblemView}
           />
         );
       }
@@ -257,6 +260,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <MathCalculatorPage
             testSection={testMathCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            updateProblemView={this.updateProblemView}
           />
         );
       }
@@ -320,13 +324,19 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   updateProblemView = (updatedProblem, sectionType) => {
-    const updatedProblems = this.state[sectionType].map(problem => {
+    console.log('log: updatedProblem', updatedProblem);
+    console.log('log: sectionType', sectionType);
+    console.log('log: state property', this.state[sectionType]);
+    const updatedProblems = this.state[sectionType].problems.problems.map(problem => {
       if (problem.id === updatedProblem.id) {
         return updatedProblem;
       }
       return problem;
     });
-    return this.setState({ [sectionType]: [...updatedProblems] });
+    console.log('log: updatedProblems', updatedProblems);
+    const newStateObject = { ...this.state[sectionType], problems: { ...this.state[sectionType].problems, problems: updatedProblems } };
+    console.log('log: newStateObject', newStateObject);
+    return this.setState({ [sectionType]: newStateObject });
   }
 
   render() {

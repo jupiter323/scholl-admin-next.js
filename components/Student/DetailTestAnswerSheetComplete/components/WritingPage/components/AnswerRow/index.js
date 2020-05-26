@@ -79,7 +79,7 @@ class AnswerRow extends React.Component {
     const { problem } = this.props;
     const { open } = this.state;
     const { status } = problem.flag;
-    // console.log('log: problem', problem);
+    console.log('log: problem', problem);
     return (
       <React.Fragment>
         <QuestionModal
@@ -88,6 +88,7 @@ class AnswerRow extends React.Component {
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
           onChangeFlagState={this.onChangeFlagState}
+          updateProblemView={this.props.updateProblemView}
         />
         <li
           className="answers-list-holder"

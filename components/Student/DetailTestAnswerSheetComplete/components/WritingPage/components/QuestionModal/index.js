@@ -16,6 +16,7 @@ class QuestionModal extends React.Component {
       status: "UN_FLAGGED",
       originalTestProblemId: "",
       subject: "",
+      problemListName: "",
     };
   }
 
@@ -24,16 +25,16 @@ class QuestionModal extends React.Component {
     console.log('log: problem_type_id', problem_type_id);
     switch (problem_type_id) {
       case 1:
-        this.setState({ subject: "Reading" });
+        this.setState({ subject: "Reading", problemListName: "testReadingProblems" });
         break;
       case 2:
-        this.setState({ subject: "Writing" });
+        this.setState({ subject: "Writing", problemListName: "testWritingProblems" });
         break;
       case 3:
-        this.setState({ subject: "Math (no calc)" });
+        this.setState({ subject: "Math (no calc)", problemListName: "testMathNoCalcProblems" });
         break;
       case 4:
-        this.setState({ subject: "Math (calculator)" });
+        this.setState({ subject: "Math (calculator)", problemListName: "testMathNoCalcProblems" });
         break;
       default:
         break;
@@ -58,7 +59,7 @@ class QuestionModal extends React.Component {
   };
 
   onHandleQuestionFlagStatus = async (_e, status) => {
-    const { studentTestId, onChangeFlagState } = this.props;
+    const { studentTestId, onChangeFlagState, updateProblemView } = this.props;
     onChangeFlagState(status);
     const {
       question: {
@@ -67,7 +68,13 @@ class QuestionModal extends React.Component {
     } = this.props;
     console.log("log: question", this.props.question);
     const postBody = { student_test_id: studentTestId, flag_id: id, status };
-    await updateStudentTestQuestionFlagStatusApi(postBody);
+    // const response = await updateStudentTestQuestionFlagStatusApi(postBody);
+    // console.log('log: response', response);
+    // if (response && !response.message) {
+    const reviewQuestion = this.props.question;
+    reviewQuestion.flag.status === "REVIEWED";
+    updateProblemView(reviewQuestion, this.state.problemListName);
+    // }
   };
 
   render() {
