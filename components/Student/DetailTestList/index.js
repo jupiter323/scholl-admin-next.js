@@ -113,7 +113,7 @@ class DetailTestList extends React.Component {
   onEnterAnswers = async currentTestId => {
     const { onFetchStudentTestSections, onSetStudentSections, user, studentTests } = this.props;
     // Have to clear all sections to have no side effects for now
-    onSetStudentSections([]);
+    // onSetStudentSections([]);
     onFetchStudentTestSections({ id: user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
