@@ -68,21 +68,17 @@ class QuestionModal extends React.Component {
     } = this.props;
     console.log("log: question", question);
     let postBody = {};
+    const newQuestion = question;
+
     if (status === "FLAGGED") {
       postBody = { student_test_id: studentTestId, test_problem_id: question.id };
-      // Send request here
+      newQuestion.flag.status = status;
     } else if (status === "REVIEWED") {
-      const postBody = { student_test_id: studentTestId, flag_id: id, status };
-      // const response = await updateStudentTestQuestionFlagStatusApi(postBody);
-      // console.log('log: response', response);
-      // if (response && !response.message) {
-      const reviewQuestion = this.props.question;
-      reviewQuestion.flag.status === "REVIEWED";
+      postBody = { student_test_id: studentTestId, flag_id: id, status };
+      newQuestion.flag.status === "REVIEWED";
     }
-    const newQuestion = question;
-    newQuestion.flag.status = status;
+
     onUpdateFlagStatus(postBody, status, newQuestion);
-    // updateProblemView(reviewQuestion, this.state.problemListName);
   };
 
   render() {

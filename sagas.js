@@ -1080,7 +1080,12 @@ function* handleUpdateTestFlagStatus(action) {
   try {
     if (action.status === "FLAGGED") {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);
-      console.log('log: response', response);
+      if (response && response.message) {
+        return console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
+      }
+      action.question.flag.id = response;
+    } else if (action.status === "REVIEWED") {
+      const response = yield call(updateStudentTestQuestionFlagStatusApi, action.payload);
       if (response && response.message) {
         return console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
       }
