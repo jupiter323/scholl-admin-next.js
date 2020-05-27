@@ -52,6 +52,7 @@ import {
   ADD_LESSON_ANSWER,
   DELETE_STUDENT_TEST,
   UPDATE_TEST_FLAG,
+  UPDATE_COMPLETED_FLAGS,
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
   SET_ESSAY_SCORE,
@@ -378,10 +379,17 @@ export const deleteStudentTest = (studentTestId, studentId, testType) => ({
   testType,
 });
 
-export const updateTestFlag = (studentTestId, studentId) => ({
+export const updateTestFlag = (studentTestId, studentId, flagCount) => ({
   type: UPDATE_TEST_FLAG,
   studentTestId,
   studentId,
+  flagCount
+});
+
+export const updateCompletedFlags = (studentTestId, flags) => ({
+  type:UPDATE_COMPLETED_FLAGS,
+  studentTestId,
+  flags,
 });
 
 export const assignNewTest = (newTest) => ({

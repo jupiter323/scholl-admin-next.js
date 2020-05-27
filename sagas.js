@@ -55,6 +55,7 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
+  UPDATE_COMPLETED_FLAGS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1001,13 +1002,20 @@ function* handleUpdateFlagStatus(action) {
           const payload = { status: 'REVIEWED', flag_id: flagData.id, student_test_id: action.studentTestId };
 
           yield call(updateStudentTestQuestionFlagStatusApi, payload);
-          reviewedTestIds.push(action.studentTestId);
+          reviewedTestIds.push(problems.problems[problemCount].id);
         }
         problemCount++;
       }
       count++;
     }
     // Dispatch to update redux store
+    if(reviewedTestIds.length === action.flagCount){
+      yield put({
+        type: UPDATE_COMPLETED_FLAGS,
+        studentTestId: action.studentTestId,
+        flags: 0,
+      });
+    }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateFlagStatus saga", error);
   }

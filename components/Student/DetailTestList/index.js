@@ -148,8 +148,8 @@ class DetailTestList extends React.Component {
       this.props.onDeleteStudentTest(student_test_id, student_id, type),
     );
   };
-  onTestFlagReviewed = (student_test_id, student_id) => {
-    this.props.onUpdateTestFlag(student_test_id, student_id);
+  onTestFlagReviewed = (student_test_id, student_id, flagCount) => {
+    this.props.onUpdateTestFlag(student_test_id, student_id, flagCount);
   };
   onSetIsVisibleTopBar = value => {
     const { onSetIsVisibleTopBar } = this.props;
@@ -422,7 +422,7 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
     onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
     onDeleteStudentTest: (studentTestId, studentId, type) => dispatch(deleteStudentTest(studentTestId, studentId, type)),
-    onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
+    onUpdateTestFlag: (studentTestId, studentId, flagCount) => dispatch(updateTestFlag(studentTestId, studentId, flagCount)),
     onAssignNewTest: (newTest) => dispatch(assignNewTest(newTest)),
     onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
     onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
