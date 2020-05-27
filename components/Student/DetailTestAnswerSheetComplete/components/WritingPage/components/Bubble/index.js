@@ -84,14 +84,46 @@ class BubbleGroup extends React.Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    // console.log('log: props ', props);
+    // console.log('log: state ', state);
+    const { problemCells } = state;
+    const { student_answer } = props.problem
+    const studentSelection = problemCells.forEach(problem => {
+      if( student_answer === problem.label){
+        problem.selected = true
+        return problem
+      }
+      console.log('log: problem ', problem);
+      return problem
+    });
+    console.log('log: studentSelection ', studentSelection);
+        // return {
+        //   selectedIndex: setSelected.id,
+        //   problemCells:setProblems
+          
+        // };
+      // }
+      return null;
+    // }
+  }
+
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
+    // console.log('log: selectedIndex ', selectedIndex);
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
+
+    } else if ( selectedIndex === index ){
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+        [selectedIndex]: { selected: { $set: false } },
+      });
+      this.onSaveStudentAnswer(updatedProblemCells, -1);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
@@ -104,7 +136,7 @@ class BubbleGroup extends React.Component {
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     const { onAddStudentAnswerToTest, problem, testSection } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
-    const { label } = this.state.problemCells[index];
+    const label = index === -1 ? null : this.state.problemCells[index].label;
     onAddStudentAnswerToTest(problem, label, testSection.student_test_id);
   };
 
@@ -135,10 +167,11 @@ class BubbleGroup extends React.Component {
   };
 
   renderBubbleStyle = letter => {
+    // console.log('log: letter ', letter);
     const {
       problem: { correct_answer, student_answer },
     } = this.props;
-    const { selectedIndex, problemCells } = this.state;
+    const { selectedIndex, problemCells, alreadySelected } = this.state;
     const selectedAnswer = problemCells[selectedIndex] ? problemCells[selectedIndex].label : null;
     const studentAnswer = student_answer || selectedAnswer;
     if (studentAnswer === letter && studentAnswer === correct_answer) {
