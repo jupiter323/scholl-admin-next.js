@@ -87,7 +87,7 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      test: { test_name, test_description, due_date, completion_date, student_test_id, student_id },
+      test: { test_name, test_description, due_date, completion_date, student_test_id, student_id, problem_flag_count },
       onEnterAnswers,
       onDeleteTest,
       onTestFlagReviewed,
@@ -115,7 +115,8 @@ class CompletedTestCard extends React.Component {
                       </div>
                       <div className="col s12 m6 right-align">
                         <div className="row icons-row" style={{ marginBottom: '10px' }}>
-                          <span
+                          { problem_flag_count > 0 && (
+                            <span
                             className="badge-rounded-xs badge red darken-2 white-text"
                             style={{
                               minWidth: '20px',
@@ -125,6 +126,7 @@ class CompletedTestCard extends React.Component {
                           >
                             <i className="icon-flag" />
                           </span>
+                          )}
                           <div className="dropdown-block col">
                             <a
                               href="#"
@@ -168,6 +170,7 @@ class CompletedTestCard extends React.Component {
                                 </li>
                                 <li>
                                   <a
+                                  className={problem_flag_count === 0 ? "disabled" : ""}
                                     href="#"
                                     onClick={e => {
                                       e.preventDefault();

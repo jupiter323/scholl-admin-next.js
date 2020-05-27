@@ -23,8 +23,8 @@ class EssayPage extends React.Component {
       if (!readingScore && !writingScore && !analysisScore) {
         return {
           readingScore: reading,
-          analysisScore: writing,
-          writingScore: analysis,
+          analysisScore: analysis,
+          writingScore: writing,
         };
       }
       return null;
