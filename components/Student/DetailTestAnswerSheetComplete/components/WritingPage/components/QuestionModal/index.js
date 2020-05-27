@@ -5,8 +5,7 @@ import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
-
-import { updateStudentTestQuestionFlagStatusApi } from "../../../../../index/api";
+import { updateFlagStatus } from "../../../../../index/actions";
 import { makeSelectActiveStudentTestId, makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
@@ -59,22 +58,31 @@ class QuestionModal extends React.Component {
   };
 
   onHandleQuestionFlagStatus = async (_e, status) => {
-    const { studentTestId, onChangeFlagState, updateProblemView } = this.props;
+    const { studentTestId, onChangeFlagState, onUpdateFlagStatus, updateProblemView } = this.props;
     onChangeFlagState(status);
     const {
       question: {
         flag: { id },
       },
+      question,
     } = this.props;
-    console.log("log: question", this.props.question);
-    const postBody = { student_test_id: studentTestId, flag_id: id, status };
-    // const response = await updateStudentTestQuestionFlagStatusApi(postBody);
-    // console.log('log: response', response);
-    // if (response && !response.message) {
-    const reviewQuestion = this.props.question;
-    reviewQuestion.flag.status === "REVIEWED";
-    updateProblemView(reviewQuestion, this.state.problemListName);
-    // }
+    console.log("log: question", question);
+    let postBody = {};
+    if (status === "FLAGGED") {
+      postBody = { student_test_id: studentTestId, test_problem_id: question.id };
+      // Send request here
+    } else if (status === "REVIEWED") {
+      const postBody = { student_test_id: studentTestId, flag_id: id, status };
+      // const response = await updateStudentTestQuestionFlagStatusApi(postBody);
+      // console.log('log: response', response);
+      // if (response && !response.message) {
+      const reviewQuestion = this.props.question;
+      reviewQuestion.flag.status === "REVIEWED";
+    }
+    const newQuestion = question;
+    newQuestion.flag.status = status;
+    onUpdateFlagStatus(postBody, status, newQuestion);
+    // updateProblemView(reviewQuestion, this.state.problemListName);
   };
 
   render() {
@@ -113,6 +121,20 @@ class QuestionModal extends React.Component {
                             margin: "0 -10px -7px",
                           }}
                         >
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                                onClick={(e) => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
+                              />
+                              <span>
+                                <i className="icon-flag red-text text-lighten-1" />
+                                Flag For Review
+                              </span>
+                            </label>
+                          </li>
                           <li>
                             <label>
                               <input
@@ -288,6 +310,12 @@ const mapStateToProps = createStructuredSelector({
   studentToken: makeSelectActiveStudentToken(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function mapDispatchToProps(dispatch) {
+  return {
+    onUpdateFlagStatus: (payload, status, question) => dispatch(updateFlagStatus(payload, status, question)),
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(QuestionModal);

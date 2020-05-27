@@ -55,6 +55,8 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
+  UPDATE_FLAG_STATUS,
+  UPDATE_FLAG_STATUS_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -138,6 +140,7 @@ const {
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1069,17 +1072,29 @@ function* handleUpdateTestStatus(action) {
   }
 }
 
-// function* watchForUpdateTestFlagStatus() {
-//   yield takeEvery(UPDATE_FLAG_STATUS, handleUpdateTestFlagStatus);
-// }
+function* watchForUpdateTestFlagStatus() {
+  yield takeEvery(UPDATE_FLAG_STATUS, handleUpdateTestFlagStatus);
+}
 
-// function* handleUpdateTestFlagStatus(action) {
-//   try {
-
-//   } catch (error) {
-//     console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
-//   }
-// }
+function* handleUpdateTestFlagStatus(action) {
+  try {
+    if (action.status === "FLAGGED") {
+      const response = yield call(addStudentTestQuestionFlagApi, action.payload);
+      console.log('log: response', response);
+      if (response && response.message) {
+        return console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
+      }
+    }
+    yield put({
+      type: UPDATE_FLAG_STATUS_SUCCESS,
+      sectionId: action.question.test_section_id,
+      question: action.question,
+      status: action.status,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
+  }
+}
 
 export default function* defaultSaga() {
   yield all([
@@ -1134,5 +1149,6 @@ export default function* defaultSaga() {
     watchForMarkAllTestFlagsReviewed(),
     watchForAddStudentAnswerToTest(),
     watchForUpdateTestStatus(),
+    watchForUpdateTestFlagStatus(),
   ]);
 }

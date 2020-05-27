@@ -48,6 +48,7 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_LIST,
+  UPDATE_FLAG_STATUS_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -300,6 +301,22 @@ function studentReducer(state = initialState, action) {
     case ADD_TEST_TO_COMPLETED:
       // Grabs the test info from original test list and adds a completion date & status
       return state.set('completedStudentTests', [...state.get('completedStudentTests'), { ...state.get(action.testList).filter(test => test.student_test_id === action.payload.student_test_id)[0], completion_date: Date.now(), status: action.payload.status }]);
+
+    case UPDATE_FLAG_STATUS_SUCCESS:
+      const newSections = state.get('sections').map(section => {
+        if (section.test_section_id === action.sectionId) {
+          const updatedProblems = section.problems.problems.map(problem => {
+            if (problem.id === action.question.id) {
+              return action.question;
+            }
+            return problem;
+          });
+          const updatedSection = { ...section, problems: { ...section.problems, problems: updatedProblems } };
+          return updatedSection;
+        }
+        return section;
+      });
+      return state.set('sections', newSections);
 
     default:
       return state;

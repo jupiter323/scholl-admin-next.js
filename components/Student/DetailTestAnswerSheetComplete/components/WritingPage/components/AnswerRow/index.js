@@ -77,8 +77,7 @@ class AnswerRow extends React.Component {
 
   render() {
     const { problem } = this.props;
-    const { open } = this.state;
-    const { status } = problem.flag;
+    const { open, status } = this.state;
     if (status === "REVIEWED") console.log('log: problem', problem);
     return (
       <React.Fragment>
@@ -128,13 +127,11 @@ class AnswerRow extends React.Component {
                 </span>
               </If>
             </div>
-            <If condition={status === 'FLAGGED'}>
-              <div className="dropdown-block col col-35">
-                <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
-                  <i className="material-icons dots-icon">more_vert</i>
-                </a>
-              </div>
-            </If>
+            <div className="dropdown-block col col-35">
+              <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
+                <i className="material-icons dots-icon">more_vert</i>
+              </a>
+            </div>
           </div>
         </li>
       </React.Fragment>
