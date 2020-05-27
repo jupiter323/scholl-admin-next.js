@@ -386,12 +386,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
               }}
               className="center-align"
             >
-              This test section is complete.
+              This test section is complete. You can still edit answer choices if needed.
             </p>}
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-          {activeSlide !== 'essay' &&
+          {activeSlide !== 'essay' && !showSectionMessage &&
             <div className="row">
               <div className="btn-holder right-align">
                 <a

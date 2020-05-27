@@ -20,7 +20,6 @@ import {
   setIsVisibleTopBar,
   fetchStudentTests,
   setActiveStudentTestId,
-  setStudentAssignedTests,
   deleteStudentTest,
   updateTestFlag,
   assignNewTest,
@@ -29,6 +28,10 @@ import {
   setActiveTestScores,
   updateTestStatus,
   setStudentSections,
+  setStudentTests,
+  setStudentCompletedTests,
+  setStudentOverDueTests,
+  setStudentAssignedTests,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -41,7 +44,6 @@ import {
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
-  updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
 } from '../index/api';
 
@@ -68,6 +70,13 @@ class DetailTestList extends React.Component {
       onFetchStudentTests(user);
     }
   };
+
+  componentWillUnmount = () => {
+    this.props.onSetStudentTests([]);
+    this.props.onSetStudentCompletedTests([]);
+    this.props.onSetStudentOverDueTests([]);
+    this.props.onSetStudentAssignedTests([]);
+  }
 
   onSetActiveTestComplete = () => this.setState({ activeTest: { ...this.state.activeTest, status: "COMPLETED" } })
 
@@ -113,7 +122,6 @@ class DetailTestList extends React.Component {
   onEnterAnswers = async currentTestId => {
     const { onFetchStudentTestSections, onSetStudentSections, user, studentTests } = this.props;
     // Have to clear all sections to have no side effects for now
-    // onSetStudentSections([]);
     onFetchStudentTestSections({ id: user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
@@ -128,7 +136,7 @@ class DetailTestList extends React.Component {
     } else if (activeTest.status === 'COMPLETED') {
       const { onSetScores, activeStudent: { id } } = this.props;
       const response = await fetchStudentTestScoreApi(id, currentTestId);
-      onSetScores(response);
+      onSetScores({ ...response, student_test_id: currentTestId });
     }
     // this.setState({ openEnterAnswerWrapper: true, activeTest });
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
@@ -435,6 +443,10 @@ function mapDispatchToProps(dispatch) {
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
     onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetStudentSections: (sections) => dispatch(setStudentSections(sections)),
+    onSetStudentTests: (tests) => dispatch(setStudentTests(tests)),
+    onSetStudentCompletedTests: (tests) => dispatch(setStudentCompletedTests(tests)),
+    onSetStudentOverDueTests: (tests) => dispatch(setStudentOverDueTests(tests)),
+    onSetStudentAssignedTests: (tests) => dispatch(setStudentAssignedTests(tests)),
   };
 }
 
