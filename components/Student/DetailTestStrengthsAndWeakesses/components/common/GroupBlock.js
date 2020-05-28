@@ -13,7 +13,7 @@ class GroupBlock extends React.Component {
     const {data: {children}} = this.props;
     if (children.length !== 0) {
       return children.map(children => {
-        return <SubBlock data={children} />;
+        return <SubBlock data={children} key={children.id} />;
       });
     }
   };
@@ -33,9 +33,15 @@ class GroupBlock extends React.Component {
           </div>
           <div className="graph-col graph-container">
             <div className="graph-linear-students">
-              <div className="graph-holder" style={{width: `${(correct / total * 100).toFixed(0)}%`}}>
+              <div
+                className="graph-holder"
+                style={{width: `${(correct / total * 100).toFixed(0)}%`}}
+              >
                 <div className="graph-admin">
-                  <div className="part-red" style={{width: `${(incorrect / total * 100).toFixed(0)}%`}} />
+                  <div
+                    className="part-red"
+                    style={{width: `${(incorrect / total * 100).toFixed(0)}%`}}
+                  />
                 </div>
               </div>
             </div>

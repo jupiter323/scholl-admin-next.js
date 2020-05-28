@@ -57,6 +57,7 @@ import {
   SET_ESSAY_SCORE,
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_TEST_STATUS,
+  FETCH_STUDENT_TESTS_SUCCESSFUL,
 } from "./constants";
 
 export function fetchStudents() {
@@ -406,3 +407,10 @@ export const updateTestStatus = (payload, currentStatus, studentId) => ({
   currentStatus,
   studentId,
 });
+
+export function setFetchStudentTestsStatus (status){
+  return {
+    type:FETCH_STUDENT_TESTS_SUCCESSFUL,
+    status
+  }
+}

@@ -12,7 +12,7 @@ class WritingPage extends React.Component {
 
   componentDidMount = () => {
     if (this.props.scores) {
-      const { scores: { children } } = this.props;
+      const {scores: {children}} = this.props;
       this.setState({
         parentScores: children,
       });
@@ -20,10 +20,10 @@ class WritingPage extends React.Component {
   };
 
   mapGroupBlcok = () => {
-    const { parentScores } = this.state;
+    const {parentScores} = this.state;
     return (
       parentScores instanceof Array &&
-      parentScores.map(group => <GroupBlock data={group} />)
+      parentScores.map(group => <GroupBlock data={group} key={group.id} />)
     );
   };
 
@@ -41,7 +41,7 @@ class WritingPage extends React.Component {
 }
 
 WritingPage.propTypes = {
-  scores: PropTypes.object.isRequired,
+  scores: PropTypes.object,
 };
 
 export default WritingPage;
