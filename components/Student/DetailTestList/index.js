@@ -35,6 +35,7 @@ import {
   makeSelectStudentTests,
   makeSelectTests,
   makeSelectActiveStudent,
+  makeSelectFetchStudentTestsStatus,
 } from '../index/selectors';
 import {
   assignTestToStudentApi,
@@ -60,10 +61,10 @@ class DetailTestList extends React.Component {
 
   componentDidMount = async () => {
     console.log("OK")
-    const { onFetchStudentTests, studentTests, activeStudent, user } = this.props;
-    if (studentTests.length === 0) {
+    const { onFetchStudentTests, studentTests, activeStudent, user,studentTestsFetchedStatus } = this.props;
+    if (studentTests.length === 0 && !studentTestsFetchedStatus) {
       onFetchStudentTests(user);
-    } else if (studentTests.length > 0 && studentTests[0].student_id !== activeStudent.id) {
+    } else if (studentTests.length > 0 && studentTests[0].student_id !== activeStudent.id && !studentTestsFetchedStatus) {
       onFetchStudentTests(user);
     }
   };
@@ -320,7 +321,7 @@ class DetailTestList extends React.Component {
       activeTest,
       opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds, overdues } = this.props;
+    const { user, completes, assigneds, overdues,studentTestsFetchedStatus } = this.props;
     return (
       <React.Fragment>
         <Toast />
@@ -362,21 +363,21 @@ class DetailTestList extends React.Component {
             />
             <div className="content-section">
               <div className="section-holder">
-                {overdues.length !== 0 &&
+                {overdues.length !== 0 && studentTestsFetchedStatus &&
                   <div className="content-container">
                     <CardHeader title="OverDue" amount={overdues.length} themeColor="#e94319" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapOverDueTests()}
                     </div>
                   </div>}
-                {assigneds.length !== 0 &&
+                {assigneds.length !== 0 && studentTestsFetchedStatus &&
                   <div className="content-container">
                     <CardHeader title="Assigned" amount={assigneds.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapAssignedTests()}
                     </div>
                   </div>}
-                {completes.length !== 0 &&
+                {completes.length !== 0 && studentTestsFetchedStatus &&
                   <div className="content-container">
                     <CardHeader title="Completed" amount={completes.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
@@ -415,6 +416,7 @@ const mapStateToProps = createStructuredSelector({
   studentTests: makeSelectStudentTests(),
   tests: makeSelectTests(),
   activeStudent: makeSelectActiveStudent(),
+  studentTestsFetchedStatus:makeSelectFetchStudentTestsStatus(),
 });
 
 function mapDispatchToProps(dispatch) {

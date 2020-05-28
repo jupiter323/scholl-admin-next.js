@@ -1,93 +1,87 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { createStructuredSelector } from "reselect";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { Sticky } from "react-sticky";
-import AccountPage from "../AccountPage";
-import DetailSummaryPage from "../DetailSummaryPage";
-import DetailWorksheetPage from "../DetailWorksheetPage";
-import DetailLessonList from "../DetailLessonList";
-import DetailTestList from "../DetailTestList";
-import LessonDetailAnswerSheet from "../LessonDetailAnswerSheet";
-import StudentNavBar from "../components/StudentNavBar";
-import SessionCalendar from "../Calendar";
+import React from 'react';
+import PropTypes from 'prop-types';
+import {createStructuredSelector} from 'reselect';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {Sticky} from 'react-sticky';
+import AccountPage from '../AccountPage';
+import DetailSummaryPage from '../DetailSummaryPage';
+import DetailWorksheetPage from '../DetailWorksheetPage';
+import DetailLessonList from '../DetailLessonList';
+import DetailTestList from '../DetailTestList';
+import LessonDetailAnswerSheet from '../LessonDetailAnswerSheet';
+import StudentNavBar from '../components/StudentNavBar';
+import SessionCalendar from '../Calendar';
 
 import {
   makeSelectAssignLessonsModalOpen,
   makeSelectAssignWorkSheetsModalOpen,
   makeSelectIsVisibleTopBar,
-} from "../index/selectors";
+} from '../index/selectors';
 
-import {
-  setIsVisibleTopBar,
-} from '../index/actions';
+import {setIsVisibleTopBar, setFetchStudentTestsStatus} from '../index/actions';
 
-import {
-  updateStudentActivationApi,
-} from '../index/api';
-
+import {updateStudentActivationApi} from '../index/api';
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "summary",
+      activePage: 'summary',
       activationDropdownOpen: false,
-      licenseCode: "",
+      licenseCode: '',
       currentTestSection: {},
       tests: [],
     };
   }
 
   componentDidMount = async () => {
-    const { onSetIsVisibleTopBar, isVisibleTopBar } = this.props;
+    const {onSetIsVisibleTopBar, isVisibleTopBar} = this.props;
     if (!isVisibleTopBar) {
       onSetIsVisibleTopBar(true);
     }
-  }
+  };
 
   onToggleActivationDropdown = () =>
-    this.setState(({ activationDropdownOpen }) => ({
+    this.setState(({activationDropdownOpen}) => ({
       activationDropdownOpen: !activationDropdownOpen,
     }));
 
-  onSetActivePage = activePage => this.setState({ activePage });
+  onSetActivePage = activePage => this.setState({activePage});
 
-  onHandleDetailsChange = (name, event) =>
-    this.setState({ [name]: event.target.value });
+  onHandleDetailsChange = (name, event) => this.setState({[name]: event.target.value});
 
   renderCurrentPage = () => {
-    const { activePage } = this.state;
+    const {activePage} = this.state;
     // The  data is not enough for now,so we are using dummy data for selected student detail
-    const { student } = this.props;
+    const {student} = this.props;
     // const student = sampleSelectedStudent;
-    if (activePage === "summary") {
+    if (activePage === 'summary') {
       return <DetailSummaryPage user={student} />;
     }
-    if (activePage === "account") {
+    if (activePage === 'account') {
       return <AccountPage user={student} />;
     }
-    if (activePage === "lessons") {
+    if (activePage === 'lessons') {
       return <DetailLessonList user={student} />;
     }
-    if (activePage === "worksheets") {
+    if (activePage === 'worksheets') {
       return <DetailWorksheetPage user={student} />;
     }
-    if (activePage === "answer-sheet") {
+    if (activePage === 'answer-sheet') {
       return <LessonDetailAnswerSheet />;
     }
-    if (activePage === "test") {
+    if (activePage === 'test') {
       return <DetailTestList user={student} />;
     }
-    if (activePage === "calendar") {
+    if (activePage === 'calendar') {
       return <SessionCalendar user={student} />;
     }
     return null;
   };
 
   handleActivateButton = async () => {
-    const { student } = this.props;
+    const {student} = this.props;
     const payload = {
       user_id: student.id,
       code: this.state.licenseCode,
@@ -95,22 +89,22 @@ class IndividualStudentPage extends React.Component {
     };
     const result = await updateStudentActivationApi(payload);
     // Check status code for 200 response
-    if (result.toString().split('')[0] !== "2") return null;
+    if (result.toString().split('')[0] !== '2') return null;
     // Set status of student to active true
     this.props.updateStudentStatus();
     this.onToggleActivationDropdown();
-  }
+  };
+
+  onRedirectToStudentPage = event => {
+    const {onRedirectToStudentPage, onSetFetchStudentTestsStatus} = this.props;
+    onRedirectToStudentPage(event);
+    onSetFetchStudentTestsStatus(false);
+  };
 
   render() {
-    const {
-      onRedirectToStudentPage,
-      student: {
-        active,
-        studentInformation: { firstName, lastName },
-      },
-    } = this.props;
-    const { activePage, activationDropdownOpen, licenseCode } = this.state;
-    const { assignLessonsModalOpen, assignWorkSheetsModalOpen, isVisibleTopBar } = this.props;
+    const {student: {active, studentInformation: {firstName, lastName}}} = this.props;
+    const {activePage, activationDropdownOpen, licenseCode} = this.state;
+    const {assignLessonsModalOpen, assignWorkSheetsModalOpen, isVisibleTopBar} = this.props;
     return (
       <React.Fragment>
         <Choose>
@@ -118,17 +112,10 @@ class IndividualStudentPage extends React.Component {
             condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen && isVisibleTopBar}
           >
             <Sticky>
-              {({ style }) => (
-                <div
-                  className="title-row card-panel"
-                  style={{ ...style, zIndex: 1999 }}
-                >
+              {({style}) =>
+                <div className="title-row card-panel" style={{...style, zIndex: 1999}}>
                   <div className="mobile-header">
-                    <a
-                      href="#"
-                      data-target="slide-out"
-                      className="sidenav-trigger"
-                    >
+                    <a href="#" data-target="slide-out" className="sidenav-trigger">
                       <i className="material-icons">menu</i>
                     </a>
                   </div>
@@ -137,7 +124,7 @@ class IndividualStudentPage extends React.Component {
                       <a
                         href="#!"
                         className="breadcrumb"
-                        onClick={onRedirectToStudentPage}
+                        onClick={e => this.onRedirectToStudentPage(e)}
                       >
                         &lt; Students
                       </a>
@@ -145,16 +132,13 @@ class IndividualStudentPage extends React.Component {
                   </nav>
                   <h2 className="h1 white-text">
                     <span className="heading-holder">
-                      <i className="icon-student"></i>
+                      <i className="icon-student" />
                       <span className="heading-block">
                         {firstName} {lastName}
                       </span>
                     </span>
                   </h2>
-                  <StudentNavBar
-                    activePage={activePage}
-                    onSetActivePage={this.onSetActivePage}
-                  />
+                  <StudentNavBar activePage={activePage} onSetActivePage={this.onSetActivePage} />
                   <div className="activate-block">
                     <Choose>
                       <When condition={active}>
@@ -162,10 +146,8 @@ class IndividualStudentPage extends React.Component {
                           href="#"
                           className="waves-effect waves-teal btn btn-white btn-bordered btn-account_activated"
                         >
-                          <b className="btn-text visible-lg">
-                            Account Activated
-                          </b>{" "}
-                          <i className="icon-unlock"></i>
+                          <b className="btn-text visible-lg">Account Activated</b>{' '}
+                          <i className="icon-unlock" />
                         </a>
                       </When>
                       <Otherwise>
@@ -175,50 +157,45 @@ class IndividualStudentPage extends React.Component {
                           className="waves-effect btn btn-orange btn-account_inactive dropdown-trigger"
                           data-target="dropdown_activate"
                         >
-                          <b className="btn-text visible-lg">
-                            Activate Account
-                          </b>{" "}
-                          <i className="icon-key"></i>
+                          <b className="btn-text visible-lg">Activate Account</b>{' '}
+                          <i className="icon-key" />
                         </a>
                       </Otherwise>
                     </Choose>
                     <div
                       id="dropdown_activate"
                       className="dropdown-content"
-                      style={activationDropdownOpen ? { display: "block", opacity: "1" } : {}}
+                      style={activationDropdownOpen ? {display: 'block', opacity: '1'} : {}}
                     >
                       <div className="card-panel">
                         <div className="title-block">
                           <div className="h3">Ready to begin your course?</div>
-                          <div className="subtitle">
-                            Please enter a valid license code below.
-                          </div>
+                          <div className="subtitle">Please enter a valid license code below.</div>
                         </div>
                         <div className="input-field">
                           <input
                             type="text"
                             value={licenseCode}
                             id="license-code"
-                            onChange={event =>
-                              this.onHandleDetailsChange("licenseCode", event)
-                            }
+                            onChange={event => this.onHandleDetailsChange('licenseCode', event)}
                           />
                           <label className="label" htmlFor="license_code">
                             License Code
                           </label>
                         </div>
                         <div className="btn-holder center-align">
-                          <button className="btn btn-blue" type="submit" onClick={() => this.handleActivateButton()}>
+                          <button
+                            className="btn btn-blue"
+                            type="submit"
+                            onClick={() => this.handleActivateButton()}
+                          >
                             Activate
                           </button>
                         </div>
                         <div className="text-block center-align">
                           <p>
-                            If you need license codes, you can get them here:{" "}
-                            <a
-                              href="#"
-                              className="waves-effect waves-light btn-small btn-blue"
-                            >
+                            If you need license codes, you can get them here:{' '}
+                            <a href="#" className="waves-effect waves-light btn-small btn-blue">
                               Purchase Licenses
                             </a>
                           </p>
@@ -226,20 +203,17 @@ class IndividualStudentPage extends React.Component {
                         <div className="text-block">
                           <p>*Note: </p>
                           <p>
-                            We oﬀer discounted account licenses for students
-                            enrolled in courses with 5 or more students in a
-                            class or group format (as opposed to individual
-                            instruction). These licenses provide the features
-                            necessary to conduct a customized course for the
-                            class as a whole, rather than for individual
-                            students.
+                            We oﬀer discounted account licenses for students enrolled in courses
+                            with 5 or more students in a class or group format (as opposed to
+                            individual instruction). These licenses provide the features necessary
+                            to conduct a customized course for the class as a whole, rather than for
+                            individual students.
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                </div>}
             </Sticky>
           </When>
         </Choose>
@@ -264,7 +238,8 @@ const mapStateToProps = createStructuredSelector({
 
 function maptDispatchToProps(dispatch) {
   return {
-    onSetIsVisibleTopBar: (value) => dispatch(setIsVisibleTopBar(value)),
+    onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
+    onSetFetchStudentTestsStatus: status => dispatch(setFetchStudentTestsStatus(status)),
   };
 }
 
