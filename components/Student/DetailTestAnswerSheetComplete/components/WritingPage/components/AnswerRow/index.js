@@ -49,7 +49,7 @@ class AnswerRow extends React.Component {
     return (
       <React.Fragment>
         {student_answer && (
-          <li key={student_answer}>
+          <li key={id}>
             <span
               className="badge badge-rounded badge-rounded-bordered"
               style={{ color: "#fff", borderColor: "#ad1e3e", backgroundColor: "#db1d41" }}
