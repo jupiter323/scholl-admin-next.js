@@ -1,4 +1,4 @@
-import { fromJS } from "immutable";
+import { fromJS } from 'immutable';
 import moment from 'moment';
 import {
   SET_STUDENTS,
@@ -49,6 +49,7 @@ import {
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_LIST,
   UPDATE_FLAG_STATUS_SUCCESS,
+  FETCH_STUDENT_TESTS_SUCCESSFUL,
 } from "./constants";
 
 const initialState = fromJS({
@@ -62,70 +63,71 @@ const initialState = fromJS({
   assignedStudentTests: [],
   completedStudentTests: [],
   sections: [],
-  activeStudentTestId: "",
+  activeStudentTestId: '',
   lessonList: [],
   studentLessonList: [],
   unassignedLessonList: [],
   isLoading: false,
   error: null,
   unitFilterOptions: [],
-  activeStudentToken: "",
+  activeStudentToken: '',
   checkedLessons: [],
   activeLesson: null,
   openAnswerSheet: false,
   subjects: {},
-  activeShowPage: "",
+  activeShowPage: '',
   tests: [],
   activeStudent: null,
   testSectionProblems: [],
   studentTests: [],
+  studentTestsFetchedStatus: false,
 });
 
 function studentReducer(state = initialState, action) {
   switch (action.type) {
     case SET_STUDENTS:
-      return state.set("students", action.students);
+      return state.set('students', action.students);
     case SET_STUDENTS_CALENDAR_ASSIGN_LESSONS_MODAL_OPEN:
-      return state.set("assignLessonsModalOpen", action.value);
+      return state.set('assignLessonsModalOpen', action.value);
     case SET_STUDENTS_CALENDAR_ASSIGN_WORKSHEETS_MODAL_OPEN:
-      return state.set("assignWorkSheetsModalOpen", action.value);
+      return state.set('assignWorkSheetsModalOpen', action.value);
     case SET_STUDENTS_CALENDAR_CALENDAR_ROWS:
-      return state.set("calendarRows", action.rows);
+      return state.set('calendarRows', action.rows);
     case SET_IS_VISIBLE_TOP_BAR:
-      return state.set("isVisibleTopBar", action.value);
+      return state.set('isVisibleTopBar', action.value);
     case SET_ACTIVE_TEST_SCORES:
-      return state.set("activeTestScores", action.scores);
+      return state.set('activeTestScores', action.scores);
     case SET_ESSAY_SCORE:
-      return state.set("activeTestScores", { ...state.get("activeTestScores"), essay: action.score });
+      return state.set('activeTestScores', { ...state.get('activeTestScores'), essay: action.score });
     case SET_STUDENT_COMPLETED_TESTS:
-      return state.set("completedStudentTests", action.tests);
+      return state.set('completedStudentTests', action.tests);
     case SET_STUDENT_OVERDUE_TESTS:
-      return state.set("overdueStudentTests", action.tests);
+      return state.set('overdueStudentTests', action.tests);
     case SET_STUDENT_ASSIGNED_TESTS:
-      return state.set("assignedStudentTests", action.tests);
+      return state.set('assignedStudentTests', action.tests);
     case SET_STUDENT_TESTS:
-      return state.set("studentTests", action.tests);
+      return state.set('studentTests', action.tests);
     case SET_STUDENT_SECTIONS:
-      return state.set("sections", action.sections);
+      return state.set('sections', action.sections);
     case SET_ACTIVE_STUDENT_TEST_ID:
-      return state.set("activeStudentTestId", action.studentTestId);
+      return state.set('activeStudentTestId', action.studentTestId);
     case FETCH_LESSON_LIST:
-      return state.set("isLoading", true);
+      return state.set('isLoading', true);
 
     case FETCH_LESSON_LIST_SUCCESS:
-      return state.set("unassignedLessonList", action.payload);
+      return state.set('unassignedLessonList', action.payload);
 
     case FETCH_STUDENT_LESSSON_LIST_SUCCESS:
-      return state.set("studentLessonList", action.payload);
+      return state.set('studentLessonList', action.payload);
     case SET_UNIT_FILTER_OPTIONS:
-      return state.set("unitFilterOptions", action.options);
+      return state.set('unitFilterOptions', action.options);
     case SET_ACTIVE_STUDENT_TOKEN:
-      return state.set("activeStudentToken", action.token);
+      return state.set('activeStudentToken', action.token);
 
     case CHECKED_LESSON:
       return state.set(
-        "lessonList",
-        state.get("lessonList").map((lesson) => {
+        'lessonList',
+        state.get('lessonList').map(lesson => {
           if (lesson.id !== action.id) {
             return lesson;
           }
@@ -137,17 +139,20 @@ function studentReducer(state = initialState, action) {
       );
 
     case SELECT_ALL_LESSONS:
-      return state.set('lessonList', state.get('lessonList').map(lesson => {
-        if (action.mappedLessons.includes(lesson.id)) {
-          return { ...lesson, selected: true };
-        }
-        return lesson;
-      }));
+      return state.set(
+        'lessonList',
+        state.get('lessonList').map(lesson => {
+          if (action.mappedLessons.includes(lesson.id)) {
+            return { ...lesson, selected: true };
+          }
+          return lesson;
+        }),
+      );
 
     case UNSELECT_ALL_LESSONS:
       return state.set(
-        "lessonList",
-        state.get('lessonList').map((lesson) => ({
+        'lessonList',
+        state.get('lessonList').map(lesson => ({
           ...lesson,
           selected: false,
         })),
@@ -156,8 +161,8 @@ function studentReducer(state = initialState, action) {
     case ADD_ALL_LESSONS:
       // Adds each lesson to the list of "checkedLessons"
       return state.set(
-        "checkedLessons",
-        action.mappedLessons.map((lesson) => {
+        'checkedLessons',
+        action.mappedLessons.map(lesson => {
           if (lesson.lesson_id) {
             return lesson.lesson_id;
           }
@@ -166,15 +171,15 @@ function studentReducer(state = initialState, action) {
       );
 
     case REMOVE_ALL_LESSONS:
-      return state.set("checkedLessons", []);
+      return state.set('checkedLessons', []);
 
     case ADD_CHECKED_LESSON:
-      return state.set("checkedLessons", [...state.get("checkedLessons"), action.lessonId]);
+      return state.set('checkedLessons', [...state.get('checkedLessons'), action.lessonId]);
 
     case REMOVE_CHECKED_LESSON:
       return state.set(
-        "checkedLessons",
-        state.get("checkedLessons").filter((lesson) => lesson !== action.lessonId),
+        'checkedLessons',
+        state.get('checkedLessons').filter(lesson => lesson !== action.lessonId),
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
@@ -188,7 +193,10 @@ function studentReducer(state = initialState, action) {
       //   }
       //   return lesson;
       // });
-      return state.set("lessonList", [...state.get('studentLessonList'), ...state.get("unassignedLessonList")]);
+      return state.set('lessonList', [
+        ...state.get('studentLessonList'),
+        ...state.get('unassignedLessonList'),
+      ]);
 
     case SET_ACTIVE_LESSON:
       return state.set('activeLesson', action.activeLesson);
@@ -201,11 +209,11 @@ function studentReducer(state = initialState, action) {
 
     case RESCHEDULE_STUDENT_LESSONS_SUCCESS:
       return state.set(
-        "lessonList",
-        state.get("lessonList").map((lesson) => {
+        'lessonList',
+        state.get('lessonList').map(lesson => {
           const { payload: { due_date, assignment_date } } = action;
           let updatedLesson = {};
-          action.payload.student_lesson_ids.forEach((setLessons) => {
+          action.payload.student_lesson_ids.forEach(setLessons => {
             if (setLessons === lesson.id) {
               return (updatedLesson = {
                 ...lesson,
@@ -213,35 +221,41 @@ function studentReducer(state = initialState, action) {
                 due_date,
               });
             }
-            if (!updatedLesson.id) return updatedLesson = lesson;
+            if (!updatedLesson.id) return (updatedLesson = lesson);
           });
           return updatedLesson;
         }),
       );
 
     case UNASSIGN_STUDENT_LESSON_SUCCESS:
-      return state.set('lessonList', state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id)));
+      return state.set(
+        'lessonList',
+        state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id)),
+      );
 
     case RESET_STUDENT_LESSONS_SUCCESS:
-      return state.set('lessonList', state.get('lessonList').map(lesson => {
-        let updatedLesson = {};
-        action.payload.forEach((sentLessonId) => {
-          if (sentLessonId === lesson.id) {
-            let status = 'ASSIGNED';
-            if (moment().isAfter(lesson.due_date)) status = 'OVERDUE';
-            return (updatedLesson = {
-              ...lesson,
-              status,
-              challenge_completed_at: null,
-              practice_completed_at: null,
-              completed_at: null,
-              scoring: {},
-            });
-          }
-          if (!updatedLesson.id) return updatedLesson = lesson;
-        });
-        return updatedLesson;
-      }));
+      return state.set(
+        'lessonList',
+        state.get('lessonList').map(lesson => {
+          let updatedLesson = {};
+          action.payload.forEach(sentLessonId => {
+            if (sentLessonId === lesson.id) {
+              let status = 'ASSIGNED';
+              if (moment().isAfter(lesson.due_date)) status = 'OVERDUE';
+              return (updatedLesson = {
+                ...lesson,
+                status,
+                challenge_completed_at: null,
+                practice_completed_at: null,
+                completed_at: null,
+                scoring: {},
+              });
+            }
+            if (!updatedLesson.id) return (updatedLesson = lesson);
+          });
+          return updatedLesson;
+        }),
+      );
 
     case FETCH_SUBJECTS_SUCCESS:
       return state.set('subjects', action.payload);
@@ -249,10 +263,13 @@ function studentReducer(state = initialState, action) {
     case SET_TESTS:
       return state.set('tests', action.tests);
     case SET_EXCUSE_STUDENT_LATENESS:
-      return state.set('lessonList', state.get('lessonList').map(lesson => {
-        if (action.payload.student_lesson_id === lesson.id) return { ...lesson, lateness_excused: action.payload.was_excused };
-        return lesson;
-      }));
+      return state.set(
+        'lessonList',
+        state.get('lessonList').map(lesson => {
+          if (action.payload.student_lesson_id === lesson.id) { return { ...lesson, lateness_excused: action.payload.was_excused }; }
+          return lesson;
+        }),
+      );
 
     case SET_ACTIVE_STUDENT:
       return state.set('activeStudent', action.student);
@@ -261,46 +278,76 @@ function studentReducer(state = initialState, action) {
       return state.set('testSectionProblems', action.problems);
 
     case REMOVE_TEST:
-      return state.set(action.testType, state.get(action.testType).filter(test => test.student_test_id !== action.studentTestId,
-      ));
+      return state.set(
+        action.testType,
+        state.get(action.testType).filter(test => test.student_test_id !== action.studentTestId),
+      );
 
     case REMOVE_TEST_FROM_LIST:
-      return state.set('studentTests', state.get('studentTests').filter(test => test.student_test_id !== action.studentTestId,
-      ));
+      return state.set(
+        'studentTests',
+        state.get('studentTests').filter(test => test.student_test_id !== action.studentTestId),
+      );
 
     case ASSIGN_NEW_TEST:
-      return state.set('assignedStudentTests', [...state.get('assignedStudentTests'), action.newTest]);
+      return state.set('assignedStudentTests', [
+        ...state.get('assignedStudentTests'),
+        action.newTest,
+      ]);
 
     case ADD_NEW_TEST_TO_STUDENT_TESTS:
-      return state.set("studentTests", [...state.get('studentTests'), action.newTest]);
+      return state.set('studentTests', [...state.get('studentTests'), action.newTest]);
 
     case UPDATE_STUDENT_TEST_ANSWER:
-      return state.set('sections', state.get('sections').map(section => {
-        if (section.test_section_id === action.sectionId) {
-          section.problems.problems.map(problem => {
-            if (problem.id === action.payload.test_problem_id) {
-              problem.student_answer = action.payload.answer;
-              return problem;
-            }
-          });
-        }
-        return section;
-      }));
+      return state.set(
+        'sections',
+        state.get('sections').map(section => {
+          if (section.test_section_id === action.sectionId) {
+            section.problems.problems.map(problem => {
+              if (problem.id === action.payload.test_problem_id) {
+                problem.student_answer = action.payload.answer;
+                return problem;
+              }
+            });
+          }
+          return section;
+        }),
+      );
 
     case UPDATE_TEST_STATUS_SUCCESS:
-      return state.set('studentTests', state.get('studentTests').map(test => {
-        if (test.student_test_id === action.payload.student_test_id) {
-          return { ...test, status: action.payload.status };
-        }
-        return test;
-      }));
+      return state.set(
+        'studentTests',
+        state.get('studentTests').map(test => {
+          if (test.student_test_id === action.payload.student_test_id) {
+            return { ...test, status: action.payload.status };
+          }
+          return test;
+        }),
+      );
 
     case REMOVE_TEST_FROM_PREV_LIST:
-      return state.set(action.testList, state.get(action.testList).filter(test => test.student_test_id !== action.payload.student_test_id));
+      return state.set(
+        action.testList,
+        state
+          .get(action.testList)
+          .filter(test => test.student_test_id !== action.payload.student_test_id),
+      );
 
     case ADD_TEST_TO_COMPLETED:
       // Grabs the test info from original test list and adds a completion date & status
-      return state.set('completedStudentTests', [...state.get('completedStudentTests'), { ...state.get(action.testList).filter(test => test.student_test_id === action.payload.student_test_id)[0], completion_date: Date.now(), status: action.payload.status }]);
+      return state.set('completedStudentTests', [
+        ...state.get('completedStudentTests'),
+        {
+          ...state
+            .get(action.testList)
+            .filter(test => test.student_test_id === action.payload.student_test_id)[0],
+          completion_date: Date.now(),
+          status: action.payload.status,
+        },
+      ]);
+
+    case FETCH_STUDENT_TESTS_SUCCESSFUL:
+      return state.set('studentTestsFetchedStatus', action.status);
 
     case UPDATE_FLAG_STATUS_SUCCESS:
       const newSections = state.get('sections').map(section => {

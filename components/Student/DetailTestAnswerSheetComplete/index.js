@@ -55,7 +55,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testScoreDetails: { student_test_id },
       activeStudent: { id },
     } = this.props;
-    // @TODO we need another solution than checking for sections
+    // @TODO we need a better  solution than checking for sections
     // The problem is that sections will always exist after clicking the first test and no new test will ever get fetched.
     // if (sections.length === 0) {
     const postBody = {
@@ -76,23 +76,20 @@ class DetailTestAnswerSheetComplete extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
-      console.log('log: ran setting problems', sections);
-      this.setState({ testReadingProblems: null,
-        testWritingProblems: null,
-        testMathCalcProblems: null,
-        testMathNoCalcProblems: null });
+      // @TODO do I need this? -Mark
+      // console.log('log: ran setting problems', sections);
+      // this.setState({ testReadingProblems: null,
+      //   testWritingProblems: null,
+      //   testMathCalcProblems: null,
+      //   testMathNoCalcProblems: null });
       this.onSetProblems(sections, student_test_id);
     }
   };
 
   onSetProblems = (sections, studentTestId) => {
-    const {
-      test,
-      tests,
-      testScoreDetails: { test_id },
-    } = this.props;
-    const testIds = tests.map((test) => test.id);
-    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+    const { tests, testScoreDetails: { test_id } } = this.props;
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
     sections.map(section => {
       const testSectionIds = currentTestSections.map(testSection => testSection.id);
@@ -221,8 +218,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
-    const { sections, activeStudentTestId, activeTestScores, onSetEssayScore, test } = this.props;
-    if (sections.length > 0 && test && sections[0].student_test_id === test.student_test_id) {
+    const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
+    if (sections) {
       const {
         testReadingProblems,
         testWritingProblems,
@@ -405,12 +402,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
               }}
               className="center-align"
             >
-              This test section is complete.
+              This test section is complete. You can still edit answer choices if needed.
             </p>}
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-          {activeSlide !== 'essay' &&
+          {activeSlide !== 'essay' && !showSectionMessage &&
             <div className="row">
               <div className="btn-holder right-align">
                 <a

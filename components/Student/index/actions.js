@@ -58,6 +58,7 @@ import {
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_TEST_STATUS,
   UPDATE_FLAG_STATUS,
+  FETCH_STUDENT_TESTS_SUCCESSFUL,
 } from "./constants";
 
 export function fetchStudents() {
@@ -401,7 +402,7 @@ export const addStudentAnswerToTest = (payload, sectionId) => ({
   sectionId,
 });
 
-export const updateTestStaus = (payload, currentStatus, studentId) => ({
+export const updateTestStatus = (payload, currentStatus, studentId) => ({
   type: UPDATE_TEST_STATUS,
   payload,
   currentStatus,
@@ -414,3 +415,9 @@ export const updateFlagStatus = (payload, status, question) => ({
   status,
   question,
 });
+export function setFetchStudentTestsStatus(status) {
+  return {
+    type: FETCH_STUDENT_TESTS_SUCCESSFUL,
+    status,
+  };
+}

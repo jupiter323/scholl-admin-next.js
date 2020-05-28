@@ -18,12 +18,13 @@ import {
   makeSelectTests,
   makeSelectAssignedStudentTests,
   makeSelectActiveStudent,
+  makeSelectActiveTestScores,
 } from '../../../index/selectors';
 import {
   fetchStudentTestSections,
   setStudentAssignedTests,
   setStudentCompletedTests,
-  updateTestStaus,
+  updateTestStatus,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
@@ -98,14 +99,11 @@ class EditTestModal extends React.Component {
       this.setState({ activePage });
     }
     if (sections.length !== 0) {
-      const {
-        tests,
-        test: { test_id },
-      } = this.props;
-      sections.map((section) => {
-        if (section.test_section_status === "COMPLETED") {
-          const testIds = tests.map((test) => test.id);
-          const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+      const { tests, test: { test_id } } = this.props;
+      sections.map(section => {
+        if (section.test_section_status === 'COMPLETED') {
+          const testIds = tests.map(test => test.id);
+          const currentTestIndex = testIds.findIndex(testId => testId === test_id);
           const currentTestSections = tests[currentTestIndex].test_sections;
           const testSectionIndex = currentTestSections.findIndex(
             testSection => testSection.id === section.test_section_id,
@@ -378,7 +376,7 @@ class EditTestModal extends React.Component {
     const currentTestSections = tests[currentTestIndex].test_sections;
     const testSectionIds = currentTestSections.map(testSection => testSection.id);
     const currentTestSectionIndex = testSectionIds.findIndex(
-      (testSectionId) => testSectionId === currentTestSectionId,
+      testSectionId => testSectionId === currentTestSectionId,
     );
     const currentTestSection = currentTestSections[currentTestSectionIndex];
     switch (currentTestSection.name) {
@@ -432,14 +430,15 @@ class EditTestModal extends React.Component {
         status: 'COMPLETED',
       };
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
-      const currentTestStatus = test.due_status === 'OVERDUE' ? "overdueStudentTests" : "assignedStudentTests";
+      const currentTestStatus =
+        test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
-      onOpentTestScore({ ...test, status: "COMPLETED" });
+      onOpentTestScore({ ...test, status: 'COMPLETED' });
     }
   };
 
   render() {
-    const { test, user, onCloseEditTestModal } = this.props;
+    const { test, user, onCloseEditTestModal, activeTestScores } = this.props;
     const { activePage, enablePublish } = this.state;
     const { title, test_name } = test;
     const { studentInformation: { firstName, lastName } } = user;
@@ -559,13 +558,14 @@ const mapStateToProps = createStructuredSelector({
   tests: makeSelectTests(),
   assignedTests: makeSelectAssignedStudentTests(),
   activeStudent: makeSelectActiveStudent(),
+  activeTestScores: makeSelectActiveTestScores(),
 });
 function mapDispatchToProps(dispatch) {
   return {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStaus(payload, currentStatus, studentId)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

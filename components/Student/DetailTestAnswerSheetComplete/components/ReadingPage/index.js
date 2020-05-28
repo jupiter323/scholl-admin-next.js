@@ -18,7 +18,7 @@ class ReadingPage extends React.Component {
     return (
       <div className="slide" id="readingAnswerSheetImg">
         <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}>
-          <ol className="answers-list">
+          <ol className="answers-list" style={{ marginBottom: '40px' }}>
             {this.mapAnswers()}
           </ol>
         </div>
