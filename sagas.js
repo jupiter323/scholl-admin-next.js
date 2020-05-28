@@ -55,6 +55,7 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
+  SET_STUDENT_SECTIONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -213,6 +214,10 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
+    yield put({
+      type: SET_STUDENT_SECTIONS,
+      sections: [],
+    });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     let count = 0;
     while (count < testSections.length) {
@@ -1049,6 +1054,7 @@ function* handleUpdateTestStatus(action) {
       type: UPDATE_TEST_STATUS_SUCCESS,
       payload: action.payload,
     });
+
     if (action.payload.status === "COMPLETED") {
       yield put({
         type: ADD_TEST_TO_COMPLETED,
@@ -1063,7 +1069,7 @@ function* handleUpdateTestStatus(action) {
       const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
-        scores: {...response, student_test_id: action.payload.student_test_id},
+        scores: { ...response, student_test_id: action.payload.student_test_id },
       });
     }
   } catch (error) {
