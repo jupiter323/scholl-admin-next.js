@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
+import FreeResponseInput from '../FreeResponseInput';
 
 class AnswerRow extends React.Component {
   constructor(props) {
@@ -72,12 +73,16 @@ class AnswerRow extends React.Component {
 
   getAnswerType = problem => {
     const { correct_answer } = problem;
-    return Number(correct_answer);
+    if (!parseFloat(correct_answer)) {
+      return null;
+    }
+    return correct_answer;
   };
 
   render() {
-    const { problem } = this.props;
+    const { problem, onAddStudentAnswerToTest, testSection } = this.props;
     const { open, status } = this.state;
+    console.log('log: problem', problem);
     return (
       <React.Fragment>
         <QuestionModal
@@ -97,11 +102,19 @@ class AnswerRow extends React.Component {
               <ul className="answer-list">
                 <Choose>
                   <When condition={this.getAnswerType(problem)}>{this.mapNumberBubbles()}</When>
+                  <When condition={problem.type === "fill_in_the_blank"}>
+                    <FreeResponseInput
+                      problem={problem}
+                      testSection={testSection}
+                      onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+                    />
+                  </When>
                   <Otherwise>
-                    <BubbleGroup 
-                      id={problem.id} 
-                      testSection={this.props.testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} 
-                      problem={problem} 
+                    <BubbleGroup
+                      id={problem.id}
+                      testSection={testSection}
+                      onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+                      problem={problem}
                     />
                   </Otherwise>
                 </Choose>

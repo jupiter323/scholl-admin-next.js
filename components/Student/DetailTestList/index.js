@@ -64,10 +64,10 @@ class DetailTestList extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { onFetchStudentTests, studentTests, activeStudent, user,studentTestsFetchedStatus } = this.props;
-    if (studentTests.length === 0 && !studentTestsFetchedStatus) {
+    const { onFetchStudentTests, studentTests, activeStudent, user } = this.props;
+    if (studentTests.length === 0) {
       onFetchStudentTests(user);
-    } else if (studentTests.length > 0 && studentTests[0].student_id !== activeStudent.id && !studentTestsFetchedStatus) {
+    } else if (studentTests.length > 0 && studentTests[0].student_id !== activeStudent.id) {
       onFetchStudentTests(user);
     }
   };
@@ -334,7 +334,7 @@ class DetailTestList extends React.Component {
       activeTest,
       opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds, overdues,studentTestsFetchedStatus } = this.props;
+    const { user, completes, assigneds, overdues, studentTestsFetchedStatus } = this.props;
     return (
       <React.Fragment>
         <Toast />
@@ -429,7 +429,7 @@ const mapStateToProps = createStructuredSelector({
   studentTests: makeSelectStudentTests(),
   tests: makeSelectTests(),
   activeStudent: makeSelectActiveStudent(),
-  studentTestsFetchedStatus:makeSelectFetchStudentTestsStatus(),
+  studentTestsFetchedStatus: makeSelectFetchStudentTestsStatus(),
 });
 
 function mapDispatchToProps(dispatch) {

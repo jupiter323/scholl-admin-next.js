@@ -98,7 +98,7 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
-  setFetchStudentTestsStatus
+  setFetchStudentTestsStatus,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -264,7 +264,7 @@ export function* fetchStudentTests(user) {
     yield put(setStudentCompletedTests(sortedTests.completes));
     yield put(setStudentOverDueTests(sortedTests.overdues));
     yield put(setStudentAssignedTests(sortedTests.assigneds));
-    yield put(setFetchStudentTestsStatus(true))
+    yield put(setFetchStudentTestsStatus(true));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTests saga", err);
   }
@@ -1022,6 +1022,7 @@ function* handleUpdateFlagStatus(action) {
 
 function* watchForAddStudentAnswerToTest() {
   yield takeEvery(ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+  // yield debounce(1000, ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest)
 }
 
 function* handleAddStudentAnswerToTest(action) {
