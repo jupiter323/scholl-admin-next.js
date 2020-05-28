@@ -32,11 +32,11 @@ class AnswerRow extends React.Component {
 
   mapNumberBubbles = () => {
     const {
-      problem: { student_answer, correct_answer },
+      problem: { student_answer, correct_answer,id },
     } = this.props;
     if (student_answer === correct_answer) {
       return (
-        <li key={student_answer}>
+        <li key={id}>
           <span
             className="badge badge-rounded badge-rounded-bordered"
             style={{ color: "#fff", borderColor: "#32955c", backgroundColor: "#3eb777" }}
