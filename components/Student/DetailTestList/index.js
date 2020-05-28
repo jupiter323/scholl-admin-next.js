@@ -59,6 +59,7 @@ class DetailTestList extends React.Component {
   }
 
   componentDidMount = async () => {
+    console.log("OK")
     const { onFetchStudentTests, studentTests, activeStudent, user } = this.props;
     if (studentTests.length === 0) {
       onFetchStudentTests(user);

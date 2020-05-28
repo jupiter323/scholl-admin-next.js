@@ -92,7 +92,7 @@ class TestScoreCard extends React.Component {
                           {readingScores.current_score}
                         </span>
                         <span className="description">
-                          (+{readingScores.delta})
+                          ({readingScores.delta})
                         </span>
                       </div>
                     </div>}
@@ -114,7 +114,7 @@ class TestScoreCard extends React.Component {
                           {writingScores.current_score}
                         </span>
                         <span className="description">
-                          (+{writingScores.delta})
+                          ({writingScores.delta})
                         </span>
                       </div>
                     </div>}
@@ -136,7 +136,7 @@ class TestScoreCard extends React.Component {
                           {mathScores.current_score}
                         </span>
                         <span className="description">
-                          (+{mathScores.delta})
+                          ({mathScores.delta})
                         </span>
                       </div>
                     </div>}
