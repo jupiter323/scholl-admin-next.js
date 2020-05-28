@@ -8,7 +8,7 @@ class MathCalculatorPage extends React.Component {
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>
-        <AnswerRow key={problem.test_problem_id} testSection={testSection} problem={problem} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} updateProblemView={this.props.updateProblemView} />,
+        <AnswerRow key={problem.test_problem_id} testSection={testSection} problem={problem} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} />,
       )
     );
   };

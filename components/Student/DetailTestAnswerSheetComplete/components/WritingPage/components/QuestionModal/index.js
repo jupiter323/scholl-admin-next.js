@@ -58,7 +58,7 @@ class QuestionModal extends React.Component {
   };
 
   onHandleQuestionFlagStatus = async (_e, status) => {
-    const { studentTestId, onChangeFlagState, onUpdateFlagStatus, updateProblemView } = this.props;
+    const { studentTestId, onChangeFlagState, onUpdateFlagStatus } = this.props;
     onChangeFlagState(status);
     const {
       question: {
@@ -66,6 +66,7 @@ class QuestionModal extends React.Component {
       },
       question,
     } = this.props;
+    console.log('log: props', this.props);
     console.log("log: question", question);
     let postBody = {};
     const newQuestion = question;
@@ -77,7 +78,6 @@ class QuestionModal extends React.Component {
       postBody = { student_test_id: studentTestId, flag_id: id, status };
       newQuestion.flag.status === "REVIEWED";
     }
-
     onUpdateFlagStatus(postBody, status, newQuestion);
   };
 
@@ -302,7 +302,7 @@ QuestionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  studentTestId: makeSelectActiveStudentTestId(),
+  // studentTestId: makeSelectActiveStudentTestId(),
   studentToken: makeSelectActiveStudentToken(),
 });
 

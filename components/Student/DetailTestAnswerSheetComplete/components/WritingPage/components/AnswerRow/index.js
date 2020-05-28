@@ -87,7 +87,7 @@ class AnswerRow extends React.Component {
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
           onChangeFlagState={this.onChangeFlagState}
-          updateProblemView={this.props.updateProblemView}
+          studentTestId={this.props.testSection.student_test_id}
         />
         <li
           className="answers-list-holder"

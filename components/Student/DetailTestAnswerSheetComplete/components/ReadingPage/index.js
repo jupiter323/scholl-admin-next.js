@@ -9,7 +9,7 @@ class ReadingPage extends React.Component {
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>
-        <AnswerRow key={problem.test_problem_id} testSection={testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} problem={problem} updateProblemView={this.props.updateProblemView} />,
+        <AnswerRow key={problem.test_problem_id} testSection={testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} problem={problem} />,
       )
     );
   };

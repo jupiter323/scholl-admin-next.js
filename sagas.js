@@ -1091,7 +1091,7 @@ function* handleUpdateTestFlagStatus(action) {
       if (response && response.message) {
         return console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
       }
-      action.question.flag.id = response;
+      action.question.flag.id = response.data.id;
     } else if (action.status === "REVIEWED") {
       const response = yield call(updateStudentTestQuestionFlagStatusApi, action.payload);
       if (response && response.message) {

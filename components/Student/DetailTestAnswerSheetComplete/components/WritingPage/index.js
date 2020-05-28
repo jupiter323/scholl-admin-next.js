@@ -8,7 +8,7 @@ class WritingPage extends React.Component {
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>
-        <AnswerRow key={problem.test_problem_id} problem={problem} testSection={testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} updateProblemView={this.props.updateProblemView} />,
+        <AnswerRow key={problem.test_problem_id} problem={problem} testSection={testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} />,
       )
     );
   };
