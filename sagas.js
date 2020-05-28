@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce, delay, race } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -1066,7 +1066,10 @@ function* handleUpdateTestStatus(action) {
         payload: action.payload,
         testList: action.currentStatus,
       });
-      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
+      const {response} = yield race({
+        response: call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id),
+        timeout: delay(500)
+      })
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
         scores: { ...response, student_test_id: action.payload.student_test_id },
