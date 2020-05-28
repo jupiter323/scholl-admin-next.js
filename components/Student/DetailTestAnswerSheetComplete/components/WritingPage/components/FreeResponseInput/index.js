@@ -1,14 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { addFreeResponseAnswerToTest } from '../../../../../index/actions';
 
 class FreeResponseInput extends React.Component {
   handleInputChange = (e) => {
     const answer = e.target.value;
-    const { onAddStudentAnswerToTest, problem, testSection: { student_test_id } } = this.props;
+    const { onAddFreeResponseAnswerToTest, problem, testSection: { student_test_id } } = this.props;
     console.log('log: problem', problem);
     console.log('log: answer', answer);
-    // const postBody = {student_test_id, test_problem_id: id, answer}
-    onAddStudentAnswerToTest(problem, answer, student_test_id);
+    const postBody = { student_test_id, test_problem_id: problem.id, answer };
+    onAddFreeResponseAnswerToTest(postBody, problem.test_section_id);
   };
   render() {
     return (
@@ -21,6 +24,16 @@ class FreeResponseInput extends React.Component {
   }
 }
 
-FreeResponseInput.propTypes = {};
+FreeResponseInput.propTypes = {
+  problem: PropTypes.object,
+};
 
-export default FreeResponseInput;
+function mapDispatchToProps(dispatch) {
+  return {
+    onAddFreeResponseAnswerToTest: () => dispatch(addFreeResponseAnswerToTest()),
+  };
+}
+
+const withConnect = connect(null, mapDispatchToProps);
+
+export default compose(withConnect)(FreeResponseInput);
