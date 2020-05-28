@@ -47,7 +47,7 @@ class ReadingPage extends React.Component {
 }
 
 ReadingPage.propTypes = {
-  scores: PropTypes.object.isRequired,
+  scores: PropTypes.object,
 };
 
 export default ReadingPage;

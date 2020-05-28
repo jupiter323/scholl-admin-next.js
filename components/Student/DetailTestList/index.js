@@ -405,7 +405,7 @@ DetailTestList.propTypes = {
   completes: PropTypes.array,
   overdues: PropTypes.array,
   assigneds: PropTypes.array,
-  onSetStudentAssignedTests: PropTypes.func.isRequired,
+  onSetStudentAssignedTests: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

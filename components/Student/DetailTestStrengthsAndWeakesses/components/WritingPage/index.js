@@ -41,7 +41,7 @@ class WritingPage extends React.Component {
 }
 
 WritingPage.propTypes = {
-  scores: PropTypes.object.isRequired,
+  scores: PropTypes.object,
 };
 
 export default WritingPage;

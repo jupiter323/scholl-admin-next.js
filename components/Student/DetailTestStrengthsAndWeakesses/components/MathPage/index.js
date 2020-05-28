@@ -41,7 +41,7 @@ class MathPage extends React.Component {
 }
 
 MathPage.propTypes = {
-  scores: PropTypes.object.isRequired,
+  scores: PropTypes.object,
 };
 
 export default MathPage;
