@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
+import { toast } from 'react-toastify';
 import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 import { updateFlagStatus } from "../../../../../index/actions";
@@ -20,7 +21,9 @@ class QuestionModal extends React.Component {
   }
 
   componentDidMount = () => {
-    const { question: { problem_type_id } } = this.props;
+    const {
+      question: { problem_type_id },
+    } = this.props;
     switch (problem_type_id) {
       case 1:
         this.setState({ subject: "Reading", problemListName: "testReadingProblems" });
@@ -57,23 +60,29 @@ class QuestionModal extends React.Component {
   };
 
   onHandleQuestionFlagStatus = async (_e, status) => {
-    const { studentTestId, onUpdateFlagStatus } = this.props;
     const {
+      studentTestId,
+      onUpdateFlagStatus,
       question: {
         flag: { id },
       },
       question,
     } = this.props;
+    // Check if user click is valid
+    if (status === this.state.status) return;
+    if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
+      return toast.error(`There is no flag to mark reviwed.`, {
+        className: "update-error",
+        progressClassName: "progress-bar-error",
+      });
+    }
+    // Continue with request
     let postBody = {};
     const newQuestion = question;
 
-    if (status === "FLAGGED") {
-      if (!id) {
-        postBody = { student_test_id: studentTestId, test_problem_id: question.id };
-      } else {
-        postBody = { student_test_id: studentTestId, flag_id: id, status };
-      }
-    } else if (status === "REVIEWED") {
+    if (status === "FLAGGED" && !id) {
+      postBody = { student_test_id: studentTestId, test_problem_id: question.id };
+    } else {
       postBody = { student_test_id: studentTestId, flag_id: id, status };
     }
     newQuestion.flag.status = status;
@@ -144,6 +153,18 @@ class QuestionModal extends React.Component {
                                 <i className="icon-flag grey-text text-lighten-1" />
                                 Mark Reviewed
                               </span>
+                            </label>
+                          </li>
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                                checked={status === "UN_FLAGGED" ? "checked" : ""}
+                                onClick={(e) => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
+                              />
+                              <span>No Problem Flag</span>
                             </label>
                           </li>
                         </ul>
