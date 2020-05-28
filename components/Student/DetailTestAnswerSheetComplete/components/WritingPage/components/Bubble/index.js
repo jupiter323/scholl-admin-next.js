@@ -91,34 +91,40 @@ class BubbleGroup extends React.Component {
   //     problemCells.forEach(problem => {
   //       if( student_answer === problem.label){
   //         problem.selected = true
-  //         return problem
+  //         return {
+  //           selectedIndex: problem.id,
+  //           problemCells:Object.assign(...problemCells, problem)  
+  //         };
   //       }
-  //     return {
-  //       selectedIndex: problem.id,
-  //       problemCells:Object.assign(...problemCells, problem)
-        
-  //     };
-  //   });
-  //     return null;
+  //     });
   //   }
+  //   return null;
   // }
 
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
-    // console.log('log: selectedIndex ', selectedIndex);
+    const { student_answer } = this.props.problem
+    const alreadySelected = (student_answer && student_answer === currentBadge.label) ? currentBadge.id : -1
+    
+    console.log('log: selectedIndex ', selectedIndex);
+    console.log('log: index ', index);
+    console.log('log: alreadySelected ', alreadySelected);
+    console.log('log: currentBadge ', currentBadge);
+    if ( alreadySelected === index ){
+      console.log('got in here ');
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+        [alreadySelected]: { selected: { $set: false } },
+      });
+      this.onSaveStudentAnswer(updatedProblemCells, -1);
+    }
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
 
-    } else if ( selectedIndex === index ){
-      const updatedProblemCells = update(this.state.problemCells, {
-        [index]: { selected: { $set: !currentBadge.selected } },
-        [selectedIndex]: { selected: { $set: false } },
-      });
-      this.onSaveStudentAnswer(updatedProblemCells, -1);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
