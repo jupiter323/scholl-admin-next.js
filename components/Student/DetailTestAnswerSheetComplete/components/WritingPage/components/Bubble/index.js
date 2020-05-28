@@ -84,29 +84,24 @@ class BubbleGroup extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    // console.log('log: props ', props);
-    // console.log('log: state ', state);
-    const { problemCells } = state;
-    const { student_answer } = props.problem
-    const studentSelection = problemCells.forEach(problem => {
-      if( student_answer === problem.label){
-        problem.selected = true
-        return problem
-      }
-      console.log('log: problem ', problem);
-      return problem
-    });
-    console.log('log: studentSelection ', studentSelection);
-        // return {
-        //   selectedIndex: setSelected.id,
-        //   problemCells:setProblems
-          
-        // };
-      // }
-      return null;
-    // }
-  }
+  // static getDerivedStateFromProps(props, state) {
+  //   const { problemCells } = state;
+  //   const { student_answer } = props.problem
+  //   if(student_answer){
+  //     problemCells.forEach(problem => {
+  //       if( student_answer === problem.label){
+  //         problem.selected = true
+  //         return problem
+  //       }
+  //     return {
+  //       selectedIndex: problem.id,
+  //       problemCells:Object.assign(...problemCells, problem)
+        
+  //     };
+  //   });
+  //     return null;
+  //   }
+  // }
 
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
@@ -171,7 +166,7 @@ class BubbleGroup extends React.Component {
     const {
       problem: { correct_answer, student_answer },
     } = this.props;
-    const { selectedIndex, problemCells, alreadySelected } = this.state;
+    const { selectedIndex, problemCells } = this.state;
     const selectedAnswer = problemCells[selectedIndex] ? problemCells[selectedIndex].label : null;
     const studentAnswer = student_answer || selectedAnswer;
     if (studentAnswer === letter && studentAnswer === correct_answer) {
