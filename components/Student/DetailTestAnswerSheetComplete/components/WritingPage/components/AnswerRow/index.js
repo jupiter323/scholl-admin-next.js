@@ -21,10 +21,13 @@ class AnswerRow extends React.Component {
     }
   }
 
-  onChangeFlagState = (status) => {
-    this.setState({
-      status,
-    });
+  componentWillReceiveProps = (nextProps) => {
+    const { problem: { flag: { status: nextPropsStatus } } } = nextProps;
+    if (nextPropsStatus !== this.state.status) {
+      this.setState({
+        status: nextPropsStatus,
+      });
+    }
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -78,7 +81,6 @@ class AnswerRow extends React.Component {
   render() {
     const { problem } = this.props;
     const { open, status } = this.state;
-    if (status === "REVIEWED") console.log('log: problem', problem);
     return (
       <React.Fragment>
         <QuestionModal
@@ -86,7 +88,6 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
-          onChangeFlagState={this.onChangeFlagState}
           studentTestId={this.props.testSection.student_test_id}
         />
         <li

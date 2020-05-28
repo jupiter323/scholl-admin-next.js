@@ -4,7 +4,6 @@ import AnswerRow from '../WritingPage/components/AnswerRow';
 
 class ReadingPage extends React.Component {
   mapAnswers = () => {
-    console.log('log: testSection', testSection);
     const { testSection: { problems: problemsSection }, testSection } = this.props;
     return (
       problemsSection.problems &&

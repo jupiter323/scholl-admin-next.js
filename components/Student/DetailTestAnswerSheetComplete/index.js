@@ -55,18 +55,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testScoreDetails: { student_test_id },
       activeStudent: { id },
     } = this.props;
-    // @TODO we need a better  solution than checking for sections
-    // The problem is that sections will always exist after clicking the first test and no new test will ever get fetched.
-    // if (sections.length === 0) {
     const postBody = {
       id,
       student_test_id,
       studentToken,
     };
     onFetchStudentTestSections(postBody);
-    // } else {
-    //   this.onSetProblems(sections, student_test_id);
-    // }
     this.props.onRef(this);
   }
   componentWillUnmount() {
@@ -76,12 +70,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { sections, student_test_id } = nextProps;
     if (sections.length !== 0) {
-      // @TODO do I need this? -Mark
-      // console.log('log: ran setting problems', sections);
-      // this.setState({ testReadingProblems: null,
-      //   testWritingProblems: null,
-      //   testMathCalcProblems: null,
-      //   testMathNoCalcProblems: null });
       this.onSetProblems(sections, student_test_id);
     }
   };
@@ -291,7 +279,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   updateSectionStatus = async (activeSlide, currentSection) => {
-    console.log('log: currentSection', currentSection);
     if (!currentSection) return;
     if (currentSection.test_section_status === 'CREATED') {
       if (!this.state.updatedSectionStatus[`${activeSlide}Section`]) {
