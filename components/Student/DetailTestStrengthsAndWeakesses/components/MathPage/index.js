@@ -23,7 +23,7 @@ class MathPage extends React.Component {
     const { parentScores } = this.state;
     return (
       parentScores instanceof Array &&
-      parentScores.map(group => <GroupBlock data={group} />)
+      parentScores.map(group => <GroupBlock data={group} key={group.id}/>)
     );
   };
 
@@ -41,7 +41,7 @@ class MathPage extends React.Component {
 }
 
 MathPage.propTypes = {
-  scores: PropTypes.object.isRequired,
+  scores: PropTypes.object,
 };
 
 export default MathPage;

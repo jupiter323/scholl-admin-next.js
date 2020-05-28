@@ -55,6 +55,7 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
+  SET_STUDENT_SECTIONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -97,6 +98,7 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
+  setFetchStudentTestsStatus
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -212,6 +214,10 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
   try {
+    yield put({
+      type: SET_STUDENT_SECTIONS,
+      sections: [],
+    });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     let count = 0;
     while (count < testSections.length) {
@@ -258,6 +264,7 @@ export function* fetchStudentTests(user) {
     yield put(setStudentCompletedTests(sortedTests.completes));
     yield put(setStudentOverDueTests(sortedTests.overdues));
     yield put(setStudentAssignedTests(sortedTests.assigneds));
+    yield put(setFetchStudentTestsStatus(true))
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTests saga", err);
   }
@@ -1047,6 +1054,7 @@ function* handleUpdateTestStatus(action) {
       type: UPDATE_TEST_STATUS_SUCCESS,
       payload: action.payload,
     });
+
     if (action.payload.status === "COMPLETED") {
       yield put({
         type: ADD_TEST_TO_COMPLETED,
@@ -1061,7 +1069,7 @@ function* handleUpdateTestStatus(action) {
       const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
-        scores: {...response, student_test_id: action.payload.student_test_id},
+        scores: { ...response, student_test_id: action.payload.student_test_id },
       });
     }
   } catch (error) {
