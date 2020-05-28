@@ -11,7 +11,7 @@ class SubBlock extends React.Component {
   mapSubRow = data => {
     if (data.children) {
       return data.children.map(children => {
-        return <GroupRow data={children} />;
+        return <GroupRow data={children} key={children.id} />;
       });
     }
   };
@@ -38,7 +38,9 @@ class SubBlock extends React.Component {
                   <div className="graph-admin">
                     <div
                       className="part-red"
-                      style={{width: `${(data.score.incorrect / data.score.total * 100).toFixed(0)}%`}}
+                      style={{
+                        width: `${(data.score.incorrect / data.score.total * 100).toFixed(0)}%`,
+                      }}
                     />
                   </div>
                 </div>
