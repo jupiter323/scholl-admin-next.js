@@ -111,27 +111,26 @@ class BubbleGroup extends React.Component {
     console.log('log: index ', index);
     console.log('log: alreadySelected ', alreadySelected);
     console.log('log: currentBadge ', currentBadge);
-    if ( alreadySelected === index ){
-      console.log('got in here ');
-      const updatedProblemCells = update(this.state.problemCells, {
-        [index]: { selected: { $set: !currentBadge.selected } },
-        [alreadySelected]: { selected: { $set: false } },
-      });
-      this.onSaveStudentAnswer(updatedProblemCells, -1);
-    }
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
 
+    } else if ( alreadySelected === index ){
+      console.log('got in here ');
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+        [alreadySelected]: { selected: { $set: false } },
+      });
+      this.onSaveStudentAnswer(updatedProblemCells, -1);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
         [selectedIndex]: { selected: { $set: false } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
-    }
+    } 
   };
 
   onSaveStudentAnswer = (updatedProblemCells, index) => {
