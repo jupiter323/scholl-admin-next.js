@@ -83,45 +83,34 @@ class BubbleGroup extends React.Component {
       ],
     };
   }
-
-  // static getDerivedStateFromProps(props, state) {
-  //   const { problemCells } = state;
-  //   const { student_answer } = props.problem
-  //   if(student_answer){
-  //     problemCells.forEach(problem => {
-  //       if( student_answer === problem.label){
-  //         problem.selected = true
-  //         return {
-  //           selectedIndex: problem.id,
-  //           problemCells:Object.assign(...problemCells, problem)  
-  //         };
-  //       }
-  //     });
-  //   }
-  //   return null;
-  // }
+  componentDidMount = () => {
+    const { problem } = this.props;
+    if (!problem.student_answer) {
+      return;
+    }
+    const cells = this.state.problemCells;
+    let selectedIndex = -1;
+    cells.map((cell, index) => {
+      if (cell.label === problem.student_answer) {
+        cells[index] = { ...cell, selected: true };
+        selectedIndex = index;
+      }
+    });
+    return this.setState({ problemCells: [...cells], selectedIndex });
+  };
 
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
-    const { student_answer } = this.props.problem
-    const alreadySelected = (student_answer && student_answer === currentBadge.label) ? currentBadge.id : -1
-    
-    console.log('log: selectedIndex ', selectedIndex);
-    console.log('log: index ', index);
-    console.log('log: alreadySelected ', alreadySelected);
-    console.log('log: currentBadge ', currentBadge);
     if (selectedIndex === -1) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
-
-    } else if ( alreadySelected === index ){
-      console.log('got in here ');
+    } else if (selectedIndex === index) {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
-        [alreadySelected]: { selected: { $set: false } },
+        [selectedIndex]: { selected: { $set: false } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, -1);
     } else {
@@ -130,7 +119,7 @@ class BubbleGroup extends React.Component {
         [selectedIndex]: { selected: { $set: false } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
-    } 
+    }
   };
 
   onSaveStudentAnswer = (updatedProblemCells, index) => {
@@ -167,7 +156,6 @@ class BubbleGroup extends React.Component {
   };
 
   renderBubbleStyle = letter => {
-    // console.log('log: letter ', letter);
     const {
       problem: { correct_answer, student_answer },
     } = this.props;
