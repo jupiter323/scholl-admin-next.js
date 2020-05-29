@@ -48,7 +48,7 @@ const SubjectsCard = ({ readingScores, writingScores, mathScores }) =>
                   <div className="chart-text">
                     <span className="title">Reading</span>
                     <span className="value">
-                      {(readingScores.score.percent_correct * 100).toFixed(0)}%
+                      {(readingScores.score.percent_correct).toFixed(0)}%
                     </span>
                     <span className="description">
                       <b>{readingScores.score.correct}</b> of <b>{readingScores.score.total}</b>
@@ -71,7 +71,7 @@ const SubjectsCard = ({ readingScores, writingScores, mathScores }) =>
                   <div className="chart-text">
                     <span className="title">Writing</span>
                     <span className="value">
-                      {(writingScores.score.percent_correct * 100).toFixed(0)}%
+                      {(writingScores.score.percent_correct).toFixed(0)}%
                     </span>
                     <span className="description">
                       <b>{writingScores.score.correct}</b> of <b>{writingScores.score.total}</b>
@@ -94,7 +94,7 @@ const SubjectsCard = ({ readingScores, writingScores, mathScores }) =>
                   <div className="chart-text">
                     <span className="title">Math</span>
                     <span className="value">
-                      {(mathScores.score.percent_correct * 100).toFixed(0)}%
+                      {(mathScores.score.percent_correct).toFixed(0)}%
                     </span>
                     <span className="description">
                       <b>{mathScores.score.correct}</b> of <b>{mathScores.score.total}</b>

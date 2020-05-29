@@ -23,8 +23,8 @@ class SubBlock extends React.Component {
           <div className="graph-row graph-row-subtitle">
             <div className="graph-col text-column">
               <strong className="graph-subtitle">
-                <span className={getScoreStatus(data.score.percent_correct * 100)}>
-                  {(data.score.percent_correct * 100).toFixed(0)}%
+                <span className={getScoreStatus(data.score.percent_correct)}>
+                  {(data.score.percent_correct).toFixed(0)}%
                 </span>
                 {data.name}
               </strong>
