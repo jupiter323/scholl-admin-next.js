@@ -34,22 +34,29 @@ class AnswerRow extends React.Component {
   mapNumberBubbles = () => {
     const {
       problem: { student_answer, correct_answer },
+      problem,
+      testSection,
     } = this.props;
     if (student_answer === correct_answer) {
       return (
-        <li key={student_answer}>
-          <span
-            className="badge badge-rounded badge-rounded-bordered"
-            style={{ color: "#fff", borderColor: "#32955c", backgroundColor: "#3eb777" }}
-          >
-            {student_answer}
-          </span>
-        </li>
+        <>
+          <li>
+            <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: true }} />
+          </li>
+          <li key={student_answer}>
+            <span
+              className="badge badge-rounded badge-rounded-bordered"
+              style={{ color: "#fff", borderColor: "#32955c", backgroundColor: "#3eb777" }}
+            >
+              {student_answer}
+            </span>
+          </li>
+        </>
       );
     }
     return (
       <React.Fragment>
-        {student_answer && (
+        {/* {student_answer && (
           <li key={student_answer}>
             <span
               className="badge badge-rounded badge-rounded-bordered"
@@ -58,11 +65,19 @@ class AnswerRow extends React.Component {
               {student_answer}
             </span>
           </li>
-        )}
+        )} */}
+        <li key={student_answer}>
+          <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: false }} />
+        </li>
         <li key={correct_answer}>
           <span
             className="badge badge-rounded badge-rounded-bordered"
-            style={{ color: "#32955c", borderColor: "#32955c", backgroundColor: "#fff" }}
+            style={{
+              color: "#32955c",
+              borderColor: "#32955c",
+              backgroundColor: "#fff",
+              width: "100%",
+            }}
           >
             {correct_answer}
           </span>
@@ -105,7 +120,7 @@ class AnswerRow extends React.Component {
                     <FreeResponseInput
                       problem={problem}
                       testSection={testSection}
-                      onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+                      answerStatus={{ complete: false }}
                     />
                   </When>
                   <Otherwise>

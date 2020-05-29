@@ -1027,7 +1027,7 @@ function* watchForAddStudentAnswerToTest() {
 }
 
 function* watchForAddStudentAnswerToTestDebounce() {
-  yield debounce(500, ADD_FREE_RESPONSE_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+  yield debounce(200, ADD_FREE_RESPONSE_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
 }
 
 function* handleAddStudentAnswerToTest(action) {
