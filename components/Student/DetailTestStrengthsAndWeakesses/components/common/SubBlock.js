@@ -14,32 +14,34 @@ class SubBlock extends React.Component {
     }
   };
 
-  renderSubBlock = data => (
-    <React.Fragment>
-      <div className="graph-row-block">
-        <div className="graph-row graph-row-subtitle">
-          <div className="graph-col text-column">
-            <strong className="graph-subtitle">
-              <span className={getScoreStatus(data.score.percent_correct * 100)}>
-                {(data.score.percent_correct * 100).toFixed(0)}%
-              </span>
-              {data.name}
-            </strong>
-          </div>
-          <div className="graph-col graph-container">
-            <div className="graph-linear-students">
-              <div
-                className="graph-holder"
-                style={{ width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%` }}
-              >
-                <div className="graph-admin">
-                  <div
-                    className="part-red"
-                    style={{
-                      width: `${(data.score.incorrect / data.score.total * 100).toFixed(0)}%`,
-                    }}
-                  />
-                </div>
+  renderSubBlock = data => {
+    return (
+      <React.Fragment>
+        <div className="graph-row-block">
+          <div className="graph-row graph-row-subtitle">
+            <div className="graph-col text-column">
+              <strong className="graph-subtitle">
+                <span className={getScoreStatus(data.score.percent_correct)}>
+                  {(data.score.percent_correct).toFixed(0)}%
+                </span>
+                {data.name}
+              </strong>
+            </div>
+            <div className="graph-col graph-container">
+              <div className="graph-linear-students">
+                <div
+                  className="graph-holder"
+                  style={{width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%`}}
+                >
+                  <div className="graph-admin">
+                    <div
+                      className="part-red"
+                      style={{
+                        width: `${(data.score.incorrect / data.score.total * 100).toFixed(0)}%`,
+                      }}
+                    />
+                  </div>
+                
               </div>
             </div>
           </div>
@@ -56,7 +58,7 @@ class SubBlock extends React.Component {
         {this.mapSubRow(data)}
       </div>
     </React.Fragment>
-  );
+  )};
 
   render() {
     return this.renderSubBlock(this.props.data);

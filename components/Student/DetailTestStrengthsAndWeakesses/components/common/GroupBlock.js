@@ -23,8 +23,8 @@ class GroupBlock extends React.Component {
         <div className="graph-row graph-row-title">
           <div className="graph-col text-column">
             <h3 className="graph-title">
-              <span className={getScoreStatus((percent_correct * 100).toFixed(0))}>
-                {(percent_correct * 100).toFixed(0)}%
+              <span className={getScoreStatus((percent_correct).toFixed(0))}>
+                {(percent_correct).toFixed(0)}%
               </span>
               {name}
             </h3>
