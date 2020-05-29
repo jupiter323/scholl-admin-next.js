@@ -6,8 +6,8 @@ const GroupRow = ({data: {name, score: {percent_correct, correct, incorrect, tot
   <div className="graph-row graph-row-inner">
     <div className="graph-col text-column">
       <strong className="graph-subtitle">
-        <span className={getScoreStatus((percent_correct * 100).toFixed(0))}>
-          {(percent_correct * 100).toFixed(0)}%
+        <span className={getScoreStatus((percent_correct).toFixed(0))}>
+          {(percent_correct).toFixed(0)}%
         </span>
         {name}
       </strong>
