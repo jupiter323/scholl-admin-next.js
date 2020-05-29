@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createStructuredSelector} from 'reselect';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {Sticky} from 'react-sticky';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Sticky } from 'react-sticky';
 import AccountPage from '../AccountPage';
 import DetailSummaryPage from '../DetailSummaryPage';
 import DetailWorksheetPage from '../DetailWorksheetPage';
@@ -19,9 +19,9 @@ import {
   makeSelectIsVisibleTopBar,
 } from '../index/selectors';
 
-import {setIsVisibleTopBar, setFetchStudentTestsStatus} from '../index/actions';
+import { setIsVisibleTopBar, setFetchStudentTestsStatus } from '../index/actions';
 
-import {updateStudentActivationApi} from '../index/api';
+import { updateStudentActivationApi } from '../index/api';
 
 class IndividualStudentPage extends React.Component {
   constructor(props) {
@@ -36,25 +36,25 @@ class IndividualStudentPage extends React.Component {
   }
 
   componentDidMount = async () => {
-    const {onSetIsVisibleTopBar, isVisibleTopBar} = this.props;
+    const { onSetIsVisibleTopBar, isVisibleTopBar } = this.props;
     if (!isVisibleTopBar) {
       onSetIsVisibleTopBar(true);
     }
   };
 
   onToggleActivationDropdown = () =>
-    this.setState(({activationDropdownOpen}) => ({
+    this.setState(({ activationDropdownOpen }) => ({
       activationDropdownOpen: !activationDropdownOpen,
     }));
 
-  onSetActivePage = activePage => this.setState({activePage});
+  onSetActivePage = activePage => this.setState({ activePage });
 
-  onHandleDetailsChange = (name, event) => this.setState({[name]: event.target.value});
+  onHandleDetailsChange = (name, event) => this.setState({ [name]: event.target.value });
 
   renderCurrentPage = () => {
-    const {activePage} = this.state;
+    const { activePage } = this.state;
     // The  data is not enough for now,so we are using dummy data for selected student detail
-    const {student} = this.props;
+    const { student } = this.props;
     // const student = sampleSelectedStudent;
     if (activePage === 'summary') {
       return <DetailSummaryPage user={student} />;
@@ -81,7 +81,7 @@ class IndividualStudentPage extends React.Component {
   };
 
   handleActivateButton = async () => {
-    const {student} = this.props;
+    const { student } = this.props;
     const payload = {
       user_id: student.id,
       code: this.state.licenseCode,
@@ -96,15 +96,15 @@ class IndividualStudentPage extends React.Component {
   };
 
   onRedirectToStudentPage = event => {
-    const {onRedirectToStudentPage, onSetFetchStudentTestsStatus} = this.props;
+    const { onRedirectToStudentPage, onSetFetchStudentTestsStatus } = this.props;
     onRedirectToStudentPage(event);
     onSetFetchStudentTestsStatus(false);
   };
 
   render() {
-    const {student: {active, studentInformation: {firstName, lastName}}} = this.props;
-    const {activePage, activationDropdownOpen, licenseCode} = this.state;
-    const {assignLessonsModalOpen, assignWorkSheetsModalOpen, isVisibleTopBar} = this.props;
+    const { student: { active, studentInformation: { firstName, lastName } } } = this.props;
+    const { activePage, activationDropdownOpen, licenseCode } = this.state;
+    const { assignLessonsModalOpen, assignWorkSheetsModalOpen, isVisibleTopBar } = this.props;
     return (
       <React.Fragment>
         <Choose>
@@ -112,8 +112,8 @@ class IndividualStudentPage extends React.Component {
             condition={!assignLessonsModalOpen && !assignWorkSheetsModalOpen && isVisibleTopBar}
           >
             <Sticky>
-              {({style}) =>
-                <div className="title-row card-panel" style={{...style, zIndex: 1999}}>
+              {({ style }) =>
+                (<div className="title-row card-panel" style={{ ...style, zIndex: 1999 }}>
                   <div className="mobile-header">
                     <a href="#" data-target="slide-out" className="sidenav-trigger">
                       <i className="material-icons">menu</i>
@@ -165,7 +165,7 @@ class IndividualStudentPage extends React.Component {
                     <div
                       id="dropdown_activate"
                       className="dropdown-content"
-                      style={activationDropdownOpen ? {display: 'block', opacity: '1'} : {}}
+                      style={activationDropdownOpen ? { display: 'block', opacity: '1' } : {}}
                     >
                       <div className="card-panel">
                         <div className="title-block">
@@ -213,7 +213,7 @@ class IndividualStudentPage extends React.Component {
                       </div>
                     </div>
                   </div>
-                </div>}
+                </div>)}
             </Sticky>
           </When>
         </Choose>

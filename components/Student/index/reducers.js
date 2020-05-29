@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable';
+import { fromJS } from 'immutable';
 import moment from 'moment';
 import {
   SET_STUDENTS,
@@ -48,8 +48,10 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_LIST,
+  UPDATE_FLAG_STATUS_SUCCESS,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
-} from './constants';
+  SEND_ERROR_MESSAGE,
+} from "./constants";
 
 const initialState = fromJS({
   students: [],
@@ -80,6 +82,9 @@ const initialState = fromJS({
   testSectionProblems: [],
   studentTests: [],
   studentTestsFetchedStatus: false,
+  errorMessages: {
+    testFlagMessage: null,
+  },
 });
 
 function studentReducer(state = initialState, action) {
@@ -97,7 +102,7 @@ function studentReducer(state = initialState, action) {
     case SET_ACTIVE_TEST_SCORES:
       return state.set('activeTestScores', action.scores);
     case SET_ESSAY_SCORE:
-      return state.set('activeTestScores', {...state.get('activeTestScores'), essay: action.score});
+      return state.set('activeTestScores', { ...state.get('activeTestScores'), essay: action.score });
     case SET_STUDENT_COMPLETED_TESTS:
       return state.set('completedStudentTests', action.tests);
     case SET_STUDENT_OVERDUE_TESTS:
@@ -134,7 +139,7 @@ function studentReducer(state = initialState, action) {
             ...lesson,
             selected: !lesson.selected,
           };
-        })
+        }),
       );
 
     case SELECT_ALL_LESSONS:
@@ -142,10 +147,10 @@ function studentReducer(state = initialState, action) {
         'lessonList',
         state.get('lessonList').map(lesson => {
           if (action.mappedLessons.includes(lesson.id)) {
-            return {...lesson, selected: true};
+            return { ...lesson, selected: true };
           }
           return lesson;
-        })
+        }),
       );
 
     case UNSELECT_ALL_LESSONS:
@@ -154,7 +159,7 @@ function studentReducer(state = initialState, action) {
         state.get('lessonList').map(lesson => ({
           ...lesson,
           selected: false,
-        }))
+        })),
       );
 
     case ADD_ALL_LESSONS:
@@ -166,7 +171,7 @@ function studentReducer(state = initialState, action) {
             return lesson.lesson_id;
           }
           return lesson.id;
-        })
+        }),
       );
 
     case REMOVE_ALL_LESSONS:
@@ -178,7 +183,7 @@ function studentReducer(state = initialState, action) {
     case REMOVE_CHECKED_LESSON:
       return state.set(
         'checkedLessons',
-        state.get('checkedLessons').filter(lesson => lesson !== action.lessonId)
+        state.get('checkedLessons').filter(lesson => lesson !== action.lessonId),
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
@@ -210,7 +215,7 @@ function studentReducer(state = initialState, action) {
       return state.set(
         'lessonList',
         state.get('lessonList').map(lesson => {
-          const {payload: {due_date, assignment_date}} = action;
+          const { payload: { due_date, assignment_date } } = action;
           let updatedLesson = {};
           action.payload.student_lesson_ids.forEach(setLessons => {
             if (setLessons === lesson.id) {
@@ -223,13 +228,13 @@ function studentReducer(state = initialState, action) {
             if (!updatedLesson.id) return (updatedLesson = lesson);
           });
           return updatedLesson;
-        })
+        }),
       );
 
     case UNASSIGN_STUDENT_LESSON_SUCCESS:
       return state.set(
         'lessonList',
-        state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id))
+        state.get('lessonList').filter(lesson => !action.payload.includes(lesson.id)),
       );
 
     case RESET_STUDENT_LESSONS_SUCCESS:
@@ -253,7 +258,7 @@ function studentReducer(state = initialState, action) {
             if (!updatedLesson.id) return (updatedLesson = lesson);
           });
           return updatedLesson;
-        })
+        }),
       );
 
     case FETCH_SUBJECTS_SUCCESS:
@@ -265,10 +270,9 @@ function studentReducer(state = initialState, action) {
       return state.set(
         'lessonList',
         state.get('lessonList').map(lesson => {
-          if (action.payload.student_lesson_id === lesson.id)
-            return {...lesson, lateness_excused: action.payload.was_excused};
+          if (action.payload.student_lesson_id === lesson.id) { return { ...lesson, lateness_excused: action.payload.was_excused }; }
           return lesson;
-        })
+        }),
       );
 
     case SET_ACTIVE_STUDENT:
@@ -280,13 +284,13 @@ function studentReducer(state = initialState, action) {
     case REMOVE_TEST:
       return state.set(
         action.testType,
-        state.get(action.testType).filter(test => test.student_test_id !== action.studentTestId)
+        state.get(action.testType).filter(test => test.student_test_id !== action.studentTestId),
       );
 
     case REMOVE_TEST_FROM_LIST:
       return state.set(
         'studentTests',
-        state.get('studentTests').filter(test => test.student_test_id !== action.studentTestId)
+        state.get('studentTests').filter(test => test.student_test_id !== action.studentTestId),
       );
 
     case ASSIGN_NEW_TEST:
@@ -311,7 +315,7 @@ function studentReducer(state = initialState, action) {
             });
           }
           return section;
-        })
+        }),
       );
 
     case UPDATE_TEST_STATUS_SUCCESS:
@@ -319,10 +323,10 @@ function studentReducer(state = initialState, action) {
         'studentTests',
         state.get('studentTests').map(test => {
           if (test.student_test_id === action.payload.student_test_id) {
-            return {...test, status: action.payload.status};
+            return { ...test, status: action.payload.status };
           }
           return test;
-        })
+        }),
       );
 
     case REMOVE_TEST_FROM_PREV_LIST:
@@ -330,7 +334,7 @@ function studentReducer(state = initialState, action) {
         action.testList,
         state
           .get(action.testList)
-          .filter(test => test.student_test_id !== action.payload.student_test_id)
+          .filter(test => test.student_test_id !== action.payload.student_test_id),
       );
 
     case ADD_TEST_TO_COMPLETED:
@@ -348,6 +352,26 @@ function studentReducer(state = initialState, action) {
 
     case FETCH_STUDENT_TESTS_SUCCESSFUL:
       return state.set('studentTestsFetchedStatus', action.status);
+
+    case UPDATE_FLAG_STATUS_SUCCESS:
+      const newSections = state.get('sections').map(section => {
+        if (section.test_section_id === action.sectionId) {
+          const updatedProblems = section.problems.problems.map(problem => {
+            if (problem.id === action.question.id) {
+              return action.question;
+            }
+            return problem;
+          });
+          const updatedSection = { ...section, problems: { ...section.problems, problems: updatedProblems } };
+          return updatedSection;
+        }
+        return section;
+      });
+      return state.set('sections', newSections);
+
+    case SEND_ERROR_MESSAGE:
+      const updatedErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: action.message };
+      return state.set('errorMessages', updatedErrorMessages);
 
     default:
       return state;

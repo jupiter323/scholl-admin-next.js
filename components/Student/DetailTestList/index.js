@@ -249,7 +249,7 @@ class DetailTestList extends React.Component {
   };
 
   onSaveNewTest = async test => {
-    const { tests, studentTests } = this.props;
+    const { studentTests, tests } = this.props;
     if (!this.props.activeStudent.active && studentTests.length >= 1) {
       return toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
         className: 'update-error',

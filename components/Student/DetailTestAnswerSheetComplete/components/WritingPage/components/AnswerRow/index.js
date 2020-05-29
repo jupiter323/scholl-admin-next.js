@@ -22,10 +22,13 @@ class AnswerRow extends React.Component {
     }
   }
 
-  onChangeFlagState = (status) => {
-    this.setState({
-      status,
-    });
+  componentWillReceiveProps = (nextProps) => {
+    const { problem: { flag: { status: nextPropsStatus } } } = nextProps;
+    if (nextPropsStatus !== this.state.status) {
+      this.setState({
+        status: nextPropsStatus,
+      });
+    }
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -104,7 +107,7 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
-          onChangeFlagState={this.onChangeFlagState}
+          studentTestId={this.props.testSection.student_test_id}
         />
         <li
           className="answers-list-holder"
@@ -147,17 +150,15 @@ class AnswerRow extends React.Component {
               <If condition={status === 'REVIEWED'}>
                 <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
+                  <b className="status-text">Reviewed</b>
                 </span>
               </If>
             </div>
-            <If condition={status === 'FLAGGED'}>
-              <div className="dropdown-block col col-35">
-                <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
-                  <i className="material-icons dots-icon">more_vert</i>
-                </a>
-              </div>
-            </If>
+            <div className="dropdown-block col col-35">
+              <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
+                <i className="material-icons dots-icon">more_vert</i>
+              </a>
+            </div>
           </div>
         </li>
       </React.Fragment>
