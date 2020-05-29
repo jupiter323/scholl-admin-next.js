@@ -50,6 +50,7 @@ import {
   REMOVE_TEST_FROM_LIST,
   UPDATE_FLAG_STATUS_SUCCESS,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
+  SEND_ERROR_MESSAGE,
 } from "./constants";
 
 const initialState = fromJS({
@@ -81,6 +82,9 @@ const initialState = fromJS({
   testSectionProblems: [],
   studentTests: [],
   studentTestsFetchedStatus: false,
+  errorMessages: {
+    testFlagMessage: null,
+  },
 });
 
 function studentReducer(state = initialState, action) {
@@ -364,6 +368,10 @@ function studentReducer(state = initialState, action) {
         return section;
       });
       return state.set('sections', newSections);
+
+    case SEND_ERROR_MESSAGE:
+      const updatedErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: action.message };
+      return state.set('errorMessages', updatedErrorMessages);
 
     default:
       return state;

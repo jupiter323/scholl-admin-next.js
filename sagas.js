@@ -101,6 +101,7 @@ import {
   setStudentSections,
   setUnitFilterOptions,
   setFetchStudentTestsStatus,
+  sendErrorMessage,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -1086,18 +1087,22 @@ function* watchForUpdateTestFlagStatus() {
 
 function* handleUpdateTestFlagStatus(action) {
   try {
+    const testFlagMessage = 'testFlagMessage';
     if (action.status === "FLAGGED" && !action.payload.flag_id) {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);
       if (response && response.message) {
+        yield put(sendErrorMessage(testFlagMessage, `Something went wrong adding a flag to this problem: ${response.message}`));
         return console.warn("Error occurred in the handleUpdateTestFlagStatus saga", response.message);
       }
       action.question.flag.id = response.data.id;
     } else {
       const response = yield call(updateStudentTestQuestionFlagStatusApi, action.payload);
       if (response && response.message) {
+        yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
         return console.warn("Error occurred in the handleUpdateTestFlagStatus saga", response.message);
       }
     }
+    yield put(sendErrorMessage(testFlagMessage, null));
     yield put({
       type: UPDATE_FLAG_STATUS_SUCCESS,
       sectionId: action.question.test_section_id,
@@ -1105,6 +1110,7 @@ function* handleUpdateTestFlagStatus(action) {
       status: action.status,
     });
   } catch (error) {
+    yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${error}`));
     console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
   }
 }

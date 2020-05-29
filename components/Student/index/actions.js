@@ -59,6 +59,7 @@ import {
   UPDATE_TEST_STATUS,
   UPDATE_FLAG_STATUS,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
+  SEND_ERROR_MESSAGE,
 } from "./constants";
 
 export function fetchStudents() {
@@ -421,3 +422,9 @@ export function setFetchStudentTestsStatus(status) {
     status,
   };
 }
+
+export const sendErrorMessage = (propertyName, message) => ({
+  type: SEND_ERROR_MESSAGE,
+  propertyName,
+  message,
+});

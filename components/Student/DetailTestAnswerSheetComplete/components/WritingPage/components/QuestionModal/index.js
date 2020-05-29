@@ -69,13 +69,13 @@ class QuestionModal extends React.Component {
       question,
     } = this.props;
     // Check if user click is valid
-    if (status === this.state.status) return;
-    if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
-      return toast.error(`There is no flag to mark reviwed.`, {
-        className: "update-error",
-        progressClassName: "progress-bar-error",
-      });
-    }
+    // if (status === this.state.status) return;
+    // if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
+    //   return toast.error(`There is no flag to mark reviwed.`, {
+    //     className: "update-error",
+    //     progressClassName: "progress-bar-error",
+    //   });
+    // }
     // Continue with request
     let postBody = {};
     const newQuestion = question;
