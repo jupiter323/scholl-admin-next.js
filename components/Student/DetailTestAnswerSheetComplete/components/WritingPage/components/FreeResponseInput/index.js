@@ -30,7 +30,7 @@ FreeResponseInput.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onAddFreeResponseAnswerToTest: () => dispatch(addFreeResponseAnswerToTest()),
+    onAddFreeResponseAnswerToTest: (postBody, sectionId) => dispatch(addFreeResponseAnswerToTest(postBody, sectionId)),
   };
 }
 

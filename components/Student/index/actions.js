@@ -419,4 +419,5 @@ export function setFetchStudentTestsStatus(status) {
 export const addFreeResponseAnswerToTest = (payload, sectionId) => ({
   type: ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   payload,
+  sectionId,
 });

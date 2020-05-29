@@ -56,6 +56,7 @@ import {
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
   SET_STUDENT_SECTIONS,
+  ADD_FREE_RESPONSE_ANSWER_TO_TEST,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1025,6 +1026,10 @@ function* watchForAddStudentAnswerToTest() {
   // yield debounce(1000, ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest)
 }
 
+function* watchForAddStudentAnswerToTestDebounce() {
+  yield debounce(500, ADD_FREE_RESPONSE_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+}
+
 function* handleAddStudentAnswerToTest(action) {
   try {
     const response = yield call(addStudentAnswerToTestApi, action.payload);
@@ -1131,5 +1136,6 @@ export default function* defaultSaga() {
     watchForUpdateTestFlagStatus(),
     watchForAddStudentAnswerToTest(),
     watchForUpdateTestStatus(),
+    watchForAddStudentAnswerToTestDebounce(),
   ]);
 }
