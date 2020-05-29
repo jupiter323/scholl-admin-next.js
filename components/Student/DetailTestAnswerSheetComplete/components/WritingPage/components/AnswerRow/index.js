@@ -59,16 +59,6 @@ class AnswerRow extends React.Component {
     }
     return (
       <React.Fragment>
-        {/* {student_answer && (
-          <li key={student_answer}>
-            <span
-              className="badge badge-rounded badge-rounded-bordered"
-              style={{ color: "#fff", borderColor: "#ad1e3e", backgroundColor: "#db1d41" }}
-            >
-              {student_answer}
-            </span>
-          </li>
-        )} */}
         <li key={student_answer}>
           <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: false }} />
         </li>
