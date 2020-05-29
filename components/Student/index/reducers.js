@@ -84,6 +84,7 @@ const initialState = fromJS({
   studentTestsFetchedStatus: false,
   errorMessages: {
     testFlagMessage: null,
+    answerTestProblemMessage: null,
   },
 });
 

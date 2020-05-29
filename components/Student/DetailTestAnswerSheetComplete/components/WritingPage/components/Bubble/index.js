@@ -110,10 +110,6 @@ class BubbleGroup extends React.Component {
 
   mapEmptyBubbles = id => {
     const letters = ["A", "B", "C", "D"];
-    // const {
-    //   problem: { student_answer, correct_answer }
-    // } = this.props;
-    // const {selectedIndex} = this.state;
     return letters.map((letter, index) => (
       <li
         key={letter}

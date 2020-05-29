@@ -368,8 +368,20 @@ class EditTestModal extends React.Component {
     if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
     if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
 
-    // Update current section as completed
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
     const { tests, test: { test_id }, test } = this.props;
+    const postBody = {
+      student_test_id: test.student_test_id,
+      student_test_section_id: activeSection.id,
+      student_test_section_status: 'COMPLETED',
+    };
+    const res = await updateStudentTestSectionStatusApi(postBody);
+    if (res && res.message) {
+      return null;
+    }
+
+    // Update current section as completed
     const currentTestSectionId = activeSection.test_section_id;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test_id);
@@ -405,14 +417,6 @@ class EditTestModal extends React.Component {
           readingSectionCompleted: true,
         });
     }
-    // @TODO bring back started check for a test that was just created
-    // if (activeTest.test_section_status === 'STARTED') {
-    const postBody = {
-      student_test_id: test.student_test_id,
-      student_test_section_id: activeSection.id,
-      student_test_section_status: 'COMPLETED',
-    };
-    await updateStudentTestSectionStatusApi(postBody);
     const {
       readingSectionCompleted,
       writingSectionCompleted,
