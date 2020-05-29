@@ -55,6 +55,8 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
+  UPDATE_FLAG_STATUS,
+  UPDATE_FLAG_STATUS_SUCCESS,
   SET_STUDENT_SECTIONS,
 } from "./components/Student/index/constants";
 import {
@@ -98,7 +100,8 @@ import {
   setStudentAssignedTests,
   setStudentSections,
   setUnitFilterOptions,
-  setFetchStudentTestsStatus
+  setFetchStudentTestsStatus,
+  sendErrorMessage,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -140,6 +143,7 @@ const {
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -264,7 +268,7 @@ export function* fetchStudentTests(user) {
     yield put(setStudentCompletedTests(sortedTests.completes));
     yield put(setStudentOverDueTests(sortedTests.overdues));
     yield put(setStudentAssignedTests(sortedTests.assigneds));
-    yield put(setFetchStudentTestsStatus(true))
+    yield put(setFetchStudentTestsStatus(true));
   } catch (err) {
     console.warn("Error occurred in the fetchStudentTests saga", err);
   }
@@ -987,11 +991,11 @@ function* handleDeleteStudentTest(action) {
   }
 }
 
-function* watchForUpdateTestFlagStatus() {
-  yield takeEvery(UPDATE_TEST_FLAG, handleUpdateFlagStatus);
+function* watchForMarkAllTestFlagsReviewed() {
+  yield takeEvery(UPDATE_TEST_FLAG, handleMarkAllFlagsReviewed);
 }
 
-function* handleUpdateFlagStatus(action) {
+function* handleMarkAllFlagsReviewed(action) {
   try {
     const sections = yield call(fetchStudentTestSectionsApi, action.studentId, action.studentTestId);
 
@@ -1077,6 +1081,38 @@ function* handleUpdateTestStatus(action) {
   }
 }
 
+function* watchForUpdateTestFlagStatus() {
+  yield takeEvery(UPDATE_FLAG_STATUS, handleUpdateTestFlagStatus);
+}
+
+function* handleUpdateTestFlagStatus(action) {
+  try {
+    const testFlagMessage = 'testFlagMessage';
+    if (action.status === "FLAGGED" && !action.payload.flag_id) {
+      const response = yield call(addStudentTestQuestionFlagApi, action.payload);
+      if (response && response.message) {
+        return yield put(sendErrorMessage(testFlagMessage, `Something went wrong adding a flag to this problem: ${response.message}`));
+      }
+      action.question.flag.id = response.data.id;
+    } else {
+      const response = yield call(updateStudentTestQuestionFlagStatusApi, action.payload);
+      if (response && response.message) {
+        return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
+      }
+    }
+    yield put(sendErrorMessage(testFlagMessage, null));
+    yield put({
+      type: UPDATE_FLAG_STATUS_SUCCESS,
+      sectionId: action.question.test_section_id,
+      question: action.question,
+      status: action.status,
+    });
+  } catch (error) {
+    yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${error}`));
+    console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1127,8 +1163,9 @@ export default function* defaultSaga() {
     watchForFetchAllLocations(),
     watchForAnswerStudentLessonProblem(),
     watchForDeleteStudentTest(),
-    watchForUpdateTestFlagStatus(),
+    watchForMarkAllTestFlagsReviewed(),
     watchForAddStudentAnswerToTest(),
     watchForUpdateTestStatus(),
+    watchForUpdateTestFlagStatus(),
   ]);
 }

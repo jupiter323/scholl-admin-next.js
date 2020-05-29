@@ -483,7 +483,7 @@ export const updateStudentTestQuestionFlagStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 
