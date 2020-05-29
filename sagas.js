@@ -1027,17 +1027,18 @@ function* handleMarkAllFlagsReviewed(action) {
 
 function* watchForAddStudentAnswerToTest() {
   yield takeEvery(ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
-  // yield debounce(1000, ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest)
 }
 
 function* watchForAddStudentAnswerToTestDebounce() {
-  yield debounce(200, ADD_FREE_RESPONSE_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+  yield debounce(500, ADD_FREE_RESPONSE_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
 }
 
 function* handleAddStudentAnswerToTest(action) {
+  const answerTestProblemMessage = "answerTestProblemMessage";
   try {
     const response = yield call(addStudentAnswerToTestApi, action.payload);
     if (response && response.message) {
+      yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
       return console.warn("Error occurred in the handleAddStudentAnswerToTest saga", response.message);
     }
     yield put({
@@ -1045,7 +1046,9 @@ function* handleAddStudentAnswerToTest(action) {
       sectionId: action.sectionId,
       payload: action.payload,
     });
+    yield put(sendErrorMessage(answerTestProblemMessage, null));
   } catch (error) {
+    yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
     console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
   }
 }
@@ -1092,8 +1095,8 @@ function* watchForUpdateTestFlagStatus() {
 }
 
 function* handleUpdateTestFlagStatus(action) {
+  const testFlagMessage = 'testFlagMessage';
   try {
-    const testFlagMessage = 'testFlagMessage';
     if (action.status === "FLAGGED" && !action.payload.flag_id) {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);
       if (response && response.message) {
