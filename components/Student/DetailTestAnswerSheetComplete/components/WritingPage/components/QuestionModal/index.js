@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 import { updateFlagStatus } from "../../../../../index/actions";
-import { makeSelectActiveStudentTestId, makeSelectActiveStudentToken } from "../../../../../index/selectors";
+import { makeSelectErrorMessages, makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
   constructor(props) {
@@ -44,15 +44,12 @@ class QuestionModal extends React.Component {
 
   componentWillReceiveProps = (nextProps) => {
     const {
-      question: { test_problem_id },
+      question: {
+        flag: { status },
+      },
+      question,
     } = nextProps;
-    const { originalTestProblemId } = this.state;
-    if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
-      const {
-        question: {
-          flag: { status },
-        },
-      } = this.props;
+    if (question.flag.status !== this.state.status) {
       this.setState({
         status,
       });
@@ -69,13 +66,13 @@ class QuestionModal extends React.Component {
       question,
     } = this.props;
     // Check if user click is valid
-    // if (status === this.state.status) return;
-    // if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
-    //   return toast.error(`There is no flag to mark reviwed.`, {
-    //     className: "update-error",
-    //     progressClassName: "progress-bar-error",
-    //   });
-    // }
+    if (status === this.state.status) return;
+    if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
+      return toast.error(`There is no flag to mark reviwed.`, {
+        className: "update-error",
+        progressClassName: "progress-bar-error",
+      });
+    }
     // Continue with request
     let postBody = {};
     const newQuestion = question;
@@ -90,7 +87,12 @@ class QuestionModal extends React.Component {
   };
 
   render() {
-    const { open, onCloseQuestionModal, question } = this.props;
+    const {
+      open,
+      onCloseQuestionModal,
+      question,
+      errorMessages: { testFlagMessage },
+    } = this.props;
     const { status } = this.state;
     return (
       <Portal selector="#modal">
@@ -169,6 +171,7 @@ class QuestionModal extends React.Component {
                           </li>
                         </ul>
                       </form>
+                      <p className="red-text">{testFlagMessage}</p>
                     </div>
                     {/* @ TODO going to comment out hardcoded data for now */}
                     {/* <div className="panel-block">
@@ -324,8 +327,8 @@ QuestionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // studentTestId: makeSelectActiveStudentTestId(),
   studentToken: makeSelectActiveStudentToken(),
+  errorMessages: makeSelectErrorMessages(),
 });
 
 function mapDispatchToProps(dispatch) {
