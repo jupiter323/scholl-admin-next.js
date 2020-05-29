@@ -5,6 +5,12 @@ import { compose } from 'redux';
 import { addFreeResponseAnswerToTest } from '../../../../../index/actions';
 
 class FreeResponseInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      answer: props.problem.student_answer,
+    };
+  }
   handleInputChange = (e) => {
     const answer = e.target.value;
     const { onAddFreeResponseAnswerToTest, problem, testSection: { student_test_id } } = this.props;
@@ -12,12 +18,14 @@ class FreeResponseInput extends React.Component {
     console.log('log: answer', answer);
     const postBody = { student_test_id, test_problem_id: problem.id, answer };
     onAddFreeResponseAnswerToTest(postBody, problem.test_section_id);
+    this.setState({ answer });
   };
   render() {
     return (
       <input
         type="text"
         name="answer"
+        defaultValue={this.state.answer}
         onChange={this.handleInputChange}
       />
     );

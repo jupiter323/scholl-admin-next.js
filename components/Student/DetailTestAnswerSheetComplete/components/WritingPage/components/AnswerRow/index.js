@@ -82,7 +82,6 @@ class AnswerRow extends React.Component {
   render() {
     const { problem, onAddStudentAnswerToTest, testSection } = this.props;
     const { open, status } = this.state;
-    console.log('log: problem', problem);
     return (
       <React.Fragment>
         <QuestionModal
