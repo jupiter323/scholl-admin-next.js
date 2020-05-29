@@ -133,6 +133,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               <StrengthsWeaknessesNavBar
                 activeSlide={activeSlide}
                 onSetActiveSlide={this.onSetActiveSlide}
+                scores={{ readingScores, mathScores, writingScores }}
               />
             </div>
             <div className="card-content">
