@@ -14,7 +14,6 @@ class QuestionModal extends React.Component {
     super(props);
     this.state = {
       status: "UN_FLAGGED",
-      originalTestProblemId: "",
       subject: "",
       problemListName: "",
     };
