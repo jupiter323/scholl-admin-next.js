@@ -32,6 +32,7 @@ import {
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 } from "./components/Student/index/api";
 
 import {
@@ -108,6 +109,7 @@ export const studentApi = {
   addStudentAnswerToTestApi,
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 };
 
 export const instructorApi = {

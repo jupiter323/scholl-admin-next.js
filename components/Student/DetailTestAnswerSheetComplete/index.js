@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import { toast } from 'react-toastify';
 import AnswerSheetNavBar from './components/AnswerSheetNavBar';
 import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
@@ -20,7 +21,7 @@ import {
 
 import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
 import { updateStudentTestSectionStatusApi } from '../index/api';
-
+import { makeSelectErrorMessages } from '../index/selectors';
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       },
       updatedSectionStatus: {},
       showSectionMessage: false,
+      answerTestProblemMessage: null,
     };
   }
 
@@ -55,18 +57,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testScoreDetails: { student_test_id },
       activeStudent: { id },
     } = this.props;
-    // @TODO we need a better  solution than checking for sections
-    // The problem is that sections will always exist after clicking the first test and no new test will ever get fetched.
-    // if (sections.length === 0) {
     const postBody = {
       id,
       student_test_id,
       studentToken,
     };
     onFetchStudentTestSections(postBody);
-    // } else {
-    //   this.onSetProblems(sections, student_test_id);
-    // }
     this.props.onRef(this);
   }
   componentWillUnmount() {
@@ -74,9 +70,15 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id } = nextProps;
+    const { sections, student_test_id, errorMessages: { answerTestProblemMessage } } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
+    }
+    if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
+      toast.error(answerTestProblemMessage, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
     }
   };
 
@@ -415,6 +417,7 @@ const mapStateToProps = createStructuredSelector({
   tests: makeSelectTests(),
   activeStudentTestId: makeSelectActiveStudentTestId(),
   activeTestScores: makeSelectActiveTestScores(),
+  errorMessages: makeSelectErrorMessages(),
 });
 function mapDispatchToProps(dispatch) {
   return {

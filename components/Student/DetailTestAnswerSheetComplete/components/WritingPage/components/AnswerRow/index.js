@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
+import FreeResponseInput from '../FreeResponseInput';
 
 class AnswerRow extends React.Component {
   constructor(props) {
@@ -21,10 +22,13 @@ class AnswerRow extends React.Component {
     }
   }
 
-  onChangeFlagState = (status) => {
-    this.setState({
-      status,
-    });
+  componentWillReceiveProps = (nextProps) => {
+    const { problem: { flag: { status: nextPropsStatus } } } = nextProps;
+    if (nextPropsStatus !== this.state.status) {
+      this.setState({
+        status: nextPropsStatus,
+      });
+    }
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -32,36 +36,41 @@ class AnswerRow extends React.Component {
 
   mapNumberBubbles = () => {
     const {
-      problem: { student_answer, correct_answer,id },
+      problem: { student_answer, correct_answer },
+      problem,
+      testSection,
     } = this.props;
     if (student_answer === correct_answer) {
       return (
-        <li key={id}>
-          <span
-            className="badge badge-rounded badge-rounded-bordered"
-            style={{ color: "#fff", borderColor: "#32955c", backgroundColor: "#3eb777" }}
-          >
-            {student_answer}
-          </span>
-        </li>
-      );
-    }
-    return (
-      <React.Fragment>
-        {student_answer && (
-          <li key={id}>
+        <>
+          <li>
+            <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: true }} />
+          </li>
+          <li key={student_answer}>
             <span
               className="badge badge-rounded badge-rounded-bordered"
-              style={{ color: "#fff", borderColor: "#ad1e3e", backgroundColor: "#db1d41" }}
+              style={{ color: "#fff", borderColor: "#32955c", backgroundColor: "#3eb777" }}
             >
               {student_answer}
             </span>
           </li>
-        )}
+        </>
+      );
+    }
+    return (
+      <React.Fragment>
+        <li key={student_answer}>
+          <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: false }} />
+        </li>
         <li key={correct_answer}>
           <span
             className="badge badge-rounded badge-rounded-bordered"
-            style={{ color: "#32955c", borderColor: "#32955c", backgroundColor: "#fff" }}
+            style={{
+              color: "#32955c",
+              borderColor: "#32955c",
+              backgroundColor: "#fff",
+              width: "100%",
+            }}
           >
             {correct_answer}
           </span>
@@ -72,11 +81,14 @@ class AnswerRow extends React.Component {
 
   getAnswerType = problem => {
     const { correct_answer } = problem;
-    return Number(correct_answer);
+    if (!parseFloat(correct_answer)) {
+      return null;
+    }
+    return correct_answer;
   };
 
   render() {
-    const { problem } = this.props;
+    const { problem, onAddStudentAnswerToTest, testSection } = this.props;
     const { open, status } = this.state;
     return (
       <React.Fragment>
@@ -85,7 +97,7 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
-          onChangeFlagState={this.onChangeFlagState}
+          studentTestId={this.props.testSection.student_test_id}
         />
         <li
           className="answers-list-holder"
@@ -97,11 +109,19 @@ class AnswerRow extends React.Component {
               <ul className="answer-list">
                 <Choose>
                   <When condition={this.getAnswerType(problem)}>{this.mapNumberBubbles()}</When>
+                  <When condition={problem.type === "fill_in_the_blank"}>
+                    <FreeResponseInput
+                      problem={problem}
+                      testSection={testSection}
+                      answerStatus={{ complete: false }}
+                    />
+                  </When>
                   <Otherwise>
-                    <BubbleGroup 
-                      id={problem.id} 
-                      testSection={this.props.testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} 
-                      problem={problem} 
+                    <BubbleGroup
+                      id={problem.id}
+                      testSection={testSection}
+                      onAddStudentAnswerToTest={onAddStudentAnswerToTest}
+                      problem={problem}
                     />
                   </Otherwise>
                 </Choose>
@@ -120,17 +140,15 @@ class AnswerRow extends React.Component {
               <If condition={status === 'REVIEWED'}>
                 <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
-                  <b className="status-text">Review</b>
+                  <b className="status-text">Reviewed</b>
                 </span>
               </If>
             </div>
-            <If condition={status === 'FLAGGED'}>
-              <div className="dropdown-block col col-35">
-                <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
-                  <i className="material-icons dots-icon">more_vert</i>
-                </a>
-              </div>
-            </If>
+            <div className="dropdown-block col col-35">
+              <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
+                <i className="material-icons dots-icon">more_vert</i>
+              </a>
+            </div>
           </div>
         </li>
       </React.Fragment>

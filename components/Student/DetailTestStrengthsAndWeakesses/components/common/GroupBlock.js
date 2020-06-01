@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SubBlock from './SubBlock';
 
-import {getScoreStatus} from '../common/GetScoreStatus';
+import { getScoreStatus } from '../common/GetScoreStatus';
 
 class GroupBlock extends React.Component {
   constructor(props) {
@@ -10,16 +10,14 @@ class GroupBlock extends React.Component {
   }
 
   mapGroupRow = () => {
-    const {data: {children}} = this.props;
+    const { data: { children } } = this.props;
     if (children.length !== 0) {
-      return children.map(children => {
-        return <SubBlock data={children} key={children.id} />;
-      });
+      return children.map(children => <SubBlock data={children} key={children.id} />);
     }
   };
 
   render() {
-    const {data: {name, score: {percent_correct, correct, incorrect, total}}} = this.props;
+    const { data: { name, score: { percent_correct, correct, incorrect, total } } } = this.props;
     return (
       <div className="graphs-block">
         <div className="graph-row graph-row-title">
@@ -35,12 +33,12 @@ class GroupBlock extends React.Component {
             <div className="graph-linear-students">
               <div
                 className="graph-holder"
-                style={{width: `${(correct / total * 100).toFixed(0)}%`}}
+                style={{ width: `${(correct / total * 100).toFixed(0)}%` }}
               >
                 <div className="graph-admin">
                   <div
                     className="part-red"
-                    style={{width: `${(incorrect / total * 100).toFixed(0)}%`}}
+                    style={{ width: `${(incorrect / total * 100).toFixed(0)}%` }}
                   />
                 </div>
               </div>

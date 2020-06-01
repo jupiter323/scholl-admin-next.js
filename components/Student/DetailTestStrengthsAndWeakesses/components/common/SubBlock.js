@@ -1,7 +1,7 @@
 import React from 'react';
 import GroupRow from './GroupRow';
 
-import {getScoreStatus} from '../common/GetScoreStatus';
+import { getScoreStatus } from '../common/GetScoreStatus';
 
 class SubBlock extends React.Component {
   constructor(props) {
@@ -10,9 +10,7 @@ class SubBlock extends React.Component {
 
   mapSubRow = data => {
     if (data.children) {
-      return data.children.map(children => {
-        return <GroupRow data={children} key={children.id} />;
-      });
+      return data.children.map(children => <GroupRow data={children} key={children.id} />);
     }
   };
 
@@ -43,24 +41,24 @@ class SubBlock extends React.Component {
                       }}
                     />
                   </div>
-                </div>
+                
               </div>
             </div>
-            <div className="graph-col graph-info">
-              <span className="text-large">
-                {data.score.correct}
-              </span>
-              <span className="text-small">out of</span>
-              <span className="text-large">
-                {data.score.total}
-              </span>
-            </div>
           </div>
-          {this.mapSubRow(data)}
+          <div className="graph-col graph-info">
+            <span className="text-large">
+              {data.score.correct}
+            </span>
+            <span className="text-small">out of</span>
+            <span className="text-large">
+              {data.score.total}
+            </span>
+          </div>
         </div>
-      </React.Fragment>
-    );
-  };
+        {this.mapSubRow(data)}
+      </div>
+    </React.Fragment>
+  )};
 
   render() {
     return this.renderSubBlock(this.props.data);
