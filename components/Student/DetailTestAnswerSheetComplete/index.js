@@ -95,6 +95,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   onErrorMessage(message) {
+    if (!message) this.setState({ [message]: message });
     toast.error(message, {
       className: 'update-error',
       progressClassName: 'progress-bar-error',
