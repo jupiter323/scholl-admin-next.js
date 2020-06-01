@@ -95,12 +95,9 @@ class EditTestModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activePage, sections, activeTestScores } = nextProps;
+    const { activePage, sections } = nextProps;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
       this.setState({ activePage });
-    }
-    if(activeTestScores && activeTestScores.subjects){
-      this.setState({scoresLoading:false})
     }
     if (sections.length !== 0) {
       const { tests, test: { test_id } } = this.props;
@@ -299,7 +296,6 @@ class EditTestModal extends React.Component {
   renderCurrentPage = () => {
     const { activePage, scoresLoading } = this.state;
     const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
-    console.log('log: this.props from test ', this.props);
     if (activePage === 'testVersion') {
       return (
         <TestVersionPage
@@ -364,7 +360,6 @@ class EditTestModal extends React.Component {
 
   handleTestScore = async (activeSection, problemsByTest) => {
     // Check for non-existing sections and set them to completed
-    this.setState({scoresLoading:true})
     const {
       testReadingProblems,
       testWritingProblems,
@@ -444,8 +439,13 @@ class EditTestModal extends React.Component {
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
       const currentTestStatus =
         test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
+      this.setState({scoresLoading:true})
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
-      onOpentTestScore({ ...test, status: 'COMPLETED' });
+      //added time for saga to fetch all score results
+      setTimeout(() => {
+        onOpentTestScore({ ...test, status: 'COMPLETED' });
+        this.setState({scoresLoading: false})
+      }, 2000)
     }
   };
 

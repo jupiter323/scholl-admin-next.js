@@ -321,31 +321,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   };
 
-  onSubmitScores = async () =>{
-   const  {scoresLoading, openTestScores, activeTestScores, test, onSetScores } = this.props
-   console.log('log: scoresLoading ', scoresLoading);
-   console.log('log: test ', test.test);
-   console.log('log: activeTestScores ', activeTestScores);
-    let delayTime = 0;
-    if (!activeTestScores) {
-      console.log("Got inside timer")
-      delayTime = 1000;
-    } else {
-      openTestScores({ ...test, status: 'COMPLETED' });
-    }
-    console.log('log: delayTime ', delayTime);
-    const response = await fetchStudentTestScoreApi(test.student_id, test.student_test_id);
-    onSetScores({ ...response, student_test_id: test.student_test_id });
-    return new Promise(resolve => {
-      console.log("Got inside promise ")
-      setTimeout(() => {
-        resolve(openTestScores({ ...test, status: 'COMPLETED' }));
-      }, delayTime)},
-    );
-    
-
-  }
-
   render() {
     const {
       activeSlide,
@@ -356,8 +331,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathNoCalcProblems,
     } = this.state;
     const { completedSections, scoresLoading } = this.props;
-    console.log('log: this.props ', this.props);
     let showSectionMessage = this.state.showSectionMessage;
+    console.log('log: scoresLoading ', scoresLoading);
     switch (activeSlide) {
       case 'reading':
         if (completedSections.readingSectionCompleted) {
@@ -406,7 +381,11 @@ class DetailTestAnswerSheetComplete extends React.Component {
               This test section is complete. You can still edit answer choices if needed.
             </p>}
           <div className="main-slick">
-            {this.renderCurrentSlide()}
+            { scoresLoading ? (
+            <div className="overlay-spinning">
+              <div className="spinning"></div>
+            </div>
+            ) : this.renderCurrentSlide()}
           </div>
           {activeSlide !== 'essay' && !showSectionMessage &&
             <div className="row">
@@ -414,7 +393,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 <a
                   href="#"
                   className="btn btn-xlarge waves-effect waves-light bg-blue"
-                  disabled={scoresLoading ? true : false}
                   onClick={() =>{
                     this.props.handleTestScore(activeTestSection, {
                       testReadingProblems,
@@ -422,10 +400,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
                       testMathNoCalcProblems,
                       testMathCalcProblems,
                     });
-                    // this.onSubmitScores();
                   }}
                 >
-                Submit Test
+                 Submit Test Scores
                 </a>
               </div>
             </div>}

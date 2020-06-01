@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce, delay, race, throttle } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce, delay} from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -1058,12 +1058,6 @@ function* watchForUpdateTestStatus() {
   yield takeEvery(UPDATE_TEST_STATUS, handleUpdateTestStatus);
 }
 
-function* watchForScores() {
-  yield throttle(5000, GET_TEST_SCORES, handleScoreFetching);
-}
-
-
-
 function* handleUpdateTestStatus(action) {
   try {
     const response = yield call(updateStudentTestStatusApi, action.payload);
@@ -1092,31 +1086,19 @@ function* handleUpdateTestStatus(action) {
         payload: action.payload,
         studentId: action.studentId,
       })
-      // const {response} = yield race({
-      //   timeout: delay(5000),
-      //   response: call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id),
-      // })
-      // yield delay(7000);
 
-      // const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
-      
-      // yield put({
-      //   type: SET_ACTIVE_TEST_SCORES,
-      //   scores: { ...response, student_test_id: action.payload.student_test_id },
-      // });
-    }
-  } catch (error) {
-    console.warn("Error occurred in the handleUpdateTestStatus saga", error);
-  }
-}
+      yield delay(1500);
 
-function* handleScoreFetching(action){
- const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
+      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
       
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
         scores: { ...response, student_test_id: action.payload.student_test_id },
       });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateTestStatus saga", error);
+  }
 }
 
 function* watchForUpdateTestFlagStatus() {
@@ -1206,6 +1188,5 @@ export default function* defaultSaga() {
     watchForUpdateTestStatus(),
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
-    watchForScores(),
   ]);
 }
