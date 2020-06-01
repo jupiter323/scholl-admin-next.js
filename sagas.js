@@ -229,15 +229,12 @@ export function* fetchStudentTestSections(id, studentTestId, studentToken) {
       sections: [],
     });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
-    // const testSections = yield call(fetchStudentTestSectionsApi, id, "324");
     if (testSections && testSections.message) {
       return yield put(sendErrorMessage(fetchSectionsMessage, `Error: Something went wrong retrieving sections and problems for this test. You may still view and score essays or try again later.`));
     }
     let count = 0;
     while (count < testSections.length) {
       const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id);
-      // const problems = yield call(fetchStudentTestSectionProblemsApi, "123", studentTestId, testSections[count].id);
-      console.log('log: saga problems', problems);
       if (problems && problems.message) {
         yield put(sendErrorMessage(fetchProblemsMessage, `Error: Couldn't retrieve one or more sections with problems for this test. Those sections will not be shown. Please try again later.`));
       }

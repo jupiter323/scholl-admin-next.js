@@ -291,10 +291,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
           />
         );
       }
-    if (!fetchSectionsMessage) {
-      return <h1 style={{textAlign: "center"}}>Loading Problems...</h1>
-    }
-    return <h1 style={{textAlign: "center", color: 'red'}}>{fetchSectionsMessage}</h1>
+      if (!fetchSectionsMessage) {
+        return <h1 style={{ textAlign: "center" }}>Loading Problems...</h1>;
+      }
+      return <h1 style={{ textAlign: "center", color: 'red' }}>{fetchSectionsMessage}</h1>;
     }
     return null;
   };
