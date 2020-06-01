@@ -103,6 +103,7 @@ import {
   setUnitFilterOptions,
   setFetchStudentTestsStatus,
   sendErrorMessage,
+  resetErrorMessage,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -1046,7 +1047,7 @@ function* handleAddStudentAnswerToTest(action) {
       sectionId: action.sectionId,
       payload: action.payload,
     });
-    yield put(sendErrorMessage(answerTestProblemMessage, null));
+    yield put(resetErrorMessage(answerTestProblemMessage));
   } catch (error) {
     yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
     console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
@@ -1109,7 +1110,7 @@ function* handleUpdateTestFlagStatus(action) {
         return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
       }
     }
-    yield put(sendErrorMessage(testFlagMessage, null));
+    yield put(resetErrorMessage(testFlagMessage));
     yield put({
       type: UPDATE_FLAG_STATUS_SUCCESS,
       sectionId: action.question.test_section_id,

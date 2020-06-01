@@ -51,6 +51,7 @@ import {
   UPDATE_FLAG_STATUS_SUCCESS,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   SEND_ERROR_MESSAGE,
+  RESET_ERROR_MESSAGE,
 } from "./constants";
 
 const initialState = fromJS({
@@ -373,6 +374,9 @@ function studentReducer(state = initialState, action) {
     case SEND_ERROR_MESSAGE:
       const updatedErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: action.message };
       return state.set('errorMessages', updatedErrorMessages);
+
+    case RESET_ERROR_MESSAGE:
+      return state.set('errorMessages', { ...state.get('errorMessages'), [action.propertyName]: null });
 
     default:
       return state;

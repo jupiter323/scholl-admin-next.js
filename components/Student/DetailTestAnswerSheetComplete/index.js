@@ -19,7 +19,7 @@ import {
   makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
+import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore, resetErrorMessage } from '../index/actions';
 import { updateStudentTestSectionStatusApi } from '../index/api';
 import { makeSelectErrorMessages } from '../index/selectors';
 class DetailTestAnswerSheetComplete extends React.Component {
@@ -46,6 +46,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       updatedSectionStatus: {},
       showSectionMessage: false,
       answerTestProblemMessage: null,
+      testFlagMessage: null,
     };
   }
 
@@ -66,21 +67,32 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.props.onRef(this);
   }
   componentWillUnmount() {
+    const { onResetErrorMessage } = this.props;
     this.props.onRef(undefined);
+    onResetErrorMessage("answerTestProblemMessage");
+    onResetErrorMessage("testFlagMessage");
   }
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id, errorMessages: { answerTestProblemMessage } } = nextProps;
+    const { sections, student_test_id, errorMessages: { answerTestProblemMessage, testFlagMessage } } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
     if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
-      toast.error(answerTestProblemMessage, {
-        className: 'update-error',
-        progressClassName: 'progress-bar-error',
-      });
+      this.onErrorMessage(answerTestProblemMessage);
+    }
+    if (testFlagMessage !== this.state.testFlagMessage) {
+      this.onErrorMessage(testFlagMessage);
     }
   };
+
+  onErrorMessage(message) {
+    toast.error(message, {
+      className: 'update-error',
+      progressClassName: 'progress-bar-error',
+    });
+    this.setState({ [message]: message });
+  }
 
   onSetProblems = (sections, studentTestId) => {
     const { tests, testScoreDetails: { test_id } } = this.props;
@@ -425,6 +437,7 @@ function mapDispatchToProps(dispatch) {
     onSetEssayScore: score => dispatch(setEssayScore(score)),
     dispatchAddStudentAnswerToTest: (payload, sectionId) =>
       dispatch(addStudentAnswerToTest(payload, sectionId)),
+    onResetErrorMessage: (errorName) => dispatch(resetErrorMessage(errorName)),
   };
 }
 

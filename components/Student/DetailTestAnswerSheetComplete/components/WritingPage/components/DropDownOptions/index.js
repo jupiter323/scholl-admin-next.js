@@ -6,11 +6,7 @@ import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 import { updateFlagStatus } from "../../../../../index/actions";
-import {
-  makeSelectErrorMessages,
-  makeSelectActiveStudentToken,
-} from "../../../../../index/selectors";
-import {Option} from './styled'
+import { Option } from './styled';
 
 class DropDownOptions extends React.Component {
   constructor(props) {
@@ -44,7 +40,7 @@ class DropDownOptions extends React.Component {
       question,
       onCloseQuestionModal,
     } = this.props;
-    // Check if user click is valid
+    // User validation
     if (status === this.state.status) return;
     if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
       return toast.error(`There is no flag to mark reviwed.`, {
@@ -57,7 +53,8 @@ class DropDownOptions extends React.Component {
     const newQuestion = question;
 
     if (status === "FLAGGED" && !id) {
-      postBody = { student_test_id: studentTestId, test_problem_id: question.id };
+    //   postBody = { student_test_id: studentTestId, test_problem_id: question.id };
+      postBody = { student_test_id: studentTestId, test_problem_id: "123" };
     } else {
       postBody = { student_test_id: studentTestId, flag_id: id, status };
     }
@@ -70,7 +67,6 @@ class DropDownOptions extends React.Component {
     const {
       open,
       onCloseQuestionModal,
-      errorMessages: { testFlagMessage },
     } = this.props;
     return (
       <If condition={open}>
@@ -106,11 +102,6 @@ DropDownOptions.propTypes = {
   question: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  studentToken: makeSelectActiveStudentToken(),
-  errorMessages: makeSelectErrorMessages(),
-});
-
 function mapDispatchToProps(dispatch) {
   return {
     onUpdateFlagStatus: (payload, status, question) =>
@@ -118,6 +109,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(null, mapDispatchToProps);
 
 export default compose(withConnect)(DropDownOptions);

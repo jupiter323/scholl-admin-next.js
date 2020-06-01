@@ -61,6 +61,7 @@ import {
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   SEND_ERROR_MESSAGE,
+  RESET_ERROR_MESSAGE,
 } from "./constants";
 
 export function fetchStudents() {
@@ -435,4 +436,9 @@ export const sendErrorMessage = (propertyName, message) => ({
   type: SEND_ERROR_MESSAGE,
   propertyName,
   message,
+});
+
+export const resetErrorMessage = (propertyName) => ({
+  type: RESET_ERROR_MESSAGE,
+  propertyName,
 });
