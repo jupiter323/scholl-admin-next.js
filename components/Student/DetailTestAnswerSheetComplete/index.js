@@ -73,6 +73,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     onResetErrorMessage("answerTestProblemMessage");
     onResetErrorMessage("testFlagMessage");
     onResetErrorMessage("fetchSectionsMessage");
+    onResetErrorMessage("fetchProblemsMessage");
   }
 
   componentWillReceiveProps = nextProps => {

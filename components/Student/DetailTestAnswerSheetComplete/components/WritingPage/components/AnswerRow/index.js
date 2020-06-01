@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponseInput from '../FreeResponseInput';
 import DropDownMenuOptions from '../DropDownOptions';
@@ -93,13 +92,6 @@ class AnswerRow extends React.Component {
     const { open, status } = this.state;
     return (
       <React.Fragment>
-        {/* <QuestionModal
-          open={open}
-          onOpenQuestionModal={this.onOpenQuestionModal}
-          onCloseQuestionModal={this.onCloseQuestionModal}
-          question={problem}
-          studentTestId={this.props.testSection.student_test_id}
-        /> */}
         <li
           className="answers-list-holder"
           key={problem.test_problem_id}
