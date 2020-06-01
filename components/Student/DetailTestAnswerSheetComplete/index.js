@@ -47,6 +47,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       showSectionMessage: false,
       answerTestProblemMessage: null,
       testFlagMessage: null,
+      fetchSectionsMessage: null,
     };
   }
 
@@ -71,10 +72,11 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.props.onRef(undefined);
     onResetErrorMessage("answerTestProblemMessage");
     onResetErrorMessage("testFlagMessage");
+    onResetErrorMessage("fetchSectionsMessage");
   }
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id, errorMessages: { answerTestProblemMessage, testFlagMessage } } = nextProps;
+    const { sections, student_test_id, errorMessages: { answerTestProblemMessage, testFlagMessage, fetchSectionsMessage } } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
@@ -83,6 +85,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
     }
     if (testFlagMessage !== this.state.testFlagMessage) {
       this.onErrorMessage(testFlagMessage);
+    }
+    if (fetchSectionsMessage !== this.state.fetchSectionsMessage) {
+      this.setState({ fetchSectionsMessage });
     }
   };
 
@@ -280,7 +285,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           />
         );
       }
-      return <h1>Loading Test Sections</h1>;
+      return <h1>{this.state.fetchSectionsMessage}</h1>;
     }
     return null;
   };

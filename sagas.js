@@ -219,20 +219,29 @@ export function* watchForFetchStudentTestSections() {
 }
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
+  const fetchSectionsMessage = 'fetchSectionsMessage';
   try {
     yield put({
       type: SET_STUDENT_SECTIONS,
       sections: [],
     });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
+    if (testSections && testSections.message) {
+      return yield put(sendErrorMessage(fetchSectionsMessage, `Something went wrong retrieving sections and problems for this test.`));
+    }
     let count = 0;
     while (count < testSections.length) {
       const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id, studentToken);
+      if (problems && problems.message) {
+        yield put(sendErrorMessage(fetchSectionsMessage, `Couldn't retrieve one or more sections with problems for this test. Those sections will not be shown.`));
+      }
       testSections[count].problems = problems;
       count++;
     }
+    yield put(resetErrorMessage(fetchSectionsMessage));
     yield put(setStudentSections(testSections));
   } catch (err) {
+    sendErrorMessage(fetchSectionsMessage, `Something went wrong retrieving sections for this test.`);
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
 }

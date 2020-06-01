@@ -86,6 +86,7 @@ const initialState = fromJS({
   errorMessages: {
     testFlagMessage: null,
     answerTestProblemMessage: null,
+    fetchSectionsMessage: null,
   },
 });
 
