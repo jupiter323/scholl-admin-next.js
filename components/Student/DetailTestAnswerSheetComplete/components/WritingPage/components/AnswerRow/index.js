@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponseInput from '../FreeResponseInput';
-import ClickOffComponentWrapper from '../../../../../../ClickOffComponentWrapper';
 import DropDownMenuOptions from '../DropDownOptions';
 
 class AnswerRow extends React.Component {
@@ -147,9 +146,6 @@ class AnswerRow extends React.Component {
               </If>
             </div>
             <div className="dropdown-block col col-35">
-              {/* <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
-                <i className="material-icons dots-icon">more_vert</i>
-              </a> */}
               <a
                 className="dropdown-trigger"
                 href="#"

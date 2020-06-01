@@ -10,6 +10,7 @@ import {
   makeSelectErrorMessages,
   makeSelectActiveStudentToken,
 } from "../../../../../index/selectors";
+import {Option} from './styled'
 
 class DropDownOptions extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class DropDownOptions extends React.Component {
         flag: { id },
       },
       question,
+      onCloseQuestionModal,
     } = this.props;
     // Check if user click is valid
     if (status === this.state.status) return;
@@ -61,16 +63,15 @@ class DropDownOptions extends React.Component {
     }
     newQuestion.flag.status = status;
     onUpdateFlagStatus(postBody, status, newQuestion);
+    onCloseQuestionModal();
   };
 
   render() {
     const {
       open,
       onCloseQuestionModal,
-      question,
       errorMessages: { testFlagMessage },
     } = this.props;
-    const { status } = this.state;
     return (
       <If condition={open}>
         <ClickOffComponentWrapper onOuterClick={() => onCloseQuestionModal()}>
@@ -84,13 +85,13 @@ class DropDownOptions extends React.Component {
             }}
           >
             <li>
-              <a href="#" onClick={(e) => this.onHandleQuestionFlagStatus(e, "FLAGGED")}>Flag For Review</a>
+              <Option href="#" onClick={(e) => this.onHandleQuestionFlagStatus(e, "FLAGGED")}>Add Flag</Option>
             </li>
             <li>
-              <a href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "REVIEWED")}>Mark Flag Reviewed</a>
+              <Option href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "REVIEWED")}>Mark Flag Reviewed</Option>
             </li>
             <li>
-              <a href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}>Remove Flag</a>
+              <Option href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}>Remove Flag</Option>
             </li>
           </ul>
         </ClickOffComponentWrapper>
