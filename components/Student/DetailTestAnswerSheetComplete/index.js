@@ -233,9 +233,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   renderCurrentSlide = () => {
-    const { activeSlide } = this.state;
+    const { activeSlide, fetchSectionsMessage } = this.state;
     const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
-    console.log('log: activeSlide', activeSlide);
     if (sections) {
       const {
         testReadingProblems,
@@ -260,6 +259,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <WritingPage
             testSection={testWritingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
       } else if (activeSlide === 'math (no calc)') {
@@ -269,6 +269,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <MathNoCalcPage
             testSection={testMathNoCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
       } else if (activeSlide === 'math (calculator)') {
@@ -278,6 +279,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <MathCalculatorPage
             testSection={testMathCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
       } else if (activeSlide === 'essay') {
@@ -289,7 +291,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
           />
         );
       }
-      return <h1>{this.state.fetchSectionsMessage}</h1>;
+    if (!fetchSectionsMessage) {
+      return <h1 style={{textAlign: "center"}}>Loading Problems...</h1>
+    }
+    return <h1 style={{textAlign: "center", color: 'red'}}>{fetchSectionsMessage}</h1>
     }
     return null;
   };

@@ -4,8 +4,8 @@ import AnswerRow from './components/AnswerRow';
 
 class WritingPage extends React.Component {
   mapAnswers = () => {
-    const { testSection: { problems: problemsSection }, testSection } = this.props;
-    if (!problemsSection) return null;
+    const { testSection: { problems: problemsSection }, testSection, fetchProblemsMessage } = this.props;
+    if (!problemsSection && fetchProblemsMessage) return <p style={{color: "red"}}>{this.props.fetchProblemsMessage}</p>
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>
@@ -17,7 +17,7 @@ class WritingPage extends React.Component {
   render() {
     return (
       <div className="slide" id="writingAnswerSheetImg">
-        <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}>
+        <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
           <ol className="answers-list" style={{ marginBottom: '40px' }}>
             {this.mapAnswers()}
           </ol>

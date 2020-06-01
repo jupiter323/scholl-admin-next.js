@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
 import { updateFlagStatus } from "../../../../../index/actions";
-import { Option } from './styled';
 
 class DropDownOptions extends React.Component {
   constructor(props) {
@@ -80,16 +79,21 @@ class DropDownOptions extends React.Component {
             }}
           >
             <li>
-              <Option href="#" onClick={(e) => this.onHandleQuestionFlagStatus(e, "FLAGGED")}>Add Flag</Option>
+              <a className="option" href="#" onClick={(e) => this.onHandleQuestionFlagStatus(e, "FLAGGED")}>Add Flag</a>
             </li>
             <li>
-              <Option href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "REVIEWED")}>Mark Flag Reviewed</Option>
+              <a className="option" href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "REVIEWED")}>Mark Flag Reviewed</a>
             </li>
             <li>
-              <Option href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}>Remove Flag</Option>
+              <a className="option" href="#!" onClick={(e) => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}>Remove Flag</a>
             </li>
           </ul>
         </ClickOffComponentWrapper>
+        <style jsx>{`
+            .option {
+              font-weight: normal;
+            }
+          `}</style>
       </If>
     );
   }
