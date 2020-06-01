@@ -227,6 +227,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   renderCurrentSlide = () => {
     const { activeSlide } = this.state;
     const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
+    console.log('log: activeSlide', activeSlide);
     if (sections) {
       const {
         testReadingProblems,
@@ -243,8 +244,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
           />
         );
-      }
-      if (activeSlide === 'writing') {
+      } else if (activeSlide === 'writing') {
         this.updateSectionStatus(activeSlide, testWritingProblems);
         return (
           testWritingProblems &&
@@ -253,8 +253,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
           />
         );
-      }
-      if (activeSlide === 'math (no calc)') {
+      } else if (activeSlide === 'math (no calc)') {
         this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
         return (
           testMathNoCalcProblems &&
@@ -263,8 +262,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
           />
         );
-      }
-      if (activeSlide === 'math (calculator)') {
+      } else if (activeSlide === 'math (calculator)') {
         this.updateSectionStatus(activeSlide, testMathCalcProblems);
         return (
           testMathCalcProblems &&
@@ -273,8 +271,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
           />
         );
-      }
-      if (activeSlide === 'essay') {
+      } else if (activeSlide === 'essay') {
         return (
           <EssayPage
             testId={activeStudentTestId}
@@ -283,9 +280,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
           />
         );
       }
-    } else {
-      return null;
+      return <h1>Loading Test Sections</h1>;
     }
+    return null;
   };
 
   onAddStudentAnswerToTest = async (problem, answer, student_test_id) => {
@@ -394,7 +391,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-          {activeSlide !== 'essay' && !showSectionMessage &&
+          {activeSlide && activeSlide !== 'essay' && !showSectionMessage &&
             <div className="row">
               <div className="btn-holder right-align">
                 <a
