@@ -172,7 +172,11 @@ const {
 const { fetchCurrentUserApi } = userApi;
 
 const { fetchAllLocationsApi } = locationsApi;
-
+// Error Message Constants
+const fetchSectionsMessage = 'fetchSectionsMessage';
+const fetchProblemsMessage = 'fetchProblemsMessage';
+const testFlagMessage = 'testFlagMessage';
+const answerTestProblemMessage = 'answerTestProblemMessage';
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -219,7 +223,6 @@ export function* watchForFetchStudentTestSections() {
 }
 
 export function* fetchStudentTestSections(id, studentTestId, studentToken) {
-  const fetchSectionsMessage = 'fetchSectionsMessage';
   try {
     yield put({
       type: SET_STUDENT_SECTIONS,
@@ -231,9 +234,11 @@ export function* fetchStudentTestSections(id, studentTestId, studentToken) {
     }
     let count = 0;
     while (count < testSections.length) {
-      const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id, studentToken);
+      const { data: problems } = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id);
+      // const problems = yield call(fetchStudentTestSectionProblemsApi, "123", studentTestId, testSections[count].id);
+      console.log('log: problems saga', problems);
       if (problems && problems.message) {
-        yield put(sendErrorMessage(fetchSectionsMessage, `Couldn't retrieve one or more sections with problems for this test. Those sections will not be shown.`));
+        yield put(sendErrorMessage(fetchProblemsMessage, `Couldn't retrieve one or more sections with problems for this test. Those sections will not be shown.`));
       }
       testSections[count].problems = problems;
       count++;
@@ -1013,7 +1018,7 @@ function* handleMarkAllFlagsReviewed(action) {
     const reviewedTestIds = [];
     let count = 0;
     while (count < sections.length) {
-      const problems = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
+      const { data: problems } = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
 
       const problemAmount = problems.problems.length;
       let problemCount = 0;
@@ -1044,7 +1049,6 @@ function* watchForAddStudentAnswerToTestDebounce() {
 }
 
 function* handleAddStudentAnswerToTest(action) {
-  const answerTestProblemMessage = "answerTestProblemMessage";
   try {
     const response = yield call(addStudentAnswerToTestApi, action.payload);
     if (response && response.message) {
@@ -1105,7 +1109,6 @@ function* watchForUpdateTestFlagStatus() {
 }
 
 function* handleUpdateTestFlagStatus(action) {
-  const testFlagMessage = 'testFlagMessage';
   try {
     if (action.status === "FLAGGED" && !action.payload.flag_id) {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);

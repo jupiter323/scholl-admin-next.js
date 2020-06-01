@@ -5,6 +5,7 @@ import AnswerRow from '../WritingPage/components/AnswerRow';
 class MathCalculatorPage extends React.Component {
   mapAnswers = () => {
     const { testSection: { problems: problemsSection }, testSection } = this.props;
+    if (!problemsSection) return null;
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>

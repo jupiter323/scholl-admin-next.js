@@ -76,7 +76,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id, errorMessages: { answerTestProblemMessage, testFlagMessage, fetchSectionsMessage } } = nextProps;
+    const { sections, student_test_id, errorMessages: { answerTestProblemMessage, testFlagMessage, fetchSectionsMessage, fetchProblemsMessage } } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
@@ -85,6 +85,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
     }
     if (testFlagMessage !== this.state.testFlagMessage) {
       this.onErrorMessage(testFlagMessage);
+    }
+    if (fetchProblemsMessage !== this.state.fetchProblemsMessage) {
+      this.setState({ fetchProblemsMessage });
     }
     if (fetchSectionsMessage !== this.state.fetchSectionsMessage) {
       this.setState({ fetchSectionsMessage });
@@ -247,6 +250,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <ReadingPage
             testSection={testReadingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
       } else if (activeSlide === 'writing') {

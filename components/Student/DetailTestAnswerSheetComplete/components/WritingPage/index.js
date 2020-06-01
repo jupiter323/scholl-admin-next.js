@@ -5,6 +5,7 @@ import AnswerRow from './components/AnswerRow';
 class WritingPage extends React.Component {
   mapAnswers = () => {
     const { testSection: { problems: problemsSection }, testSection } = this.props;
+    if (!problemsSection) return null;
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>

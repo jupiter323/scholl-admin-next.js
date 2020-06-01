@@ -87,6 +87,7 @@ const initialState = fromJS({
     testFlagMessage: null,
     answerTestProblemMessage: null,
     fetchSectionsMessage: null,
+    fetchProblemsMessage: null,
   },
 });
 

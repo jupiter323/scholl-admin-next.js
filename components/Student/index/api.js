@@ -423,7 +423,7 @@ export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, 
     },
   })
     .then(res => res.json())
-    .then(({ data }) => data)
+    // .then(({ data }) => data)
     .catch(err => err);
 
 export const addStudentAnswerToTestApi = answer =>

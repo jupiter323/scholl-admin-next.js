@@ -53,8 +53,7 @@ class DropDownOptions extends React.Component {
     const newQuestion = question;
 
     if (status === "FLAGGED" && !id) {
-    //   postBody = { student_test_id: studentTestId, test_problem_id: question.id };
-      postBody = { student_test_id: studentTestId, test_problem_id: "123" };
+      postBody = { student_test_id: studentTestId, test_problem_id: question.id };
     } else {
       postBody = { student_test_id: studentTestId, flag_id: id, status };
     }
