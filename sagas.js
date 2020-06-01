@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce, delay, race } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce, delay, race, throttle } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -59,6 +59,7 @@ import {
   UPDATE_FLAG_STATUS_SUCCESS,
   SET_STUDENT_SECTIONS,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  GET_TEST_SCORES
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1057,6 +1058,12 @@ function* watchForUpdateTestStatus() {
   yield takeEvery(UPDATE_TEST_STATUS, handleUpdateTestStatus);
 }
 
+function* watchForScores() {
+  yield throttle(5000, GET_TEST_SCORES, handleScoreFetching);
+}
+
+
+
 function* handleUpdateTestStatus(action) {
   try {
     const response = yield call(updateStudentTestStatusApi, action.payload);
@@ -1079,18 +1086,37 @@ function* handleUpdateTestStatus(action) {
         payload: action.payload,
         testList: action.currentStatus,
       });
-      const {response} = yield race({
-        response: call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id),
-        timeout: delay(500)
-      })
+
       yield put({
-        type: SET_ACTIVE_TEST_SCORES,
-        scores: { ...response, student_test_id: action.payload.student_test_id },
-      });
+        type:GET_TEST_SCORES,
+        payload: action.payload,
+        studentId: action.studentId,
+      })
+      // const {response} = yield race({
+      //   timeout: delay(5000),
+      //   response: call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id),
+      // })
+      // yield delay(7000);
+
+      // const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
+      
+      // yield put({
+      //   type: SET_ACTIVE_TEST_SCORES,
+      //   scores: { ...response, student_test_id: action.payload.student_test_id },
+      // });
     }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateTestStatus saga", error);
   }
+}
+
+function* handleScoreFetching(action){
+ const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
+      
+      yield put({
+        type: SET_ACTIVE_TEST_SCORES,
+        scores: { ...response, student_test_id: action.payload.student_test_id },
+      });
 }
 
 function* watchForUpdateTestFlagStatus() {
@@ -1180,5 +1206,6 @@ export default function* defaultSaga() {
     watchForUpdateTestStatus(),
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
+    watchForScores(),
   ]);
 }

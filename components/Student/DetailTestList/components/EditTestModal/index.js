@@ -69,6 +69,7 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
+      scoresLoading:false
     };
   }
 
@@ -94,9 +95,12 @@ class EditTestModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activePage, sections } = nextProps;
+    const { activePage, sections, activeTestScores } = nextProps;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
       this.setState({ activePage });
+    }
+    if(activeTestScores && activeTestScores.subjects){
+      this.setState({scoresLoading:false})
     }
     if (sections.length !== 0) {
       const { tests, test: { test_id } } = this.props;
@@ -293,8 +297,9 @@ class EditTestModal extends React.Component {
   };
 
   renderCurrentPage = () => {
-    const { activePage } = this.state;
-    const { test, user, onDeleteTest, onSaveTestChanges } = this.props;
+    const { activePage, scoresLoading } = this.state;
+    const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
+    console.log('log: this.props from test ', this.props);
     if (activePage === 'testVersion') {
       return (
         <TestVersionPage
@@ -338,6 +343,8 @@ class EditTestModal extends React.Component {
           }}
           setIsCompleted={setIsCompleted}
           test={this.props.test}
+          scoresLoading={scoresLoading}
+          openTestScores={onOpentTestScore}
         />
       );
     }
@@ -357,6 +364,7 @@ class EditTestModal extends React.Component {
 
   handleTestScore = async (activeSection, problemsByTest) => {
     // Check for non-existing sections and set them to completed
+    this.setState({scoresLoading:true})
     const {
       testReadingProblems,
       testWritingProblems,
@@ -443,7 +451,7 @@ class EditTestModal extends React.Component {
 
   render() {
     const { test, user, onCloseEditTestModal, activeTestScores } = this.props;
-    const { activePage, enablePublish } = this.state;
+    const { activePage, enablePublish, scoresLoading } = this.state;
     const { title, test_name } = test;
     const { studentInformation: { firstName, lastName } } = user;
     const completedTest = test.status === 'COMPLETED';

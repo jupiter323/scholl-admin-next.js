@@ -19,8 +19,8 @@ import {
   makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
-import { updateStudentTestSectionStatusApi } from '../index/api';
+import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore, setActiveTestScores } from '../index/actions';
+import { updateStudentTestSectionStatusApi, fetchStudentTestScoreApi } from '../index/api';
 import { makeSelectErrorMessages } from '../index/selectors';
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -321,6 +321,31 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   };
 
+  onSubmitScores = async () =>{
+   const  {scoresLoading, openTestScores, activeTestScores, test, onSetScores } = this.props
+   console.log('log: scoresLoading ', scoresLoading);
+   console.log('log: test ', test.test);
+   console.log('log: activeTestScores ', activeTestScores);
+    let delayTime = 0;
+    if (!activeTestScores) {
+      console.log("Got inside timer")
+      delayTime = 1000;
+    } else {
+      openTestScores({ ...test, status: 'COMPLETED' });
+    }
+    console.log('log: delayTime ', delayTime);
+    const response = await fetchStudentTestScoreApi(test.student_id, test.student_test_id);
+    onSetScores({ ...response, student_test_id: test.student_test_id });
+    return new Promise(resolve => {
+      console.log("Got inside promise ")
+      setTimeout(() => {
+        resolve(openTestScores({ ...test, status: 'COMPLETED' }));
+      }, delayTime)},
+    );
+    
+
+  }
+
   render() {
     const {
       activeSlide,
@@ -330,7 +355,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections } = this.props;
+    const { completedSections, scoresLoading } = this.props;
+    console.log('log: this.props ', this.props);
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
       case 'reading':
@@ -388,15 +414,18 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 <a
                   href="#"
                   className="btn btn-xlarge waves-effect waves-light bg-blue"
-                  onClick={() =>
+                  disabled={scoresLoading ? true : false}
+                  onClick={() =>{
                     this.props.handleTestScore(activeTestSection, {
                       testReadingProblems,
                       testWritingProblems,
                       testMathNoCalcProblems,
                       testMathCalcProblems,
-                    })}
+                    });
+                    // this.onSubmitScores();
+                  }}
                 >
-                  Score Test Section
+                Submit Test
                 </a>
               </div>
             </div>}
@@ -425,6 +454,7 @@ function mapDispatchToProps(dispatch) {
     onSetEssayScore: score => dispatch(setEssayScore(score)),
     dispatchAddStudentAnswerToTest: (payload, sectionId) =>
       dispatch(addStudentAnswerToTest(payload, sectionId)),
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
   };
 }
 
