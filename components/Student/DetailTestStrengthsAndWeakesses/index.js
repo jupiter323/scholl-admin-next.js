@@ -80,7 +80,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
         const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
         circleImageList.push(currentImg);
       });
+      console.log('circleImageList:',circleImageList);
       barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
+      console.log('barImageList:',barImageList);
       const imgList = { circleImageList, barImageList };
       resolve(imgList);
     });

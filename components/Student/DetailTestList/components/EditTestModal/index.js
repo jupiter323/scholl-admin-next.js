@@ -25,6 +25,7 @@ import {
   setStudentAssignedTests,
   setStudentCompletedTests,
   updateTestStatus,
+  setActiveTestScores,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
@@ -72,7 +73,7 @@ class EditTestModal extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.props.onRef(this);
     const {
       activeStudent: {studentInformation: {firstName, lastName}},
@@ -88,7 +89,7 @@ class EditTestModal extends React.Component {
     this.setState({
       userInfo: updatedUserInfo,
     });
-  }
+  };
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
@@ -127,6 +128,8 @@ class EditTestModal extends React.Component {
       });
     }
   }
+
+  
 
   getBase64ImageFromURL = url =>
     new Promise((resolve, reject) => {
@@ -170,7 +173,7 @@ class EditTestModal extends React.Component {
   };
 
   getData = item =>
-    new Promise(async resolve => {
+    new Promise(resolve => {
       const currentChild = item.child;
       this.setState(
         {
@@ -179,24 +182,27 @@ class EditTestModal extends React.Component {
         async () => {
           const data = await this[currentChild].getComponentImages();
           switch (item.state) {
-            case 'StrengthsAndWeaknesses':
-              this.setState({
-                analysisCicleImages: data.circleImageList,
-                analysisBarImages: data.barImageList,
-              });
-              break;
-            case 'answerSheet':
-              this.setState({
-                answerSheetImages: data,
-              });
-              break;
+            // case 'StrengthsAndWeaknesses':
+            //   this.setState({
+            //     analysisCicleImages: data.circleImageList,
+            //     analysisBarImages: data.barImageList,
+            //   });
+            //   break;
+            // case 'answerSheet':
+            //   this.setState({
+            //     answerSheetImages: data,
+            //   });
+            //   break;
             case 'scores':
               this.setState({
                 scoresImages: data,
               });
+              resolve();
+              break;
+            default:
+              resolve();
               break;
           }
-          resolve();
         }
       );
     });
@@ -220,14 +226,14 @@ class EditTestModal extends React.Component {
         state: 'scores',
         child: 'ScoresChild',
       },
-      {
-        state: 'StrengthsAndWeaknesses',
-        child: 'AnalysisChild',
-      },
-      {
-        state: 'answerSheet',
-        child: 'AnswerSheetChild',
-      },
+      // {
+      //   state: 'StrengthsAndWeaknesses',
+      //   child: 'AnalysisChild',
+      // },
+      // {
+      //   state: 'answerSheet',
+      //   child: 'AnswerSheetChild',
+      // },
     ];
     const getImagesPromise = pageStates.reduce(
       (accumulatorPromise, item) =>
@@ -250,36 +256,36 @@ class EditTestModal extends React.Component {
         margin: [0, 20, 0, 0],
         pageBreak: 'after',
       });
-      for (let i = 0; i < 3; i++) {
-        imgDataLists.push({
-          image: analysisCicleImages[i],
-          width: 300,
-          margin: [0, 20, 0, 0],
-        });
-        imgDataLists.push({
-          image: analysisBarImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
-        imgDataLists.push({
-          image: analysisBarImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
-        imgDataLists.push({
-          image: answerSheetImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
-      }
-      imgDataLists.push({
-        image: answerSheetImages[3],
-        width: 550,
-        margin: [0, 20, 0, 0],
-      });
+      // for (let i = 0; i < 3; i++) {
+      //   imgDataLists.push({
+      //     image: analysisCicleImages[i],
+      //     width: 300,
+      //     margin: [0, 20, 0, 0],
+      //   });
+      //   imgDataLists.push({
+      //     image: analysisBarImages[i],
+      //     width: 550,
+      //     margin: [0, 20, 0, 0],
+      //     pageBreak: 'after',
+      //   });
+      //   imgDataLists.push({
+      //     image: analysisBarImages[i],
+      //     width: 550,
+      //     margin: [0, 20, 0, 0],
+      //     pageBreak: 'after',
+      //   });
+      //   imgDataLists.push({
+      //     image: answerSheetImages[i],
+      //     width: 550,
+      //     margin: [0, 20, 0, 0],
+      //     pageBreak: 'after',
+      //   });
+      // }
+      // imgDataLists.push({
+      //   image: answerSheetImages[3],
+      //   width: 550,
+      //   margin: [0, 20, 0, 0],
+      // });
       pdfMakeReport(
         imgDataLists,
         userInfo,
@@ -565,7 +571,9 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
-    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) =>
+      dispatch(updateTestStatus(payload, currentStatus, studentId)),
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
