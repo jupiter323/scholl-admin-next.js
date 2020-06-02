@@ -57,7 +57,10 @@ import {
   SET_ESSAY_SCORE,
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_TEST_STATUS,
+  UPDATE_FLAG_STATUS,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
+  ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  SEND_ERROR_MESSAGE,
 } from "./constants";
 
 export function fetchStudents() {
@@ -408,9 +411,28 @@ export const updateTestStatus = (payload, currentStatus, studentId) => ({
   studentId,
 });
 
-export function setFetchStudentTestsStatus (status){
+export const updateFlagStatus = (payload, status, question) => ({
+  type: UPDATE_FLAG_STATUS,
+  payload,
+  status,
+  question,
+});
+
+export function setFetchStudentTestsStatus(status) {
   return {
-    type:FETCH_STUDENT_TESTS_SUCCESSFUL,
-    status
-  }
+    type: FETCH_STUDENT_TESTS_SUCCESSFUL,
+    status,
+  };
 }
+
+export const addFreeResponseAnswerToTest = (payload, sectionId) => ({
+  type: ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  payload,
+  sectionId,
+});
+
+export const sendErrorMessage = (propertyName, message) => ({
+  type: SEND_ERROR_MESSAGE,
+  propertyName,
+  message,
+});

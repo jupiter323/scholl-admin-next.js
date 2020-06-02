@@ -184,7 +184,7 @@ class CompletedTestCard extends React.Component {
                                 </li>
                                 <li>
                                   <a
-                                    className={problem_flag_count === 0 ? 'disabled' : ''}
+                                    className={problem_flag_count === 0 ? "disabled" : ""}
                                     href="#"
                                     onClick={e => {
                                       e.preventDefault();
