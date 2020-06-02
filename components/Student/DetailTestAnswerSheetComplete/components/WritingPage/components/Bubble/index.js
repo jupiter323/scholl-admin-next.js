@@ -99,17 +99,6 @@ class BubbleGroup extends React.Component {
     return this.setState({ problemCells: [...cells], selectedIndex });
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const letters = ["A", "B", "C", "D"];
-  //   if (letters.indexOf(nextProps.problem.student_answer) !== prevState.selectedIndex) {
-  //     console.log('log: nextProps', nextProps);
-  //     console.log('log: prevState', prevState);
-  //     if (prevState.prevState) {
-  //       return {...prevState.prevState}
-  //     }
-  //   }
-  // }
-
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
     const selectedIndex = this.state.selectedIndex;
@@ -135,10 +124,9 @@ class BubbleGroup extends React.Component {
 
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     const { onAddStudentAnswerToTest, problem, testSection } = this.props;
-    this.setState({ problemCells: updatedProblemCells, selectedIndex: index, prevState: { ...this.state } });
+    this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const label = index === -1 ? null : this.state.problemCells[index].label;
     onAddStudentAnswerToTest(problem, label, testSection.student_test_id);
-    // onAddStudentAnswerToTest(problem, null, testSection.student_test_id);
   };
 
   mapEmptyBubbles = id => {

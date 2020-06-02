@@ -69,6 +69,7 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
+      updateTestSectionMessage: "",
     };
   }
 
@@ -323,6 +324,7 @@ class EditTestModal extends React.Component {
         mathNoCalcSectionCompleted,
         mathCalcSectionCompleted,
         setIsCompleted,
+        updateTestSectionMessage,
       } = this.state;
       return (
         <DetailTestAnswerSheetComplete
@@ -337,6 +339,8 @@ class EditTestModal extends React.Component {
             mathCalcSectionCompleted,
           }}
           setIsCompleted={setIsCompleted}
+          updateTestSectionMessage={updateTestSectionMessage}
+          onUpdateTestSectionMsg={this.onUpdateTestSectionMsg}
         />
       );
     }
@@ -372,12 +376,13 @@ class EditTestModal extends React.Component {
     const { tests, test: { test_id }, test } = this.props;
     const postBody = {
       student_test_id: test.student_test_id,
-      student_test_section_id: activeSection.id,
+      // student_test_section_id: activeSection.id,
+      student_test_section_id: "123",
       student_test_section_status: 'COMPLETED',
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
     if (res && res.message) {
-      return null;
+      return this.onUpdateTestSectionMsg("Something went wrong completing this test section. Please try again later.");
     }
 
     // Update current section as completed
@@ -439,6 +444,8 @@ class EditTestModal extends React.Component {
       onOpentTestScore({ ...test, status: 'COMPLETED' });
     }
   };
+
+  onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
 
   render() {
     const { test, user, onCloseEditTestModal, activeTestScores } = this.props;

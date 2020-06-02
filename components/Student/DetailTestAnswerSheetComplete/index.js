@@ -244,6 +244,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
         break;
     }
     this.setState({ activeSlide, activeTestSection: currentSection });
+    // Remove any error message for the previous slide
+    this.props.onUpdateTestSectionMsg("");
   };
 
   renderCurrentSlide = () => {
@@ -306,6 +308,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             testId={activeStudentTestId}
             testScores={activeTestScores}
             setEssayScore={onSetEssayScore}
+            testScoreDetails={this.props.testScoreDetails}
           />
         );
       }
@@ -444,6 +447,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               </div>
             </div>
           )}
+          <p className="right-align red-text">{this.props.updateTestSectionMessage}</p>
         </div>
       </div>
     );
