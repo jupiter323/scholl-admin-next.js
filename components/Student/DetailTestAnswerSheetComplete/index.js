@@ -90,7 +90,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
-    if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
+    if (answerTestProblemMessage) {
       this.onErrorMessage(answerTestProblemMessage, "answerTestProblemMessage");
     }
     if (testFlagMessage !== this.state.testFlagMessage) {
