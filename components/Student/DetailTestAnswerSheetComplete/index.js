@@ -231,13 +231,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   renderCurrentSlide = () => {
-<<<<<<< HEAD
-    const {activeSlide} = this.state;
-    const {sections, activeStudentTestId, activeTestScores, onSetEssayScore} = this.props;
-=======
     const { activeSlide, fetchSectionsMessage } = this.state;
     const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
->>>>>>> 979e04d7701ff69d2df87f22ac272879c03b92c0
     if (sections) {
       const {
         testReadingProblems,
@@ -408,12 +403,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-<<<<<<< HEAD
-          {activeSlide !== 'essay' &&
-            !showSectionMessage &&
-=======
           {activeSlide && activeSlide !== 'essay' && !showSectionMessage &&
->>>>>>> 979e04d7701ff69d2df87f22ac272879c03b92c0
             <div className="row">
               <div className="btn-holder right-align">
                 <a
