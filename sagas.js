@@ -103,6 +103,7 @@ import {
   setUnitFilterOptions,
   setFetchStudentTestsStatus,
   sendErrorMessage,
+  resetErrorMessage,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -171,7 +172,11 @@ const {
 const { fetchCurrentUserApi } = userApi;
 
 const { fetchAllLocationsApi } = locationsApi;
-
+// Error Message Constants
+const fetchSectionsMessage = 'fetchSectionsMessage';
+const fetchProblemsMessage = 'fetchProblemsMessage';
+const testFlagMessage = 'testFlagMessage';
+const answerTestProblemMessage = 'answerTestProblemMessage';
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -224,14 +229,22 @@ export function* fetchStudentTestSections(id, studentTestId, studentToken) {
       sections: [],
     });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
+    if (testSections && testSections.message) {
+      return yield put(sendErrorMessage(fetchSectionsMessage, `Error: Something went wrong retrieving sections and problems for this test. You may still view and score essays or try again later.`));
+    }
     let count = 0;
     while (count < testSections.length) {
-      const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id, studentToken);
-      testSections[count].problems = problems;
+      const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id);
+      if (problems && problems.message) {
+        yield put(sendErrorMessage(fetchProblemsMessage, `Error: Couldn't retrieve one or more sections with problems for this test. Those sections will not be shown. Please try again later.`));
+      }
+      testSections[count].problems = problems.data;
       count++;
     }
+    yield put(resetErrorMessage(fetchSectionsMessage));
     yield put(setStudentSections(testSections));
   } catch (err) {
+    sendErrorMessage(fetchSectionsMessage, `Something went wrong retrieving sections for this test.`);
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
 }
@@ -1003,7 +1016,7 @@ function* handleMarkAllFlagsReviewed(action) {
     const reviewedTestIds = [];
     let count = 0;
     while (count < sections.length) {
-      const problems = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
+      const { data: problems } = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
 
       const problemAmount = problems.problems.length;
       let problemCount = 0;
@@ -1034,7 +1047,6 @@ function* watchForAddStudentAnswerToTestDebounce() {
 }
 
 function* handleAddStudentAnswerToTest(action) {
-  const answerTestProblemMessage = "answerTestProblemMessage";
   try {
     const response = yield call(addStudentAnswerToTestApi, action.payload);
     if (response && response.message) {
@@ -1046,7 +1058,7 @@ function* handleAddStudentAnswerToTest(action) {
       sectionId: action.sectionId,
       payload: action.payload,
     });
-    yield put(sendErrorMessage(answerTestProblemMessage, null));
+    yield put(resetErrorMessage(answerTestProblemMessage));
   } catch (error) {
     yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
     console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
@@ -1095,7 +1107,6 @@ function* watchForUpdateTestFlagStatus() {
 }
 
 function* handleUpdateTestFlagStatus(action) {
-  const testFlagMessage = 'testFlagMessage';
   try {
     if (action.status === "FLAGGED" && !action.payload.flag_id) {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);
@@ -1109,7 +1120,7 @@ function* handleUpdateTestFlagStatus(action) {
         return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
       }
     }
-    yield put(sendErrorMessage(testFlagMessage, null));
+    yield put(resetErrorMessage(testFlagMessage));
     yield put({
       type: UPDATE_FLAG_STATUS_SUCCESS,
       sectionId: action.question.test_section_id,

@@ -4,7 +4,8 @@ import AnswerRow from '../WritingPage/components/AnswerRow';
 
 class MathCalculatorPage extends React.Component {
   mapAnswers = () => {
-    const { testSection: { problems: problemsSection }, testSection } = this.props;
+    const { testSection: { problems: problemsSection }, testSection, fetchProblemsMessage } = this.props;
+    if (!problemsSection && fetchProblemsMessage) return <p style={{ color: "red" }}>{this.props.fetchProblemsMessage}</p>;
     return (
       problemsSection.problems &&
       problemsSection.problems.map(problem =>

@@ -19,7 +19,7 @@ import {
   makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
+import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore, resetErrorMessage } from '../index/actions';
 import { updateStudentTestSectionStatusApi } from '../index/api';
 import { makeSelectErrorMessages } from '../index/selectors';
 class DetailTestAnswerSheetComplete extends React.Component {
@@ -46,6 +46,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
       updatedSectionStatus: {},
       showSectionMessage: false,
       answerTestProblemMessage: null,
+      testFlagMessage: null,
+      fetchSectionsMessage: null,
     };
   }
 
@@ -66,21 +68,41 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.props.onRef(this);
   }
   componentWillUnmount() {
+    const { onResetErrorMessage } = this.props;
     this.props.onRef(undefined);
+    onResetErrorMessage("answerTestProblemMessage");
+    onResetErrorMessage("testFlagMessage");
+    onResetErrorMessage("fetchSectionsMessage");
+    onResetErrorMessage("fetchProblemsMessage");
   }
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id, errorMessages: { answerTestProblemMessage } } = nextProps;
+    const { sections, student_test_id, errorMessages: { answerTestProblemMessage, testFlagMessage, fetchSectionsMessage, fetchProblemsMessage } } = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
     if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
-      toast.error(answerTestProblemMessage, {
-        className: 'update-error',
-        progressClassName: 'progress-bar-error',
-      });
+      this.onErrorMessage(answerTestProblemMessage);
+    }
+    if (testFlagMessage !== this.state.testFlagMessage) {
+      this.onErrorMessage(testFlagMessage);
+    }
+    if (fetchProblemsMessage !== this.state.fetchProblemsMessage) {
+      this.setState({ fetchProblemsMessage });
+    }
+    if (fetchSectionsMessage !== this.state.fetchSectionsMessage) {
+      this.setState({ fetchSectionsMessage });
     }
   };
+
+  onErrorMessage(message) {
+    if (!message) this.setState({ [message]: message });
+    toast.error(message, {
+      className: 'update-error',
+      progressClassName: 'progress-bar-error',
+    });
+    this.setState({ [message]: message });
+  }
 
   onSetProblems = (sections, studentTestId) => {
     const { tests, testScoreDetails: { test_id } } = this.props;
@@ -213,7 +235,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   renderCurrentSlide = () => {
-    const { activeSlide } = this.state;
+    const { activeSlide, fetchSectionsMessage } = this.state;
     const { sections, activeStudentTestId, activeTestScores, onSetEssayScore } = this.props;
     if (sections) {
       const {
@@ -229,40 +251,40 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <ReadingPage
             testSection={testReadingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
-      }
-      if (activeSlide === 'writing') {
+      } else if (activeSlide === 'writing') {
         this.updateSectionStatus(activeSlide, testWritingProblems);
         return (
           testWritingProblems &&
           <WritingPage
             testSection={testWritingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
-      }
-      if (activeSlide === 'math (no calc)') {
+      } else if (activeSlide === 'math (no calc)') {
         this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
         return (
           testMathNoCalcProblems &&
           <MathNoCalcPage
             testSection={testMathNoCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
-      }
-      if (activeSlide === 'math (calculator)') {
+      } else if (activeSlide === 'math (calculator)') {
         this.updateSectionStatus(activeSlide, testMathCalcProblems);
         return (
           testMathCalcProblems &&
           <MathCalculatorPage
             testSection={testMathCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
         );
-      }
-      if (activeSlide === 'essay') {
+      } else if (activeSlide === 'essay') {
         return (
           <EssayPage
             testId={activeStudentTestId}
@@ -271,9 +293,12 @@ class DetailTestAnswerSheetComplete extends React.Component {
           />
         );
       }
-    } else {
-      return null;
+      if (!fetchSectionsMessage) {
+        return <h1 style={{ textAlign: "center" }}>Loading Problems...</h1>;
+      }
+      return <h1 style={{ textAlign: "center", color: 'red' }}>{fetchSectionsMessage}</h1>;
     }
+    return null;
   };
 
   onAddStudentAnswerToTest = async (problem, answer, student_test_id) => {
@@ -382,7 +407,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-          {activeSlide !== 'essay' && !showSectionMessage &&
+          {activeSlide && activeSlide !== 'essay' && !showSectionMessage &&
             <div className="row">
               <div className="btn-holder right-align">
                 <a
@@ -425,6 +450,7 @@ function mapDispatchToProps(dispatch) {
     onSetEssayScore: score => dispatch(setEssayScore(score)),
     dispatchAddStudentAnswerToTest: (payload, sectionId) =>
       dispatch(addStudentAnswerToTest(payload, sectionId)),
+    onResetErrorMessage: (errorName) => dispatch(resetErrorMessage(errorName)),
   };
 }
 
