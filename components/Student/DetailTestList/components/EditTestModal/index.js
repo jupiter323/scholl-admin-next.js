@@ -337,7 +337,6 @@ class EditTestModal extends React.Component {
             mathCalcSectionCompleted,
           }}
           setIsCompleted={setIsCompleted}
-          test={this.props.test}
         />
       );
     }
