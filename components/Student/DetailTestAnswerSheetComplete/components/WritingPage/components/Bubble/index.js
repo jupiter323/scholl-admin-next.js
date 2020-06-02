@@ -83,6 +83,21 @@ class BubbleGroup extends React.Component {
       ],
     };
   }
+  componentDidMount = () => {
+    const { problem } = this.props;
+    if (!problem.student_answer) {
+      return;
+    }
+    const cells = this.state.problemCells;
+    let selectedIndex = -1;
+    cells.map((cell, index) => {
+      if (cell.label === problem.student_answer) {
+        cells[index] = { ...cell, selected: true };
+        selectedIndex = index;
+      }
+    });
+    return this.setState({ problemCells: [...cells], selectedIndex });
+  };
 
   handleClickBadge = (index) => {
     const currentBadge = this.state.problemCells[index];
@@ -92,6 +107,12 @@ class BubbleGroup extends React.Component {
         [index]: { selected: { $set: !currentBadge.selected } },
       });
       this.onSaveStudentAnswer(updatedProblemCells, index);
+    } else if (selectedIndex === index) {
+      const updatedProblemCells = update(this.state.problemCells, {
+        [index]: { selected: { $set: !currentBadge.selected } },
+        [selectedIndex]: { selected: { $set: false } },
+      });
+      this.onSaveStudentAnswer(updatedProblemCells, -1);
     } else {
       const updatedProblemCells = update(this.state.problemCells, {
         [index]: { selected: { $set: !currentBadge.selected } },
@@ -104,7 +125,7 @@ class BubbleGroup extends React.Component {
   onSaveStudentAnswer = (updatedProblemCells, index) => {
     const { onAddStudentAnswerToTest, problem, testSection } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
-    const { label } = this.state.problemCells[index];
+    const label = index === -1 ? null : this.state.problemCells[index].label;
     onAddStudentAnswerToTest(problem, label, testSection.student_test_id);
   };
 
