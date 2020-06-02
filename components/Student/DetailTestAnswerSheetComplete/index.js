@@ -194,7 +194,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
       ];
       this.delayFetchStudentTestSections().then(() => {
         setTimeout(() => {
-          this.onSetProblems(this.state.sections).then(() => {
             const getImgListPromise = componentRefs.reduce(
               (accumulatorPromise, item) =>
                 accumulatorPromise
@@ -208,7 +207,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
             getImgListPromise.then(() => {
               resolve(imgDataList);
             });
-          });
         }, 20000);
       });
     });
