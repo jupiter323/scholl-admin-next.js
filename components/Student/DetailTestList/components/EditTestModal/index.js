@@ -74,6 +74,18 @@ class EditTestModal extends React.Component {
   }
 
   componentDidMount = async () => {
+    const {
+      onFetchStudentTestSections,
+      studentToken,
+      test: {student_test_id},
+      activeStudent: {id},
+    } = this.props;
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
     this.props.onRef(this);
     const {
       activeStudent: {studentInformation: {firstName, lastName}},
@@ -569,7 +581,7 @@ const mapStateToProps = createStructuredSelector({
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
+    onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
     onUpdateTestStatus: (payload, currentStatus, studentId) =>
