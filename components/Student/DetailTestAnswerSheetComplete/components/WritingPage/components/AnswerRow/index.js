@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponseInput from '../FreeResponseInput';
+import DropDownMenuOptions from '../DropDownOptions';
 
 class AnswerRow extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class AnswerRow extends React.Component {
     }
   }
 
-  onOpenQuestionModal = () => this.setState({ open: true });
+  onOpenQuestionModal = () => this.setState({ open: !this.state.open });
   onCloseQuestionModal = () => this.setState({ open: false });
 
   mapNumberBubbles = () => {
@@ -92,13 +92,6 @@ class AnswerRow extends React.Component {
     const { open, status } = this.state;
     return (
       <React.Fragment>
-        <QuestionModal
-          open={open}
-          onOpenQuestionModal={this.onOpenQuestionModal}
-          onCloseQuestionModal={this.onCloseQuestionModal}
-          question={problem}
-          studentTestId={this.props.testSection.student_test_id}
-        />
         <li
           className="answers-list-holder"
           key={problem.test_problem_id}
@@ -131,13 +124,13 @@ class AnswerRow extends React.Component {
               <span className="status-info">E</span>
             </div>
             <div className="col col-auto">
-              <If condition={status === 'FLAGGED'}>
+              <If condition={status === "FLAGGED"}>
                 <span className="status-answer" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
                   <b className="status-text">Review</b>
                 </span>
               </If>
-              <If condition={status === 'REVIEWED'}>
+              <If condition={status === "REVIEWED"}>
                 <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                   <i className="icon-flag"></i>
                   <b className="status-text">Reviewed</b>
@@ -145,9 +138,21 @@ class AnswerRow extends React.Component {
               </If>
             </div>
             <div className="dropdown-block col col-35">
-              <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
+              <a
+                className="dropdown-trigger"
+                href="#"
+                data-target="dropdown01"
+                onClick={() => this.onOpenQuestionModal()}
+              >
                 <i className="material-icons dots-icon">more_vert</i>
               </a>
+              <DropDownMenuOptions
+                open={open}
+                onOpenQuestionModal={this.onOpenQuestionModal}
+                onCloseQuestionModal={this.onCloseQuestionModal}
+                question={problem}
+                studentTestId={this.props.testSection.student_test_id}
+              />
             </div>
           </div>
         </li>
