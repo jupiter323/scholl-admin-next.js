@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import { toast } from 'react-toastify';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {createStructuredSelector} from 'reselect';
+import {toast} from 'react-toastify';
 import AnswerSheetNavBar from './components/AnswerSheetNavBar';
 import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
@@ -19,9 +19,9 @@ import {
   makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore } from '../index/actions';
-import { updateStudentTestSectionStatusApi } from '../index/api';
-import { makeSelectErrorMessages } from '../index/selectors';
+import {fetchStudentTestSections, addStudentAnswerToTest, setEssayScore} from '../index/actions';
+import {updateStudentTestSectionStatusApi} from '../index/api';
+import {makeSelectErrorMessages} from '../index/selectors';
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
     super(props);
@@ -50,28 +50,15 @@ class DetailTestAnswerSheetComplete extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      onFetchStudentTestSections,
-      sections,
-      studentToken,
-      testScoreDetails: {student_test_id},
-      activeStudent: {id},
-    } = this.props;
-    const postBody = {
-      id,
-      student_test_id,
-      studentToken,
-    };
-    onFetchStudentTestSections(postBody);
     this.props.onRef(this);
-    console.log('Rendered Answersheet!');
+    this.delayFetchStudentTestSections();
   }
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
 
   componentWillReceiveProps = nextProps => {
-    const { sections, student_test_id, errorMessages: { answerTestProblemMessage } } = nextProps;
+    const {sections, student_test_id, errorMessages: {answerTestProblemMessage}} = nextProps;
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
@@ -83,51 +70,73 @@ class DetailTestAnswerSheetComplete extends React.Component {
     }
   };
 
-  onSetProblems = (sections, studentTestId) => {
-    console.log('Ooops!');
-    const {tests, testScoreDetails: {test_id}} = this.props;
-    const testIds = tests.map(test => test.id);
-    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
-    const currentTestSections = tests[currentTestIndex].test_sections;
-    sections.map(section => {
-      const testSectionIds = currentTestSections.map(testSection => testSection.id);
-      const currentTestSectionIndex = testSectionIds.findIndex(
-        testSectionId => testSectionId === section.test_section_id
-      );
-      const currentTestSection = currentTestSections[currentTestSectionIndex];
-      if (!currentTestSection) return;
-      switch (currentTestSection.name) {
-        case 'Math (Calculator)':
-          this.setState({
-            testMathCalcProblems: section,
-          });
-          break;
-        case 'Writing':
-          this.setState({
-            testWritingProblems: section,
-          });
-          break;
-        case 'Math (No Calculator)':
-          this.setState({
-            testMathNoCalcProblems: section,
-          });
-          break;
-        case 'Reading':
-          this.setState({
-            testReadingProblems: section,
-          });
-          break;
-        default:
-          this.setState({
-            testReadingProblems: section,
-          });
-          break;
-      }
+  delayFetchStudentTestSections = () => {
+    const {
+      onFetchStudentTestSections,
+      studentToken,
+      testScoreDetails: {student_test_id},
+      activeStudent: {id},
+    } = this.props;
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    return new Promise(async resolve => {
+      onFetchStudentTestSections(postBody);
+      resolve();
     });
-    this.setState({
-      testSections: sections,
-      studentTestId,
-      showSectionMessage: false,
+  };
+
+  onSetProblems = (sections, studentTestId) => {
+    return new Promise(async resolve => {
+      const {tests, testScoreDetails: {test_id}} = this.props;
+      const testIds = tests.map(test => test.id);
+      const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+      const currentTestSections = tests[currentTestIndex].test_sections;
+      sections.map(section => {
+        const testSectionIds = currentTestSections.map(testSection => testSection.id);
+        const currentTestSectionIndex = testSectionIds.findIndex(
+          testSectionId => testSectionId === section.test_section_id
+        );
+        const currentTestSection = currentTestSections[currentTestSectionIndex];
+        if (!currentTestSection) return;
+        switch (currentTestSection.name) {
+          case 'Math (Calculator)':
+            this.setState({
+              testMathCalcProblems: section,
+            });
+            break;
+          case 'Writing':
+            this.setState({
+              testWritingProblems: section,
+            });
+            break;
+          case 'Math (No Calculator)':
+            this.setState({
+              testMathNoCalcProblems: section,
+            });
+            break;
+          case 'Reading':
+            this.setState({
+              testReadingProblems: section,
+            });
+            break;
+          default:
+            this.setState({
+              testReadingProblems: section,
+            });
+            break;
+        }
+      });
+      this.setState({
+        testSections: sections,
+        studentTestId,
+        showSectionMessage: false,
+      });
+      setTimeout(() => {
+        resolve();
+      }, 1000);
     });
   };
 
@@ -140,19 +149,22 @@ class DetailTestAnswerSheetComplete extends React.Component {
         {id: 'mathNoCalcAnswerSheetImg', state: 'math (no calc)'},
         {id: 'mathCalcAnswerSheetImg', state: 'math (calculator)'},
       ];
-      const getImgListPromise = componentRefs.reduce(
-        (accumulatorPromise, item) =>
-          accumulatorPromise
-            .then(async () => {
-              const result = await this.getData(item);
-              return imgDataList.push(result);
-            })
-            .catch(console.error),
-        Promise.resolve()
-      );
-      getImgListPromise.then(() => {
-        console.log('AnswersheetImages:', imgDataList);
-        resolve(imgDataList);
+      this.delayFetchStudentTestSections().then(() => {
+        setTimeout(async () => {
+          const getImgListPromise = componentRefs.reduce(
+            (accumulatorPromise, item) =>
+              accumulatorPromise
+                .then(async () => {
+                  const result = await this.getData(item);
+                  return imgDataList.push(result);
+                })
+                .catch(console.error),
+            Promise.resolve()
+          );
+          getImgListPromise.then(() => {
+            resolve(imgDataList);
+          });
+        }, 20000);
       });
     });
 
