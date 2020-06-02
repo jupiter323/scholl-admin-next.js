@@ -376,8 +376,7 @@ class EditTestModal extends React.Component {
     const { tests, test: { test_id }, test } = this.props;
     const postBody = {
       student_test_id: test.student_test_id,
-      // student_test_section_id: activeSection.id,
-      student_test_section_id: "123",
+      student_test_section_id: activeSection.id,
       student_test_section_status: 'COMPLETED',
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
