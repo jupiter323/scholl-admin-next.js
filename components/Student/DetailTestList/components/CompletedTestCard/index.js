@@ -43,7 +43,6 @@ class CompletedTestCard extends React.Component {
 
   onEditTest = async () => {
     const {onEditTest, onSetScores} = this.props;
-    console.log('scores:',scores)
     const {scores} = this.state;
     if (scores) {
       onSetScores(scores);
