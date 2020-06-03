@@ -374,8 +374,7 @@ function studentReducer(state = initialState, action) {
       return state.set('sections', newSections);
 
     case SEND_ERROR_MESSAGE:
-      const updatedErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: action.message };
-      return state.set('errorMessages', updatedErrorMessages);
+      return state.set('errorMessages', { ...state.get('errorMessages'), [action.propertyName]: action.message });
 
     case RESET_ERROR_MESSAGE:
       return state.set('errorMessages', { ...state.get('errorMessages'), [action.propertyName]: null });

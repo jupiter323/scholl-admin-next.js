@@ -21,7 +21,6 @@ import {
   makeSelectActiveTestScores,
 } from '../../../index/selectors';
 import {
-  fetchStudentTestSections,
   setStudentAssignedTests,
   setStudentCompletedTests,
   updateTestStatus,
@@ -579,7 +578,6 @@ const mapStateToProps = createStructuredSelector({
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
     onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),

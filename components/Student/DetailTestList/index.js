@@ -121,7 +121,7 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = async currentTestId => {
-    const { onFetchStudentTestSections, onSetStudentSections, user, studentTests } = this.props;
+    const { onFetchStudentTestSections, user, studentTests } = this.props;
     // Have to clear all sections to have no side effects for now
     onFetchStudentTestSections({ id: user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
@@ -444,7 +444,6 @@ function mapDispatchToProps(dispatch) {
     onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
     onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
-    onSetStudentSections: (sections) => dispatch(setStudentSections(sections)),
     onSetStudentTests: (tests) => dispatch(setStudentTests(tests)),
     onSetStudentCompletedTests: (tests) => dispatch(setStudentCompletedTests(tests)),
     onSetStudentOverDueTests: (tests) => dispatch(setStudentOverDueTests(tests)),
