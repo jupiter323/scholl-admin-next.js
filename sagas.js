@@ -1052,7 +1052,7 @@ function* handleAddStudentAnswerToTest(action) {
   try {
     const response = yield call(addStudentAnswerToTestApi, action.payload);
     if (response && response.message) {
-      yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
+      yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Your answer will not be recorded. Please try again later.`));
       yield put(resetErrorMessage(answerTestProblemMessage));
       return console.warn("Error occurred in the handleAddStudentAnswerToTest saga", response.message);
     }
