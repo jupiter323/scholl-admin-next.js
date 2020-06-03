@@ -309,6 +309,8 @@ class EditTestModal extends React.Component {
     });
   };
 
+  onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
+
   renderCurrentPage = () => {
     const { activePage, scoresLoading } = this.state;
     const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
@@ -399,7 +401,7 @@ class EditTestModal extends React.Component {
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
     if (res && res.message) {
-      return null;
+      return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
     }
 
     // Update current section as completed

@@ -234,6 +234,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
         break;
     }
     this.setState({ activeSlide, activeTestSection: currentSection });
+    // Remove any error message for the previous slide
+    this.props.onUpdateTestSectionMsg("");
   };
 
   renderCurrentSlide = () => {
@@ -400,7 +402,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections, scoresLoading, testScoreDetails: { status } } = this.props;
+    const { completedSections, scoresLoading, testScoreDetails: { status }, updateTestSectionMessage } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
       case 'reading':
@@ -463,6 +465,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 </a>
               </div>
             </div>)}
+          <p className="red-text right-align">{updateTestSectionMessage}</p>
         </div>
       </div>
     );
