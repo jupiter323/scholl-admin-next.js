@@ -85,7 +85,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
         fetchProblemsMessage,
       },
     } = nextProps;
-    console.log('log: nextProps error', nextProps.errorMessages);
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
@@ -104,7 +103,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
   onErrorMessage(message, name) {
     if (!message) return this.setState({ [name]: "" });
-    console.log('log: message inside', message);
     toast.error(message, {
       className: 'update-error',
       progressClassName: 'progress-bar-error',
