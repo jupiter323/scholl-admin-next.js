@@ -54,7 +54,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
   componentDidMount() {
     const {
       onFetchStudentTestSections,
-      sections,
       studentToken,
       testScoreDetails: { student_test_id },
       activeStudent: { id },
@@ -390,7 +389,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
     } = this.state;
     const { completedSections, scoresLoading, testScoreDetails: { status } } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
-    console.log('log: scoresLoading ', scoresLoading);
     switch (activeSlide) {
       case "reading":
         if (completedSections.readingSectionCompleted) {
@@ -428,9 +426,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
           {showSectionMessage && status !== "COMPLETED" && this.completedSectionMessage()}
           <div className="main-slick">
             { scoresLoading ? (
-            <div className="overlay-spinning">
-              <div className="spinning"></div>
-            </div>
+              <div className="overlay-spinning">
+                <div className="spinning"></div>
+              </div>
             ) : this.renderCurrentSlide()}
           </div>
           {activeSlide && activeSlide !== "essay" && !showSectionMessage && (
@@ -439,13 +437,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 <a
                   href="#"
                   className="btn btn-xlarge waves-effect waves-light bg-blue"
-                  onClick={() =>{
+                  onClick={() => {
                     this.props.handleTestScore(activeTestSection, {
                       testReadingProblems,
                       testWritingProblems,
                       testMathNoCalcProblems,
                       testMathCalcProblems,
-                    })
+                    });
                   }}
                 >
                  Submit Test Scores

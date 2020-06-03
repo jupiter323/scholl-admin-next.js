@@ -70,7 +70,7 @@ class EditTestModal extends React.Component {
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
       updateTestSectionMessage: "",
-      scoresLoading:false
+      scoresLoading: false,
     };
   }
 
@@ -342,7 +342,6 @@ class EditTestModal extends React.Component {
           setIsCompleted={setIsCompleted}
           updateTestSectionMessage={updateTestSectionMessage}
           onUpdateTestSectionMsg={this.onUpdateTestSectionMsg}
-          test={this.props.test}
           scoresLoading={scoresLoading}
           openTestScores={onOpentTestScore}
         />
@@ -443,13 +442,13 @@ class EditTestModal extends React.Component {
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
       const currentTestStatus =
         test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
-      this.setState({scoresLoading:true})
+      this.setState({ scoresLoading: true });
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
-      //added time for saga to fetch all score results
+      // added time for saga to fetch all score results
       setTimeout(() => {
         onOpentTestScore({ ...test, status: 'COMPLETED' });
-        this.setState({scoresLoading: false})
-      }, 2000)
+        this.setState({ scoresLoading: false });
+      }, 2000);
     }
   };
 

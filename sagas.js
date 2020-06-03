@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce, delay} from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce, delay } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -59,7 +59,7 @@ import {
   UPDATE_FLAG_STATUS_SUCCESS,
   SET_STUDENT_SECTIONS,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
-  GET_TEST_SCORES
+  GET_TEST_SCORES,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -225,6 +225,11 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId) {
   try {
+    // @TODO figure out if this is necessary or not
+    yield put({
+      type: SET_STUDENT_SECTIONS,
+      sections: [],
+    });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     if (testSections && testSections.message) {
       return yield put(sendErrorMessage(fetchSectionsMessage, `Error: Something went wrong retrieving sections and problems for this test. You may still view and score essays or try again later.`));
@@ -1091,15 +1096,15 @@ function* handleUpdateTestStatus(action) {
       });
 
       yield put({
-        type:GET_TEST_SCORES,
+        type: GET_TEST_SCORES,
         payload: action.payload,
         studentId: action.studentId,
-      })
+      });
 
       yield delay(1500);
 
-      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
-      
+      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
+
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
         scores: { ...response, student_test_id: action.payload.student_test_id },
