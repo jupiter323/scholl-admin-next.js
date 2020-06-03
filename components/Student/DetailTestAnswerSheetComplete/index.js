@@ -116,6 +116,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const {
       tests,
       testScoreDetails: { test_id },
+      testScoreDetails,
     } = this.props;
     const testIds = tests.map((test) => test.id);
     const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
@@ -126,7 +127,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
         (testSectionId) => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
-      if (!currentTestSection) return;
+      // Confirm that the sections are for the current student_test_id
+      if (!currentTestSection || testScoreDetails.student_test_id !== section.student_test_id) return null;
       switch (currentTestSection.name) {
         case "Math (Calculator)":
           this.setState({

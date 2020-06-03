@@ -225,11 +225,6 @@ export function* watchForFetchStudentTestSections() {
 
 export function* fetchStudentTestSections(id, studentTestId) {
   try {
-    // @TODO figure out if this is necessary or not
-    // yield put({
-    //   type: SET_STUDENT_SECTIONS,
-    //   sections: [],
-    // });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     if (testSections && testSections.message) {
       return yield put(sendErrorMessage(fetchSectionsMessage, `Error: Something went wrong retrieving sections and problems for this test. You may still view and score essays or try again later.`));
