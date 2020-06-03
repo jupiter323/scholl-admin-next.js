@@ -70,6 +70,7 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
+      scoresLoading:false
     };
   }
 
@@ -308,8 +309,8 @@ class EditTestModal extends React.Component {
   };
 
   renderCurrentPage = () => {
-    const {activePage} = this.state;
-    const {test, user, onDeleteTest, onSaveTestChanges} = this.props;
+    const { activePage, scoresLoading } = this.state;
+    const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
     if (activePage === 'testVersion') {
       return (
         <TestVersionPage
@@ -353,6 +354,8 @@ class EditTestModal extends React.Component {
           }}
           setIsCompleted={setIsCompleted}
           test={this.props.test}
+          scoresLoading={scoresLoading}
+          openTestScores={onOpentTestScore}
         />
       );
     }
@@ -451,16 +454,21 @@ class EditTestModal extends React.Component {
       const {onOpentTestScore, onUpdateTestStatus} = this.props;
       const currentTestStatus =
         test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
+      this.setState({scoresLoading:true})
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
-      onOpentTestScore({...test, status: 'COMPLETED'});
+      //added time for saga to fetch all score results
+      setTimeout(() => {
+        onOpentTestScore({ ...test, status: 'COMPLETED' });
+        this.setState({scoresLoading: false})
+      }, 2000)
     }
   };
 
   render() {
-    const {test, user, onCloseEditTestModal, activeTestScores} = this.props;
-    const {activePage, enablePublish} = this.state;
-    const {title, test_name} = test;
-    const {studentInformation: {firstName, lastName}} = user;
+    const { test, user, onCloseEditTestModal, activeTestScores } = this.props;
+    const { activePage, enablePublish, scoresLoading } = this.state;
+    const { title, test_name } = test;
+    const { studentInformation: { firstName, lastName } } = user;
     const completedTest = test.status === 'COMPLETED';
     return (
       <div className="wrapper">
