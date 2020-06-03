@@ -139,7 +139,7 @@ class BubbleGroup extends React.Component {
     return this.onSaveStudentAnswer(updatedProblemCells, index);
   };
 
-  onSaveStudentAnswer = async (updatedProblemCells, index) => {
+  onSaveStudentAnswer = (updatedProblemCells, index) => {
     const { onAddStudentAnswerToTest, problem, testSection } = this.props;
     this.setState({ problemCells: updatedProblemCells, selectedIndex: index });
     const label = index === -1 ? null : this.state.problemCells[index].label;
