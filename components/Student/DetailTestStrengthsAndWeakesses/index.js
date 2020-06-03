@@ -76,22 +76,31 @@ class DetailTestAnswerSheetComplete extends React.Component {
         { id: 'writingAnalysisBarImg', state: 'writing' },
         { id: 'mathAnalysisBarImg', state: 'math' },
       ];
-      circleRefs.map(async (circleRef, index) => {
-        const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
-        circleImageList.push(currentImg);
-      });
+
+      const getCircleImagesPromise = circleRefs.reduce(
+        (accumulatorPromise, circleRef) =>
+          accumulatorPromise
+            .then(async () => {
+              const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
+              circleImageList.push(currentImg);
+            })
+            .catch(console.error),
+        Promise.resolve(),
+      );
       barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
-      const imgList = { circleImageList, barImageList };
-      resolve(imgList);
+      getCircleImagesPromise.then(() => {
+        const imgList = { circleImageList, barImageList };
+        resolve(imgList);
+      });
     });
   getData = item =>
     new Promise(async resolve => {
       setTimeout(() => {
         this.setState({ activeSlide: item.state }, async () => {
           const [currentImg] = await Promise.all([this.onHandleTargetImage(item.id)]);
-          resolve(currentImg);
+          if (currentImg) resolve(currentImg);
         });
-      }, 1000);
+      }, 500);
     });
 
   onHandleTargetImage = async currentRef =>

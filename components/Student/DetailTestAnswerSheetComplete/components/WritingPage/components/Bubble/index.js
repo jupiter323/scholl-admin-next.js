@@ -26,8 +26,7 @@ const styles = {
   greenBorderOnly: {
     position: "relative",
     color: "#32955c",
-    borderColor: "#32955c",
-    border: "1px solid",
+    border: "1px solid #32955c",
     backgroundColor: "#fff",
     height: "19px",
     width: "19px",
@@ -36,8 +35,7 @@ const styles = {
   plain: {
     position: "relative",
     color: "#a6a8ab",
-    border: "1px solid",
-    borderColor: "#a6a8ab",
+    border: "1px solid #a6a8ab",
     height: "19px",
     width: "19px",
     borderRadius: "50%",
@@ -45,8 +43,7 @@ const styles = {
   blueFilled: {
     position: "relative",
     color: "#fff",
-    borderColor: "#40c4ff",
-    border: "1px solid",
+    border: "1px solid #40c4ff",
     backgroundColor: "#40c4ff",
     height: "19px",
     width: "19px",
@@ -84,6 +81,9 @@ class BubbleGroup extends React.Component {
     };
   }
 
+  /**
+   * This exists to revert the user's answser choice if request fails but it is slow to update. Needs better solution in the future.
+   */
   static getDerivedStateFromProps(props, state) {
     const letters = ["A", "B", "C", "D"];
     const { problem: { student_answer } } = props;

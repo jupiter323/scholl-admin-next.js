@@ -19,17 +19,22 @@ import {
   makeSelectActiveTestScores,
 } from '../index/selectors';
 
-import { fetchStudentTestSections, addStudentAnswerToTest, setEssayScore, resetErrorMessage } from '../index/actions';
+import {
+  fetchStudentTestSections,
+  addStudentAnswerToTest,
+  setEssayScore,
+  resetErrorMessage,
+} from '../index/actions';
 import { updateStudentTestSectionStatusApi } from '../index/api';
 import { makeSelectErrorMessages } from '../index/selectors';
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSlide: "",
+      activeSlide: '',
       isOpened: false,
       testSections: [],
-      studentTestId: "",
+      studentTestId: '',
       testReadingProblems: null,
       testWritingProblems: null,
       testMathCalcProblems: null,
@@ -41,41 +46,35 @@ class DetailTestAnswerSheetComplete extends React.Component {
         activeWritingSection: false,
         activeMathNoCalcSection: false,
         activeMathWithCalcSection: false,
-        activeSection: "",
+        activeSection: '',
       },
       updatedSectionStatus: {},
       showSectionMessage: false,
       answerTestProblemMessage: null,
       testFlagMessage: null,
       fetchSectionsMessage: null,
+      enableScoreReport: false,
     };
   }
 
   componentDidMount() {
-    const {
-      onFetchStudentTestSections,
-      studentToken,
-      testScoreDetails: { student_test_id },
-      activeStudent: { id },
-    } = this.props;
-    const postBody = {
-      id,
-      student_test_id,
-      studentToken,
-    };
-    onFetchStudentTestSections(postBody);
+    const { enableScoreReport } = this.state;
+    const { sections, testScoreDetails: { student_test_id } } = this.props;
+    if (sections.length !== 0 && !enableScoreReport) {
+      this.onSetProblems(sections, student_test_id);
+    }
     this.props.onRef(this);
   }
   componentWillUnmount() {
     const { onResetErrorMessage } = this.props;
     this.props.onRef(undefined);
-    onResetErrorMessage("answerTestProblemMessage");
-    onResetErrorMessage("testFlagMessage");
-    onResetErrorMessage("fetchSectionsMessage");
-    onResetErrorMessage("fetchProblemsMessage");
+    onResetErrorMessage('answerTestProblemMessage');
+    onResetErrorMessage('testFlagMessage');
+    onResetErrorMessage('fetchSectionsMessage');
+    onResetErrorMessage('fetchProblemsMessage');
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = nextProps => {
     const {
       sections,
       student_test_id,
@@ -93,7 +92,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       this.onErrorMessage(answerTestProblemMessage, "answerTestProblemMessage");
     }
     if (testFlagMessage !== this.state.testFlagMessage) {
-      this.onErrorMessage(testFlagMessage, "testFlagMessage");
+      this.onErrorMessage(testFlagMessage);
     }
     if (fetchProblemsMessage !== this.state.fetchProblemsMessage) {
       this.setState({ fetchProblemsMessage });
@@ -102,50 +101,44 @@ class DetailTestAnswerSheetComplete extends React.Component {
       this.setState({ fetchSectionsMessage });
     }
   };
-
-  onErrorMessage(message, name) {
-    if (!message) this.setState({ [name]: message });
-    this.setState({ [name]: message });
+  onErrorMessage(message) {
+    if (!message) this.setState({ [message]: message });
     toast.error(message, {
-      className: "update-error",
-      progressClassName: "progress-bar-error",
+      className: 'update-error',
+      progressClassName: 'progress-bar-error',
     });
+    this.setState({ [message]: message });
   }
-
-  onSetProblems = (sections, studentTestId) => {
-    const {
-      tests,
-      testScoreDetails: { test_id },
-      testScoreDetails,
-    } = this.props;
-    const testIds = tests.map((test) => test.id);
-    const currentTestIndex = testIds.findIndex((testId) => testId === test_id);
+  onSetProblems = (sections, studentTestId) => new Promise(async resolve => {
+    const { tests, testScoreDetails: { test_id }, testScoreDetails } = this.props;
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
-    sections.map((section) => {
-      const testSectionIds = currentTestSections.map((testSection) => testSection.id);
+    sections.map(section => {
+      const testSectionIds = currentTestSections.map(testSection => testSection.id);
       const currentTestSectionIndex = testSectionIds.findIndex(
-        (testSectionId) => testSectionId === section.test_section_id,
+        testSectionId => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
       // Confirm that the sections are for the current student_test_id
       if (!currentTestSection || testScoreDetails.student_test_id !== section.student_test_id) return null;
       switch (currentTestSection.name) {
-        case "Math (Calculator)":
+        case 'Math (Calculator)':
           this.setState({
             testMathCalcProblems: section,
           });
           break;
-        case "Writing":
+        case 'Writing':
           this.setState({
             testWritingProblems: section,
           });
           break;
-        case "Math (No Calculator)":
+        case 'Math (No Calculator)':
           this.setState({
             testMathNoCalcProblems: section,
           });
           break;
-        case "Reading":
+        case 'Reading':
           this.setState({
             testReadingProblems: section,
           });
@@ -162,64 +155,60 @@ class DetailTestAnswerSheetComplete extends React.Component {
       studentTestId,
       showSectionMessage: false,
     });
-  };
-
-  delayToGetSections(ms) {
-    let delayTime = 0;
-    if (this.props.sections.length === 0) {
-      delayTime = ms;
-    } else {
-      delayTime = 1000;
-    }
-    return new Promise((resolve) =>
-      setTimeout(() => {
-        resolve();
-      }, delayTime),
-    );
-  }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
 
   getComponentImages = () =>
-    this.delayToGetSections(5000).then(
-      () =>
-        new Promise((resolve) => {
-          const imgDataList = [];
-          const componentRefs = [
-            { id: "readingAnswerSheetImg", state: "reading" },
-            { id: "writingAnswerSheetImg", state: "writing" },
-            { id: "mathNoCalcAnswerSheetImg", state: "math (no calc)" },
-            { id: "mathCalcAnswerSheetImg", state: "math (calculator)" },
-          ];
-          const getImgListPromise = componentRefs.reduce(
-            (accumulatorPromise, item) =>
-              accumulatorPromise
-                .then(async () => {
-                  const result = await this.getData(item);
-                  return imgDataList.push(result);
-                })
-                .catch(console.error),
-            Promise.resolve(),
-          );
-          getImgListPromise.then(() => {
-            resolve(imgDataList);
-          });
-        }),
-    );
+    new Promise(resolve => {
+      this.setState({
+        enableScoreReport: true,
+      });
+      const imgDataList = [];
+      const componentRefs = [
+        { id: 'readingAnswerSheetImg', state: 'reading' },
+        { id: 'writingAnswerSheetImg', state: 'writing' },
+        { id: 'mathNoCalcAnswerSheetImg', state: 'math (no calc)' },
+        { id: 'mathCalcAnswerSheetImg', state: 'math (calculator)' },
+      ];
+      setTimeout(() => {
+        const { sections, testScoreDetails: { student_test_id } } = this.props;
+        this.onSetProblems(sections, student_test_id).then(() => {
+          setTimeout(async () => {
+            const getImgListPromise = componentRefs.reduce(
+              (accumulatorPromise, item) =>
+                accumulatorPromise
+                  .then(async () => {
+                    const result = await this.getData(item);
+                    return imgDataList.push(result);
+                  })
+                  .catch(console.error),
+              Promise.resolve(),
+            );
+            getImgListPromise.then(() => {
+              resolve(imgDataList);
+            });
+          }, 1000);
+        });
+      }, 2000);
+    });
 
-  getData = (item) =>
-    new Promise((resolve) => {
+  getData = item =>
+    new Promise(resolve => {
       this.setState({ activeSlide: item.state }, async () => {
         const currentImg = await this.onHandleTargetImage(item.id);
         resolve(currentImg);
       });
     });
 
-  onHandleTargetImage = async (currentRef) => {
+  onHandleTargetImage = async currentRef => {
     const { getTargetImage } = this.props;
     const currentImg = await getTargetImage(document.getElementById(currentRef));
     return currentImg;
   };
 
-  onSetActiveSlide = (activeSlide) => {
+  onSetActiveSlide = activeSlide => {
     const {
       testReadingProblems,
       testWritingProblems,
@@ -228,16 +217,16 @@ class DetailTestAnswerSheetComplete extends React.Component {
     } = this.state;
     let currentSection;
     switch (activeSlide) {
-      case "reading":
+      case 'reading':
         currentSection = testReadingProblems;
         break;
-      case "writing":
+      case 'writing':
         currentSection = testWritingProblems;
         break;
-      case "math (no calc)":
+      case 'math (no calc)':
         currentSection = testMathNoCalcProblems;
         break;
-      case "math (calculator)":
+      case 'math (calculator)':
         currentSection = testMathCalcProblems;
         break;
       default:
@@ -245,8 +234,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
         break;
     }
     this.setState({ activeSlide, activeTestSection: currentSection });
-    // Remove any error message for the previous slide
-    this.props.onUpdateTestSectionMsg("");
   };
 
   renderCurrentSlide = () => {
@@ -259,51 +246,71 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testMathCalcProblems,
         testMathNoCalcProblems,
       } = this.state;
-      if (activeSlide === "reading") {
+      if (activeSlide === 'reading') {
         this.updateSectionStatus(activeSlide, testReadingProblems);
-        return (
-          testReadingProblems && (
-            <ReadingPage
-              testSection={testReadingProblems}
-              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-              fetchProblemsMessage={this.state.fetchProblemsMessage}
-            />
-          )
-        );
-      } else if (activeSlide === "writing") {
+        return testReadingProblems
+          ? <ReadingPage
+            testSection={testReadingProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+          : <div className="slide" id="readingAnswerSheetImg">
+            <div
+              className="row"
+              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
+            >
+              <ol className="answers-list" style={{ marginBottom: '40px' }} />
+            </div>
+          </div>;
+      } else if (activeSlide === 'writing') {
         this.updateSectionStatus(activeSlide, testWritingProblems);
-        return (
-          testWritingProblems && (
-            <WritingPage
-              testSection={testWritingProblems}
-              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-              fetchProblemsMessage={this.state.fetchProblemsMessage}
-            />
-          )
-        );
-      } else if (activeSlide === "math (no calc)") {
+        return testWritingProblems
+          ? <WritingPage
+            testSection={testWritingProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+          : <div className="slide" id="writingAnswerSheetImg">
+            <div
+              className="row"
+              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
+            >
+              <ol className="answers-list" style={{ marginBottom: '40px' }} />
+            </div>
+          </div>;
+      } else if (activeSlide === 'math (no calc)') {
         this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
-        return (
-          testMathNoCalcProblems && (
-            <MathNoCalcPage
-              testSection={testMathNoCalcProblems}
-              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-              fetchProblemsMessage={this.state.fetchProblemsMessage}
-            />
-          )
-        );
-      } else if (activeSlide === "math (calculator)") {
+        return testMathNoCalcProblems
+          ? <MathNoCalcPage
+            testSection={testMathNoCalcProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+          : <div className="slide" id="mathNoCalcAnswerSheetImg">
+            <div
+              className="row"
+              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
+            >
+              <ol className="answers-list" style={{ marginBottom: '40px' }} />
+            </div>
+          </div>;
+      } else if (activeSlide === 'math (calculator)') {
         this.updateSectionStatus(activeSlide, testMathCalcProblems);
-        return (
-          testMathCalcProblems && (
-            <MathCalculatorPage
-              testSection={testMathCalcProblems}
-              onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-              fetchProblemsMessage={this.state.fetchProblemsMessage}
-            />
-          )
-        );
-      } else if (activeSlide === "essay") {
+        return testMathCalcProblems
+          ? <MathCalculatorPage
+            testSection={testMathCalcProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+          : <div className="slide" id="mathCalcAnswerSheetImg">
+            <div
+              className="row"
+              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
+            >
+              <ol className="answers-list" style={{ marginBottom: '40px' }} />
+            </div>
+          </div>;
+      } else if (activeSlide === 'essay') {
         return (
           <EssayPage
             testId={activeStudentTestId}
@@ -314,9 +321,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
         );
       }
       if (!fetchSectionsMessage) {
-        return <h1 style={{ textAlign: "center" }}>Loading Problems...</h1>;
+        return <h1 style={{ textAlign: 'center' }}>Loading Problems...</h1>;
       }
-      return <h1 style={{ textAlign: "center", color: "red" }}>{fetchSectionsMessage}</h1>;
+      return (
+        <h1 style={{ textAlign: 'center', color: 'red' }}>
+          {fetchSectionsMessage}
+        </h1>
+      );
     }
     return null;
   };
@@ -333,18 +344,18 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   updateSectionStatus = async (activeSlide, currentSection) => {
     if (!currentSection) return;
-    if (currentSection.test_section_status === "CREATED") {
+    if (currentSection.test_section_status === 'CREATED') {
       if (!this.state.updatedSectionStatus[`${activeSlide}Section`]) {
         const postBody = {
           student_test_id: currentSection.student_test_id,
           student_test_section_id: currentSection.id,
-          student_test_section_status: "STARTED",
+          student_test_section_status: 'STARTED',
         };
         await updateStudentTestSectionStatusApi(postBody);
         this.setState({
           updatedSectionStatus: {
             ...this.state.updatedSectionStatus,
-            [`${activeSlide}Section`]: "STARTED",
+            [`${activeSlide}Section`]: 'STARTED',
           },
         });
       }
@@ -392,22 +403,22 @@ class DetailTestAnswerSheetComplete extends React.Component {
     const { completedSections, scoresLoading, testScoreDetails: { status } } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
-      case "reading":
+      case 'reading':
         if (completedSections.readingSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-      case "writing":
+      case 'writing':
         if (completedSections.writingSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-      case "math (no calc)":
+      case 'math (no calc)':
         if (completedSections.mathNoCalcSectionCompleted) {
           showSectionMessage = true;
         }
         break;
-      case "math (calculator)":
+      case 'math (calculator)':
         if (completedSections.mathCalcSectionCompleted) {
           showSectionMessage = true;
         }
@@ -448,12 +459,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
                     });
                   }}
                 >
-                 Submit Test Scores
+                  Submit Test Scores
                 </a>
               </div>
-            </div>
-          )}
-          <p className="right-align red-text">{this.props.updateTestSectionMessage}</p>
+            </div>)}
         </div>
       </div>
     );
@@ -479,7 +488,7 @@ function mapDispatchToProps(dispatch) {
     onSetEssayScore: score => dispatch(setEssayScore(score)),
     dispatchAddStudentAnswerToTest: (payload, sectionId) =>
       dispatch(addStudentAnswerToTest(payload, sectionId)),
-    onResetErrorMessage: (errorName) => dispatch(resetErrorMessage(errorName)),
+    onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }
 

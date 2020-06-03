@@ -10,31 +10,57 @@ import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
 import SubScoresCard from './components/SubscoresCard';
 import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../index/selectors';
+import { setActiveTestScores } from '../index/actions';
+import { fetchStudentTestScoreApi } from '../index/api';
 
 class DetailTestScorePage extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.onRef(this);
-  }
+  };
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
 
-  getComponentImages = async () => {
-    const { getTargetImage } = this.props;
-    const [scoresImages] = await Promise.all([
-      getTargetImage(document.getElementById('scoresRef')),
-    ]);
-    return scoresImages;
+  delay = () => {
+    const { scores, onSetScores } = this.props;
+    return new Promise(async resolve => {
+      if (!scores) {
+        const formattedScores = await this.getScoresByStudentTest(this.props.test);
+        if (!formattedScores) return;
+        onSetScores(formattedScores);
+      }
+      resolve();
+    });
   };
+
+  getScoresByStudentTest = async test => {
+    const { student_test_id } = test;
+    const { activeStudent: { id } } = this.props;
+    const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
+    return formattedTestScores;
+  };
+
+  getComponentImages = () =>
+    new Promise(resolve => {
+      this.delay().then(() => {
+        setTimeout(async () => {
+          const { getTargetImage } = this.props;
+          const [scoresImages] = await Promise.all([
+            getTargetImage(document.getElementById('scoresRef')),
+          ]);
+          resolve(scoresImages);
+        }, 500);
+      });
+    });
 
   render() {
     const { scores, test } = this.props;
-    if (!scores) return (<div>Loading...</div>);
-    if (scores.student_test_id !== test.student_test_id) return (<div>Loading...</div>);
+    if (!scores) return <div>Loading...</div>;
+    // if (scores.student_test_id !== test.student_test_id) return <div>Loading...</div>;
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
     return (
       <div className="container" id="scoresRef">
@@ -67,6 +93,12 @@ const mapStateToProps = createStructuredSelector({
   activeStudent: makeSelectActiveStudent(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(DetailTestScorePage);
