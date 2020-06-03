@@ -90,7 +90,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (sections.length !== 0) {
       this.onSetProblems(sections, student_test_id);
     }
-    if (answerTestProblemMessage) {
+    if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
       this.onErrorMessage(answerTestProblemMessage, "answerTestProblemMessage");
     }
     if (testFlagMessage !== this.state.testFlagMessage) {
@@ -420,7 +420,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <AnswerSheetNavBar
             activeSlide={activeSlide}
             onSetActiveSlide={this.onSetActiveSlide}
-            updateSectionStatus={this.updateSectionStatus}
             getExistingSections={this.getExistingSections()}
           />
         </div>
