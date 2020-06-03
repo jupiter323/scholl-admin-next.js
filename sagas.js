@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce, delay} from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -59,6 +59,7 @@ import {
   UPDATE_FLAG_STATUS_SUCCESS,
   SET_STUDENT_SECTIONS,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  GET_TEST_SCORES
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1088,7 +1089,17 @@ function* handleUpdateTestStatus(action) {
         payload: action.payload,
         testList: action.currentStatus,
       });
-      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
+
+      yield put({
+        type:GET_TEST_SCORES,
+        payload: action.payload,
+        studentId: action.studentId,
+      })
+
+      yield delay(1500);
+
+      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
+      
       yield put({
         type: SET_ACTIVE_TEST_SCORES,
         scores: { ...response, student_test_id: action.payload.student_test_id },

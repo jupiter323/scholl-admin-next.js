@@ -81,7 +81,7 @@ class AnswerRow extends React.Component {
 
   getAnswerType = problem => {
     const { correct_answer } = problem;
-    if (!parseFloat(correct_answer)) {
+    if (!parseFloat(correct_answer) && correct_answer !== '0.0') {
       return null;
     }
     return correct_answer;

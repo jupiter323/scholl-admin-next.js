@@ -388,8 +388,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections, testScoreDetails: { status } } = this.props;
+    const { completedSections, scoresLoading, testScoreDetails: { status } } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
+    console.log('log: scoresLoading ', scoresLoading);
     switch (activeSlide) {
       case "reading":
         if (completedSections.readingSectionCompleted) {
@@ -425,23 +426,29 @@ class DetailTestAnswerSheetComplete extends React.Component {
         </div>
         <div className="card-content">
           {showSectionMessage && status !== "COMPLETED" && this.completedSectionMessage()}
-          <div className="main-slick">{this.renderCurrentSlide()}</div>
+          <div className="main-slick">
+            { scoresLoading ? (
+            <div className="overlay-spinning">
+              <div className="spinning"></div>
+            </div>
+            ) : this.renderCurrentSlide()}
+          </div>
           {activeSlide && activeSlide !== "essay" && !showSectionMessage && (
             <div className="row">
               <div className="btn-holder right-align">
                 <a
                   href="#"
                   className="btn btn-xlarge waves-effect waves-light bg-blue"
-                  onClick={() =>
+                  onClick={() =>{
                     this.props.handleTestScore(activeTestSection, {
                       testReadingProblems,
                       testWritingProblems,
                       testMathNoCalcProblems,
                       testMathCalcProblems,
                     })
-                  }
+                  }}
                 >
-                  Score Test Section
+                 Submit Test Scores
                 </a>
               </div>
             </div>
