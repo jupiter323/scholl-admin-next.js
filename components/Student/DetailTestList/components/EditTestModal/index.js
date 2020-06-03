@@ -291,11 +291,11 @@ class EditTestModal extends React.Component {
           pageBreak: 'after',
         });
       }
-      // imgDataLists.push({
-      //   image: answerSheetImages[3],
-      //   width: 550,
-      //   margin: [0, 20, 0, 0],
-      // });
+      imgDataLists.push({
+        image: answerSheetImages[3],
+        width: 550,
+        margin: [0, 20, 0, 0],
+      });
       pdfMakeReport(
         imgDataLists,
         userInfo,
