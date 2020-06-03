@@ -170,24 +170,27 @@ class DetailTestAnswerSheetComplete extends React.Component {
         {id: 'mathNoCalcAnswerSheetImg', state: 'math (no calc)'},
         {id: 'mathCalcAnswerSheetImg', state: 'math (calculator)'},
       ];
-      const {sections, testScoreDetails: {student_test_id}} = this.props;
-      this.onSetProblems(sections, student_test_id).then(() => {
-        setTimeout(async () => {
-          const getImgListPromise = componentRefs.reduce(
-            (accumulatorPromise, item) =>
-              accumulatorPromise
-                .then(async () => {
-                  const result = await this.getData(item);
-                  return imgDataList.push(result);
-                })
-                .catch(console.error),
-            Promise.resolve()
-          );
-          getImgListPromise.then(() => {
-            resolve(imgDataList);
-          });
-        }, 1000);
-      });
+      setTimeout(() => {
+        const {sections, testScoreDetails: {student_test_id}} = this.props;
+        console.log('sections:',sections)
+        this.onSetProblems(sections, student_test_id).then(() => {
+          setTimeout(async () => {
+            const getImgListPromise = componentRefs.reduce(
+              (accumulatorPromise, item) =>
+                accumulatorPromise
+                  .then(async () => {
+                    const result = await this.getData(item);
+                    return imgDataList.push(result);
+                  })
+                  .catch(console.error),
+              Promise.resolve()
+            );
+            getImgListPromise.then(() => {
+              resolve(imgDataList);
+            });
+          }, 1000);
+        });
+      }, 2000);
     });
 
   getData = item =>
@@ -357,7 +360,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections, scoresLoading } = this.props;
+    const {completedSections, scoresLoading} = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     console.log('log: scoresLoading ', scoresLoading);
     switch (activeSlide) {
@@ -408,11 +411,11 @@ class DetailTestAnswerSheetComplete extends React.Component {
               This test section is complete. You can still edit answer choices if needed.
             </p>}
           <div className="main-slick">
-            { scoresLoading ? (
-            <div className="overlay-spinning">
-              <div className="spinning"></div>
-            </div>
-            ) : this.renderCurrentSlide()}
+            {scoresLoading
+              ? <div className="overlay-spinning">
+                  <div className="spinning" />
+                </div>
+              : this.renderCurrentSlide()}
           </div>
           {activeSlide &&
             activeSlide !== 'essay' &&
@@ -422,7 +425,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
                 <a
                   href="#"
                   className="btn btn-xlarge waves-effect waves-light bg-blue"
-                  onClick={() =>{
+                  onClick={() => {
                     this.props.handleTestScore(activeTestSection, {
                       testReadingProblems,
                       testWritingProblems,
@@ -431,7 +434,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
                     });
                   }}
                 >
-                 Submit Test Scores
+                  Submit Test Scores
                 </a>
               </div>
             </div>}
