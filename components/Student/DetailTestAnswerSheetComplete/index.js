@@ -189,7 +189,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             });
           }, 1000);
         });
-      }, 2000);
+      }, 5000);
     });
 
   getData = item =>

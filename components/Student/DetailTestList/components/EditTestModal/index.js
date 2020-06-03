@@ -88,7 +88,6 @@ class EditTestModal extends React.Component {
       studentToken,
     };
     onFetchStudentTestSections(postBody);
-    
     this.props.onRef(this);
   };
   componentWillUnmount() {
