@@ -19,7 +19,7 @@ class WritingPage extends React.Component {
       <div className="slide" id="writingAnswerSheetImg">
         <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}>
           <ol className="answers-list" style={{ marginBottom: '40px' }}>
-            {this.mapAnswers()}
+            {this.props.testSection && this.mapAnswers()}
           </ol>
         </div>
       </div>
