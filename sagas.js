@@ -262,7 +262,7 @@ export function* fetchStudentTests(user) {
   try {
     const { data: formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
     if (!formattedStudentTests) {
-      return yield put(sendErrorMessage(fetchingStudentTestsMessage, `Something went wrong when fetching for student tests`));
+      return yield put(sendErrorMessage(fetchingStudentTestsMessage, `Something went wrong when fetching for student tests: ${formattedStudentTests.message}`));
     }
     yield put(resetErrorMessage(fetchingStudentTestsMessage));
     yield put(setStudentTests(formattedStudentTests));
