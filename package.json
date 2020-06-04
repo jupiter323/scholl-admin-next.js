@@ -67,6 +67,7 @@
     "react-select": "^2.4.1",
     "react-slick": "^0.24.0",
     "react-smooth-dnd": "^0.11.0",
+    "react-spinners": "^0.8.3",
     "react-sticky": "^6.0.3",
     "react-time-picker": "^3.9.0",
     "react-to-pdf": "0.0.10",
@@ -111,7 +112,8 @@
               "displayName": true
             }
           ],
-          "jsx-control-statements"
+          "jsx-control-statements",
+          "emotion"
         ]
       },
       "production": {

@@ -76,7 +76,7 @@ export default (
               style: { fontSize: 10, color: "#818284" }
             },
             {
-              text: "Arnold Studently | Page " + (currentPage - 1).toString(),
+              text: userInfo.name +" | Page " + (currentPage - 1).toString(),
               alignment: "right",
               margin: [0, 0, 20, 0],
               width: "30%",
