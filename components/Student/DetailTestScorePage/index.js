@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {createStructuredSelector} from 'reselect';
-import {compose} from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import TotalScoreCard from './components/TotalScoreCard';
 import SectionScoreCard from './components/SectionScoreCard';
 import TestScoreCard from './components/TestScoreCard';
 import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
 import SubScoresCard from './components/SubscoresCard';
-import {makeSelectActiveTestScores, makeSelectActiveStudent} from '../index/selectors';
-import {setActiveTestScores} from '../index/actions';
-import {fetchStudentTestScoreApi} from '../index/api';
+import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../index/selectors';
+import { setActiveTestScores } from '../index/actions';
+import { fetchStudentTestScoreApi } from '../index/api';
 
 class DetailTestScorePage extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class DetailTestScorePage extends React.Component {
   }
 
   delay = () => {
-    const {scores, onSetScores} = this.props;
+    const { scores, onSetScores } = this.props;
     return new Promise(async resolve => {
       if (!scores) {
         const formattedScores = await this.getScoresByStudentTest(this.props.test);
@@ -38,8 +38,8 @@ class DetailTestScorePage extends React.Component {
   };
 
   getScoresByStudentTest = async test => {
-    const {student_test_id} = test;
-    const {activeStudent: {id}} = this.props;
+    const { student_test_id } = test;
+    const { activeStudent: { id } } = this.props;
     const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
     return formattedTestScores;
   };
@@ -48,7 +48,7 @@ class DetailTestScorePage extends React.Component {
     new Promise(resolve => {
       this.delay().then(() => {
         setTimeout(async () => {
-          const {getTargetImage} = this.props;
+          const { getTargetImage } = this.props;
           const [scoresImages] = await Promise.all([
             getTargetImage(document.getElementById('scoresRef')),
           ]);
@@ -58,10 +58,10 @@ class DetailTestScorePage extends React.Component {
     });
 
   render() {
-    const {scores, test} = this.props;
+    const { scores, test } = this.props;
     if (!scores) return <div>Loading...</div>;
-    // if (scores.student_test_id !== test.student_test_id) return <div>Loading...</div>;
-    const {subjects, cross_test_score, sub_section_score, essay} = scores;
+    if (scores.student_test_id !== test.student_test_id) return <div>Loading...</div>;
+    const { subjects, cross_test_score, sub_section_score, essay } = scores;
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
