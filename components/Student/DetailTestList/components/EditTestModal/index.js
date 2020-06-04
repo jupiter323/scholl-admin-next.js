@@ -33,6 +33,9 @@ import {
   fetchTestsByStudentIdApi,
 } from '../../../index/api';
 
+import {css} from '@emotion/core';
+import BarLoader from 'react-spinners/BarLoader';
+
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
@@ -557,6 +560,14 @@ class EditTestModal extends React.Component {
                   </li>}
               </ul>
             </div>
+          </div>
+          <div className="sweet-loading">
+            <BarLoader
+              height={3}
+              width={'100%'}
+              color={'#36D7B7'}
+              loading={!this.state.enablePublish}
+            />
           </div>
           <div className="content-section">
             <div className="content-section-holder">
