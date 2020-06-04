@@ -423,7 +423,6 @@ export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, 
     },
   })
     .then(res => res.json())
-    .then(({ data }) => data)
     .catch(err => err);
 
 export const addStudentAnswerToTestApi = answer =>
@@ -483,7 +482,7 @@ export const updateStudentTestQuestionFlagStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 
@@ -749,7 +748,7 @@ export const updateStudentTestSectionStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 export const rescoreStudentLessonApi = (body) =>

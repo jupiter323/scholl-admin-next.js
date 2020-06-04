@@ -24,7 +24,8 @@ import {
   fetchStudentTestSections,
   setStudentAssignedTests,
   setStudentCompletedTests,
-  updateTestStaus,
+  updateTestStatus,
+  setActiveTestScores,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
@@ -69,10 +70,23 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
+      scoresLoading:false
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    const {
+      onFetchStudentTestSections,
+      studentToken,
+      test: {student_test_id},
+      activeStudent: {id},
+    } = this.props;
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
     this.props.onRef(this);
     const {
       activeStudent: {studentInformation: {firstName, lastName}},
@@ -88,7 +102,7 @@ class EditTestModal extends React.Component {
     this.setState({
       userInfo: updatedUserInfo,
     });
-  }
+  };
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
@@ -170,7 +184,7 @@ class EditTestModal extends React.Component {
   };
 
   getData = item =>
-    new Promise(async resolve => {
+    new Promise(resolve => {
       const currentChild = item.child;
       this.setState(
         {
@@ -194,6 +208,8 @@ class EditTestModal extends React.Component {
               this.setState({
                 scoresImages: data,
               });
+              break;
+            default:
               break;
           }
           resolve();
@@ -275,11 +291,11 @@ class EditTestModal extends React.Component {
           pageBreak: 'after',
         });
       }
-      imgDataLists.push({
-        image: answerSheetImages[3],
-        width: 550,
-        margin: [0, 20, 0, 0],
-      });
+      // imgDataLists.push({
+      //   image: answerSheetImages[3],
+      //   width: 550,
+      //   margin: [0, 20, 0, 0],
+      // });
       pdfMakeReport(
         imgDataLists,
         userInfo,
@@ -293,8 +309,8 @@ class EditTestModal extends React.Component {
   };
 
   renderCurrentPage = () => {
-    const {activePage} = this.state;
-    const {test, user, onDeleteTest, onSaveTestChanges} = this.props;
+    const { activePage, scoresLoading } = this.state;
+    const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
     if (activePage === 'testVersion') {
       return (
         <TestVersionPage
@@ -338,6 +354,8 @@ class EditTestModal extends React.Component {
           }}
           setIsCompleted={setIsCompleted}
           test={this.props.test}
+          scoresLoading={scoresLoading}
+          openTestScores={onOpentTestScore}
         />
       );
     }
@@ -368,8 +386,20 @@ class EditTestModal extends React.Component {
     if (!testMathCalcProblems) this.setState({mathCalcSectionCompleted: true});
     if (!testMathNoCalcProblems) this.setState({mathNoCalcSectionCompleted: true});
 
-    // Update current section as completed
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
     const {tests, test: {test_id}, test} = this.props;
+    const postBody = {
+      student_test_id: test.student_test_id,
+      student_test_section_id: activeSection.id,
+      student_test_section_status: 'COMPLETED',
+    };
+    const res = await updateStudentTestSectionStatusApi(postBody);
+    if (res && res.message) {
+      return null;
+    }
+
+    // Update current section as completed
     const currentTestSectionId = activeSection.test_section_id;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test_id);
@@ -405,14 +435,6 @@ class EditTestModal extends React.Component {
           readingSectionCompleted: true,
         });
     }
-    // @TODO bring back started check for a test that was just created
-    // if (activeTest.test_section_status === 'STARTED') {
-    const postBody = {
-      student_test_id: test.student_test_id,
-      student_test_section_id: activeSection.id,
-      student_test_section_status: 'COMPLETED',
-    };
-    await updateStudentTestSectionStatusApi(postBody);
     const {
       readingSectionCompleted,
       writingSectionCompleted,
@@ -432,16 +454,21 @@ class EditTestModal extends React.Component {
       const {onOpentTestScore, onUpdateTestStatus} = this.props;
       const currentTestStatus =
         test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
+      this.setState({scoresLoading:true})
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
-      onOpentTestScore({...test, status: 'COMPLETED'});
+      //added time for saga to fetch all score results
+      setTimeout(() => {
+        onOpentTestScore({ ...test, status: 'COMPLETED' });
+        this.setState({scoresLoading: false})
+      }, 2000)
     }
   };
 
   render() {
-    const {test, user, onCloseEditTestModal, activeTestScores} = this.props;
-    const {activePage, enablePublish} = this.state;
-    const {title, test_name} = test;
-    const {studentInformation: {firstName, lastName}} = user;
+    const { test, user, onCloseEditTestModal, activeTestScores } = this.props;
+    const { activePage, enablePublish, scoresLoading } = this.state;
+    const { title, test_name } = test;
+    const { studentInformation: { firstName, lastName } } = user;
     const completedTest = test.status === 'COMPLETED';
     return (
       <div className="wrapper">
@@ -513,8 +540,6 @@ class EditTestModal extends React.Component {
                   </a>
                 </li>
                 {completedTest &&
-                  activeTestScores.categories &&
-                  activeTestScores.subjects &&
                   <li className="col s3">
                     <a
                       className={activePage === 'StrengthsAndWeaknesses' ? 'active' : ''}
@@ -564,11 +589,12 @@ const mapStateToProps = createStructuredSelector({
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId)),
+    onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
     onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
     onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
     onUpdateTestStatus: (payload, currentStatus, studentId) =>
-      dispatch(updateTestStaus(payload, currentStatus, studentId)),
+      dispatch(updateTestStatus(payload, currentStatus, studentId)),
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

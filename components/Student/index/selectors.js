@@ -61,7 +61,9 @@ const makeSelectTests = () => createSelector(makeSelectStudentPageState(), subst
 
 const makeSelectActiveStudent = () => createSelector(makeSelectStudentPageState(), substate => substate.activeStudent);
 
-// const makeSelectTestSectionProblems = ()
+const makeSelectFetchStudentTestsStatus = () => createSelector(makeSelectStudentPageState(), substate => substate.studentTestsFetchedStatus);
+
+const makeSelectErrorMessages = () => createSelector(makeSelectStudentPageState(), substate => substate.errorMessages);
 
 export default selectStudentsDomain;
 export {
@@ -89,4 +91,6 @@ export {
   makeSelectOpenActivePage,
   makeSelectTests,
   makeSelectActiveStudent,
+  makeSelectFetchStudentTestsStatus,
+  makeSelectErrorMessages,
 };
