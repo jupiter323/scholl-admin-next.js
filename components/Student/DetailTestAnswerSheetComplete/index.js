@@ -192,7 +192,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             });
           }, 1000);
         });
-      }, 2000);
+      }, 5000);
     });
 
   getData = item =>
@@ -249,68 +249,32 @@ class DetailTestAnswerSheetComplete extends React.Component {
       } = this.state;
       if (activeSlide === 'reading') {
         this.updateSectionStatus(activeSlide, testReadingProblems);
-        return testReadingProblems
-          ? <ReadingPage
+        return <ReadingPage
               testSection={testReadingProblems}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               fetchProblemsMessage={this.state.fetchProblemsMessage}
             />
-          : <div className="slide" id="readingAnswerSheetImg">
-              <div
-                className="row"
-                style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}
-              >
-                <ol className="answers-list" style={{marginBottom: '40px'}} />
-              </div>
-            </div>;
       } else if (activeSlide === 'writing') {
         this.updateSectionStatus(activeSlide, testWritingProblems);
-        return testWritingProblems
-          ? <WritingPage
+        return <WritingPage
               testSection={testWritingProblems}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               fetchProblemsMessage={this.state.fetchProblemsMessage}
             />
-          : <div className="slide" id="writingAnswerSheetImg">
-              <div
-                className="row"
-                style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}
-              >
-                <ol className="answers-list" style={{marginBottom: '40px'}} />
-              </div>
-            </div>;
       } else if (activeSlide === 'math (no calc)') {
         this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
-        return testMathNoCalcProblems
-          ? <MathNoCalcPage
+        return <MathNoCalcPage
               testSection={testMathNoCalcProblems}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               fetchProblemsMessage={this.state.fetchProblemsMessage}
             />
-          : <div className="slide" id="mathNoCalcAnswerSheetImg">
-              <div
-                className="row"
-                style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}
-              >
-                <ol className="answers-list" style={{marginBottom: '40px'}} />
-              </div>
-            </div>;
       } else if (activeSlide === 'math (calculator)') {
         this.updateSectionStatus(activeSlide, testMathCalcProblems);
-        return testMathCalcProblems
-          ? <MathCalculatorPage
+        return <MathCalculatorPage
               testSection={testMathCalcProblems}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               fetchProblemsMessage={this.state.fetchProblemsMessage}
             />
-          : <div className="slide" id="mathCalcAnswerSheetImg">
-              <div
-                className="row"
-                style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}
-              >
-                <ol className="answers-list" style={{marginBottom: '40px'}} />
-              </div>
-            </div>;
       } else if (activeSlide === 'essay') {
         return (
           <EssayPage
