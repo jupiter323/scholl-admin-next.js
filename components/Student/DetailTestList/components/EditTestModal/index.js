@@ -26,6 +26,7 @@ import {
   setStudentCompletedTests,
   updateTestStatus,
   setActiveTestScores,
+  getTestScores,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
@@ -327,6 +328,7 @@ class EditTestModal extends React.Component {
             test={test}
             getTargetImage={this.getTargetImage}
             onRef={ref => (this.ScoresChild = ref)}
+            onGetTestScores={this.props.onGetTestScores}
           />
         </div>
       );
@@ -589,6 +591,7 @@ function mapDispatchToProps(dispatch) {
     onUpdateTestStatus: (payload, currentStatus, studentId) =>
       dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

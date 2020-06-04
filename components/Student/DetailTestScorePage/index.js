@@ -26,12 +26,11 @@ class DetailTestScorePage extends React.Component {
   }
 
   delay = () => {
-    const { scores, onSetScores } = this.props;
+    const { scores, test: { student_test_id }, onGetTestScores, activeStudent: { id } } = this.props;
     return new Promise(async resolve => {
       if (!scores) {
-        const formattedScores = await this.getScoresByStudentTest(this.props.test);
-        if (!formattedScores) return;
-        onSetScores(formattedScores);
+        const postBody = { studentId: id, student_test_id };
+        onGetTestScores(postBody);
       }
       resolve();
     });
@@ -41,7 +40,7 @@ class DetailTestScorePage extends React.Component {
     const { student_test_id } = test;
     const { activeStudent: { id } } = this.props;
     const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
-    return formattedTestScores;
+    return formattedTestScores.data;
   };
 
   getComponentImages = () =>
