@@ -1,0 +1,14 @@
+{
+  "apps" : [{
+    "name": "Admin",
+    "script": "/usr/share/nginx/Admin/current",
+    "cwd": "/usr/share/nginx/Admin/current",
+    "exec_interpreter": "/usr/bin/node",
+    "instances": "max",
+    "exec_mode": "cluster",
+    "watch": true,
+    "env": {
+      "NODE_ENV": "develop"
+    }
+  }]
+}

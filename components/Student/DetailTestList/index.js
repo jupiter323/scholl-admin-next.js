@@ -144,7 +144,6 @@ class DetailTestList extends React.Component {
   };
 
   onDownloadReport = activeTest => {
-    console.log('downloading...');
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
     this.setState(
