@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import sampleEssayScores from '../../utils/sampleEssayScores';
-import { updateStudentEssayScoreApi, fetchStudentTestScoreApi } from '../../../index/api';
+import { updateStudentEssayScoreApi } from '../../../index/api';
 
 
 class EssayPage extends React.Component {
@@ -17,31 +17,29 @@ class EssayPage extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { testScoreDetails: { status, student_id, student_test_id } } = this.props;
+    const { testScoreDetails: { status, student_id, student_test_id }, onGetTestScores } = this.props;
     if (status !== "COMPLETED") {
-      const response = await fetchStudentTestScoreApi(student_id, student_test_id);
-      if (!response || (response && response.message)) return null;
-      const { reading, writing, analysis } = response.essay;
-      this.setState({
-        readingScore: reading,
-        analysisScore: analysis,
-        writingScore: writing,
-      });
+      const postBody = {
+        studentId: student_id,
+        student_test_id,
+      };
+      onGetTestScores(postBody);
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     const { readingScore, writingScore, analysisScore } = state;
-    if (props.testScores && props.testScores.essay && props.testScoreDetails.status === "COMPLETED") {
-      const { reading, writing, analysis } = props.testScores.essay;
-      if (!readingScore && !writingScore && !analysisScore) {
+    const { testScores } = props;
+    if (testScores && testScores.essay) {
+      const { reading, writing, analysis } = testScores.essay;
+      if (reading !== readingScore || writingScore !== writing || analysis !== analysisScore) {
+        console.log('log: props', props);
         return {
           readingScore: reading,
           analysisScore: analysis,
           writingScore: writing,
         };
       }
-      return null;
     }
   }
 

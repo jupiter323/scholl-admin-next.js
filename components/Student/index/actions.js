@@ -62,6 +62,7 @@ import {
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   SEND_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
+  GET_TEST_SCORES,
 } from "./constants";
 
 export function fetchStudents() {
@@ -441,4 +442,9 @@ export const sendErrorMessage = (propertyName, message) => ({
 export const resetErrorMessage = (propertyName) => ({
   type: RESET_ERROR_MESSAGE,
   propertyName,
+});
+
+export const getTestScores = (payload) => ({
+  type: GET_TEST_SCORES,
+  payload,
 });

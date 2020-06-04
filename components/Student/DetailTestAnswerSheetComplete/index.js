@@ -24,6 +24,7 @@ import {
   addStudentAnswerToTest,
   setEssayScore,
   resetErrorMessage,
+  getTestScores,
 } from '../index/actions';
 import { updateStudentTestSectionStatusApi } from '../index/api';
 import { makeSelectErrorMessages } from '../index/selectors';
@@ -315,6 +316,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
             testId={activeStudentTestId}
             testScores={activeTestScores}
             setEssayScore={onSetEssayScore}
+            onGetTestScores={this.props.onGetTestScores}
+            testScoreDetails={this.props.testScoreDetails}
           />
         );
       }
@@ -483,6 +486,7 @@ function mapDispatchToProps(dispatch) {
     dispatchAddStudentAnswerToTest: (payload, sectionId) =>
       dispatch(addStudentAnswerToTest(payload, sectionId)),
     onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
   };
 }
 
