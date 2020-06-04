@@ -384,7 +384,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections, scoresLoading } = this.props;
+    const { completedSections } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
       case 'reading':
@@ -434,11 +434,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               This test section is complete. You can still edit answer choices if needed.
             </p>}
           <div className="main-slick">
-            {scoresLoading
-              ? <div className="overlay-spinning">
-                <div className="spinning" />
-              </div>
-              : this.renderCurrentSlide()}
+            {this.renderCurrentSlide()}
           </div>
           {activeSlide &&
             activeSlide !== 'essay' &&

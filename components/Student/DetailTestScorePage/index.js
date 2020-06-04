@@ -57,10 +57,21 @@ class DetailTestScorePage extends React.Component {
       });
     });
 
+  loadingSpinner = () => (
+    <div className="overlay-spinning">
+        Fetching Scores...
+      <div className="spinning" />
+    </div>
+  )
+
   render() {
     const { scores, test } = this.props;
-    if (!scores) return <div>Loading...</div>;
-    if (scores.student_test_id !== test.student_test_id) return <div>Loading...</div>;
+    if (!scores) {
+      return this.loadingSpinner();
+    }
+    if (scores.student_test_id !== test.student_test_id) {
+      return this.loadingSpinner();
+    }
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
     return (
       <div className="container" id="scoresRef">
