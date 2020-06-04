@@ -1095,11 +1095,11 @@ function* handleUpdateTestStatus(action) {
 
       yield delay(1500);
 
-      // const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id)
-      const response = yield call(fetchStudentTestScoreApi, action.studentId);
+      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
+      // const response = yield call(fetchStudentTestScoreApi, action.studentId);
       if (response && response.message) {
         console.warn(`Error occurred in the handleFetchActiveTestScores saga: ${response.message}`);
-        return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores for this test. Close the test and try again later."));
+        return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores for this test. Please try opening this test from the completed test section to view scores."));
       }
       yield put({
         type: SET_ACTIVE_TEST_SCORES,

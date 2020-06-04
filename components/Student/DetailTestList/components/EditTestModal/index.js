@@ -7,6 +7,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { toast } from 'react-toastify';
 import TestVersionPage from '../TestVersionPage';
 import DetailTestScorePage from '../../../DetailTestScorePage';
 import DetailTestAnswerSheetComplete from '../../../DetailTestAnswerSheetComplete';
@@ -19,6 +20,7 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectActiveStudent,
   makeSelectActiveTestScores,
+  makeSelectErrorMessages,
 } from '../../../index/selectors';
 import {
   fetchStudentTestSections,
@@ -27,6 +29,7 @@ import {
   updateTestStatus,
   setActiveTestScores,
   getTestScores,
+  resetErrorMessage,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
@@ -71,6 +74,7 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
+      fetchScoresMsg: "",
     };
   }
 
@@ -105,10 +109,11 @@ class EditTestModal extends React.Component {
   };
   componentWillUnmount() {
     this.props.onRef(undefined);
+    this.props.onResetErrorMessage("fetchScoresMsg");
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activePage, sections } = nextProps;
+    const { activePage, sections, errorMessages } = nextProps;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
       this.setState({ activePage });
     }
@@ -139,6 +144,11 @@ class EditTestModal extends React.Component {
           }
         }
       });
+    }
+    if (errorMessages.fetchScoresMsg !== this.state.fetchScoresMsg && errorMessages.fetchScoresMsg !== "") {
+      this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
+      toast.error(errorMessages.fetchScoresMsg);
+      this.props.onCloseEditTestModal();
     }
   }
 
@@ -582,6 +592,7 @@ const mapStateToProps = createStructuredSelector({
   assignedTests: makeSelectAssignedStudentTests(),
   activeStudent: makeSelectActiveStudent(),
   activeTestScores: makeSelectActiveTestScores(),
+  errorMessages: makeSelectErrorMessages(),
 });
 function mapDispatchToProps(dispatch) {
   return {
@@ -592,6 +603,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
     onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
+    onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

@@ -51,9 +51,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
       },
       updatedSectionStatus: {},
       showSectionMessage: false,
-      answerTestProblemMessage: null,
-      testFlagMessage: null,
-      fetchSectionsMessage: null,
+      answerTestProblemMessage: "",
+      testFlagMessage: "",
+      fetchSectionsMessage: "",
       enableScoreReport: false,
     };
   }
@@ -90,10 +90,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
       this.onSetProblems(sections, student_test_id);
     }
     if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
-      this.onErrorMessage(answerTestProblemMessage);
+      this.onErrorMessage(answerTestProblemMessage, "answerTestProblemMessage");
     }
     if (testFlagMessage !== this.state.testFlagMessage) {
-      this.onErrorMessage(testFlagMessage);
+      this.onErrorMessage(testFlagMessage, "testFlagMessage");
     }
     if (fetchProblemsMessage !== this.state.fetchProblemsMessage) {
       this.setState({ fetchProblemsMessage });
@@ -102,13 +102,13 @@ class DetailTestAnswerSheetComplete extends React.Component {
       this.setState({ fetchSectionsMessage });
     }
   };
-  onErrorMessage(message) {
-    if (!message) this.setState({ [message]: message });
+  onErrorMessage(message, name) {
+    if (!message) return this.setState({ [name]: "" });
     toast.error(message, {
       className: 'update-error',
       progressClassName: 'progress-bar-error',
     });
-    this.setState({ [message]: message });
+    this.setState({ [name]: message });
   }
   onSetProblems = (sections, studentTestId) => new Promise(async resolve => {
     const { tests, testScoreDetails: { test_id } } = this.props;
