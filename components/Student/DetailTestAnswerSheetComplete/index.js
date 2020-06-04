@@ -85,6 +85,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
         fetchProblemsMessage,
       },
     } = nextProps;
+    if (sections.length !== 0) {
+      this.onSetProblems(sections, student_test_id);
+    }
     if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
       this.onErrorMessage(answerTestProblemMessage);
     }

@@ -178,6 +178,7 @@ const fetchSectionsMessage = 'fetchSectionsMessage';
 const fetchProblemsMessage = 'fetchProblemsMessage';
 const testFlagMessage = 'testFlagMessage';
 const answerTestProblemMessage = 'answerTestProblemMessage';
+const fetchingStudentTestsMessage = 'fetchingStudentTestsMessage'
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -260,6 +261,10 @@ export function* watchForFetchStudentTests() {
 export function* fetchStudentTests(user) {
   try {
     const { data: formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    if (!formattedStudentTests) {
+      return yield put(sendErrorMessage(fetchingStudentTestsMessage, `Something went wrong when fetching for student tests`));
+    }
+    yield put(resetErrorMessage(fetchingStudentTestsMessage));
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
       overdues: [],
@@ -285,6 +290,7 @@ export function* fetchStudentTests(user) {
     yield put(setStudentAssignedTests(sortedTests.assigneds));
     yield put(setFetchStudentTestsStatus(true));
   } catch (err) {
+    yield put(sendErrorMessage(fetchingStudentTestsMessage, `Something went wrong when fetching for student tests: ${err}`));
     console.warn("Error occurred in the fetchStudentTests saga", err);
   }
 }
