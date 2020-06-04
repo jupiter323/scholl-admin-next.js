@@ -145,7 +145,7 @@ class EditTestModal extends React.Component {
         }
       });
     }
-    if (errorMessages.fetchScoresMsg !== this.state.fetchScoresMsg && errorMessages.fetchScoresMsg !== "") {
+    if (errorMessages.fetchScoresMsg && errorMessages.fetchScoresMsg !== this.state.fetchScoresMsg && errorMessages.fetchScoresMsg !== "") {
       this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
       toast.error(errorMessages.fetchScoresMsg);
       this.props.onCloseEditTestModal();
