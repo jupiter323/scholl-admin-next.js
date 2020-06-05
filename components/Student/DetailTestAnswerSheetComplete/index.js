@@ -86,7 +86,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         fetchProblemsMessage,
       },
     } = nextProps;
-    if (sections.length !== 0) {
+    if (sections.length !== 0 && !this.state.enableScoreReport) {
       this.onSetProblems(sections, student_test_id);
     }
     if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
@@ -111,7 +111,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     this.setState({ [name]: message });
   }
   onSetProblems = (sections, studentTestId) => new Promise(async resolve => {
-    const { tests, testScoreDetails: { test_id } } = this.props;
+    const { tests, testScoreDetails: { test_id }, testScoreDetails } = this.props;
     const testIds = tests.map(test => test.id);
     const currentTestIndex = testIds.findIndex(testId => testId === test_id);
     const currentTestSections = tests[currentTestIndex].test_sections;
@@ -121,7 +121,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testSectionId => testSectionId === section.test_section_id,
       );
       const currentTestSection = currentTestSections[currentTestSectionIndex];
-      if (!currentTestSection) return;
+      // Confirm that the sections are for the current student_test_id
+      if (!currentTestSection || testScoreDetails.student_test_id !== section.student_test_id) return null;
       switch (currentTestSection.name) {
         case 'Math (Calculator)':
           this.setState({
@@ -191,7 +192,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             });
           }, 1000);
         });
-      }, 2000);
+      }, 5000);
     });
 
   getData = item =>
@@ -234,6 +235,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
         break;
     }
     this.setState({ activeSlide, activeTestSection: currentSection });
+    // Remove any error message for the previous slide
+    this.props.onUpdateTestSectionMsg("");
   };
 
   renderCurrentSlide = () => {
@@ -248,68 +251,40 @@ class DetailTestAnswerSheetComplete extends React.Component {
       } = this.state;
       if (activeSlide === 'reading') {
         this.updateSectionStatus(activeSlide, testReadingProblems);
-        return testReadingProblems
-          ? <ReadingPage
+        return (
+          <ReadingPage
             testSection={testReadingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
             fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
-          : <div className="slide" id="readingAnswerSheetImg">
-            <div
-              className="row"
-              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
-            >
-              <ol className="answers-list" style={{ marginBottom: '40px' }} />
-            </div>
-          </div>;
+        );
       } else if (activeSlide === 'writing') {
         this.updateSectionStatus(activeSlide, testWritingProblems);
-        return testWritingProblems
-          ? <WritingPage
+        return (
+          <WritingPage
             testSection={testWritingProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
             fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
-          : <div className="slide" id="writingAnswerSheetImg">
-            <div
-              className="row"
-              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
-            >
-              <ol className="answers-list" style={{ marginBottom: '40px' }} />
-            </div>
-          </div>;
+        );
       } else if (activeSlide === 'math (no calc)') {
         this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
-        return testMathNoCalcProblems
-          ? <MathNoCalcPage
+        return (
+          <MathNoCalcPage
             testSection={testMathNoCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
             fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
-          : <div className="slide" id="mathNoCalcAnswerSheetImg">
-            <div
-              className="row"
-              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
-            >
-              <ol className="answers-list" style={{ marginBottom: '40px' }} />
-            </div>
-          </div>;
+        );
       } else if (activeSlide === 'math (calculator)') {
         this.updateSectionStatus(activeSlide, testMathCalcProblems);
-        return testMathCalcProblems
-          ? <MathCalculatorPage
+        return (
+          <MathCalculatorPage
             testSection={testMathCalcProblems}
             onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
             fetchProblemsMessage={this.state.fetchProblemsMessage}
           />
-          : <div className="slide" id="mathCalcAnswerSheetImg">
-            <div
-              className="row"
-              style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}
-            >
-              <ol className="answers-list" style={{ marginBottom: '40px' }} />
-            </div>
-          </div>;
+        );
       } else if (activeSlide === 'essay') {
         return (
           <EssayPage
@@ -347,6 +322,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (!currentSection) return;
     if (currentSection.test_section_status === 'CREATED') {
       if (!this.state.updatedSectionStatus[`${activeSlide}Section`]) {
+        console.log('log: this.state.updatedSectionStatus', this.state.updatedSectionStatus[`${activeSlide}Section`]);
+        console.log('log: currentSection.test_section_status', currentSection.test_section_status);
         const postBody = {
           student_test_id: currentSection.student_test_id,
           student_test_section_id: currentSection.id,
@@ -378,6 +355,20 @@ class DetailTestAnswerSheetComplete extends React.Component {
     };
   };
 
+  completedSectionMessage = () => (
+    <p
+      style={{
+        color: "white",
+        backgroundColor: "#28a745",
+        fontSize: "14px",
+        borderRadius: "25px",
+      }}
+      className="center-align"
+    >
+        This test section is complete. You can still edit answer choices if needed.
+    </p>
+  );
+
   render() {
     const {
       activeSlide,
@@ -387,7 +378,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections } = this.props;
+    const { completedSections, testScoreDetails: { status }, updateTestSectionMessage } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
       case 'reading':
@@ -419,29 +410,15 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <AnswerSheetNavBar
             activeSlide={activeSlide}
             onSetActiveSlide={this.onSetActiveSlide}
-            updateSectionStatus={this.updateSectionStatus}
             getExistingSections={this.getExistingSections()}
           />
         </div>
         <div className="card-content">
-          {showSectionMessage &&
-            <p
-              style={{
-                color: 'white',
-                backgroundColor: '#28a745',
-                fontSize: '14px',
-                borderRadius: '25px',
-              }}
-              className="center-align"
-            >
-              This test section is complete. You can still edit answer choices if needed.
-            </p>}
+          {showSectionMessage && status !== "COMPLETED" && this.completedSectionMessage()}
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-          {activeSlide &&
-            activeSlide !== 'essay' &&
-            !showSectionMessage &&
+          {activeSlide && activeSlide !== "essay" && !showSectionMessage && (
             <div className="row">
               <div className="btn-holder right-align">
                 <a
@@ -459,7 +436,8 @@ class DetailTestAnswerSheetComplete extends React.Component {
                   Submit Test Scores
                 </a>
               </div>
-            </div>}
+            </div>)}
+          <p className="red-text right-align">{updateTestSectionMessage}</p>
         </div>
       </div>
     );

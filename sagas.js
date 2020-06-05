@@ -218,17 +218,13 @@ export function* fetchUnits() {
 export function* watchForFetchStudentTestSections() {
   while (true) {
     const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    const { postBody: { id, student_test_id, studentToken } } = payload;
-    yield call(fetchStudentTestSections, id, student_test_id, studentToken);
+    const { postBody: { id, student_test_id } } = payload;
+    yield call(fetchStudentTestSections, id, student_test_id);
   }
 }
 
-export function* fetchStudentTestSections(id, studentTestId, studentToken) {
+export function* fetchStudentTestSections(id, studentTestId) {
   try {
-    yield put({
-      type: SET_STUDENT_SECTIONS,
-      sections: [],
-    });
     const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
     if (testSections && testSections.message) {
       return yield put(sendErrorMessage(fetchSectionsMessage, `Error: Something went wrong retrieving sections and problems for this test. You may still view and score essays or try again later.`));
@@ -1051,7 +1047,8 @@ function* handleAddStudentAnswerToTest(action) {
   try {
     const response = yield call(addStudentAnswerToTestApi, action.payload);
     if (response && response.message) {
-      yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
+      yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Your answer will not be recorded. Please try again later.`));
+      yield put(resetErrorMessage(answerTestProblemMessage));
       return console.warn("Error occurred in the handleAddStudentAnswerToTest saga", response.message);
     }
     yield put({

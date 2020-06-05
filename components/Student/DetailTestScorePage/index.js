@@ -36,12 +36,12 @@ class DetailTestScorePage extends React.Component {
     });
   };
 
-  getScoresByStudentTest = async test => {
-    const { student_test_id } = test;
-    const { activeStudent: { id } } = this.props;
-    const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
-    return formattedTestScores.data;
-  };
+  // getScoresByStudentTest = async test => {
+  //   const { student_test_id } = test;
+  //   const { activeStudent: { id } } = this.props;
+  //   const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
+  //   return formattedTestScores.data;
+  // };
 
   getComponentImages = () =>
     new Promise(resolve => {

@@ -120,7 +120,7 @@ class DetailTestList extends React.Component {
   };
 
   onEnterAnswers = async currentTestId => {
-    const { onFetchStudentTestSections, onSetStudentSections, user, studentTests } = this.props;
+    const { onFetchStudentTestSections, user, studentTests } = this.props;
     // Have to clear all sections to have no side effects for now
     onFetchStudentTestSections({ id: user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
@@ -138,12 +138,10 @@ class DetailTestList extends React.Component {
       const postBody = { studentId: id, student_test_id: currentTestId };
       onGetTestScores(postBody);
     }
-    // this.setState({ openEnterAnswerWrapper: true, activeTest });
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
   onDownloadReport = activeTest => {
-    console.log('downloading...');
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
     this.setState(
@@ -442,7 +440,6 @@ function mapDispatchToProps(dispatch) {
     onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
     onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
     onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
-    onSetStudentSections: (sections) => dispatch(setStudentSections(sections)),
     onSetStudentTests: (tests) => dispatch(setStudentTests(tests)),
     onSetStudentCompletedTests: (tests) => dispatch(setStudentCompletedTests(tests)),
     onSetStudentOverDueTests: (tests) => dispatch(setStudentOverDueTests(tests)),

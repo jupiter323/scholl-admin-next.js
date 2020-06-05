@@ -23,19 +23,22 @@ import {
   makeSelectErrorMessages,
 } from '../../../index/selectors';
 import {
-  fetchStudentTestSections,
   setStudentAssignedTests,
   setStudentCompletedTests,
   updateTestStatus,
   setActiveTestScores,
   getTestScores,
   resetErrorMessage,
+  fetchStudentTestSections,
 } from '../../../index/actions';
 import {
   updateStudentTestSectionStatusApi,
   updateStudentTestStatusApi,
   fetchTestsByStudentIdApi,
 } from '../../../index/api';
+
+import { css } from '@emotion/core';
+import BarLoader from 'react-spinners/BarLoader';
 
 class EditTestModal extends React.Component {
   constructor(props) {
@@ -47,14 +50,6 @@ class EditTestModal extends React.Component {
       analysisCicleImages: [],
       answerSheetImages: [],
       enablePublish: true,
-      userInfo: {
-        version: 'Version: SAT Practice Test #1',
-        target: 'Score Report',
-        test_date: 'September 28th, 2018',
-        name: 'Arnold Studently',
-        test_type: 'Practice Test',
-        order: '3rd',
-      },
       subjects: [
         'Practice Test Scores',
         'Reading Analysis',
@@ -75,6 +70,7 @@ class EditTestModal extends React.Component {
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
       fetchScoresMsg: "",
+      updateTestSectionMessage: "",
     };
   }
 
@@ -85,6 +81,7 @@ class EditTestModal extends React.Component {
       test: { student_test_id },
       activeStudent: { id },
     } = this.props;
+
     const postBody = {
       id,
       student_test_id,
@@ -92,21 +89,8 @@ class EditTestModal extends React.Component {
     };
     onFetchStudentTestSections(postBody);
     this.props.onRef(this);
-    const {
-      activeStudent: { studentInformation: { firstName, lastName } },
-      test: { test_description, completion_date },
-    } = this.props;
-    const updatedUserInfo = update(this.state.userInfo, {
-      $merge: {
-        name: `${firstName} ${lastName}`,
-        version: test_description,
-        test_date: moment(completion_date).format('MMMM Do YYYY'),
-      },
-    });
-    this.setState({
-      userInfo: updatedUserInfo,
-    });
   };
+
   componentWillUnmount() {
     this.props.onRef(undefined);
     this.props.onResetErrorMessage("fetchScoresMsg");
@@ -232,7 +216,7 @@ class EditTestModal extends React.Component {
       enablePublish: false,
     });
     const imgDataLists = [];
-    const { userInfo, subjects, adminInfo, headerGradient } = this.state;
+    const { subjects, adminInfo, headerGradient } = this.state;
     const coverBackgroundImg = './static/images/sunset.jpg';
     const logoImg = './static/images/study-hut-logo.png';
     const backgroundImage = await this.getBase64ImageFromURL(
@@ -301,11 +285,22 @@ class EditTestModal extends React.Component {
           pageBreak: 'after',
         });
       }
-      // imgDataLists.push({
-      //   image: answerSheetImages[3],
-      //   width: 550,
-      //   margin: [0, 20, 0, 0],
-      // });
+      imgDataLists.push({
+        image: answerSheetImages[3],
+        width: 550,
+        margin: [0, 20, 0, 0],
+      });
+      const {
+        test: { test_description, completion_date },
+        activeStudent: { studentInformation: { firstName, lastName } },
+      } = this.props;
+      const userInfo = update(this.state.userInfo, {
+        $merge: {
+          name: `${firstName} ${lastName}`,
+          version: test_description,
+          test_date: moment(completion_date).format('MMMM Do YYYY'),
+        },
+      });
       pdfMakeReport(
         imgDataLists,
         userInfo,
@@ -317,6 +312,8 @@ class EditTestModal extends React.Component {
       );
     });
   };
+
+  onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
@@ -349,6 +346,7 @@ class EditTestModal extends React.Component {
         writingSectionCompleted,
         mathNoCalcSectionCompleted,
         mathCalcSectionCompleted,
+        updateTestSectionMessage,
         setIsCompleted,
       } = this.state;
       return (
@@ -365,6 +363,8 @@ class EditTestModal extends React.Component {
           }}
           setIsCompleted={setIsCompleted}
           test={this.props.test}
+          updateTestSectionMessage={updateTestSectionMessage}
+          onUpdateTestSectionMsg={this.onUpdateTestSectionMsg}
           openTestScores={onOpentTestScore}
         />
       );
@@ -406,7 +406,7 @@ class EditTestModal extends React.Component {
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
     if (res && res.message) {
-      return null;
+      return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
     }
 
     // Update current section as completed
@@ -565,6 +565,14 @@ class EditTestModal extends React.Component {
                   </li>}
               </ul>
             </div>
+          </div>
+          <div className="sweet-loading">
+            <BarLoader
+              height={3}
+              width={'100%'}
+              color={'#36D7B7'}
+              loading={!this.state.enablePublish}
+            />
           </div>
           <div className="content-section">
             <div className="content-section-holder">
