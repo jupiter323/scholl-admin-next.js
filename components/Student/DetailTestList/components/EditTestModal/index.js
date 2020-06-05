@@ -576,7 +576,7 @@ class EditTestModal extends React.Component {
             />
           </div>
           {
-            this.state.enablePublish && <div style = {{textAlign:'center',padding:10}}>please wait the test score repost downloading...</div>
+            !this.state.enablePublish && <div style = {{textAlign:'center',padding:10}}>please wait the test score repost downloading...</div>
           }
           <div className="content-section">
             <div className="content-section-holder">
