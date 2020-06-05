@@ -60,6 +60,14 @@ class EditTestModal extends React.Component {
         'Math Answer Sheet(calculator)',
       ],
       adminInfo: 'Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com',
+      userInfo: {
+        version: 'Version: SAT Practice Test #1',
+        target: 'Score Report',
+        test_date: 'September 28th, 2018',
+        name: 'Arnold Studently',
+        test_type: 'Practice Test',
+        order: '3rd'
+     },
       headerGradient: ['#ec693d 0%', '#649aab 61%', '#30add6 87%', '#18b5e9 100%'],
       readingSectionCompleted: false,
       writingSectionCompleted: false,
@@ -567,6 +575,9 @@ class EditTestModal extends React.Component {
               loading={!this.state.enablePublish}
             />
           </div>
+          {
+            this.state.enablePublish && <div style = {{textAlign:'center',padding:10}}>please wait the test score repost downloading...</div>
+          }
           <div className="content-section">
             <div className="content-section-holder">
               {this.renderCurrentPage()}
