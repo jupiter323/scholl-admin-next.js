@@ -70,8 +70,8 @@ class EditTestModal extends React.Component {
         test_date: '',
         name: '',
         test_type: 'Practice Test',
-        order: '3rd'
-     },
+        order: '3rd',
+      },
       headerGradient: ['#ec693d 0%', '#649aab 61%', '#30add6 87%', '#18b5e9 100%'],
       readingSectionCompleted: false,
       writingSectionCompleted: false,
@@ -413,6 +413,7 @@ class EditTestModal extends React.Component {
       student_test_section_status: 'COMPLETED',
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
+    // const res = await updateStudentTestSectionStatusApi();
     if (res && res.message) {
       return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
     }
@@ -583,7 +584,7 @@ class EditTestModal extends React.Component {
             />
           </div>
           {
-            !this.state.enablePublish && <div style = {{textAlign:'center',padding:10}}>please wait the test score report downloading...</div>
+            !this.state.enablePublish && <div style={{ textAlign: 'center', padding: 10 }}>please wait the test score report downloading...</div>
           }
           <div className="content-section">
             <div className="content-section-holder">

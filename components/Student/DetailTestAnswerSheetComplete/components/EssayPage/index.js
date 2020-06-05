@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import sampleEssayScores from '../../utils/sampleEssayScores';
-import { updateStudentEssayScoreApi } from '../../../index/api';
+import { updateStudentEssayScoreApi, fetchStudentTestScoreApi } from '../../../index/api';
 
 
 class EssayPage extends React.Component {
@@ -17,29 +17,32 @@ class EssayPage extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { testScoreDetails: { status, student_id, student_test_id }, onGetTestScores } = this.props;
+    const { testScoreDetails: { status, student_id, student_test_id } } = this.props;
     if (status !== "COMPLETED") {
-      const postBody = {
-        studentId: student_id,
-        student_test_id,
-      };
-      onGetTestScores(postBody);
+      const response = await fetchStudentTestScoreApi(student_id, student_test_id);
+      if (!response || (response && response.message)) return null;
+      if (!response.data.essay) return null;
+      const { reading, writing, analysis } = response.data.essay;
+      this.setState({
+        readingScore: reading,
+        analysisScore: analysis,
+        writingScore: writing,
+      });
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     const { readingScore, writingScore, analysisScore } = state;
-    const { testScores } = props;
-    if (testScores && testScores.essay) {
-      const { reading, writing, analysis } = testScores.essay;
-      if (reading !== readingScore || writingScore !== writing || analysis !== analysisScore) {
-        console.log('log: props', props);
+    if (props.testScores && props.testScores.essay && props.testScoreDetails.status === "COMPLETED") {
+      const { reading, writing, analysis } = props.testScores.essay;
+      if (!readingScore && !writingScore && !analysisScore) {
         return {
           readingScore: reading,
           analysisScore: analysis,
           writingScore: writing,
         };
       }
+      return null;
     }
     return null;
   }

@@ -322,8 +322,6 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (!currentSection) return;
     if (currentSection.test_section_status === 'CREATED') {
       if (!this.state.updatedSectionStatus[`${activeSlide}Section`]) {
-        console.log('log: this.state.updatedSectionStatus', this.state.updatedSectionStatus[`${activeSlide}Section`]);
-        console.log('log: currentSection.test_section_status', currentSection.test_section_status);
         const postBody = {
           student_test_id: currentSection.student_test_id,
           student_test_section_id: currentSection.id,
