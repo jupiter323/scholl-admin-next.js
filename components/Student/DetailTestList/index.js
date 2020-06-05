@@ -84,6 +84,11 @@ class DetailTestList extends React.Component {
     const { onSetActiveStudentTestId } = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
+    const postBody = {
+      id: this.props.activeStudent.id,
+      student_test_id: activeTest.student_test_id,
+    };
+    this.props.onFetchStudentTestSections(postBody);
     this.setState(
       ({ openEditTestModal }) => ({
         openEditTestModal: true,
