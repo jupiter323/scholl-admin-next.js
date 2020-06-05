@@ -85,7 +85,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         fetchProblemsMessage,
       },
     } = nextProps;
-    if (sections.length !== 0) {
+    if (sections.length !== 0 && !this.state.enableScoreReport) {
       this.onSetProblems(sections, student_test_id);
     }
     if (answerTestProblemMessage !== this.state.answerTestProblemMessage) {
@@ -250,32 +250,40 @@ class DetailTestAnswerSheetComplete extends React.Component {
       } = this.state;
       if (activeSlide === 'reading') {
         this.updateSectionStatus(activeSlide, testReadingProblems);
-        return (<ReadingPage
-          testSection={testReadingProblems}
-          onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-          fetchProblemsMessage={this.state.fetchProblemsMessage}
-        />);
+        return (
+          <ReadingPage
+            testSection={testReadingProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+        );
       } else if (activeSlide === 'writing') {
         this.updateSectionStatus(activeSlide, testWritingProblems);
-        return (<WritingPage
-          testSection={testWritingProblems}
-          onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-          fetchProblemsMessage={this.state.fetchProblemsMessage}
-        />);
+        return (
+          <WritingPage
+            testSection={testWritingProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+        );
       } else if (activeSlide === 'math (no calc)') {
         this.updateSectionStatus(activeSlide, testMathNoCalcProblems);
-        return (<MathNoCalcPage
-          testSection={testMathNoCalcProblems}
-          onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-          fetchProblemsMessage={this.state.fetchProblemsMessage}
-        />);
+        return (
+          <MathNoCalcPage
+            testSection={testMathNoCalcProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+        );
       } else if (activeSlide === 'math (calculator)') {
         this.updateSectionStatus(activeSlide, testMathCalcProblems);
-        return (<MathCalculatorPage
-          testSection={testMathCalcProblems}
-          onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-          fetchProblemsMessage={this.state.fetchProblemsMessage}
-        />);
+        return (
+          <MathCalculatorPage
+            testSection={testMathCalcProblems}
+            onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
+            fetchProblemsMessage={this.state.fetchProblemsMessage}
+          />
+        );
       } else if (activeSlide === 'essay') {
         return (
           <EssayPage
