@@ -108,6 +108,7 @@ class EditTestModal extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { activePage, sections, errorMessages } = nextProps;
+    const { onCloseEditTestModal } = this.props;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
       this.setState({ activePage });
     }
@@ -139,15 +140,16 @@ class EditTestModal extends React.Component {
         }
       });
     }
-    if (errorMessages.fetchScoresMsg && errorMessages.fetchScoresMsg !== this.state.fetchScoresMsg && errorMessages.fetchScoresMsg !== "") {
+    const errorConditon = (name) => (errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== "");
+    if (errorConditon("fetchScoresMsg")) {
       this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
       toast.error(errorMessages.fetchScoresMsg);
-      this.props.onCloseEditTestModal();
+      onCloseEditTestModal();
     }
-    if (errorMessages.updateTestStatusMsg && errorMessages.updateTestStatusMsg !== this.state.updateTestStatusMsg && errorMessages.updateTestStatusMsg !== "") {
+    if (errorConditon("updateTestStatusMsg")) {
       this.setState({ updateTestStatusMsg: errorMessages.updateTestStatusMsg });
       toast.error(errorMessages.updateTestStatusMsg);
-      this.props.onCloseEditTestModal();
+      onCloseEditTestModal();
     }
   }
 
@@ -486,7 +488,7 @@ class EditTestModal extends React.Component {
   };
 
   render() {
-    const { test, user, onCloseEditTestModal, activeTestScores } = this.props;
+    const { test, user, onCloseEditTestModal } = this.props;
     const { activePage, enablePublish } = this.state;
     const { title, test_name } = test;
     const { studentInformation: { firstName, lastName } } = user;
