@@ -90,6 +90,7 @@ const initialState = fromJS({
     fetchProblemsMessage: "",
     fetchScoresMsg: "",
     updateTestStatusMsg: "",
+    fetchingStudentTestsMessage: '',
   },
 });
 

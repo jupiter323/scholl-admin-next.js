@@ -54,6 +54,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       answerTestProblemMessage: "",
       testFlagMessage: "",
       fetchSectionsMessage: "",
+      fetchingStudentTestsMessage: "",
       enableScoreReport: false,
     };
   }
@@ -73,6 +74,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     onResetErrorMessage('testFlagMessage');
     onResetErrorMessage('fetchSectionsMessage');
     onResetErrorMessage('fetchProblemsMessage');
+    onResetErrorMessage('fetchingStudentTestsMessage');
   }
 
   componentWillReceiveProps = nextProps => {
@@ -84,6 +86,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
         testFlagMessage,
         fetchSectionsMessage,
         fetchProblemsMessage,
+        fetchingStudentTestsMessage,
       },
     } = nextProps;
     if (sections.length !== 0 && !this.state.enableScoreReport) {
@@ -95,11 +98,17 @@ class DetailTestAnswerSheetComplete extends React.Component {
     if (testFlagMessage !== this.state.testFlagMessage) {
       this.onErrorMessage(testFlagMessage, "testFlagMessage");
     }
+    if (fetchingStudentTestsMessage !== this.state.fetchingStudentTestsMessage) {
+      this.onErrorMessage(fetchingStudentTestsMessage, "fetchingStudentTestsMessage");
+    }
     if (fetchProblemsMessage !== this.state.fetchProblemsMessage) {
       this.setState({ fetchProblemsMessage });
     }
     if (fetchSectionsMessage !== this.state.fetchSectionsMessage) {
       this.setState({ fetchSectionsMessage });
+    }
+    if (fetchingStudentTestsMessage !== this.state.fetchingStudentTestsMessage) {
+      this.setState({ fetchingStudentTestsMessage });
     }
   };
   onErrorMessage(message, name) {
