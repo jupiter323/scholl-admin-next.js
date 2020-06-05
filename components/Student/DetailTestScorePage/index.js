@@ -26,22 +26,14 @@ class DetailTestScorePage extends React.Component {
   }
 
   delay = () => {
-    const { scores, onSetScores } = this.props;
+    const { scores, test: { student_test_id }, onGetTestScores, activeStudent: { id } } = this.props;
     return new Promise(async resolve => {
       if (!scores) {
-        const formattedScores = await this.getScoresByStudentTest(this.props.test);
-        if (!formattedScores) return;
-        onSetScores(formattedScores);
+        const postBody = { studentId: id, student_test_id };
+        onGetTestScores(postBody);
       }
       resolve();
     });
-  };
-
-  getScoresByStudentTest = async test => {
-    const { student_test_id } = test;
-    const { activeStudent: { id } } = this.props;
-    const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
-    return formattedTestScores;
   };
 
   getComponentImages = () =>
@@ -57,10 +49,21 @@ class DetailTestScorePage extends React.Component {
       });
     });
 
+  loadingSpinner = () => (
+    <div className="overlay-spinning">
+      <h1>Fetching Scores...</h1>
+      <div className="spinning" />
+    </div>
+  )
+
   render() {
     const { scores, test } = this.props;
-    if (!scores) return <div>Loading...</div>;
-    // if (scores.student_test_id !== test.student_test_id) return <div>Loading...</div>;
+    if (!scores) {
+      return this.loadingSpinner();
+    }
+    if (scores.student_test_id !== test.student_test_id) {
+      return this.loadingSpinner();
+    }
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
     return (
       <div className="container" id="scoresRef">

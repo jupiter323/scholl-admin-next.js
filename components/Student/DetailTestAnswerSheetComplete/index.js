@@ -24,6 +24,7 @@ import {
   addStudentAnswerToTest,
   setEssayScore,
   resetErrorMessage,
+  getTestScores,
 } from '../index/actions';
 import { updateStudentTestSectionStatusApi } from '../index/api';
 import { makeSelectErrorMessages } from '../index/selectors';
@@ -53,7 +54,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       answerTestProblemMessage: "",
       testFlagMessage: "",
       fetchSectionsMessage: "",
-      fetchingStudentTestsMessage:"",
+      fetchingStudentTestsMessage: "",
       enableScoreReport: false,
     };
   }
@@ -73,7 +74,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
     onResetErrorMessage('testFlagMessage');
     onResetErrorMessage('fetchSectionsMessage');
     onResetErrorMessage('fetchProblemsMessage');
-    onResetErrorMessage('fetchingStudentTestsMessage')
+    onResetErrorMessage('fetchingStudentTestsMessage');
   }
 
   componentWillReceiveProps = nextProps => {
@@ -107,7 +108,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       this.setState({ fetchSectionsMessage });
     }
     if (fetchingStudentTestsMessage !== this.state.fetchingStudentTestsMessage) {
-      this.setState({fetchingStudentTestsMessage});
+      this.setState({ fetchingStudentTestsMessage });
     }
   };
   onErrorMessage(message, name) {
@@ -299,6 +300,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
             testId={activeStudentTestId}
             testScores={activeTestScores}
             setEssayScore={onSetEssayScore}
+            onGetTestScores={this.props.onGetTestScores}
             testScoreDetails={this.props.testScoreDetails}
           />
         );
@@ -383,7 +385,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = this.state;
-    const { completedSections, scoresLoading, testScoreDetails: { status }, updateTestSectionMessage } = this.props;
+    const { completedSections, testScoreDetails: { status }, updateTestSectionMessage } = this.props;
     let showSectionMessage = this.state.showSectionMessage;
     switch (activeSlide) {
       case 'reading':
@@ -421,13 +423,9 @@ class DetailTestAnswerSheetComplete extends React.Component {
         <div className="card-content">
           {showSectionMessage && status !== "COMPLETED" && this.completedSectionMessage()}
           <div className="main-slick">
-            { scoresLoading ? (
-              <div className="overlay-spinning">
-                <div className="spinning"></div>
-              </div>
-            ) : this.renderCurrentSlide()}
+            {this.renderCurrentSlide()}
           </div>
-          {activeSlide && activeSlide !== "essay" && !showSectionMessage && (
+          {activeSlide && activeSlide !== "essay" && status !== "COMPLETED" && (
             <div className="row">
               <div className="btn-holder right-align">
                 <a
@@ -442,7 +440,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
                     });
                   }}
                 >
-                  Submit Test Scores
+                  {!showSectionMessage ? "Submit Test Section" : "Resubmit Test"}
                 </a>
               </div>
             </div>)}
@@ -473,6 +471,7 @@ function mapDispatchToProps(dispatch) {
     dispatchAddStudentAnswerToTest: (payload, sectionId) =>
       dispatch(addStudentAnswerToTest(payload, sectionId)),
     onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
   };
 }
 

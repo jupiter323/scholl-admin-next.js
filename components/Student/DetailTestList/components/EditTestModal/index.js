@@ -7,6 +7,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { toast } from 'react-toastify';
 import TestVersionPage from '../TestVersionPage';
 import DetailTestScorePage from '../../../DetailTestScorePage';
 import DetailTestAnswerSheetComplete from '../../../DetailTestAnswerSheetComplete';
@@ -19,12 +20,15 @@ import {
   makeSelectAssignedStudentTests,
   makeSelectActiveStudent,
   makeSelectActiveTestScores,
+  makeSelectErrorMessages,
 } from '../../../index/selectors';
 import {
   setStudentAssignedTests,
   setStudentCompletedTests,
   updateTestStatus,
   setActiveTestScores,
+  getTestScores,
+  resetErrorMessage,
   fetchStudentTestSections,
 } from '../../../index/actions';
 import {
@@ -66,15 +70,16 @@ class EditTestModal extends React.Component {
         test_date: '',
         name: '',
         test_type: 'Practice Test',
-        order: '3rd'
-     },
+        order: '3rd',
+      },
       headerGradient: ['#ec693d 0%', '#649aab 61%', '#30add6 87%', '#18b5e9 100%'],
       readingSectionCompleted: false,
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
+      fetchScoresMsg: "",
+      updateTestStatusMsg: "",
       updateTestSectionMessage: "",
-      scoresLoading: false,
     };
   }
 
@@ -97,10 +102,13 @@ class EditTestModal extends React.Component {
 
   componentWillUnmount() {
     this.props.onRef(undefined);
+    this.props.onResetErrorMessage("fetchScoresMsg");
+    this.props.onResetErrorMessage("updateTestStatusMsg");
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activePage, sections } = nextProps;
+    const { activePage, sections, errorMessages } = nextProps;
+    const { onCloseEditTestModal } = this.props;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
       this.setState({ activePage });
     }
@@ -131,6 +139,17 @@ class EditTestModal extends React.Component {
           }
         }
       });
+    }
+    const errorConditon = (name) => (errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== "");
+    if (errorConditon("fetchScoresMsg")) {
+      this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
+      toast.error(errorMessages.fetchScoresMsg);
+      onCloseEditTestModal();
+    }
+    if (errorConditon("updateTestStatusMsg")) {
+      this.setState({ updateTestStatusMsg: errorMessages.updateTestStatusMsg });
+      toast.error(errorMessages.updateTestStatusMsg);
+      onCloseEditTestModal();
     }
   }
 
@@ -314,7 +333,7 @@ class EditTestModal extends React.Component {
   onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
 
   renderCurrentPage = () => {
-    const { activePage, scoresLoading } = this.state;
+    const { activePage } = this.state;
     const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
     if (activePage === 'testVersion') {
       return (
@@ -333,6 +352,7 @@ class EditTestModal extends React.Component {
             test={test}
             getTargetImage={this.getTargetImage}
             onRef={ref => (this.ScoresChild = ref)}
+            onGetTestScores={this.props.onGetTestScores}
           />
         </div>
       );
@@ -359,9 +379,9 @@ class EditTestModal extends React.Component {
             mathCalcSectionCompleted,
           }}
           setIsCompleted={setIsCompleted}
+          test={this.props.test}
           updateTestSectionMessage={updateTestSectionMessage}
           onUpdateTestSectionMsg={this.onUpdateTestSectionMsg}
-          scoresLoading={scoresLoading}
           openTestScores={onOpentTestScore}
         />
       );
@@ -461,19 +481,15 @@ class EditTestModal extends React.Component {
       const { onOpentTestScore, onUpdateTestStatus } = this.props;
       const currentTestStatus =
         test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
-      this.setState({ scoresLoading: true });
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
-      // added time for saga to fetch all score results
-      setTimeout(() => {
-        onOpentTestScore({ ...test, status: 'COMPLETED' });
-        this.setState({ scoresLoading: false });
-      }, 2000);
+      // Delay set on saga before running onOpentTestScore()
+      onOpentTestScore({ ...test, status: 'COMPLETED' });
     }
   };
 
   render() {
-    const { test, user, onCloseEditTestModal, activeTestScores } = this.props;
-    const { activePage, enablePublish, scoresLoading } = this.state;
+    const { test, user, onCloseEditTestModal } = this.props;
+    const { activePage, enablePublish } = this.state;
     const { title, test_name } = test;
     const { studentInformation: { firstName, lastName } } = user;
     const completedTest = test.status === 'COMPLETED';
@@ -576,7 +592,7 @@ class EditTestModal extends React.Component {
             />
           </div>
           {
-            !this.state.enablePublish && <div style = {{textAlign:'center',padding:10}}>please wait the test score report downloading...</div>
+            !this.state.enablePublish && <div style={{ textAlign: 'center', padding: 10 }}>please wait the test score report downloading...</div>
           }
           <div className="content-section">
             <div className="content-section-holder">
@@ -604,6 +620,7 @@ const mapStateToProps = createStructuredSelector({
   assignedTests: makeSelectAssignedStudentTests(),
   activeStudent: makeSelectActiveStudent(),
   activeTestScores: makeSelectActiveTestScores(),
+  errorMessages: makeSelectErrorMessages(),
 });
 function mapDispatchToProps(dispatch) {
   return {
@@ -613,6 +630,8 @@ function mapDispatchToProps(dispatch) {
     onUpdateTestStatus: (payload, currentStatus, studentId) =>
       dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
+    onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

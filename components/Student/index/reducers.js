@@ -88,6 +88,8 @@ const initialState = fromJS({
     answerTestProblemMessage: "",
     fetchSectionsMessage: "",
     fetchProblemsMessage: "",
+    fetchScoresMsg: "",
+    updateTestStatusMsg: "",
     fetchingStudentTestsMessage: '',
   },
 });
@@ -375,10 +377,12 @@ function studentReducer(state = initialState, action) {
       return state.set('sections', newSections);
 
     case SEND_ERROR_MESSAGE:
-      return state.set('errorMessages', { ...state.get('errorMessages'), [action.propertyName]: action.message });
+      const updatedErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: action.message };
+      return state.set('errorMessages', updatedErrorMessages);
 
     case RESET_ERROR_MESSAGE:
-      return state.set('errorMessages', { ...state.get('errorMessages'), [action.propertyName]: "" });
+      const resetErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: "" };
+      return state.set('errorMessages', resetErrorMessages);
 
     default:
       return state;

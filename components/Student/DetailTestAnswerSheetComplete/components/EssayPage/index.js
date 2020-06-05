@@ -21,7 +21,8 @@ class EssayPage extends React.Component {
     if (status !== "COMPLETED") {
       const response = await fetchStudentTestScoreApi(student_id, student_test_id);
       if (!response || (response && response.message)) return null;
-      const { reading, writing, analysis } = response.essay;
+      if (!response.data.essay) return null;
+      const { reading, writing, analysis } = response.data.essay;
       this.setState({
         readingScore: reading,
         analysisScore: analysis,

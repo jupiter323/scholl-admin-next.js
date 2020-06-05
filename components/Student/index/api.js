@@ -462,14 +462,6 @@ export const fetchStudentTestScoreApi = (student_id, student_test_id) =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      const formattedTestScores = data;
-      if (!formattedTestScores.essay) {
-        formattedTestScores.essay = { analysis: "", reading: "", writing: "" };
-        return formattedTestScores;
-      }
-      return formattedTestScores;
-    })
     .catch(err => err);
 export const updateStudentTestQuestionFlagStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-question-flag-status`, {
@@ -721,7 +713,7 @@ export const updateStudentTestStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 

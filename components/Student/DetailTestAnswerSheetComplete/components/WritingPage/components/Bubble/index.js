@@ -102,6 +102,7 @@ class BubbleGroup extends React.Component {
       });
       return { selectedIndex: letters.indexOf(student_answer), problemCells: revertedProblemCells };
     }
+    return null
   }
 
   componentDidMount = () => {

@@ -25,13 +25,13 @@ import {
   assignNewTest,
   fetchStudentTestSections,
   addNewTestToStudentTests,
-  setActiveTestScores,
   updateTestStatus,
   setStudentSections,
   setStudentTests,
   setStudentCompletedTests,
   setStudentOverDueTests,
   setStudentAssignedTests,
+  getTestScores,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -45,7 +45,6 @@ import {
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
-  fetchStudentTestScoreApi,
 } from '../index/api';
 
 class DetailTestList extends React.Component {
@@ -85,6 +84,11 @@ class DetailTestList extends React.Component {
     const { onSetActiveStudentTestId } = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
+    const postBody = {
+      id: this.props.activeStudent.id,
+      student_test_id: activeTest.student_test_id,
+    };
+    this.props.onFetchStudentTestSections(postBody);
     this.setState(
       ({ openEditTestModal }) => ({
         openEditTestModal: true,
@@ -135,11 +139,10 @@ class DetailTestList extends React.Component {
       const { onUpdateTestStatus } = this.props;
       await onUpdateTestStatus(postBody, 'STARTED', user.id);
     } else if (activeTest.status === 'COMPLETED') {
-      const { onSetScores, activeStudent: { id } } = this.props;
-      const response = await fetchStudentTestScoreApi(id, currentTestId);
-      onSetScores({ ...response, student_test_id: currentTestId });
+      const { activeStudent: { id }, onGetTestScores } = this.props;
+      const postBody = { studentId: id, student_test_id: currentTestId };
+      onGetTestScores(postBody);
     }
-    // this.setState({ openEnterAnswerWrapper: true, activeTest });
     this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
@@ -441,12 +444,12 @@ function mapDispatchToProps(dispatch) {
     onAssignNewTest: (newTest) => dispatch(assignNewTest(newTest)),
     onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
     onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
-    onSetScores: scores => dispatch(setActiveTestScores(scores)),
     onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetStudentTests: (tests) => dispatch(setStudentTests(tests)),
     onSetStudentCompletedTests: (tests) => dispatch(setStudentCompletedTests(tests)),
     onSetStudentOverDueTests: (tests) => dispatch(setStudentOverDueTests(tests)),
     onSetStudentAssignedTests: (tests) => dispatch(setStudentAssignedTests(tests)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
   };
 }
 
