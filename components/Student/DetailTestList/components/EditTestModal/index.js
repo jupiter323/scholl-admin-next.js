@@ -78,6 +78,7 @@ class EditTestModal extends React.Component {
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
       fetchScoresMsg: "",
+      updateTestStatusMsg: "",
       updateTestSectionMessage: "",
     };
   }
@@ -102,6 +103,7 @@ class EditTestModal extends React.Component {
   componentWillUnmount() {
     this.props.onRef(undefined);
     this.props.onResetErrorMessage("fetchScoresMsg");
+    this.props.onResetErrorMessage("updateTestStatusMsg");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -140,6 +142,11 @@ class EditTestModal extends React.Component {
     if (errorMessages.fetchScoresMsg && errorMessages.fetchScoresMsg !== this.state.fetchScoresMsg && errorMessages.fetchScoresMsg !== "") {
       this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
       toast.error(errorMessages.fetchScoresMsg);
+      this.props.onCloseEditTestModal();
+    }
+    if (errorMessages.updateTestStatusMsg && errorMessages.updateTestStatusMsg !== this.state.updateTestStatusMsg && errorMessages.updateTestStatusMsg !== "") {
+      this.setState({ updateTestStatusMsg: errorMessages.updateTestStatusMsg });
+      toast.error(errorMessages.updateTestStatusMsg);
       this.props.onCloseEditTestModal();
     }
   }
@@ -413,7 +420,6 @@ class EditTestModal extends React.Component {
       student_test_section_status: 'COMPLETED',
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
-    // const res = await updateStudentTestSectionStatusApi();
     if (res && res.message) {
       return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
     }

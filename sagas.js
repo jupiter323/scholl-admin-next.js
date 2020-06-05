@@ -1074,8 +1074,9 @@ function* watchForUpdateTestStatus() {
 function* handleUpdateTestStatus(action) {
   try {
     const response = yield call(updateStudentTestStatusApi, action.payload);
-    if (response && response.message) {
-      return console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
+    if (response && response.message && action.payload.status === "COMPLETED") {
+      console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
+      return yield put(sendErrorMessage("updateTestStatusMsg", `Something went wrong updating this test to ${action.payload.status}. Please try opening and resubmitting this test later.`));
     }
     yield put({
       type: UPDATE_TEST_STATUS_SUCCESS,
@@ -1109,6 +1110,7 @@ function* handleUpdateTestStatus(action) {
         scores: { ...response.data, student_test_id: action.payload.student_test_id },
       });
       yield put(resetErrorMessage("fetchScoresMsg"));
+      yield put(resetErrorMessage("updateTestStatusMsg"));
     }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateTestStatus saga", error);

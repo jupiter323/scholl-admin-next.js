@@ -416,7 +416,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
           <div className="main-slick">
             {this.renderCurrentSlide()}
           </div>
-          {activeSlide && activeSlide !== "essay" && !showSectionMessage && (
+          {activeSlide && activeSlide !== "essay" && status !== "COMPLETED" && (
             <div className="row">
               <div className="btn-holder right-align">
                 <a
@@ -431,7 +431,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
                     });
                   }}
                 >
-                  Submit Test Scores
+                  {!showSectionMessage ? "Submit Test Section" : "Resubmit Test"}
                 </a>
               </div>
             </div>)}

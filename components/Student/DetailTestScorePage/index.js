@@ -58,7 +58,7 @@ class DetailTestScorePage extends React.Component {
 
   loadingSpinner = () => (
     <div className="overlay-spinning">
-        Fetching Scores...
+      <h1>Fetching Scores...</h1>
       <div className="spinning" />
     </div>
   )

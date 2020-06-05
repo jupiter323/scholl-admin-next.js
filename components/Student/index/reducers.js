@@ -89,6 +89,7 @@ const initialState = fromJS({
     fetchSectionsMessage: "",
     fetchProblemsMessage: "",
     fetchScoresMsg: "",
+    updateTestStatusMsg: "",
   },
 });
 
