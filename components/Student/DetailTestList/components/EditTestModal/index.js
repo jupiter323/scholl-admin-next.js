@@ -61,10 +61,10 @@ class EditTestModal extends React.Component {
       ],
       adminInfo: 'Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com',
       userInfo: {
-        version: 'Version: SAT Practice Test #1',
+        version: '',
         target: 'Score Report',
-        test_date: 'September 28th, 2018',
-        name: 'Arnold Studently',
+        test_date: '',
+        name: '',
         test_type: 'Practice Test',
         order: '3rd'
      },
