@@ -43,6 +43,7 @@ class EssayPage extends React.Component {
       }
       return null;
     }
+    return null;
   }
 
   onSubmitScores = async () => {

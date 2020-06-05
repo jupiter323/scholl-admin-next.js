@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BubbleGroup from "../Bubble";
-import FreeResponseInput from '../FreeResponseInput';
+import FreeResponse from '../FreeResponse';
 import DropDownMenuOptions from '../DropDownOptions';
 
 class AnswerRow extends React.Component {
@@ -44,7 +44,7 @@ class AnswerRow extends React.Component {
       return (
         <>
           <li>
-            <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: true }} />
+            <FreeResponse problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: true }} />
           </li>
           <li key={student_answer}>
             <span
@@ -60,7 +60,7 @@ class AnswerRow extends React.Component {
     return (
       <React.Fragment>
         <li key={student_answer}>
-          <FreeResponseInput problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: false }} />
+          <FreeResponse problem={problem} testSection={testSection} answerStatus={{ complete: true, isCorrect: false }} />
         </li>
         <li key={correct_answer}>
           <span
@@ -103,7 +103,7 @@ class AnswerRow extends React.Component {
                 <Choose>
                   <When condition={this.getAnswerType(problem)}>{this.mapNumberBubbles()}</When>
                   <When condition={problem.type === "fill_in_the_blank"}>
-                    <FreeResponseInput
+                    <FreeResponse
                       problem={problem}
                       testSection={testSection}
                       answerStatus={{ complete: false }}
