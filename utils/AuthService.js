@@ -23,7 +23,6 @@ export const getToken = () => {
     // Is running on the client
     return sessionStorage.getItem('token');
   }
-  console.log('we are running on the server');
 };
 
 export const logout = () => {
