@@ -56,6 +56,16 @@ class DetailTestScorePage extends React.Component {
     </div>
   )
 
+  essayScoresCard = () => {
+    const { scores: { essay } } = this.props;
+    if (!essay) return null;
+    const { reading, writing, analysis } = essay;
+    if (reading !== "" && writing !== "" && analysis !== "") {
+      return (<EssayScoresCard essayScores={essay} />);
+    }
+    return null;
+  }
+
   render() {
     const { scores, test } = this.props;
     if (!scores) {
@@ -74,7 +84,7 @@ class DetailTestScorePage extends React.Component {
           </div>
           <div className="d-flex-content same-height justify-center row mb-0">
             <TestScoreCard subjectScores={subjects} />
-            <EssayScoresCard essayScores={essay} />
+            {this.essayScoresCard()}
           </div>
           <div className="d-flex-content justify-center row mb-0">
             <CrossTestScoresCard crossTestScores={cross_test_score} />
