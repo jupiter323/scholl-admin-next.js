@@ -15,4 +15,12 @@ module.exports = withCSS({
     env: {
       API_URL: process.env.API_URL,
     },
+    distDir: "_next",
+    generateBuildId: async () => {
+        if (process.env.BUILD_ID) {
+            return process.env.BUILD_ID;
+        } else {
+            return `${new Date().getTime()}`;
+        }
+    }
   });
