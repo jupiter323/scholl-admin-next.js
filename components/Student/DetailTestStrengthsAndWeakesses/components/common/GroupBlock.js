@@ -11,7 +11,6 @@ class GroupBlock extends React.Component {
 
   mapGroupRow = () => {
     const { data: { children, score } } = this.props;
-    // console.log('log: parent', this.props.data);
     if (children.length !== 0) {
       return children.map(children => <SubBlock data={children} parentTotal={score.total} key={children.id} />);
     }

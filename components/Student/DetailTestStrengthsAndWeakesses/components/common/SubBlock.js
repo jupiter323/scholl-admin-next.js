@@ -16,7 +16,6 @@ class SubBlock extends React.Component {
 
   renderSubBlock = data => {
     const { parentTotal } = this.props;
-    // console.log('log: lengths', (data.total / parentTotal) * 100)
     return (
       <React.Fragment>
         <div className="graph-row-block">
