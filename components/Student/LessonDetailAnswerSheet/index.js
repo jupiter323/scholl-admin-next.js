@@ -9,7 +9,7 @@ import ChallengeQuestions from './components/ChallengeQuestions';
 import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
-import { makeSelectUnitFilterOptions } from "../index/selectors";
+import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
 import DropDownMenu from '../DropDownMenu';
 
 
@@ -70,6 +70,7 @@ class LessonDetailAnswerSheet extends React.Component {
 
 
   componentDidMount = async () => {
+    console.log('log: component did mount answer sheet');
     const { lesson, user: { id: student_id } } = this.props;
     if (lesson.sections) { // lesson module type
       this.setState({
@@ -100,7 +101,7 @@ class LessonDetailAnswerSheet extends React.Component {
         }
       });
     }
-    if (lesson.problems && lesson.problems.length !== 0) {
+    if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
       this.setState({
         currentType: "Drill",
         hasDrill: true,
@@ -211,9 +212,9 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   render() {
-    const { challengeProblems, practiceProlems, drillProblems } = this.state;
+    const { challengeProblems, practiceProlems } = this.state;
     const { onCloseDetailModal, user,
-      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime } } = this.props;
+      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime }, activeLesson: { drillProblems } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
@@ -539,6 +540,7 @@ LessonDetailAnswerSheet.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   units: makeSelectUnitFilterOptions(),
+  activeLesson: makeSelectActiveLesson(),
 });
 
 const withConnect = connect(mapStateToProps, null);

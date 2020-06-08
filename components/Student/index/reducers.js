@@ -194,22 +194,22 @@ function studentReducer(state = initialState, action) {
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
-      // const getStudentLessonList = (studentLessonList) => studentLessonList.map(lesson => {
-      //   if (lesson.problems && lesson.problems.length > 0) {
-      //     lesson = { ...lesson, type: 'drill', selected: false };
-      //   } else if (lesson.sections) {
-      //     lesson = { ...lesson, type: 'module', selected: false };
-      //   } else if (lesson.problems && lesson.problems.length <= 0) {
-      //     lesson = { ...lesson, type: 'reading', selected: false };
-      //   }
-      //   return lesson;
-      // });
       return state.set('lessonList', [
         ...state.get('studentLessonList'),
         ...state.get('unassignedLessonList'),
       ]);
 
     case SET_ACTIVE_LESSON:
+      console.log('log: setting active lesson reducer');
+      action.activeLesson.challengeProblems = [];
+      action.activeLesson.practiceProblems = [];
+      // Object.assign({},{})
+      if (action.activeLesson.type.label === "Drill") {
+        action.activeLesson.drillProblems = action.activeLesson.problems;
+        delete action.activeLesson.problems;
+      } else {
+        action.activeLesson.drillProblems = [];
+      }
       return state.set('activeLesson', action.activeLesson);
 
     case SET_OPEN_ANSWERSHEET_STATUS:

@@ -239,7 +239,7 @@ class QuestionModal extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="card-panel">
+                  {/* <div className="card-panel">
                     <div className="panel-block">
                       <strong className="subtitle">Edit Student's Answer</strong>
                       <EditProblemRow
@@ -249,7 +249,7 @@ class QuestionModal extends React.Component {
                         problemType={this.props.problemType}
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </ClickOffComponentWrapper>
