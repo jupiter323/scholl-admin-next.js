@@ -17,7 +17,12 @@ class GroupBlock extends React.Component {
   };
 
   render() {
-    const { data: { name, score: { percent_correct, correct, incorrect, total } } } = this.props;
+    const { data: { name, score: { percent_correct, correct, incorrect, total } }, parentScores } = this.props;
+    console.log('log: parentScores', parentScores);
+    let width = 100;
+    if (parentScores && parentScores.score) {
+      width = (total / parentScores.score.total) * 100;
+    }
     return (
       <div className="graphs-block">
         <div className="graph-row graph-row-title">
@@ -33,7 +38,7 @@ class GroupBlock extends React.Component {
             <div className="graph-linear-students">
               <div
                 className="graph-holder"
-                style={{ width: `100%` }}
+                style={{ width: `${width}%` }}
               >
                 <div className="graph-admin">
                   <div
