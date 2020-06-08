@@ -22,7 +22,7 @@ const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide, scores }) =>
               Reading
             </a>
           </div>}
-          {scores.writingSCores && <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
+          {scores.writingScores && <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
             <a
               className={activeSlide === "writing" ? "active" : ""}
               onClick={() => onSetActiveSlide("writing")}
