@@ -30,6 +30,7 @@ class ReadingPage extends React.Component {
 
   mapGroupBlcok = () => {
     const { parentScores } = this.state;
+    console.log('log: parentScores', parentScores);
     return parentScores instanceof Array && parentScores.map(group => <GroupBlock data={group} key={group.id} />);
   };
 

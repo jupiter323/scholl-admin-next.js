@@ -15,6 +15,7 @@ class SubBlock extends React.Component {
   };
 
   renderSubBlock = data => {
+    console.log('log: percent', (data.score.incorrect / data.score.total * 100).toFixed(0));
     return (
       <React.Fragment>
         <div className="graph-row-block">
@@ -31,9 +32,15 @@ class SubBlock extends React.Component {
               <div className="graph-linear-students">
                 <div
                   className="graph-holder"
-                  style={{width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%`}}
+                  style={{ width: `100%` }}
                 >
                   <div className="graph-admin">
+                    <div
+                      className="part-green"
+                      style={{
+                        width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%`,
+                      }}
+                    />
                     <div
                       className="part-red"
                       style={{
@@ -41,24 +48,25 @@ class SubBlock extends React.Component {
                       }}
                     />
                   </div>
-                
+
+                </div>
               </div>
             </div>
+            <div className="graph-col graph-info">
+              <span className="text-large">
+                {data.score.correct}
+              </span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">
+                {data.score.total}
+              </span>
+            </div>
           </div>
-          <div className="graph-col graph-info">
-            <span className="text-large">
-              {data.score.correct}
-            </span>
-            <span className="text-small">out of</span>
-            <span className="text-large">
-              {data.score.total}
-            </span>
-          </div>
+          {this.mapSubRow(data)}
         </div>
-        {this.mapSubRow(data)}
-      </div>
-    </React.Fragment>
-  )};
+      </React.Fragment>
+    );
+  };
 
   render() {
     return this.renderSubBlock(this.props.data);

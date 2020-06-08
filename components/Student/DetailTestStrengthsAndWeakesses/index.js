@@ -114,6 +114,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   renderCurrentSlide = () => {
     const { activeSlide, readingScores, mathScores, writingScores } = this.state;
+    console.log('log: mathScores', mathScores);
     if (activeSlide === 'reading') {
       return <ReadingPage scores={readingScores} />;
     }

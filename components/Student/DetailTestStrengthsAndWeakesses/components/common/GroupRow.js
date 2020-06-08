@@ -25,7 +25,7 @@ const GroupRow = ({ data: { name, score: { percent_correct, correct, incorrect, 
       <span className="text-large">
         {correct}
       </span>
-      <span className="text-small">out of</span>
+      <span className="text-small"> out of </span>
       <span className="text-large">
         {total}
       </span>
