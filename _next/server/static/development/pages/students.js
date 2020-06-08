@@ -38928,7 +38928,7 @@ class DetailTestScorePage extends react__WEBPACK_IMPORTED_MODULE_2___default.a.C
           } = this.props;
           const [scoresImages] = await _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a.all([getTargetImage(document.getElementById('scoresRef'))]);
           resolve(scoresImages);
-        }, 3000);
+        }, 5000);
       });
     }));
 

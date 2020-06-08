@@ -45,7 +45,7 @@ class DetailTestScorePage extends React.Component {
             getTargetImage(document.getElementById('scoresRef')),
           ]);
           resolve(scoresImages);
-        }, 3000);
+        }, 5000);
       });
     });
 
