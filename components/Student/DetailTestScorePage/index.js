@@ -75,7 +75,6 @@ class DetailTestScorePage extends React.Component {
       return this.loadingSpinner();
     }
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
-    console.log('log: essay', essay);
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
