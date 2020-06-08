@@ -38908,15 +38908,14 @@ class DetailTestScorePage extends react__WEBPACK_IMPORTED_MODULE_2___default.a.C
         }
       } = this.props;
       return new _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(async resolve => {
-        if (!scores) {
-          const postBody = {
-            studentId: id,
-            student_test_id
-          };
-          onGetTestScores(postBody);
-        }
-
-        resolve();
+        const postBody = {
+          studentId: id,
+          student_test_id
+        };
+        onGetTestScores(postBody);
+        setTimeout(() => {
+          resolve();
+        }, 3000);
       });
     });
 
@@ -38928,7 +38927,7 @@ class DetailTestScorePage extends react__WEBPACK_IMPORTED_MODULE_2___default.a.C
           } = this.props;
           const [scoresImages] = await _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a.all([getTargetImage(document.getElementById('scoresRef'))]);
           resolve(scoresImages);
-        }, 5000);
+        }, 2000);
       });
     }));
 
@@ -38984,70 +38983,70 @@ class DetailTestScorePage extends react__WEBPACK_IMPORTED_MODULE_2___default.a.C
       id: "scoresRef",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 69
+        lineNumber: 68
       },
       __self: this
     }, __jsx("div", {
       className: "cards-section",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 70
+        lineNumber: 69
       },
       __self: this
     }, __jsx("div", {
       className: "d-flex-content same-height justify-center row mb-0",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 71
+        lineNumber: 70
       },
       __self: this
     }, __jsx(_components_TotalScoreCard__WEBPACK_IMPORTED_MODULE_7__["default"], {
       subjectScores: subjects,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 72
+        lineNumber: 71
       },
       __self: this
     })), __jsx("div", {
       className: "d-flex-content same-height justify-center row mb-0",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 75
+        lineNumber: 74
       },
       __self: this
     }, __jsx(_components_TestScoreCard__WEBPACK_IMPORTED_MODULE_9__["default"], {
       subjectScores: subjects,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 76
+        lineNumber: 75
       },
       __self: this
     }), __jsx(_components_EssayScoresCard__WEBPACK_IMPORTED_MODULE_10__["default"], {
       essayScores: essay,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 77
+        lineNumber: 76
       },
       __self: this
     })), __jsx("div", {
       className: "d-flex-content justify-center row mb-0",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 79
+        lineNumber: 78
       },
       __self: this
     }, __jsx(_components_CrossTestScoresCard__WEBPACK_IMPORTED_MODULE_11__["default"], {
       crossTestScores: cross_test_score,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 80
+        lineNumber: 79
       },
       __self: this
     }), __jsx(_components_SubscoresCard__WEBPACK_IMPORTED_MODULE_12__["default"], {
       subScores: sub_section_score,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 81
+        lineNumber: 80
       },
       __self: this
     }))));
