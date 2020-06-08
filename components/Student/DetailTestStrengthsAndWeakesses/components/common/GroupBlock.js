@@ -33,12 +33,16 @@ class GroupBlock extends React.Component {
             <div className="graph-linear-students">
               <div
                 className="graph-holder"
-                style={{ width: `${(correct / total * 100).toFixed(0)}%` }}
+                style={{ width: `100%` }}
               >
                 <div className="graph-admin">
                   <div
                     className="part-red"
                     style={{ width: `${(incorrect / total * 100).toFixed(0)}%` }}
+                  />
+                  <div
+                    className="part-green"
+                    style={{ width: `${(correct / total * 100).toFixed(0)}%` }}
                   />
                 </div>
               </div>

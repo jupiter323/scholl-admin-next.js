@@ -15,7 +15,9 @@ class SubBlock extends React.Component {
   };
 
   renderSubBlock = data => {
-    console.log('log: percent', (data.score.incorrect / data.score.total * 100).toFixed(0));
+    // console.log('log: percent', (data.score.incorrect / data.score.total * 100).toFixed(0));
+    console.log('log: data', data);
+    console.log('log: props', this.props);
     return (
       <React.Fragment>
         <div className="graph-row-block">
