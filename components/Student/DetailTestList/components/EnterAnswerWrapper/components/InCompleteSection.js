@@ -7,16 +7,17 @@ class InCompleteReadingTest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      problems: []
+      problems: [],
     };
   }
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
+    if (!testSection || !testSection.hasOwnProperty('problems')) return;
     const updatedProblems = update(this.state.problems, {
-      $set: testSection.problems
+      $set: testSection.problems.problems,
     });
     this.setState({
-      problems: updatedProblems
+      problems: updatedProblems,
     });
   };
 
@@ -33,8 +34,8 @@ class InCompleteReadingTest extends React.Component {
   render() {
     const {
       open,
-      testSection: { problems },
-      onEditTest
+      testSection,
+      handleTestScore,
     } = this.props;
     return (
       <div>
@@ -51,7 +52,7 @@ class InCompleteReadingTest extends React.Component {
                             className="answers-list answers-list-columns"
                             style={{ marginBottom: "20px" }}
                           >
-                            {problems && this.mapProblems()}
+                            {testSection && testSection.problems && this.mapProblems()}
                           </ol>
                         </div>
                       </div>
@@ -62,7 +63,7 @@ class InCompleteReadingTest extends React.Component {
                       <a
                         href="#"
                         className="btn btn-xlarge waves-effect waves-light bg-blue"
-                        onClick={onEditTest}
+                        onClick={() => handleTestScore(this.props.testSection)}
                       >
                         Score Test
                       </a>
@@ -83,7 +84,7 @@ InCompleteReadingTest.propTypes = {
   onAddStudentAnswerToTest: PropTypes.func.isRequired,
   testSection: PropTypes.object.isRequired,
   onStudentTestScore: PropTypes.func.isRequired,
-  onEditTest: PropTypes.func.isRequired
+  handleTestScore: PropTypes.func.isRequired,
 };
 
 export default InCompleteReadingTest;

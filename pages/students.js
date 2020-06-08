@@ -10,10 +10,14 @@ import PropTypes from "prop-types";
 import { createStructuredSelector } from "reselect";
 import {
   fetchStudents,
-  createStudent,
   deleteStudent,
-  setStudents
+  setStudents,
+  setActiveStudent,
 } from "../components/Student/index/actions";
+
+
+import { createStudentApi } from "../components/Student/index/api";
+
 import { makeSelectStudents } from "../components/Student/index/selectors";
 import StudentCard from "../components/Student/components/StudentCard";
 import FilterSection from "../components/Student/ListPage/Components/FilterSection";
@@ -25,13 +29,22 @@ import {
   studentFirstNameAscending,
   studentFirstNameDescending,
   studentLastNameAscending,
-  studentLastNameDescending
+  studentLastNameDescending,
 } from "../components/utils/sortFunctions";
-import { loggedIn } from "../utils/AuthService";
+import { loggedIn, logIn } from "../utils/AuthService";
+
+
+import {
+  fetchAllLocationns,
+} from '../components/Location/index/actions';
+
+import { makeSelectLocations } from "../components/Location/index/selectors";
+import { makeSelectCurrentUser } from "../components/User/index/selectors";
+
 // eslint-disable-next-line prefer-template
 const idGenerator = () =>
   `${subIdGenerator() +
-    subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
+  subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}-${subIdGenerator()}${subIdGenerator()}${subIdGenerator()}`;
 const subIdGenerator = () =>
   Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
@@ -54,23 +67,23 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
-          addressLine1: "",
-          addressLine2: "",
+          addressLine: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
+      hasRequiredFields: true,
     };
   }
 
@@ -78,12 +91,21 @@ class Students extends Component {
     if (!loggedIn()) {
       Router.push("/login");
     } else {
-      const { onFetchStudents, students } = this.props;
+      const { onFetchStudents, students, locations, onFetchAllLocationns } = this.props;
       if (students.length === 0) {
         onFetchStudents();
       }
     }
   };
+
+  componentWillReceiveProps = (nextProps) => {
+    const { onFetchAllLocationns } = this.props;
+    const { locations } = nextProps;
+    if (!locations && nextProps.currentUser) {
+      const { currentUser: { id } } = nextProps;
+      onFetchAllLocationns(id);
+    }
+  }
 
   componentDidUpdate() {
     const { students: studentState } = this.state;
@@ -107,38 +129,156 @@ class Students extends Component {
   onUnsetFilteredLocationState = () => this.setState({ location: "" });
 
   // TODO add a toas or some notification that a student has been saved
-  onSaveNewStudent = () => {
+  onSaveNewStudent = async () => {
     const { newStudent: previousStudentState } = this.state;
-
+    const { onFetchStudents } = this.props;
+    const { firstName, lastName } = previousStudentState.studentInformation;
     // dispatch add student action
-    const { onCreateStudent, onFetchStudents } = this.props;
-    onCreateStudent(previousStudentState);
-
+    if (!firstName || !lastName) return this.setState({ hasRequiredFields: false });
+    const { firstName: first_name, lastName: last_name } = previousStudentState.studentInformation;
+    const { email } = previousStudentState.emailAddress;
+    const {
+      state,
+      addressLine,
+      city,
+      phone,
+      zipCode: zip,
+    } = previousStudentState.contactInformation;
+    const { locations } = previousStudentState.location;
+    const formattedLocations = locations.map(location => location.id);
+    const studentPayload = {
+      first_name,
+      last_name,
+      email,
+      state,
+      locations: formattedLocations,
+      phone,
+      address: `${addressLine}`,
+      city,
+      zip,
+    };
+    const { user_id: id } = await createStudentApi(studentPayload);
+    const {
+      studentInformation,
+      contactInformation,
+      emailAddress,
+      location,
+    } = previousStudentState;
+    const newTestStudent = {
+      id,
+      active: false,
+      studentInformation,
+      contactInformation,
+      emailAddress,
+      location,
+      stats: {
+        complete: 0,
+        overdue: 0,
+        practice_tests: 0,
+        sessions_complete: 0,
+        total_sessions: 0,
+      },
+      tutor: "",
+      testScores: {
+        initialScore: "0",
+        currentScore: "0",
+      },
+      courseContext: {
+        courseStartDateOption: "secondOption",
+        courseStartDate: "",
+        courseEndDateOption: "secondOption",
+        courseEndDate: "",
+        targetTestDate: "12/12/2019",
+        targetScore: "1400",
+        highSchool: "Everglades High",
+        graduationYear: "2018",
+      },
+      courseProgress: {
+        startDate: "6/03/18",
+        testDate: "10/14/18",
+        progress: "77",
+        improvement: "82",
+        lessons: "73",
+        instruction: "68",
+        practiceTests: "47",
+      },
+      overdueWork: {
+        lessons: "12",
+        worksheets: "3",
+        quizzes: "1",
+        practiceTests: "5",
+      },
+      summary: {
+        questionsAnswered: "791",
+        videoWatched: "416",
+        notesTaken: "52",
+        totalTimeLoggedIn: "220",
+        lastLogIn: "3:12",
+        loginTimeCode: "pm",
+        onTimePercentage: "77",
+      },
+      testScores: {
+        initialScore: "1040",
+        currentScore: "1300",
+        compositeScore: {
+          reading: "83",
+          writing: "31",
+          math: "105",
+          composite: "218",
+        },
+        subjectScores: {
+          reading: "58",
+          writing: "44",
+          math: "91",
+          composite: "195",
+        },
+      },
+      strengthsAndWeaknesses: {
+        reading: {
+          correctAnswers: "32",
+          totalAnswers: "52",
+        },
+        writing: {
+          correctAnswers: "35",
+          totalAnswers: "52",
+        },
+        math: {
+          correctAnswers: "37",
+          totalAnswers: "52",
+        },
+      },
+    };
     const newStudent = update(previousStudentState, {
       $set: {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
-          addressLine1: "",
-          addressLine2: "",
+          addressLine: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+
+
+      },
     });
     this.setState({ newStudent });
-    onFetchStudents();
+    const updatedStudents = update(this.state.students, {
+      $push: [newTestStudent],
+    });
+    this.setState({ students: updatedStudents });
+    // const { onSetStudents } = this.props;
+    // onSetStudents(updatedStudents);
     this.onCloseStudentModal();
   };
 
@@ -149,23 +289,22 @@ class Students extends Component {
         active: false,
         studentInformation: {
           firstName: "",
-          lastName: ""
+          lastName: "",
         },
         contactInformation: {
           phone: "",
-          addressLine1: "",
-          addressLine2: "",
+          addressLine: "",
           city: "",
           state: "",
-          zipCode: ""
+          zipCode: "",
         },
         emailAddress: {
-          email: ""
+          email: "",
         },
         location: {
-          locations: []
-        }
-      }
+          locations: [],
+        },
+      },
     });
     this.setState({ newStudent });
   };
@@ -173,11 +312,11 @@ class Students extends Component {
   onRemoveLocation = index => {
     const { newStudent: previousStudentState } = this.state;
     const {
-      location: { locations }
+      location: { locations },
     } = this.state.newStudent;
     const newLocationsArray = this.arrayItemRemover(locations, locations[index]);
     const newStudent = update(previousStudentState, {
-      location: { $set: { locations: newLocationsArray } }
+      location: { $set: { locations: newLocationsArray } },
     });
     this.setState({ newStudent });
   };
@@ -186,7 +325,7 @@ class Students extends Component {
     const { students, nameFilter } = this.state;
     return students.reduce((finalArr, currentStudent) => {
       const {
-        studentInformation: { firstName, lastName }
+        studentInformation: { firstName, lastName },
       } = currentStudent;
       const studentString = `${firstName}${lastName}`.replace(/\s/g, "").toLowerCase();
       if (studentString.indexOf(nameFilter) !== -1 && finalArr.indexOf(currentStudent) === -1) {
@@ -196,8 +335,10 @@ class Students extends Component {
     }, []);
   };
 
-  onHandleStudentCard = index => {
+  onHandleStudentCard = async index => {
     const { students } = this.state;
+    const { onSetActiveStudent } = this.props;
+    onSetActiveStudent(students[index]);
     this.setState({ selectedStudent: students[index] });
   };
 
@@ -221,7 +362,7 @@ class Students extends Component {
   onCloneStudent = index => {
     const { students } = this.state;
     const newStudent = update(students[index], {
-      id: { $set: idGenerator() }
+      id: { $set: idGenerator() },
     });
     this.setState(prevState => {
       prevState.students.push(newStudent);
@@ -233,7 +374,7 @@ class Students extends Component {
     const { newStudent: previousStudentState } = this.state;
     const value = event.target ? event.target.value : event;
     const updatedStudent = update(previousStudentState, {
-      [section]: { $merge: { [name]: value } }
+      [section]: { $merge: { [name]: value } },
     });
     this.setState({ newStudent: updatedStudent });
   };
@@ -245,19 +386,14 @@ class Students extends Component {
       studentInformation,
       contactInformation,
       emailAddress,
-      location
+      location,
     } = updatedStudent;
     const studentToUpdate = originalStudents.filter(student => student.id === updatedStudent.id)[0];
     const updatedStudentIndex = originalStudents.indexOf(studentToUpdate);
-<<<<<<< HEAD
     const students = update(originalStudents, {
       [updatedStudentIndex]: {
-        $merge: { active, studentInformation, contactInformation, emailAddress, location }
-=======
-    const students = update(originalStudents, {[updatedStudentIndex]: {
-        $merge: {active,studentInformation,contactInformation,emailAddress,location}
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-      }
+        $merge: { active, studentInformation, contactInformation, emailAddress, location },
+      },
     });
     this.setState({ students });
     const { onSetStudents } = this.props;
@@ -313,6 +449,7 @@ class Students extends Component {
       />
     ));
 
+  updateStudentStatus = () => this.setState({ selectedStudent: { ...this.state.selectedStudent, active: true } })
   render() {
     const { studentModalOpen, selectedStudent } = this.state;
     return (
@@ -366,6 +503,7 @@ class Students extends Component {
                   onOpenLocationModal={this.onOpenLocationModal}
                   onRemoveLocation={this.onRemoveLocation}
                   onDeleteNewStudent={this.onDeleteNewStudent}
+                  hasRequiredFields={this.state.hasRequiredFields}
                 />
                 <LocationModal
                   open={this.state.locationModalOpen}
@@ -380,6 +518,7 @@ class Students extends Component {
               <IndividualStudentPage
                 student={selectedStudent}
                 onRedirectToStudentPage={this.onRedirectToStudentPage}
+                updateStudentStatus={this.updateStudentStatus}
               />
             )}
           </StickyContainer>
@@ -394,18 +533,22 @@ Students.propTypes = {
   onFetchStudents: PropTypes.func.isRequired,
   onCreateStudent: PropTypes.func.isRequired,
   onDeleteStudent: PropTypes.func.isRequired,
-  onSetStudents: PropTypes.func.isRequired
+  onSetStudents: PropTypes.func.isRequired,
+  locations: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  students: makeSelectStudents()
+  students: makeSelectStudents(),
+  locations: makeSelectLocations(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeleteStudent: id => dispatch(deleteStudent(id)),
   onFetchStudents: () => dispatch(fetchStudents()),
   onSetStudents: students => dispatch(setStudents(students)),
-  onCreateStudent: student => dispatch(createStudent(student))
+  onSetActiveStudent: student => dispatch(setActiveStudent(student)),
+  onFetchAllLocationns: (user_id) => dispatch(fetchAllLocationns(user_id)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

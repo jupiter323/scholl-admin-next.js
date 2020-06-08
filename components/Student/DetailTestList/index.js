@@ -1,203 +1,172 @@
 /* eslint-disable no-console */
-import React from "react";
-import PropTypes from "prop-types";
-import update from "immutability-helper";
-import Moment from "moment";
+import React from 'react';
+import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import Moment from 'moment';
+import { toast } from 'react-toastify';
+import Toast from '../../Toast';
 import { connect } from "react-redux";
 import { compose } from "redux";
-<<<<<<< HEAD
 import { createStructuredSelector } from "reselect";
 import AssignedTestCard from "./components/AssignedTestCard";
+import OverDueTestCard from "./components/OverDueTestCard";
 import CompletedTestCard from "./components/CompletedTestCard";
 import EditTestModal from "./components/EditTestModal";
 import NewTestModal from "./components/TestModal";
 import TestSettingModal from "./components/TestSettingModal";
 import EnterAnswerWrapper from "./components/EnterAnswerWrapper";
 import CardHeader from "./components/CardHeader";
-import { setIsVisibleTopBar, fetchStudentTests, setActiveStudentTestId } from "../index/actions";
+import {
+  setIsVisibleTopBar,
+  fetchStudentTests,
+  setActiveStudentTestId,
+  deleteStudentTest,
+  updateTestFlag,
+  assignNewTest,
+  fetchStudentTestSections,
+  addNewTestToStudentTests,
+  updateTestStatus,
+  setStudentSections,
+  setStudentTests,
+  setStudentCompletedTests,
+  setStudentOverDueTests,
+  setStudentAssignedTests,
+  getTestScores,
+} from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
   makeSelectCompletedStudentTests,
   makeSelectAssignedStudentTests,
-  makeSelectStudentTests
-} from "../index/selectors";
-import { assignTestToStudentApi, addStudentAnswerToTestApi } from "../index/api";
-
-// import sampleTests from "./utils/sampleTests";
-=======
-import FutureTestCard from "./components/FutureTestCard";
-import CompletedTestCard from "./components/CompletedTestCard";
-import TestSections from "../TestSections";
-// import sampleTests from "./utils/sampleTests";
-import EditTestModal from "./components/EditTestModal";
-import NewTestModal from "./components/TestModal";
-import StartTestWrapper from "./components/StartTestPage";
-import CompletedTestDetailView from "./components/CompletedTestDetailView";
-import { setIsVisibleTopBar } from "../index/actions";
-
+  makeSelectStudentTests,
+  makeSelectTests,
+  makeSelectActiveStudent,
+  makeSelectFetchStudentTestsStatus,
+} from '../index/selectors';
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
-  fetchTestsByStudentIdApi,
-  fetchStudentTestScoreApi
-} from "../index/api";
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-
-const uuidGenerator = require("uuid/v4");
+} from '../index/api';
 
 class DetailTestList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
       activeTest: {},
+      activePage: "scores",
       dropdownIndex: null,
       dropdownIsOpen: false,
       openEditTestModal: false,
       openCreateTestModal: false,
       opentTestSettingModal: false,
-      openEnterAnswerWrapper: false
-=======
-      tests: [],
-      currentTestSection: {},
-      dropdownIndex: null,
-      dropdownIsOpen: false,
-      editTestModalOpen: false,
-      testDetailViewOpen: false,
-      activeCompletedTestCard: false,
-      StartTestWrapperOpen: false,
-      activeTest: null,
-      selectedTest: null,
-      createTestModalOpen: false,
-      existTestsData: false
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+      openEnterAnswerWrapper: false,
     };
   }
 
   componentDidMount = async () => {
-<<<<<<< HEAD
-    const { onFetchStudentTests, overdues, completes, assigneds, user } = this.props;
-    if (overdues.length === 0 && completes.length === 0 && assigneds.length === 0) {
+    const { onFetchStudentTests, studentTests, activeStudent, user } = this.props;
+    if (studentTests.length === 0) {
       onFetchStudentTests(user);
-=======
-    if (this.state.tests.length === 0) {
-      const { id } = this.props.user;
-      const { formattedStudentTests: tests } = await fetchTestsByStudentIdApi(id);
-      if (tests.length !== 0) {
-        this.setState({
-          tests,
-          existTestsData: true
-        });
-      } else {
-        this.setState({
-          existTestsData: false
-        });
-      }
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+    } else if (studentTests.length > 0 && studentTests[0].student_id !== activeStudent.id) {
+      onFetchStudentTests(user);
     }
   };
 
-  onGetStudentScoresByStudentTestId = async(test) =>{
-    const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
+  componentWillUnmount = () => {
+    this.props.onSetStudentTests([]);
+    this.props.onSetStudentCompletedTests([]);
+    this.props.onSetStudentOverDueTests([]);
+    this.props.onSetStudentAssignedTests([]);
   }
 
-  onToggleEditTestModal = (activeTest = null) => {
+  onSetActiveTestComplete = () => this.setState({ activeTest: { ...this.state.activeTest, status: "COMPLETED" } })
+
+  onToggleEditTestModal = async (activeTest) => {
     const { onSetActiveStudentTestId } = this.props;
     onSetActiveStudentTestId(activeTest.student_test_id);
     this.onSetIsVisibleTopBar(false);
+    const postBody = {
+      id: this.props.activeStudent.id,
+      student_test_id: activeTest.student_test_id,
+    };
+    this.props.onFetchStudentTestSections(postBody);
     this.setState(
-<<<<<<< HEAD
       ({ openEditTestModal }) => ({
-        openEditTestModal: !openEditTestModal,
+        openEditTestModal: true,
         openEnterAnswerWrapper: false,
-=======
-      ({ editTestModalOpen }) => ({
-        editTestModalOpen: !editTestModalOpen,
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-        activeTest
+        activeTest,
+        activePage: 'scores',
       }),
-      this.onCloseDropdown
+      this.onCloseDropdown,
     );
   };
   onCloseEditTestModal = () => {
     this.onSetIsVisibleTopBar(true);
     this.setState(({ openEditTestModal }) => ({
       openEditTestModal: !openEditTestModal,
-      openEnterAnswerWrapper: false
+      openEnterAnswerWrapper: false,
     }));
   };
 
-  onToggleCompleteTestDetailView = () => {
-    this.setState(({ testDetailViewOpen }) => ({
-      testDetailViewOpen: !testDetailViewOpen
-    }));
-  };
-
-  onSetDropdown = dropdownIndex =>
-    this.setState({ dropdownIndex, dropdownIsOpen: true });
-  onCloseDropdown = () =>
-    this.setState({ dropdownIsOpen: false, dropdownIndex: null });
+  onSetDropdown = dropdownIndex => this.setState({ dropdownIndex, dropdownIsOpen: true });
+  onCloseDropdown = () => this.setState({ dropdownIsOpen: false, dropdownIndex: null });
 
   handleTestSettingModalOpen = activeTest => {
     this.onCloseDropdown();
     this.setState(({ opentTestSettingModal }) => ({
       activeTest,
-      opentTestSettingModal: !opentTestSettingModal
+      opentTestSettingModal: !opentTestSettingModal,
     }));
   };
 
   onCreateTest = event => {
     event.preventDefault();
-<<<<<<< HEAD
     this.setState({ openCreateTestModal: true });
-    console.warn("Pending implementation of create test UI and functionality");
+    console.warn('Pending implementation of create test UI and functionality');
   };
 
-  onEnterAnswers = currentTestId => {
+  onEnterAnswers = async currentTestId => {
+    const { onFetchStudentTestSections, user, studentTests } = this.props;
+    // Have to clear all sections to have no side effects for now
+    onFetchStudentTestSections({ id: user.id, student_test_id: currentTestId });
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
-    const activeTest = this.props.tests.find(test => test.test_id === currentTestId);
-    this.setState({ openEnterAnswerWrapper: true, activeTest });
+    const activeTest = studentTests.find(test => test.student_test_id === currentTestId);
+    if (activeTest.status === 'ASSIGNED') {
+      const postBody = {
+        student_test_id: currentTestId,
+        status: 'STARTED',
+      };
+      const { onUpdateTestStatus } = this.props;
+      await onUpdateTestStatus(postBody, 'STARTED', user.id);
+    } else if (activeTest.status === 'COMPLETED') {
+      const { activeStudent: { id }, onGetTestScores } = this.props;
+      const postBody = { studentId: id, student_test_id: currentTestId };
+      onGetTestScores(postBody);
+    }
+    this.setState({ openEditTestModal: true, activeTest, activePage: "answerSheet" });
   };
 
   onDownloadReport = activeTest => {
-    console.log("downloading...");
     this.onSetIsVisibleTopBar(false);
     this.onCloseDropdown();
     this.setState(
       {
         activeTest,
-        openEditTestModal: true
+        openEditTestModal: true,
       },
       async () => {
         await this.editTestModal.generateScoreReportPdf();
-      }
+      },
     );
   };
-=======
-    this.setState({ createTestModalOpen: true });
-    console.warn("Pending implementation of create test UI and functionality");
-  };
-
-  onEnterAnswers = (currentTestId,test) => {
-    const currentTestSection = this.state.tests.find(test => test.test_id === currentTestId);
-    this.setState({ StartTestWrapperOpen: true, currentTestSection });
-  };
-
-  onEditTest = () =>
-    console.warn("Pending implementation edit test UI and functionality");
-  onDownloadReport = () =>
-    console.warn(
-      "Pending implementation of download report ui and functionality"
-    );
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-  onDeleteTest = () => {
+  onDeleteTest = (student_test_id, student_id, type) => {
     this.onSetIsVisibleTopBar(true);
     this.setState({ openEditTestModal: false }, () =>
-      console.warn("Pending implementation of delete test UI and functionality")
+      this.props.onDeleteStudentTest(student_test_id, student_id, type),
     );
+  };
+  onTestFlagReviewed = (student_test_id, student_id) => {
+    this.props.onUpdateTestFlag(student_test_id, student_id);
   };
   onSetIsVisibleTopBar = value => {
     const { onSetIsVisibleTopBar } = this.props;
@@ -206,36 +175,38 @@ class DetailTestList extends React.Component {
   onSaveTestChanges = (testVersion, settings) => {
     this.onToggleEditTestModal();
     this.onSetIsVisibleTopBar(true);
-<<<<<<< HEAD
-    console.warn("Pending save test changes functionality", testVersion, settings);
+    console.warn('Pending save test changes functionality', testVersion, settings);
   };
 
   mapCompletedTests = () => {
     const { dropdownIndex, dropdownIsOpen } = this.state;
     const { completes } = this.props;
-    return completes.map(test => (
-      <CompletedTestCard
+    return completes.map((test, index) =>
+      (<CompletedTestCard
         test={test}
-        index={test.test_id}
-        key={test.test_id}
+        index={`completed${index}`}
+        key={`completed-${index}`}
         onEnterAnswers={this.onEnterAnswers}
-        onEditTest={() => this.onToggleEditTestModal(test)}
+        onEditTest={() => this.onToggleEditTestModal({ ...test, status: 'COMPLETED' })}
         onSetDropdown={this.onSetDropdown}
         onCloseDropdown={this.onCloseDropdown}
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-      />
-    ));
+        onTestFlagReviewed={this.onTestFlagReviewed}
+        onDeleteTest={this.onDeleteTest}
+        handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
+      />),
+    );
   };
 
   mapAssignedTests = () => {
     const { dropdownIndex, dropdownIsOpen } = this.state;
     const { assigneds } = this.props;
-    return assigneds.map((test, index) => (
-      <AssignedTestCard
+    return assigneds.map((test, index) =>
+      (<AssignedTestCard
         test={test}
-        key={`future-${test.test_id}`}
+        key={`assigned-${index}`}
         handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
         onDeleteTest={this.onDeleteTest}
         onSetDropdown={this.onSetDropdown}
@@ -244,155 +215,131 @@ class DetailTestList extends React.Component {
         onDownloadReport={this.onDownloadReport}
         dropdownIndex={dropdownIndex}
         dropdownIsOpen={dropdownIsOpen}
-        index={assigneds.length + index}
-      />
-    ));
+        index={`assigned${index}`}
+        onTestFlagReviewed={this.onTestFlagReviewed}
+      />),
+    );
+  };
+  mapOverDueTests = () => {
+    const { dropdownIndex, dropdownIsOpen } = this.state;
+    const { overdues } = this.props;
+    return overdues.map((test, index) =>
+      (<OverDueTestCard
+        test={test}
+        key={`overdue-${index}`}
+        handleTestSettingModalOpen={() => this.handleTestSettingModalOpen(test)}
+        onDeleteTest={this.onDeleteTest}
+        onSetDropdown={this.onSetDropdown}
+        onEnterAnswers={this.onEnterAnswers}
+        onCloseDropdown={this.onCloseDropdown}
+        onDownloadReport={this.onDownloadReport}
+        dropdownIndex={dropdownIndex}
+        dropdownIsOpen={dropdownIsOpen}
+        index={`overdue${index}`}
+        onTestFlagReviewed={this.onTestFlagReviewed}
+      />),
+    );
   };
 
   onCloseTestModal = () => this.setState({ openCreateTestModal: false });
   onCloaseAnswerWrapper = async () => {
     this.onSetIsVisibleTopBar(true);
     this.setState({
-      openEnterAnswerWrapper: false
-=======
-    console.warn(
-      "Pending save test changes functionality",
-      testVersion,
-      settings
-    );
-  };
-  openTestScores = index => {
-    const { tests } = this.state;
-    const newTestArray = tests.filter(test => test.status === "complete");
-    this.setState({ selectedTest: newTestArray[index.index] });
-  };
-
-  mapCompletedTests = () => {
-    const {
-      activeCompletedTestCard,
-      scores,
-      existTestsData,
-      tests
-    } = this.state;
-    //We are using 0 as index.In the future,The Completed Test Card should be mapping so that index should be unique
-    return tests
-      .filter(test => test.status === "COMPLETED").map((test, index) =>existTestsData && (
-            <CompletedTestCard
-              scores={this.onGetStudentScoresByStudentTestId()}
-              test={test}
-              index={test.test_id}
-              onDetailTest={() => this.onToggleCompleteTestDetailView()}
-              onSetDropdown={this.onSetDropdown}
-              onCloseDropdown={this.onCloseDropdown}
-              onDownloadReport={this.onDownloadReport}
-              dropdownIndex={this.state.dropdownIndex}
-              dropdownIsOpen={this.state.dropdownIsOpen}
-            />
-          )
-      );
-  };
-
-  mapFutureTests = () => {
-    const { tests, existTestsData } = this.state;
-
-    return tests
-      .filter(test => test.status === "ASSIGNED")
-      .map(
-        (test, index) =>
-          existTestsData && (
-            <FutureTestCard
-              futureTest
-              test={test}
-              key={`future-${test.test_id}`}
-              onEditTest={() => this.onToggleEditTestModal(test)}
-              onDeleteTest={this.onDeleteTest}
-              onSetDropdown={this.onSetDropdown}
-              onEnterAnswers={this.onEnterAnswers}
-              onCloseDropdown={this.onCloseDropdown}
-              onDownloadReport={this.onDownloadReport}
-              dropdownIndex={this.state.dropdownIndex}
-              dropdownIsOpen={this.state.dropdownIsOpen}
-              openTestScores={this.openTestScores}
-              index={
-                tests.filter(filterTest => filterTest.status === "ASSIGNED")
-                  .length + index
-              }
-            />
-          )
-      );
-  };
-
-  onCloseTestModal = () => this.setState({ createTestModalOpen: false });
-
-  onOpenStudentAnswerModal = () =>
-    this.setState({ StartTestWrapperOpen: true });
-
-  onActiveCompletedTestCard = async () => {
-    this.setState({
-      StartTestWrapperOpen: false,
-      activeCompletedTestCard: true,
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+      openEnterAnswerWrapper: false,
     });
     this.onCloseDropdown();
   };
 
-  onSaveNewTest = test => {
+  onSaveNewTest = async test => {
+    const { studentTests, tests } = this.props;
+    if (!this.props.activeStudent.active && studentTests.length >= 1) {
+      return toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
     this.onCloseTestModal();
-    const { tests: prevTestsState } = this.props;
-    const newTestNumber = prevTestsState.length + 1;
-    const sampleNewTest = {
-      id: uuidGenerator(),
-      status: "future",
-      title: `Practice Test ${newTestNumber}`,
-      testDate: Moment(test.assignDate).format("YYYY-MM-DD"),
-      dueDate: Moment(test.dueDate).format("YYYY-MM-DD"),
-      completionDate: "",
-      completionTime: "",
-      weekNumber: "3",
-      subjects: [{}, {}]
-    };
-    const updatedTests = update(prevTestsState, { $push: [sampleNewTest] });
-    this.setState({ tests: updatedTests });
-    const {
-      user: { id }
-    } = this.props;
+    const test_sections = [];
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test.version);
+    const currentTest = tests[currentTestIndex];
+
+    const { user: { id } } = this.props;
+    currentTest.test_sections.map(testSection => {
+      if (testSection.name === 'Reading' && test.reading) {
+        test_sections.push(testSection);
+      }
+      if (testSection.name === 'Writing' && test.writing) {
+        test_sections.push(testSection);
+      }
+      if (testSection.name === 'Math (No Calculator)' && test.mathNoCalc) {
+        test_sections.push(testSection);
+      }
+      if (testSection.name === 'Math (Calculator)' && test.mathWithCalc) {
+        test_sections.push(testSection);
+      }
+    });
+    if (test_sections.length === 0) {
+      return toast.error(`Cannot assign a test without selecting one or more sections.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
     const postBody = {
       student_id: id,
-      test_id: uuidGenerator(),
-      assignment_date: Moment(test.assignDate).format("YYYY-MM-DD"),
-      due_date: Moment(test.dueDate).format("YYYY-MM-DD")
+      test_id: test.version,
+      assignment_date: Moment(test.assignDate).format('YYYY-MM-DD'),
+      due_date: Moment(test.dueDate).format('YYYY-MM-DD'),
+      test_section_ids: test_sections.map(testSection => testSection.id),
+      is_timed: test.isTimed,
     };
-    assignTestToStudentApi(postBody);
+    const { student_test_id } = await assignTestToStudentApi(postBody);
+    if (student_test_id) {
+      const formattedNewTest = {
+        assignment_date: test.assignDate,
+        due_date: test.dueDate,
+        due_status: '',
+        status: 'ASSIGNED',
+        student_id: id,
+        student_test_id,
+        test_description: currentTest.description,
+        test_form: '3',
+        test_id: test.version,
+        test_name: currentTest.name,
+      };
+      const { onAssignNewTest, onAddNewTestToStudentTests } = this.props;
+      onAssignNewTest(formattedNewTest);
+      onAddNewTestToStudentTests(formattedNewTest);
+    } else {
+      toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
+        className: 'update-error',
+        progressClassName: 'progress-bar-error',
+      });
+    }
   };
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
-<<<<<<< HEAD
-    const {
-      activeTest: { student_test_id }
-    } = this.state;
-=======
-    const { currentTestSection:{student_test_id} } = this.state;
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+    const { activeTest: { student_test_id } } = this.state;
     const postBody = {
       student_test_id,
       test_problem_id,
-      answer
+      answer,
     };
     await addStudentAnswerToTestApi(postBody);
   };
 
   render() {
     const {
-<<<<<<< HEAD
       openEditTestModal,
       openCreateTestModal,
       openEnterAnswerWrapper,
       activeTest,
-      opentTestSettingModal
+      opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds } = this.props;
+    const { user, completes, assigneds, overdues, studentTestsFetchedStatus } = this.props;
     return (
       <React.Fragment>
+        <Toast />
         <Choose>
           <When condition={openEditTestModal}>
             <EditTestModal
@@ -402,15 +349,25 @@ class DetailTestList extends React.Component {
               onDeleteTest={this.onDeleteTest}
               onSaveTestChanges={this.onSaveTestChanges}
               onCloseEditTestModal={this.onCloseEditTestModal}
+              activePage={this.state.activePage}
+              onOpentTestScore={this.onToggleEditTestModal}
             />
           </When>
           <When condition={openEnterAnswerWrapper}>
-            <EnterAnswerWrapper
+            {/* <EnterAnswerWrapper
               open={openEnterAnswerWrapper}
               onCloaseAnswerWrapper={this.onCloaseAnswerWrapper}
               onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
               test={activeTest}
-              onEditTest={() => this.onToggleEditTestModal(activeTest)}
+              onOpentTestScore={() => this.onToggleEditTestModal(activeTest)}
+            /> */}
+          </When>
+          <When condition={opentTestSettingModal}>
+            <TestSettingModal
+              open={opentTestSettingModal}
+              test={activeTest}
+              onClose={this.handleTestSettingModalOpen}
+              onSave={this.onSaveNewTest}
             />
           </When>
           <Otherwise>
@@ -419,79 +376,29 @@ class DetailTestList extends React.Component {
               onClose={this.onCloseTestModal}
               onSave={this.onSaveNewTest}
             />
-            <TestSettingModal
-              open={opentTestSettingModal}
-              test={activeTest}
-              onClose={this.handleTestSettingModalOpen}
-              onSave={this.onSaveNewTest}
-            />
             <div className="content-section">
               <div className="section-holder">
-                {assigneds.length !== 0 && (
-=======
-      editTestModalOpen,
-      createTestModalOpen,
-      StartTestWrapperOpen,
-      activeTest,
-      selectedTest,
-      currentTestSection,
-      testDetailViewOpen
-    } = this.state;
-    const { user } = this.props;
-    return (
-      <React.Fragment>
-        {!selectedTest && (
-          <Choose>
-            <When condition={editTestModalOpen}>
-              <EditTestModal
-                user={user}
-                test={activeTest}
-                onDeleteTest={this.onDeleteTest}
-                onSaveTestChanges={this.onSaveTestChanges}
-              />
-            </When>
-            <When condition={testDetailViewOpen}>
-              <CompletedTestDetailView
-                user={user}
-                test={activeTest}
-                onDeleteTest={this.onDeleteTest}
-                onSaveTestChanges={this.onSaveTestChanges}
-              />
-            </When>
-            <When condition={StartTestWrapperOpen}>
-              <StartTestWrapper
-                open={StartTestWrapperOpen}
-                onActiveCompletedTestCard={this.onActiveCompletedTestCard}
-                onAddStudentAnswerToTest={this.onAddStudentAnswerToTest}
-                test={currentTestSection}
-              />
-            </When>
-            <When condition={createTestModalOpen}>
-              <NewTestModal
-                open={createTestModalOpen}
-                onClose={this.onCloseTestModal}
-                onSave={this.onSaveNewTest}
-              />
-            </When>
-            <Otherwise>
-              <div className="content-section">
-                <div className="section-holder">
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+                {overdues.length !== 0 && studentTestsFetchedStatus &&
                   <div className="content-container">
-                    <CardHeader title="Assigned" amount={assigneds.length} />
+                    <CardHeader title="OverDue" amount={overdues.length} themeColor="#e94319" />
+                    <div className="row d-flex-content card-width-366">
+                      {this.mapOverDueTests()}
+                    </div>
+                  </div>}
+                {assigneds.length !== 0 && studentTestsFetchedStatus &&
+                  <div className="content-container">
+                    <CardHeader title="Assigned" amount={assigneds.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapAssignedTests()}
                     </div>
-                  </div>
-                )}
-                {completes.length !== 0 && (
+                  </div>}
+                {completes.length !== 0 && studentTestsFetchedStatus &&
                   <div className="content-container">
-                    <CardHeader title="Completed" amount={completes.length} />
+                    <CardHeader title="Completed" amount={completes.length} themeColor="#39b44a" />
                     <div className="row d-flex-content card-width-366">
                       {this.mapCompletedTests()}
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
               <a
                 href="#"
@@ -510,32 +417,39 @@ class DetailTestList extends React.Component {
 
 DetailTestList.propTypes = {
   user: PropTypes.object.isRequired,
-<<<<<<< HEAD
   onSetIsVisibleTopBar: PropTypes.func.isRequired,
   completes: PropTypes.array,
   overdues: PropTypes.array,
-  assigneds: PropTypes.array
-=======
-  onSetIsVisibleTopBar: PropTypes.func.isRequired
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+  assigneds: PropTypes.array,
+  onSetStudentAssignedTests: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   completes: makeSelectCompletedStudentTests(),
   assigneds: makeSelectAssignedStudentTests(),
   overdues: makeSelectOverDueStudentTests(),
-  tests: makeSelectStudentTests()
+  studentTests: makeSelectStudentTests(),
+  tests: makeSelectTests(),
+  activeStudent: makeSelectActiveStudent(),
+  studentTestsFetchedStatus: makeSelectFetchStudentTestsStatus(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-<<<<<<< HEAD
     onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
     onFetchStudentTests: user => dispatch(fetchStudentTests(user)),
-    onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId))
-=======
-    onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value))
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+    onSetActiveStudentTestId: studentTestId => dispatch(setActiveStudentTestId(studentTestId)),
+    onDeleteStudentTest: (studentTestId, studentId, type) => dispatch(deleteStudentTest(studentTestId, studentId, type)),
+    onUpdateTestFlag: (studentTestId, studentId) => dispatch(updateTestFlag(studentTestId, studentId)),
+    onAssignNewTest: (newTest) => dispatch(assignNewTest(newTest)),
+    onFetchStudentTestSections: (studentInfo) => dispatch(fetchStudentTestSections(studentInfo)),
+    onAddNewTestToStudentTests: (studentInfo) => dispatch(addNewTestToStudentTests(studentInfo)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) => dispatch(updateTestStatus(payload, currentStatus, studentId)),
+    onSetStudentTests: (tests) => dispatch(setStudentTests(tests)),
+    onSetStudentCompletedTests: (tests) => dispatch(setStudentCompletedTests(tests)),
+    onSetStudentOverDueTests: (tests) => dispatch(setStudentOverDueTests(tests)),
+    onSetStudentAssignedTests: (tests) => dispatch(setStudentAssignedTests(tests)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
   };
 }
 

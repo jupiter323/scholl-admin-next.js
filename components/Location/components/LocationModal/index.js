@@ -1,19 +1,21 @@
 import React from 'react';
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-
+import { makeSelectLocations } from "../../../Location/index/selectors";
 import Portal from '../../../Portal';
 import ClickOffComponentWrapper from '../../../ClickOffComponentWrapper';
 import LocationToggleCard from './components/LocationToggleCard';
 
-import sampleLocations from '../../../utils/sampleLocations';
 
 class LocationModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      locations: sampleLocations,
+      locations: [],
       selectedLocations: [],
     };
   }
@@ -41,7 +43,7 @@ class LocationModal extends React.Component {
 
   render() {
     const { open } = this.props;
-    const { locations } = this.state;
+    const { locations } = this.props;
     return (
       <Portal selector="#modal">
         {open && (
@@ -65,7 +67,7 @@ class LocationModal extends React.Component {
                             <ul className="checkbox-list">
                               {locations.map(location => (
                                 <LocationToggleCard
-                                  key={location.locationName}
+                                  key={location.id}
                                   location={location}
                                   onToggleLocationSelect={this.onToggleLocationSelect}
                                 />
@@ -148,6 +150,15 @@ LocationModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   handleLocationsChange: PropTypes.func.isRequired,
+  locations: PropTypes.array.isRequired,
 };
 
-export default LocationModal;
+const mapStateToProps = createStructuredSelector({
+  locations: makeSelectLocations(),
+});
+
+
+const withConnect = connect(mapStateToProps, null);
+
+
+export default compose(withConnect)(LocationModal);

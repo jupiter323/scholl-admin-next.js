@@ -1,39 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
-import AnswerRow from "./components/AnswerRow";
+import React from 'react';
+import PropTypes from 'prop-types';
+import AnswerRow from './components/AnswerRow';
 
 class WritingPage extends React.Component {
-<<<<<<< HEAD
   mapAnswers = () => {
-    const {
-      testSection: { problems }
-    } = this.props;
+    const { testSection: { problems: problemsSection }, testSection, fetchProblemsMessage } = this.props;
+    if (!problemsSection && fetchProblemsMessage) return <p style={{ color: "red" }}>{this.props.fetchProblemsMessage}</p>;
     return (
-      problems &&
-      problems.map(problem => <AnswerRow key={problem.test_problem_id} problem={problem} />)
+      problemsSection.problems &&
+      problemsSection.problems.map(problem =>
+        <AnswerRow key={problem.test_problem_id} problem={problem} testSection={testSection} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} />,
+      )
     );
-=======
-  mapSampleAnswers = () => {
-    const { sampleAnswers } = this.props;
-    return sampleAnswers.map((question, index) => (
-      <AnswerRow key={question.id} question={question} index={index} />
-    ));
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
   };
 
   render() {
     return (
       <div className="slide" id="writingAnswerSheetImg">
-<<<<<<< HEAD
-        <div className="row" style={{ columns: "3 auto", marginLeft: "10px", marginRight: "10px" }}>
-          <ol className="answers-list">{this.mapAnswers()}</ol>
-=======
-        <div
-          className="row"
-          style={{ columns: "3 auto", marginLeft: "10px", marginRight: "10px" }}
-        >
-          <ol className="answers-list">{this.mapSampleAnswers()}</ol>
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+        <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}>
+          <ol className="answers-list" style={{ marginBottom: '40px' }}>
+            {this.props.testSection && this.mapAnswers()}
+          </ol>
         </div>
       </div>
     );
@@ -41,11 +28,7 @@ class WritingPage extends React.Component {
 }
 
 WritingPage.propTypes = {
-<<<<<<< HEAD
-  testSection: PropTypes.object
-=======
-  sampleAnswers: PropTypes.array.isRequired
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
+  testSection: PropTypes.object,
 };
 
 export default WritingPage;

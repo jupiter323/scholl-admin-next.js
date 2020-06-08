@@ -6,17 +6,18 @@ class StartReadingTest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sampleProblems: []
+      sampleProblems: [],
     };
   }
 
   componentWillReceiveProps = nextProps => {
     const { testSection } = nextProps;
+    if (!testSection || !testSection.hasOwnProperty('problems')) return;
     const updatedProblems = update(this.state.sampleProblems, {
-      $set: testSection.problems
+      $set: testSection.problems.problems,
     });
     this.setState({
-      sampleProblems: updatedProblems
+      sampleProblems: updatedProblems,
     });
   };
 
@@ -34,7 +35,7 @@ class StartReadingTest extends React.Component {
               style={{
                 color: "#fff",
                 borderColor: "#19b4e9",
-                backgroundColor: "#19b4e9"
+                backgroundColor: "#19b4e9",
               }}
             >
               B
@@ -52,10 +53,10 @@ class StartReadingTest extends React.Component {
   };
 
   render() {
-    const { open, onSetActivePage, testSection:{problems,time_limit}  } = this.props;
+    const { open, onSetActivePage, testSection } = this.props;
     return (
       <React.Fragment>
-        {open && problems && (
+        {open && testSection.problems && (
           <div className="tabs-content">
             <div id="tab_reading" className="tab-content">
               <div className="content-section content-section-simulated">
@@ -72,7 +73,7 @@ class StartReadingTest extends React.Component {
                       <div className="starting-block">
                         <div className="holder">
                           <span className="title">
-                            This section has {problems.length} questions and is {time_limit} minutes
+                            This section has {testSection ? testSection.problems.problems.length : "0"} questions and is {testSection ? testSection.problems.time_limit : "0"} minutes
                             total
                           </span>
                           <a
@@ -100,7 +101,7 @@ class StartReadingTest extends React.Component {
 StartReadingTest.propTypes = {
   open: PropTypes.bool.isRequired,
   onSetActivePage: PropTypes.func.isRequired,
-  testSection: PropTypes.object.isRequired
+  testSection: PropTypes.object.isRequired,
 };
 
 export default StartReadingTest;

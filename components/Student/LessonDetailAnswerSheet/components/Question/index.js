@@ -1,123 +1,103 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
+import QuestionModal from "../QuestionModal";
+import BubbleGroup from "../Bubble";
+import FreeResponse from '../FreeResponse';
 
-import { difficultyMap, getAnswerColor, getCompleteAnswerColor } from '../../utils';
-
-class Question extends React.Component {
-  mapAnswerChoices = () => {
-    const { question: { answerType, answerChoices, studentAnswer }, answerSheetComplete } = this.props;
-    if (answerSheetComplete) {
-      if (answerType === 'letter') {
-        return (
-          <ul className="answer-list">
-            {answerChoices.map(answer => (
-              <li key={answer.answerLetter}>
-                <span
-                  className="badge-circle badge-circle-bordered"
-                  style={getCompleteAnswerColor('letter', answer, studentAnswer)}
-                >
-                  {answer.answerLetter}
-                </span>
-              </li>
-            ))}
-          </ul>
-        );
-      }
-      return (
-        <ul className="answer-list">
-          {answerChoices.map(answer => (
-            <li key={answer.answerValue}>
-              <span
-                className="badge badge-rounded badge-rounded-bordered"
-                style={getCompleteAnswerColor('value', answer, studentAnswer)}
-              >
-                {answer.answerValue}
-              </span>
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    if (answerType === 'letter') {
-      return (
-        <ul className="answer-list">
-          {answerChoices.map(answer => (
-            <li key={answer.answerLetter}>
-              <span
-                className="badge-circle badge-circle-bordered"
-                style={getAnswerColor(answer)}
-              >
-                {answer.answerLetter}
-              </span>
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    return (
-      <ul className="answer-list">
-        {answerChoices.map(answer => (
-          <li key={answer.answerValue}>
-            <span
-              className="badge badge-rounded badge-rounded-bordered"
-              style={getAnswerColor(answer)}
-            >
-              {answer.answerValue}
-            </span>
-          </li>
-        ))}
-      </ul>
-    );
+class AnswerRow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      status: '',
+      originalTestProblemId: "",
+    };
   }
 
+  componentDidMount = () => {
+    const { problem: { id } } = this.props;
+    const { originalTestProblemId } = this.state;
+    if (id !== originalTestProblemId && this.props.problem.flag_status) {
+      const { problem: { flag_status } } = this.props;
+      this.setState({
+        status: flag_status,
+        originalTestProblemId: id,
+      });
+    }
+  }
+  onChangeFlagState = (status) => {
+    this.setState({
+      status,
+    });
+  }
+
+  onOpenQuestionModal = () => this.setState({ open: true });
+  onCloseQuestionModal = () => this.setState({ open: false });
+
+  isFreeResponse = () => {
+    if (this.props.problem.problem.answers.length === 0) return true;
+    return false;
+  }
+
+
   render() {
-    const { onOpenQuestionModal, question, answerSheetComplete } = this.props;
-    const { difficulty, hasVideo, flagged, studentNotes } = question;
+    const { problem } = this.props;
+    const { open, status } = this.state;
     return (
-      <li className="answers-list-holder">
-        <div className="answer-row row mb-0">
-          <div className="col col-120">
-            {this.mapAnswerChoices()}
-          </div>
-          <div className="col col-30">
-            <span className="status-info">{difficultyMap[difficulty]}</span>
-          </div>
-          {hasVideo && (
-            <div className="col col-43">
-              <span className="play-progress" data-video-id="video001">
-                <span className="play"></span>
-                <svg viewBox="0 0 50 50" width="50" height="50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <circle className="circle-static" cx="25.8" cy="24.3" r="22.8" style={{ strokeWidth: '3', fill: 'rgba(0,0,0,0)' }} />
-                  <circle className="circle-progress" cx="25.8" cy="24.3" r="22.8" style={{ stroke: 'none', strokeWidth: '3', fill: 'rgba(0,0,0,0)' }} />
-                </svg>
-              </span>
+      <React.Fragment>
+        <QuestionModal
+          open={open}
+          onOpenQuestionModal={this.onOpenQuestionModal}
+          onCloseQuestionModal={this.onCloseQuestionModal}
+          question={problem}
+          onChangeFlagState={this.onChangeFlagState}
+          updateProblemList={this.props.updateProblemList}
+          problemType={this.props.problemType}
+        />
+        <li
+          className="answers-list-holder"
+          key={problem.id}
+          style={{ marginRight: "15px" }}
+        >
+          <div className="answer-row row mb-0">
+            <div className="col col-120">
+              <ul className="answer-list">
+                {this.isFreeResponse() ? <FreeResponse lesson={problem} /> : <BubbleGroup lesson={problem} />}
+              </ul>
             </div>
-          )}
-          <div className="col col-auto">
-            <If condition={answerSheetComplete && flagged}>
-              <span className="status-answer" style={{ color: '#c0272d' }}>
-                <i className="icon-flag"></i><b className="status-text">Review</b>
-              </span>
-            </If>
+            <div className="col col-30">
+              <span className="status-info">E</span>
+            </div>
+            <div className="col col-auto">
+              <Choose>
+                <When condition={status === 'FLAGGED'}>
+                  <span className="status-answer" style={{ color: "#c0272d" }}>
+                    <i className="icon-flag"></i>
+                    <b className="status-text">Review</b>
+                  </span>
+                </When>
+                <When condition={status === 'REVIEWED'}>
+                  <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
+                    <i className="icon-flag"></i>
+                    <b className="status-text">Review</b>
+                  </span>
+                </When>
+              </Choose>
+            </div>
+            <div className="dropdown-block col col-35">
+              <a className="modal-trigger" href="#" onClick={this.onOpenQuestionModal}>
+                <i className="material-icons dots-icon">more_vert</i>
+              </a>
+            </div>
           </div>
-          <div className="dropdown-block col col-35">
-            <a className="modal-trigger" onClick={() => onOpenQuestionModal(question)} href="#"><i className="material-icons dots-icon">more_vert</i></a>
-          </div>
-        </div>
-        <If condition={answerSheetComplete && studentNotes}>
-          <div className="comment-block">
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore?  tincidunt ut laoreet dolore?</p>
-          </div>
-        </If>
-      </li>
+        </li>
+      </React.Fragment>
     );
   }
 }
 
-Question.propTypes = {
-  question: PropTypes.object.isRequired,
-  onOpenQuestionModal: PropTypes.func.isRequired,
-  answerSheetComplete: PropTypes.string.isRequired,
+AnswerRow.propTypes = {
+  problem: PropTypes.object,
 };
 
-export default Question;
+export default AnswerRow;

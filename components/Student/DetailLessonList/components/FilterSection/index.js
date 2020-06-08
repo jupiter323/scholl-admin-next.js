@@ -2,10 +2,14 @@
 import React from 'react';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import lessonSortOptions from '../../utils/lessonSortOptions';
-import unitOptions from '../../utils/unitOptions';
+import { makeSelectUnitFilterOptions } from '../../../index/selectors';
+import { setUnitFilterOptions, fetchUnits, fetchSubjects } from '../../../index/actions';
 
 class FilterSection extends React.Component {
   constructor(props) {
@@ -15,7 +19,26 @@ class FilterSection extends React.Component {
       sort: {},
       nameFilter: "",
       unitFilter: "",
+      unitOptions: [{
+        label: "Any",
+        value: "",
+      }],
     };
+  }
+
+  componentDidMount = () => {
+    const { onFetchUnits, onFetchSubjects } = this.props;
+    onFetchUnits();
+    onFetchSubjects();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.unitOptions.length !== 0) {
+      const { unitOptions: newOptions } = nextProps;
+      this.setState({
+        unitOptions: this.state.unitOptions.concat(newOptions),
+      });
+    }
   }
 
   onToggleShowFilters = () => this.setState(({ open }) => ({ open: !open }))
@@ -58,7 +81,7 @@ class FilterSection extends React.Component {
       if (event === '') {
         return onUnsetFilteredState();
       }
-      return onSetFilteredState(event);
+      return onSetFilteredState(event.target.value);
     }
     if (name === 'unitFilter') {
       if (event === "") {
@@ -69,7 +92,7 @@ class FilterSection extends React.Component {
   }
   render() {
     const { open, sort, nameFilter, unitFilter } = this.state;
-    const { currentView, dueDateFilters, flagFilters, subjectFilters, statusFilters, scoreStatusFilters, classTypeFilters, onChangeView, handleFilterClick } = this.props;
+    const { currentView, dueDateFilters, flagFilters, subjectFilters, scoreStatusFilters, onChangeView, handleFilterClick } = this.props;
     return (
       <div className="filter-form-holder">
         <ul className="collapsible expandable">
@@ -90,8 +113,8 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="writing"
-                      checked={subjectFilters.indexOf('Writing') !== -1}
-                      onChange={() => handleFilterClick("subject", 'Writing')}
+                      checked={subjectFilters.indexOf('Writing and Language') !== -1}
+                      onChange={() => handleFilterClick("subject", 'Writing and Language')}
                     />
                     <label htmlFor="writing">Writing</label>
                   </li>
@@ -109,76 +132,38 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="beginning"
-                      checked={scoreStatusFilters.indexOf('Beginning') !== -1}
-                      onChange={() => handleFilterClick("score", 'Beginning')}
+                      id="great"
+                      checked={scoreStatusFilters.indexOf('great') !== -1}
+                      onChange={() => handleFilterClick("score", 'great')}
                     />
-                    <label htmlFor="beginning">Beginning</label>
+                    <label htmlFor="great">Great</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="developing"
-                      checked={scoreStatusFilters.indexOf('Developing') !== -1}
-                      onChange={() => handleFilterClick("score", 'Developing')}
+                      id="aboveAverage"
+                      checked={scoreStatusFilters.indexOf('above average') !== -1}
+                      onChange={() => handleFilterClick("score", 'above average')}
                     />
-                    <label htmlFor="developing">Developing</label>
+                    <label htmlFor="aboveAverage">Above Average</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="accomplished"
-                      checked={scoreStatusFilters.indexOf('Accomplished') !== -1}
-                      onChange={() => handleFilterClick("score", 'Accomplished')}
+                      id="belowAverage"
+                      checked={scoreStatusFilters.indexOf('below average') !== -1}
+                      onChange={() => handleFilterClick("score", 'below average')}
                     />
-                    <label htmlFor="accomplished">Accomplished</label>
+                    <label htmlFor="belowAverage">Below Average</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="exemplary"
-                      checked={scoreStatusFilters.indexOf('Exemplary') !== -1}
-                      onChange={() => handleFilterClick("score", 'Exemplary')}
+                      id="poor"
+                      checked={scoreStatusFilters.indexOf('poor') !== -1}
+                      onChange={() => handleFilterClick("score", 'poor')}
                     />
-                    <label htmlFor="exemplary">Exemplary</label>
-                  </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="scheduled"
-                      checked={statusFilters.indexOf('Scheduled') !== -1}
-                      onChange={() => handleFilterClick('status', 'Scheduled')}
-                    />
-                    <label htmlFor="scheduled">Scheduled</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="assigned"
-                      checked={statusFilters.indexOf('Assigned') !== -1}
-                      onChange={() => handleFilterClick('status', 'Assigned')}
-                    />
-                    <label htmlFor="assigned">Assigned</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="started"
-                      checked={statusFilters.indexOf('Started') !== -1}
-                      onChange={() => handleFilterClick('status', 'Started')}
-                    />
-                    <label htmlFor="started">Started</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      id="complete"
-                      checked={statusFilters.indexOf('Complete') !== -1}
-                      onChange={() => handleFilterClick('status', 'Complete')}
-                    />
-                    <label htmlFor="complete">Complete</label>
+                    <label htmlFor="poor">Poor</label>
                   </li>
                 </ul>
                 <ul className="filter-form_checkbox-list">
@@ -186,7 +171,7 @@ class FilterSection extends React.Component {
                     <input
                       type="checkbox"
                       id="hasReviewFlags"
-                      checked={flagFilters.indexOf("flags") !== -1}
+                      checked={flagFilters.indexOf("true") !== -1}
                       onChange={() => handleFilterClick('flags', 'true')}
                     />
                     <label htmlFor="hasReviewFlags">Has Review Flags</label>
@@ -214,40 +199,29 @@ class FilterSection extends React.Component {
                   <li>
                     <input
                       type="checkbox"
-                      id="dueThisWeek"
-                      checked={dueDateFilters.indexOf('dueThisWeek') !== -1}
-                      onChange={() => handleFilterClick('dueDate', 'dueThisWeek')}
-                    />
-                    <label htmlFor="dueThisWeek">Due this Week</label>
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
                       id="overdue"
                       checked={dueDateFilters.indexOf('overdue') !== -1}
                       onChange={() => handleFilterClick('dueDate', 'overdue')}
                     />
                     <label htmlFor="overdue">Overdue</label>
                   </li>
-                </ul>
-                <ul className="filter-form_checkbox-list">
                   <li>
                     <input
                       type="checkbox"
-                      id="some-class"
-                      checked={classTypeFilters.indexOf('class') !== -1}
-                      onChange={() => handleFilterClick('classType', 'class')}
+                      id="noDueDate"
+                      checked={dueDateFilters.indexOf('noDueDate') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'noDueDate')}
                     />
-                    <label htmlFor="some-class">Some Class</label>
+                    <label htmlFor="noDueDate">noDueDate</label>
                   </li>
                   <li>
                     <input
                       type="checkbox"
-                      id="tutoring"
-                      checked={classTypeFilters.indexOf('tutoring') !== -1}
-                      onChange={() => handleFilterClick('classType', 'tutoring')}
+                      id="unAssigned"
+                      checked={dueDateFilters.indexOf('unAssigned') !== -1}
+                      onChange={() => handleFilterClick('dueDate', 'unAssigned')}
                     />
-                    <label htmlFor="tutoring">Tutoring</label>
+                    <label htmlFor="unAssigned">UnAssigned</label>
                   </li>
                 </ul>
               </div>
@@ -273,10 +247,10 @@ class FilterSection extends React.Component {
                 <div className="col s12 m3">
                   <div className="input-field" style={{ marginTop: '-7px' }}>
                     <Dropdown
-                      value={getValueFromState(unitFilter, unitOptions)}
+                      value={getValueFromState(unitFilter, this.state.unitOptions)}
                       onChange={(event) => this.handleUnitChange(event)}
-                      options={unitOptions}
-                      label="Unit Number"
+                      options={this.state.unitOptions}
+                      label="Unit"
                       stateKey="unit"
                       dropdownKey="unit"
                     />
@@ -289,7 +263,7 @@ class FilterSection extends React.Component {
               <div className="col s12 l4">
                 <div className="row mb-0">
 
-                  <div className="col s12 x17">
+                  <div className="col s12 m12">
                     <div className="input-field">
                       <Dropdown
                         value={getValueFromState(sort, lessonSortOptions)}
@@ -316,7 +290,8 @@ class FilterSection extends React.Component {
                       data-view="view-list"
                       className={currentView === 'list' ? 'active' : ''}
                     >
-                      <a href="#" onClick={() => onChangeView('list')}>List View</a>
+                      {/* @TODO student lesson listview commented out for now */}
+                      {/* <a href="#" onClick={() => onChangeView('list')}>List View</a> */}
                     </li>
                   </ul>
                 </div>
@@ -351,11 +326,22 @@ FilterSection.propTypes = {
   onUnsetFilteredState: PropTypes.func.isRequired,
   onSetSort: PropTypes.func.isRequired,
   subjectFilters: PropTypes.array.isRequired,
-  statusFilters: PropTypes.array.isRequired,
   scoreStatusFilters: PropTypes.array.isRequired,
   flagFilters: PropTypes.array.isRequired,
   dueDateFilters: PropTypes.array.isRequired,
-  classTypeFilters: PropTypes.array.isRequired,
   onSetUnitFilter: PropTypes.func.isRequired,
 };
-export default FilterSection;
+
+const mapStateToProps = createStructuredSelector({
+  unitOptions: makeSelectUnitFilterOptions(),
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSetUnitFilterOptions: options => dispatch(setUnitFilterOptions(options)),
+  onFetchUnits: () => dispatch(fetchUnits()),
+  onFetchSubjects: () => dispatch(fetchSubjects()),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(FilterSection);

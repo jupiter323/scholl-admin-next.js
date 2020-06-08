@@ -84,7 +84,7 @@ class StudentModal extends React.Component {
                                         value={state.emailAddress.email}
                                         onChange={(event) => handleChange(event, 'email', 'emailAddress')}
                                       />
-                                      <label className="label" htmlFor="email">Email Address*</label>
+                                      <label className="label" htmlFor="email">Email Address (optional)</label>
                                     </div>
                                   </div>
                                 </div>
@@ -113,8 +113,8 @@ class StudentModal extends React.Component {
                                         type="text"
                                         id="address"
                                         name="address"
-                                        value={state.contactInformation.addressLine1}
-                                        onChange={(event) => handleChange(event, 'addressLine1', 'contactInformation')}
+                                        value={state.contactInformation.addressLine}
+                                        onChange={(event) => handleChange(event, 'addressLine', 'contactInformation')}
                                       />
                                       <label className="label" htmlFor="address">Street Address (optional)</label>
                                     </div>
@@ -169,6 +169,7 @@ class StudentModal extends React.Component {
                               <a href="#" className="btn" onClick={onSave}>Save</a>
                             </div>
                           </div>
+                          {!this.props.hasRequiredFields && <p className="save-message">Please fill out the required fields before submitting.</p>}
                         </div>
                       </div>
                     </div>
@@ -192,6 +193,10 @@ class StudentModal extends React.Component {
             .card-modal {
               margin: 0;
               border-radius: 6px;
+            }
+            .save-message {
+              color: red;
+              float: right;
             }
             #modal_Location1 {
               border-radius: 6px;

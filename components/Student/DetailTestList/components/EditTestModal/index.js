@@ -1,98 +1,169 @@
 /* eslint-disable react/no-did-update-set-state */
 /* eslint-disable react/no-did-mount-set-state */
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { compose } from "redux";
-import TestVersionPage from "../TestVersionPage";
-import DetailTestScorePage from "../../../DetailTestScorePage";
-import DetailTestAnswerSheetComplete from "../../../DetailTestAnswerSheetComplete";
-import StrengthsAndWeaknesses from "../../../DetailTestStrengthsAndWeakesses";
-import pdfMakeReport from "./pdfMakeReport";
+import React from 'react';
+import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+import moment from 'moment';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { toast } from 'react-toastify';
+import TestVersionPage from '../TestVersionPage';
+import DetailTestScorePage from '../../../DetailTestScorePage';
+import DetailTestAnswerSheetComplete from '../../../DetailTestAnswerSheetComplete';
+import StrengthsAndWeaknesses from '../../../DetailTestStrengthsAndWeakesses';
+import pdfMakeReport from './pdfMakeReport';
+import {
+  makeSelectStudentSections,
+  makeSelectActiveStudentToken,
+  makeSelectTests,
+  makeSelectAssignedStudentTests,
+  makeSelectActiveStudent,
+  makeSelectActiveTestScores,
+  makeSelectErrorMessages,
+} from '../../../index/selectors';
+import {
+  setStudentAssignedTests,
+  setStudentCompletedTests,
+  updateTestStatus,
+  setActiveTestScores,
+  getTestScores,
+  resetErrorMessage,
+  fetchStudentTestSections,
+} from '../../../index/actions';
+import {
+  updateStudentTestSectionStatusApi,
+  updateStudentTestStatusApi,
+  fetchTestsByStudentIdApi,
+} from '../../../index/api';
 
-import { makeSelectStudentSections } from "../../../index/selectors";
-import { fetchStudentTestSections } from "../../../index/actions";
+import { css } from '@emotion/core';
+import BarLoader from 'react-spinners/BarLoader';
+
 class EditTestModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: "scores",
+      activePage: props.activePage,
       scoresImages: null,
       analysisBarImages: [],
       analysisCicleImages: [],
       answerSheetImages: [],
-<<<<<<< HEAD
       enablePublish: true,
-=======
-      enablePublish:true,
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-      userInfo: {
-        version: "Version: SAT Practice Test #1",
-        target: "Score Report",
-        test_date: "September 28th, 2018",
-        name: "Arnold Studently",
-        test_type: "Practice Test",
-        order: "3rd"
-      },
       subjects: [
-        "Practice Test Scores",
-        "Reading Analysis",
-        "Reading Analysis (cont’d)",
-        "Reading Answer Sheet",
-        "Writing Analysis",
-        "Writing Analysis (cont’d)",
-        "Writing Answer Sheet",
-        "Math Analysis",
+        'Practice Test Scores',
+        'Reading Analysis',
+        'Reading Analysis (cont’d)',
+        'Reading Answer Sheet',
+        'Writing Analysis',
+        'Writing Analysis (cont’d)',
+        'Writing Answer Sheet',
+        'Math Analysis',
         "Math Analysis (cont'd)",
-        "Math Answer Sheet(no calc)",
-        "Math Answer Sheet(calculator)"
+        'Math Answer Sheet(no calc)',
+        'Math Answer Sheet(calculator)',
       ],
-<<<<<<< HEAD
-      adminInfo: "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
-      headerGradient: ["#ec693d 0%", "#649aab 61%", "#30add6 87%", "#18b5e9 100%"]
+      adminInfo: 'Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com',
+      userInfo: {
+        version: '',
+        target: 'Score Report',
+        test_date: '',
+        name: '',
+        test_type: 'Practice Test',
+        order: '3rd',
+      },
+      headerGradient: ['#ec693d 0%', '#649aab 61%', '#30add6 87%', '#18b5e9 100%'],
+      readingSectionCompleted: false,
+      writingSectionCompleted: false,
+      mathNoCalcSectionCompleted: false,
+      mathCalcSectionCompleted: false,
+      fetchScoresMsg: "",
+      updateTestStatusMsg: "",
+      updateTestSectionMessage: "",
     };
   }
 
-  componentDidMount() {
-    this.props.onRef(this);
+  componentDidMount = async () => {
     const {
       onFetchStudentTestSections,
-      sections,
-      test: { student_test_id }
+      studentToken,
+      test: { student_test_id },
+      activeStudent: { id },
     } = this.props;
-    if (sections.length === 0) {
-      onFetchStudentTestSections(student_test_id);
-    }
-  }
+
+    const postBody = {
+      id,
+      student_test_id,
+      studentToken,
+    };
+    onFetchStudentTestSections(postBody);
+    this.props.onRef(this);
+  };
+
   componentWillUnmount() {
     this.props.onRef(undefined);
+    this.props.onResetErrorMessage("fetchScoresMsg");
+    this.props.onResetErrorMessage("updateTestStatusMsg");
   }
 
-=======
-      adminInfo:
-        "Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com",
-      headerGradient: [
-        "#ec693d 0%",
-        "#649aab 61%",
-        "#30add6 87%",
-        "#18b5e9 100%"
-      ]
-    };
+  componentWillReceiveProps(nextProps) {
+    const { activePage, sections, errorMessages } = nextProps;
+    const { onCloseEditTestModal } = this.props;
+    if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
+      this.setState({ activePage });
+    }
+    if (sections.length !== 0) {
+      const { tests, test: { test_id } } = this.props;
+      sections.map(section => {
+        if (section.test_section_status === 'COMPLETED') {
+          const testIds = tests.map(test => test.id);
+          const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+          const currentTestSections = tests[currentTestIndex].test_sections;
+          const testSectionIndex = currentTestSections.findIndex(
+            testSection => testSection.id === section.test_section_id,
+          );
+          // If no match return and wait for new props
+          if (!currentTestSections[testSectionIndex]) return;
+
+          const sectionType = currentTestSections[testSectionIndex].name;
+          switch (sectionType) {
+            case 'Reading':
+              return this.setState({ readingSectionCompleted: true });
+            case 'Writing':
+              return this.setState({ writingSectionCompleted: true });
+            case 'Math (Calculator)':
+              return this.setState({ mathCalcSectionCompleted: true });
+            case 'Math (No Calculator)':
+              return this.setState({ mathNoCalcSectionCompleted: true });
+            default:
+          }
+        }
+      });
+    }
+    const errorConditon = (name) => (errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== "");
+    if (errorConditon("fetchScoresMsg")) {
+      this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
+      toast.error(errorMessages.fetchScoresMsg);
+      onCloseEditTestModal();
+    }
+    if (errorConditon("updateTestStatusMsg")) {
+      this.setState({ updateTestStatusMsg: errorMessages.updateTestStatusMsg });
+      toast.error(errorMessages.updateTestStatusMsg);
+      onCloseEditTestModal();
+    }
   }
 
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-  getBase64ImageFromURL = url => {
-    return new Promise((resolve, reject) => {
-      var img = new Image();
-      img.setAttribute("crossOrigin", "anonymous");
+  getBase64ImageFromURL = url =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute('crossOrigin', 'anonymous');
       img.onload = () => {
-        var canvas = document.createElement("canvas");
+        const canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
-        var ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        var dataURL = canvas.toDataURL("image/png");
+        const dataURL = canvas.toDataURL('image/png');
         resolve(dataURL);
       };
       img.onerror = error => {
@@ -100,163 +171,152 @@ class EditTestModal extends React.Component {
       };
       img.src = url;
     });
-  };
 
   onSetActivePage = activePage => {
     this.setState({
-      activePage
+      activePage,
     });
   };
 
   getTargetImage = currentRef => {
-    const html2canvas = require("html2canvas");
+    const html2canvas = require('html2canvas');
     const defaultCanvasSetting = {
       scale: 2,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: "rgba(0,0,0,0)",
-      removeContainer: true
+      backgroundColor: 'rgba(0,0,0,0)',
+      removeContainer: true,
     };
-<<<<<<< HEAD
     const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(canvas => {
-      const imgData = canvas.toDataURL("image/png", 1.0);
+      const imgData = canvas.toDataURL('image/png', 1.0);
       return imgData;
     });
-=======
-    const targetImg = html2canvas(currentRef, defaultCanvasSetting).then(
-      canvas => {
-        const imgData = canvas.toDataURL("image/png", 1.0);
-        return imgData;
-      }
-    );
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
     return targetImg;
   };
 
-  getData = item => {
-    return new Promise(async resolve => {
+  getData = item =>
+    new Promise(resolve => {
       const currentChild = item.child;
       this.setState(
         {
-          activePage: item.state
+          activePage: item.state,
         },
         async () => {
           const data = await this[currentChild].getComponentImages();
           switch (item.state) {
-            case "StrengthsAndWeaknesses":
+            case 'StrengthsAndWeaknesses':
               this.setState({
                 analysisCicleImages: data.circleImageList,
-                analysisBarImages: data.barImageList
+                analysisBarImages: data.barImageList,
               });
               break;
-            case "answerSheet":
+            case 'answerSheet':
               this.setState({
-                answerSheetImages: data
+                answerSheetImages: data,
               });
               break;
-            case "scores":
+            case 'scores':
               this.setState({
-                scoresImages: data
+                scoresImages: data,
               });
+              break;
+            default:
               break;
           }
           resolve();
-        }
+        },
       );
     });
-  };
 
   generateScoreReportPdf = async () => {
     this.setState({
-<<<<<<< HEAD
-      enablePublish: false
+      enablePublish: false,
     });
-=======
-      enablePublish:false,
-    })
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-    let imgDataLists = [];
-    const { userInfo, subjects, adminInfo, headerGradient } = this.state;
-    const coverBackgroundImg = "./static/images/sunset.jpg";
-    const logoImg = "./static/images/study-hut-logo.png";
+    const imgDataLists = [];
+    const { subjects, adminInfo, headerGradient } = this.state;
+    const coverBackgroundImg = './static/images/sunset.jpg';
+    const logoImg = './static/images/study-hut-logo.png';
     const backgroundImage = await this.getBase64ImageFromURL(
-      coverBackgroundImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const logo = await this.getBase64ImageFromURL(
-      logoImg + "?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
     );
     const pageStates = [
       {
-        state: "scores",
-        child: "ScoresChild"
+        state: 'scores',
+        child: 'ScoresChild',
       },
       {
-        state: "StrengthsAndWeaknesses",
-        child: "AnalysisChild"
+        state: 'StrengthsAndWeaknesses',
+        child: 'AnalysisChild',
       },
       {
-        state: "answerSheet",
-        child: "AnswerSheetChild"
-      }
+        state: 'answerSheet',
+        child: 'AnswerSheetChild',
+      },
     ];
-    const getImagesPromise = pageStates.reduce((accumulatorPromise, item) => {
-      return accumulatorPromise
-        .then(async () => {
-          const images = await this.getData(item);
-        })
-        .catch(console.error);
-    }, Promise.resolve());
+    const getImagesPromise = pageStates.reduce(
+      (accumulatorPromise, item) =>
+        accumulatorPromise
+          .then(async () => {
+            const images = await this.getData(item);
+          })
+          .catch(console.error),
+      Promise.resolve(),
+    );
 
     getImagesPromise.then(() => {
       this.setState({
-<<<<<<< HEAD
-        enablePublish: true
+        enablePublish: true,
       });
-=======
-        enablePublish:true
-      })
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-      const {
-        scoresImages,
-        analysisCicleImages,
-        analysisBarImages,
-        answerSheetImages
-      } = this.state;
+      const { scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages } = this.state;
       imgDataLists.push({
         image: scoresImages,
         width: 550,
         margin: [0, 20, 0, 0],
-        pageBreak: "after"
+        pageBreak: 'after',
       });
       for (let i = 0; i < 3; i++) {
         imgDataLists.push({
           image: analysisCicleImages[i],
           width: 300,
-          margin: [0, 20, 0, 0]
+          margin: [0, 20, 0, 0],
         });
         imgDataLists.push({
           image: analysisBarImages[i],
           width: 550,
           margin: [0, 20, 0, 0],
-          pageBreak: "after"
+          pageBreak: 'after',
         });
         imgDataLists.push({
           image: analysisBarImages[i],
           width: 550,
           margin: [0, 20, 0, 0],
-          pageBreak: "after"
+          pageBreak: 'after',
         });
         imgDataLists.push({
           image: answerSheetImages[i],
           width: 550,
           margin: [0, 20, 0, 0],
-          pageBreak: "after"
+          pageBreak: 'after',
         });
       }
       imgDataLists.push({
         image: answerSheetImages[3],
         width: 550,
-        margin: [0, 20, 0, 0]
+        margin: [0, 20, 0, 0],
+      });
+      const {
+        test: { test_description, completion_date },
+        activeStudent: { studentInformation: { firstName, lastName } },
+      } = this.props;
+      const userInfo = update(this.state.userInfo, {
+        $merge: {
+          name: `${firstName} ${lastName}`,
+          version: test_description,
+          test_date: moment(completion_date).format('MMMM Do YYYY'),
+        },
       });
       pdfMakeReport(
         imgDataLists,
@@ -265,15 +325,17 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo
+        logo,
       );
     });
   };
 
+  onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
+
   renderCurrentPage = () => {
     const { activePage } = this.state;
-    const { test, user, onDeleteTest, onSaveTestChanges } = this.props;
-    if (activePage === "testVersion") {
+    const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
+    if (activePage === 'testVersion') {
       return (
         <TestVersionPage
           test={test}
@@ -283,73 +345,180 @@ class EditTestModal extends React.Component {
         />
       );
     }
-    if (activePage === "scores") {
+    if (activePage === 'scores') {
       return (
         <div id="wrapper">
           <DetailTestScorePage
             test={test}
             getTargetImage={this.getTargetImage}
             onRef={ref => (this.ScoresChild = ref)}
+            onGetTestScores={this.props.onGetTestScores}
           />
         </div>
       );
     }
-    if (activePage === "answerSheet") {
+    if (activePage === 'answerSheet') {
+      const {
+        readingSectionCompleted,
+        writingSectionCompleted,
+        mathNoCalcSectionCompleted,
+        mathCalcSectionCompleted,
+        updateTestSectionMessage,
+        setIsCompleted,
+      } = this.state;
       return (
         <DetailTestAnswerSheetComplete
-          testScoreDetails={test.testScoreDetails}
+          testScoreDetails={test}
           getTargetImage={this.getTargetImage}
           onRef={ref => (this.AnswerSheetChild = ref)}
+          handleTestScore={this.handleTestScore}
+          completedSections={{
+            readingSectionCompleted,
+            writingSectionCompleted,
+            mathNoCalcSectionCompleted,
+            mathCalcSectionCompleted,
+          }}
+          setIsCompleted={setIsCompleted}
+          test={this.props.test}
+          updateTestSectionMessage={updateTestSectionMessage}
+          onUpdateTestSectionMsg={this.onUpdateTestSectionMsg}
+          openTestScores={onOpentTestScore}
         />
       );
     }
 
-    if (activePage === "StrengthsAndWeaknesses") {
+    if (activePage === 'StrengthsAndWeaknesses') {
       return (
         <StrengthsAndWeaknesses
-          testScoreDetails={test.testScoreDetails}
           getTargetImage={this.getTargetImage}
           onRef={ref => (this.AnalysisChild = ref)}
+          test={this.props.test}
+          activeStudent={this.props.activeStudent}
         />
       );
     }
     return null;
   };
 
+  handleTestScore = async (activeSection, problemsByTest) => {
+    // Check for non-existing sections and set them to completed
+    const {
+      testReadingProblems,
+      testWritingProblems,
+      testMathCalcProblems,
+      testMathNoCalcProblems,
+    } = problemsByTest;
+    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
+    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
+    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
+    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
+
+    // @TODO bring back started check for a test that was just created
+    // if (activeTest.test_section_status === 'STARTED') {
+    const { tests, test: { test_id }, test } = this.props;
+    const postBody = {
+      student_test_id: test.student_test_id,
+      student_test_section_id: activeSection.id,
+      student_test_section_status: 'COMPLETED',
+    };
+    const res = await updateStudentTestSectionStatusApi(postBody);
+    if (res && res.message) {
+      return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
+    }
+
+    // Update current section as completed
+    const currentTestSectionId = activeSection.test_section_id;
+    const testIds = tests.map(test => test.id);
+    const currentTestIndex = testIds.findIndex(testId => testId === test_id);
+    const currentTestSections = tests[currentTestIndex].test_sections;
+    const testSectionIds = currentTestSections.map(testSection => testSection.id);
+    const currentTestSectionIndex = testSectionIds.findIndex(
+      testSectionId => testSectionId === currentTestSectionId,
+    );
+    const currentTestSection = currentTestSections[currentTestSectionIndex];
+    switch (currentTestSection.name) {
+      case 'Math (Calculator)':
+        this.setState({
+          mathCalcSectionCompleted: true,
+        });
+        break;
+      case 'Writing':
+        this.setState({
+          writingSectionCompleted: true,
+        });
+        break;
+      case 'Math (No Calculator)':
+        this.setState({
+          mathNoCalcSectionCompleted: true,
+        });
+        break;
+      case 'Reading':
+        this.setState({
+          readingSectionCompleted: true,
+        });
+        break;
+      default:
+        this.setState({
+          readingSectionCompleted: true,
+        });
+    }
+    const {
+      readingSectionCompleted,
+      writingSectionCompleted,
+      mathCalcSectionCompleted,
+      mathNoCalcSectionCompleted,
+    } = this.state;
+    if (
+      readingSectionCompleted &&
+      writingSectionCompleted &&
+      mathCalcSectionCompleted &&
+      mathNoCalcSectionCompleted
+    ) {
+      const postBody = {
+        student_test_id: test.student_test_id,
+        status: 'COMPLETED',
+      };
+      const { onOpentTestScore, onUpdateTestStatus } = this.props;
+      const currentTestStatus =
+        test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
+      onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
+      // Delay set on saga before running onOpentTestScore()
+      onOpentTestScore({ ...test, status: 'COMPLETED' });
+    }
+  };
+
   render() {
-<<<<<<< HEAD
     const { test, user, onCloseEditTestModal } = this.props;
     const { activePage, enablePublish } = this.state;
-=======
-    const { test, user } = this.props;
-    const { activePage,enablePublish } = this.state;
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-    const { title, version: testVersion } = test;
-    const {
-      studentInformation: { firstName, lastName }
-    } = user;
+    const { title, test_name } = test;
+    const { studentInformation: { firstName, lastName } } = user;
+    const completedTest = test.status === 'COMPLETED';
     return (
       <div className="wrapper">
         <div
           className="card-modal card-main card switcher-section grey lighten-5 modal"
           style={{
-            zIndex: "1003",
-            display: "block",
-            position: "absolute",
-            top: "0",
-            minHeight: "100%",
-            minWidth: "100%"
+            zIndex: '1003',
+            display: 'block',
+            position: 'absolute',
+            top: '0',
+            minHeight: '100%',
+            minWidth: '100%',
           }}
         >
           <div className="header-row card-panel light-blue lighten-1 white-text">
             <div className="card-panel-row row">
               <div className="icon-col col s1">
-                <i className="icon-letter-a"></i>
+                <i className="icon-letter-a" />
               </div>
               <div className="col s9">
                 <div className="card-panel-text center-align">
-                  <div className="text-xlarge">{title}</div>
-                  <div className="text-small">Version: SAT Practice Test #{testVersion}</div>
+                  <div className="text-xlarge">
+                    {title}
+                  </div>
+                  <div className="text-small">
+                    Version: {test_name}
+                  </div>
                 </div>
               </div>
               <div className="col s1 right-align">
@@ -374,62 +543,61 @@ class EditTestModal extends React.Component {
           <div className="nav-header white">
             <div className="nav-additional">
               <ul className="menu-additional">
+                {completedTest &&
+                  <li className="col s3">
+                    <a
+                      className={activePage === 'scores' ? 'active' : ''}
+                      onClick={() => enablePublish && this.onSetActivePage('scores')}
+                      href="#"
+                    >
+                      Scores
+                    </a>
+                  </li>}
                 <li className="col s3">
                   <a
-                    className={activePage === "scores" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("scores")}
-                    href="#"
-                  >
-                    Scores
-                  </a>
-                </li>
-                <li className="col s3">
-                  <a
-                    className={activePage === "answerSheet" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("answerSheet")}
+                    className={activePage === 'answerSheet' ? 'active' : ''}
+                    onClick={() => enablePublish && this.onSetActivePage('answerSheet')}
                     href="#"
                   >
                     Answer Sheet
                   </a>
                 </li>
-                <li className="col s3">
-                  <a
-<<<<<<< HEAD
-                    className={activePage === "StrengthsAndWeaknesses" ? "active" : ""}
-                    onClick={() => enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")}
-=======
-                    className={
-                      activePage === "StrengthsAndWeaknesses" ? "active" : ""
-                    }
-                    onClick={() =>
-                      enablePublish && this.onSetActivePage("StrengthsAndWeaknesses")
-                    }
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
-                    href="#"
-                  >
-                    Strengths &amp; Weaknesses
-                  </a>
-                </li>
-                {/* <li className="col s3">
-                  <a
-                    className={activePage === "testVersion" ? "active" : ""}
-                    onClick={() => this.onSetActivePage("testVersion")}
-                    href="#"
-                  >
-                    Test Version
-                  </a>
-                </li> */}
-                <li className="menu-special col s3">
-                  <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
-                    Download Score Report
-                    <i className="icon-download-file"></i>
-                  </a>
-                </li>
+                {completedTest &&
+                  <li className="col s3">
+                    <a
+                      className={activePage === 'StrengthsAndWeaknesses' ? 'active' : ''}
+                      onClick={() =>
+                        enablePublish && this.onSetActivePage('StrengthsAndWeaknesses')}
+                      href="#"
+                    >
+                      Strengths &amp; Weaknesses
+                    </a>
+                  </li>}
+                {completedTest &&
+                  <li className="menu-special col s3">
+                    <a href="#" onClick={() => enablePublish && this.generateScoreReportPdf()}>
+                      Download Score Report
+                      <i className="icon-download-file" />
+                    </a>
+                  </li>}
               </ul>
             </div>
           </div>
+          <div className="sweet-loading">
+            <BarLoader
+              height={3}
+              width={'100%'}
+              color={'#36D7B7'}
+              loading={!this.state.enablePublish}
+            />
+          </div>
+          {
+            !this.state.enablePublish && <div style={{ textAlign: 'center', padding: 10 }}>please wait the test score report downloading...</div>
+          }
           <div className="content-section">
-            <div className="content-section-holder">{this.renderCurrentPage()}</div>
+            <div className="content-section-holder">
+              {this.renderCurrentPage()}
+            </div>
           </div>
         </div>
       </div>
@@ -442,15 +610,28 @@ EditTestModal.propTypes = {
   user: PropTypes.object.isRequired,
   onDeleteTest: PropTypes.func.isRequired,
   onSaveTestChanges: PropTypes.func.isRequired,
-  onCloseEditTestModal: PropTypes.func.isRequired
+  onCloseEditTestModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  sections: makeSelectStudentSections()
+  sections: makeSelectStudentSections(),
+  studentToken: makeSelectActiveStudentToken(),
+  tests: makeSelectTests(),
+  assignedTests: makeSelectAssignedStudentTests(),
+  activeStudent: makeSelectActiveStudent(),
+  activeTestScores: makeSelectActiveTestScores(),
+  errorMessages: makeSelectErrorMessages(),
 });
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchStudentTestSections: studentTestId => dispatch(fetchStudentTestSections(studentTestId))
+    onFetchStudentTestSections: postBody => dispatch(fetchStudentTestSections(postBody)),
+    onSetAssignedTests: tests => dispatch(setStudentAssignedTests(tests)),
+    onSetCompletedTests: tests => dispatch(setStudentCompletedTests(tests)),
+    onUpdateTestStatus: (payload, currentStatus, studentId) =>
+      dispatch(updateTestStatus(payload, currentStatus, studentId)),
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
+    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
+    onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

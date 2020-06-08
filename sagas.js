@@ -1,7 +1,6 @@
-import { take, call, put, all } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, debounce, delay } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
-  CREATE_STUDENT,
   DELETE_STUDENT,
   UPDATE_STUDENT_ADDRESS,
   UPDATE_STUDENT_CITY,
@@ -13,7 +12,54 @@ import {
   UPDATE_STUDENT_ZIP,
   SEARCH_STUDENTS,
   GET_TESTS,
-  FETCH_STUDENT_TEST_SECTIONS
+  FETCH_STUDENT_TEST_SECTIONS,
+  FETCH_LESSON_LIST,
+  FETCH_LESSON_LIST_SUCCESS,
+  FETCH_LESSON_LIST_FAIL,
+  FETCH_UNITS,
+  FETCH_STUDENT_LESSON_LIST,
+  FETCH_STUDENT_LESSON_LIST_FAIL,
+  FETCH_STUDENT_LESSSON_LIST_SUCCESS,
+  ASSIGN_STUDENT_LESSON,
+  ASSIGN_STUDENT_LESSON_FAIL,
+  RESET_STUDENT_LESSONS,
+  RESET_STUDENT_LESSONS_SUCCESS,
+  RESET_STUDENT_LESSONS_FAIL,
+  UNASSIGN_STUDENT_LESSON,
+  UNASSIGN_STUDENT_LESSON_SUCCESS,
+  UNASSIGN_STUDENT_LESSON_FAIL,
+  RESCHEDULE_STUDENT_LESSONS,
+  RESCHEDULE_STUDENT_LESSONS_SUCCESS,
+  RESCHEDULE_STUDENT_LESSONS_FAIL,
+  MERGE_STUDENT_LESSON_LISTS,
+  UPDATE_STUDENT_ACTIVATION,
+  UPDATE_STUDENT_ACTIVATION_SUCCESS,
+  UPDATE_STUDENT_ACTIVATION_FAIL,
+  FETCH_SUBJECTS,
+  FETCH_SUBJECTS_SUCCESS,
+  FETCH_STUDENT_LESSON_LIST_DEBOUNCE,
+  EXCUSE_STUDENT_LATENESS,
+  FILTER_LESSONS,
+  FLAG_STUDENT_LESSON_PROBLEM,
+  SET_EXCUSE_STUDENT_LATENESS,
+  ADD_LESSON_ANSWER,
+  ADD_LESSON_ANSWER_SUCCESS,
+  DELETE_STUDENT_TEST,
+  UPDATE_TEST_FLAG,
+  REMOVE_TEST,
+  ADD_STUDENT_ANSWER_TO_TEST,
+  UPDATE_STUDENT_TEST_ANSWER,
+  UPDATE_TEST_STATUS,
+  UPDATE_TEST_STATUS_SUCCESS,
+  ADD_TEST_TO_COMPLETED,
+  REMOVE_TEST_FROM_PREV_LIST,
+  REMOVE_TEST_FROM_LIST,
+  SET_ACTIVE_TEST_SCORES,
+  UPDATE_FLAG_STATUS,
+  UPDATE_FLAG_STATUS_SUCCESS,
+  SET_STUDENT_SECTIONS,
+  ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  GET_TEST_SCORES,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -22,7 +68,8 @@ import {
   UPDATE_CLASS_START_DATE,
   UPDATE_CLASS_END_DATE,
   UPDATE_CLASS_DURATION,
-  UPDATE_EXCLUDE_FROM_STATISTICS
+  UPDATE_EXCLUDE_FROM_STATISTICS,
+
 } from "./components/Classes/index/constants";
 import {
   FETCH_INSTRUCTORS,
@@ -35,23 +82,39 @@ import {
   UPDATE_INSTRUCTOR_CITY,
   UPDATE_INSTRUCTOR_ZIP,
   UPDATE_INSTRUCTOR_ADDRESS,
-  UPDATE_INSTRUCTOR_PHONE
+  UPDATE_INSTRUCTOR_PHONE,
 } from "./components/Instructor/index/constants";
+import {
+  SET_CURRENT_USER,
+  FETCH_CURRENT_USER,
+} from './components/User/index/constants';
+
+import {
+  FETCH_ALL_LOCATIONS,
+  SET_ALL_LOCATIONS,
+} from './components/Location/index/constants';
+
 import {
   setStudents,
   setStudentTests,
   setStudentCompletedTests,
   setStudentOverDueTests,
   setStudentAssignedTests,
-  setStudentSections
+  setStudentSections,
+  setUnitFilterOptions,
+  setFetchStudentTestsStatus,
+  sendErrorMessage,
+  resetErrorMessage,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
-import { studentApi, classApi, instructorApi } from "./api";
+
+
+import { studentApi, classApi, instructorApi, lessonApi, userApi, locationsApi } from "./api";
+
 const {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -62,7 +125,28 @@ const {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi
+  fetchStudentTestSectionsApi,
+  fetchLessonListApi,
+  fetchUnitsApi,
+  fetchStudentLessonListApi,
+  assignLessonToStudentApi,
+  resetStudentLessonsApi,
+  updateStudentActivationApi,
+  unAssignLessonFromStudentApi,
+  rescheduleStudentLessonsApi,
+  fetchSubjectsApi,
+  excuseStudentLessonLatenessApi,
+  filterLessonListApi,
+  addStudentLessonProblemFlagApi,
+  addStudentLessonProblemAnswerApi,
+  rescoreStudentLessonApi,
+  deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -71,7 +155,7 @@ const {
   updateClassStartDateApi,
   updateClassEndDateApi,
   updateClassDurationApi,
-  updateClassExcludeFromStatisticsApi
+  updateClassExcludeFromStatisticsApi,
 } = classApi;
 const {
   fetchInstructorsApi,
@@ -84,9 +168,17 @@ const {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   updateInstructorPhoneApi,
-  createNewInstructorApi
+  createNewInstructorApi,
 } = instructorApi;
+const { fetchCurrentUserApi } = userApi;
 
+const { fetchAllLocationsApi } = locationsApi;
+// Error Message Constants
+const fetchSectionsMessage = 'fetchSectionsMessage';
+const fetchProblemsMessage = 'fetchProblemsMessage';
+const testFlagMessage = 'testFlagMessage';
+const answerTestProblemMessage = 'answerTestProblemMessage';
+const fetchingStudentTestsMessage = 'fetchingStudentTestsMessage';
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -106,18 +198,55 @@ export function* fetchStudents() {
   }
 }
 
-export function* watchForFetchStudentTestSections() {
+export function* watchForFetchUnitFilterOptions() {
   while (true) {
-    const { studentTestId } = yield take(FETCH_STUDENT_TEST_SECTIONS);
-    yield call(fetchStudentTestSections, studentTestId);
+    yield take(FETCH_UNITS);
+    yield call(fetchUnits);
   }
 }
 
-export function* fetchStudentTestSections(studentTestId) {
+export function* fetchUnits() {
   try {
-    const { formattedData } = yield call(fetchProblemsByStudentTestIdApi, studentTestId);
-    yield put(setStudentSections(formattedData.test.sections));
+    const { formattedUnits } = yield call(fetchUnitsApi);
+    if (Array.isArray(formattedUnits) || formattedUnits instanceof Array) {
+      yield put(setUnitFilterOptions(formattedUnits));
+    }
   } catch (err) {
+    console.warn("Error occured in the fetchUnits saga", err);
+  }
+}
+
+export function* watchForFetchStudentTestSections() {
+  while (true) {
+    const payload = yield take(FETCH_STUDENT_TEST_SECTIONS);
+    const { postBody: { id, student_test_id } } = payload;
+    yield call(fetchStudentTestSections, id, student_test_id);
+  }
+}
+
+export function* fetchStudentTestSections(id, studentTestId) {
+  try {
+    yield put({
+      type: SET_STUDENT_SECTIONS,
+      sections: [],
+    });
+    const testSections = yield call(fetchStudentTestSectionsApi, id, studentTestId);
+    if (testSections && testSections.message) {
+      return yield put(sendErrorMessage(fetchSectionsMessage, `Error: Something went wrong retrieving sections and problems for this test. You may still view and score essays or try again later.`));
+    }
+    let count = 0;
+    while (count < testSections.length) {
+      const problems = yield call(fetchStudentTestSectionProblemsApi, id, studentTestId, testSections[count].id);
+      if (problems && problems.message) {
+        yield put(sendErrorMessage(fetchProblemsMessage, `Error: Couldn't retrieve one or more sections with problems for this test. Those sections will not be shown. Please try again later.`));
+      }
+      testSections[count].problems = problems.data;
+      count++;
+    }
+    yield put(resetErrorMessage(fetchSectionsMessage));
+    yield put(setStudentSections(testSections));
+  } catch (err) {
+    sendErrorMessage(fetchSectionsMessage, `Something went wrong retrieving sections for this test.`);
     console.warn("Error occurred in the fetchStudentTestSections saga", err);
   }
 }
@@ -131,36 +260,37 @@ export function* watchForFetchStudentTests() {
 
 export function* fetchStudentTests(user) {
   try {
-    const { formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    const { data: formattedStudentTests } = yield call(fetchTestsByStudentIdApi, user.id);
+    if (!formattedStudentTests) {
+      return yield put(sendErrorMessage(fetchingStudentTestsMessage, `Something went wrong when fetching for student tests: ${formattedStudentTests.message}`));
+    }
+    yield put(resetErrorMessage(fetchingStudentTestsMessage));
     yield put(setStudentTests(formattedStudentTests));
     const sortedTests = {
       overdues: [],
       assigneds: [],
-      completes: []
+      completes: [],
     };
     // sort test into assisend, incompletes
     //* * using for development purposes pushing :STARTED to assigneds */
     yield formattedStudentTests.forEach(test => {
-      switch (test.status) {
-        case "OVERDUED":
+      if (test.status === "ASSIGNED" || test.status === 'STARTED') {
+        if (test.due_status === 'OVERDUE') {
           sortedTests.overdues.push(test);
-          break;
-        //* commented out for development purposes  */
-        case "COMPLETED":
-          sortedTests.completes.push(test);
-          break;
-        case "ASSIGNED":
+        } else {
           sortedTests.assigneds.push(test);
-          break;
-        default:
-          sortedTests.assigneds.push(test);
+        }
+      } else if (test.status === 'COMPLETED') {
+        sortedTests.completes.push(test);
       }
     });
     // Dispatch Action
     yield put(setStudentCompletedTests(sortedTests.completes));
     yield put(setStudentOverDueTests(sortedTests.overdues));
     yield put(setStudentAssignedTests(sortedTests.assigneds));
+    yield put(setFetchStudentTestsStatus(true));
   } catch (err) {
+    yield put(sendErrorMessage(fetchingStudentTestsMessage, `Something went wrong when fetching for student tests: ${err}`));
     console.warn("Error occurred in the fetchStudentTests saga", err);
   }
 }
@@ -180,21 +310,6 @@ export function* searchStudents(filters) {
     }
   } catch (err) {
     console.warn("Error occurred in searchStudents saga", err);
-  }
-}
-
-export function* watchForCreateStudent() {
-  while (true) {
-    try {
-      const { student } = yield take(CREATE_STUDENT);
-      const response = yield call(createStudentApi, student);
-      if (response && response.message) {
-        return console.warn("Something went wrong with adding a new student!");
-      }
-      yield call(fetchStudents);
-    } catch (err) {
-      console.warn("Error occurred in watchForAddStudent", err);
-    }
   }
 }
 
@@ -596,13 +711,480 @@ export function* watchForUpdateClassExcludeFromStatistics() {
   }
 }
 
+/** ******************************************    LESSONS    ******************************************* */
+function* watchForFetchLesson() {
+  yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
+}
+
+function* handleFetchLesson() {
+  try {
+    const lessons = yield call(fetchLessonListApi);
+    if (Array.isArray(lessons) || lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+          status: 'NOTASSIGNED',
+        })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchLesson saga", error);
+    yield put({
+      type: FETCH_LESSON_LIST_FAIL,
+      payload: error,
+    });
+  }
+}
+
+
+function* watchForFetchStudentLesson() {
+  yield takeEvery(FETCH_STUDENT_LESSON_LIST, handleFetchStudentLessonList);
+}
+
+function* watchForFetchStudentLessonDebounce() {
+  yield debounce(1000, FETCH_STUDENT_LESSON_LIST_DEBOUNCE, handleFetchStudentLessonList);
+}
+
+function* handleFetchStudentLessonList(action) {
+  try {
+    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
+    yield put({
+      type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
+      payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),
+    });
+    yield put({
+      type: MERGE_STUDENT_LESSON_LISTS,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchStudentLesson saga", error);
+    yield put({
+      type: FETCH_STUDENT_LESSON_LIST_FAIL,
+    });
+  }
+}
+
+function* watchForAssignLesson() {
+  yield takeEvery(ASSIGN_STUDENT_LESSON, handleAssignLesson);
+}
+
+function* handleAssignLesson(action) {
+  try {
+    yield call(assignLessonToStudentApi, action.lesson);
+    yield put({ type: FETCH_STUDENT_LESSON_LIST_DEBOUNCE, postBody: { id: action.lesson.student_id } });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchLesson saga", error);
+    yield put({
+      type: ASSIGN_STUDENT_LESSON_FAIL,
+      payload: error,
+    });
+  }
+}
+
+function* watchForResetLesson() {
+  yield takeEvery(RESET_STUDENT_LESSONS, handleResetLessons);
+}
+
+function* handleResetLessons(action) {
+  try {
+    yield call(resetStudentLessonsApi, { student_lesson_ids: action.lessons });
+    yield put({ type: RESET_STUDENT_LESSONS_SUCCESS, payload: action.lessons });
+  } catch (error) {
+    console.warn("Error occurred in the handleResetLessons saga", error);
+    yield put({
+      type: RESET_STUDENT_LESSONS_FAIL,
+      payload: error,
+    });
+  }
+}
+
+function* watchForUpdateStudentActivation() {
+  yield takeEvery(UPDATE_STUDENT_ACTIVATION, handleUpdateStudentActivation);
+}
+
+function* handleUpdateStudentActivation(action) {
+  try {
+    yield call(updateStudentActivationApi, action.studentInfo);
+    yield put({ type: UPDATE_STUDENT_ACTIVATION_SUCCESS });
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateStudentActivation saga", error);
+    yield put({
+      type: UPDATE_STUDENT_ACTIVATION_FAIL,
+      payload: error,
+    });
+  }
+}
+
+function* watchForUnAssignLesson() {
+  yield takeEvery(UNASSIGN_STUDENT_LESSON, handleUnAssignLesson);
+}
+
+function* handleUnAssignLesson(action) {
+  try {
+    yield call(unAssignLessonFromStudentApi, { student_lesson_ids: action.lesson });
+    yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
+  } catch (error) {
+    console.warn("Error occurred in the handleUnAssignLesson saga", error);
+    yield put({
+      type: UNASSIGN_STUDENT_LESSON_FAIL,
+      payload: error,
+    });
+  }
+}
+
+function* watchForRescheduleStudentLessons() {
+  yield takeEvery(RESCHEDULE_STUDENT_LESSONS, handleRescheduleStudentLessons);
+}
+
+function* handleRescheduleStudentLessons(action) {
+  try {
+    yield call(rescheduleStudentLessonsApi, action.studentLessonData);
+    yield put({
+      type: RESCHEDULE_STUDENT_LESSONS_SUCCESS,
+      payload: action.studentLessonData,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleRescheduleStudentLessons saga", error);
+    yield put({
+      type: RESCHEDULE_STUDENT_LESSONS_FAIL,
+      payload: error,
+    });
+  }
+}
+
+function* watchForFetchSubjects() {
+  yield takeEvery(FETCH_SUBJECTS, handleFetchSubjects);
+}
+
+function* handleFetchSubjects() {
+  try {
+    const response = yield call(fetchSubjectsApi);
+    const newSubjectObject = {};
+    response.forEach(subject => {
+      newSubjectObject[subject.id] = subject.name;
+    });
+    yield put({
+      type: FETCH_SUBJECTS_SUCCESS,
+      payload: newSubjectObject,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchSubjects saga", error);
+  }
+}
+
+export function* watchForFetchCurrentUser() {
+  while (true) {
+    yield take(FETCH_CURRENT_USER);
+    yield call(handleFetchCurrentUser);
+  }
+}
+function* handleFetchCurrentUser() {
+  try {
+    const response = yield call(fetchCurrentUserApi);
+    if (response) {
+      yield put({
+        type: SET_CURRENT_USER,
+        value: response,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchCurrentUser saga", error);
+  }
+}
+
+function* watchForExcuseStudentLateness() {
+  yield takeEvery(EXCUSE_STUDENT_LATENESS, handleExcuseStudentLateness);
+}
+
+function* handleExcuseStudentLateness(action) {
+  try {
+    yield call(excuseStudentLessonLatenessApi, action.lessons);
+    yield put({
+      type: SET_EXCUSE_STUDENT_LATENESS,
+      payload: action.lessons,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleExcuseStudentLateness saga", error);
+  }
+}
+
+function* watchForFilterLessons() {
+  yield debounce(200, FILTER_LESSONS, handleFilterLessons);
+}
+
+function* handleFilterLessons(action) {
+  try {
+    const lessons = yield call(filterLessonListApi, action.filters);
+    if (lessons && lessons instanceof Array) {
+      yield put({
+        type: FETCH_LESSON_LIST_SUCCESS,
+        payload: lessons.map(lesson => ({
+          ...lesson,
+          selected: false,
+          status: 'NOTASSIGNED',
+        })),
+      });
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
+      });
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleFilterLessons saga", error);
+  }
+}
+
+function* watchForFlagStudentLessonProblem() {
+  yield takeEvery(FLAG_STUDENT_LESSON_PROBLEM, handleFlagStudentLessonProblem);
+}
+
+function* handleFlagStudentLessonProblem(action) {
+  try {
+    yield call(addStudentLessonProblemFlagApi, action.lesson);
+  } catch (error) {
+    console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
+  }
+}
+
+
+function* watchForFetchAllLocations() {
+  const value = yield take(FETCH_ALL_LOCATIONS);
+  yield call(handleFetchAllLocations, value.user_id);
+}
+
+
+function* handleFetchAllLocations(id) {
+  try {
+    const locations = yield call(fetchAllLocationsApi, id);
+    yield put({
+      type: SET_ALL_LOCATIONS,
+      payload: locations,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchAllLocations saga", error);
+  }
+}
+
+function* watchForAnswerStudentLessonProblem() {
+  yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
+}
+
+
+function* handleAnswerStudentLessonProblem(action) {
+  try {
+    // @TODO will come back to this after fix/edit-answer-bubbles-rescoring gets merged
+    // const addAnswerResponse = yield call(addStudentLessonProblemAnswerApi);
+    // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
+    // yield put({
+    //   type: ADD_LESSON_ANSWER,
+    //   payload: locations,
+    // });
+  } catch (error) {
+    console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
+  }
+}
+
+function* watchForDeleteStudentTest() {
+  yield takeEvery(DELETE_STUDENT_TEST, handleDeleteStudentTest);
+}
+
+function* handleDeleteStudentTest(action) {
+  try {
+    const payload = { student_test_id: action.studentTestId };
+    const response = yield call(deleteStudentTestApi, payload);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleDeleteStudentTest saga", error);
+    }
+    yield put({
+      type: REMOVE_TEST,
+      testType: action.testType,
+      studentTestId: action.studentTestId,
+    });
+    yield put({
+      type: REMOVE_TEST_FROM_LIST,
+      studentTestId: action.studentTestId,
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleDeleteStudentTest saga", error);
+  }
+}
+
+function* watchForMarkAllTestFlagsReviewed() {
+  yield takeEvery(UPDATE_TEST_FLAG, handleMarkAllFlagsReviewed);
+}
+
+function* handleMarkAllFlagsReviewed(action) {
+  try {
+    const sections = yield call(fetchStudentTestSectionsApi, action.studentId, action.studentTestId);
+
+    const reviewedTestIds = [];
+    let count = 0;
+    while (count < sections.length) {
+      const { data: problems } = yield call(fetchStudentTestSectionProblemsApi, action.studentId, action.studentTestId, sections[count].id);
+
+      const problemAmount = problems.problems.length;
+      let problemCount = 0;
+      while (problemCount < problemAmount) {
+        const flagData = problems.problems[problemCount].flag;
+        if (flagData.id && flagData.status === 'FLAGGED') {
+          const payload = { status: 'REVIEWED', flag_id: flagData.id, student_test_id: action.studentTestId };
+
+          yield call(updateStudentTestQuestionFlagStatusApi, payload);
+          reviewedTestIds.push(action.studentTestId);
+        }
+        problemCount++;
+      }
+      count++;
+    }
+    // Dispatch to update redux store
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateFlagStatus saga", error);
+  }
+}
+
+function* watchForAddStudentAnswerToTest() {
+  yield takeEvery(ADD_STUDENT_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+}
+
+function* watchForAddStudentAnswerToTestDebounce() {
+  yield debounce(500, ADD_FREE_RESPONSE_ANSWER_TO_TEST, handleAddStudentAnswerToTest);
+}
+
+function* handleAddStudentAnswerToTest(action) {
+  try {
+    const response = yield call(addStudentAnswerToTestApi, action.payload);
+    if (response && response.message) {
+      yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Your answer will not be recorded. Please try again later.`));
+      yield put(resetErrorMessage(answerTestProblemMessage));
+      return console.warn("Error occurred in the handleAddStudentAnswerToTest saga", response.message);
+    }
+    yield put({
+      type: UPDATE_STUDENT_TEST_ANSWER,
+      sectionId: action.sectionId,
+      payload: action.payload,
+    });
+    yield put(resetErrorMessage(answerTestProblemMessage));
+  } catch (error) {
+    yield put(sendErrorMessage(answerTestProblemMessage, `Something went wrong adding an answer to this problem. Please try again.`));
+    console.warn("Error occurred in the handleAddStudentAnswerToTest saga", error);
+  }
+}
+
+function* watchForUpdateTestStatus() {
+  yield takeEvery(UPDATE_TEST_STATUS, handleUpdateTestStatus);
+}
+
+function* handleUpdateTestStatus(action) {
+  try {
+    const response = yield call(updateStudentTestStatusApi, action.payload);
+    if (response && response.message && action.payload.status === "COMPLETED") {
+      console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
+      return yield put(sendErrorMessage("updateTestStatusMsg", `Something went wrong updating this test to ${action.payload.status}. Please try opening and resubmitting this test later.`));
+    }
+    yield put({
+      type: UPDATE_TEST_STATUS_SUCCESS,
+      payload: action.payload,
+    });
+
+    if (action.payload.status === "COMPLETED") {
+      yield put({
+        type: ADD_TEST_TO_COMPLETED,
+        payload: action.payload,
+        testList: action.currentStatus,
+      });
+      yield put({
+        type: REMOVE_TEST_FROM_PREV_LIST,
+        payload: action.payload,
+        testList: action.currentStatus,
+      });
+
+      yield delay(1500);
+
+      const response = yield call(fetchStudentTestScoreApi, action.studentId, action.payload.student_test_id);
+      if (response && response.message) {
+        console.warn(`Error occurred in the handleFetchActiveTestScores saga: ${response.message}`);
+        return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores for this test. Please try opening this test from the completed test section to view scores."));
+      }
+      if (!response.data.essay) {
+        response.data.essay = { analysis: "", reading: "", writing: "" };
+      }
+      yield put({
+        type: SET_ACTIVE_TEST_SCORES,
+        scores: { ...response.data, student_test_id: action.payload.student_test_id },
+      });
+      yield put(resetErrorMessage("fetchScoresMsg"));
+      yield put(resetErrorMessage("updateTestStatusMsg"));
+    }
+  } catch (error) {
+    console.warn("Error occurred in the handleUpdateTestStatus saga", error);
+  }
+}
+
+function* watchForUpdateTestFlagStatus() {
+  yield takeEvery(UPDATE_FLAG_STATUS, handleUpdateTestFlagStatus);
+}
+
+function* handleUpdateTestFlagStatus(action) {
+  try {
+    if (action.status === "FLAGGED" && !action.payload.flag_id) {
+      const response = yield call(addStudentTestQuestionFlagApi, action.payload);
+      if (response && response.message) {
+        return yield put(sendErrorMessage(testFlagMessage, `Something went wrong adding a flag to this problem: ${response.message}`));
+      }
+      action.question.flag.id = response.data.id;
+    } else {
+      const response = yield call(updateStudentTestQuestionFlagStatusApi, action.payload);
+      if (response && response.message) {
+        return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
+      }
+    }
+    yield put(resetErrorMessage(testFlagMessage));
+    yield put({
+      type: UPDATE_FLAG_STATUS_SUCCESS,
+      sectionId: action.question.test_section_id,
+      question: action.question,
+      status: action.status,
+    });
+  } catch (error) {
+    yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${error}`));
+    console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
+  }
+}
+
+function* watchForFetchActiveTestScores() {
+  yield takeEvery(GET_TEST_SCORES, handleFetchActiveTestScores);
+}
+
+function* handleFetchActiveTestScores(action) {
+  try {
+    const response = yield call(fetchStudentTestScoreApi, action.payload.studentId, action.payload.student_test_id);
+    if (response && response.message) {
+      console.warn(`Error occurred in the handleFetchActiveTestScores saga: ${response.message}`);
+      return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores."));
+    }
+    yield put(resetErrorMessage("fetchScoresMsg"));
+    if (!response.data.essay) {
+      response.data.essay = { analysis: "", reading: "", writing: "" };
+    }
+    yield put({
+      type: SET_ACTIVE_TEST_SCORES,
+      scores: { ...response.data, student_test_id: action.payload.student_test_id },
+    });
+  } catch (error) {
+    console.warn("Error occurred in the handleFetchActiveTestScores saga", error);
+    return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores."));
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
     watchForFetchStudentTests(),
     watchForFetchStudentTestSections(),
     watchForSearchStudents(),
-    watchForCreateStudent(),
     watchForDeleteStudent(),
     watchForUpdateStudentFirstName(),
     watchForUpdateStudentLastName(),
@@ -629,6 +1211,29 @@ export default function* defaultSaga() {
     watchForUpdateClassEndDate(),
     watchForUpdateClassExcludeFromStatistics(),
     watchForUpdateClassName(),
-    watchForUpdateClassDuration()
+    watchForUpdateClassDuration(),
+    watchForFetchLesson(),
+    watchForFetchUnitFilterOptions(),
+    watchForFetchStudentLesson(),
+    watchForAssignLesson(),
+    watchForResetLesson(),
+    watchForUpdateStudentActivation(),
+    watchForUnAssignLesson(),
+    watchForRescheduleStudentLessons(),
+    watchForFetchSubjects(),
+    watchForFetchCurrentUser(),
+    watchForFetchStudentLessonDebounce(),
+    watchForExcuseStudentLateness(),
+    watchForFilterLessons(),
+    watchForFlagStudentLessonProblem(),
+    watchForFetchAllLocations(),
+    watchForAnswerStudentLessonProblem(),
+    watchForDeleteStudentTest(),
+    watchForMarkAllTestFlagsReviewed(),
+    watchForAddStudentAnswerToTest(),
+    watchForUpdateTestStatus(),
+    watchForAddStudentAnswerToTestDebounce(),
+    watchForUpdateTestFlagStatus(),
+    watchForFetchActiveTestScores(),
   ]);
 }

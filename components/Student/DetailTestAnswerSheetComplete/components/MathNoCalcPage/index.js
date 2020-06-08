@@ -1,31 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
-import AnswerRow from "../WritingPage/components/AnswerRow";
+import React from 'react';
+import PropTypes from 'prop-types';
+import AnswerRow from '../WritingPage/components/AnswerRow';
 
 class MathNoCalcPage extends React.Component {
   mapAnswers = () => {
-    const {
-      testSection: { problems }
-    } = this.props;
+    const { testSection: { problems: problemsSection }, testSection, fetchProblemsMessage } = this.props;
+    if (!problemsSection && fetchProblemsMessage) return <p style={{ color: "red" }}>{this.props.fetchProblemsMessage}</p>;
     return (
-      problems &&
-      problems.map(problem => <AnswerRow key={problem.test_problem_id} problem={problem} />)
+      problemsSection.problems &&
+      problemsSection.problems.map(problem =>
+        <AnswerRow key={problem.test_problem_id} testSection={testSection} problem={problem} onAddStudentAnswerToTest={this.props.onAddStudentAnswerToTest} />,
+      )
     );
   };
 
   render() {
     return (
-<<<<<<< HEAD
       <div className="slide" id="mathNoCalcAnswerSheetImg">
-        <div className="row" style={{ columns: "3 auto", marginLeft: "10px", marginRight: "10px" }}>
-          <ol className="answers-list">{this.mapAnswers()}</ol>
-=======
-      <div className="slide" id = "mathNoCalcAnswerSheetImg">
-        <div className="row"  style={{columns: '3 auto', marginLeft: '10px', marginRight: '10px'}}>
-          <ol className="answers-list">
-            {this.mapMathNoCalcAnswers()}
+        <div className="row" style={{ columns: '3 auto', marginLeft: '10px', marginRight: '10px' }}>
+          <ol className="answers-list" style={{ marginBottom: '40px' }}>
+            {this.props.testSection && this.mapAnswers()}
           </ol>
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
         </div>
       </div>
     );
@@ -33,11 +28,6 @@ class MathNoCalcPage extends React.Component {
 }
 
 MathNoCalcPage.propTypes = {
-<<<<<<< HEAD
-  testSection: PropTypes.object
+  testSection: PropTypes.object,
 };
-=======
-  mathNoCalc: PropTypes.object.isRequired,
-}
->>>>>>> 5648d67a1ffd519eaa27202bf67e210bab1c7b50
 export default MathNoCalcPage;

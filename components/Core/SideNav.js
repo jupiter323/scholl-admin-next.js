@@ -7,12 +7,16 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import Link from "next/link";
 import ActiveLink from "../../utils/ActiveLink";
-import { makeSelectUserIsLogged } from "../User/index/selectors";
+import {
+  makeSelectUserIsLogged,
+  makeSelectCurrentUser,
+} from "../User/index/selectors";
 import { loggedIn } from "../../utils/AuthService";
 
-import { setUserIsLogged } from "../User/index/actions";
+import { setUserIsLogged, getCurrentUser } from "../User/index/actions";
+import { LogoutApi } from "../User/index/api";
 import $ from "jquery";
-
+import Router from "next/router";
 if (typeof window !== "undefined") {
   window.$ = $;
   window.jQuery = $;
@@ -73,13 +77,23 @@ class SideNav extends Component {
 
   componentDidMount() {
     const isLogged = loggedIn();
-    const { onSetUserIsLogged } = this.props;
+    const { onSetUserIsLogged, onFetchCurrentUser, currentUser } = this.props;
+    if (!currentUser && isLogged) {
+      onFetchCurrentUser();
+    }
     onSetUserIsLogged(isLogged);
     $(".sidenav").sidenav();
   }
 
+  handleLogout = () => {
+    const { onSetUserIsLogged } = this.props;
+    onSetUserIsLogged(false);
+    LogoutApi();
+    Router.push("/login");
+  }
+
   render() {
-    const { firstName, lastName } = this.props.user;
+    const { isLogged, currentUser } = this.props;
     return (
       <aside id="slide-out" className="sidenav">
         <div className="sidenav-holder">
@@ -106,15 +120,13 @@ class SideNav extends Component {
           </ul>
           <div className="log-block white-text" style={{ cursor: "hand" }}>
             <div className="text">
-              <Link href="/login">
-                <a href="#">
-                  <div className="block white-text">Log Out</div>
-                </a>
-              </Link>
+              <a href="#" onClick={this.handleLogout}>
+                <div className="block white-text">{isLogged ? "Log Out" : ""}</div>
+              </a>
               <Link href="/account">
                 <a>
                   <div className="block white-text">
-                    {firstName} {lastName}
+                    {isLogged && currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Loading..."}
                   </div>
                 </a>
               </Link>
@@ -135,18 +147,20 @@ SideNav.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     onSetUserIsLogged: (value) => dispatch(setUserIsLogged(value)),
+    onFetchCurrentUser: () => dispatch(getCurrentUser()),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   isLogged: makeSelectUserIsLogged(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  { pure: false }
+  { pure: false },
 );
 
 export default compose(withConnect)(SideNav);

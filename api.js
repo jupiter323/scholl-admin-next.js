@@ -1,7 +1,6 @@
 import {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -12,7 +11,28 @@ import {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi,
+  fetchStudentTestSectionsApi,
+  fetchLessonListApi,
+  fetchUnitsApi,
+  fetchStudentLessonListApi,
+  assignLessonToStudentApi,
+  resetStudentLessonsApi,
+  updateStudentActivationApi,
+  unAssignLessonFromStudentApi,
+  rescheduleStudentLessonsApi,
+  fetchSubjectsApi,
+  excuseStudentLessonLatenessApi,
+  filterLessonListApi,
+  addStudentLessonProblemFlagApi,
+  addStudentLessonProblemAnswerApi,
+  rescoreStudentLessonApi,
+  deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 } from "./components/Student/index/api";
 
 import {
@@ -25,7 +45,8 @@ import {
   updateClassExcludeFromStatisticsApi,
 } from './components/Classes/index/api';
 
-import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
+import {
+  fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi,
   updateInstructorLastNameApi,
   updateInstructorEmailApi,
   updateInstructorStateApi,
@@ -35,6 +56,14 @@ import { fetchInstructorsApi, searchInstructorsApi, updateInstructorFirstNameApi
   addInstructorToLocationApi,
   createNewInstructorApi,
 } from './components/Instructor/index/api';
+
+import {
+  fetchCurrentUserApi,
+} from './components/User/index/api';
+
+import {
+  fetchAllLocationsApi,
+} from './components/Location/index/api';
 
 export const classApi = {
   createClassApi,
@@ -49,7 +78,6 @@ export const classApi = {
 export const studentApi = {
   fetchStudentsApi,
   searchStudentsApi,
-  createStudentApi,
   deleteStudentApi,
   updateStudentAddressApi,
   updateStudentCityApi,
@@ -60,7 +88,28 @@ export const studentApi = {
   updateStudentStateApi,
   updateStudentZipApi,
   fetchTestsByStudentIdApi,
-  fetchProblemsByStudentTestIdApi,
+  fetchStudentTestSectionsApi,
+  fetchLessonListApi,
+  fetchUnitsApi,
+  fetchStudentLessonListApi,
+  assignLessonToStudentApi,
+  resetStudentLessonsApi,
+  updateStudentActivationApi,
+  unAssignLessonFromStudentApi,
+  rescheduleStudentLessonsApi,
+  fetchSubjectsApi,
+  excuseStudentLessonLatenessApi,
+  filterLessonListApi,
+  addStudentLessonProblemFlagApi,
+  addStudentLessonProblemAnswerApi,
+  deleteStudentTestApi,
+  fetchStudentTestSectionProblemsApi,
+  updateStudentTestQuestionFlagStatusApi,
+  rescoreStudentLessonApi,
+  addStudentAnswerToTestApi,
+  updateStudentTestStatusApi,
+  fetchStudentTestScoreApi,
+  addStudentTestQuestionFlagApi,
 };
 
 export const instructorApi = {
@@ -75,4 +124,13 @@ export const instructorApi = {
   updateInstructorZipApi,
   updateInstructorAddressApi,
   addInstructorToLocationApi,
+};
+
+export const userApi = {
+  fetchCurrentUserApi,
+};
+
+
+export const locationsApi = {
+  fetchAllLocationsApi,
 };

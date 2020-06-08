@@ -1,10 +1,12 @@
 const API_URL = process.env.API_URL;
+import { getToken } from '../../../utils/AuthService';
 
 export const fetchClassesApi = () =>
   fetch(`${API_URL}/api/classes`, {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   })
     .then(res => res.json())
@@ -54,6 +56,7 @@ export const createClassApi = (classroom) =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(classroom),
   })
@@ -66,6 +69,7 @@ export const updateClassNameApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -78,6 +82,7 @@ export const updateClassStartDateApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -90,6 +95,7 @@ export const updateClassEndDateApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -102,6 +108,7 @@ export const updateClassDurationApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })
@@ -114,6 +121,7 @@ export const updateClassExcludeFromStatisticsApi = body =>
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
   })

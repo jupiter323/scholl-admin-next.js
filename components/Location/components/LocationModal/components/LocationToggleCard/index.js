@@ -12,8 +12,8 @@ const LocationToggleCard = ({ location, onToggleLocationSelect }) => (
         <span className="check-link icon-check"></span>
         <div className="card-panel-row row">
           <div className="col s10">
-            <h3 className="h4 truncate">{location.locationNickname}</h3>
-            <h4 className="sub-title">{location.locationName}</h4>
+            <h3 className="h4 truncate">{location.nickname}</h3>
+            <h4 className="sub-title">{location.name}</h4>
           </div>
           <div className="col s2 right-align">
             <span className="block-icon">

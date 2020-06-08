@@ -2,46 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import { fetchStudentTestScoreApi } from "../../../index/api";
 class AssignedTestCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ReadingScore: null,
-      WritingScore: null,
-      ReadingAndWrigingScore: null,
-      MathScore: null,
-      NA: 0
-    };
   }
-
-  componentDidMount = async () => {
-    const scores = await this.getScoresByStudentTest(this.props.test);
-    scores.map(score => {
-      switch (score.subject_name) {
-        case "Reading":
-          this.setState({ ReadingScore: score });
-          break;
-        case "Writing and Language":
-          this.setState({ ReadingAndWrigingScore: score });
-          break;
-        case "Math":
-          this.setState({ MathScore: score });
-          break;
-        case "Writing":
-          this.setState({ WritingScore: score });
-          break;
-        default:
-          this.setState({ NA: 0 });
-      }
-    });
-  };
-
-  getScoresByStudentTest = async test => {
-    const { student_test_id } = test;
-    const { formattedTestScores } = await fetchStudentTestScoreApi(student_test_id);
-    return formattedTestScores.scores;
-  };
 
   handleDropdownClick = event => {
     const { onSetDropdown, onCloseDropdown, dropdownIsOpen, index } = this.props;
@@ -57,12 +21,14 @@ class AssignedTestCard extends React.Component {
       dropdownIndex,
       index,
       dropdownIsOpen,
-      test: { test_name, test_description, dueDate, completion_date, test_id },
+      test: { test_name, test_description, due_date, assignment_date, student_test_id, student_id },
       onEnterAnswers,
-      handleTestSettingModalOpen
+      handleTestSettingModalOpen,
+      onDeleteTest,
+      onTestFlagReviewed,
     } = this.props;
-    const formattedDueDate = moment(dueDate).format("MM/DD/YY");
-    const formattedCompletedDate = moment(completion_date).format("MM/DD/YY");
+    const formattedDueDate = moment(due_date).format("MM/DD/YY");
+    const formattedAssignedDate = moment(assignment_date).format("MM/DD/YY");
     return (
       <React.Fragment>
         <div
@@ -100,7 +66,7 @@ class AssignedTestCard extends React.Component {
                                   transformOrigin: "0px 0px 0px",
                                   opacity: "1",
                                   transform: "scaleX(1) scaleY(1)",
-                                  width: "210px"
+                                  width: "210px",
                                 }}
                                 className="dropdown-content"
                               >
@@ -110,7 +76,7 @@ class AssignedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={() => onEnterAnswers(test_id)}>
+                                  <a href="#" onClick={() => onEnterAnswers(student_test_id)}>
                                     Edit/Enter Answers
                                   </a>
                                 </li>
@@ -120,7 +86,13 @@ class AssignedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="disabled">
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onTestFlagReviewed(student_test_id, student_id);
+                                    }}
+                                  >
                                     Mark flags reviewed
                                   </a>
                                 </li>
@@ -130,7 +102,14 @@ class AssignedTestCard extends React.Component {
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" className="red-text text-darken-3">
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onDeleteTest(student_test_id, student_id, "assignedStudentTests");
+                                    }}
+                                    className="red-text text-darken-3"
+                                  >
                                     Unassign
                                   </a>
                                 </li>
@@ -146,7 +125,7 @@ class AssignedTestCard extends React.Component {
                           <li>
                             <span className="list-status">
                               <span className="ico-mark" />
-                              <span className="status-text">Assigned {formattedCompletedDate}</span>
+                              <span className="status-text">Assigned {formattedAssignedDate}</span>
                             </span>
                           </li>
                           <li>
@@ -179,12 +158,11 @@ class AssignedTestCard extends React.Component {
 }
 
 AssignedTestCard.propTypes = {
-  dropdownIndex: PropTypes.number,
   onSetDropdown: PropTypes.func.isRequired,
   dropdownIsOpen: PropTypes.bool.isRequired,
   onCloseDropdown: PropTypes.func.isRequired,
   onDownloadReport: PropTypes.func.isRequired,
-  test: PropTypes.object.isRequired
+  test: PropTypes.object.isRequired,
 };
 
 export default AssignedTestCard;
