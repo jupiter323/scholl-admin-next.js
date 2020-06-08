@@ -10,14 +10,13 @@ class SubBlock extends React.Component {
 
   mapSubRow = data => {
     if (data.children) {
-      return data.children.map(children => <GroupRow data={children} key={children.id} />);
+      return data.children.map(children => <GroupRow data={children} parentTotal={data.score.total} key={children.id} />);
     }
   };
 
   renderSubBlock = data => {
-    // console.log('log: percent', (data.score.incorrect / data.score.total * 100).toFixed(0));
-    console.log('log: data', data);
-    console.log('log: props', this.props);
+    const { parentTotal } = this.props;
+    // console.log('log: lengths', (data.total / parentTotal) * 100)
     return (
       <React.Fragment>
         <div className="graph-row-block">
@@ -34,7 +33,7 @@ class SubBlock extends React.Component {
               <div className="graph-linear-students">
                 <div
                   className="graph-holder"
-                  style={{ width: `100%` }}
+                  style={{ width: `${(data.score.total / parentTotal) * 100}%` }}
                 >
                   <div className="graph-admin">
                     <div
