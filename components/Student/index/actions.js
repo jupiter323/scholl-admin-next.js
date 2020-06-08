@@ -63,6 +63,7 @@ import {
   SEND_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
   GET_TEST_SCORES,
+  FETCH_LESSON_SECTIONS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -447,4 +448,9 @@ export const resetErrorMessage = (propertyName) => ({
 export const getTestScores = (payload) => ({
   type: GET_TEST_SCORES,
   payload,
+});
+
+export const fetchLessonSection = (postBody) => ({
+  type: FETCH_LESSON_SECTIONS,
+  postBody,
 });

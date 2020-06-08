@@ -10,6 +10,7 @@ import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
+import { fetchLessonSection } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 
 
@@ -58,7 +59,7 @@ class LessonDetailAnswerSheet extends React.Component {
     super(props);
     this.state = {
       challengeProblems: [],
-      practiceProlems: [],
+      practiceProblems: [],
       drillProblems: [],
       currentType: "",
       hasChallenge: false,
@@ -85,19 +86,21 @@ class LessonDetailAnswerSheet extends React.Component {
           this.setState({
             hasChallenge: true,
           });
-          const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          this.setState({
-            challengeProblems: challengeProblems.lesson_problems,
-          });
+          this.props.onFetchLessonSection({ student_id, lesson_id, section_id });
+          // const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
+          // this.setState({
+          //   challengeProblems: challengeProblems.lesson_problems,
+          // });
         } else {
           this.setState({
             hasPractice: true,
           });
-          const practiceProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          if (!practiceProblems) return;
-          this.setState({
-            practiceProlems: practiceProblems.lesson_problems,
-          });
+          // const practiceProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
+          this.props.onFetchLessonSection({ student_id, lesson_id, section_id });
+          // if (!practiceProblems) return;
+          // this.setState({
+          //   practiceProblems: practiceProblems.lesson_problems,
+          // });
         }
       });
     }
@@ -123,7 +126,7 @@ class LessonDetailAnswerSheet extends React.Component {
 
   getProblemsAmount = () => {
     if (this.state.currentType === "Module") {
-      return this.state.challengeProblems.length + this.state.practiceProlems.length;
+      return this.state.challengeProblems.length + this.state.practiceProblems.length;
     }
     if (this.state.currentType === "Drill") {
       return this.state.drillProblems.length;
@@ -140,13 +143,13 @@ class LessonDetailAnswerSheet extends React.Component {
       });
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
-      const { challengeProblems, practiceProlems } = this.state;
+      const { challengeProblems, practiceProblems } = this.state;
       challengeProblems.length !== 0 && challengeProblems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
       });
-      practiceProlems.length !== 0 && practiceProlems.map(section => {
+      practiceProblems.length !== 0 && practiceProblems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
@@ -206,16 +209,17 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   getCurrentProblemList = () => {
-    const { currentType, drillProblems, practiceProlems, challengeProblems } = this.state;
+    const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
     if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
-    if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProlems, type: "practiceProlems" }];
+    if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
   }
 
   render() {
-    const { challengeProblems, practiceProlems } = this.state;
+    // const { challengeProblems, practiceProblems, drillProblems } = this.state;
     const { onCloseDetailModal, user,
-      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime }, activeLesson: { drillProblems } } = this.props;
+      lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime }, activeLesson: { drillProblems, challengeProblems, practiceProblems } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
+    console.log('log: activeLesson', this.props.activeLesson);
     return (
       <React.Fragment>
         <div className="wrapper">
@@ -484,9 +488,9 @@ class LessonDetailAnswerSheet extends React.Component {
                                 <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
                               </div>
                             )}
-                            {practiceProlems.length !== 0 && (
+                            {practiceProblems.length !== 0 && (
                               <div className="main-row row">
-                                <PracticeQuestions questions={practiceProlems} updateProblemList={this.updateProblemList} problemType={'practiceProlems'} />
+                                <PracticeQuestions questions={practiceProblems} updateProblemList={this.updateProblemList} problemType={'practiceProblems'} />
                               </div>
                             )}
                             {drillProblems.length !== 0 && (
@@ -507,9 +511,9 @@ class LessonDetailAnswerSheet extends React.Component {
                         )}
                       </div>
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
-                        {practiceProlems.length !== 0 && (
+                        {practiceProblems.length !== 0 && (
                           <div className="main-row row">
-                            <PracticeQuestions questions={practiceProlems} updateProblemList={this.updateProblemList} problemType={'practiceProlems'} />
+                            <PracticeQuestions questions={practiceProblems} updateProblemList={this.updateProblemList} problemType={'practiceProblems'} />
                           </div>
                         )}
                       </div>
@@ -543,6 +547,12 @@ const mapStateToProps = createStructuredSelector({
   activeLesson: makeSelectActiveLesson(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function mapDispatchToProps(dispatch) {
+  return {
+    onFetchLessonSection: postBody => dispatch(fetchLessonSection(postBody)),
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(LessonDetailAnswerSheet);

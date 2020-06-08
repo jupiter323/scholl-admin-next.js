@@ -52,6 +52,7 @@ import {
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   SEND_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
+  SET_LESSON_SECTIONS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -200,10 +201,7 @@ function studentReducer(state = initialState, action) {
       ]);
 
     case SET_ACTIVE_LESSON:
-      console.log('log: setting active lesson reducer');
-      action.activeLesson.challengeProblems = [];
-      action.activeLesson.practiceProblems = [];
-      // Object.assign({},{})
+      Object.assign(action.activeLesson, { challengeProblems: [], practiceProblems: [] });
       if (action.activeLesson.type.label === "Drill") {
         action.activeLesson.drillProblems = action.activeLesson.problems;
         delete action.activeLesson.problems;
@@ -383,6 +381,11 @@ function studentReducer(state = initialState, action) {
     case RESET_ERROR_MESSAGE:
       const resetErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: "" };
       return state.set('errorMessages', resetErrorMessages);
+
+    case SET_LESSON_SECTIONS:
+      const activeLesson = state.get('activeLesson');
+      activeLesson[`${action.sectionType}Problems`] = action.problems;
+      return state.set('activeLesson', activeLesson);
 
     default:
       return state;

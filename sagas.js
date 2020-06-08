@@ -60,6 +60,8 @@ import {
   SET_STUDENT_SECTIONS,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   GET_TEST_SCORES,
+  FETCH_LESSON_SECTIONS,
+  SET_LESSON_SECTIONS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -147,6 +149,7 @@ const {
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
   addStudentTestQuestionFlagApi,
+  fetchStudentLessonSectionApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1179,30 +1182,27 @@ function* handleFetchActiveTestScores(action) {
   }
 }
 
-// function* watchForFetchActiveTestScores() {
-//   yield takeEvery(GET_TEST_SCORES, handleFetchActiveTestScores);
-// }
+function* watchForFetchLessonSections() {
+  yield takeEvery(FETCH_LESSON_SECTIONS, handleFetchLessonSections);
+}
 
-// function* handleFetchActiveTestScores(action) {
-//   try {
-//     const response = yield call(fetchStudentTestScoreApi, action.payload.studentId, action.payload.student_test_id);
-//     if (response && response.message) {
-//       console.warn(`Error occurred in the handleFetchActiveTestScores saga: ${response.message}`);
-//       return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores."));
-//     }
-//     yield put(resetErrorMessage("fetchScoresMsg"));
-//     if (!response.data.essay) {
-//       response.data.essay = { analysis: "", reading: "", writing: "" };
-//     }
-//     yield put({
-//       type: SET_ACTIVE_TEST_SCORES,
-//       scores: { ...response.data, student_test_id: action.payload.student_test_id },
-//     });
-//   } catch (error) {
-//     console.warn("Error occurred in the handleFetchActiveTestScores saga", error);
-//     return yield put(sendErrorMessage("fetchScoresMsg", "Something went wrong fetching scores."));
-//   }
-// }
+function* handleFetchLessonSections(action) {
+  try {
+    const { postBody: { student_id, lesson_id, section_id } } = action;
+    const response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, section_id);
+    // console.log('log: response saga', response)
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleFetchLessonSections saga", response.message);
+    }
+    yield put({
+      type: SET_LESSON_SECTIONS,
+      sectionType: response.data.name,
+      problems: response.data.lesson_problems,
+    });
+  } catch (error) {
+    return console.warn("Error occurred in the handleFetchLessonSections saga", error);
+  }
+}
 
 export default function* defaultSaga() {
   yield all([
@@ -1260,5 +1260,6 @@ export default function* defaultSaga() {
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
+    watchForFetchLessonSections(),
   ]);
 }
