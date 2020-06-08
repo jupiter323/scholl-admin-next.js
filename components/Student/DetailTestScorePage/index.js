@@ -56,6 +56,16 @@ class DetailTestScorePage extends React.Component {
     </div>
   )
 
+  displayEssayScoresCard = () => {
+    const { scores: { essay } } = this.props;
+    if (!essay) return null;
+    const { reading, writing, analysis } = essay;
+    if (reading !== "" && writing !== "" && analysis !== "") {
+      return (<EssayScoresCard essayScores={essay} />);
+    }
+    return null;
+  }
+
   render() {
     const { scores, test } = this.props;
     if (!scores) {
@@ -65,6 +75,7 @@ class DetailTestScorePage extends React.Component {
       return this.loadingSpinner();
     }
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
+    console.log('log: essay', essay);
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
@@ -74,7 +85,8 @@ class DetailTestScorePage extends React.Component {
           </div>
           <div className="d-flex-content same-height justify-center row mb-0">
             <TestScoreCard subjectScores={subjects} />
-            <EssayScoresCard essayScores={essay} />
+            {/* <EssayScoresCard essayScores={essay} /> */}
+            {this.displayEssayScoresCard()}
           </div>
           <div className="d-flex-content justify-center row mb-0">
             <CrossTestScoresCard crossTestScores={cross_test_score} />
