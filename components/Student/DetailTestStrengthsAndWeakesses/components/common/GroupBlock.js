@@ -10,14 +10,19 @@ class GroupBlock extends React.Component {
   }
 
   mapGroupRow = () => {
-    const { data: { children } } = this.props;
+    const { data: { children, score } } = this.props;
     if (children.length !== 0) {
-      return children.map(children => <SubBlock data={children} key={children.id} />);
+      return children.map(children => <SubBlock data={children} parentTotal={score.total} key={children.id} />);
     }
   };
 
   render() {
-    const { data: { name, score: { percent_correct, correct, incorrect, total } } } = this.props;
+    const { data: { name, score: { percent_correct, correct, incorrect, total } }, parentScores } = this.props;
+    console.log('log: parentScores', parentScores);
+    let width = 100;
+    if (parentScores && parentScores.score) {
+      width = (total / parentScores.score.total) * 100;
+    }
     return (
       <div className="graphs-block">
         <div className="graph-row graph-row-title">
@@ -33,12 +38,16 @@ class GroupBlock extends React.Component {
             <div className="graph-linear-students">
               <div
                 className="graph-holder"
-                style={{ width: `${(correct / total * 100).toFixed(0)}%` }}
+                style={{ width: `${width}%` }}
               >
                 <div className="graph-admin">
                   <div
                     className="part-red"
                     style={{ width: `${(incorrect / total * 100).toFixed(0)}%` }}
+                  />
+                  <div
+                    className="part-green"
+                    style={{ width: `${(correct / total * 100).toFixed(0)}%` }}
                   />
                 </div>
               </div>
@@ -48,7 +57,7 @@ class GroupBlock extends React.Component {
             <span className="text-large">
               {correct}
             </span>
-            <span className="text-small">out of</span>
+            <span className="text-small"> out of </span>
             <span className="text-large">
               {total}
             </span>

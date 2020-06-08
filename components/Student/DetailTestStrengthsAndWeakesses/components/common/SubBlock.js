@@ -10,11 +10,12 @@ class SubBlock extends React.Component {
 
   mapSubRow = data => {
     if (data.children) {
-      return data.children.map(children => <GroupRow data={children} key={children.id} />);
+      return data.children.map(children => <GroupRow data={children} parentTotal={data.score.total} key={children.id} />);
     }
   };
 
   renderSubBlock = data => {
+    const { parentTotal } = this.props;
     return (
       <React.Fragment>
         <div className="graph-row-block">
@@ -31,9 +32,15 @@ class SubBlock extends React.Component {
               <div className="graph-linear-students">
                 <div
                   className="graph-holder"
-                  style={{width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%`}}
+                  style={{ width: `${(data.score.total / parentTotal) * 100}%` }}
                 >
                   <div className="graph-admin">
+                    <div
+                      className="part-green"
+                      style={{
+                        width: `${(data.score.correct / data.score.total * 100).toFixed(0)}%`,
+                      }}
+                    />
                     <div
                       className="part-red"
                       style={{
@@ -41,24 +48,25 @@ class SubBlock extends React.Component {
                       }}
                     />
                   </div>
-                
+
+                </div>
               </div>
             </div>
+            <div className="graph-col graph-info">
+              <span className="text-large">
+                {data.score.correct}
+              </span>
+              <span className="text-small"> out of </span>
+              <span className="text-large">
+                {data.score.total}
+              </span>
+            </div>
           </div>
-          <div className="graph-col graph-info">
-            <span className="text-large">
-              {data.score.correct}
-            </span>
-            <span className="text-small">out of</span>
-            <span className="text-large">
-              {data.score.total}
-            </span>
-          </div>
+          {this.mapSubRow(data)}
         </div>
-        {this.mapSubRow(data)}
-      </div>
-    </React.Fragment>
-  )};
+      </React.Fragment>
+    );
+  };
 
   render() {
     return this.renderSubBlock(this.props.data);
