@@ -566,7 +566,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                   <div className="col s6 badge-block-column red-text">
                                     <span className="badge-rounded-xlg badge red darken-2 white-text">
                                       <b className="badge-text">
-                                        {this.getReviewedAndFlaggedProblemAmount('FLAGGED')}
+                                        {this.props.lesson.problem_flag_count}
                                       </b>{' '}
                                       <i className="icon-flag" />
                                     </span>
