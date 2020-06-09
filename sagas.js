@@ -1190,7 +1190,6 @@ function* handleFetchLessonSections(action) {
   try {
     const { postBody: { student_id, lesson_id, section_id } } = action;
     const response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, section_id);
-    // console.log('log: response saga', response)
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonSections saga", response.message);
     }

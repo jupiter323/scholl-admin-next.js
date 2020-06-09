@@ -206,11 +206,9 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   render() {
-    // const { challengeProblems, practiceProblems, drillProblems } = this.state;
     const { onCloseDetailModal, user,
       lesson: { name, starting_page, ending_page, completed_at, assignTime, assignment_date, due_date, dueTime }, activeLesson: { drillProblems, challengeProblems, practiceProblems } } = this.props;
     const { studentInformation: { firstName, lastName } } = user;
-    console.log('log: activeLesson', this.props.activeLesson);
     return (
       <React.Fragment>
         <div className="wrapper">

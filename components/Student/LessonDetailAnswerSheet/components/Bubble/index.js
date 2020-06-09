@@ -37,6 +37,15 @@ const styles = {
     width: "19px",
     borderRadius: "50%",
   },
+  blueFilled: {
+    position: "relative",
+    color: "#fff",
+    border: "1px solid #40c4ff",
+    backgroundColor: "#40c4ff",
+    height: "19px",
+    width: "19px",
+    borderRadius: "50%",
+  },
 };
 
 class BubbleGroup extends React.Component {
@@ -90,16 +99,17 @@ class BubbleGroup extends React.Component {
     if (correctAnswerIndex === index && !condition) {
       return styles.greenBorderOnly;
     }
-    if (index === studentAnswerIndex && !condition) {
+    if (index === studentAnswerIndex && !condition && correctAnswerIndex !== -1) {
       return styles.red;
     }
-    if (index !== studentAnswerIndex && index !== correctAnswerIndex) {
-      return styles.plain;
+    if (correctAnswerIndex === -1 && studentAnswerIndex !== -1 && studentAnswerIndex === index) {
+      return styles.blueFilled;
     }
     return styles.plain;
   };
 
   render() {
+    console.log('log: bubble props', this.props);
     const {
       lesson: { id },
     } = this.props;
