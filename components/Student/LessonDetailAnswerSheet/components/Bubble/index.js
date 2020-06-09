@@ -64,7 +64,7 @@ class BubbleGroup extends React.Component {
       problem_id: lesson.problem.id,
       answer_id: answerId,
     };
-    onAnswerStudentLessonProblem(postBody, problemType);
+    onAnswerStudentLessonProblem(postBody, problemType, "multiple");
   }
 
   mapEmptyBubbles = id => {

@@ -122,7 +122,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onAnswerStudentLessonProblem: (postBody, problemType) => dispatch(answerStudentLessonProblem(postBody, problemType)),
+  onAnswerStudentLessonProblem: (postBody, problemType, format) => dispatch(answerStudentLessonProblem(postBody, problemType, format)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnswerRow);

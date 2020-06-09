@@ -27,71 +27,41 @@ class FreeResponse extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      answer: "",
+      answer: props.lesson.answer_text,
     };
   }
 
-  // responseSection = () => {
-  //   const {
-  //     lesson: { is_correct, answer_text, correct_answer_id },
-  //   } = this.props;
-  //   return (
-  //     <>
-  //       <li>
-  //         <span
-  //           className="badge badge-rounded badge-rounded-bordered"
-  //           style={this.renderResponseStyle()}
-  //         >
-  //           {!answer_text ? "Free Response" : answer_text}
-  //         </span>
-  //       </li>
-  //       {!is_correct && correct_answer_id && (
-  //         <li>
-  //           <span
-  //             className="badge badge-rounded badge-rounded-bordered"
-  //             style={styles.greenBorderOnly}
-  //           >
-  //             {correct_answer_id}
-  //           </span>
-  //         </li>
-  //       )}
-  //     </>
-  //   );
-  // };
+  renderResponseStyle = () => {
+    const {
+      lesson: { is_correct, correct_answer_id, answer_text },
+    } = this.props;
+    if (is_correct && answer_text && correct_answer_id === answer_text) {
+      return styles.greenFilled;
+    }
+    if (!is_correct && answer_text && correct_answer_id !== answer_text) {
+      return styles.red;
+    }
+    return styles.plain;
+  };
 
-  // renderResponseStyle = () => {
-  //   const {
-  //     lesson: { is_correct, correct_answer_id, answer_text },
-  //   } = this.props;
-  //   if (is_correct && answer_text && correct_answer_id === answer_text) {
-  //     return styles.greenFilled;
-  //   }
-  //   if (!is_correct && answer_text && correct_answer_id !== answer_text) {
-  //     return styles.red;
-  //   }
-  //   return styles.plain;
-  // };
-
-  // render() {
-  //   const {
-  //     lesson: { id },
-  //   } = this.props;
-  //   return <React.Fragment>{this.responseSection()}</React.Fragment>;
-  // }
   handleInputChange = (e) => {
     e.preventDefault();
     const answer = e.target.value;
-    // const { onAddFreeResponseAnswerToTest, problem, testSection: { student_test_id } } = this.props;
-    // const postBody = { student_test_id, test_problem_id: problem.id, answer };
-    // onAddFreeResponseAnswerToTest(postBody, problem.test_section_id);
-    // this.setState({ answer });
+    const { onAnswerStudentLessonProblem, lesson, studentLessonId, problemType } = this.props;
+    const postBody = {
+      student_lesson_id: studentLessonId,
+      problem_id: lesson.problem.id,
+      answer_text: answer,
+    };
+    onAnswerStudentLessonProblem(postBody, problemType, "fill-in-blank");
+    this.setState({ answer });
   };
 
   render() {
-    // const { answerStatus } = this.props;
-    // let style = {};
-    // !answerStatus.complete ? style = this.state.basicStyle : !answerStatus.isCorrect ? style = this.state.incorrectStyle : style = this.state.correctStyle;
+    const { lesson: { is_correct } } = this.props;
+    console.log('log: this.props.lesson', this.props.lesson);
     return (
+      <>
       <input
         className="badge badge-rounded badge-rounded-bordered"
         // style={style}
@@ -100,6 +70,17 @@ class FreeResponse extends React.Component {
         defaultValue={this.state.answer}
         onChange={this.handleInputChange}
       />
+      {!is_correct && (
+        <li>
+          <span
+            className="badge badge-rounded badge-rounded-bordered"
+            style={this.renderResponseStyle()}
+          >
+            {"hello"}
+          </span>
+        </li>
+      )}
+      </>
     );
   }
 }

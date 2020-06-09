@@ -983,11 +983,21 @@ function* handleAnswerStudentLessonProblem(action) {
     if (response && !response.ok) {
       return console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", response);
     }
+    let propertyName; let
+      answer;
+    if (action.format === "multiple") {
+      propertyName = "answer_id";
+      answer = action.postBody.answer_id;
+    } else {
+      propertyName = "answer_text";
+      answer = action.postBody.answer_text;
+    }
     yield put({
       type: SET_LESSON_ANSWER,
       problem_id: action.postBody.problem_id,
-      answer_id: action.postBody.answer_id,
+      answer,
       problemType: action.problemType,
+      propertyName,
     });
   } catch (error) {
     console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
