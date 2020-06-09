@@ -53,10 +53,23 @@ class BubbleGroup extends React.Component {
     super(props);
   }
 
+  handleClickBadge = (index) => {
+    const { onAnswerStudentLessonProblem, lesson, studentLessonId } = this.props;
+    console.log('log: props after click', this.props);
+    console.log('log: index after click', index);
+    const postBody = {
+      student_lesson_id: studentLessonId,
+      problem_id: lesson.problem.id,
+      answer_id: lesson.problem.answers[index].id,
+    };
+    // Send dispatch to answer question here
+    onAnswerStudentLessonProblem(postBody);
+  }
+
   mapEmptyBubbles = id => {
     const letters = ["A", "B", "C", "D"];
     return letters.map((letter, index) => (
-      <li key={letter}>
+      <li key={letter} onClick={() => this.handleClickBadge(index)}>
         <form>
           <label
             htmlFor={`${id}${letter}`}
@@ -109,7 +122,6 @@ class BubbleGroup extends React.Component {
   };
 
   render() {
-    console.log('log: bubble props', this.props);
     const {
       lesson: { id },
     } = this.props;

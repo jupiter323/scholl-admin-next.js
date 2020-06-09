@@ -1,8 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
+import { createStructuredSelector } from "reselect";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponse from '../FreeResponse';
+import { answerStudentLessonProblem } from '../../../index/actions';
+import { makeSelectActiveLesson } from '../../../index/selectors';
 
 class AnswerRow extends React.Component {
   constructor(props) {
@@ -41,7 +45,7 @@ class AnswerRow extends React.Component {
 
 
   render() {
-    const { problem } = this.props;
+    const { problem, onAnswerStudentLessonProblem } = this.props;
     const { open, status } = this.state;
     return (
       <React.Fragment>
@@ -60,7 +64,11 @@ class AnswerRow extends React.Component {
           <div className="answer-row row mb-0">
             <div className="col col-120">
               <ul className="answer-list">
-                {this.isFreeResponse() ? <FreeResponse lesson={problem} /> : <BubbleGroup lesson={problem} />}
+                {this.isFreeResponse() ? <FreeResponse lesson={problem} /> : <BubbleGroup
+                  lesson={problem}
+                  onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
+                  studentLessonId={this.props.activeLesson.id}
+                />}
               </ul>
             </div>
             <div className="col col-30">
@@ -98,4 +106,12 @@ AnswerRow.propTypes = {
   problem: PropTypes.object,
 };
 
-export default AnswerRow;
+const mapStateToProps = createStructuredSelector({
+  activeLesson: makeSelectActiveLesson(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onAnswerStudentLessonProblem: postBody => dispatch(answerStudentLessonProblem(postBody)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnswerRow);

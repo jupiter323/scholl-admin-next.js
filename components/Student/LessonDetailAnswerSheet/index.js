@@ -474,17 +474,29 @@ class LessonDetailAnswerSheet extends React.Component {
                           <div className="card-block" style={{ margin: "0 auto" }}>
                             {challengeProblems.length !== 0 && (
                               <div className="main-row row">
-                                <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
+                                <ChallengeQuestions
+                                  questions={challengeProblems}
+                                  updateProblemList={this.updateProblemList}
+                                  problemType={'challengeProblems'}
+                                />
                               </div>
                             )}
                             {practiceProblems.length !== 0 && (
                               <div className="main-row row">
-                                <PracticeQuestions questions={practiceProblems} updateProblemList={this.updateProblemList} problemType={'practiceProblems'} />
+                                <PracticeQuestions
+                                  questions={practiceProblems}
+                                  updateProblemList={this.updateProblemList}
+                                  problemType={'practiceProblems'}
+                                />
                               </div>
                             )}
                             {drillProblems.length !== 0 && (
                               <div className="main-row row">
-                                <DrillQuestions questions={drillProblems} updateProblemList={this.updateProblemList} problemType={'drillProblems'} />
+                                <DrillQuestions
+                                  questions={drillProblems}
+                                  updateProblemList={this.updateProblemList}
+                                  problemType={'drillProblems'}
+                                />
                               </div>
                             )}
                           </div>
@@ -495,20 +507,32 @@ class LessonDetailAnswerSheet extends React.Component {
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {challengeProblems.length !== 0 && (
                           <div className="main-row row">
-                            <ChallengeQuestions questions={challengeProblems} updateProblemList={this.updateProblemList} problemType={'challengeProblems'} />
+                            <ChallengeQuestions
+                              questions={challengeProblems}
+                              updateProblemList={this.updateProblemList}
+                              problemType={'challengeProblems'}
+                            />
                           </div>
                         )}
                       </div>
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {practiceProblems.length !== 0 && (
                           <div className="main-row row">
-                            <PracticeQuestions questions={practiceProblems} updateProblemList={this.updateProblemList} problemType={'practiceProblems'} />
+                            <PracticeQuestions
+                              questions={practiceProblems}
+                              updateProblemList={this.updateProblemList}
+                              problemType={'practiceProblems'}
+                            />
                           </div>
                         )}
                       </div>
                       {drillProblems.length !== 0 && (
                         <div className="main-row row">
-                          <DrillQuestions questions={drillProblems} updateProblemList={this.updateProblemList} problemType={'drillProblems'} />
+                          <DrillQuestions
+                            questions={drillProblems}
+                            updateProblemList={this.updateProblemList}
+                            problemType={'drillProblems'}
+                          />
                         </div>
                       )}
                     </Otherwise>

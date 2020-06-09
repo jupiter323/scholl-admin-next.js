@@ -373,9 +373,9 @@ export const setActiveStudent = (student) => ({
   student,
 });
 
-export const answerStudentLessonProblem = (payload) => ({
+export const answerStudentLessonProblem = (postBody) => ({
   type: ADD_LESSON_ANSWER,
-  payload,
+  postBody,
 });
 
 export const deleteStudentTest = (studentTestId, studentId, testType) => ({

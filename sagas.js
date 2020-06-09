@@ -978,13 +978,9 @@ function* watchForAnswerStudentLessonProblem() {
 
 function* handleAnswerStudentLessonProblem(action) {
   try {
-    // @TODO will come back to this after fix/edit-answer-bubbles-rescoring gets merged
-    // const addAnswerResponse = yield call(addStudentLessonProblemAnswerApi);
+    const response = yield call(addStudentLessonProblemAnswerApi, action.postBody);
+    console.log('log: response', response);
     // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
-    // yield put({
-    //   type: ADD_LESSON_ANSWER,
-    //   payload: locations,
-    // });
   } catch (error) {
     console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
   }
