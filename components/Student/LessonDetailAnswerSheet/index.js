@@ -529,7 +529,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                       </span>
                                       <span className="description" style={{fontSize: '32px'}}>
                                         {ConvertSecondsToMinutesSeconds(
-                                          this.props.lesson.video_watched_missed
+                                          this.getTotalVideoDuration()
                                         )}
                                       </span>
                                     </div>
