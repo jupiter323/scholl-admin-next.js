@@ -228,7 +228,6 @@ class LessonDetailAnswerSheet extends React.Component {
   };
 
   getTotalVideoDuration = () => {
-    console.log('Wow:', this.props.lesson);
     let totalDuration = 0;
     if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
       //Drill
