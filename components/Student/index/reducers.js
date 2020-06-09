@@ -385,7 +385,7 @@ function studentReducer(state = initialState, action) {
     case SET_LESSON_SECTIONS:
       const activeLesson = state.get('activeLesson');
       activeLesson[`${action.sectionType}Problems`] = action.problems;
-      return state.set('activeLesson', activeLesson);
+      return state.set('activeLesson', { ...activeLesson });
 
     default:
       return state;

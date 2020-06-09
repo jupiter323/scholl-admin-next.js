@@ -58,9 +58,9 @@ class LessonDetailAnswerSheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      challengeProblems: [],
-      practiceProblems: [],
-      drillProblems: [],
+      // challengeProblems: [],
+      // practiceProblems: [],
+      // drillProblems: [],
       currentType: "",
       hasChallenge: false,
       hasPractice: false,
@@ -69,9 +69,7 @@ class LessonDetailAnswerSheet extends React.Component {
     };
   }
 
-
   componentDidMount = async () => {
-    console.log('log: component did mount answer sheet');
     const { lesson, user: { id: student_id } } = this.props;
     if (lesson.sections) { // lesson module type
       this.setState({
@@ -87,20 +85,11 @@ class LessonDetailAnswerSheet extends React.Component {
             hasChallenge: true,
           });
           this.props.onFetchLessonSection({ student_id, lesson_id, section_id });
-          // const challengeProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
-          // this.setState({
-          //   challengeProblems: challengeProblems.lesson_problems,
-          // });
         } else {
           this.setState({
             hasPractice: true,
           });
-          // const practiceProblems = await fetchStudentLessonSectionApi(student_id, lesson_id, section_id);
           this.props.onFetchLessonSection({ student_id, lesson_id, section_id });
-          // if (!practiceProblems) return;
-          // this.setState({
-          //   practiceProblems: practiceProblems.lesson_problems,
-          // });
         }
       });
     }
@@ -125,25 +114,27 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   getProblemsAmount = () => {
+    const { activeLesson } = this.props;
     if (this.state.currentType === "Module") {
-      return this.state.challengeProblems.length + this.state.practiceProblems.length;
+      return activeLesson.challengeProblems.length + activeLesson.practiceProblems.length;
     }
     if (this.state.currentType === "Drill") {
-      return this.state.drillProblems.length;
+      return activeLesson.drillProblems.length;
     }
   }
 
   getReviewedAndFlaggedProblemAmount = (type) => {
+    const { activeLesson } = this.props;
     let amount = 0;
-    if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
-      this.props.lesson.problems.map(section => {
+    if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
+      activeLesson.drillProblems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
       });
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
-      const { challengeProblems, practiceProblems } = this.state;
+      const { challengeProblems, practiceProblems } = activeLesson;
       challengeProblems.length !== 0 && challengeProblems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
