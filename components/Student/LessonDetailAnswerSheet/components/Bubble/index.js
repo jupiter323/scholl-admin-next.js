@@ -55,10 +55,14 @@ class BubbleGroup extends React.Component {
 
   handleClickBadge = (index) => {
     const { onAnswerStudentLessonProblem, lesson, studentLessonId, problemType } = this.props;
+    let answerId = lesson.problem.answers[index].id;
+    if (lesson.problem.answers[index].id === lesson.answer_id) {
+      answerId = null;
+    }
     const postBody = {
       student_lesson_id: studentLessonId,
       problem_id: lesson.problem.id,
-      answer_id: lesson.problem.answers[index].id,
+      answer_id: answerId,
     };
     onAnswerStudentLessonProblem(postBody, problemType);
   }
