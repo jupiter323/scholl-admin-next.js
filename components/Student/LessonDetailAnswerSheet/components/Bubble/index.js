@@ -54,16 +54,13 @@ class BubbleGroup extends React.Component {
   }
 
   handleClickBadge = (index) => {
-    const { onAnswerStudentLessonProblem, lesson, studentLessonId } = this.props;
-    console.log('log: props after click', this.props);
-    console.log('log: index after click', index);
+    const { onAnswerStudentLessonProblem, lesson, studentLessonId, problemType } = this.props;
     const postBody = {
       student_lesson_id: studentLessonId,
       problem_id: lesson.problem.id,
       answer_id: lesson.problem.answers[index].id,
     };
-    // Send dispatch to answer question here
-    onAnswerStudentLessonProblem(postBody);
+    onAnswerStudentLessonProblem(postBody, problemType);
   }
 
   mapEmptyBubbles = id => {

@@ -68,6 +68,7 @@ class AnswerRow extends React.Component {
                   lesson={problem}
                   onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
                   studentLessonId={this.props.activeLesson.id}
+                  problemType={this.props.problemType}
                 />}
               </ul>
             </div>
@@ -111,7 +112,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onAnswerStudentLessonProblem: postBody => dispatch(answerStudentLessonProblem(postBody)),
+  onAnswerStudentLessonProblem: (postBody, problemType) => dispatch(answerStudentLessonProblem(postBody, problemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnswerRow);

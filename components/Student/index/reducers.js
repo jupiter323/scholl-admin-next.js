@@ -53,6 +53,7 @@ import {
   SEND_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
   SET_LESSON_SECTIONS,
+  SET_LESSON_ANSWER,
 } from "./constants";
 
 const initialState = fromJS({
@@ -382,11 +383,23 @@ function studentReducer(state = initialState, action) {
       const resetErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: "" };
       return state.set('errorMessages', resetErrorMessages);
 
-    case SET_LESSON_SECTIONS:
+    case SET_LESSON_SECTIONS: {
       const activeLesson = state.get('activeLesson');
       activeLesson[`${action.sectionType}Problems`] = action.problems;
       return state.set('activeLesson', { ...activeLesson });
-
+    }
+    case SET_LESSON_ANSWER: {
+      const activeLesson = state.get('activeLesson');
+      const newQuestions = activeLesson[action.problemType].map(question => {
+        if (question.problem.id === action.problem_id) {
+          question.answer_id = action.answer_id;
+          return question;
+        }
+        return question;
+      });
+      activeLesson[action.problemType] = newQuestions;
+      return state.set('activeLesson', { ...activeLesson });
+    }
     default:
       return state;
   }

@@ -62,6 +62,7 @@ import {
   GET_TEST_SCORES,
   FETCH_LESSON_SECTIONS,
   SET_LESSON_SECTIONS,
+  SET_LESSON_ANSWER,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -979,8 +980,15 @@ function* watchForAnswerStudentLessonProblem() {
 function* handleAnswerStudentLessonProblem(action) {
   try {
     const response = yield call(addStudentLessonProblemAnswerApi, action.postBody);
-    console.log('log: response', response);
-    // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
+    if (response && !response.ok) {
+      return console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", response);
+    }
+    yield put({
+      type: SET_LESSON_ANSWER,
+      problem_id: action.postBody.problem_id,
+      answer_id: action.postBody.answer_id,
+      problemType: action.problemType,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
   }

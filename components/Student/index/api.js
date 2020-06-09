@@ -700,7 +700,7 @@ export const addStudentLessonProblemAnswerApi = (body) =>
       Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
-  }).then((res) => res.status);
+  }).then((res) => res).catch(err => err);
 
 export const updateStudentTestStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-status`, {
