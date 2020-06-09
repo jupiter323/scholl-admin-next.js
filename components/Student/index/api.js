@@ -781,3 +781,17 @@ export const updateStudentEssayScoreApi = (scores) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const updateStudentLessonStatusApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-lesson-status`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);

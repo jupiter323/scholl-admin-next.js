@@ -39,8 +39,11 @@ class AnswerRow extends React.Component {
   onCloseQuestionModal = () => this.setState({ open: false });
 
   isFreeResponse = () => {
-    if (this.props.problem.problem.answers.length === 0) return true;
-    return false;
+    const { problem } = this.props;
+    if (problem.problem.format === "Multiple") {
+      return false;
+    }
+    return true;
   }
 
 
@@ -64,12 +67,19 @@ class AnswerRow extends React.Component {
           <div className="answer-row row mb-0">
             <div className="col col-120">
               <ul className="answer-list">
-                {this.isFreeResponse() ? <FreeResponse lesson={problem} /> : <BubbleGroup
-                  lesson={problem}
-                  onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
-                  studentLessonId={this.props.activeLesson.id}
-                  problemType={this.props.problemType}
-                />}
+                {this.isFreeResponse() ?
+                  <FreeResponse
+                    lesson={problem}
+                    onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
+                    studentLessonId={this.props.activeLesson.id}
+                    problemType={this.props.problemType}
+                  /> :
+                  <BubbleGroup
+                    lesson={problem}
+                    onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
+                    studentLessonId={this.props.activeLesson.id}
+                    problemType={this.props.problemType}
+                  />}
               </ul>
             </div>
             <div className="col col-30">
