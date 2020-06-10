@@ -28,11 +28,11 @@ class DetailTestScorePage extends React.Component {
   delay = () => {
     const { scores, test: { student_test_id }, onGetTestScores, activeStudent: { id } } = this.props;
     return new Promise(async resolve => {
-      if (!scores) {
-        const postBody = { studentId: id, student_test_id };
-        onGetTestScores(postBody);
-      }
-      resolve();
+      const postBody = { studentId: id, student_test_id };
+      onGetTestScores(postBody);
+      setTimeout(() => {
+        resolve();
+      }, 3000);
     });
   };
 
@@ -45,16 +45,15 @@ class DetailTestScorePage extends React.Component {
             getTargetImage(document.getElementById('scoresRef')),
           ]);
           resolve(scoresImages);
-        }, 500);
+        }, 2000);
       });
     });
 
-  loadingSpinner = () => (
-    <div className="overlay-spinning">
+  loadingSpinner = () =>
+    (<div className="overlay-spinning">
       <h1>Fetching Scores...</h1>
       <div className="spinning" />
-    </div>
-  )
+    </div>);
 
   essayScoresCard = () => {
     const { scores: { essay } } = this.props;
