@@ -106,7 +106,7 @@ class BubbleGroup extends React.Component {
     const correctAnswerIndex = this.getCorrectAnswerIndex(answerIds);
     const studentAnswerIndex = this.getStudentAnswerIndex(answerIds);
     const matchingAnswers = correctAnswerIndex === studentAnswerIndex;
-    const condition = correctAnswerIndex ? matchingAnswers : is_correct;
+    const condition = correctAnswerIndex || correctAnswerIndex === 0 ? matchingAnswers : is_correct;
     if (correctAnswerIndex === index && condition) {
       return styles.greenFilled;
     }

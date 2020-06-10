@@ -156,7 +156,6 @@ const mapDispatchToProps = (dispatch) => ({
   onRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
   onUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
   onResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
-  onSetActiveLesson: bindActionCreators(setActiveLesson, dispatch),
 });
 
 const withConnect = connect(null, mapDispatchToProps);

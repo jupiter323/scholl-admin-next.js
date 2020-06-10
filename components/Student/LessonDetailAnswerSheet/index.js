@@ -58,9 +58,6 @@ class LessonDetailAnswerSheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // challengeProblems: [],
-      // practiceProblems: [],
-      // drillProblems: [],
       currentType: "",
       hasChallenge: false,
       hasPractice: false,
@@ -111,6 +108,10 @@ class LessonDetailAnswerSheet extends React.Component {
         drillProblems: lesson.problems,
       });
     }
+  }
+
+  componentWillUnmount = () => {
+    this.props.onCloseDetailModal();
   }
 
   getProblemsAmount = () => {
