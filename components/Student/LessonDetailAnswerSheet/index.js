@@ -10,7 +10,7 @@ import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
-import { fetchLessonSection } from '../index/actions';
+import { fetchLessonProblems } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 
 
@@ -67,12 +67,12 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { lesson, user: { id: student_id } } = this.props;
+    const { lesson, user: { id: student_id }, onFetchLessonProblems } = this.props;
+    const lesson_id = this.props.lesson.id;
     if (lesson.sections) { // lesson module type
       this.setState({
         currentType: "Module",
       });
-      const lesson_id = this.props.lesson.id;
       const { sections } = this.props.lesson;
       sections.map(async section => {
         const section_id = section.id;
@@ -81,16 +81,17 @@ class LessonDetailAnswerSheet extends React.Component {
           this.setState({
             hasChallenge: true,
           });
-          this.props.onFetchLessonSection({ student_id, lesson_id, section_id });
+          onFetchLessonProblems({ student_id, lesson_id, section_id });
         } else {
           this.setState({
             hasPractice: true,
           });
-          this.props.onFetchLessonSection({ student_id, lesson_id, section_id });
+          onFetchLessonProblems({ student_id, lesson_id, section_id });
         }
       });
     }
     if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
+      onFetchLessonProblems({ student_id, lesson_id });
       this.setState({
         currentType: "Drill",
         hasDrill: true,
@@ -104,9 +105,6 @@ class LessonDetailAnswerSheet extends React.Component {
           return problem;
         });
       }
-      this.setState({
-        drillProblems: lesson.problems,
-      });
     }
   }
 
@@ -563,7 +561,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onFetchLessonSection: postBody => dispatch(fetchLessonSection(postBody)),
+    onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
   };
 }
 

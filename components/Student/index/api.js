@@ -636,8 +636,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     },
   })
     .then((res) => res.json())
-    .then((res) => res)
-    .then(({ data }) => data);
+    .catch(err => err);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/sections/${section_id}`, {

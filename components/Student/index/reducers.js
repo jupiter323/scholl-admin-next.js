@@ -52,7 +52,7 @@ import {
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   SEND_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
-  SET_LESSON_SECTIONS,
+  SET_LESSON_PROBLEMS,
   SET_LESSON_ANSWER,
 } from "./constants";
 
@@ -383,7 +383,7 @@ function studentReducer(state = initialState, action) {
       const resetErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: "" };
       return state.set('errorMessages', resetErrorMessages);
 
-    case SET_LESSON_SECTIONS: {
+    case SET_LESSON_PROBLEMS: {
       const activeLesson = state.get('activeLesson');
       activeLesson[`${action.sectionType}Problems`] = action.problems;
       return state.set('activeLesson', { ...activeLesson });

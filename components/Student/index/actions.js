@@ -453,7 +453,7 @@ export const getTestScores = (payload) => ({
   payload,
 });
 
-export const fetchLessonSection = (postBody) => ({
+export const fetchLessonProblems = (postBody) => ({
   type: FETCH_LESSON_SECTIONS,
   postBody,
 });

@@ -61,7 +61,7 @@ import {
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   GET_TEST_SCORES,
   FETCH_LESSON_SECTIONS,
-  SET_LESSON_SECTIONS,
+  SET_LESSON_PROBLEMS,
   SET_LESSON_ANSWER,
   ADD_LESSON_ANSWER_DEBOUNCE,
 } from "./components/Student/index/constants";
@@ -152,6 +152,7 @@ const {
   fetchStudentTestScoreApi,
   addStudentTestQuestionFlagApi,
   fetchStudentLessonSectionApi,
+  fetchStudentLessonApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1200,24 +1201,31 @@ function* handleFetchActiveTestScores(action) {
   }
 }
 
-function* watchForFetchLessonSections() {
-  yield takeEvery(FETCH_LESSON_SECTIONS, handleFetchLessonSections);
+function* watchForFetchLessonProblems() {
+  yield takeEvery(FETCH_LESSON_SECTIONS, handleFetchLessonProblems);
 }
 
-function* handleFetchLessonSections(action) {
+function* handleFetchLessonProblems(action) {
   try {
-    const { postBody: { student_id, lesson_id, section_id } } = action;
-    const response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, section_id);
-    if (response && response.message) {
-      return console.warn("Error occurred in the handleFetchLessonSections saga", response.message);
+    const { postBody: { student_id, lesson_id } } = action;
+    let response;
+    if (action.postBody.section_id) {
+      response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, action.postBody.section_id);
+    } else {
+      response = yield call(fetchStudentLessonApi, student_id, lesson_id);
     }
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleFetchLessonProblems saga", response.message);
+    }
+    const sectionType = !action.postBody.section_id ? 'drill' : response.data.name;
+    const problems = !action.postBody.section_id ? response.data.problems : response.data.lesson_problems;
     yield put({
-      type: SET_LESSON_SECTIONS,
-      sectionType: response.data.name,
-      problems: response.data.lesson_problems,
+      type: SET_LESSON_PROBLEMS,
+      sectionType,
+      problems,
     });
   } catch (error) {
-    return console.warn("Error occurred in the handleFetchLessonSections saga", error);
+    return console.warn("Error occurred in the handleFetchLessonProblems saga", error);
   }
 }
 
@@ -1277,7 +1285,7 @@ export default function* defaultSaga() {
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
-    watchForFetchLessonSections(),
+    watchForFetchLessonProblems(),
     watchForAnswerStudentLessonProblemDebounce(),
   ]);
 }
