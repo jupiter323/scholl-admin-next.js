@@ -794,3 +794,17 @@ export const updateStudentLessonStatusApi = (body) =>
   })
     .then((res) => res.json())
     .catch((err) => err);
+
+export const completeStudentLessonSectionApi = (body) =>
+  fetch(`${API_URL}/api/commands/complete-student-lesson-section`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);

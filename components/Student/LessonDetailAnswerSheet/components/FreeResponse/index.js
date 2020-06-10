@@ -57,8 +57,25 @@ class FreeResponse extends React.Component {
     this.setState({ answer });
   };
 
+  renderCorrectAnswer = () => {
+    const { lesson } = this.props;
+    const answerChoices = lesson.problem.answers.map(choice => choice.text);
+    // Only show if the section or drill is completed
+    // if answer is correct and matches, show answer that matches the users
+    // if answer is incorrect just show the first answer in the list
+    return (
+      <li>
+        <span
+          className="badge badge-rounded badge-rounded-bordered"
+          style={this.renderResponseStyle()}
+        >
+          {answerChoices[0]}
+        </span>
+      </li>
+    );
+  }
+
   render() {
-    const { lesson: { is_correct } } = this.props;
     console.log('log: this.props.lesson', this.props.lesson);
     return (
       <>
@@ -70,16 +87,7 @@ class FreeResponse extends React.Component {
         defaultValue={this.state.answer}
         onChange={this.handleInputChange}
       />
-      {!is_correct && (
-        <li>
-          <span
-            className="badge badge-rounded badge-rounded-bordered"
-            style={this.renderResponseStyle()}
-          >
-            {"hello"}
-          </span>
-        </li>
-      )}
+      {this.renderCorrectAnswer()}
       </>
     );
   }
