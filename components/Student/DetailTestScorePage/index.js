@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
+import {compose} from 'redux';
 import TotalScoreCard from './components/TotalScoreCard';
 import SectionScoreCard from './components/SectionScoreCard';
 import TestScoreCard from './components/TestScoreCard';
 import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
 import SubScoresCard from './components/SubscoresCard';
-import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../index/selectors';
-import { setActiveTestScores } from '../index/actions';
-import { fetchStudentTestScoreApi } from '../index/api';
+import {makeSelectActiveTestScores, makeSelectActiveStudent} from '../index/selectors';
+import {setActiveTestScores} from '../index/actions';
+import {fetchStudentTestScoreApi} from '../index/api';
 
 class DetailTestScorePage extends React.Component {
   constructor(props) {
@@ -26,13 +26,13 @@ class DetailTestScorePage extends React.Component {
   }
 
   delay = () => {
-    const { scores, test: { student_test_id }, onGetTestScores, activeStudent: { id } } = this.props;
+    const {scores, test: {student_test_id}, onGetTestScores, activeStudent: {id}} = this.props;
     return new Promise(async resolve => {
-      if (!scores) {
-        const postBody = { studentId: id, student_test_id };
-        onGetTestScores(postBody);
-      }
-      resolve();
+      const postBody = {studentId: id, student_test_id};
+      onGetTestScores(postBody);
+      setTimeout(() => {
+        resolve();
+      }, 3000);
     });
   };
 
@@ -40,21 +40,20 @@ class DetailTestScorePage extends React.Component {
     new Promise(resolve => {
       this.delay().then(() => {
         setTimeout(async () => {
-          const { getTargetImage } = this.props;
+          const {getTargetImage} = this.props;
           const [scoresImages] = await Promise.all([
             getTargetImage(document.getElementById('scoresRef')),
           ]);
           resolve(scoresImages);
-        }, 500);
+        }, 2000);
       });
     });
 
-  loadingSpinner = () => (
+  loadingSpinner = () =>
     <div className="overlay-spinning">
       <h1>Fetching Scores...</h1>
       <div className="spinning" />
-    </div>
-  )
+    </div>;
 
   essayScoresCard = () => {
     const { scores: { essay } } = this.props;
@@ -67,14 +66,14 @@ class DetailTestScorePage extends React.Component {
   }
 
   render() {
-    const { scores, test } = this.props;
+    const {scores, test} = this.props;
     if (!scores) {
       return this.loadingSpinner();
     }
     if (scores.student_test_id !== test.student_test_id) {
       return this.loadingSpinner();
     }
-    const { subjects, cross_test_score, sub_section_score, essay } = scores;
+    const {subjects, cross_test_score, sub_section_score, essay} = scores;
     return (
       <div className="container" id="scoresRef">
         <div className="cards-section">
