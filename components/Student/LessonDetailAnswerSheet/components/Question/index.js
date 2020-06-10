@@ -46,9 +46,23 @@ class AnswerRow extends React.Component {
     return true;
   }
 
+  isLessonSectionCompleted = () => {
+    const { activeLesson, problemType } = this.props;
+    switch (problemType) {
+      case "drillProblems":
+        if (activeLesson.status === "COMPLETED") return true;
+      case "challengeProblems":
+        if (activeLesson.sections[0].status === "COMPLETED") return true;
+      case "practiceProblems":
+        if (activeLesson.sections[1].status === "COMPLETED") return true;
+      default:
+        return false;
+    }
+  }
+
 
   render() {
-    const { problem, onAnswerStudentLessonProblem, onAnswerStudentLessonDebounce } = this.props;
+    const { problem, onAnswerStudentLessonProblem, onAnswerStudentLessonDebounce, activeLesson } = this.props;
     const { open, status } = this.state;
     return (
       <React.Fragment>
@@ -71,13 +85,14 @@ class AnswerRow extends React.Component {
                   <FreeResponse
                     lesson={problem}
                     onAnswerStudentLessonDebounce={onAnswerStudentLessonDebounce}
-                    studentLessonId={this.props.activeLesson.id}
+                    studentLessonId={activeLesson.id}
                     problemType={this.props.problemType}
+                    hasDisplayAnswers={this.isLessonSectionCompleted()}
                   /> :
                   <BubbleGroup
                     lesson={problem}
                     onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
-                    studentLessonId={this.props.activeLesson.id}
+                    studentLessonId={activeLesson.id}
                     problemType={this.props.problemType}
                   />}
               </ul>

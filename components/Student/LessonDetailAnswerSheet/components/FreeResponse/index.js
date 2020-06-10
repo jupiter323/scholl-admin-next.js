@@ -33,12 +33,14 @@ class FreeResponse extends React.Component {
 
   renderResponseStyle = () => {
     const {
-      lesson: { is_correct, correct_answer_id, answer_text },
+      lesson: { answer_text, problem },
     } = this.props;
-    if (is_correct && answer_text && correct_answer_id === answer_text) {
+    const answerChoices = problem.answers.map(choice => choice.text);
+    const hasMatchingAnswer = answerChoices.indexOf(answer_text);
+    if (answer_text && hasMatchingAnswer !== -1) {
       return styles.greenFilled;
     }
-    if (!is_correct && answer_text && correct_answer_id !== answer_text) {
+    if (answer_text && hasMatchingAnswer === -1) {
       return styles.red;
     }
     return styles.plain;
@@ -58,12 +60,9 @@ class FreeResponse extends React.Component {
   };
 
   renderCorrectAnswer = () => {
-    const { lesson } = this.props;
-    const answerChoices = lesson.problem.answers.map(choice => choice.text);
-    // Only show if the section or drill is completed
-    // if answer is correct and matches, show answer that matches the users
-    // if answer is incorrect just show the first answer in the list
-    return (
+    const { lesson: { problem }, hasDisplayAnswers } = this.props;
+    const answerChoices = problem.answers.map(choice => choice.text);
+    return hasDisplayAnswers && (
       <li>
         <span
           className="badge badge-rounded badge-rounded-bordered"
@@ -76,7 +75,6 @@ class FreeResponse extends React.Component {
   }
 
   render() {
-    console.log('log: this.props.lesson', this.props.lesson);
     return (
       <>
       <input
