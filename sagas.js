@@ -153,6 +153,8 @@ const {
   addStudentTestQuestionFlagApi,
   fetchStudentLessonSectionApi,
   fetchStudentLessonApi,
+  updateStudentLessonStatusApi,
+  completeStudentLessonSectionApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -1217,6 +1219,7 @@ function* handleFetchLessonProblems(action) {
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonProblems saga", response.message);
     }
+    console.log('log: response saga', response);
     const sectionType = !action.postBody.section_id ? 'drill' : response.data.name;
     const problems = !action.postBody.section_id ? response.data.problems : response.data.lesson_problems;
     yield put({

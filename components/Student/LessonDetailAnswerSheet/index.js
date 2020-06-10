@@ -97,15 +97,16 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: 'Drill',
         hasDrill: true,
       });
-      if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
-        lesson.problems.map(problem => {
-          if (problem.flag_status === 'FLAGGED') {
-            problem.flag_status = 'REVIEWED';
-            return problem;
-          }
-          return problem;
-        });
-      }
+      // @TODO commented out until I can finish reworking answering lessons
+      // if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
+      //   lesson.problems.map(problem => {
+      //     if (problem.flag_status === 'FLAGGED') {
+      //       problem.flag_status = 'REVIEWED';
+      //       return problem;
+      //     }
+      //     return problem;
+      //   });
+      // }
     }
   };
 
@@ -191,18 +192,20 @@ class LessonDetailAnswerSheet extends React.Component {
   };
 
   updateProblemList = (problemsType, updatedProblem) => {
-    const problems = this.state[problemsType];
-    const newProblems = problems.map(problem => {
-      if (problem.id === updatedProblem.id) return updatedProblem;
-      return problem;
-    });
-    this.setState({ [problemsType]: [...newProblems] });
+    // @TODO Replace this function because problems are now from props not state-Mark
+    // const problems = this.state[problemsType];
+    // const newProblems = problems.map(problem => {
+    //   if (problem.id === updatedProblem.id) return updatedProblem;
+    //   return problem;
+    // });
+    // this.setState({ [problemsType]: [...newProblems] });
   };
 
   getCurrentProblemList = () => {
-    const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
-    if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
-    if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
+    // @TODO Replace this function because problems are from props not state-Mark
+    // const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
+    // if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
+    // if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
   }
 
   getTotalVideoDuration = () => {
