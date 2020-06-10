@@ -47,13 +47,13 @@ class FreeResponse extends React.Component {
   handleInputChange = (e) => {
     e.preventDefault();
     const answer = e.target.value;
-    const { onAnswerStudentLessonProblem, lesson, studentLessonId, problemType } = this.props;
+    const { onAnswerStudentLessonDebounce, lesson, studentLessonId, problemType } = this.props;
     const postBody = {
       student_lesson_id: studentLessonId,
       problem_id: lesson.problem.id,
       answer_text: answer,
     };
-    onAnswerStudentLessonProblem(postBody, problemType, "fill-in-blank");
+    onAnswerStudentLessonDebounce(postBody, problemType, "fill-in-blank");
     this.setState({ answer });
   };
 

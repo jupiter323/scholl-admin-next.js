@@ -63,6 +63,7 @@ import {
   FETCH_LESSON_SECTIONS,
   SET_LESSON_SECTIONS,
   SET_LESSON_ANSWER,
+  ADD_LESSON_ANSWER_DEBOUNCE,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -976,6 +977,9 @@ function* watchForAnswerStudentLessonProblem() {
   yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
 }
 
+function* watchForAnswerStudentLessonProblemDebounce() {
+  yield debounce(500, ADD_LESSON_ANSWER_DEBOUNCE, handleAnswerStudentLessonProblem);
+}
 
 function* handleAnswerStudentLessonProblem(action) {
   try {
@@ -983,8 +987,8 @@ function* handleAnswerStudentLessonProblem(action) {
     if (response && !response.ok) {
       return console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", response);
     }
-    let propertyName; let
-      answer;
+    let propertyName;
+    let answer;
     if (action.format === "multiple") {
       propertyName = "answer_id";
       answer = action.postBody.answer_id;
@@ -1274,5 +1278,6 @@ export default function* defaultSaga() {
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
     watchForFetchLessonSections(),
+    watchForAnswerStudentLessonProblemDebounce(),
   ]);
 }

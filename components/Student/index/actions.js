@@ -64,6 +64,7 @@ import {
   RESET_ERROR_MESSAGE,
   GET_TEST_SCORES,
   FETCH_LESSON_SECTIONS,
+  ADD_LESSON_ANSWER_DEBOUNCE,
 } from "./constants";
 
 export function fetchStudents() {
@@ -455,4 +456,11 @@ export const getTestScores = (payload) => ({
 export const fetchLessonSection = (postBody) => ({
   type: FETCH_LESSON_SECTIONS,
   postBody,
+});
+
+export const answerStudentLessonDebounce = (postBody, problemType, format) => ({
+  type: ADD_LESSON_ANSWER_DEBOUNCE,
+  postBody,
+  problemType,
+  format,
 });

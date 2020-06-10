@@ -392,7 +392,7 @@ function studentReducer(state = initialState, action) {
       const activeLesson = state.get('activeLesson');
       const newQuestions = activeLesson[action.problemType].map(question => {
         if (question.problem.id === action.problem_id) {
-          question[propertyName] = action.answer;
+          question[action.propertyName] = action.answer;
           return question;
         }
         return question;

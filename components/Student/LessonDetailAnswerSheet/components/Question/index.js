@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponse from '../FreeResponse';
-import { answerStudentLessonProblem } from '../../../index/actions';
+import { answerStudentLessonProblem, answerStudentLessonDebounce } from '../../../index/actions';
 import { makeSelectActiveLesson } from '../../../index/selectors';
 
 class AnswerRow extends React.Component {
@@ -48,7 +48,7 @@ class AnswerRow extends React.Component {
 
 
   render() {
-    const { problem, onAnswerStudentLessonProblem } = this.props;
+    const { problem, onAnswerStudentLessonProblem, onAnswerStudentLessonDebounce } = this.props;
     const { open, status } = this.state;
     return (
       <React.Fragment>
@@ -70,7 +70,7 @@ class AnswerRow extends React.Component {
                 {this.isFreeResponse() ?
                   <FreeResponse
                     lesson={problem}
-                    onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
+                    onAnswerStudentLessonDebounce={onAnswerStudentLessonDebounce}
                     studentLessonId={this.props.activeLesson.id}
                     problemType={this.props.problemType}
                   /> :
@@ -123,6 +123,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
   onAnswerStudentLessonProblem: (postBody, problemType, format) => dispatch(answerStudentLessonProblem(postBody, problemType, format)),
+  onAnswerStudentLessonDebounce: (postBody, problemType, format) => dispatch(answerStudentLessonDebounce(postBody, problemType, format)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnswerRow);
