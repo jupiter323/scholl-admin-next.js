@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from "prop-types";
+import moment from 'moment';
 import Portal from "../../../../Portal";
 import getValueFromState from "../../../../utils/getValueFromState";
 import Dropdown from "../../../../FormComponents/Dropdown";
@@ -49,9 +50,22 @@ class TestSettingModal extends React.Component {
       });
     }
     if (this.props.test) {
-      const { test: { test_id } } = this.props
+      const { test: { test_id, assignment_date, due_date, due_status, is_timed, sections } } = this.props
+      const subjects = sections.map(section =>{
+        return section.section.name
+      })
+     const isSectionAssigned = (subject) => subjects.includes(subject)
       this.setState({
-        version: test_id
+        version: test_id,
+        assignTime: new Date(assignment_date),
+        dueTime: new Date(due_date),
+        assignDate: new Date(assignment_date),
+        dueDate: new Date(due_date),
+        reading: isSectionAssigned("Reading"),
+        mathNoCalc: isSectionAssigned("Math (No Calculator)"),
+        writing: isSectionAssigned("Writing"),
+        mathWithCalc: isSectionAssigned("Math (Calculator)"),
+        isTimed: is_timed,
       });
     }
   }
@@ -70,7 +84,7 @@ class TestSettingModal extends React.Component {
   };
 
   onSave = () => {
-    const { onSave } = this.props;
+    const { onSave, onClose } = this.props;
     onSave(this.state);
   };
 
@@ -78,7 +92,9 @@ class TestSettingModal extends React.Component {
     const {
       open,
       onClose,
-      test: { test_name: testName }
+      test: { 
+        test_name: testName
+      }
     } = this.props;
     const {
       versionOptions,
