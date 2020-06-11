@@ -10,7 +10,7 @@ import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
 import { fetchStudentLessonSectionApi } from "../index/api";
 import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
-import { fetchLessonProblems, submitLessonProblems } from '../index/actions';
+import { fetchLessonProblems, submitLessonProblems, fetchLessonDetails } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 import RadialBar from '../../common/RadialBar';
 
@@ -72,6 +72,7 @@ class LessonDetailAnswerSheet extends React.Component {
       lesson,
       user: { id: student_id },
       onFetchLessonProblems,
+      onFetchLessonDetails,
     } = this.props;
     const lesson_id = this.props.lesson.id;
     if (lesson.sections) {
@@ -97,7 +98,7 @@ class LessonDetailAnswerSheet extends React.Component {
       });
     }
     if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
-      onFetchLessonProblems({ student_id, lesson_id });
+      onFetchLessonDetails({ student_id, lesson_id });
       this.setState({
         currentType: "Drill",
         hasDrill: true,
@@ -248,15 +249,26 @@ class LessonDetailAnswerSheet extends React.Component {
   submitLessonButton = (lessonType) => {
     // Currently getting to work for drill problems
     // @TODO section problems
-    const { activeLesson, onSubmitLessonProblems } = this.props;
-    const condition = activeLesson.status !== "COMPLETED";
+    const {
+      activeLesson: { status, id },
+      onSubmitLessonProblems,
+      user: { id: student_id },
+    } = this.props;
+    const condition = status !== "COMPLETED";
+    let postBody = {};
+    if (lessonType === 'drill') {
+      postBody = {
+        student_lesson_id: id,
+        status: 'COMPLETED',
+      };
+    }
     return condition && (
       <div className="row">
         <div className="btn-holder left-align">
           <a
             href="#"
             className="btn btn-xlarge waves-effect waves-light bg-blue"
-            onClick={() => onSubmitLessonProblems(lessonType)}
+            onClick={() => onSubmitLessonProblems(lessonType, postBody, student_id)}
           >
             I'm Done
           </a>
@@ -702,7 +714,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
-    onSubmitLessonProblems: (lessonType, postBody) => dispatch(submitLessonProblems(lessonType, postBody)),
+    onFetchLessonDetails: postBody => dispatch(fetchLessonDetails(postBody)),
+    onSubmitLessonProblems: (lessonType, postBody, student_id) => dispatch(submitLessonProblems(lessonType, postBody, student_id)),
   };
 }
 

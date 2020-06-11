@@ -68,6 +68,8 @@ import {
   UPDATE_LESSON_STATUS_SUCCESS,
   COMPLETE_LESSON_SECTION,
   SUBMIT_LESSON_PROBLEMS,
+  FETCH_LESSON_DETAILS,
+  SET_ACTIVE_LESSON,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1209,6 +1211,46 @@ function* handleFetchActiveTestScores(action) {
   }
 }
 
+function* watchForFetchLessonDetails() {
+  yield takeEvery(FETCH_LESSON_DETAILS, handleFetchLessonDetails);
+}
+
+function* handleFetchLessonDetails(action) {
+  try {
+    console.log('log: saga 3', action);
+    const response = yield call(fetchStudentLessonApi, action.postBody.student_id, action.postBody.lesson_id);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleFetchLessonDetails saga", response.message);
+    }
+    console.log('log: saga 4', response);
+    // Condition statement for module lessons vs drill.
+    // If drill lesson, just set active lesson
+    // If section set active lesson then continue to fetch section problems
+    if (response.data.type.label === "Drill") {
+      yield put({
+        type: SET_ACTIVE_LESSON,
+        activeLesson: response.data,
+      });
+      if (response.data.status === "ASSIGNED") {
+        yield put({
+          type: UPDATE_LESSON_STATUS,
+          postBody: {
+            student_lesson_id: response.data.id,
+            status: "STARTED",
+          },
+        });
+      }
+    } else if (response.data.type.label === "Module") {
+      yield put({
+        type: FETCH_LESSON_SECTIONS,
+        postBody: {},
+      });
+    }
+  } catch (error) {
+    return console.warn("Error occurred in the handleFetchLessonDetails saga", error);
+  }
+}
+
 function* watchForFetchLessonProblems() {
   yield takeEvery(FETCH_LESSON_SECTIONS, handleFetchLessonProblems);
 }
@@ -1260,13 +1302,19 @@ function* handleUpdateLessonStatus(action) {
       response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
     }
     if (action.postBody.status === "COMPLETED") {
-      // Dispatch a refetch and stuff here
-    } else {
-      yield put({
-        type: UPDATE_LESSON_STATUS_SUCCESS,
-        status: action.postBody.status,
+      console.log('log: saga 2', action);
+      return yield put({
+        type: FETCH_LESSON_DETAILS,
+        postBody: {
+          student_id: action.student_id,
+          lesson_id: action.postBody.student_lesson_id,
+        },
       });
     }
+    return yield put({
+      type: UPDATE_LESSON_STATUS_SUCCESS,
+      status: action.postBody.status,
+    });
   } catch (error) {
     return console.warn("Error occurred in the handleUpdateLessonStatus saga", error);
   }
@@ -1295,13 +1343,19 @@ function* handleSubmitLessonProblems(action) {
   try {
     console.log('log: action', action);
     if (action.lessonType === 'drill') {
+      yield put({
+        type: UPDATE_LESSON_STATUS,
+        postBody: action.postBody,
+        student_id: action.student_id,
+      });
       // send request to update status
       // refetch lesson to get scores and answers
       // set new fetched lesson as active lesson
-    } else if (action.lessonType === 'module') {
+    } else if (action.lessonType === 'challenge') {
       // send request to update section status
       // check if there is another section
       // if yes, update redux store, fetch that new section, set problems in redux
+    } else if (action.lessonType === 'practice') {
       // if no, refetch lesson to get scores and answers, set active lesson, fetch problems for each section, update redux store with new answers
     } else if (action.lessonType === 'reading') {
       // send request to update status
@@ -1374,5 +1428,6 @@ export default function* defaultSaga() {
     watchForUpdateStudentLessonStatus(),
     watchForCompleteStudentLessonSection(),
     watchForSubmitLessonProblems(),
+    watchForFetchLessonDetails(),
   ]);
 }
