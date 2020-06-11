@@ -10,12 +10,13 @@ class SubBlock extends React.Component {
 
   mapSubRow = data => {
     if (data.children) {
-      return data.children.map(children => <GroupRow data={children} parentTotal={data.score.total} key={children.id} />);
+      return data.children.map(children => <GroupRow data={children} parentTotal={this.props.parentTotal} key={children.id} />);
     }
   };
 
   renderSubBlock = data => {
     const { parentTotal } = this.props;
+    console.log('log: 2nd node', (data.score.total / parentTotal) * 100);
     return (
       <React.Fragment>
         <div className="graph-row-block">
