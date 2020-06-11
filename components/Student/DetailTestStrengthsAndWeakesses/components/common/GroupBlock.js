@@ -18,7 +18,6 @@ class GroupBlock extends React.Component {
 
   render() {
     const { data: { name, score: { percent_correct, correct, incorrect, total } }, parentScores } = this.props;
-    console.log('log: parentScores', parentScores);
     let width = 100;
     if (parentScores && parentScores.score) {
       width = (total / parentScores.score.total) * 100;
