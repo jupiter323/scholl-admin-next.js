@@ -70,6 +70,7 @@ import {
   SUBMIT_LESSON_PROBLEMS,
   FETCH_LESSON_DETAILS,
   SET_ACTIVE_LESSON,
+  COMPLETE_SECTION_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1330,6 +1331,24 @@ function* handleCompleteLessonSection(action) {
     if (response && !response.ok) {
       response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
     }
+    if (action.lessonType === 'challenge') {
+      // update the redux store
+      // fetch problems for practice
+      yield put({
+        type: COMPLETE_SECTION_SUCCESS,
+      });
+      console.log('log: saga 5', action);
+      yield put({
+        type: FETCH_LESSON_SECTIONS,
+        postBody: {
+          student_id: action.student_id,
+          lesson_id: action.postBody.student_lesson_id,
+          section_id: action.sections[1].id,
+        },
+      });
+    } else if (action.lessonType === 'practice') {
+      // fetch lesson details
+    }
   } catch (error) {
     return console.warn("Error occurred in the handleCompleteLessonSection saga", error);
   }
@@ -1355,8 +1374,29 @@ function* handleSubmitLessonProblems(action) {
       // send request to update section status
       // check if there is another section
       // if yes, update redux store, fetch that new section, set problems in redux
+      const postBody = {
+        student_lesson_id: action.postBody.student_lesson_id,
+        lesson_section_id: action.postBody.sections[0].id,
+      };
+      yield put({
+        type: COMPLETE_LESSON_SECTION,
+        postBody,
+        student_id: action.student_id,
+        lessonType: 'challenge',
+        sections: action.postBody.sections,
+      });
     } else if (action.lessonType === 'practice') {
       // if no, refetch lesson to get scores and answers, set active lesson, fetch problems for each section, update redux store with new answers
+      const postBody = {
+        student_lesson_id: action.postBody.student_lesson_id,
+        lesson_section_id: action.postBody.sections[1].id,
+      };
+      yield put({
+        type: COMPLETE_LESSON_SECTION,
+        postBody,
+        student_id: action.student_id,
+        lessonType: 'practice',
+      });
     } else if (action.lessonType === 'reading') {
       // send request to update status
       // refetch lesson to get scores and answers

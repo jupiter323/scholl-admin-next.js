@@ -247,22 +247,27 @@ class LessonDetailAnswerSheet extends React.Component {
   };
 
   submitLessonButton = (lessonType) => {
-    // Currently getting to work for drill problems
-    // @TODO section problems
     const {
+      activeLesson,
       activeLesson: { status, id },
       onSubmitLessonProblems,
       user: { id: student_id },
     } = this.props;
-    const condition = status !== "COMPLETED";
+    const isComplete = status === "COMPLETED";
+    const isChallengeComplete = false;
     let postBody = {};
     if (lessonType === 'drill') {
       postBody = {
         student_lesson_id: id,
         status: 'COMPLETED',
       };
+    } else if (lessonType === "practice" || lessonType === "challenge") {
+      postBody = {
+        student_lesson_id: id,
+        sections: activeLesson.sections,
+      };
     }
-    return condition && (
+    return !isComplete && !isChallengeComplete && (
       <div className="row">
         <div className="btn-holder left-align">
           <a
