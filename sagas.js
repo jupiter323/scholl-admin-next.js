@@ -66,6 +66,8 @@ import {
   ADD_LESSON_ANSWER_DEBOUNCE,
   UPDATE_LESSON_STATUS,
   UPDATE_LESSON_STATUS_SUCCESS,
+  COMPLETE_LESSON_SECTION,
+  SUBMIT_LESSON_PROBLEMS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1257,14 +1259,60 @@ function* handleUpdateLessonStatus(action) {
     if (response && !response.ok) {
       response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
     }
-    yield put({
-      type: UPDATE_LESSON_STATUS_SUCCESS,
-      status: action.postBody.status,
-    });
+    if (action.postBody.status === "COMPLETED") {
+      // Dispatch a refetch and stuff here
+    } else {
+      yield put({
+        type: UPDATE_LESSON_STATUS_SUCCESS,
+        status: action.postBody.status,
+      });
+    }
   } catch (error) {
     return console.warn("Error occurred in the handleUpdateLessonStatus saga", error);
   }
 }
+
+function* watchForCompleteStudentLessonSection() {
+  yield takeEvery(COMPLETE_LESSON_SECTION, handleCompleteLessonSection);
+}
+
+function* handleCompleteLessonSection(action) {
+  try {
+    const response = yield call(completeStudentLessonSectionApi, action.postBody);
+    if (response && !response.ok) {
+      response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
+    }
+  } catch (error) {
+    return console.warn("Error occurred in the handleCompleteLessonSection saga", error);
+  }
+}
+
+function* watchForSubmitLessonProblems() {
+  yield takeEvery(SUBMIT_LESSON_PROBLEMS, handleSubmitLessonProblems);
+}
+
+function* handleSubmitLessonProblems(action) {
+  try {
+    console.log('log: action', action);
+    if (action.lessonType === 'drill') {
+      // send request to update status
+      // refetch lesson to get scores and answers
+      // set new fetched lesson as active lesson
+    } else if (action.lessonType === 'module') {
+      // send request to update section status
+      // check if there is another section
+      // if yes, update redux store, fetch that new section, set problems in redux
+      // if no, refetch lesson to get scores and answers, set active lesson, fetch problems for each section, update redux store with new answers
+    } else if (action.lessonType === 'reading') {
+      // send request to update status
+      // refetch lesson to get scores and answers
+      // set new fetched lesson as active lesson
+    }
+  } catch (error) {
+    return console.warn("Error occurred in the handleSubmitLessonProblems saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1324,5 +1372,7 @@ export default function* defaultSaga() {
     watchForFetchLessonProblems(),
     watchForAnswerStudentLessonProblemDebounce(),
     watchForUpdateStudentLessonStatus(),
+    watchForCompleteStudentLessonSection(),
+    watchForSubmitLessonProblems(),
   ]);
 }

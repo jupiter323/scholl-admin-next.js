@@ -65,6 +65,7 @@ import {
   GET_TEST_SCORES,
   FETCH_LESSON_SECTIONS,
   ADD_LESSON_ANSWER_DEBOUNCE,
+  SUBMIT_LESSON_PROBLEMS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -463,4 +464,10 @@ export const answerStudentLessonDebounce = (postBody, problemType, format) => ({
   postBody,
   problemType,
   format,
+});
+
+export const submitLessonProblems = (lessonType, postBody) => ({
+  type: SUBMIT_LESSON_PROBLEMS,
+  lessonType,
+  postBody,
 });

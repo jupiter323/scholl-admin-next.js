@@ -26,6 +26,7 @@ class PracticeQuestions extends React.Component {
               <ol className="answers-list">
                 {this.mapQuestions()}
               </ol>
+              {this.props.submitLessonButton('practice')}
             </div>
           </div>
         </div>

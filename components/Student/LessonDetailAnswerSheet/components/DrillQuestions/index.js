@@ -26,6 +26,7 @@ class DrillQuestions extends React.Component {
               <ol className="answers-list">
                 {this.mapQuestions()}
               </ol>
+              {this.props.submitLessonButton('drill')}
             </div>
           </div>
         </div>
