@@ -64,6 +64,8 @@ import {
   SET_LESSON_PROBLEMS,
   SET_LESSON_ANSWER,
   ADD_LESSON_ANSWER_DEBOUNCE,
+  UPDATE_LESSON_STATUS,
+  UPDATE_LESSON_STATUS_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -988,7 +990,9 @@ function* handleAnswerStudentLessonProblem(action) {
   try {
     const response = yield call(addStudentLessonProblemAnswerApi, action.postBody);
     if (response && !response.ok) {
-      return console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", response);
+      if (!response.ok) {
+        response.json().then(res => console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", res.message));
+      }
     }
     let propertyName;
     let answer;
@@ -1211,6 +1215,7 @@ function* handleFetchLessonProblems(action) {
   try {
     const { postBody: { student_id, lesson_id } } = action;
     let response;
+    // Fetch most updated problem problem/answers
     if (action.postBody.section_id) {
       response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, action.postBody.section_id);
     } else {
@@ -1219,7 +1224,7 @@ function* handleFetchLessonProblems(action) {
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonProblems saga", response.message);
     }
-    console.log('log: response saga', response);
+    // Update those problem/answers in redux
     const sectionType = !action.postBody.section_id ? 'drill' : response.data.name;
     const problems = !action.postBody.section_id ? response.data.problems : response.data.lesson_problems;
     yield put({
@@ -1227,11 +1232,39 @@ function* handleFetchLessonProblems(action) {
       sectionType,
       problems,
     });
+    // If a drill lesson is being entered check if it needs to be started
+    if (response.data.status === "ASSIGNED") {
+      yield put({
+        type: UPDATE_LESSON_STATUS,
+        postBody: {
+          student_lesson_id: response.data.id,
+          status: "STARTED",
+        },
+      });
+    }
   } catch (error) {
     return console.warn("Error occurred in the handleFetchLessonProblems saga", error);
   }
 }
 
+function* watchForUpdateStudentLessonStatus() {
+  yield takeEvery(UPDATE_LESSON_STATUS, handleUpdateLessonStatus);
+}
+
+function* handleUpdateLessonStatus(action) {
+  try {
+    const response = yield call(updateStudentLessonStatusApi, action.postBody);
+    if (response && !response.ok) {
+      response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
+    }
+    yield put({
+      type: UPDATE_LESSON_STATUS_SUCCESS,
+      status: action.postBody.status,
+    });
+  } catch (error) {
+    return console.warn("Error occurred in the handleUpdateLessonStatus saga", error);
+  }
+}
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1290,5 +1323,6 @@ export default function* defaultSaga() {
     watchForFetchActiveTestScores(),
     watchForFetchLessonProblems(),
     watchForAnswerStudentLessonProblemDebounce(),
+    watchForUpdateStudentLessonStatus(),
   ]);
 }

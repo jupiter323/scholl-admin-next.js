@@ -54,6 +54,7 @@ import {
   RESET_ERROR_MESSAGE,
   SET_LESSON_PROBLEMS,
   SET_LESSON_ANSWER,
+  UPDATE_LESSON_STATUS_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -398,6 +399,11 @@ function studentReducer(state = initialState, action) {
         return question;
       });
       activeLesson[action.problemType] = newQuestions;
+      return state.set('activeLesson', { ...activeLesson });
+    }
+    case UPDATE_LESSON_STATUS_SUCCESS: {
+      const activeLesson = state.get('activeLesson');
+      activeLesson.status = action.status;
       return state.set('activeLesson', { ...activeLesson });
     }
     default:
