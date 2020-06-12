@@ -8,9 +8,8 @@ import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
 import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
-import { fetchStudentLessonSectionApi } from "../index/api";
-import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
-import { fetchLessonProblems, submitLessonProblems, fetchLessonDetails } from '../index/actions';
+import { makeSelectUnitFilterOptions, makeSelectActiveLesson, makeSelectErrorMessages } from "../index/selectors";
+import { fetchLessonProblems, submitLessonProblems, fetchLessonDetails, resetErrorMessage } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 import RadialBar from '../../common/RadialBar';
 
@@ -65,15 +64,20 @@ class LessonDetailAnswerSheet extends React.Component {
       hasDrill: false,
       dropdownIsOpen: false,
       loadingScores: false,
+      completeSectionMsg: "",
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log('log: props', props);
-    if (props.activeLesson.status === "COMPLETED") {
+    const { activeLesson, errorMessages: { completeSectionMsg } } = props;
+    if (activeLesson.status === "COMPLETED") {
       return { loadingScores: false };
     }
+    if (completeSectionMsg && completeSectionMsg !== state.completeSectionMsg) {
+      return { completeSectionMsg };
+    }
   }
+
   componentDidMount = async () => {
     const {
       lesson,
@@ -125,6 +129,7 @@ class LessonDetailAnswerSheet extends React.Component {
 
   componentWillUnmount = () => {
     this.props.onCloseDetailModal();
+    this.props.onResetErrorMessage("completeSectionMsg");
   };
 
   getProblemsAmount = () => {
@@ -270,6 +275,7 @@ class LessonDetailAnswerSheet extends React.Component {
     return displayBtn && (
       <div className="row">
         <div className="btn-holder left-align">
+          <p className="red-text">{this.state.completeSectionMsg}</p>
           <a
             href="#"
             className="btn btn-xlarge waves-effect waves-light bg-blue"
@@ -719,6 +725,7 @@ LessonDetailAnswerSheet.propTypes = {
 const mapStateToProps = createStructuredSelector({
   units: makeSelectUnitFilterOptions(),
   activeLesson: makeSelectActiveLesson(),
+  errorMessages: makeSelectErrorMessages(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -726,6 +733,7 @@ function mapDispatchToProps(dispatch) {
     onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
     onSubmitLessonProblems: (lessonType, postBody, student_id) => dispatch(submitLessonProblems(lessonType, postBody, student_id)),
     onFetchLessonDetails: (postBody) => dispatch(fetchLessonDetails(postBody)),
+    onResetErrorMessage: (errName) => dispatch(resetErrorMessage(errName)),
   };
 }
 

@@ -1320,8 +1320,11 @@ function* handleCompleteLessonSection(action) {
   try {
     const response = yield call(completeStudentLessonSectionApi, action.postBody);
     if (response && !response.ok) {
-      response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
+      yield put(sendErrorMessage("completeSectionMsg", "Something went wrong completing this section. Please try again."));
+      return response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
     }
+
+    yield put(resetErrorMessage("completeSectionMsg"));
     const actionData = {
       postBody: {
         student_id: action.student_id,
