@@ -95,21 +95,29 @@ class DetailLessonList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispathGetLessonList();
     const { id } = this.props.user;
-    const { studentToken } = this.props;
+    const { studentToken, lessonList } = this.props;
     const postBody = {
       id,
       studentToken,
     };
+    if (lessonList && lessonList.length === 0) {
+      this.props.dispathGetLessonList();
+    }
     this.props.dispathGetStudentLessonList(postBody);
   }
 
   componentWillReceiveProps = (nextProps) => {
+    console.log('log: component recieving props', nextProps);
+    console.log('log: current props', this.props.activeShowPage);
+    const { activeShowPage, user: { id }, dispathGetStudentLessonList } = this.props;
     if (this.state.lessons.length === 0) {
       this.setState({
         lessons: nextProps.lessonList,
       });
+    }
+    if (activeShowPage === "AnswerSheet" && nextProps.activeShowPage === "") {
+      dispathGetStudentLessonList({ id });
     }
   };
 

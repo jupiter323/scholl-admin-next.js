@@ -80,28 +80,7 @@ const LessonCard = props => {
       if (hasFlaggedProblems.length > 0) {
         return setHasFlaggedProblems(true);
       }
-    } else if (lesson.sections && lesson.sections.length > 0) {
-      const section1 = fetchStudentLessonSectionApi(
-        props.user.id,
-        lesson.id,
-        lesson.sections[0].id
-      );
-      const section2 = fetchStudentLessonSectionApi(
-        props.user.id,
-        lesson.id,
-        lesson.sections[1].id
-      );
-      Promise.all([section1, section2]).then((sections) => {
-        const filteredSections = sections.filter((section) => section.data);
-        filteredSections.map((section) => {
-          section.data.lesson_problems.map((problem) => {
-            if (problem.flag_status === "FLAGGED") {
-              setHasFlaggedProblems(true);
-            }
-          });
-        });
-      });
-    }
+    } 
   }, []);
 
   const onOpenDetailModal = async (e) => {

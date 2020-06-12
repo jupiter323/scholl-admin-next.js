@@ -72,7 +72,6 @@ class LessonDetailAnswerSheet extends React.Component {
       lesson,
       user: { id: student_id },
       onFetchLessonProblems,
-      onFetchLessonDetails,
     } = this.props;
     const lesson_id = this.props.lesson.id;
     if (lesson.sections) {
@@ -98,12 +97,11 @@ class LessonDetailAnswerSheet extends React.Component {
       });
     }
     if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
-      onFetchLessonDetails({ student_id, lesson_id });
       this.setState({
         currentType: "Drill",
         hasDrill: true,
       });
-      // @TODO commented out until I can finish reworking answering lessons
+      // @TODO commented out some flag logic until I can finish reworking answering lessons-Mark
       // if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
       //   lesson.problems.map(problem => {
       //     if (problem.flag_status === 'FLAGGED') {
@@ -722,7 +720,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
-    onFetchLessonDetails: postBody => dispatch(fetchLessonDetails(postBody)),
     onSubmitLessonProblems: (lessonType, postBody, student_id) => dispatch(submitLessonProblems(lessonType, postBody, student_id)),
   };
 }
