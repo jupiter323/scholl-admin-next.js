@@ -1,10 +1,10 @@
 import React from 'react';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
-import {createStructuredSelector} from 'reselect';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
-import {setOpenActivePage, setIsVisibleTopBar} from '../index/actions';
-import {makeSelectActiveLesson, makeSelectUnitFilterOptions} from '../index/selectors';
+import { setOpenActivePage, setIsVisibleTopBar } from '../index/actions';
+import { makeSelectActiveLesson, makeSelectUnitFilterOptions } from '../index/selectors';
 import moment from 'moment';
 import DropDownMenu from '../DropDownMenu';
 
@@ -19,13 +19,13 @@ class ReadWorkBook extends React.Component {
     };
   }
   onSetActivePage = () => {
-    const {onSetOpenActivePage, onSetIsVisibleTopBar} = this.props;
+    const { onSetOpenActivePage, onSetIsVisibleTopBar } = this.props;
     onSetIsVisibleTopBar(true);
     onSetOpenActivePage('');
   };
 
   getUnitNameById = () => {
-    const {units} = this.props;
+    const { units } = this.props;
     if (units && units.length !== 0) {
       const unitIds = units.map(unit => unit.value);
       const currentIndex = unitIds.findIndex(this.getUnitIndexMatchedUnitId);
@@ -37,7 +37,7 @@ class ReadWorkBook extends React.Component {
 
   getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
 
-  onSetDropdown = () => this.setState({dropdownIsOpen: !this.state.dropdownIsOpen});
+  onSetDropdown = () => this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
 
   render() {
     const {
@@ -54,7 +54,7 @@ class ReadWorkBook extends React.Component {
         description,
       },
     } = this.props;
-    const {studentInformation: {firstName, lastName}} = user;
+    const { studentInformation: { firstName, lastName } } = user;
     return (
       <div className="wrapper">
         <div
@@ -69,7 +69,7 @@ class ReadWorkBook extends React.Component {
           }}
         >
           <div className="header-box card-panel light-blue lighten-1 white-text">
-            <div className="header-flex-row row mb-0" style={{width: '100%'}}>
+            <div className="header-flex-row row mb-0" style={{ width: '100%' }}>
               <div className="col s12 m7 xl8">
                 <div className="header-holder">
                   <div className="header-col">
@@ -104,7 +104,7 @@ class ReadWorkBook extends React.Component {
                       <dt>Assigned:</dt>
                       <dd>
                         <time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format(
-                          'MM/DD/YY'
+                          'MM/DD/YY',
                         )} at ${moment(assignTime).format('hh:mm')}`}</time>
                       </dd>
                     </dl>}
@@ -113,7 +113,7 @@ class ReadWorkBook extends React.Component {
                       <dt>Due:</dt>
                       <dd>
                         <time dateTime="2019-01-06T16:00">{`${moment(due_date).format(
-                          'MM/DD/YY'
+                          'MM/DD/YY',
                         )} at ${moment(dueTime).format('hh:mm')}`}</time>
                       </dd>
                     </dl>}
@@ -122,7 +122,7 @@ class ReadWorkBook extends React.Component {
                       <dt>Completed:</dt>
                       <dd>
                         <time dateTime="2019-09-01T06:59">{`${moment(completed_at).format(
-                          'MM/DD/YY'
+                          'MM/DD/YY',
                         )} at ${moment(completed_at).format('hh:mm')}`}</time>
                       </dd>
                     </dl>}
@@ -169,7 +169,7 @@ class ReadWorkBook extends React.Component {
           </div>
           <div className="content-section">
             <div className="content-section-holder">
-              <div className="card-block" style={{maxWidth: 450, margin: '0 auto'}}>
+              <div className="card-block" style={{ maxWidth: 450, margin: '0 auto' }}>
                 <h3>
                   Read page(s) {starting_page}
                   {ending_page > starting_page ? `-${ending_page}` : ''}
@@ -182,7 +182,7 @@ class ReadWorkBook extends React.Component {
                       {description}
                     </h3>
                     <div className="answers-list">
-                      <h2 style={{float: 'left', marginRight: 20}}>Student's Initials:</h2>
+                      <h2 style={{ float: 'left', marginRight: 20 }}>Student's Initials:</h2>
                       <input type="text" className="answer-input" />
                     </div>
                   </div>

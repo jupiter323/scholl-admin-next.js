@@ -290,7 +290,6 @@ class FilterSection extends React.Component {
                       data-view="view-list"
                       className={currentView === 'list' ? 'active' : ''}
                     >
-                      {/* @TODO student lesson listview commented out for now */}
                       {/* <a href="#" onClick={() => onChangeView('list')}>List View</a> */}
                     </li>
                   </ul>
