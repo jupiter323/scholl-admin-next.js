@@ -1,19 +1,20 @@
 import React from 'react';
-import {compose} from 'redux';
-import {createStructuredSelector} from 'reselect';
-import {connect} from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {Doughnut} from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
 import DrillQuestions from './components/DrillQuestions';
-import moment from 'moment';
-import {fetchStudentLessonSectionApi} from '../index/api';
-import {makeSelectUnitFilterOptions} from '../index/selectors';
+import moment from "moment";
+import { fetchStudentLessonSectionApi } from "../index/api";
+import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
+import { fetchLessonProblems } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 import RadialBar from '../../common/RadialBar';
 
-import {ConvertSecondsToMinutesSeconds} from '../../utils/ConvertSecondsToMinutesSeconds';
+import { ConvertSecondsToMinutesSeconds } from '../../utils/ConvertSecondsToMinutesSeconds';
 
 const data = (value, total) => ({
   datasets: [
@@ -42,11 +43,11 @@ const getValuesByScore = (value, max, target) => {
     }
   }
   const colorList = [
-    {label: 'Great', color: '#74b287'},
-    {label: 'Above Average', color: '#a9c466'},
-    {label: 'Average', color: 'd8c539'},
-    {label: 'Below Average', color: '#e89258'},
-    {label: 'Poor', color: '#f27c7c'},
+    { label: 'Great', color: '#74b287' },
+    { label: 'Above Average', color: '#a9c466' },
+    { label: 'Average', color: 'd8c539' },
+    { label: 'Below Average', color: '#e89258' },
+    { label: 'Poor', color: '#f27c7c' },
   ];
   if (target === 'color') {
     return colorList[activeIndex].color;
@@ -58,10 +59,7 @@ class LessonDetailAnswerSheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      challengeProblems: [],
-      practiceProlems: [],
-      drillProblems: [],
-      currentType: '',
+      currentType: "",
       hasChallenge: false,
       hasPractice: false,
       hasDrill: false,
@@ -70,14 +68,13 @@ class LessonDetailAnswerSheet extends React.Component {
   }
 
   componentDidMount = async () => {
-    const {lesson, user: {id: student_id}} = this.props;
-    if (lesson.sections) {
-      // lesson module type
+    const { lesson, user: { id: student_id }, onFetchLessonProblems } = this.props;
+    const lesson_id = this.props.lesson.id;
+    if (lesson.sections) { // lesson module type
       this.setState({
         currentType: 'Module',
       });
-      const lesson_id = this.props.lesson.id;
-      const {sections} = this.props.lesson;
+      const { sections } = this.props.lesson;
       sections.map(async section => {
         const section_id = section.id;
         const currentSectionName = section.name;
@@ -85,84 +82,70 @@ class LessonDetailAnswerSheet extends React.Component {
           this.setState({
             hasChallenge: true,
           });
-          const challengeProblems = await fetchStudentLessonSectionApi(
-            student_id,
-            lesson_id,
-            section_id
-          );
-          this.setState({
-            challengeProblems: challengeProblems.lesson_problems,
-          });
+          onFetchLessonProblems({ student_id, lesson_id, section_id });
         } else {
           this.setState({
             hasPractice: true,
           });
-          const practiceProblems = await fetchStudentLessonSectionApi(
-            student_id,
-            lesson_id,
-            section_id
-          );
-          if (!practiceProblems) return;
-          this.setState({
-            practiceProlems: practiceProblems.lesson_problems,
-          });
+          onFetchLessonProblems({ student_id, lesson_id, section_id });
         }
       });
     }
-    if (lesson.problems && lesson.problems.length !== 0) {
+    if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
+      onFetchLessonProblems({ student_id, lesson_id });
       this.setState({
         currentType: 'Drill',
         hasDrill: true,
       });
-      if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
-        lesson.problems.map(problem => {
-          if (problem.flag_status === 'FLAGGED') {
-            problem.flag_status = 'REVIEWED';
-            return problem;
-          }
-          return problem;
-        });
-      }
-      this.setState({
-        drillProblems: lesson.problems,
-      });
+      // @TODO commented out until I can finish reworking answering lessons
+      // if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
+      //   lesson.problems.map(problem => {
+      //     if (problem.flag_status === 'FLAGGED') {
+      //       problem.flag_status = 'REVIEWED';
+      //       return problem;
+      //     }
+      //     return problem;
+      //   });
+      // }
     }
   };
+
+  componentWillUnmount = () => {
+    this.props.onCloseDetailModal();
+  }
 
   getProblemsAmount = () => {
-    if (this.state.currentType === 'Module') {
-      return this.state.challengeProblems.length + this.state.practiceProlems.length;
+    const { activeLesson } = this.props;
+    if (this.state.currentType === "Module") {
+      return activeLesson.challengeProblems.length + activeLesson.practiceProblems.length;
     }
-    if (this.state.currentType === 'Drill') {
-      return this.state.drillProblems.length;
+    if (this.state.currentType === "Drill") {
+      return activeLesson.drillProblems.length;
     }
   };
 
-  getReviewedAndFlaggedProblemAmount = type => {
+  getReviewedAndFlaggedProblemAmount = (type) => {
+    const { activeLesson } = this.props;
     let amount = 0;
-    if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
-      //Drill
-      this.props.lesson.problems.map(section => {
+    if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
+      activeLesson.drillProblems.map(section => {
         if (section.flag_status === type) {
           amount += 1;
         }
       });
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
-      //Module
-      const {challengeProblems, practiceProlems} = this.state;
-      challengeProblems.length !== 0 &&
-        challengeProblems.map(section => {
-          if (section.flag_status === type) {
-            amount += 1;
-          }
-        });
-      practiceProlems.length !== 0 &&
-        practiceProlems.map(section => {
-          if (section.flag_status === type) {
-            amount += 1;
-          }
-        });
+      const { challengeProblems, practiceProblems } = activeLesson;
+      challengeProblems.length !== 0 && challengeProblems.map(section => {
+        if (section.flag_status === type) {
+          amount += 1;
+        }
+      });
+      practiceProblems.length !== 0 && practiceProblems.map(section => {
+        if (section.flag_status === type) {
+          amount += 1;
+        }
+      });
     }
     return amount;
   };
@@ -188,7 +171,7 @@ class LessonDetailAnswerSheet extends React.Component {
   };
 
   getUnitNameById = () => {
-    const {units} = this.props;
+    const { units } = this.props;
     if (units && units.length !== 0) {
       const unitIds = units.map(unit => unit.value);
       const currentIndex = unitIds.findIndex(this.getUnitIndexMatchedUnitId);
@@ -200,56 +183,55 @@ class LessonDetailAnswerSheet extends React.Component {
 
   getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
 
-  onSetDropdown = () => this.setState({dropdownIsOpen: !this.state.dropdownIsOpen});
+  onSetDropdown = () => this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
 
   handleAssignLesson = () => {
-    const {onOpenModal, onAddCheckedLesson, lesson} = this.props;
+    const { onOpenModal, onAddCheckedLesson, lesson } = this.props;
     onOpenModal();
     onAddCheckedLesson(lesson.id);
   };
 
   updateProblemList = (problemsType, updatedProblem) => {
-    const problems = this.state[problemsType];
-    const newProblems = problems.map(problem => {
-      if (problem.id === updatedProblem.id) return updatedProblem;
-      return problem;
-    });
-    this.setState({[problemsType]: [...newProblems]});
+    // @TODO Replace this function because problems are now from props not state-Mark
+    // const problems = this.state[problemsType];
+    // const newProblems = problems.map(problem => {
+    //   if (problem.id === updatedProblem.id) return updatedProblem;
+    //   return problem;
+    // });
+    // this.setState({ [problemsType]: [...newProblems] });
   };
 
   getCurrentProblemList = () => {
-    const {currentType, drillProblems, practiceProlems, challengeProblems} = this.state;
-    if (currentType === 'Drill') return [{problems: drillProblems, type: 'drillProblems'}];
-    if (currentType === 'Module')
-      return [
-        {problems: challengeProblems, type: 'challengeProblems'},
-        {problems: practiceProlems, type: 'practiceProlems'},
-      ];
-  };
+    // @TODO Replace this function because problems are from props not state-Mark
+    // const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
+    // if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
+    // if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
+  }
 
   getTotalVideoDuration = () => {
+    const { activeLesson } = this.props;
     let totalDuration = 0;
-    if (this.props.lesson.problems && this.props.lesson.problems.length !== 0) {
-      //Drill
-      this.props.lesson.problems.map(section => {
+    if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
+      // Drill
+      activeLesson.drillProblems.map(section => {
         if (section.problem && section.problem.video && section.problem.video.duration) {
-          totalDuration = totalDuration + section.problem.video.duration;
+          totalDuration += section.problem.video.duration;
         }
       });
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
-      //Module
-      const {challengeProblems, practiceProlems} = this.state;
+      // Module
+      const { challengeProblems, practiceProblems } = activeLesson;
       challengeProblems.length !== 0 &&
         challengeProblems.map(section => {
           if (section.problem && section.problem.video && section.problem.video.duration) {
-            totalDuration = totalDuration + section.problem.video.duration;
+            totalDuration += section.problem.video.duration;
           }
         });
-      practiceProlems.length !== 0 &&
-        practiceProlems.map(section => {
+      practiceProblems.length !== 0 &&
+        practiceProblems.map(section => {
           if (section.problem && section.problem.video && section.problem.video.duration) {
-            totalDuration = totalDuration + section.problem.video.duration;
+            totalDuration += section.problem.video.duration;
           }
         });
     }
@@ -257,7 +239,6 @@ class LessonDetailAnswerSheet extends React.Component {
   };
 
   render() {
-    const {challengeProblems, practiceProlems, drillProblems} = this.state;
     const {
       onCloseDetailModal,
       user,
@@ -271,8 +252,13 @@ class LessonDetailAnswerSheet extends React.Component {
         due_date,
         dueTime,
       },
+      activeLesson: {
+        drillProblems,
+        challengeProblems,
+        practiceProblems,
+      },
     } = this.props;
-    const {studentInformation: {firstName, lastName}} = user;
+    const { studentInformation: { firstName, lastName } } = user;
     return (
       <React.Fragment>
         <div className="wrapper">
@@ -288,7 +274,7 @@ class LessonDetailAnswerSheet extends React.Component {
             }}
           >
             <div className="header-box card-panel light-blue lighten-1 white-text">
-              <div className="header-flex-row row mb-0" style={{width: '100%'}}>
+              <div className="header-flex-row row mb-0" style={{ width: '100%' }}>
                 <div className="col s12 m7 xl8">
                   <div className="header-holder">
                     <div className="header-col">
@@ -323,7 +309,7 @@ class LessonDetailAnswerSheet extends React.Component {
                         <dt>Assigned:</dt>
                         <dd>
                           <time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format(
-                            'MM/DD/YY'
+                            'MM/DD/YY',
                           )} at ${moment(assignTime).format('hh:mm')}`}</time>
                         </dd>
                       </dl>}
@@ -332,7 +318,7 @@ class LessonDetailAnswerSheet extends React.Component {
                         <dt>Due:</dt>
                         <dd>
                           <time dateTime="2019-01-06T16:00">{`${moment(due_date).format(
-                            'MM/DD/YY'
+                            'MM/DD/YY',
                           )} at ${moment(dueTime).format('hh:mm')}`}</time>
                         </dd>
                       </dl>}
@@ -341,7 +327,7 @@ class LessonDetailAnswerSheet extends React.Component {
                         <dt>Completed:</dt>
                         <dd>
                           <time dateTime="2019-09-01T06:59">{`${moment(completed_at).format(
-                            'MM/DD/YY'
+                            'MM/DD/YY',
                           )} at ${moment(completed_at).format('hh:mm')}`}</time>
                         </dd>
                       </dl>}
@@ -395,19 +381,19 @@ class LessonDetailAnswerSheet extends React.Component {
                     <div className="col s12 m6">
                       <div className="main-row row">
                         <div className="col s12">
-                          <div className="card-block" style={{margin: '0 auto'}}>
+                          <div className="card-block" style={{ margin: '0 auto' }}>
                             <h3>Performance</h3>
                             <div className="card-answer card">
                               <div className="card-content">
                                 <div className="row">
                                   <div className="col s6">
-                                    <div className="chart-container" style={{width: 140}}>
-                                      <div className="chart-holder" style={{width: 140}}>
+                                    <div className="chart-container" style={{ width: 140 }}>
+                                      <div className="chart-holder" style={{ width: 140 }}>
                                         <Doughnut
                                           data={() =>
                                             data(
                                               this.props.lesson.scoring.correct_count,
-                                              this.props.lesson.scoring.question_count
+                                              this.props.lesson.scoring.question_count,
                                             )}
                                           height={140}
                                           width={140}
@@ -424,7 +410,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                             backgroundColor: getValuesByScore(
                                               this.props.lesson.scoring.correct_count,
                                               this.props.lesson.scoring.question_count,
-                                              'color'
+                                              'color',
                                             ),
                                             marginBottom: '-40px',
                                             width: '50px',
@@ -434,7 +420,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                           {Math.floor(
                                             this.props.lesson.scoring.percentage_correct
                                               ? this.props.lesson.scoring.percentage_correct
-                                              : 0
+                                              : 0,
                                           )}
                                           %
                                         </span>
@@ -444,7 +430,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                           color: getValuesByScore(
                                             this.props.lesson.scoring.correct_count,
                                             this.props.lesson.scoring.question_count,
-                                            'color'
+                                            'color',
                                           ),
                                           margin: '45px 45px 0 45px',
                                         }}
@@ -455,8 +441,8 @@ class LessonDetailAnswerSheet extends React.Component {
                                     </div>
                                   </div>
                                   <div className="col s6">
-                                    <div className="chart-description" style={{marginTop: '10px'}}>
-                                      <dl className="dl-horizontal" style={{fontSize: 16}}>
+                                    <div className="chart-description" style={{ marginTop: '10px' }}>
+                                      <dl className="dl-horizontal" style={{ fontSize: 16 }}>
                                         <dt>Time Est:</dt>
                                         <dd>
                                           {this.props.lesson.time_estimate
@@ -465,7 +451,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                           min
                                         </dd>
                                       </dl>
-                                      <dl className="dl-horizontal" style={{fontSize: 16}}>
+                                      <dl className="dl-horizontal" style={{ fontSize: 16 }}>
                                         <dt>Problems:</dt>
                                         <dd>
                                           {this.getProblemsAmount()}
@@ -480,7 +466,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                           backgroundColor: getValuesByScore(
                                             this.props.lesson.scoring.correct_count,
                                             this.props.lesson.scoring.question_count,
-                                            'color'
+                                            'color',
                                           ),
                                           color: 'white',
                                         }}
@@ -488,7 +474,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                         {getValuesByScore(
                                           this.props.lesson.scoring.correct_count,
                                           this.props.lesson.scoring.question_count,
-                                          'label'
+                                          'label',
                                         )}
                                       </dl>
                                     </div>
@@ -499,8 +485,8 @@ class LessonDetailAnswerSheet extends React.Component {
                           </div>
                         </div>
                       </div>
-                      <div className="row" style={{margin: 0}}>
-                        <div className="card-block" style={{margin: '0 auto'}}>
+                      <div className="row" style={{ margin: 0 }}>
+                        <div className="card-block" style={{ margin: '0 auto' }}>
                           <h3>Video</h3>
                           <div className="card-answer card">
                             <div className="card-content">
@@ -518,34 +504,34 @@ class LessonDetailAnswerSheet extends React.Component {
                                     <div className="chart-text">
                                       <span
                                         className="value"
-                                        style={{fontSize: '32px', color: 'rgb(0, 187, 247)'}}
+                                        style={{ fontSize: '32px', color: 'rgb(0, 187, 247)' }}
                                       >
                                         {ConvertSecondsToMinutesSeconds(
-                                          this.props.lesson.video_watched_total
+                                          this.props.lesson.video_watched_total,
                                         )}
                                       </span>
-                                      <span className="title" style={{fontSize: '14px'}}>
+                                      <span className="title" style={{ fontSize: '14px' }}>
                                         out of
                                       </span>
-                                      <span className="description" style={{fontSize: '32px'}}>
+                                      <span className="description" style={{ fontSize: '32px' }}>
                                         {ConvertSecondsToMinutesSeconds(
-                                          this.getTotalVideoDuration()
+                                          this.getTotalVideoDuration(),
                                         )}
                                       </span>
                                     </div>
                                   </div>
                                 </div>
                                 <div className="col s6 ">
-                                  <div className="chart-description" style={{marginTop: '30px'}}>
+                                  <div className="chart-description" style={{ marginTop: '30px' }}>
                                     <dl
                                       className="dl-horizontal"
-                                      style={{fontSize: 16, color: '#00BBF7'}}
+                                      style={{ fontSize: 16, color: '#00BBF7' }}
                                     >
                                       <dt>total minutes of video watched</dt>
                                     </dl>
                                     <dl
                                       className="dl-horizontal"
-                                      style={{fontSize: 16, marginTop: '10px'}}
+                                      style={{ fontSize: 16, marginTop: '10px' }}
                                     >
                                       <dt>total minutes of video for all missed problems</dt>
                                     </dl>
@@ -558,7 +544,7 @@ class LessonDetailAnswerSheet extends React.Component {
                       </div>
                       <div className="main-row row">
                         <div className="col s12">
-                          <div className="card-block" style={{margin: '0 auto'}}>
+                          <div className="card-block" style={{ margin: '0 auto' }}>
                             <h3>Flagged For Review</h3>
                             <div className="card-answer card">
                               <div className="card-content">
@@ -570,7 +556,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                       </b>{' '}
                                       <i className="icon-flag" />
                                     </span>
-                                    <span style={{marginLeft: 10, fontSize: 16}}>To Review</span>
+                                    <span style={{ marginLeft: 10, fontSize: 16 }}>To Review</span>
                                   </div>
                                   <div className="col s6 badge-block-column">
                                     <span className="badge-rounded-xlg badge grey darken-2 white-text">
@@ -579,7 +565,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                       </b>{' '}
                                       <i className="icon-flag" />
                                     </span>
-                                    <span style={{marginLeft: 10, fontSize: 16}}>Reviewed</span>
+                                    <span style={{ marginLeft: 10, fontSize: 16 }}>Reviewed</span>
                                   </div>
                                 </div>
                               </div>
@@ -591,65 +577,71 @@ class LessonDetailAnswerSheet extends React.Component {
                   <Choose>
                     <When condition={this.props.lesson.status === 'COMPLETED'}>
                       <div className="col s12 m6">
-                        <div className="row" style={{margin: 0}}>
-                          <div className="card-block" style={{margin: '0 auto'}}>
+                        <div className="row" style={{ margin: 0 }}>
+                          <div className="card-block" style={{ margin: '0 auto' }}>
                             {challengeProblems.length !== 0 &&
-                              <div className="main-row row">
+                              (<div className="main-row row">
                                 <ChallengeQuestions
                                   questions={challengeProblems}
                                   updateProblemList={this.updateProblemList}
                                   problemType={'challengeProblems'}
                                 />
-                              </div>}
-                            {practiceProlems.length !== 0 &&
+                              </div>
+                              )}
+                            {practiceProblems.length !== 0 && (
                               <div className="main-row row">
                                 <PracticeQuestions
-                                  questions={practiceProlems}
+                                  questions={practiceProblems}
                                   updateProblemList={this.updateProblemList}
-                                  problemType={'practiceProlems'}
+                                  problemType={'practiceProblems'}
                                 />
-                              </div>}
-                            {drillProblems.length !== 0 &&
+                              </div>
+                            )}
+                            {drillProblems.length !== 0 && (
                               <div className="main-row row">
                                 <DrillQuestions
                                   questions={drillProblems}
                                   updateProblemList={this.updateProblemList}
                                   problemType={'drillProblems'}
                                 />
-                              </div>}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
                     </When>
                     <Otherwise>
-                      <div className="col s12 m6 card-block" style={{margin: '0 auto'}}>
+                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
                         {challengeProblems.length !== 0 &&
-                          <div className="main-row row">
+                          (<div className="main-row row">
                             <ChallengeQuestions
                               questions={challengeProblems}
                               updateProblemList={this.updateProblemList}
                               problemType={'challengeProblems'}
                             />
-                          </div>}
+                          </div>
+                          )}
                       </div>
-                      <div className="col s12 m6 card-block" style={{margin: '0 auto'}}>
-                        {practiceProlems.length !== 0 &&
+                      <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
+                        {practiceProblems.length !== 0 && (
                           <div className="main-row row">
                             <PracticeQuestions
-                              questions={practiceProlems}
+                              questions={practiceProblems}
                               updateProblemList={this.updateProblemList}
-                              problemType={'practiceProlems'}
+                              problemType={'practiceProblems'}
                             />
-                          </div>}
+                          </div>
+                        )}
                       </div>
                       {drillProblems.length !== 0 &&
-                        <div className="main-row row">
+                        (<div className="main-row row">
                           <DrillQuestions
                             questions={drillProblems}
                             updateProblemList={this.updateProblemList}
                             problemType={'drillProblems'}
                           />
-                        </div>}
+                        </div>
+                        )}
                     </Otherwise>
                   </Choose>
                 </div>
@@ -671,8 +663,15 @@ LessonDetailAnswerSheet.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   units: makeSelectUnitFilterOptions(),
+  activeLesson: makeSelectActiveLesson(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function mapDispatchToProps(dispatch) {
+  return {
+    onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(LessonDetailAnswerSheet);

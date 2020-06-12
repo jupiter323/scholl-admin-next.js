@@ -52,6 +52,8 @@ import {
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   SEND_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
+  SET_LESSON_PROBLEMS,
+  SET_LESSON_ANSWER,
 } from "./constants";
 
 const initialState = fromJS({
@@ -194,22 +196,19 @@ function studentReducer(state = initialState, action) {
       );
 
     case MERGE_STUDENT_LESSON_LISTS:
-      // const getStudentLessonList = (studentLessonList) => studentLessonList.map(lesson => {
-      //   if (lesson.problems && lesson.problems.length > 0) {
-      //     lesson = { ...lesson, type: 'drill', selected: false };
-      //   } else if (lesson.sections) {
-      //     lesson = { ...lesson, type: 'module', selected: false };
-      //   } else if (lesson.problems && lesson.problems.length <= 0) {
-      //     lesson = { ...lesson, type: 'reading', selected: false };
-      //   }
-      //   return lesson;
-      // });
       return state.set('lessonList', [
         ...state.get('studentLessonList'),
         ...state.get('unassignedLessonList'),
       ]);
 
     case SET_ACTIVE_LESSON:
+      Object.assign(action.activeLesson, { challengeProblems: [], practiceProblems: [] });
+      if (action.activeLesson.type.label === "Drill") {
+        action.activeLesson.drillProblems = action.activeLesson.problems;
+        delete action.activeLesson.problems;
+      } else {
+        action.activeLesson.drillProblems = [];
+      }
       return state.set('activeLesson', action.activeLesson);
 
     case SET_OPEN_ANSWERSHEET_STATUS:
@@ -384,6 +383,23 @@ function studentReducer(state = initialState, action) {
       const resetErrorMessages = { ...state.get('errorMessages'), [action.propertyName]: "" };
       return state.set('errorMessages', resetErrorMessages);
 
+    case SET_LESSON_PROBLEMS: {
+      const activeLesson = state.get('activeLesson');
+      activeLesson[`${action.sectionType}Problems`] = action.problems;
+      return state.set('activeLesson', { ...activeLesson });
+    }
+    case SET_LESSON_ANSWER: {
+      const activeLesson = state.get('activeLesson');
+      const newQuestions = activeLesson[action.problemType].map(question => {
+        if (question.problem.id === action.problem_id) {
+          question[action.propertyName] = action.answer;
+          return question;
+        }
+        return question;
+      });
+      activeLesson[action.problemType] = newQuestions;
+      return state.set('activeLesson', { ...activeLesson });
+    }
     default:
       return state;
   }
