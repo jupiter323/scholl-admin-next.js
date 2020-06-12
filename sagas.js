@@ -1218,6 +1218,9 @@ function* watchForFetchLessonDetails() {
 
 function* handleFetchLessonDetails(action) {
   try {
+    if (action.afterCompleted) {
+      yield delay(500);
+    }
     const response = yield call(fetchStudentLessonApi, action.postBody.student_id, action.postBody.lesson_id);
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonDetails saga", response.message);
@@ -1297,6 +1300,7 @@ function* handleUpdateLessonStatus(action) {
           lesson_id: action.postBody.student_lesson_id,
           section_id: action.section_id,
         },
+        afterCompleted: true,
       });
     }
     return yield put({
@@ -1325,6 +1329,7 @@ function* handleCompleteLessonSection(action) {
         section_id: action.sections[1].id,
       },
       sections: action.sections,
+      afterCompleted: true,
     };
     if (action.lessonType === 'challenge') {
       yield put({
@@ -1372,11 +1377,6 @@ function* handleSubmitLessonProblems(action) {
         sections: action.postBody.sections,
       });
     }
-    // else if (lessonType === 'reading') {
-    //   // send request to update status
-    //   // refetch lesson to get scores and answers
-    //   // set new fetched lesson as active lesson
-    // }
   } catch (error) {
     return console.warn("Error occurred in the handleSubmitLessonProblems saga", error);
   }

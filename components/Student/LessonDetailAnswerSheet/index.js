@@ -64,9 +64,16 @@ class LessonDetailAnswerSheet extends React.Component {
       hasPractice: false,
       hasDrill: false,
       dropdownIsOpen: false,
+      loadingScores: false,
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    console.log('log: props', props);
+    if (props.activeLesson.status === "COMPLETED") {
+      return { loadingScores: false };
+    }
+  }
   componentDidMount = async () => {
     const {
       lesson,
@@ -254,7 +261,7 @@ class LessonDetailAnswerSheet extends React.Component {
     } else if (lessonType === "practice" || lessonType === "challenge") {
       const { sections } = activeLesson;
       if (lessonType === 'challenge' && sections[0].status !== "COMPLETED") displayBtn = true;
-      if (lessonType === 'practice' && sections[0].status === "COMPLETED") displayBtn = true;
+      if (lessonType === 'practice' && sections[0].status === "COMPLETED" && sections[1].status !== "COMPLETED") displayBtn = true;
       postBody = {
         student_lesson_id: id,
         sections,
@@ -266,7 +273,12 @@ class LessonDetailAnswerSheet extends React.Component {
           <a
             href="#"
             className="btn btn-xlarge waves-effect waves-light bg-blue"
-            onClick={() => onSubmitLessonProblems(lessonType, postBody, student_id)}
+            onClick={() => {
+              if (lessonType === 'drill' || lessonType === 'practice') {
+                this.setState({ loadingScores: true });
+              }
+              onSubmitLessonProblems(lessonType, postBody, student_id);
+            }}
           >
             I'm Done
           </a>
@@ -274,6 +286,12 @@ class LessonDetailAnswerSheet extends React.Component {
       </div>
     );
   };
+
+  loadingSpinner = () =>
+    (<div className="overlay-spinning">
+      <h1>Fetching Scores...</h1>
+      <div className="spinning" />
+    </div>);
 
   render() {
     const {
@@ -294,6 +312,7 @@ class LessonDetailAnswerSheet extends React.Component {
     const {
       studentInformation: { firstName, lastName },
     } = user;
+    if (this.state.loadingScores) return this.loadingSpinner();
     return (
       <React.Fragment>
         <div className="wrapper">
