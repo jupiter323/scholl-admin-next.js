@@ -51,6 +51,7 @@ import {
   UPDATE_STUDENT_TEST_ANSWER,
   UPDATE_TEST_STATUS,
   UPDATE_TEST_STATUS_SUCCESS,
+  UPDATE_TEST_SECTIONS,
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
@@ -147,6 +148,7 @@ const {
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
   addStudentTestQuestionFlagApi,
+  updateStudentTestSectionsApi
 } = studentApi;
 const {
   fetchClassesApi,
@@ -179,6 +181,7 @@ const fetchProblemsMessage = 'fetchProblemsMessage';
 const testFlagMessage = 'testFlagMessage';
 const answerTestProblemMessage = 'answerTestProblemMessage';
 const fetchingStudentTestsMessage = 'fetchingStudentTestsMessage';
+const updateTestSectionsMessage = 'updateTestSectionsMessage'
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -1079,7 +1082,7 @@ function* watchForUpdateTestStatus() {
 
 function* handleUpdateTestStatus(action) {
   try {
-    const response = yield call(updateStudentTestStatusApi, action.payload);
+    const response = yield call(updateTestSectionApi, action.payload);
     if (response && response.message && action.payload.status === "COMPLETED") {
       console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
       return yield put(sendErrorMessage("updateTestStatusMsg", `Something went wrong updating this test to ${action.payload.status}. Please try opening and resubmitting this test later.`));
@@ -1122,6 +1125,31 @@ function* handleUpdateTestStatus(action) {
     console.warn("Error occurred in the handleUpdateTestStatus saga", error);
   }
 }
+
+function* watchForhandleUpdateTestSections(){
+  yield takeEvery(UPDATE_TEST_SECTIONS, handleUpdateTestSections)
+}
+
+function* handleUpdateTestSections(action) {
+  try {
+    const response = yield call(updateStudentTestSectionsApi, action.payload);
+    if (response && response.message ) {
+      console.warn("Error occurred in the handleUpdateTestSections saga", response.message);
+      return yield put(sendErrorMessage("updateTestSectionsMessage", `Something went wrong updating this test sections. Please try changing test settings later.`));
+    }
+    if (!response.message) {
+      yield put({
+        type: GET_TESTS,
+        user: action.user,
+      });
+      yield put(resetErrorMessage("updateTestSectionsMessage"));
+    }
+  } catch (error) {
+    sendErrorMessage("updateTestSectionsMessage", `Something went wrong updating this test sections. Please try changing test settings later.`)
+    console.warn("Error occurred in the handleUpdateTestSections saga", error);
+  }
+}
+
 
 function* watchForUpdateTestFlagStatus() {
   yield takeEvery(UPDATE_FLAG_STATUS, handleUpdateTestFlagStatus);
@@ -1235,5 +1263,6 @@ export default function* defaultSaga() {
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
+    watchForhandleUpdateTestSections(),
   ]);
 }

@@ -32,6 +32,8 @@ import {
   setStudentOverDueTests,
   setStudentAssignedTests,
   getTestScores,
+  updateTestSections,
+  resetErrorMessage
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -41,11 +43,11 @@ import {
   makeSelectTests,
   makeSelectActiveStudent,
   makeSelectFetchStudentTestsStatus,
+  makeSelectErrorMessages,
 } from '../index/selectors';
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
-  updateStudentTestSectionsApi,
 } from '../index/api';
 
 class DetailTestList extends React.Component {
@@ -60,6 +62,7 @@ class DetailTestList extends React.Component {
       openCreateTestModal: false,
       opentTestSettingModal: false,
       openEnterAnswerWrapper: false,
+      updateTestSectionsMessage: "",
     };
   }
 
@@ -73,10 +76,35 @@ class DetailTestList extends React.Component {
   };
 
   componentWillUnmount = () => {
+    const { onResetErrorMessage } = this.props;
     this.props.onSetStudentTests([]);
     this.props.onSetStudentCompletedTests([]);
     this.props.onSetStudentOverDueTests([]);
     this.props.onSetStudentAssignedTests([]);
+    onResetErrorMessage('updateTestSectionsMessage');
+  }
+
+  componentWillReceiveProps = nextProps => {
+    const {
+      errorMessages: {
+        updateTestSectionsMessage,
+      },
+    } = nextProps;
+    if (updateTestSectionsMessage && updateTestSectionsMessage !== this.state.updateTestSectionsMessage) {
+      this.onErrorMessage(updateTestSectionsMessage, "updateTestSectionsMessage");
+    }
+    if (updateTestSectionsMessage && updateTestSectionsMessage !== this.state.updateTestSectionsMessage) {
+      this.setState({ updateTestSectionsMessage });
+    }
+  };
+
+  onErrorMessage(message, name) {
+    if (!message) return this.setState({ [name]: "" });
+    toast.error(message, {
+      className: 'update-error',
+      progressClassName: 'progress-bar-error',
+    });
+    this.setState({ [name]: message });
   }
 
   onSetActiveTestComplete = () => this.setState({ activeTest: { ...this.state.activeTest, status: "COMPLETED" } })
@@ -250,14 +278,11 @@ class DetailTestList extends React.Component {
     });
     this.onCloseDropdown();
   };
-  onCloseTestSettingModal = () => {
-    const { onFetchStudentTests, user } = this.props
-    onFetchStudentTests(user)
-    this.setState({ opentTestSettingModal: false})
-  }
+
+  onCloseTestSettingsModal = () => this.setState({ opentTestSettingModal: false})
 
   onSaveNewTest = async test => {
-    const { studentTests, tests } = this.props;
+    const { studentTests, tests, onFetchStudentTests } = this.props;
     if (!this.props.activeStudent.active && studentTests.length >= 1) {
       return toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
         className: 'update-error',
@@ -270,7 +295,7 @@ class DetailTestList extends React.Component {
     const currentTestIndex = testIds.findIndex(testId => testId === test.version);
     const currentTest = tests[currentTestIndex];
 
-    const { user: { id } } = this.props;
+    const { user: { id }, user } = this.props;
     currentTest.test_sections.map(testSection => {
       if (testSection.name === 'Reading' && test.reading) {
         test_sections.push(testSection);
@@ -316,6 +341,7 @@ class DetailTestList extends React.Component {
       const { onAssignNewTest, onAddNewTestToStudentTests } = this.props;
       onAssignNewTest(formattedNewTest);
       onAddNewTestToStudentTests(formattedNewTest);
+      onFetchStudentTests(user)
     } else {
       toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
         className: 'update-error',
@@ -324,14 +350,14 @@ class DetailTestList extends React.Component {
     }
   };
 
-  onUpdateTestSections = async (student_test_id, sectionsArray) => {
+  updateTestSections = async (student_test_id, sectionsArray) => {
+    const { onUpdateTestSections, user } = this.props
     const postBody = {
       student_test_id,
       test_section_ids: sectionsArray,
     }
-    console.log('log: postBody ', postBody);
-    await updateStudentTestSectionsApi(postBody);
-    this.onCloseTestSettingModal()
+    await onUpdateTestSections(postBody, user);
+    this.onCloseTestSettingsModal()
   }
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
@@ -383,7 +409,7 @@ class DetailTestList extends React.Component {
               open={opentTestSettingModal}
               test={activeTest}
               onClose={this.handleTestSettingModalOpen}
-              onSave={this.onUpdateTestSections}
+              onSave={this.updateTestSections}
             />
           </When>
           <Otherwise>
@@ -448,6 +474,7 @@ const mapStateToProps = createStructuredSelector({
   tests: makeSelectTests(),
   activeStudent: makeSelectActiveStudent(),
   studentTestsFetchedStatus: makeSelectFetchStudentTestsStatus(),
+  errorMessages: makeSelectErrorMessages(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -466,6 +493,8 @@ function mapDispatchToProps(dispatch) {
     onSetStudentOverDueTests: (tests) => dispatch(setStudentOverDueTests(tests)),
     onSetStudentAssignedTests: (tests) => dispatch(setStudentAssignedTests(tests)),
     onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
+    onUpdateTestSections: (postBody, user) => dispatch(updateTestSections(postBody, user)),
+    onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }
 

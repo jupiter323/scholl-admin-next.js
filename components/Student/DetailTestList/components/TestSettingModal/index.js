@@ -106,9 +106,6 @@ class TestSettingModal extends React.Component {
           break;
       }
     })
-    console.log('log: currentTest ', currentTest);
-    console.log('log: sectionIds ', sectionIds);
-    console.log('log:  test ',test );
     onSave(student_test_id, sectionIds);
   };
 
