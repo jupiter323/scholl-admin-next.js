@@ -1348,6 +1348,13 @@ function* handleCompleteLessonSection(action) {
       });
     } else if (action.lessonType === 'practice') {
       // fetch lesson details
+      yield put({
+        type: FETCH_LESSON_DETAILS,
+        postBody: {
+          student_id: action.student_id,
+          lesson_id: action.postBody.student_lesson_id,
+        },
+      });
     }
   } catch (error) {
     return console.warn("Error occurred in the handleCompleteLessonSection saga", error);
