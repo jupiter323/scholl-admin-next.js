@@ -84,8 +84,32 @@ class TestSettingModal extends React.Component {
   };
 
   onSave = () => {
-    const { onSave, onClose } = this.props;
-    onSave(this.state);
+    const { onSave, tests, test:{ student_test_id, test_id}, test } = this.props;
+    const { mathNoCalc, mathWithCalc, reading, writing } = this.state
+    const currentTest = tests.find( test => test.id === test_id )
+    let sectionIds = [];
+    currentTest.test_sections.forEach( testSection =>{
+      switch (testSection.name) {
+        case "Reading":
+          reading && sectionIds.push(testSection.id)
+          break;
+        case "Writing":
+          writing && sectionIds.push(testSection.id)
+          break;
+        case "Math (No Calculator)":
+          mathNoCalc && sectionIds.push(testSection.id)
+          break;
+        case "Math (Calculator)":
+          mathWithCalc && sectionIds.push(testSection.id)
+          break;
+        default:
+          break;
+      }
+    })
+    console.log('log: currentTest ', currentTest);
+    console.log('log: sectionIds ', sectionIds);
+    console.log('log:  test ',test );
+    onSave(student_test_id, sectionIds);
   };
 
   render() {

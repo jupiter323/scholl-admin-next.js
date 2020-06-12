@@ -45,6 +45,7 @@ import {
 import {
   assignTestToStudentApi,
   addStudentAnswerToTestApi,
+  updateStudentTestSectionsApi,
 } from '../index/api';
 
 class DetailTestList extends React.Component {
@@ -249,6 +250,11 @@ class DetailTestList extends React.Component {
     });
     this.onCloseDropdown();
   };
+  onCloseTestSettingModal = () => {
+    const { onFetchStudentTests, user } = this.props
+    onFetchStudentTests(user)
+    this.setState({ opentTestSettingModal: false})
+  }
 
   onSaveNewTest = async test => {
     const { studentTests, tests } = this.props;
@@ -318,6 +324,16 @@ class DetailTestList extends React.Component {
     }
   };
 
+  onUpdateTestSections = async (student_test_id, sectionsArray) => {
+    const postBody = {
+      student_test_id,
+      test_section_ids: sectionsArray,
+    }
+    console.log('log: postBody ', postBody);
+    await updateStudentTestSectionsApi(postBody);
+    this.onCloseTestSettingModal()
+  }
+
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
     const { activeTest: { student_test_id } } = this.state;
     const postBody = {
@@ -367,7 +383,7 @@ class DetailTestList extends React.Component {
               open={opentTestSettingModal}
               test={activeTest}
               onClose={this.handleTestSettingModalOpen}
-              // onSave={this.onSaveNewTest}
+              onSave={this.onUpdateTestSections}
             />
           </When>
           <Otherwise>
