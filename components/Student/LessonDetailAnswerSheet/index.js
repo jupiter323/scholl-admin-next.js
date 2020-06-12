@@ -45,7 +45,7 @@ const getValuesByScore = (value, max, target) => {
   const colorList = [
     { label: 'Great', color: '#74b287' },
     { label: 'Above Average', color: '#a9c466' },
-    { label: 'Average', color: 'd8c539' },
+    { label: 'Average', color: '#d8c539' },
     { label: 'Below Average', color: '#e89258' },
     { label: 'Poor', color: '#f27c7c' },
   ];
@@ -253,21 +253,24 @@ class LessonDetailAnswerSheet extends React.Component {
       onSubmitLessonProblems,
       user: { id: student_id },
     } = this.props;
-    const isComplete = status === "COMPLETED";
-    const isChallengeComplete = false;
+    let displayBtn = false;
     let postBody = {};
     if (lessonType === 'drill') {
+      if (status !== 'COMPLETED') displayBtn = true;
       postBody = {
         student_lesson_id: id,
         status: 'COMPLETED',
       };
     } else if (lessonType === "practice" || lessonType === "challenge") {
+      const { sections } = activeLesson;
+      if (lessonType === 'challenge' && sections[0].status !== "COMPLETED") displayBtn = true;
+      if (lessonType === 'practice' && sections[0].status === "COMPLETED") displayBtn = true;
       postBody = {
         student_lesson_id: id,
-        sections: activeLesson.sections,
+        sections,
       };
     }
-    return !isComplete && !isChallengeComplete && (
+    return displayBtn && (
       <div className="row">
         <div className="btn-holder left-align">
           <a

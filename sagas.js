@@ -1351,7 +1351,7 @@ function* watchForSubmitLessonProblems() {
 
 function* handleSubmitLessonProblems(action) {
   try {
-    const { lessonType, postBody } = action;
+    const { lessonType } = action;
     if (lessonType === 'drill') {
       yield put({
         type: UPDATE_LESSON_STATUS,
