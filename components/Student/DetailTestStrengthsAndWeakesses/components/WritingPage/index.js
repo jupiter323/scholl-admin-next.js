@@ -22,7 +22,7 @@ class WritingPage extends React.Component {
   mapGroupBlcok = () => {
     const { parentScores } = this.state;
     return (
-      parentScores instanceof Array &&
+      parentScores instanceof Array && parentScores.length !== 0 &&
       parentScores.map(group => <GroupBlock data={group} parentScores={this.props.scores} key={group.id} />)
     );
   };

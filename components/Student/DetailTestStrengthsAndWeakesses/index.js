@@ -84,25 +84,38 @@ class DetailTestAnswerSheetComplete extends React.Component {
               setTimeout(async () => {
                 const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
                 circleImageList.push(currentImg);
-              }, 2000);
+              }, 1000);
             })
             .catch(console.error),
         Promise.resolve()
       );
-      barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
+      const getBarImageListPromise = barRefs.reduce(
+        (accumulatorPromise, barRef) =>
+          accumulatorPromise
+            .then(async () => {
+              const result = await this.getData(barRef);
+              return barImageList.push(result);
+            })
+            .catch(console.error),
+        Promise.resolve()
+      );
       getCircleImagesPromise.then(() => {
-        const imgList = {circleImageList, barImageList};
-        resolve(imgList);
+        getBarImageListPromise.then(() => {
+          const imgList = {circleImageList, barImageList};
+          resolve(imgList);
+        });
       });
     });
   getData = item =>
-    new Promise(async resolve => {
-      setTimeout(() => {
-        this.setState({activeSlide: item.state}, async () => {
-          const [currentImg] = await Promise.all([this.onHandleTargetImage(item.id)]);
-          if (currentImg) resolve(currentImg);
-        });
-      }, 500);
+    new Promise(resolve => {
+      this.setState({activeSlide: item.state}, () => {
+        setTimeout(async () => {
+          const currentImg = await this.onHandleTargetImage(item.id);
+          setTimeout(() => {
+            resolve(currentImg);
+          }, 500);
+        }, 500);
+      });
     });
 
   onHandleTargetImage = async currentRef =>
