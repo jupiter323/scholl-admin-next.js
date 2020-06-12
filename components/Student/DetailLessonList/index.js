@@ -108,15 +108,13 @@ class DetailLessonList extends React.Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    console.log('log: component recieving props', nextProps);
-    console.log('log: current props', this.props.activeShowPage);
     const { activeShowPage, user: { id }, dispathGetStudentLessonList } = this.props;
     if (this.state.lessons.length === 0) {
       this.setState({
         lessons: nextProps.lessonList,
       });
     }
-    if (activeShowPage === "AnswerSheet" && nextProps.activeShowPage === "") {
+    if (activeShowPage !== "" && nextProps.activeShowPage === "") {
       dispathGetStudentLessonList({ id });
     }
   };

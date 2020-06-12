@@ -9,7 +9,6 @@ class ChallengeQuestions extends React.Component {
         <Question
           key={problem.id}
           problem={problem}
-          updateProblemList={this.props.updateProblemList}
           problemType={this.props.problemType}
         />
       ));

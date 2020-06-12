@@ -72,6 +72,7 @@ class LessonDetailAnswerSheet extends React.Component {
       lesson,
       user: { id: student_id },
       onFetchLessonProblems,
+      onFetchLessonDetails,
     } = this.props;
     const lesson_id = this.props.lesson.id;
     if (lesson.sections) {
@@ -97,6 +98,7 @@ class LessonDetailAnswerSheet extends React.Component {
       });
     }
     if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
+      onFetchLessonDetails({ student_id, lesson_id });
       this.setState({
         currentType: "Drill",
         hasDrill: true,
@@ -195,16 +197,6 @@ class LessonDetailAnswerSheet extends React.Component {
     const { onOpenModal, onAddCheckedLesson, lesson } = this.props;
     onOpenModal();
     onAddCheckedLesson(lesson.id);
-  };
-
-  updateProblemList = (problemsType, updatedProblem) => {
-    // @TODO Replace this function because problems are now from props not state-Mark
-    // const problems = this.state[problemsType];
-    // const newProblems = problems.map(problem => {
-    //   if (problem.id === updatedProblem.id) return updatedProblem;
-    //   return problem;
-    // });
-    // this.setState({ [problemsType]: [...newProblems] });
   };
 
   getCurrentProblemList = () => {
@@ -398,7 +390,6 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
                       handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
-                      updateProblemList={this.updateProblemList}
                       problems={this.getCurrentProblemList()}
                       handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
@@ -628,7 +619,6 @@ class LessonDetailAnswerSheet extends React.Component {
                               <div className="main-row row">
                                 <ChallengeQuestions
                                   questions={challengeProblems}
-                                  updateProblemList={this.updateProblemList}
                                   problemType={"challengeProblems"}
                                   submitLessonButton={this.submitLessonButton}
                                 />
@@ -638,7 +628,6 @@ class LessonDetailAnswerSheet extends React.Component {
                               <div className="main-row row">
                                 <PracticeQuestions
                                   questions={practiceProblems}
-                                  updateProblemList={this.updateProblemList}
                                   problemType={"practiceProblems"}
                                   submitLessonButton={this.submitLessonButton}
                                 />
@@ -648,7 +637,6 @@ class LessonDetailAnswerSheet extends React.Component {
                               <div className="main-row row">
                                 <DrillQuestions
                                   questions={drillProblems}
-                                  updateProblemList={this.updateProblemList}
                                   problemType={"drillProblems"}
                                   submitLessonButton={this.submitLessonButton}
                                 />
@@ -664,7 +652,6 @@ class LessonDetailAnswerSheet extends React.Component {
                           <div className="main-row row">
                             <ChallengeQuestions
                               questions={challengeProblems}
-                              updateProblemList={this.updateProblemList}
                               problemType={"challengeProblems"}
                               submitLessonButton={this.submitLessonButton}
                             />
@@ -676,7 +663,6 @@ class LessonDetailAnswerSheet extends React.Component {
                           <div className="main-row row">
                             <PracticeQuestions
                               questions={practiceProblems}
-                              updateProblemList={this.updateProblemList}
                               problemType={"practiceProblems"}
                               submitLessonButton={this.submitLessonButton}
                             />
@@ -687,7 +673,6 @@ class LessonDetailAnswerSheet extends React.Component {
                         <div className="main-row row">
                           <DrillQuestions
                             questions={drillProblems}
-                            updateProblemList={this.updateProblemList}
                             problemType={"drillProblems"}
                             submitLessonButton={this.submitLessonButton}
                           />
@@ -721,6 +706,7 @@ function mapDispatchToProps(dispatch) {
   return {
     onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
     onSubmitLessonProblems: (lessonType, postBody, student_id) => dispatch(submitLessonProblems(lessonType, postBody, student_id)),
+    onFetchLessonDetails: (postBody) => dispatch(fetchLessonDetails(postBody)),
   };
 }
 

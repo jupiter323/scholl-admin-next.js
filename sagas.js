@@ -1229,7 +1229,7 @@ function* handleFetchLessonDetails(action) {
     });
 
     const label = response.data.type.label;
-    if (label === "Drill") {
+    if (label === "Drill" || label === 'Reading') {
       if (response.data.status === "ASSIGNED") {
         yield put({
           type: UPDATE_LESSON_STATUS,
@@ -1352,7 +1352,7 @@ function* watchForSubmitLessonProblems() {
 function* handleSubmitLessonProblems(action) {
   try {
     const { lessonType } = action;
-    if (lessonType === 'drill') {
+    if (lessonType === 'drill' || lessonType === 'reading') {
       yield put({
         type: UPDATE_LESSON_STATUS,
         postBody: action.postBody,
@@ -1371,11 +1371,12 @@ function* handleSubmitLessonProblems(action) {
         lessonType,
         sections: action.postBody.sections,
       });
-    } else if (lessonType === 'reading') {
-      // send request to update status
-      // refetch lesson to get scores and answers
-      // set new fetched lesson as active lesson
     }
+    // else if (lessonType === 'reading') {
+    //   // send request to update status
+    //   // refetch lesson to get scores and answers
+    //   // set new fetched lesson as active lesson
+    // }
   } catch (error) {
     return console.warn("Error occurred in the handleSubmitLessonProblems saga", error);
   }
