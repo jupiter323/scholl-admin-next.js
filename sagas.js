@@ -60,6 +60,10 @@ import {
   SET_STUDENT_SECTIONS,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   GET_TEST_SCORES,
+  FETCH_LESSON_SECTIONS,
+  SET_LESSON_PROBLEMS,
+  SET_LESSON_ANSWER,
+  ADD_LESSON_ANSWER_DEBOUNCE,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -147,6 +151,10 @@ const {
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
   addStudentTestQuestionFlagApi,
+  fetchStudentLessonSectionApi,
+  fetchStudentLessonApi,
+  updateStudentLessonStatusApi,
+  completeStudentLessonSectionApi,
 } = studentApi;
 const {
   fetchClassesApi,
@@ -972,16 +980,32 @@ function* watchForAnswerStudentLessonProblem() {
   yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
 }
 
+function* watchForAnswerStudentLessonProblemDebounce() {
+  yield debounce(500, ADD_LESSON_ANSWER_DEBOUNCE, handleAnswerStudentLessonProblem);
+}
 
 function* handleAnswerStudentLessonProblem(action) {
   try {
-    // @TODO will come back to this after fix/edit-answer-bubbles-rescoring gets merged
-    // const addAnswerResponse = yield call(addStudentLessonProblemAnswerApi);
-    // const rescoreLessonResponse = yield call(rescoreStudentLessonApi)
-    // yield put({
-    //   type: ADD_LESSON_ANSWER,
-    //   payload: locations,
-    // });
+    const response = yield call(addStudentLessonProblemAnswerApi, action.postBody);
+    if (response && !response.ok) {
+      return console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", response);
+    }
+    let propertyName;
+    let answer;
+    if (action.format === "multiple") {
+      propertyName = "answer_id";
+      answer = action.postBody.answer_id;
+    } else {
+      propertyName = "answer_text";
+      answer = action.postBody.answer_text;
+    }
+    yield put({
+      type: SET_LESSON_ANSWER,
+      problem_id: action.postBody.problem_id,
+      answer,
+      problemType: action.problemType,
+      propertyName,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
   }
@@ -1179,6 +1203,35 @@ function* handleFetchActiveTestScores(action) {
   }
 }
 
+function* watchForFetchLessonProblems() {
+  yield takeEvery(FETCH_LESSON_SECTIONS, handleFetchLessonProblems);
+}
+
+function* handleFetchLessonProblems(action) {
+  try {
+    const { postBody: { student_id, lesson_id } } = action;
+    let response;
+    if (action.postBody.section_id) {
+      response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, action.postBody.section_id);
+    } else {
+      response = yield call(fetchStudentLessonApi, student_id, lesson_id);
+    }
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleFetchLessonProblems saga", response.message);
+    }
+    console.log('log: response saga', response);
+    const sectionType = !action.postBody.section_id ? 'drill' : response.data.name;
+    const problems = !action.postBody.section_id ? response.data.problems : response.data.lesson_problems;
+    yield put({
+      type: SET_LESSON_PROBLEMS,
+      sectionType,
+      problems,
+    });
+  } catch (error) {
+    return console.warn("Error occurred in the handleFetchLessonProblems saga", error);
+  }
+}
+
 export default function* defaultSaga() {
   yield all([
     watchForFetchStudents(),
@@ -1235,5 +1288,7 @@ export default function* defaultSaga() {
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
+    watchForFetchLessonProblems(),
+    watchForAnswerStudentLessonProblemDebounce(),
   ]);
 }
