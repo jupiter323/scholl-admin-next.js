@@ -1218,20 +1218,18 @@ function* watchForFetchLessonDetails() {
 
 function* handleFetchLessonDetails(action) {
   try {
-    console.log('log: saga 3', action);
     const response = yield call(fetchStudentLessonApi, action.postBody.student_id, action.postBody.lesson_id);
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonDetails saga", response.message);
     }
-    console.log('log: saga 4', response);
-    // Condition statement for module lessons vs drill.
-    // If drill lesson, just set active lesson
-    // If section set active lesson then continue to fetch section problems
-    if (response.data.type.label === "Drill") {
-      yield put({
-        type: SET_ACTIVE_LESSON,
-        activeLesson: response.data,
-      });
+
+    yield put({
+      type: SET_ACTIVE_LESSON,
+      activeLesson: response.data,
+    });
+
+    const label = response.data.type.label;
+    if (label === "Drill") {
       if (response.data.status === "ASSIGNED") {
         yield put({
           type: UPDATE_LESSON_STATUS,
@@ -1241,11 +1239,17 @@ function* handleFetchLessonDetails(action) {
           },
         });
       }
-    } else if (response.data.type.label === "Module") {
-      yield put({
-        type: FETCH_LESSON_SECTIONS,
-        postBody: {},
-      });
+    } else if (label === "Module") {
+      for (const section of action.sections) {
+        yield put({
+          type: FETCH_LESSON_SECTIONS,
+          postBody: {
+            student_id: action.postBody.student_id,
+            lesson_id: action.postBody.lesson_id,
+            section_id: section.id,
+          },
+        });
+      }
     }
   } catch (error) {
     return console.warn("Error occurred in the handleFetchLessonDetails saga", error);
@@ -1258,35 +1262,18 @@ function* watchForFetchLessonProblems() {
 
 function* handleFetchLessonProblems(action) {
   try {
-    const { postBody: { student_id, lesson_id } } = action;
-    let response;
-    // Fetch most updated problem problem/answers
-    if (action.postBody.section_id) {
-      response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, action.postBody.section_id);
-    } else {
-      response = yield call(fetchStudentLessonApi, student_id, lesson_id);
-    }
+    const { postBody: { student_id, lesson_id, section_id } } = action;
+    const response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, section_id);
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonProblems saga", response.message);
     }
-    // Update those problem/answers in redux
-    const sectionType = !action.postBody.section_id ? 'drill' : response.data.name;
-    const problems = !action.postBody.section_id ? response.data.problems : response.data.lesson_problems;
+    const sectionType = response.data.name;
+    const problems = response.data.lesson_problems;
     yield put({
       type: SET_LESSON_PROBLEMS,
       sectionType,
       problems,
     });
-    // If a drill lesson is being entered check if it needs to be started
-    if (response.data.status === "ASSIGNED") {
-      yield put({
-        type: UPDATE_LESSON_STATUS,
-        postBody: {
-          student_lesson_id: response.data.id,
-          status: "STARTED",
-        },
-      });
-    }
   } catch (error) {
     return console.warn("Error occurred in the handleFetchLessonProblems saga", error);
   }
@@ -1303,12 +1290,12 @@ function* handleUpdateLessonStatus(action) {
       response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
     }
     if (action.postBody.status === "COMPLETED") {
-      console.log('log: saga 2', action);
       return yield put({
         type: FETCH_LESSON_DETAILS,
         postBody: {
           student_id: action.student_id,
           lesson_id: action.postBody.student_lesson_id,
+          section_id: action.section_id,
         },
       });
     }
@@ -1331,29 +1318,26 @@ function* handleCompleteLessonSection(action) {
     if (response && !response.ok) {
       response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
     }
+    const actionData = {
+      postBody: {
+        student_id: action.student_id,
+        lesson_id: action.postBody.student_lesson_id,
+        section_id: action.sections[1].id,
+      },
+      sections: action.sections,
+    };
     if (action.lessonType === 'challenge') {
-      // update the redux store
-      // fetch problems for practice
       yield put({
         type: COMPLETE_SECTION_SUCCESS,
       });
-      console.log('log: saga 5', action);
       yield put({
         type: FETCH_LESSON_SECTIONS,
-        postBody: {
-          student_id: action.student_id,
-          lesson_id: action.postBody.student_lesson_id,
-          section_id: action.sections[1].id,
-        },
+        ...actionData,
       });
     } else if (action.lessonType === 'practice') {
-      // fetch lesson details
       yield put({
         type: FETCH_LESSON_DETAILS,
-        postBody: {
-          student_id: action.student_id,
-          lesson_id: action.postBody.student_lesson_id,
-        },
+        ...actionData,
       });
     }
   } catch (error) {
@@ -1367,44 +1351,27 @@ function* watchForSubmitLessonProblems() {
 
 function* handleSubmitLessonProblems(action) {
   try {
-    console.log('log: action', action);
-    if (action.lessonType === 'drill') {
+    const { lessonType, postBody } = action;
+    if (lessonType === 'drill') {
       yield put({
         type: UPDATE_LESSON_STATUS,
         postBody: action.postBody,
         student_id: action.student_id,
       });
-      // send request to update status
-      // refetch lesson to get scores and answers
-      // set new fetched lesson as active lesson
-    } else if (action.lessonType === 'challenge') {
-      // send request to update section status
-      // check if there is another section
-      // if yes, update redux store, fetch that new section, set problems in redux
+    } else if (lessonType === 'challenge' || lessonType === 'practice') {
+      const sectionIndex = lessonType === 'challenge' ? 0 : 1;
       const postBody = {
         student_lesson_id: action.postBody.student_lesson_id,
-        lesson_section_id: action.postBody.sections[0].id,
+        lesson_section_id: action.postBody.sections[sectionIndex].id,
       };
       yield put({
         type: COMPLETE_LESSON_SECTION,
         postBody,
         student_id: action.student_id,
-        lessonType: 'challenge',
+        lessonType,
         sections: action.postBody.sections,
       });
-    } else if (action.lessonType === 'practice') {
-      // if no, refetch lesson to get scores and answers, set active lesson, fetch problems for each section, update redux store with new answers
-      const postBody = {
-        student_lesson_id: action.postBody.student_lesson_id,
-        lesson_section_id: action.postBody.sections[1].id,
-      };
-      yield put({
-        type: COMPLETE_LESSON_SECTION,
-        postBody,
-        student_id: action.student_id,
-        lessonType: 'practice',
-      });
-    } else if (action.lessonType === 'reading') {
+    } else if (lessonType === 'reading') {
       // send request to update status
       // refetch lesson to get scores and answers
       // set new fetched lesson as active lesson
