@@ -8,7 +8,7 @@ import { compose } from 'redux';
 import Dropdown from '../../../../FormComponents/Dropdown';
 import getValueFromState from '../../../../utils/getValueFromState';
 import lessonSortOptions from '../../utils/lessonSortOptions';
-import { makeSelectUnitFilterOptions } from '../../../index/selectors';
+import { makeSelectUnitFilterOptions, makeSelectSubjects } from '../../../index/selectors';
 import { setUnitFilterOptions, fetchUnits, fetchSubjects } from '../../../index/actions';
 
 class FilterSection extends React.Component {
@@ -27,9 +27,9 @@ class FilterSection extends React.Component {
   }
 
   componentDidMount = () => {
-    const { onFetchUnits, onFetchSubjects } = this.props;
-    onFetchUnits();
-    onFetchSubjects();
+    const { onFetchUnits, onFetchSubjects, unitOptions, subjects } = this.props;
+    if (unitOptions.length === 0) onFetchUnits();
+    if (Object.keys(subjects).length === 0) onFetchSubjects();
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -333,6 +333,7 @@ FilterSection.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   unitOptions: makeSelectUnitFilterOptions(),
+  subjects: makeSelectSubjects(),
 });
 
 const mapDispatchToProps = dispatch => ({

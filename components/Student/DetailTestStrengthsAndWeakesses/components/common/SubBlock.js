@@ -10,7 +10,7 @@ class SubBlock extends React.Component {
 
   mapSubRow = data => {
     if (data.children) {
-      return data.children.map(children => <GroupRow data={children} parentTotal={data.score.total} key={children.id} />);
+      return data.children.map(children => <GroupRow data={children} parentTotal={this.props.parentTotal} key={children.id} />);
     }
   };
 

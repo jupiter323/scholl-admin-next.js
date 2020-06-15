@@ -804,7 +804,7 @@ export const updateStudentLessonStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then((res) => res.json())
+    .then((res) => res)
     .catch((err) => err);
 
 export const completeStudentLessonSectionApi = (body) =>
@@ -818,5 +818,5 @@ export const completeStudentLessonSectionApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then((res) => res.json())
+    .then((res) => res)
     .catch((err) => err);

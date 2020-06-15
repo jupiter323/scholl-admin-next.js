@@ -54,6 +54,8 @@ import {
   RESET_ERROR_MESSAGE,
   SET_LESSON_PROBLEMS,
   SET_LESSON_ANSWER,
+  UPDATE_LESSON_STATUS_SUCCESS,
+  COMPLETE_SECTION_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -93,7 +95,8 @@ const initialState = fromJS({
     fetchScoresMsg: "",
     updateTestStatusMsg: "",
     fetchingStudentTestsMessage: "",
-    updateTestSectionsMessage:""
+    updateTestSectionsMessage:"",
+    completeSectionMsg: "",
   },
 });
 
@@ -399,6 +402,16 @@ function studentReducer(state = initialState, action) {
         return question;
       });
       activeLesson[action.problemType] = newQuestions;
+      return state.set('activeLesson', { ...activeLesson });
+    }
+    case UPDATE_LESSON_STATUS_SUCCESS: {
+      const activeLesson = state.get('activeLesson');
+      activeLesson.status = action.status;
+      return state.set('activeLesson', { ...activeLesson });
+    }
+    case COMPLETE_SECTION_SUCCESS: {
+      const activeLesson = state.get('activeLesson');
+      activeLesson.sections[0].status = 'COMPLETED';
       return state.set('activeLesson', { ...activeLesson });
     }
     default:
