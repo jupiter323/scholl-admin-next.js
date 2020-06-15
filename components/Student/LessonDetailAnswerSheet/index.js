@@ -8,9 +8,8 @@ import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
 import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
-import { fetchStudentLessonSectionApi } from "../index/api";
-import { makeSelectUnitFilterOptions, makeSelectActiveLesson } from "../index/selectors";
-import { fetchLessonProblems } from '../index/actions';
+import { makeSelectUnitFilterOptions, makeSelectActiveLesson, makeSelectErrorMessages } from "../index/selectors";
+import { fetchLessonProblems, submitLessonProblems, fetchLessonDetails, resetErrorMessage } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 import RadialBar from '../../common/RadialBar';
 
@@ -45,7 +44,7 @@ const getValuesByScore = (value, max, target) => {
   const colorList = [
     { label: 'Great', color: '#74b287' },
     { label: 'Above Average', color: '#a9c466' },
-    { label: 'Average', color: 'd8c539' },
+    { label: 'Average', color: '#d8c539' },
     { label: 'Below Average', color: '#e89258' },
     { label: 'Poor', color: '#f27c7c' },
   ];
@@ -64,21 +63,39 @@ class LessonDetailAnswerSheet extends React.Component {
       hasPractice: false,
       hasDrill: false,
       dropdownIsOpen: false,
+      loadingScores: false,
+      completeSectionMsg: "",
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { activeLesson, errorMessages: { completeSectionMsg } } = props;
+    if (activeLesson.status === "COMPLETED") {
+      return { loadingScores: false };
+    }
+    if (completeSectionMsg && completeSectionMsg !== state.completeSectionMsg) {
+      return { completeSectionMsg };
+    }
+  }
+
   componentDidMount = async () => {
-    const { lesson, user: { id: student_id }, onFetchLessonProblems } = this.props;
+    const {
+      lesson,
+      user: { id: student_id },
+      onFetchLessonProblems,
+      onFetchLessonDetails,
+    } = this.props;
     const lesson_id = this.props.lesson.id;
-    if (lesson.sections) { // lesson module type
+    if (lesson.sections) {
+      // lesson module type
       this.setState({
-        currentType: 'Module',
+        currentType: "Module",
       });
       const { sections } = this.props.lesson;
-      sections.map(async section => {
+      sections.map(async (section) => {
         const section_id = section.id;
         const currentSectionName = section.name;
-        if (currentSectionName === 'challenge') {
+        if (currentSectionName === "challenge") {
           this.setState({
             hasChallenge: true,
           });
@@ -92,12 +109,12 @@ class LessonDetailAnswerSheet extends React.Component {
       });
     }
     if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
-      onFetchLessonProblems({ student_id, lesson_id });
+      onFetchLessonDetails({ student_id, lesson_id });
       this.setState({
-        currentType: 'Drill',
+        currentType: "Drill",
         hasDrill: true,
       });
-      // @TODO commented out until I can finish reworking answering lessons
+      // @TODO commented out some flag logic until I can finish reworking answering lessons-Mark
       // if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
       //   lesson.problems.map(problem => {
       //     if (problem.flag_status === 'FLAGGED') {
@@ -112,7 +129,8 @@ class LessonDetailAnswerSheet extends React.Component {
 
   componentWillUnmount = () => {
     this.props.onCloseDetailModal();
-  }
+    this.props.onResetErrorMessage("completeSectionMsg");
+  };
 
   getProblemsAmount = () => {
     const { activeLesson } = this.props;
@@ -128,7 +146,7 @@ class LessonDetailAnswerSheet extends React.Component {
     const { activeLesson } = this.props;
     let amount = 0;
     if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
-      activeLesson.drillProblems.map(section => {
+      activeLesson.drillProblems.map((section) => {
         if (section.flag_status === type) {
           amount += 1;
         }
@@ -136,35 +154,37 @@ class LessonDetailAnswerSheet extends React.Component {
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
       const { challengeProblems, practiceProblems } = activeLesson;
-      challengeProblems.length !== 0 && challengeProblems.map(section => {
-        if (section.flag_status === type) {
-          amount += 1;
-        }
-      });
-      practiceProblems.length !== 0 && practiceProblems.map(section => {
-        if (section.flag_status === type) {
-          amount += 1;
-        }
-      });
+      challengeProblems.length !== 0 &&
+        challengeProblems.map((section) => {
+          if (section.flag_status === type) {
+            amount += 1;
+          }
+        });
+      practiceProblems.length !== 0 &&
+        practiceProblems.map((section) => {
+          if (section.flag_status === type) {
+            amount += 1;
+          }
+        });
     }
     return amount;
   };
 
   getTypeLabel = () => {
-    let typeLabel = '';
+    let typeLabel = "";
     if (this.state.hasChallenge && this.state.hasPractice) {
-      typeLabel = 'Challenge + Practice';
+      typeLabel = "Challenge + Practice";
     } else {
       if (this.state.hasChallenge) {
-        typeLabel = 'Challenge';
+        typeLabel = "Challenge";
       }
       if (this.state.hasPractice) {
-        typeLabel = 'Practice';
+        typeLabel = "Practice";
       }
     }
 
     if (this.state.hasDrill) {
-      typeLabel = 'Drill';
+      typeLabel = "Drill";
     }
 
     return typeLabel;
@@ -173,15 +193,15 @@ class LessonDetailAnswerSheet extends React.Component {
   getUnitNameById = () => {
     const { units } = this.props;
     if (units && units.length !== 0) {
-      const unitIds = units.map(unit => unit.value);
+      const unitIds = units.map((unit) => unit.value);
       const currentIndex = unitIds.findIndex(this.getUnitIndexMatchedUnitId);
       const currentUnit = units[currentIndex];
       return currentUnit.label;
     }
-    return 'Undefind UnitName';
+    return "Undefind UnitName";
   };
 
-  getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
+  getUnitIndexMatchedUnitId = (unitId) => unitId === this.props.lesson.unit_id;
 
   onSetDropdown = () => this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
 
@@ -191,29 +211,19 @@ class LessonDetailAnswerSheet extends React.Component {
     onAddCheckedLesson(lesson.id);
   };
 
-  updateProblemList = (problemsType, updatedProblem) => {
-    // @TODO Replace this function because problems are now from props not state-Mark
-    // const problems = this.state[problemsType];
-    // const newProblems = problems.map(problem => {
-    //   if (problem.id === updatedProblem.id) return updatedProblem;
-    //   return problem;
-    // });
-    // this.setState({ [problemsType]: [...newProblems] });
-  };
-
   getCurrentProblemList = () => {
     // @TODO Replace this function because problems are from props not state-Mark
     // const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
     // if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
     // if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
-  }
+  };
 
   getTotalVideoDuration = () => {
     const { activeLesson } = this.props;
     let totalDuration = 0;
     if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
       // Drill
-      activeLesson.drillProblems.map(section => {
+      activeLesson.drillProblems.map((section) => {
         if (section.problem && section.problem.video && section.problem.video.duration) {
           totalDuration += section.problem.video.duration;
         }
@@ -223,13 +233,13 @@ class LessonDetailAnswerSheet extends React.Component {
       // Module
       const { challengeProblems, practiceProblems } = activeLesson;
       challengeProblems.length !== 0 &&
-        challengeProblems.map(section => {
+        challengeProblems.map((section) => {
           if (section.problem && section.problem.video && section.problem.video.duration) {
             totalDuration += section.problem.video.duration;
           }
         });
       practiceProblems.length !== 0 &&
-        practiceProblems.map(section => {
+        practiceProblems.map((section) => {
           if (section.problem && section.problem.video && section.problem.video.duration) {
             totalDuration += section.problem.video.duration;
           }
@@ -237,6 +247,57 @@ class LessonDetailAnswerSheet extends React.Component {
     }
     return totalDuration;
   };
+
+  submitLessonButton = (lessonType) => {
+    const {
+      activeLesson,
+      activeLesson: { status, id },
+      onSubmitLessonProblems,
+      user: { id: student_id },
+    } = this.props;
+    let displayBtn = false;
+    let postBody = {};
+    if (lessonType === 'drill') {
+      if (status !== 'COMPLETED') displayBtn = true;
+      postBody = {
+        student_lesson_id: id,
+        status: 'COMPLETED',
+      };
+    } else if (lessonType === "practice" || lessonType === "challenge") {
+      const { sections } = activeLesson;
+      if (lessonType === 'challenge' && sections[0].status !== "COMPLETED") displayBtn = true;
+      if (lessonType === 'practice' && sections[0].status === "COMPLETED" && sections[1].status !== "COMPLETED") displayBtn = true;
+      postBody = {
+        student_lesson_id: id,
+        sections,
+      };
+    }
+    return displayBtn && (
+      <div className="row">
+        <div className="btn-holder left-align">
+          <p className="red-text">{this.state.completeSectionMsg}</p>
+          <a
+            href="#"
+            className="btn btn-xlarge waves-effect waves-light bg-blue"
+            onClick={() => {
+              if (lessonType === 'drill' || lessonType === 'practice') {
+                this.setState({ loadingScores: true });
+              }
+              onSubmitLessonProblems(lessonType, postBody, student_id);
+            }}
+          >
+            I'm Done
+          </a>
+        </div>
+      </div>
+    );
+  };
+
+  loadingSpinner = () =>
+    (<div className="overlay-spinning">
+      <h1>Fetching Scores...</h1>
+      <div className="spinning" />
+    </div>);
 
   render() {
     const {
@@ -252,29 +313,28 @@ class LessonDetailAnswerSheet extends React.Component {
         due_date,
         dueTime,
       },
-      activeLesson: {
-        drillProblems,
-        challengeProblems,
-        practiceProblems,
-      },
+      activeLesson: { drillProblems, challengeProblems, practiceProblems },
     } = this.props;
-    const { studentInformation: { firstName, lastName } } = user;
+    const {
+      studentInformation: { firstName, lastName },
+    } = user;
+    if (this.state.loadingScores) return this.loadingSpinner();
     return (
       <React.Fragment>
         <div className="wrapper">
           <div
             className="card-modal card-main card switcher-section grey lighten-5 modal"
             style={{
-              zIndex: '1004',
-              display: 'block',
-              position: 'absolute',
-              top: '0',
-              minHeight: '100%',
-              minWidth: '100%',
+              zIndex: "1004",
+              display: "block",
+              position: "absolute",
+              top: "0",
+              minHeight: "100%",
+              minWidth: "100%",
             }}
           >
             <div className="header-box card-panel light-blue lighten-1 white-text">
-              <div className="header-flex-row row mb-0" style={{ width: '100%' }}>
+              <div className="header-flex-row row mb-0" style={{ width: "100%" }}>
                 <div className="col s12 m7 xl8">
                   <div className="header-holder">
                     <div className="header-col">
@@ -285,15 +345,11 @@ class LessonDetailAnswerSheet extends React.Component {
                     </div>
                     <div className="header-col">
                       <div className="card-panel-text">
-                        <div className="text-small">
-                          {this.getUnitNameById()}
-                        </div>
-                        <h1 className="text-large">
-                          {name}
-                        </h1>
+                        <div className="text-small">{this.getUnitNameById()}</div>
+                        <h1 className="text-large">{name}</h1>
                         <div className="text-small">
                           p.{starting_page}
-                          {ending_page > starting_page ? `-${ending_page}` : ''}(Reading)
+                          {ending_page > starting_page ? `-${ending_page}` : ""}(Reading)
                         </div>
                       </div>
                     </div>
@@ -304,33 +360,36 @@ class LessonDetailAnswerSheet extends React.Component {
                     <h2 className="text-large">
                       {firstName} {lastName}
                     </h2>
-                    {assignment_date &&
+                    {assignment_date && (
                       <dl className="text-small dl-horizontal">
                         <dt>Assigned:</dt>
                         <dd>
                           <time dateTime="2019-01-06T08:00">{`${moment(assignment_date).format(
-                            'MM/DD/YY',
-                          )} at ${moment(assignTime).format('hh:mm')}`}</time>
+                            "MM/DD/YY",
+                          )} at ${moment(assignTime).format("hh:mm")}`}</time>
                         </dd>
-                      </dl>}
-                    {due_date &&
+                      </dl>
+                    )}
+                    {due_date && (
                       <dl className="text-small dl-horizontal">
                         <dt>Due:</dt>
                         <dd>
                           <time dateTime="2019-01-06T16:00">{`${moment(due_date).format(
-                            'MM/DD/YY',
-                          )} at ${moment(dueTime).format('hh:mm')}`}</time>
+                            "MM/DD/YY",
+                          )} at ${moment(dueTime).format("hh:mm")}`}</time>
                         </dd>
-                      </dl>}
-                    {completed_at &&
+                      </dl>
+                    )}
+                    {completed_at && (
                       <dl className="text-small dl-horizontal">
                         <dt>Completed:</dt>
                         <dd>
                           <time dateTime="2019-09-01T06:59">{`${moment(completed_at).format(
-                            'MM/DD/YY',
-                          )} at ${moment(completed_at).format('hh:mm')}`}</time>
+                            "MM/DD/YY",
+                          )} at ${moment(completed_at).format("hh:mm")}`}</time>
                         </dd>
-                      </dl>}
+                      </dl>
+                    )}
                   </div>
                 </div>
                 <div className="col s2 m1 right-align position-mobile-right">
@@ -339,7 +398,7 @@ class LessonDetailAnswerSheet extends React.Component {
                       className="dropdown-trigger btn"
                       href="#"
                       data-target="dropdown_top"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
                         this.onSetDropdown();
                       }}
@@ -356,7 +415,6 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
                       handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
-                      updateProblemList={this.updateProblemList}
                       problems={this.getCurrentProblemList()}
                       handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
@@ -377,11 +435,11 @@ class LessonDetailAnswerSheet extends React.Component {
             <div className="content-section">
               <div className="row">
                 <div className="container-sm">
-                  {this.props.lesson.status === 'COMPLETED' &&
+                  {this.props.lesson.status === "COMPLETED" && (
                     <div className="col s12 m6">
                       <div className="main-row row">
                         <div className="col s12">
-                          <div className="card-block" style={{ margin: '0 auto' }}>
+                          <div className="card-block" style={{ margin: "0 auto" }}>
                             <h3>Performance</h3>
                             <div className="card-answer card">
                               <div className="card-content">
@@ -394,7 +452,8 @@ class LessonDetailAnswerSheet extends React.Component {
                                             data(
                                               this.props.lesson.scoring.correct_count,
                                               this.props.lesson.scoring.question_count,
-                                            )}
+                                            )
+                                          }
                                           height={140}
                                           width={140}
                                           options={{
@@ -410,11 +469,11 @@ class LessonDetailAnswerSheet extends React.Component {
                                             backgroundColor: getValuesByScore(
                                               this.props.lesson.scoring.correct_count,
                                               this.props.lesson.scoring.question_count,
-                                              'color',
+                                              "color",
                                             ),
-                                            marginBottom: '-40px',
-                                            width: '50px',
-                                            height: '50px',
+                                            marginBottom: "-40px",
+                                            width: "50px",
+                                            height: "50px",
                                           }}
                                         >
                                           {Math.floor(
@@ -430,18 +489,21 @@ class LessonDetailAnswerSheet extends React.Component {
                                           color: getValuesByScore(
                                             this.props.lesson.scoring.correct_count,
                                             this.props.lesson.scoring.question_count,
-                                            'color',
+                                            "color",
                                           ),
-                                          margin: '45px 45px 0 45px',
+                                          margin: "45px 45px 0 45px",
                                         }}
                                       >
-                                        {this.props.lesson.scoring.correct_count} of{' '}
+                                        {this.props.lesson.scoring.correct_count} of{" "}
                                         {this.props.lesson.scoring.question_count}
                                       </div>
                                     </div>
                                   </div>
                                   <div className="col s6">
-                                    <div className="chart-description" style={{ marginTop: '10px' }}>
+                                    <div
+                                      className="chart-description"
+                                      style={{ marginTop: "10px" }}
+                                    >
                                       <dl className="dl-horizontal" style={{ fontSize: 16 }}>
                                         <dt>Time Est:</dt>
                                         <dd>
@@ -453,9 +515,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                       </dl>
                                       <dl className="dl-horizontal" style={{ fontSize: 16 }}>
                                         <dt>Problems:</dt>
-                                        <dd>
-                                          {this.getProblemsAmount()}
-                                        </dd>
+                                        <dd>{this.getProblemsAmount()}</dd>
                                       </dl>
                                       <dl
                                         className="dl-horizontal"
@@ -466,15 +526,15 @@ class LessonDetailAnswerSheet extends React.Component {
                                           backgroundColor: getValuesByScore(
                                             this.props.lesson.scoring.correct_count,
                                             this.props.lesson.scoring.question_count,
-                                            'color',
+                                            "color",
                                           ),
-                                          color: 'white',
+                                          color: "white",
                                         }}
                                       >
                                         {getValuesByScore(
                                           this.props.lesson.scoring.correct_count,
                                           this.props.lesson.scoring.question_count,
-                                          'label',
+                                          "label",
                                         )}
                                       </dl>
                                     </div>
@@ -486,7 +546,7 @@ class LessonDetailAnswerSheet extends React.Component {
                         </div>
                       </div>
                       <div className="row" style={{ margin: 0 }}>
-                        <div className="card-block" style={{ margin: '0 auto' }}>
+                        <div className="card-block" style={{ margin: "0 auto" }}>
                           <h3>Video</h3>
                           <div className="card-answer card">
                             <div className="card-content">
@@ -504,16 +564,16 @@ class LessonDetailAnswerSheet extends React.Component {
                                     <div className="chart-text">
                                       <span
                                         className="value"
-                                        style={{ fontSize: '32px', color: 'rgb(0, 187, 247)' }}
+                                        style={{ fontSize: "32px", color: "rgb(0, 187, 247)" }}
                                       >
                                         {ConvertSecondsToMinutesSeconds(
                                           this.props.lesson.video_watched_total,
                                         )}
                                       </span>
-                                      <span className="title" style={{ fontSize: '14px' }}>
+                                      <span className="title" style={{ fontSize: "14px" }}>
                                         out of
                                       </span>
-                                      <span className="description" style={{ fontSize: '32px' }}>
+                                      <span className="description" style={{ fontSize: "32px" }}>
                                         {ConvertSecondsToMinutesSeconds(
                                           this.getTotalVideoDuration(),
                                         )}
@@ -522,16 +582,16 @@ class LessonDetailAnswerSheet extends React.Component {
                                   </div>
                                 </div>
                                 <div className="col s6 ">
-                                  <div className="chart-description" style={{ marginTop: '30px' }}>
+                                  <div className="chart-description" style={{ marginTop: "30px" }}>
                                     <dl
                                       className="dl-horizontal"
-                                      style={{ fontSize: 16, color: '#00BBF7' }}
+                                      style={{ fontSize: 16, color: "#00BBF7" }}
                                     >
                                       <dt>total minutes of video watched</dt>
                                     </dl>
                                     <dl
                                       className="dl-horizontal"
-                                      style={{ fontSize: 16, marginTop: '10px' }}
+                                      style={{ fontSize: 16, marginTop: "10px" }}
                                     >
                                       <dt>total minutes of video for all missed problems</dt>
                                     </dl>
@@ -544,7 +604,7 @@ class LessonDetailAnswerSheet extends React.Component {
                       </div>
                       <div className="main-row row">
                         <div className="col s12">
-                          <div className="card-block" style={{ margin: '0 auto' }}>
+                          <div className="card-block" style={{ margin: "0 auto" }}>
                             <h3>Flagged For Review</h3>
                             <div className="card-answer card">
                               <div className="card-content">
@@ -553,7 +613,7 @@ class LessonDetailAnswerSheet extends React.Component {
                                     <span className="badge-rounded-xlg badge red darken-2 white-text">
                                       <b className="badge-text">
                                         {this.props.lesson.problem_flag_count}
-                                      </b>{' '}
+                                      </b>{" "}
                                       <i className="icon-flag" />
                                     </span>
                                     <span style={{ marginLeft: 10, fontSize: 16 }}>To Review</span>
@@ -561,8 +621,8 @@ class LessonDetailAnswerSheet extends React.Component {
                                   <div className="col s6 badge-block-column">
                                     <span className="badge-rounded-xlg badge grey darken-2 white-text">
                                       <b className="badge-text">
-                                        {this.getReviewedAndFlaggedProblemAmount('REVIEWED')}
-                                      </b>{' '}
+                                        {this.getReviewedAndFlaggedProblemAmount("REVIEWED")}
+                                      </b>{" "}
                                       <i className="icon-flag" />
                                     </span>
                                     <span style={{ marginLeft: 10, fontSize: 16 }}>Reviewed</span>
@@ -573,27 +633,28 @@ class LessonDetailAnswerSheet extends React.Component {
                           </div>
                         </div>
                       </div>
-                    </div>}
+                    </div>
+                  )}
                   <Choose>
-                    <When condition={this.props.lesson.status === 'COMPLETED'}>
+                    <When condition={this.props.lesson.status === "COMPLETED"}>
                       <div className="col s12 m6">
                         <div className="row" style={{ margin: 0 }}>
-                          <div className="card-block" style={{ margin: '0 auto' }}>
-                            {challengeProblems.length !== 0 &&
-                              (<div className="main-row row">
+                          <div className="card-block" style={{ margin: "0 auto" }}>
+                            {challengeProblems.length !== 0 && (
+                              <div className="main-row row">
                                 <ChallengeQuestions
                                   questions={challengeProblems}
-                                  updateProblemList={this.updateProblemList}
-                                  problemType={'challengeProblems'}
+                                  problemType={"challengeProblems"}
+                                  submitLessonButton={this.submitLessonButton}
                                 />
                               </div>
-                              )}
+                            )}
                             {practiceProblems.length !== 0 && (
                               <div className="main-row row">
                                 <PracticeQuestions
                                   questions={practiceProblems}
-                                  updateProblemList={this.updateProblemList}
-                                  problemType={'practiceProblems'}
+                                  problemType={"practiceProblems"}
+                                  submitLessonButton={this.submitLessonButton}
                                 />
                               </div>
                             )}
@@ -601,8 +662,8 @@ class LessonDetailAnswerSheet extends React.Component {
                               <div className="main-row row">
                                 <DrillQuestions
                                   questions={drillProblems}
-                                  updateProblemList={this.updateProblemList}
-                                  problemType={'drillProblems'}
+                                  problemType={"drillProblems"}
+                                  submitLessonButton={this.submitLessonButton}
                                 />
                               </div>
                             )}
@@ -611,37 +672,37 @@ class LessonDetailAnswerSheet extends React.Component {
                       </div>
                     </When>
                     <Otherwise>
-                      <div className="col s12 m6 card-block" style={{ margin: '0 auto' }}>
-                        {challengeProblems.length !== 0 &&
-                          (<div className="main-row row">
+                      <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
+                        {challengeProblems.length !== 0 && (
+                          <div className="main-row row">
                             <ChallengeQuestions
                               questions={challengeProblems}
-                              updateProblemList={this.updateProblemList}
-                              problemType={'challengeProblems'}
+                              problemType={"challengeProblems"}
+                              submitLessonButton={this.submitLessonButton}
                             />
                           </div>
-                          )}
+                        )}
                       </div>
                       <div className="col s12 m6 card-block" style={{ margin: "0 auto" }}>
                         {practiceProblems.length !== 0 && (
                           <div className="main-row row">
                             <PracticeQuestions
                               questions={practiceProblems}
-                              updateProblemList={this.updateProblemList}
-                              problemType={'practiceProblems'}
+                              problemType={"practiceProblems"}
+                              submitLessonButton={this.submitLessonButton}
                             />
                           </div>
                         )}
                       </div>
-                      {drillProblems.length !== 0 &&
-                        (<div className="main-row row">
+                      {drillProblems.length !== 0 && (
+                        <div className="main-row row">
                           <DrillQuestions
                             questions={drillProblems}
-                            updateProblemList={this.updateProblemList}
-                            problemType={'drillProblems'}
+                            problemType={"drillProblems"}
+                            submitLessonButton={this.submitLessonButton}
                           />
                         </div>
-                        )}
+                      )}
                     </Otherwise>
                   </Choose>
                 </div>
@@ -664,11 +725,15 @@ LessonDetailAnswerSheet.propTypes = {
 const mapStateToProps = createStructuredSelector({
   units: makeSelectUnitFilterOptions(),
   activeLesson: makeSelectActiveLesson(),
+  errorMessages: makeSelectErrorMessages(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onFetchLessonProblems: postBody => dispatch(fetchLessonProblems(postBody)),
+    onSubmitLessonProblems: (lessonType, postBody, student_id) => dispatch(submitLessonProblems(lessonType, postBody, student_id)),
+    onFetchLessonDetails: (postBody) => dispatch(fetchLessonDetails(postBody)),
+    onResetErrorMessage: (errName) => dispatch(resetErrorMessage(errName)),
   };
 }
 

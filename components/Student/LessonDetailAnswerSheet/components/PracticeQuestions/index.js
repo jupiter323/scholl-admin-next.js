@@ -9,7 +9,6 @@ class PracticeQuestions extends React.Component {
         <Question
           key={problem.id}
           problem={problem}
-          updateProblemList={this.props.updateProblemList}
           problemType={this.props.problemType}
         />
       ));
@@ -26,6 +25,7 @@ class PracticeQuestions extends React.Component {
               <ol className="answers-list">
                 {this.mapQuestions()}
               </ol>
+              {this.props.submitLessonButton('practice')}
             </div>
           </div>
         </div>
