@@ -753,6 +753,32 @@ export const updateStudentTestSectionsApi = (body) =>
     .then(res => res.json())
     .catch(err => err);
 
+export const updateStudentTestAssignmentDateApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-test-assignment-date`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
+export const updateStudentTestDueDateApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-test-due-date`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => err);
+
 export const rescoreStudentLessonApi = (body) =>
   fetch(`${API_URL}/api/commands/rescore-student-lesson`, {
     method: "PATCH",

@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from "prop-types";
 import moment from 'moment';
+import { toast } from 'react-toastify';
 import Portal from "../../../../Portal";
 import getValueFromState from "../../../../utils/getValueFromState";
 import Dropdown from "../../../../FormComponents/Dropdown";
@@ -37,7 +38,6 @@ class TestSettingModal extends React.Component {
 
   componentDidMount = async () => {
     const { tests, onSetTests } = this.props;
-    console.log('log: this.props ', this.props);
     if (tests.length === 0) {
       const { data: { tests } } = await fetchAllTestsApi();
       onSetTests(tests);
@@ -86,32 +86,51 @@ class TestSettingModal extends React.Component {
     }
   };
 
-  onSave = () => {
+  onUpdate = () => {
     const { onSave, tests, test:{ student_test_id, test_id}, test } = this.props;
-    const { mathNoCalc, mathWithCalc, reading, writing } = this.state
+    const { mathNoCalc, mathWithCalc, reading, writing, dueDate } = this.state
     const currentTest = tests.find( test => test.id === test_id )
-    let sectionIds = [];
+    // console.log('log: currentTest ', currentTest);
+    // console.log('log: test ', test);
+    // console.log('log: dueDate ', dueDate);
+    // const dateDue = (dueDate === test.due_date) ? null : dueDate
+    // console.log('log: dueDate ', dueDate);
+
+    let currentTestSectionsIds = [];
+    test.sections.forEach( sections => {
+      currentTestSectionsIds.push(sections.section.id)
+     }) 
+    let updatedSectionsIds = [];
     currentTest.test_sections.forEach( testSection =>{
       switch (testSection.name) {
         case "Reading":
-          reading && sectionIds.push(testSection.id)
+          reading && updatedSectionsIds.push(testSection.id)
           break;
         case "Writing":
-          writing && sectionIds.push(testSection.id)
+          writing && updatedSectionsIds.push(testSection.id)
           break;
         case "Math (No Calculator)":
-          mathNoCalc && sectionIds.push(testSection.id)
+          mathNoCalc && updatedSectionsIds.push(testSection.id)
           break;
         case "Math (Calculator)":
-          mathWithCalc && sectionIds.push(testSection.id)
+          mathWithCalc && updatedSectionsIds.push(testSection.id)
           break;
         default:
           break;
       }
     })
-    onSave(student_test_id, sectionIds);
-  };
+    console.log('log: currentTestSections ', currentTestSectionsIds);
+    console.log('log: updatedSectionsIds ', updatedSectionsIds);
 
+    if((currentTestSectionsIds.length === updatedSectionsIds.length) && (currentTestSectionsIds.every(val => updatedSectionsIds.includes(val)))){
+      onSave(student_test_id,[], dueDate)
+      console.log("NO Sections changed but added dueDate")
+    }else{
+      onSave(student_test_id, updatedSectionsIds, dueDate);
+      console.log("Added new sections and Due Date")
+    }
+  };
+  
   render() {
     const {
       open,
@@ -385,7 +404,7 @@ class TestSettingModal extends React.Component {
                             >
                               Cancel
                             </a>
-                            <a href="#" className="btn" onClick={this.onSave}>
+                            <a href="#" className="btn" onClick={this.onUpdate}>
                               Save
                             </a>
                           </div>

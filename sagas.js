@@ -72,6 +72,7 @@ import {
   FETCH_LESSON_DETAILS,
   SET_ACTIVE_LESSON,
   COMPLETE_SECTION_SUCCESS,
+  UPDATE_TEST_DUE_DATE,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -161,6 +162,8 @@ const {
   fetchStudentTestScoreApi,
   addStudentTestQuestionFlagApi,
   updateStudentTestSectionsApi,
+  updateStudentTestAssignmentDateApi,
+  updateStudentTestDueDateApi,
   fetchStudentLessonSectionApi,
   fetchStudentLessonApi,
   updateStudentLessonStatusApi,
@@ -198,6 +201,7 @@ const testFlagMessage = 'testFlagMessage';
 const answerTestProblemMessage = 'answerTestProblemMessage';
 const fetchingStudentTestsMessage = 'fetchingStudentTestsMessage';
 const updateTestSectionsMessage = 'updateTestSectionsMessage'
+const updateTestDueDateMessage = 'updateTestDueDateMessage'
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -1160,29 +1164,56 @@ function* handleUpdateTestStatus(action) {
   }
 }
 
-function* watchForhandleUpdateTestSections(){
-  yield takeEvery(UPDATE_TEST_SECTIONS, handleUpdateTestSections)
+function* watchForhandleUpdateTestSettings(){
+    while (true) {
+      const action = yield take(UPDATE_TEST_SECTIONS);
+      const { test_section_ids } = action.payload;
+      if(test_section_ids.length){
+        yield call(handleUpdateTestSections, action);
+      }
+      const dueDate = yield take(UPDATE_TEST_DUE_DATE);
+      console.log('log: dueDate ', dueDate);
+      const { due_date } = dueDate.payload;
+      if(due_date){
+        yield call(handleUpdateTestDueDate, dueDate);
+      }
+
+      console.log('action', action)
+      if(test_section_ids.length || due_date){
+        console.log("updated the tests")
+        yield call(fetchStudentTests, action.user);
+      }
+    }
 }
 
 function* handleUpdateTestSections(action) {
+  console.log("got in update section", action)
   try {
     const response = yield call(updateStudentTestSectionsApi, action.payload);
     if (response && response.message ) {
       console.warn("Error occurred in the handleUpdateTestSections saga", response.message);
       yield put(sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`));
-      // yield put(resetErrorMessage(updateTestSectionsMessage));
       return console.warn("Error occurred in the update test sections saga", response.message);
-    }
-    if (!response.message) {
-      yield put({
-        type: GET_TESTS,
-        user: action.user,
-      });
-      yield put(resetErrorMessage(updateTestSectionsMessage));
     }
   } catch (error) {
     sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`)
     console.warn("Error occurred in the handleUpdateTestSections saga", error);
+  }
+}
+
+function* handleUpdateTestDueDate(action) {
+  console.log("got in update due date", action)
+
+  try {
+    const response = yield call(updateStudentTestDueDateApi, action.payload);
+    if (response && response.message ) {
+      console.warn("Error occurred in the handleUpdateTestDueDate saga", response.message);
+      yield put(sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`));
+      return console.warn("Error occurred in the handleUpdateTestDueDate", response.message);
+    }
+  } catch (error) {
+    sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`)
+    console.warn("Error occurred in the handleUpdateTestDueDate saga", error);
   }
 }
 
@@ -1472,7 +1503,7 @@ export default function* defaultSaga() {
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
-    watchForhandleUpdateTestSections(),
+    watchForhandleUpdateTestSettings(),
     watchForFetchLessonProblems(),
     watchForAnswerStudentLessonProblemDebounce(),
     watchForUpdateStudentLessonStatus(),
