@@ -166,7 +166,7 @@ class DetailTestList extends React.Component {
     );
   };
   onTestFlagReviewed = (student_test_id, student_id, flagCount) => {
-    this.props.onUpdateTestFlag(student_test_id, student_id, flagCount);
+    this.props.onMarkAllFlagsReviewed(student_test_id, student_id, flagCount);
   };
   onSetIsVisibleTopBar = value => {
     const { onSetIsVisibleTopBar } = this.props;
