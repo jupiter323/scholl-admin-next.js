@@ -121,7 +121,6 @@ class AnswerRow extends React.Component {
               </ul>
             </div>
             <div className="col col-30">
-              {/* @TODO Difficulty level of test problems should be here */}
               {/* <span className="status-info">E</span> */}
             </div>
             <div className="col col-auto">

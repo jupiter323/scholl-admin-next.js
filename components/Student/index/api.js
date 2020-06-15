@@ -636,8 +636,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     },
   })
     .then((res) => res.json())
-    .then((res) => res)
-    .then(({ data }) => data);
+    .catch(err => err);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/sections/${section_id}`, {
@@ -648,8 +647,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
     },
   })
     .then((res) => res.json())
-    .then((res) => res)
-    .then(({ data }) => data);
+    .catch((err) => err);
 
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
@@ -701,7 +699,7 @@ export const addStudentLessonProblemAnswerApi = (body) =>
       Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
-  }).then((res) => res.status);
+  }).then((res) => res).catch(err => err);
 
 export const updateStudentTestStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-status`, {
@@ -794,3 +792,31 @@ export const updateStudentEssayScoreApi = (scores) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const updateStudentLessonStatusApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-lesson-status`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+
+export const completeStudentLessonSectionApi = (body) =>
+  fetch(`${API_URL}/api/commands/complete-student-lesson-section`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);

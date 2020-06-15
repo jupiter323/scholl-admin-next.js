@@ -92,9 +92,9 @@ const LessonCard = props => {
         lesson.sections[1].id
       );
       Promise.all([section1, section2]).then((sections) => {
-        const filteredSections = sections.filter((section) => section);
+        const filteredSections = sections.filter((section) => section.data);
         filteredSections.map((section) => {
-          section.lesson_problems.map((problem) => {
+          section.data.lesson_problems.map((problem) => {
             if (problem.flag_status === "FLAGGED") {
               setHasFlaggedProblems(true);
             }

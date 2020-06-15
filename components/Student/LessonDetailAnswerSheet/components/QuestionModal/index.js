@@ -9,7 +9,6 @@ import { makeSelectActiveLesson } from "../../../index/selectors";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
-import EditProblemRow from '../EditProblemRow';
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
@@ -237,17 +236,6 @@ class QuestionModal extends React.Component {
                           </span>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="card-panel">
-                    <div className="panel-block">
-                      <strong className="subtitle">Edit Student's Answer</strong>
-                      <EditProblemRow
-                        activeLesson={this.props.activeLesson}
-                        question={this.props.question}
-                        updateProblemList={this.props.updateProblemList}
-                        problemType={this.props.problemType}
-                      />
                     </div>
                   </div>
                 </div>
