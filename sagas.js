@@ -117,6 +117,7 @@ import {
   setFetchStudentTestsStatus,
   sendErrorMessage,
   resetErrorMessage,
+  updateTestSections,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -1168,17 +1169,19 @@ function* handleUpdateTestSections(action) {
     const response = yield call(updateStudentTestSectionsApi, action.payload);
     if (response && response.message ) {
       console.warn("Error occurred in the handleUpdateTestSections saga", response.message);
-      return yield put(sendErrorMessage("updateTestSectionsMessage", `Something went wrong updating this test sections. Please try changing test settings later.`));
+      yield put(sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`));
+      // yield put(resetErrorMessage(updateTestSectionsMessage));
+      return console.warn("Error occurred in the update test sections saga", response.message);
     }
     if (!response.message) {
       yield put({
         type: GET_TESTS,
         user: action.user,
       });
-      yield put(resetErrorMessage("updateTestSectionsMessage"));
+      yield put(resetErrorMessage(updateTestSectionsMessage));
     }
   } catch (error) {
-    sendErrorMessage("updateTestSectionsMessage", `Something went wrong updating this test sections. Please try changing test settings later.`)
+    sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`)
     console.warn("Error occurred in the handleUpdateTestSections saga", error);
   }
 }

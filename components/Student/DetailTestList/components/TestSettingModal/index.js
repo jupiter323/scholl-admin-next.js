@@ -37,6 +37,7 @@ class TestSettingModal extends React.Component {
 
   componentDidMount = async () => {
     const { tests, onSetTests } = this.props;
+    console.log('log: this.props ', this.props);
     if (tests.length === 0) {
       const { data: { tests } } = await fetchAllTestsApi();
       onSetTests(tests);
@@ -69,6 +70,8 @@ class TestSettingModal extends React.Component {
       });
     }
   }
+
+
 
   handleDetailsChange = (event, name, checkBox = false) => {
     const value = event.target ? event.target.value : event;

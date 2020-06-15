@@ -76,12 +76,12 @@ class DetailTestList extends React.Component {
   };
 
   componentWillUnmount = () => {
+    console.log("got here")
     const { onResetErrorMessage } = this.props;
     this.props.onSetStudentTests([]);
     this.props.onSetStudentCompletedTests([]);
     this.props.onSetStudentOverDueTests([]);
     this.props.onSetStudentAssignedTests([]);
-    onResetErrorMessage('updateTestSectionsMessage');
   }
 
   componentWillReceiveProps = nextProps => {
@@ -89,9 +89,11 @@ class DetailTestList extends React.Component {
       errorMessages: {
         updateTestSectionsMessage,
       },
+      onResetErrorMessage
     } = nextProps;
     if (updateTestSectionsMessage && updateTestSectionsMessage !== this.state.updateTestSectionsMessage) {
       this.onErrorMessage(updateTestSectionsMessage, "updateTestSectionsMessage");
+      onResetErrorMessage('updateTestSectionsMessage');
     }
     if (updateTestSectionsMessage && updateTestSectionsMessage !== this.state.updateTestSectionsMessage) {
       this.setState({ updateTestSectionsMessage });
@@ -279,7 +281,7 @@ class DetailTestList extends React.Component {
     this.onCloseDropdown();
   };
 
-  onCloseTestSettingsModal = () => this.setState({ opentTestSettingModal: false})
+  onCloseTestSettingsModal = () => this.setState({ opentTestSettingModal: false, updateTestSectionsMessage:""})
 
   onSaveNewTest = async test => {
     const { studentTests, tests, onFetchStudentTests } = this.props;
@@ -378,7 +380,7 @@ class DetailTestList extends React.Component {
       activeTest,
       opentTestSettingModal,
     } = this.state;
-    const { user, completes, assigneds, overdues, studentTestsFetchedStatus } = this.props;
+    const { user, completes, assigneds, overdues, studentTestsFetchedStatus, onResetErrorMessage } = this.props;
     return (
       <React.Fragment>
         <Toast />
@@ -410,6 +412,7 @@ class DetailTestList extends React.Component {
               test={activeTest}
               onClose={this.handleTestSettingModalOpen}
               onSave={this.updateTestSections}
+              onResetErrorMessage = {onResetErrorMessage}
             />
           </When>
           <Otherwise>
