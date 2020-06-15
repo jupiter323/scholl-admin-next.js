@@ -5,7 +5,11 @@ import { createStructuredSelector } from "reselect";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponse from '../FreeResponse';
-import { answerStudentLessonProblem, answerStudentLessonDebounce } from '../../../index/actions';
+import {
+  answerStudentLessonProblem,
+  answerStudentLessonDebounce,
+  flagStudentLessonProblem,
+} from '../../../index/actions';
 import { makeSelectActiveLesson } from '../../../index/selectors';
 
 class AnswerRow extends React.Component {
@@ -76,6 +80,8 @@ class AnswerRow extends React.Component {
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
           onChangeFlagState={this.onChangeFlagState}
+          activeLesson={activeLesson}
+          onFlagStudentLessonProblem={this.props.onFlagStudentLessonProblem}
         />
         <li
           className="answers-list-holder"
@@ -143,6 +149,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   onAnswerStudentLessonProblem: (postBody, problemType, format) => dispatch(answerStudentLessonProblem(postBody, problemType, format)),
   onAnswerStudentLessonDebounce: (postBody, problemType, format) => dispatch(answerStudentLessonDebounce(postBody, problemType, format)),
+  onFlagStudentLessonProblem: (postBody) => dispatch(flagStudentLessonProblem(postBody)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnswerRow);

@@ -360,9 +360,9 @@ export const filterLessons = (filters) => ({
   filters,
 });
 
-export const flagStudentLessonProblem = (lesson) => ({
+export const flagStudentLessonProblem = (postBody) => ({
   type: FLAG_STUDENT_LESSON_PROBLEM,
-  lesson,
+  postBody,
 });
 
 export const setTests = (tests) => ({

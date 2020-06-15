@@ -660,7 +660,7 @@ export const addStudentLessonProblemFlagApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then((res) => res.json())
+    .then((res) => res)
     .catch((err) => err);
 
 export const addVideoWatchedTime = (body) =>

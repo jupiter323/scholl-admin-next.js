@@ -71,6 +71,7 @@ import {
   FETCH_LESSON_DETAILS,
   SET_ACTIVE_LESSON,
   COMPLETE_SECTION_SUCCESS,
+  FLAG_STUDENT_LESSON_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -958,7 +959,16 @@ function* watchForFlagStudentLessonProblem() {
 
 function* handleFlagStudentLessonProblem(action) {
   try {
-    yield call(addStudentLessonProblemFlagApi, action.lesson);
+    const response = yield call(addStudentLessonProblemFlagApi, action.postBody);
+    if (response && !response.ok) {
+      return response.json().then(res => console.warn("Error occurred in the handleFlagStudentLessonProblem saga", res.message));
+    }
+    yield put({
+      type: FLAG_STUDENT_LESSON_SUCCESS,
+      status: action.postBody.flag_status,
+      problemId: action.postBody.problem_id,
+      studentLessonId: action.postBody.student_lesson_id,
+    });
   } catch (error) {
     console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
   }

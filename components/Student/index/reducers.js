@@ -56,6 +56,7 @@ import {
   SET_LESSON_ANSWER,
   UPDATE_LESSON_STATUS_SUCCESS,
   COMPLETE_SECTION_SUCCESS,
+  FLAG_STUDENT_LESSON_SUCCESS,
 } from "./constants";
 
 const initialState = fromJS({
@@ -413,6 +414,16 @@ function studentReducer(state = initialState, action) {
       activeLesson.sections[0].status = 'COMPLETED';
       return state.set('activeLesson', { ...activeLesson });
     }
+    case FLAG_STUDENT_LESSON_SUCCESS:
+      const activeLesson = state.get('activeLesson');
+      if (action.status === "FLAGGED") {
+        activeLesson.problem_flag_count += 1;
+      } else if (action.status === "REVIEWED") {
+        activeLesson.problem_flag_count -= 1;
+      } else if (action.status === "UN_FLAGGED") {
+        activeLesson.problem_flag_count -= 1;
+      }
+      return state.set('activeLesson', { ...activeLesson });
     default:
       return state;
   }

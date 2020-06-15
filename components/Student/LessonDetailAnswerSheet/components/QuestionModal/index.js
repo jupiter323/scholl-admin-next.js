@@ -1,11 +1,8 @@
 import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
 import Portal from "../../../../common/Portal";
 import ClickOffComponentWrapper from "../../../../common/ClickOffComponentWrapper";
 import { addStudentLessonProblemFlagApi, addVideoWatchedTime } from "../../../index/api";
-import { makeSelectActiveLesson } from "../../../index/selectors";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
@@ -42,6 +39,7 @@ class QuestionModal extends React.Component {
     const {
       activeLesson: { id: lessonId },
       onChangeFlagState,
+      onFlagStudentLessonProblem,
     } = this.props;
     this.setState({
       status,
@@ -49,7 +47,8 @@ class QuestionModal extends React.Component {
     onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
     const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
-    await addStudentLessonProblemFlagApi(postBody);
+    // await addStudentLessonProblemFlagApi(postBody);
+    onFlagStudentLessonProblem(postBody);
   };
 
   recordVideoWatchedTime = () => {
@@ -305,8 +304,4 @@ QuestionModal.propTypes = {
   question: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  activeLesson: makeSelectActiveLesson(),
-});
-
-export default connect(mapStateToProps, null)(QuestionModal);
+export default QuestionModal;
