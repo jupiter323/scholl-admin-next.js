@@ -13,23 +13,22 @@ export const loggedIn = () => {
 
 export const setToken = (token, expires_at) => {
   // Saves user token to sessionStorage
-  sessionStorage.setItem('token', token);
-  sessionStorage.setItem('expires_at', expires_at);
+  localStorage.setItem('token', token);
+  localStorage.setItem('expires_at', expires_at);
 };
 
 export const getToken = () => {
 // Retrieves the user token from sessionStorage
   if (typeof window !== 'undefined') {
     // Is running on the client
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
-  console.log('we are running on the server');
 };
 
 export const logout = () => {
   // Clear user token from sessionStorage
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('expires_at');
+  localStorage.removeItem('token');
+  localStorage.removeItem('expires_at');
 };
 
 export const isTokenExpired = token => {

@@ -423,7 +423,6 @@ export const fetchStudentTestSectionProblemsApi = (student_id, student_test_id, 
     },
   })
     .then(res => res.json())
-    .then(({ data }) => data)
     .catch(err => err);
 
 export const addStudentAnswerToTestApi = answer =>
@@ -463,14 +462,6 @@ export const fetchStudentTestScoreApi = (student_id, student_test_id) =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      const formattedTestScores = data;
-      if (!formattedTestScores.essay) {
-        formattedTestScores.essay = { analysis: "", reading: "", writing: "" };
-        return formattedTestScores;
-      }
-      return formattedTestScores;
-    })
     .catch(err => err);
 export const updateStudentTestQuestionFlagStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-question-flag-status`, {
@@ -483,7 +474,7 @@ export const updateStudentTestQuestionFlagStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 
@@ -529,10 +520,13 @@ export const fetchUnitsApi = () =>
     .catch(err => console.warn('err', err));
 
 export const filterLessonListApi = (filters) => {
-  const { unitFilter, nameFilter } = filters;
+  const { unitFilter, nameFilter, subjectFilters, flagFilters, dueFilters } = filters;
   const unitString = unitFilter.length ? `unit_id=${unitFilter}&` : '';
   const searchString = nameFilter.length ? `search=${nameFilter.toLowerCase().replace(/\s/g, '+')}&` : '';
-  const filterQuery = `${searchString}${unitString}`;
+  // const subjectsString = subjectFilters.length?`subject_id=${subjectFilters}&` : '';
+  const flagString = flagFilters.length ? `has_lesson_flags=${flagFilters}&` : '';
+  const dueString = dueFilters.length ? `due=${dueFilters}&` : '';
+  const filterQuery = `${searchString}${unitString}${dueString}${flagString}`;
   return fetch(`${API_URL}/api/lessons?${filterQuery}`, {
     headers: {
       Accept: "application/json",
@@ -645,8 +639,7 @@ export const fetchStudentLessonApi = (student_id, lesson_id) =>
     },
   })
     .then((res) => res.json())
-    .then((res) => res)
-    .then(({ data }) => data);
+    .catch(err => err);
 
 export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) =>
   fetch(`${API_URL}/api/students/${student_id}/student_lessons/${lesson_id}/sections/${section_id}`, {
@@ -657,8 +650,7 @@ export const fetchStudentLessonSectionApi = (student_id, lesson_id, section_id) 
     },
   })
     .then((res) => res.json())
-    .then((res) => res)
-    .then(({ data }) => data);
+    .catch((err) => err);
 
 export const addStudentLessonProblemFlagApi = (body) =>
   fetch(`${API_URL}/api/commands/flag-student-lesson-problem`, {
@@ -710,7 +702,7 @@ export const addStudentLessonProblemAnswerApi = (body) =>
       Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(body),
-  }).then((res) => res.status);
+  }).then((res) => res).catch(err => err);
 
 export const updateStudentTestStatusApi = (body) =>
   fetch(`${API_URL}/api/commands/update-student-test-status`, {
@@ -722,7 +714,7 @@ export const updateStudentTestStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 
@@ -749,7 +741,7 @@ export const updateStudentTestSectionStatusApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then(res => res)
+    .then(res => res.json())
     .catch(err => err);
 
 export const rescoreStudentLessonApi = (body) =>
@@ -791,3 +783,31 @@ export const updateStudentEssayScoreApi = (scores) =>
   })
     .then(res => res)
     .catch(err => err);
+
+export const updateStudentLessonStatusApi = (body) =>
+  fetch(`${API_URL}/api/commands/update-student-lesson-status`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);
+
+export const completeStudentLessonSectionApi = (body) =>
+  fetch(`${API_URL}/api/commands/complete-student-lesson-section`, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res)
+    .catch((err) => err);

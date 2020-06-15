@@ -10,31 +10,69 @@ import EssayScoresCard from './components/EssayScoresCard';
 import CrossTestScoresCard from './components/CrossTestScoresCard';
 import SubScoresCard from './components/SubscoresCard';
 import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../index/selectors';
+import { setActiveTestScores } from '../index/actions';
+import { fetchStudentTestScoreApi } from '../index/api';
 
 class DetailTestScorePage extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.onRef(this);
-  }
+  };
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
 
-  getComponentImages = async () => {
-    const { getTargetImage } = this.props;
-    const [scoresImages] = await Promise.all([
-      getTargetImage(document.getElementById('scoresRef')),
-    ]);
-    return scoresImages;
+  delay = () => {
+    const { scores, test: { student_test_id }, onGetTestScores, activeStudent: { id } } = this.props;
+    return new Promise(async resolve => {
+      const postBody = { studentId: id, student_test_id };
+      onGetTestScores(postBody);
+      setTimeout(() => {
+        resolve();
+      }, 3000);
+    });
   };
+
+  getComponentImages = () =>
+    new Promise(resolve => {
+      this.delay().then(() => {
+        setTimeout(async () => {
+          const { getTargetImage } = this.props;
+          const [scoresImages] = await Promise.all([
+            getTargetImage(document.getElementById('scoresRef')),
+          ]);
+          resolve(scoresImages);
+        }, 2000);
+      });
+    });
+
+  loadingSpinner = () =>
+    (<div className="overlay-spinning">
+      <h1>Fetching Scores...</h1>
+      <div className="spinning" />
+    </div>);
+
+  essayScoresCard = () => {
+    const { scores: { essay } } = this.props;
+    if (!essay) return null;
+    const { reading, writing, analysis } = essay;
+    if (reading !== "" && writing !== "" && analysis !== "") {
+      return (<EssayScoresCard essayScores={essay} />);
+    }
+    return null;
+  }
 
   render() {
     const { scores, test } = this.props;
-    if (!scores) return (<div>Loading...</div>);
-    if (scores.student_test_id !== test.student_test_id) return (<div>Loading...</div>);
+    if (!scores) {
+      return this.loadingSpinner();
+    }
+    if (scores.student_test_id !== test.student_test_id) {
+      return this.loadingSpinner();
+    }
     const { subjects, cross_test_score, sub_section_score, essay } = scores;
     return (
       <div className="container" id="scoresRef">
@@ -45,7 +83,7 @@ class DetailTestScorePage extends React.Component {
           </div>
           <div className="d-flex-content same-height justify-center row mb-0">
             <TestScoreCard subjectScores={subjects} />
-            <EssayScoresCard essayScores={essay} />
+            {this.essayScoresCard()}
           </div>
           <div className="d-flex-content justify-center row mb-0">
             <CrossTestScoresCard crossTestScores={cross_test_score} />
@@ -67,6 +105,12 @@ const mapStateToProps = createStructuredSelector({
   activeStudent: makeSelectActiveStudent(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetScores: scores => dispatch(setActiveTestScores(scores)),
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(DetailTestScorePage);

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide }) => (
+const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide, scores }) => (
   // eslint-disable-next-line no-unused-expressions
   <div
     className="card-panel light-blue accent-2 white-text"
@@ -13,7 +13,7 @@ const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide }) => (
           className="nav-slick nav-tab"
           style={{ fontSize: "15px", display: "table", margin: "0 auto" }}
         >
-          <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
+          {scores.readingScores && <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
             <a
               className={activeSlide === "reading" ? "active" : ""}
               onClick={() => onSetActiveSlide("reading")}
@@ -21,8 +21,8 @@ const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide }) => (
             >
               Reading
             </a>
-          </div>
-          <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
+          </div>}
+          {scores.writingScores && <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
             <a
               className={activeSlide === "writing" ? "active" : ""}
               onClick={() => onSetActiveSlide("writing")}
@@ -30,8 +30,8 @@ const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide }) => (
             >
               Writing
             </a>
-          </div>
-          <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
+          </div>}
+          {scores.mathScores && <div className="tab slide col 3" style={{ padding: "0px 70px" }}>
             <a
               className={activeSlide === "math" ? "active" : ""}
               onClick={() => onSetActiveSlide("math")}
@@ -39,7 +39,7 @@ const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide }) => (
             >
               Math
             </a>
-          </div>
+          </div>}
         </div>
       </div>
     </div>
@@ -48,6 +48,6 @@ const StrengthsWeaknessesNavBar = ({ activeSlide, onSetActiveSlide }) => (
 
 StrengthsWeaknessesNavBar.propTypes = {
   activeSlide: PropTypes.string.isRequired,
-  onSetActiveSlide: PropTypes.func.isRequired
+  onSetActiveSlide: PropTypes.func.isRequired,
 };
 export default StrengthsWeaknessesNavBar;

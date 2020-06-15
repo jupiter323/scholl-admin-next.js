@@ -65,7 +65,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   getComponentImages = () =>
     new Promise(async resolve => {
       const circleImageList = [];
-      let barImageList = [];
+      const barImageList = [];
       const circleRefs = [
         { id: 'analysisReadingCicleImg' },
         { id: 'analysisWritingCircleImg' },
@@ -76,22 +76,46 @@ class DetailTestAnswerSheetComplete extends React.Component {
         { id: 'writingAnalysisBarImg', state: 'writing' },
         { id: 'mathAnalysisBarImg', state: 'math' },
       ];
-      circleRefs.map(async (circleRef, index) => {
-        const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
-        circleImageList.push(currentImg);
+
+      const getCircleImagesPromise = circleRefs.reduce(
+        (accumulatorPromise, circleRef) =>
+          accumulatorPromise
+            .then(() => {
+              setTimeout(async () => {
+                const [currentImg] = await Promise.all([this.onHandleTargetImage(circleRef.id)]);
+                circleImageList.push(currentImg);
+              }, 1000);
+            })
+            .catch(console.error),
+        Promise.resolve(),
+      );
+      const getBarImageListPromise = barRefs.reduce(
+        (accumulatorPromise, barRef) =>
+          accumulatorPromise
+            .then(async () => {
+              const result = await this.getData(barRef);
+              return barImageList.push(result);
+            })
+            .catch(console.error),
+        Promise.resolve(),
+      );
+      getCircleImagesPromise.then(() => {
+        getBarImageListPromise.then(() => {
+          const imgList = { circleImageList, barImageList };
+          resolve(imgList);
+        });
       });
-      barImageList = await Promise.all(barRefs.map(async barRef => await this.getData(barRef)));
-      const imgList = { circleImageList, barImageList };
-      resolve(imgList);
     });
   getData = item =>
-    new Promise(async resolve => {
-      setTimeout(() => {
-        this.setState({ activeSlide: item.state }, async () => {
-          const [currentImg] = await Promise.all([this.onHandleTargetImage(item.id)]);
-          resolve(currentImg);
-        });
-      }, 1000);
+    new Promise(resolve => {
+      this.setState({ activeSlide: item.state }, () => {
+        setTimeout(async () => {
+          const currentImg = await this.onHandleTargetImage(item.id);
+          setTimeout(() => {
+            resolve(currentImg);
+          }, 500);
+        }, 500);
+      });
     });
 
   onHandleTargetImage = async currentRef =>
@@ -133,6 +157,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               <StrengthsWeaknessesNavBar
                 activeSlide={activeSlide}
                 onSetActiveSlide={this.onSetActiveSlide}
+                scores={{ readingScores, mathScores, writingScores }}
               />
             </div>
             <div className="card-content">

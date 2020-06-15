@@ -58,6 +58,16 @@ import {
   SET_ESSAY_SCORE,
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_TEST_STATUS,
+  UPDATE_FLAG_STATUS,
+  FETCH_STUDENT_TESTS_SUCCESSFUL,
+  ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  SEND_ERROR_MESSAGE,
+  RESET_ERROR_MESSAGE,
+  GET_TEST_SCORES,
+  FETCH_LESSON_SECTIONS,
+  ADD_LESSON_ANSWER_DEBOUNCE,
+  SUBMIT_LESSON_PROBLEMS,
+  FETCH_LESSON_DETAILS,
 } from "./constants";
 
 export function fetchStudents() {
@@ -367,9 +377,11 @@ export const setActiveStudent = (student) => ({
   student,
 });
 
-export const answerStudentLessonProblem = (payload) => ({
+export const answerStudentLessonProblem = (postBody, problemType, format) => ({
   type: ADD_LESSON_ANSWER,
-  payload,
+  postBody,
+  problemType,
+  format,
 });
 
 export const deleteStudentTest = (studentTestId, studentId, testType) => ({
@@ -383,11 +395,11 @@ export const updateTestFlag = (studentTestId, studentId, flagCount) => ({
   type: UPDATE_TEST_FLAG,
   studentTestId,
   studentId,
-  flagCount
+  flagCount,
 });
 
 export const updateCompletedFlags = (studentTestId, flags) => ({
-  type:UPDATE_COMPLETED_FLAGS,
+  type: UPDATE_COMPLETED_FLAGS,
   studentTestId,
   flags,
 });
@@ -408,9 +420,69 @@ export const addStudentAnswerToTest = (payload, sectionId) => ({
   sectionId,
 });
 
-export const updateTestStaus = (payload, currentStatus, studentId) => ({
+export const updateTestStatus = (payload, currentStatus, studentId) => ({
   type: UPDATE_TEST_STATUS,
   payload,
   currentStatus,
   studentId,
+});
+
+export const updateFlagStatus = (payload, status, question) => ({
+  type: UPDATE_FLAG_STATUS,
+  payload,
+  status,
+  question,
+});
+
+export function setFetchStudentTestsStatus(status) {
+  return {
+    type: FETCH_STUDENT_TESTS_SUCCESSFUL,
+    status,
+  };
+}
+
+export const addFreeResponseAnswerToTest = (payload, sectionId) => ({
+  type: ADD_FREE_RESPONSE_ANSWER_TO_TEST,
+  payload,
+  sectionId,
+});
+
+export const sendErrorMessage = (propertyName, message) => ({
+  type: SEND_ERROR_MESSAGE,
+  propertyName,
+  message,
+});
+
+export const resetErrorMessage = (propertyName) => ({
+  type: RESET_ERROR_MESSAGE,
+  propertyName,
+});
+
+export const getTestScores = (payload) => ({
+  type: GET_TEST_SCORES,
+  payload,
+});
+
+export const fetchLessonProblems = (postBody) => ({
+  type: FETCH_LESSON_SECTIONS,
+  postBody,
+});
+
+export const answerStudentLessonDebounce = (postBody, problemType, format) => ({
+  type: ADD_LESSON_ANSWER_DEBOUNCE,
+  postBody,
+  problemType,
+  format,
+});
+
+export const submitLessonProblems = (lessonType, postBody, student_id) => ({
+  type: SUBMIT_LESSON_PROBLEMS,
+  lessonType,
+  postBody,
+  student_id,
+});
+
+export const fetchLessonDetails = (postBody) => ({
+  type: FETCH_LESSON_DETAILS,
+  postBody,
 });

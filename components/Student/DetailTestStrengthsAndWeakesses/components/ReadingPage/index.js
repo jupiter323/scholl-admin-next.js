@@ -30,7 +30,7 @@ class ReadingPage extends React.Component {
 
   mapGroupBlcok = () => {
     const { parentScores } = this.state;
-    return parentScores instanceof Array && parentScores.map(group => <GroupBlock data={group} />);
+    return parentScores instanceof Array && parentScores.length !== 0 && parentScores.map(group => <GroupBlock data={group} parentScores={this.props.scores} key={group.id} />);
   };
 
   render() {
@@ -47,7 +47,7 @@ class ReadingPage extends React.Component {
 }
 
 ReadingPage.propTypes = {
-  scores: PropTypes.object.isRequired,
+  scores: PropTypes.object,
 };
 
 export default ReadingPage;

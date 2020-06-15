@@ -3,46 +3,96 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import PropTypes from "prop-types";
+import { toast } from 'react-toastify';
 import Portal from "../../../../../../Portal";
 import ClickOffComponentWrapper from "../../../../../../ClickOffComponentWrapper";
-
-import { updateStudentTestQuestionFlagStatusApi } from "../../../../../index/api";
-import { makeSelectActiveStudentTestId, makeSelectActiveStudentToken } from "../../../../../index/selectors";
+import { updateFlagStatus } from "../../../../../index/actions";
+import { makeSelectErrorMessages, makeSelectActiveStudentToken } from "../../../../../index/selectors";
 
 class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'UN_FLAGGED',
-      originalTestProblemId: '',
+      status: "UN_FLAGGED",
+      subject: "",
+      problemListName: "",
     };
   }
 
+  componentDidMount = () => {
+    const {
+      question: { problem_type_id },
+    } = this.props;
+    switch (problem_type_id) {
+      case 1:
+        this.setState({ subject: "Reading", problemListName: "testReadingProblems" });
+        break;
+      case 2:
+        this.setState({ subject: "Writing", problemListName: "testWritingProblems" });
+        break;
+      case 3:
+        this.setState({ subject: "Math (no calc)", problemListName: "testMathNoCalcProblems" });
+        break;
+      case 4:
+        this.setState({ subject: "Math (calculator)", problemListName: "testMathNoCalcProblems" });
+        break;
+      default:
+        break;
+    }
+  };
+
   componentWillReceiveProps = (nextProps) => {
-    const { question: { test_problem_id } } = nextProps;
-    const { originalTestProblemId } = this.state;
-    if (test_problem_id !== originalTestProblemId && this.props.question.flag) {
-      const { question: { flag: { status } } } = this.props;
+    const {
+      question: {
+        flag: { status },
+      },
+      question,
+    } = nextProps;
+    if (question.flag.status !== this.state.status) {
       this.setState({
         status,
       });
     }
-  }
+  };
 
   onHandleQuestionFlagStatus = async (_e, status) => {
     const {
       studentTestId,
-      onChangeFlagState,
+      onUpdateFlagStatus,
+      question: {
+        flag: { id },
+      },
+      question,
     } = this.props;
-    onChangeFlagState(status);
-    const { question: { flag: { id } } } = this.props;
-    const postBody = { student_test_id: studentTestId, flag_id: id, status };
-    await updateStudentTestQuestionFlagStatusApi(postBody);
+    // Check if user click is valid
+    if (status === this.state.status) return;
+    if (this.state.status === "UN_FLAGGED" && status === "REVIEWED" && !id) {
+      return toast.error(`There is no flag to mark reviwed.`, {
+        className: "update-error",
+        progressClassName: "progress-bar-error",
+      });
+    }
+    // Continue with request
+    let postBody = {};
+    const newQuestion = question;
+
+    if (status === "FLAGGED" && !id) {
+      postBody = { student_test_id: studentTestId, test_problem_id: question.id };
+    } else {
+      postBody = { student_test_id: studentTestId, flag_id: id, status };
+    }
+    newQuestion.flag.status = status;
+    onUpdateFlagStatus(postBody, status, newQuestion);
   };
 
-
   render() {
-    const { open, onCloseQuestionModal, question } = this.props;
+    const {
+      open,
+      onCloseQuestionModal,
+      question,
+      errorMessages: { testFlagMessage },
+    } = this.props;
+    const { status } = this.state;
     return (
       <Portal selector="#modal">
         {open && (
@@ -55,7 +105,7 @@ class QuestionModal extends React.Component {
               >
                 <div className="modal-header row mb-0">
                   <div className="col s10">
-                    <span className="subtitle">Reading</span>
+                    <span className="subtitle">{this.state.subject}</span>
                     <span className="title">Problem {question.question_number}</span>
                   </div>
                   <div className="col s2 right-align">
@@ -82,7 +132,23 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
+                                checked={status === "FLAGGED" ? "checked" : ""}
+                                onClick={(e) => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
+                              />
+                              <span>
+                                <i className="icon-flag red-text text-lighten-1" />
+                                Flag For Review
+                              </span>
+                            </label>
+                          </li>
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                                checked={status === "REVIEWED" ? "checked" : ""}
+                                onClick={(e) => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
                               />
                               <span>
                                 <i className="icon-flag grey-text text-lighten-1" />
@@ -90,10 +156,24 @@ class QuestionModal extends React.Component {
                               </span>
                             </label>
                           </li>
+                          <li>
+                            <label>
+                              <input
+                                className="with-gap"
+                                name="review_radio"
+                                type="radio"
+                                checked={status === "UN_FLAGGED" ? "checked" : ""}
+                                onClick={(e) => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
+                              />
+                              <span>No Problem Flag</span>
+                            </label>
+                          </li>
                         </ul>
                       </form>
+                      <p className="red-text">{testFlagMessage}</p>
                     </div>
-                    <div className="panel-block">
+                    {/* @ TODO going to comment out hardcoded data for now */}
+                    {/* <div className="panel-block">
                       <ul className="informers-list">
                         <li className="informer-block">
                           <div
@@ -146,8 +226,8 @@ class QuestionModal extends React.Component {
                           <b className="informer-value">8%</b>
                         </li>
                       </ul>
-                    </div>
-                    <div className="panel-block">
+                    </div> */}
+                    {/* <div className="panel-block">
                       <strong className="subtitle">Student’s Notes:</strong>
                       <div
                         className="text-content custom-form"
@@ -176,7 +256,7 @@ class QuestionModal extends React.Component {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -246,10 +326,16 @@ QuestionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  studentTestId: makeSelectActiveStudentTestId(),
   studentToken: makeSelectActiveStudentToken(),
+  errorMessages: makeSelectErrorMessages(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+function mapDispatchToProps(dispatch) {
+  return {
+    onUpdateFlagStatus: (payload, status, question) => dispatch(updateFlagStatus(payload, status, question)),
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(QuestionModal);

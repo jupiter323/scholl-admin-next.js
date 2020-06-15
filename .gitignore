@@ -12,7 +12,7 @@ converage
 
 .idea
 .next
-
+_next
 node_modules
 
 npm_debug.log

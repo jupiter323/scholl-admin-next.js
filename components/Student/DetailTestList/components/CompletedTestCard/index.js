@@ -10,6 +10,8 @@ import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../../../in
 
 import { fetchStudentTestScoreApi } from '../../../index/api';
 class CompletedTestCard extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,15 +26,20 @@ class CompletedTestCard extends React.Component {
 
   componentDidMount = async () => {
     const { test } = this.props;
+    this._isMounted = true;
     const formattedScores = await this.getScoresByStudentTest(this.props.test);
     if (!formattedScores) return;
-    if (formattedScores) {
+    if (formattedScores && this._isMounted) {
       this.setState({
         scores: { ...formattedScores, student_test_id: test.student_test_id },
       });
       this.setScores(formattedScores.subjects);
     }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   onEditTest = async () => {
     const { onEditTest, onSetScores } = this.props;
@@ -69,7 +76,7 @@ class CompletedTestCard extends React.Component {
     const { student_test_id } = test;
     const { activeStudent: { id } } = this.props;
     const formattedTestScores = await fetchStudentTestScoreApi(id, student_test_id);
-    return formattedTestScores;
+    return formattedTestScores.data;
   };
 
   handleDropdownClick = event => {
@@ -87,7 +94,15 @@ class CompletedTestCard extends React.Component {
       index,
       dropdownIsOpen,
       onDownloadReport,
-      test: { test_name, test_description, due_date, completion_date, student_test_id, student_id, problem_flag_count },
+      test: {
+        test_name,
+        test_description,
+        due_date,
+        completion_date,
+        student_test_id,
+        student_id,
+        problem_flag_count,
+      },
       onEnterAnswers,
       onDeleteTest,
       onTestFlagReviewed,
@@ -115,18 +130,17 @@ class CompletedTestCard extends React.Component {
                       </div>
                       <div className="col s12 m6 right-align">
                         <div className="row icons-row" style={{ marginBottom: '10px' }}>
-                          { problem_flag_count > 0 && (
+                          {problem_flag_count > 0 &&
                             <span
-                            className="badge-rounded-xs badge red darken-2 white-text"
-                            style={{
-                              minWidth: '20px',
-                              minHeight: '20px',
-                              borderRadius: '50%',
-                            }}
-                          >
-                            <i className="icon-flag" />
-                          </span>
-                          )}
+                              className="badge-rounded-xs badge red darken-2 white-text"
+                              style={{
+                                minWidth: '20px',
+                                minHeight: '20px',
+                                borderRadius: '50%',
+                              }}
+                            >
+                              <i className="icon-flag" />
+                            </span>}
                           <div className="dropdown-block col">
                             <a
                               href="#"
@@ -150,39 +164,39 @@ class CompletedTestCard extends React.Component {
                               >
                                 <li>
                                   <a href="#" onClick={handleTestSettingModalOpen}>
-                                          Edit Test Settings
+                                    Edit Test Settings
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" onClick={() => onEnterAnswers(student_test_id)}>
-                                          Edit/Enter Answers
+                                    Edit/Enter Answers
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" onClick={() => onDownloadReport(this.props.test)}>
-                                          Download score report
+                                    Download score report
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" className="disabled">
-                                          Excuse/Unexcuse lateness
+                                    Excuse/Unexcuse lateness
                                   </a>
                                 </li>
                                 <li>
                                   <a
-                                  className={problem_flag_count === 0 ? "disabled" : ""}
+                                    className={problem_flag_count === 0 ? "disabled" : ""}
                                     href="#"
                                     onClick={e => {
                                       e.preventDefault();
                                       onTestFlagReviewed(student_test_id, student_id, problem_flag_count);
                                     }}
                                   >
-                                          Mark flags reviewed
+                                    Mark flags reviewed
                                   </a>
                                 </li>
                                 <li>
                                   <a href="#" className="disabled">
-                                          Reset
+                                    Reset
                                   </a>
                                 </li>
                                 <li>
@@ -198,7 +212,7 @@ class CompletedTestCard extends React.Component {
                                     }}
                                     className="red-text text-darken-3"
                                   >
-                                          Unassign
+                                    Unassign
                                   </a>
                                 </li>
                               </ul>
@@ -214,7 +228,7 @@ class CompletedTestCard extends React.Component {
                             <span className="list-status">
                               <span className="ico-mark" />
                               <span className="status-text">
-                                      Complete {formattedCompletedDate}
+                                Complete {formattedCompletedDate}
                               </span>
                             </span>
                           </li>
@@ -222,7 +236,7 @@ class CompletedTestCard extends React.Component {
                             <span className="list-date">
                               <i className="icon-calendar" />
                               <span className="date">
-                                      Due {formattedDueDate}
+                                Due {formattedDueDate}
                               </span>
                             </span>
                           </li>
@@ -262,7 +276,9 @@ class CompletedTestCard extends React.Component {
                         <h2 style={{ marginBottom: '5px' }}>SAT Score</h2>
                       </strong>
                       <h2 style={{ marginBottom: '20px' }}>
-                        {MathScore.current_score + ReadingScore.current_score + ReadingAndWritingScore.current_score}
+                        {MathScore.current_score +
+                            ReadingScore.current_score +
+                            ReadingAndWritingScore.current_score}
                       </h2>
                     </span>
                   </span>
@@ -326,7 +342,7 @@ class CompletedTestCard extends React.Component {
                   >
                     <span className="badge-text" style={{ fontSize: '16px' }}>
                       <strong>
-                                Writing
+                          Writing
                         {/* <br />
                                 &amp; Language */}
                       </strong>
@@ -348,7 +364,7 @@ class CompletedTestCard extends React.Component {
                   <span className="badge-circle">
                     <span className="badge-text" style={{ fontSize: '16px', marginBottom: '10px' }}>
                       <strong>
-                                Writing
+                          Writing
                         {/* <br />
                                 &amp; Language */}
                       </strong>
@@ -369,7 +385,7 @@ class CompletedTestCard extends React.Component {
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: '16px' }}>
-                              Reading
+                        Reading
                       <br />
                       <h3 style={{ marginBottom: ReadingScore.previous_score ? '' : '20px' }}>
                         {ReadingScore.current_score}
@@ -388,7 +404,7 @@ class CompletedTestCard extends React.Component {
                     }}
                   >
                     <span className="badge-text" style={{ fontSize: '16px' }}>
-                              Reading
+                        Reading
                       <br />
                       <h3 style={{ marginTop: '10px' }}>n/a</h3>
                     </span>

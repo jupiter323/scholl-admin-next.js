@@ -345,7 +345,6 @@ class NewTestModal extends React.Component {
                                     </label>
                                   </p>
                                 </div>
-                                {/* @TODO this is taken out for now */}
                                 {/* <div className="col s12">
                                   <p>
                                     <label>
