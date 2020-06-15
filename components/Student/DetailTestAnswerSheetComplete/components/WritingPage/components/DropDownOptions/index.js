@@ -50,14 +50,14 @@ class DropDownOptions extends React.Component {
     // Continue with request
     let postBody = {};
     const newQuestion = question;
-
+    const oldStatus = question.flag.status;
     if (status === "FLAGGED" && !id) {
       postBody = { student_test_id: studentTestId, test_problem_id: question.id };
     } else {
       postBody = { student_test_id: studentTestId, flag_id: id, status };
     }
     newQuestion.flag.status = status;
-    onUpdateFlagStatus(postBody, status, newQuestion);
+    onUpdateFlagStatus(postBody, status, newQuestion, oldStatus);
     onCloseQuestionModal();
   };
 
@@ -107,8 +107,8 @@ DropDownOptions.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onUpdateFlagStatus: (payload, status, question) =>
-      dispatch(updateFlagStatus(payload, status, question)),
+    onUpdateFlagStatus: (payload, status, question, oldStatus) =>
+      dispatch(updateFlagStatus(payload, status, question, oldStatus)),
   };
 }
 

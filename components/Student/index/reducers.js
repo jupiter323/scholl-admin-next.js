@@ -57,6 +57,7 @@ import {
   SET_LESSON_ANSWER,
   UPDATE_LESSON_STATUS_SUCCESS,
   COMPLETE_SECTION_SUCCESS,
+  UPDATE_TEST_FLAG_COUNT,
 } from "./constants";
 
 const initialState = fromJS({
@@ -423,6 +424,43 @@ function studentReducer(state = initialState, action) {
       activeLesson.sections[0].status = 'COMPLETED';
       return state.set('activeLesson', { ...activeLesson });
     }
+    case UPDATE_TEST_FLAG_COUNT:
+      const studentTestList = state.get('studentTests');
+      const matchingTest = studentTestList.filter(test => test.student_test_id === action.student_test_id)[0];
+      let newList = [];
+      let listName = "";
+      const updateTestCardList = (listName) => {
+        const cardList = state.get(listName);
+        const newList = cardList.map(test => {
+          if (test.student_test_id === action.student_test_id) {
+            test.problem_flag_count += action.flagDiff;
+          }
+          return test;
+        });
+        return newList;
+      };
+      console.log('log: matchingTest', matchingTest);
+      if (matchingTest) {
+        if (matchingTest.status === "COMPLETED") {
+          console.log('log: 1', 1);
+          newList = updateTestCardList("completedStudentTests");
+          listName = "completedStudentTests";
+        } else if (matchingTest.status !== "COMPLETED" && matchingTest.due_status === "OVERDUE") {
+          console.log('log: 2', 2);
+          newList = updateTestCardList("overdueStudentTests");
+          listName = "overdueStudentTests";
+        } else {
+          console.log('log: 3', 3);
+          newList = updateTestCardList("assignedStudentTests");
+          listName = "assignedStudentTests";
+        }
+      }
+      console.log('log: action.flagDiff', action.flagDiff);
+      console.log('log: listName', listName);
+      console.log('log: newList', newList);
+      return state.set(listName, [...newList]);
+
+
     default:
       return state;
   }

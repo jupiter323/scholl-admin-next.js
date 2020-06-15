@@ -45,7 +45,7 @@ import {
   ADD_LESSON_ANSWER,
   ADD_LESSON_ANSWER_SUCCESS,
   DELETE_STUDENT_TEST,
-  UPDATE_TEST_FLAG,
+  MARK_ALL_FLAGS_REVIEWED,
   REMOVE_TEST,
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_STUDENT_TEST_ANSWER,
@@ -72,6 +72,7 @@ import {
   FETCH_LESSON_DETAILS,
   SET_ACTIVE_LESSON,
   COMPLETE_SECTION_SUCCESS,
+  UPDATE_TEST_FLAG_COUNT,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1047,7 +1048,7 @@ function* handleDeleteStudentTest(action) {
 }
 
 function* watchForMarkAllTestFlagsReviewed() {
-  yield takeEvery(UPDATE_TEST_FLAG, handleMarkAllFlagsReviewed);
+  yield takeEvery(MARK_ALL_FLAGS_REVIEWED, handleMarkAllFlagsReviewed);
 }
 
 function* handleMarkAllFlagsReviewed(action) {
@@ -1074,6 +1075,8 @@ function* handleMarkAllFlagsReviewed(action) {
       count++;
     }
     // Dispatch to update redux store
+    console.log('log: reviewedTestIds.length', reviewedTestIds.length);
+    console.log('log: action.flagCount', action.flagCount);
     if (reviewedTestIds.length === action.flagCount) {
       yield put({
         type: UPDATE_COMPLETED_FLAGS,
@@ -1170,6 +1173,7 @@ function* watchForUpdateTestFlagStatus() {
 
 function* handleUpdateTestFlagStatus(action) {
   try {
+    let flagDiff = 0;
     if (action.status === "FLAGGED" && !action.payload.flag_id) {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);
       if (response && response.message) {
@@ -1182,12 +1186,23 @@ function* handleUpdateTestFlagStatus(action) {
         return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
       }
     }
+    console.log('log: action.status', action.status);
+    console.log('log: action.oldStatus', action.oldStatus);
+    if (action.oldStatus !== "FLAGGED" && action.status === "FLAGGED") {
+      flagDiff = 1;
+    } else if (action.oldStatus === "FLAGGED" && action.status !== "FLAGGED") {
+      flagDiff = -1;
+    }
     yield put(resetErrorMessage(testFlagMessage));
     yield put({
       type: UPDATE_FLAG_STATUS_SUCCESS,
       sectionId: action.question.test_section_id,
       question: action.question,
-      status: action.status,
+    });
+    yield put({
+      type: UPDATE_TEST_FLAG_COUNT,
+      flagDiff,
+      student_test_id: action.payload.student_test_id,
     });
   } catch (error) {
     yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${error}`));

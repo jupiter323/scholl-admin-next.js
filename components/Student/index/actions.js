@@ -51,7 +51,7 @@ import {
   SET_ACTIVE_STUDENT,
   ADD_LESSON_ANSWER,
   DELETE_STUDENT_TEST,
-  UPDATE_TEST_FLAG,
+  MARK_ALL_FLAGS_REVIEWED,
   UPDATE_COMPLETED_FLAGS,
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
@@ -392,7 +392,7 @@ export const deleteStudentTest = (studentTestId, studentId, testType) => ({
 });
 
 export const updateTestFlag = (studentTestId, studentId, flagCount) => ({
-  type: UPDATE_TEST_FLAG,
+  type: MARK_ALL_FLAGS_REVIEWED,
   studentTestId,
   studentId,
   flagCount,
@@ -427,11 +427,12 @@ export const updateTestStatus = (payload, currentStatus, studentId) => ({
   studentId,
 });
 
-export const updateFlagStatus = (payload, status, question) => ({
+export const updateFlagStatus = (payload, status, question, oldStatus) => ({
   type: UPDATE_FLAG_STATUS,
   payload,
   status,
   question,
+  oldStatus,
 });
 
 export function setFetchStudentTestsStatus(status) {
