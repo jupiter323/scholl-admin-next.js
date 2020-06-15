@@ -48,7 +48,6 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_LIST,
-  UPDATE_COMPLETED_FLAGS,
   UPDATE_FLAG_STATUS_SUCCESS,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   SEND_ERROR_MESSAGE,
@@ -352,24 +351,6 @@ function studentReducer(state = initialState, action) {
       // Grabs the test info from original test list and adds a completion date & status
       return state.set('completedStudentTests', [...state.get('completedStudentTests'), { ...state.get(action.testList).filter(test => test.student_test_id === action.payload.student_test_id)[0], completion_date: Date.now(), status: action.payload.status }]);
 
-    case UPDATE_COMPLETED_FLAGS:
-      return state.set('completedStudentTests', state.get('completedStudentTests').map(test => {
-        if (test.student_test_id === action.studentTestId) {
-          return { ...test, problem_flag_count: action.flags };
-        }
-        return test;
-      }));
-      return state.set('completedStudentTests', [
-        ...state.get('completedStudentTests'),
-        {
-          ...state
-            .get(action.testList)
-            .filter(test => test.student_test_id === action.payload.student_test_id)[0],
-          completion_date: Date.now(),
-          status: action.payload.status,
-        },
-      ]);
-
     case FETCH_STUDENT_TESTS_SUCCESSFUL:
       return state.set('studentTestsFetchedStatus', action.status);
 
@@ -433,7 +414,11 @@ function studentReducer(state = initialState, action) {
         const cardList = state.get(listName);
         const newList = cardList.map(test => {
           if (test.student_test_id === action.student_test_id) {
-            test.problem_flag_count += action.flagDiff;
+            console.log('log: action', action);
+            (action.flagCount === 0 ?
+              test.problem_flag_count = action.flagCount
+              : test.problem_flag_count += action.flagDiff);
+            console.log('log: flag count', test.problem_flag_count);
           }
           return test;
         });

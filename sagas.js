@@ -55,7 +55,6 @@ import {
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
   SET_ACTIVE_TEST_SCORES,
-  UPDATE_COMPLETED_FLAGS,
   UPDATE_FLAG_STATUS,
   UPDATE_FLAG_STATUS_SUCCESS,
   SET_STUDENT_SECTIONS,
@@ -1079,9 +1078,9 @@ function* handleMarkAllFlagsReviewed(action) {
     console.log('log: action.flagCount', action.flagCount);
     if (reviewedTestIds.length === action.flagCount) {
       yield put({
-        type: UPDATE_COMPLETED_FLAGS,
-        studentTestId: action.studentTestId,
-        flags: 0,
+        type: UPDATE_TEST_FLAG_COUNT,
+        student_test_id: action.studentTestId,
+        flagCount: 0,
       });
     }
   } catch (error) {
@@ -1186,24 +1185,22 @@ function* handleUpdateTestFlagStatus(action) {
         return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
       }
     }
-    console.log('log: action.status', action.status);
-    console.log('log: action.oldStatus', action.oldStatus);
-    if (action.oldStatus !== "FLAGGED" && action.status === "FLAGGED") {
-      flagDiff = 1;
-    } else if (action.oldStatus === "FLAGGED" && action.status !== "FLAGGED") {
+    if (action.oldStatus === "FLAGGED" && action.status !== "FLAGGED") {
       flagDiff = -1;
+    } else if (action.status === "FLAGGED" && action.oldStatus !== "FLAGGED") {
+      flagDiff = 1;
     }
-    yield put(resetErrorMessage(testFlagMessage));
-    yield put({
-      type: UPDATE_FLAG_STATUS_SUCCESS,
-      sectionId: action.question.test_section_id,
-      question: action.question,
-    });
     yield put({
       type: UPDATE_TEST_FLAG_COUNT,
       flagDiff,
       student_test_id: action.payload.student_test_id,
     });
+    yield put({
+      type: UPDATE_FLAG_STATUS_SUCCESS,
+      sectionId: action.question.test_section_id,
+      question: action.question,
+    });
+    yield put(resetErrorMessage(testFlagMessage));
   } catch (error) {
     yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${error}`));
     console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);

@@ -52,7 +52,6 @@ import {
   ADD_LESSON_ANSWER,
   DELETE_STUDENT_TEST,
   MARK_ALL_FLAGS_REVIEWED,
-  UPDATE_COMPLETED_FLAGS,
   ASSIGN_NEW_TEST,
   ADD_NEW_TEST_TO_STUDENT_TESTS,
   SET_ESSAY_SCORE,
@@ -396,12 +395,6 @@ export const updateTestFlag = (studentTestId, studentId, flagCount) => ({
   studentTestId,
   studentId,
   flagCount,
-});
-
-export const updateCompletedFlags = (studentTestId, flags) => ({
-  type: UPDATE_COMPLETED_FLAGS,
-  studentTestId,
-  flags,
 });
 
 export const assignNewTest = (newTest) => ({
