@@ -17,7 +17,6 @@ class AnswerRow extends React.Component {
     super(props);
     this.state = {
       open: false,
-      status: '',
       originalTestProblemId: "",
     };
   }
@@ -25,18 +24,11 @@ class AnswerRow extends React.Component {
   componentDidMount = () => {
     const { problem: { id } } = this.props;
     const { originalTestProblemId } = this.state;
-    if (id !== originalTestProblemId && this.props.problem.flag_status) {
-      const { problem: { flag_status } } = this.props;
+    if (id !== originalTestProblemId) {
       this.setState({
-        status: flag_status,
         originalTestProblemId: id,
       });
     }
-  }
-  onChangeFlagState = (status) => {
-    this.setState({
-      status,
-    });
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -71,7 +63,7 @@ class AnswerRow extends React.Component {
 
   render() {
     const { problem, onAnswerStudentLessonProblem, onAnswerStudentLessonDebounce, activeLesson } = this.props;
-    const { open, status } = this.state;
+    const { open } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
@@ -79,7 +71,6 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
-          onChangeFlagState={this.onChangeFlagState}
           activeLesson={activeLesson}
           onFlagStudentLessonProblem={this.props.onFlagStudentLessonProblem}
         />
@@ -112,13 +103,13 @@ class AnswerRow extends React.Component {
             </div>
             <div className="col col-auto">
               <Choose>
-                <When condition={status === 'FLAGGED'}>
+                <When condition={problem.flag_status === 'FLAGGED'}>
                   <span className="status-answer" style={{ color: "#c0272d" }}>
                     <i className="icon-flag"></i>
                     <b className="status-text">Review</b>
                   </span>
                 </When>
-                <When condition={status === 'REVIEWED'}>
+                <When condition={problem.flag_status === 'REVIEWED'}>
                   <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                     <i className="icon-flag"></i>
                     <b className="status-text">Review</b>

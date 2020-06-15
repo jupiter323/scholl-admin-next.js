@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Portal from "../../../../common/Portal";
 import ClickOffComponentWrapper from "../../../../common/ClickOffComponentWrapper";
-import { addStudentLessonProblemFlagApi, addVideoWatchedTime } from "../../../index/api";
+import { addVideoWatchedTime } from "../../../index/api";
 import RadialBar from "../../../../common/RadialBar";
 import { ConvertSecondsToMinutesSeconds } from '../../../../utils/ConvertSecondsToMinutesSeconds';
 import VideoPlayer from '../VideoPlayer';
@@ -44,10 +44,8 @@ class QuestionModal extends React.Component {
     this.setState({
       status,
     });
-    onChangeFlagState(status);
     const { question: { problem: { id: problemId } } } = this.props;
     const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
-    // await addStudentLessonProblemFlagApi(postBody);
     onFlagStudentLessonProblem(postBody);
   };
 
