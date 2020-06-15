@@ -390,7 +390,7 @@ export const deleteStudentTest = (studentTestId, studentId, testType) => ({
   testType,
 });
 
-export const updateTestFlag = (studentTestId, studentId, flagCount) => ({
+export const markAllFlagsReviewed = (studentTestId, studentId, flagCount) => ({
   type: MARK_ALL_FLAGS_REVIEWED,
   studentTestId,
   studentId,
