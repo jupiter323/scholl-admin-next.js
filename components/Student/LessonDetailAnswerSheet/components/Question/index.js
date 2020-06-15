@@ -51,12 +51,16 @@ class AnswerRow extends React.Component {
     switch (problemType) {
       case "drillProblems":
         if (activeLesson.status === "COMPLETED") return true;
+        break;
       case "challengeProblems":
         if (activeLesson.sections[0].status === "COMPLETED") return true;
+        break;
       case "practiceProblems":
         if (activeLesson.sections[1].status === "COMPLETED") return true;
+        break;
       default:
         return false;
+        break;
     }
   }
 

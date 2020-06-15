@@ -64,6 +64,13 @@ import {
   SET_LESSON_PROBLEMS,
   SET_LESSON_ANSWER,
   ADD_LESSON_ANSWER_DEBOUNCE,
+  UPDATE_LESSON_STATUS,
+  UPDATE_LESSON_STATUS_SUCCESS,
+  COMPLETE_LESSON_SECTION,
+  SUBMIT_LESSON_PROBLEMS,
+  FETCH_LESSON_DETAILS,
+  SET_ACTIVE_LESSON,
+  COMPLETE_SECTION_SUCCESS,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -988,7 +995,9 @@ function* handleAnswerStudentLessonProblem(action) {
   try {
     const response = yield call(addStudentLessonProblemAnswerApi, action.postBody);
     if (response && !response.ok) {
-      return console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", response);
+      if (!response.ok) {
+        response.json().then(res => console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", res.message));
+      }
     }
     let propertyName;
     let answer;
@@ -1203,25 +1212,66 @@ function* handleFetchActiveTestScores(action) {
   }
 }
 
+function* watchForFetchLessonDetails() {
+  yield takeEvery(FETCH_LESSON_DETAILS, handleFetchLessonDetails);
+}
+
+function* handleFetchLessonDetails(action) {
+  try {
+    if (action.afterCompleted) {
+      yield delay(500);
+    }
+    const response = yield call(fetchStudentLessonApi, action.postBody.student_id, action.postBody.lesson_id);
+    if (response && response.message) {
+      return console.warn("Error occurred in the handleFetchLessonDetails saga", response.message);
+    }
+
+    yield put({
+      type: SET_ACTIVE_LESSON,
+      activeLesson: response.data,
+    });
+
+    const label = response.data.type.label;
+    if (label === "Drill" || label === 'Reading') {
+      if (response.data.status === "ASSIGNED") {
+        yield put({
+          type: UPDATE_LESSON_STATUS,
+          postBody: {
+            student_lesson_id: response.data.id,
+            status: "STARTED",
+          },
+        });
+      }
+    } else if (label === "Module") {
+      for (const section of action.sections) {
+        yield put({
+          type: FETCH_LESSON_SECTIONS,
+          postBody: {
+            student_id: action.postBody.student_id,
+            lesson_id: action.postBody.lesson_id,
+            section_id: section.id,
+          },
+        });
+      }
+    }
+  } catch (error) {
+    return console.warn("Error occurred in the handleFetchLessonDetails saga", error);
+  }
+}
+
 function* watchForFetchLessonProblems() {
   yield takeEvery(FETCH_LESSON_SECTIONS, handleFetchLessonProblems);
 }
 
 function* handleFetchLessonProblems(action) {
   try {
-    const { postBody: { student_id, lesson_id } } = action;
-    let response;
-    if (action.postBody.section_id) {
-      response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, action.postBody.section_id);
-    } else {
-      response = yield call(fetchStudentLessonApi, student_id, lesson_id);
-    }
+    const { postBody: { student_id, lesson_id, section_id } } = action;
+    const response = yield call(fetchStudentLessonSectionApi, student_id, lesson_id, section_id);
     if (response && response.message) {
       return console.warn("Error occurred in the handleFetchLessonProblems saga", response.message);
     }
-    console.log('log: response saga', response);
-    const sectionType = !action.postBody.section_id ? 'drill' : response.data.name;
-    const problems = !action.postBody.section_id ? response.data.problems : response.data.lesson_problems;
+    const sectionType = response.data.name;
+    const problems = response.data.lesson_problems;
     yield put({
       type: SET_LESSON_PROBLEMS,
       sectionType,
@@ -1229,6 +1279,109 @@ function* handleFetchLessonProblems(action) {
     });
   } catch (error) {
     return console.warn("Error occurred in the handleFetchLessonProblems saga", error);
+  }
+}
+
+function* watchForUpdateStudentLessonStatus() {
+  yield takeEvery(UPDATE_LESSON_STATUS, handleUpdateLessonStatus);
+}
+
+function* handleUpdateLessonStatus(action) {
+  try {
+    const response = yield call(updateStudentLessonStatusApi, action.postBody);
+    if (response && !response.ok) {
+      response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
+    }
+    if (action.postBody.status === "COMPLETED") {
+      return yield put({
+        type: FETCH_LESSON_DETAILS,
+        postBody: {
+          student_id: action.student_id,
+          lesson_id: action.postBody.student_lesson_id,
+          section_id: action.section_id,
+        },
+        afterCompleted: true,
+      });
+    }
+    return yield put({
+      type: UPDATE_LESSON_STATUS_SUCCESS,
+      status: action.postBody.status,
+    });
+  } catch (error) {
+    return console.warn("Error occurred in the handleUpdateLessonStatus saga", error);
+  }
+}
+
+function* watchForCompleteStudentLessonSection() {
+  yield takeEvery(COMPLETE_LESSON_SECTION, handleCompleteLessonSection);
+}
+
+function* handleCompleteLessonSection(action) {
+  try {
+    const response = yield call(completeStudentLessonSectionApi, action.postBody);
+    if (response && !response.ok) {
+      yield put(sendErrorMessage("completeSectionMsg", "Something went wrong completing this section. Please try again."));
+      return response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
+    }
+
+    yield put(resetErrorMessage("completeSectionMsg"));
+    const actionData = {
+      postBody: {
+        student_id: action.student_id,
+        lesson_id: action.postBody.student_lesson_id,
+        section_id: action.sections[1].id,
+      },
+      sections: action.sections,
+      afterCompleted: true,
+    };
+    if (action.lessonType === 'challenge') {
+      yield put({
+        type: COMPLETE_SECTION_SUCCESS,
+      });
+      yield put({
+        type: FETCH_LESSON_SECTIONS,
+        ...actionData,
+      });
+    } else if (action.lessonType === 'practice') {
+      yield put({
+        type: FETCH_LESSON_DETAILS,
+        ...actionData,
+      });
+    }
+  } catch (error) {
+    return console.warn("Error occurred in the handleCompleteLessonSection saga", error);
+  }
+}
+
+function* watchForSubmitLessonProblems() {
+  yield takeEvery(SUBMIT_LESSON_PROBLEMS, handleSubmitLessonProblems);
+}
+
+function* handleSubmitLessonProblems(action) {
+  try {
+    const { lessonType } = action;
+    if (lessonType === 'drill' || lessonType === 'reading') {
+      yield put({
+        type: UPDATE_LESSON_STATUS,
+        postBody: action.postBody,
+        student_id: action.student_id,
+      });
+    } else if (lessonType === 'challenge' || lessonType === 'practice') {
+      const sectionIndex = lessonType === 'challenge' ? 0 : 1;
+      const postBody = {
+        student_lesson_id: action.postBody.student_lesson_id,
+        lesson_section_id: action.postBody.sections[sectionIndex].id,
+      };
+      yield put({
+        type: COMPLETE_LESSON_SECTION,
+        postBody,
+        student_id: action.student_id,
+        lessonType,
+        sections: action.postBody.sections,
+      });
+    }
+  } catch (error) {
+    return console.warn("Error occurred in the handleSubmitLessonProblems saga", error);
   }
 }
 
@@ -1290,5 +1443,9 @@ export default function* defaultSaga() {
     watchForFetchActiveTestScores(),
     watchForFetchLessonProblems(),
     watchForAnswerStudentLessonProblemDebounce(),
+    watchForUpdateStudentLessonStatus(),
+    watchForCompleteStudentLessonSection(),
+    watchForSubmitLessonProblems(),
+    watchForFetchLessonDetails(),
   ]);
 }

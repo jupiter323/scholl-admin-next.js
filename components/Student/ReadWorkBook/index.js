@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
-import { setOpenActivePage, setIsVisibleTopBar } from '../index/actions';
+import { setOpenActivePage, setIsVisibleTopBar, fetchLessonDetails, submitLessonProblems } from '../index/actions';
 import { makeSelectActiveLesson, makeSelectUnitFilterOptions } from '../index/selectors';
 import moment from 'moment';
 import DropDownMenu from '../DropDownMenu';
@@ -18,6 +18,19 @@ class ReadWorkBook extends React.Component {
       dropdownIsOpen: false,
     };
   }
+
+  componentDidMount = () => {
+    const {
+      user: { id: student_id },
+      onFetchLessonDetails,
+    } = this.props;
+    const lesson_id = this.props.lesson.id;
+    onFetchLessonDetails({ student_id, lesson_id });
+  }
+  componentWillUnmount = () => {
+    this.props.onCloseDetailModal();
+  };
+
   onSetActivePage = () => {
     const { onSetOpenActivePage, onSetIsVisibleTopBar } = this.props;
     onSetIsVisibleTopBar(true);
@@ -38,6 +51,31 @@ class ReadWorkBook extends React.Component {
   getUnitIndexMatchedUnitId = unitId => unitId === this.props.lesson.unit_id;
 
   onSetDropdown = () => this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
+
+  submitLessonButton = () => {
+    const {
+      activeLesson: { status, id },
+      onSubmitLessonProblems,
+      user: { id: student_id },
+    } = this.props;
+    const postBody = {
+      student_lesson_id: id,
+      status: 'COMPLETED',
+    };
+    return status !== 'COMPLETED' && (
+      <div className="row">
+        <div className="btn-holder left-align">
+          <a
+            href="#"
+            className="btn btn-xlarge waves-effect waves-light bg-blue"
+            onClick={() => onSubmitLessonProblems('reading', postBody, student_id)}
+          >
+            I'm Done
+          </a>
+        </div>
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -187,6 +225,7 @@ class ReadWorkBook extends React.Component {
                     </div>
                   </div>
                 </div>
+                {this.submitLessonButton()}
               </div>
             </div>
           </div>
@@ -205,11 +244,14 @@ ReadWorkBook.propTypes = {
 const mapStateToProps = createStructuredSelector({
   lesson: makeSelectActiveLesson(),
   units: makeSelectUnitFilterOptions(),
+  activeLesson: makeSelectActiveLesson(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onSetOpenActivePage: activepage => dispatch(setOpenActivePage(activepage)),
   onSetIsVisibleTopBar: value => dispatch(setIsVisibleTopBar(value)),
+  onFetchLessonDetails: (postBody) => dispatch(fetchLessonDetails(postBody)),
+  onSubmitLessonProblems: (lessonType, postBody, student_id) => dispatch(submitLessonProblems(lessonType, postBody, student_id)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
