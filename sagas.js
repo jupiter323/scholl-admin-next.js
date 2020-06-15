@@ -1074,8 +1074,6 @@ function* handleMarkAllFlagsReviewed(action) {
       count++;
     }
     // Dispatch to update redux store
-    console.log('log: reviewedTestIds.length', reviewedTestIds.length);
-    console.log('log: action.flagCount', action.flagCount);
     if (reviewedTestIds.length === action.flagCount) {
       yield put({
         type: UPDATE_TEST_FLAG_COUNT,

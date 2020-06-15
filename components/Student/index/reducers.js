@@ -412,37 +412,27 @@ function studentReducer(state = initialState, action) {
       let listName = "";
       const updateTestCardList = (listName) => {
         const cardList = state.get(listName);
-        const newList = cardList.map(test => {
+        return cardList.map(test => {
           if (test.student_test_id === action.student_test_id) {
-            console.log('log: action', action);
             (action.flagCount === 0 ?
               test.problem_flag_count = action.flagCount
               : test.problem_flag_count += action.flagDiff);
-            console.log('log: flag count', test.problem_flag_count);
           }
           return test;
         });
-        return newList;
       };
-      console.log('log: matchingTest', matchingTest);
       if (matchingTest) {
         if (matchingTest.status === "COMPLETED") {
-          console.log('log: 1', 1);
           newList = updateTestCardList("completedStudentTests");
           listName = "completedStudentTests";
         } else if (matchingTest.status !== "COMPLETED" && matchingTest.due_status === "OVERDUE") {
-          console.log('log: 2', 2);
           newList = updateTestCardList("overdueStudentTests");
           listName = "overdueStudentTests";
         } else {
-          console.log('log: 3', 3);
           newList = updateTestCardList("assignedStudentTests");
           listName = "assignedStudentTests";
         }
       }
-      console.log('log: action.flagDiff', action.flagDiff);
-      console.log('log: listName', listName);
-      console.log('log: newList', newList);
       return state.set(listName, [...newList]);
 
 

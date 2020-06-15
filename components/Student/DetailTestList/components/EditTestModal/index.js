@@ -347,7 +347,6 @@ class EditTestModal extends React.Component {
         imgWidth: img.width,
         imgHeight: img.height,
       };
-      console.log('imgSize:', imgSize);
       return imgSize;
     }, 0);
   };
