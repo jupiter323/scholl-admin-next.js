@@ -4,10 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-import { toast } from 'react-toastify';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
+import {compose} from 'redux';
+import {toast} from 'react-toastify';
 import TestVersionPage from '../TestVersionPage';
 import DetailTestScorePage from '../../../DetailTestScorePage';
 import DetailTestAnswerSheetComplete from '../../../DetailTestAnswerSheetComplete';
@@ -37,7 +37,7 @@ import {
   fetchTestsByStudentIdApi,
 } from '../../../index/api';
 
-import { css } from '@emotion/core';
+import {css} from '@emotion/core';
 import BarLoader from 'react-spinners/BarLoader';
 
 class EditTestModal extends React.Component {
@@ -53,13 +53,13 @@ class EditTestModal extends React.Component {
       subjects: [
         'Practice Test Scores',
         'Reading Analysis',
-        'Reading Analysis (cont’d)',
+        // 'Reading Analysis (cont’d)',
         'Reading Answer Sheet',
         'Writing Analysis',
-        'Writing Analysis (cont’d)',
+        // 'Writing Analysis (cont’d)',
         'Writing Answer Sheet',
         'Math Analysis',
-        "Math Analysis (cont'd)",
+        // "Math Analysis (cont'd)",
         'Math Answer Sheet(no calc)',
         'Math Answer Sheet(calculator)',
       ],
@@ -77,9 +77,9 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
-      fetchScoresMsg: "",
-      updateTestStatusMsg: "",
-      updateTestSectionMessage: "",
+      fetchScoresMsg: '',
+      updateTestStatusMsg: '',
+      updateTestSectionMessage: '',
     };
   }
 
@@ -87,8 +87,8 @@ class EditTestModal extends React.Component {
     const {
       onFetchStudentTestSections,
       studentToken,
-      test: { student_test_id },
-      activeStudent: { id },
+      test: {student_test_id},
+      activeStudent: {id},
     } = this.props;
 
     const postBody = {
@@ -102,25 +102,25 @@ class EditTestModal extends React.Component {
 
   componentWillUnmount() {
     this.props.onRef(undefined);
-    this.props.onResetErrorMessage("fetchScoresMsg");
-    this.props.onResetErrorMessage("updateTestStatusMsg");
+    this.props.onResetErrorMessage('fetchScoresMsg');
+    this.props.onResetErrorMessage('updateTestStatusMsg');
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activePage, sections, errorMessages } = nextProps;
-    const { onCloseEditTestModal } = this.props;
+    const {activePage, sections, errorMessages} = nextProps;
+    const {onCloseEditTestModal} = this.props;
     if (activePage !== this.state.activePage && activePage !== this.props.activePage) {
-      this.setState({ activePage });
+      this.setState({activePage});
     }
     if (sections.length !== 0) {
-      const { tests, test: { test_id } } = this.props;
+      const {tests, test: {test_id}} = this.props;
       sections.map(section => {
         if (section.test_section_status === 'COMPLETED') {
           const testIds = tests.map(test => test.id);
           const currentTestIndex = testIds.findIndex(testId => testId === test_id);
           const currentTestSections = tests[currentTestIndex].test_sections;
           const testSectionIndex = currentTestSections.findIndex(
-            testSection => testSection.id === section.test_section_id,
+            testSection => testSection.id === section.test_section_id
           );
           // If no match return and wait for new props
           if (!currentTestSections[testSectionIndex]) return;
@@ -128,26 +128,27 @@ class EditTestModal extends React.Component {
           const sectionType = currentTestSections[testSectionIndex].name;
           switch (sectionType) {
             case 'Reading':
-              return this.setState({ readingSectionCompleted: true });
+              return this.setState({readingSectionCompleted: true});
             case 'Writing':
-              return this.setState({ writingSectionCompleted: true });
+              return this.setState({writingSectionCompleted: true});
             case 'Math (Calculator)':
-              return this.setState({ mathCalcSectionCompleted: true });
+              return this.setState({mathCalcSectionCompleted: true});
             case 'Math (No Calculator)':
-              return this.setState({ mathNoCalcSectionCompleted: true });
+              return this.setState({mathNoCalcSectionCompleted: true});
             default:
           }
         }
       });
     }
-    const errorConditon = (name) => (errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== "");
-    if (errorConditon("fetchScoresMsg")) {
-      this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
+    const errorConditon = name =>
+      errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== '';
+    if (errorConditon('fetchScoresMsg')) {
+      this.setState({fetchScoresMsg: errorMessages.fetchScoresMsg});
       toast.error(errorMessages.fetchScoresMsg);
       onCloseEditTestModal();
     }
-    if (errorConditon("updateTestStatusMsg")) {
-      this.setState({ updateTestStatusMsg: errorMessages.updateTestStatusMsg });
+    if (errorConditon('updateTestStatusMsg')) {
+      this.setState({updateTestStatusMsg: errorMessages.updateTestStatusMsg});
       toast.error(errorMessages.updateTestStatusMsg);
       onCloseEditTestModal();
     }
@@ -224,7 +225,7 @@ class EditTestModal extends React.Component {
               break;
           }
           resolve();
-        },
+        }
       );
     });
 
@@ -233,14 +234,14 @@ class EditTestModal extends React.Component {
       enablePublish: false,
     });
     const imgDataLists = [];
-    const { subjects, adminInfo, headerGradient } = this.state;
+    const {subjects, adminInfo, headerGradient} = this.state;
     const coverBackgroundImg = './static/images/sunset.jpg';
     const logoImg = './static/images/study-hut-logo.png';
     const backgroundImage = await this.getBase64ImageFromURL(
-      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
+      `${coverBackgroundImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
     );
     const logo = await this.getBase64ImageFromURL(
-      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`,
+      `${logoImg}?auto=compress&cs=tinysrgb&dpr=1&w=500`
     );
     const pageStates = [
       {
@@ -263,53 +264,61 @@ class EditTestModal extends React.Component {
             const images = await this.getData(item);
           })
           .catch(console.error),
-      Promise.resolve(),
+      Promise.resolve()
     );
 
     getImagesPromise.then(() => {
       this.setState({
         enablePublish: true,
       });
-      const { scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages } = this.state;
+      const {scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages} = this.state;
       imgDataLists.push({
         image: scoresImages,
-        width: 550,
+        width: 545.28,
         margin: [0, 20, 0, 0],
         pageBreak: 'after',
       });
+
       for (let i = 0; i < 3; i++) {
         imgDataLists.push({
           image: analysisCicleImages[i],
           width: 300,
           margin: [0, 20, 0, 0],
         });
-        imgDataLists.push({
-          image: analysisBarImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
-        imgDataLists.push({
-          image: analysisBarImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
+        const imagesHeight = this.getBarAndCircleImageTotalHeight(
+          analysisBarImages[i],
+          analysisCicleImages[i]
+        );
+        if (imagesHeight > 746.89) {
+          //OverSized
+          imgDataLists.push({
+            image: analysisBarImages[i],
+            width: 545.28,
+            height: imagesHeight,
+            margin: [0, 20, 0, 50],
+          });
+        } else {
+          imgDataLists.push({
+            image: analysisBarImages[i],
+            width: 545.28,
+            margin: [0, 20, 0, 50],
+          });
+        }
         imgDataLists.push({
           image: answerSheetImages[i],
-          width: 550,
+          width: 545.28,
           margin: [0, 20, 0, 0],
           pageBreak: 'after',
         });
       }
       imgDataLists.push({
         image: answerSheetImages[3],
-        width: 550,
+        width: 545.28,
         margin: [0, 20, 0, 0],
       });
       const {
-        test: { test_description, completion_date },
-        activeStudent: { studentInformation: { firstName, lastName } },
+        test: {test_description, completion_date},
+        activeStudent: {studentInformation: {firstName, lastName}},
       } = this.props;
       const userInfo = update(this.state.userInfo, {
         $merge: {
@@ -325,16 +334,37 @@ class EditTestModal extends React.Component {
         adminInfo,
         backgroundImage,
         headerGradient,
-        logo,
+        logo
       );
     });
   };
 
-  onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
+  getImageSizeFromBase64String = base64string => {
+    let img = document.createElement('img');
+    img.setAttribute('src', base64string);
+    setTimeout(function() {
+      const imgSize = {
+        imgWidth: img.width,
+        imgHeight: img.height,
+      };
+      console.log('imgSize:', imgSize);
+      return imgSize;
+    }, 0);
+  };
+
+  getBarAndCircleImageTotalHeight = (barImageString, circleImageString) => {
+    const circleImage = this.getImageSizeFromBase64String(circleImageString);
+    const circleImageHeight = 300 / circleImage.imgWidth * circleImage.imgHeight;
+    const barImage = this.getImageSizeFromBase64String(barImageString);
+    const barImageHeight = 545.28 / barImage.imgWidth * barImage.imgHeight;
+    return Number(circleImageHeight) + Number(barImageHeight);
+  };
+
+  onUpdateTestSectionMsg = message => this.setState({updateTestSectionMessage: message});
 
   renderCurrentPage = () => {
-    const { activePage } = this.state;
-    const { test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore } = this.props;
+    const {activePage} = this.state;
+    const {test, user, onDeleteTest, onSaveTestChanges, onOpentTestScore} = this.props;
     if (activePage === 'testVersion') {
       return (
         <TestVersionPage
@@ -408,14 +438,14 @@ class EditTestModal extends React.Component {
       testMathCalcProblems,
       testMathNoCalcProblems,
     } = problemsByTest;
-    if (!testReadingProblems) this.setState({ readingSectionCompleted: true });
-    if (!testWritingProblems) this.setState({ writingSectionCompleted: true });
-    if (!testMathCalcProblems) this.setState({ mathCalcSectionCompleted: true });
-    if (!testMathNoCalcProblems) this.setState({ mathNoCalcSectionCompleted: true });
+    if (!testReadingProblems) this.setState({readingSectionCompleted: true});
+    if (!testWritingProblems) this.setState({writingSectionCompleted: true});
+    if (!testMathCalcProblems) this.setState({mathCalcSectionCompleted: true});
+    if (!testMathNoCalcProblems) this.setState({mathNoCalcSectionCompleted: true});
 
     // @TODO bring back started check for a test that was just created
     // if (activeTest.test_section_status === 'STARTED') {
-    const { tests, test: { test_id }, test } = this.props;
+    const {tests, test: {test_id}, test} = this.props;
     const postBody = {
       student_test_id: test.student_test_id,
       student_test_section_id: activeSection.id,
@@ -423,7 +453,9 @@ class EditTestModal extends React.Component {
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
     if (res && res.message) {
-      return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
+      return this.onUpdateTestSectionMsg(
+        'Something went wrong completing this test section. Please try again later.'
+      );
     }
 
     // Update current section as completed
@@ -433,7 +465,7 @@ class EditTestModal extends React.Component {
     const currentTestSections = tests[currentTestIndex].test_sections;
     const testSectionIds = currentTestSections.map(testSection => testSection.id);
     const currentTestSectionIndex = testSectionIds.findIndex(
-      testSectionId => testSectionId === currentTestSectionId,
+      testSectionId => testSectionId === currentTestSectionId
     );
     const currentTestSection = currentTestSections[currentTestSectionIndex];
     switch (currentTestSection.name) {
@@ -478,20 +510,20 @@ class EditTestModal extends React.Component {
         student_test_id: test.student_test_id,
         status: 'COMPLETED',
       };
-      const { onOpentTestScore, onUpdateTestStatus } = this.props;
+      const {onOpentTestScore, onUpdateTestStatus} = this.props;
       const currentTestStatus =
         test.due_status === 'OVERDUE' ? 'overdueStudentTests' : 'assignedStudentTests';
       onUpdateTestStatus(postBody, currentTestStatus, test.student_id);
       // Delay set on saga before running onOpentTestScore()
-      onOpentTestScore({ ...test, status: 'COMPLETED' });
+      onOpentTestScore({...test, status: 'COMPLETED'});
     }
   };
 
   render() {
-    const { test, user, onCloseEditTestModal } = this.props;
-    const { activePage, enablePublish } = this.state;
-    const { title, test_name } = test;
-    const { studentInformation: { firstName, lastName } } = user;
+    const {test, user, onCloseEditTestModal} = this.props;
+    const {activePage, enablePublish} = this.state;
+    const {title, test_name} = test;
+    const {studentInformation: {firstName, lastName}} = user;
     const completedTest = test.status === 'COMPLETED';
     return (
       <div className="wrapper">
@@ -591,9 +623,10 @@ class EditTestModal extends React.Component {
               loading={!this.state.enablePublish}
             />
           </div>
-          {
-            !this.state.enablePublish && <div style={{ textAlign: 'center', padding: 10 }}>please wait the test score report downloading...</div>
-          }
+          {!this.state.enablePublish &&
+            <div style={{textAlign: 'center', padding: 10}}>
+              please wait the test score report downloading...
+            </div>}
           <div className="content-section">
             <div className="content-section-holder">
               {this.renderCurrentPage()}
@@ -630,7 +663,7 @@ function mapDispatchToProps(dispatch) {
     onUpdateTestStatus: (payload, currentStatus, studentId) =>
       dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
-    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
+    onGetTestScores: postBody => dispatch(getTestScores(postBody)),
     onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }
