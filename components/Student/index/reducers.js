@@ -58,6 +58,7 @@ import {
   COMPLETE_SECTION_SUCCESS,
   FLAG_STUDENT_LESSON_SUCCESS,
   RESET_LESSON_FLAG_COUNT,
+  UPDATE_LESSON_SCORE,
 } from "./constants";
 
 const initialState = fromJS({
@@ -466,6 +467,10 @@ function studentReducer(state = initialState, action) {
         return lesson;
       });
       return state.set('studentLessonList', [...newStudentLessonList]);
+    case UPDATE_LESSON_SCORE: {
+      const activeLesson = state.get('activeLesson');
+      return state.set('activeLesson', { ...activeLesson });
+    }
     default:
       return state;
   }

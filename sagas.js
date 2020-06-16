@@ -74,6 +74,7 @@ import {
   FLAG_STUDENT_LESSON_SUCCESS,
   MARK_ALL_LESSON_FLAGS_REVIEWED,
   RESET_LESSON_FLAG_COUNT,
+  UPDATE_LESSON_SCORE,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -1030,6 +1031,13 @@ function* handleAnswerStudentLessonProblem(action) {
       problemType: action.problemType,
       propertyName,
     });
+    // Update scores only if scores exist
+    if (action.scoringInfo && action.scoringInfo.hasScoring) {
+      yield put({
+        type: UPDATE_LESSON_SCORE,
+        isCorrect: action.isCorrect,
+      });
+    }
   } catch (error) {
     console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
   }

@@ -378,11 +378,12 @@ export const setActiveStudent = (student) => ({
   student,
 });
 
-export const answerStudentLessonProblem = (postBody, problemType, format) => ({
+export const answerStudentLessonProblem = (postBody, problemType, format, scoringInfo) => ({
   type: ADD_LESSON_ANSWER,
   postBody,
   problemType,
   format,
+  scoringInfo,
 });
 
 export const deleteStudentTest = (studentTestId, studentId, testType) => ({
@@ -462,11 +463,12 @@ export const fetchLessonProblems = (postBody) => ({
   postBody,
 });
 
-export const answerStudentLessonDebounce = (postBody, problemType, format) => ({
+export const answerStudentLessonDebounce = (postBody, problemType, format, scoringInfo) => ({
   type: ADD_LESSON_ANSWER_DEBOUNCE,
   postBody,
   problemType,
   format,
+  scoringInfo,
 });
 
 export const submitLessonProblems = (lessonType, postBody, student_id) => ({

@@ -64,7 +64,18 @@ class BubbleGroup extends React.Component {
       problem_id: lesson.problem.id,
       answer_id: answerId,
     };
-    onAnswerStudentLessonProblem(postBody, problemType, "multiple");
+    console.log('log: lesson', lesson);
+    onAnswerStudentLessonProblem(postBody, problemType, "multiple", {
+      hasScoring: this.props.hasScoring,
+      isAnsCorrect: this.isAnswerCorrect(answerId),
+      isPrevAnsCorrect: this.isAnswerCorrect(lesson.answer_id),
+    });
+  }
+
+  isAnswerCorrect = (answer) => {
+    const { lesson } = this.props;
+    if (lesson.correct_answer_id === answer) return true;
+    return false;
   }
 
   mapEmptyBubbles = id => {

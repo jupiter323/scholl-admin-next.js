@@ -89,12 +89,14 @@ class AnswerRow extends React.Component {
                     studentLessonId={activeLesson.id}
                     problemType={this.props.problemType}
                     hasDisplayAnswers={this.isLessonSectionCompleted()}
+                    hasScoring={!!activeLesson.scoring}
                   /> :
                   <BubbleGroup
                     lesson={problem}
                     onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
                     studentLessonId={activeLesson.id}
                     problemType={this.props.problemType}
+                    hasScoring={!!activeLesson.scoring}
                   />}
               </ul>
             </div>
@@ -138,8 +140,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onAnswerStudentLessonProblem: (postBody, problemType, format) => dispatch(answerStudentLessonProblem(postBody, problemType, format)),
-  onAnswerStudentLessonDebounce: (postBody, problemType, format) => dispatch(answerStudentLessonDebounce(postBody, problemType, format)),
+  onAnswerStudentLessonProblem: (postBody, problemType, format, scoringInfo) => dispatch(answerStudentLessonProblem(postBody, problemType, format, scoringInfo)),
+  onAnswerStudentLessonDebounce: (postBody, problemType, format, scoringInfo) => dispatch(answerStudentLessonDebounce(postBody, problemType, format, scoringInfo)),
   onFlagStudentLessonProblem: (postBody) => dispatch(flagStudentLessonProblem(postBody)),
 });
 
