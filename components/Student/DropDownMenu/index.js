@@ -91,16 +91,6 @@ class DropDownMenu extends React.Component {
 
   startMarkFlagsReviewed = (lessonIds) => {
     this.props.handleMarkAllFlagsReviewed(lessonIds, false);
-    // @TODO comment out for now until finish rework of answering problems-Mark
-    // const { problems, updateProblemList } = this.props;
-    // this.props.handleMarkAllFlagsReviewed(lessonIds);
-    // problems.map(problemList => {
-    //   problemList.problems.map(problem => {
-    //     if (problem.flag_status === 'FLAGGED') {
-    //       updateProblemList(problemList.type, { ...problem, flag_status: 'REVIEWED' });
-    //     }
-    //   });
-    // });
   }
 
   render() {

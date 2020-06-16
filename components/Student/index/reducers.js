@@ -98,6 +98,7 @@ const initialState = fromJS({
     updateTestStatusMsg: "",
     fetchingStudentTestsMessage: '',
     completeSectionMsg: "",
+    markLessonsReviewedMsg: "",
   },
 });
 

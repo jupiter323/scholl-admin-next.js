@@ -1434,7 +1434,8 @@ function* handleMarkAllLessonFlagsReviewed(action) {
               lesson.id,
               lesson.sections[1].id,
             );
-            if (section1 && section2 && section1.message && section2.message) {
+            if (section1 && section2 && (section1.message || section2.message)) {
+              yield put(sendErrorMessage("markLessonsReviewedMsg", "Something went wrong reviewing flags for this lesson. Please try again later."));
               return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga");
             }
             const sectionsArr = [section1, section2];
@@ -1465,6 +1466,7 @@ function* handleMarkAllLessonFlagsReviewed(action) {
         });
       }
     }
+    yield put(resetErrorMessage("markLessonsReviewedMsg"));
   } catch (error) {
     return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga", error);
   }

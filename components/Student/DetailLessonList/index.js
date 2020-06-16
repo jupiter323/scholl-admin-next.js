@@ -90,7 +90,6 @@ class DetailLessonList extends React.Component {
         unitFilter: '',
       },
       confirmationModalMessage: '',
-      lessonIdsToUnFlag: [],
     };
   }
 
@@ -118,12 +117,6 @@ class DetailLessonList extends React.Component {
       dispathGetStudentLessonList({ id });
     }
   };
-
-  // deSelectAllLessons = async (selectedLessonIds) => {
-  //   await this.props.dispatchUnCheckAllLesson(selectedLessonIds);
-  //   await this.props.dispatchRemoveAllLessons(this.getMappableLessons());
-  //   this.setState({ selectAll: false });
-  // }
 
   /**
    * @param checked {bool}
@@ -550,58 +543,6 @@ class DetailLessonList extends React.Component {
     this.resetLessonSelections();
   }
 
-  // handleMarkAllFlagsReviewed = (studentLessonIds) => {
-  //   const { onFlagStudentLessonProblem, studentLess } = this.props;
-  //   if (studentLessonIds && studentLessonIds.length > 0) {
-  //     studentLess.forEach(lesson => {
-  //       if (studentLessonIds.includes(lesson.id)) {
-  //         console.log('log: lesson', lesson)
-  //         if (lesson.problems && lesson.problems.length > 0) {
-  //           lesson.problems.forEach(problem => {
-  //             if (problem.flag_status === "FLAGGED") {
-  //               const payload = {
-  //                 student_lesson_id: lesson.id,
-  //                 problem_id: problem.problem.id,
-  //                 flag_status: 'REVIEWED',
-  //               };
-  //               onFlagStudentLessonProblem(payload);
-  //             }
-  //           });
-  //         } else if (lesson.sections && lesson.sections.length > 0) {
-  //           const section1 = fetchStudentLessonSectionApi(
-  //             this.props.user.id,
-  //             lesson.id,
-  //             lesson.sections[0].id,
-  //           );
-  //           const section2 = fetchStudentLessonSectionApi(
-  //             this.props.user.id,
-  //             lesson.id,
-  //             lesson.sections[1].id,
-  //           );
-  //           Promise.all([section1, section2]).then((sections) => {
-  //             const filteredSections = sections.filter((section) => section);
-  //             console.log('log: filteredSections', filteredSections);
-  //             filteredSections.map((section) => {
-  //               section.data.lesson_problems.map((problem) => {
-  //                 if (problem.flag_status === "FLAGGED") {
-  //                   const payload = {
-  //                     student_lesson_id: lesson.id,
-  //                     problem_id: problem.problem.id,
-  //                     flag_status: 'REVIEWED',
-  //                   };
-  //                   onFlagStudentLessonProblem(payload);
-  //                 }
-  //               });
-  //             });
-  //           });
-  //         }
-  //       }
-  //     });
-  //     this.setState({ lessonIdsToUnFlag: mergeArrays(this.state.lessonIdsToUnFlag, studentLessonIds) });
-  //     this.resetLessonSelections();
-  //   }
-  // }
-
   handleExcuseLessonLateness = (lessonCardIds) => {
     const { onExcuseStudentLateness } = this.props;
     if (lessonCardIds && lessonCardIds.length > 0) {
@@ -645,7 +586,6 @@ class DetailLessonList extends React.Component {
               onCloseDropdown={this.onCloseDropdown}
               resetLessonSelections={this.resetLessonSelections}
               handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
-              lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
               handleExcuseLessonLateness={this.handleExcuseLessonLateness}
             />
           </When>

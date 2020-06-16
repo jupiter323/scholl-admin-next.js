@@ -114,16 +114,6 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: "Drill",
         hasDrill: true,
       });
-      // @TODO commented out some flag logic until I can finish reworking answering lessons-Mark
-      // if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
-      //   lesson.problems.map(problem => {
-      //     if (problem.flag_status === 'FLAGGED') {
-      //       problem.flag_status = 'REVIEWED';
-      //       return problem;
-      //     }
-      //     return problem;
-      //   });
-      // }
     }
   };
 
@@ -209,13 +199,6 @@ class LessonDetailAnswerSheet extends React.Component {
     const { onOpenModal, onAddCheckedLesson, lesson } = this.props;
     onOpenModal();
     onAddCheckedLesson(lesson.id);
-  };
-
-  getCurrentProblemList = () => {
-    // @TODO Replace this function because problems are from props not state-Mark
-    // const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
-    // if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
-    // if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
   };
 
   getTotalVideoDuration = () => {
@@ -417,7 +400,6 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
                       handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
-                      problems={this.getCurrentProblemList()}
                       handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
                   </div>
