@@ -100,6 +100,7 @@ const initialState = fromJS({
     fetchingStudentTestsMessage: '',
     completeSectionMsg: "",
     markLessonsReviewedMsg: "",
+    updateLessonStatusMsg: "",
   },
 });
 
@@ -251,8 +252,8 @@ function studentReducer(state = initialState, action) {
 
     case UNASSIGN_STUDENT_LESSON_SUCCESS:
       return state.set(
-        "lessonList",
-        state.get("lessonList").filter((lesson) => !action.payload.includes(lesson.id)),
+        "studentLessonList",
+        state.get("studentLessonList").filter((lesson) => !action.payload.includes(lesson.id)),
       );
 
     case RESET_STUDENT_LESSONS_SUCCESS:
@@ -489,7 +490,6 @@ function studentReducer(state = initialState, action) {
         }
         scoring.percentage_correct = score;
         scoring.grade = newGrade;
-        console.log('log: scoring', scoring);
         activeLesson.scoring = scoring;
       };
       if (isAnsCorrect && !isPrevAnsCorrect) {

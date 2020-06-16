@@ -65,16 +65,21 @@ class LessonDetailAnswerSheet extends React.Component {
       dropdownIsOpen: false,
       loadingScores: false,
       completeSectionMsg: "",
+      updateLessonStatusMsg: ""
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { lesson, errorMessages: { completeSectionMsg } } = props;
+    const { lesson, errorMessages: { completeSectionMsg, updateLessonStatusMsg } } = props;
     if (lesson.status === "COMPLETED") {
       return { loadingScores: false };
     }
+    console.log('log: completeSectionMsg', completeSectionMsg);
     if (completeSectionMsg && completeSectionMsg !== state.completeSectionMsg) {
       return { completeSectionMsg };
+    }
+    if (updateLessonStatusMsg && updateLessonStatusMsg !== state.updateLessonStatusMsg) {
+      return { updateLessonStatusMsg };
     }
   }
 
@@ -120,6 +125,7 @@ class LessonDetailAnswerSheet extends React.Component {
   componentWillUnmount = () => {
     this.props.onCloseDetailModal();
     this.props.onResetErrorMessage("completeSectionMsg");
+    this.props.onResetErrorMessage("updateLessonStatusMsg");
   };
 
   getProblemsAmount = () => {
@@ -259,6 +265,7 @@ class LessonDetailAnswerSheet extends React.Component {
       <div className="row">
         <div className="btn-holder left-align">
           <p className="red-text">{this.state.completeSectionMsg}</p>
+          <p className="red-text">{this.state.updateLessonStatusMsg}</p>
           <a
             href="#"
             className="btn btn-xlarge waves-effect waves-light bg-blue"

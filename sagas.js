@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce, delay } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, takeLatest, debounce, delay } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -847,6 +847,7 @@ function* handleUnAssignLesson(action) {
   try {
     yield call(unAssignLessonFromStudentApi, { student_lesson_ids: action.lesson });
     yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
+    yield put({type: MERGE_STUDENT_LESSON_LISTS})
   } catch (error) {
     console.warn("Error occurred in the handleUnAssignLesson saga", error);
     yield put({
@@ -1000,7 +1001,7 @@ function* handleFetchAllLocations(id) {
 }
 
 function* watchForAnswerStudentLessonProblem() {
-  yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
+  yield takeLatest(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
 }
 
 function* watchForAnswerStudentLessonProblemDebounce() {
@@ -1031,7 +1032,6 @@ function* handleAnswerStudentLessonProblem(action) {
       problemType: action.problemType,
       propertyName,
     });
-    // Update scores only if scores exist
     if (action.scoringInfo && action.scoringInfo.hasScoring) {
       yield put({
         type: UPDATE_LESSON_SCORE,
@@ -1314,6 +1314,7 @@ function* handleUpdateLessonStatus(action) {
     const response = yield call(updateStudentLessonStatusApi, action.postBody);
     if (response && !response.ok) {
       response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
+      return yield put(sendErrorMessage("updateLessonStatusMsg", "Something went wrong updating this lesson's status. Try again later."))
     }
     if (action.postBody.status === "COMPLETED") {
       return yield put({
@@ -1343,7 +1344,7 @@ function* handleCompleteLessonSection(action) {
   try {
     const response = yield call(completeStudentLessonSectionApi, action.postBody);
     if (response && !response.ok) {
-      yield put(sendErrorMessage("completeSectionMsg", "Something went wrong completing this section. Please try again."));
+      yield put(sendErrorMessage("completeSectionMsg", "Something went wrong completing this section. Please try again later."));
       return response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
     }
 
