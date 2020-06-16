@@ -481,9 +481,10 @@ export const fetchLessonDetails = (postBody) => ({
   postBody,
 });
 
-export const markAllLessonFlagsReviewed = (studentLessonIds, studentLessons, user) => ({
+export const markAllLessonFlagsReviewed = (studentLessonIds, studentLessons, user, setLessonList) => ({
   type: MARK_ALL_LESSON_FLAGS_REVIEWED,
   studentLessonIds,
   studentLessons,
   user,
+  setLessonList,
 });

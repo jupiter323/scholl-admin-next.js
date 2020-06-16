@@ -1406,7 +1406,7 @@ function* watchForMarkAllLessonFlagsReviewed() {
 
 function* handleMarkAllLessonFlagsReviewed(action) {
   try {
-    const { studentLessonIds, studentLessons, user } = action;
+    const { studentLessonIds, studentLessons, user, setLessonList } = action;
     if (studentLessonIds && studentLessonIds.length > 0) {
       for (const lesson of studentLessons) {
         if (studentLessonIds.includes(lesson.id)) {
@@ -1418,7 +1418,7 @@ function* handleMarkAllLessonFlagsReviewed(action) {
                   problem_id: problem.problem.id,
                   flag_status: "REVIEWED",
                 };
-                yield put(flagStudentLessonProblem(payload, true));
+                yield put(flagStudentLessonProblem(payload, setLessonList));
               }
             }
           } else if (lesson.sections && lesson.sections.length > 0) {
@@ -1446,20 +1446,24 @@ function* handleMarkAllLessonFlagsReviewed(action) {
                     problem_id: problem.problem.id,
                     flag_status: "REVIEWED",
                   };
-                  yield put(flagStudentLessonProblem(payload, true));
+                  yield put(flagStudentLessonProblem(payload, setLessonList));
                 }
               }
             }
           }
-          yield put({
-            type: RESET_LESSON_FLAG_COUNT,
-            studentLessonId: lesson.id,
-          });
+          if (setLessonList) {
+            yield put({
+              type: RESET_LESSON_FLAG_COUNT,
+              studentLessonId: lesson.id,
+            });
+          }
         }
       }
-      yield put({
-        type: MERGE_STUDENT_LESSON_LISTS,
-      });
+      if (setLessonList) {
+        yield put({
+          type: MERGE_STUDENT_LESSON_LISTS,
+        });
+      }
     }
   } catch (error) {
     return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga", error);

@@ -10,7 +10,6 @@ class QuestionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'UN_FLAGGED',
       originalTestProblemId: '',
       videoWatchedTime: 0,
       intervalId: null,
@@ -36,14 +35,11 @@ class QuestionModal extends React.Component {
   }
 
   onHandleQuestionFlagStatus = async (_e, status) => {
-    if (this.state.status === status) return null;
+    if (this.props.question.flag_status === status) return null;
     const {
       activeLesson: { id: lessonId },
       onFlagStudentLessonProblem,
     } = this.props;
-    this.setState({
-      status,
-    });
     const { question: { problem: { id: problemId } } } = this.props;
     const postBody = { problem_id: problemId, student_lesson_id: lessonId, flag_status: status };
     onFlagStudentLessonProblem(postBody);
@@ -84,7 +80,7 @@ class QuestionModal extends React.Component {
 
 
   render() {
-    const { open, question: { problem: { reference_number, video } } } = this.props;
+    const { open, question: { problem: { reference_number, video }, flag_status } } = this.props;
     const { videoWatchedTime } = this.state;
     return (
       <Portal selector="#modal">
@@ -122,7 +118,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={this.state.status === "UN_FLAGGED"}
+                                checked={flag_status === "UN_FLAGGED"}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "UN_FLAGGED")}
                               />
                               <span>Nope. Got it.</span>
@@ -134,7 +130,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={this.state.status === "FLAGGED"}
+                                checked={flag_status === "FLAGGED"}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "FLAGGED")}
                               />
                               <span>
@@ -149,7 +145,7 @@ class QuestionModal extends React.Component {
                                 className="with-gap"
                                 name="review_radio"
                                 type="radio"
-                                checked={this.state.status === "REVIEWED"}
+                                checked={flag_status === "REVIEWED"}
                                 onClick={e => this.onHandleQuestionFlagStatus(e, "REVIEWED")}
                               />
                               <span>

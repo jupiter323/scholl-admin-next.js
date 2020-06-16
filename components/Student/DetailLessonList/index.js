@@ -545,8 +545,8 @@ class DetailLessonList extends React.Component {
     onSetOpenActivePage("");
   }
 
-  handleMarkAllFlagsReviewed = (studentLessonIds) => {
-    this.props.onMarkAllLessonFlagsReviewed(studentLessonIds, this.props.studentLess, this.props.user);
+  handleMarkAllFlagsReviewed = (studentLessonIds, setLessonList = true) => {
+    this.props.onMarkAllLessonFlagsReviewed(studentLessonIds, this.props.studentLess, this.props.user, setLessonList);
     this.resetLessonSelections();
   }
 

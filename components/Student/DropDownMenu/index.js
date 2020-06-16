@@ -14,6 +14,7 @@ import {
   rescheduleStudentLessons,
   unAssignLessonToStudent,
   resetStudentLessons,
+  markAllLessonFlagsReviewed,
 } from "../index/actions";
 
 class DropDownMenu extends React.Component {
@@ -89,6 +90,7 @@ class DropDownMenu extends React.Component {
   };
 
   startMarkFlagsReviewed = (lessonIds) => {
+    this.props.handleMarkAllFlagsReviewed(lessonIds, false);
     // @TODO comment out for now until finish rework of answering problems-Mark
     // const { problems, updateProblemList } = this.props;
     // this.props.handleMarkAllFlagsReviewed(lessonIds);
@@ -157,6 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
   onRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
   onUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
   onResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
+  onMarkAllLessonFlagsReviewed: bindActionCreators(markAllLessonFlagsReviewed, dispatch),
 });
 
 const withConnect = connect(null, mapDispatchToProps);
