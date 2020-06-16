@@ -58,10 +58,10 @@ class TestSettingModal extends React.Component {
      const isSectionAssigned = (subject) => subjects.includes(subject)
       this.setState({
         version: test_id,
-        assignTime: new Date(assignment_date),
-        dueTime: new Date(due_date),
-        assignDate: new Date(assignment_date),
-        dueDate: new Date(due_date),
+        assignTime: moment(assignment_date).toDate(),
+        dueTime: moment(due_date).toDate(),
+        assignDate: moment(assignment_date).toDate(),
+        dueDate: moment(due_date).toDate(),
         reading: isSectionAssigned("Reading"),
         mathNoCalc: isSectionAssigned("Math (No Calculator)"),
         writing: isSectionAssigned("Writing"),
@@ -88,14 +88,10 @@ class TestSettingModal extends React.Component {
 
   onUpdate = () => {
     const { onSave, tests, test:{ student_test_id, test_id}, test } = this.props;
-    const { mathNoCalc, mathWithCalc, reading, writing, dueDate } = this.state
+    const { mathNoCalc, mathWithCalc, reading, writing, dueDate, assignDate } = this.state
+    let checkedAssignDate = moment(assignDate).isSame(test.assignment_date) ? '' : assignDate
+    let checkedDueDate = moment(dueDate).isSame(test.due_date) ? '' : dueDate
     const currentTest = tests.find( test => test.id === test_id )
-    // console.log('log: currentTest ', currentTest);
-    // console.log('log: test ', test);
-    // console.log('log: dueDate ', dueDate);
-    // const dateDue = (dueDate === test.due_date) ? null : dueDate
-    // console.log('log: dueDate ', dueDate);
-
     let currentTestSectionsIds = [];
     test.sections.forEach( sections => {
       currentTestSectionsIds.push(sections.section.id)
@@ -119,15 +115,10 @@ class TestSettingModal extends React.Component {
           break;
       }
     })
-    console.log('log: currentTestSections ', currentTestSectionsIds);
-    console.log('log: updatedSectionsIds ', updatedSectionsIds);
-
     if((currentTestSectionsIds.length === updatedSectionsIds.length) && (currentTestSectionsIds.every(val => updatedSectionsIds.includes(val)))){
-      onSave(student_test_id,[], dueDate)
-      console.log("NO Sections changed but added dueDate")
+      onSave(student_test_id,[], checkedDueDate, checkedAssignDate)
     }else{
-      onSave(student_test_id, updatedSectionsIds, dueDate);
-      console.log("Added new sections and Due Date")
+      onSave(student_test_id, updatedSectionsIds, checkedDueDate, checkedAssignDate);
     }
   };
   
