@@ -70,15 +70,6 @@ const LessonCard = props => {
   const completedAt = completed_at || completionDate
   // STATE
   const [dropdownIsOpen, toggleDropdown] = useState(false);
-  // const [hasFlaggedProblems, setHasFlaggedProblems] = useState(false)
-
-  // useEffect(() => {
-  //   if (lesson.problem_flag_count) {
-  //     if (lesson.problem_flag_count > 0) {
-  //       return setHasFlaggedProblems(true);
-  //     }
-  //   } 
-  // }, []);
 
   const onOpenDetailModal = async (e) => {
     e.preventDefault()
@@ -144,9 +135,8 @@ const LessonCard = props => {
 
   const startMarkFlagsReviewed = (lessonIds) => {
     handleMarkAllFlagsReviewed(lessonIds)
-    // setHasFlaggedProblems(false)
   }
-  console.log('log: props', props)
+  
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -179,7 +169,7 @@ const LessonCard = props => {
               </div>
               <div className="col s1 right-align">
                 <div className="row icons-row">
-                  {!!lesson.problem_flag_count && lesson.problem_flag_count !== 0 && <i style={{ color: "#c0272d" }} className="icon-flag"></i>}
+                  {!!lesson.problem_flag_count && lesson.problem_flag_count > 0 && <i style={{ color: "#c0272d" }} className="icon-flag"></i>}
                   <div className="dropdown-block col">
                     <a
                       className="dropdown-trigger btn"

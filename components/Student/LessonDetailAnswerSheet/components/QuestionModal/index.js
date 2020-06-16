@@ -36,9 +36,9 @@ class QuestionModal extends React.Component {
   }
 
   onHandleQuestionFlagStatus = async (_e, status) => {
+    if (this.state.status === status) return null;
     const {
       activeLesson: { id: lessonId },
-      onChangeFlagState,
       onFlagStudentLessonProblem,
     } = this.props;
     this.setState({

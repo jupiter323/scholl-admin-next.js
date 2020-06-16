@@ -38,7 +38,6 @@ import AssignLessonModal from "./components/AssignLessonModal";
 import { renderDropdownOptions } from './components/FullView/components/LessonCard/utils/index';
 import ReadWorkBook from '../ReadWorkBook';
 import Modal from "../../Modal/index";
-
 import {
   getLessonList,
   getStudentLessonList,
@@ -53,6 +52,7 @@ import {
   excuseStudentLateness,
   filterLessons,
   flagStudentLessonProblem,
+  markAllLessonFlagsReviewed,
 } from "../index/actions";
 import { makeSelectGetLessonList, makeSelectCheckedLessons, makeSelectActiveStudentToken, makeSelectGetStudentLessonList, makeSelectActiveLesson, makeSelectOpenActivePage, makeSelectSubjects } from "../index/selectors";
 import { createStructuredSelector } from "reselect";
@@ -459,7 +459,6 @@ class DetailLessonList extends React.Component {
           onAddAssignLessonIds={this.onAddAssignLessonIds}
           resetLessonSelections={this.resetLessonSelections}
           handleMarkAllFlagsReviewed={this.handleMarkAllFlagsReviewed}
-          lessonIdsToUnFlag={this.state.lessonIdsToUnFlag}
           handleExcuseLessonLateness={this.handleExcuseLessonLateness}
         />
       );
@@ -547,54 +546,61 @@ class DetailLessonList extends React.Component {
   }
 
   handleMarkAllFlagsReviewed = (studentLessonIds) => {
-    const { onFlagStudentLessonProblem } = this.props;
-    if (studentLessonIds && studentLessonIds.length > 0) {
-      this.getMappableLessons().forEach(lesson => {
-        if (studentLessonIds.includes(lesson.id)) {
-          if (lesson.problems && lesson.problems.length > 0) {
-            lesson.problems.forEach(problem => {
-              if (problem.flag_status === "FLAGGED") {
-                const payload = {
-                  student_lesson_id: lesson.id,
-                  problem_id: problem.problem.id,
-                  flag_status: 'REVIEWED',
-                };
-                onFlagStudentLessonProblem(payload);
-              }
-            });
-          } else if (lesson.sections && lesson.sections.length > 0) {
-            const section1 = fetchStudentLessonSectionApi(
-              this.props.user.id,
-              lesson.id,
-              lesson.sections[0].id,
-            );
-            const section2 = fetchStudentLessonSectionApi(
-              this.props.user.id,
-              lesson.id,
-              lesson.sections[1].id,
-            );
-            Promise.all([section1, section2]).then((sections) => {
-              const filteredSections = sections.filter((section) => section);
-              filteredSections.map((section) => {
-                section.lesson_problems.map((problem) => {
-                  if (problem.flag_status === "FLAGGED") {
-                    const payload = {
-                      student_lesson_id: lesson.id,
-                      problem_id: problem.problem.id,
-                      flag_status: 'REVIEWED',
-                    };
-                    onFlagStudentLessonProblem(payload);
-                  }
-                });
-              });
-            });
-          }
-        }
-      });
-      this.setState({ lessonIdsToUnFlag: mergeArrays(this.state.lessonIdsToUnFlag, studentLessonIds) });
-      this.resetLessonSelections();
-    }
+    this.props.onMarkAllLessonFlagsReviewed(studentLessonIds, this.props.studentLess, this.props.user);
+    this.resetLessonSelections();
   }
+
+  // handleMarkAllFlagsReviewed = (studentLessonIds) => {
+  //   const { onFlagStudentLessonProblem, studentLess } = this.props;
+  //   if (studentLessonIds && studentLessonIds.length > 0) {
+  //     studentLess.forEach(lesson => {
+  //       if (studentLessonIds.includes(lesson.id)) {
+  //         console.log('log: lesson', lesson)
+  //         if (lesson.problems && lesson.problems.length > 0) {
+  //           lesson.problems.forEach(problem => {
+  //             if (problem.flag_status === "FLAGGED") {
+  //               const payload = {
+  //                 student_lesson_id: lesson.id,
+  //                 problem_id: problem.problem.id,
+  //                 flag_status: 'REVIEWED',
+  //               };
+  //               onFlagStudentLessonProblem(payload);
+  //             }
+  //           });
+  //         } else if (lesson.sections && lesson.sections.length > 0) {
+  //           const section1 = fetchStudentLessonSectionApi(
+  //             this.props.user.id,
+  //             lesson.id,
+  //             lesson.sections[0].id,
+  //           );
+  //           const section2 = fetchStudentLessonSectionApi(
+  //             this.props.user.id,
+  //             lesson.id,
+  //             lesson.sections[1].id,
+  //           );
+  //           Promise.all([section1, section2]).then((sections) => {
+  //             const filteredSections = sections.filter((section) => section);
+  //             console.log('log: filteredSections', filteredSections);
+  //             filteredSections.map((section) => {
+  //               section.data.lesson_problems.map((problem) => {
+  //                 if (problem.flag_status === "FLAGGED") {
+  //                   const payload = {
+  //                     student_lesson_id: lesson.id,
+  //                     problem_id: problem.problem.id,
+  //                     flag_status: 'REVIEWED',
+  //                   };
+  //                   onFlagStudentLessonProblem(payload);
+  //                 }
+  //               });
+  //             });
+  //           });
+  //         }
+  //       }
+  //     });
+  //     this.setState({ lessonIdsToUnFlag: mergeArrays(this.state.lessonIdsToUnFlag, studentLessonIds) });
+  //     this.resetLessonSelections();
+  //   }
+  // }
 
   handleExcuseLessonLateness = (lessonCardIds) => {
     const { onExcuseStudentLateness } = this.props;
@@ -717,6 +723,7 @@ const mapDispatchToProps = (dispatch) => ({
   onExcuseStudentLateness: bindActionCreators(excuseStudentLateness, dispatch),
   dispatchFilterLessons: bindActionCreators(filterLessons, dispatch),
   onFlagStudentLessonProblem: bindActionCreators(flagStudentLessonProblem, dispatch),
+  onMarkAllLessonFlagsReviewed: bindActionCreators(markAllLessonFlagsReviewed, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

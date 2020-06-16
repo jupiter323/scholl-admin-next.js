@@ -67,6 +67,7 @@ import {
   ADD_LESSON_ANSWER_DEBOUNCE,
   SUBMIT_LESSON_PROBLEMS,
   FETCH_LESSON_DETAILS,
+  MARK_ALL_LESSON_FLAGS_REVIEWED,
 } from "./constants";
 
 export function fetchStudents() {
@@ -360,9 +361,10 @@ export const filterLessons = (filters) => ({
   filters,
 });
 
-export const flagStudentLessonProblem = (postBody) => ({
+export const flagStudentLessonProblem = (postBody, isFromAllFlagsSaga) => ({
   type: FLAG_STUDENT_LESSON_PROBLEM,
   postBody,
+  isFromAllFlagsSaga,
 });
 
 export const setTests = (tests) => ({
@@ -477,4 +479,11 @@ export const submitLessonProblems = (lessonType, postBody, student_id) => ({
 export const fetchLessonDetails = (postBody) => ({
   type: FETCH_LESSON_DETAILS,
   postBody,
+});
+
+export const markAllLessonFlagsReviewed = (studentLessonIds, studentLessons, user) => ({
+  type: MARK_ALL_LESSON_FLAGS_REVIEWED,
+  studentLessonIds,
+  studentLessons,
+  user,
 });
