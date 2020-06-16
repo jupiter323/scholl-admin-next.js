@@ -64,7 +64,6 @@ class BubbleGroup extends React.Component {
       problem_id: lesson.problem.id,
       answer_id: answerId,
     };
-    console.log('log: lesson', lesson);
     onAnswerStudentLessonProblem(postBody, problemType, "multiple", {
       hasScoring: this.props.hasScoring,
       isAnsCorrect: this.isAnswerCorrect(answerId),

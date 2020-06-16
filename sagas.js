@@ -1035,7 +1035,7 @@ function* handleAnswerStudentLessonProblem(action) {
     if (action.scoringInfo && action.scoringInfo.hasScoring) {
       yield put({
         type: UPDATE_LESSON_SCORE,
-        isCorrect: action.isCorrect,
+        scoringInfo: action.scoringInfo,
       });
     }
   } catch (error) {

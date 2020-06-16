@@ -469,6 +469,34 @@ function studentReducer(state = initialState, action) {
       return state.set('studentLessonList', [...newStudentLessonList]);
     case UPDATE_LESSON_SCORE: {
       const activeLesson = state.get('activeLesson');
+      const { scoringInfo: { isAnsCorrect, isPrevAnsCorrect } } = action;
+      const updateScore = (changeInScore) => {
+        const { scoring } = activeLesson;
+        let newGrade = activeLesson.scoring.grade;
+        scoring.correct_count += changeInScore;
+        scoring.incorrect_count -= changeInScore;
+        const score = (scoring.correct_count / scoring.question_count) * 100;
+        if (score >= 90) {
+          newGrade = "GREAT";
+        } else if (score < 90 && score > 75) {
+          newGrade = "ABOVE_AVERAGE";
+        } else if (score > 60 && score < 76) {
+          newGrade = "AVERAGE";
+        } else if (score >= 40 && score <= 60) {
+          newGrade = 'BELOW_AVERAGE';
+        } else if (score < 40) {
+          newGrade = 'POOR';
+        }
+        scoring.percentage_correct = score;
+        scoring.grade = newGrade;
+        console.log('log: scoring', scoring);
+        activeLesson.scoring = scoring;
+      };
+      if (isAnsCorrect && !isPrevAnsCorrect) {
+        updateScore(1);
+      } else if (!isAnsCorrect && isPrevAnsCorrect) {
+        updateScore(-1);
+      }
       return state.set('activeLesson', { ...activeLesson });
     }
     default:
