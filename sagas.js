@@ -73,6 +73,7 @@ import {
   COMPLETE_SECTION_SUCCESS,
   FLAG_STUDENT_LESSON_SUCCESS,
   MARK_ALL_LESSON_FLAGS_REVIEWED,
+  RESET_LESSON_FLAG_COUNT,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -965,7 +966,7 @@ function* handleFlagStudentLessonProblem(action) {
     if (response && !response.ok) {
       return response.json().then(res => console.warn("Error occurred in the handleFlagStudentLessonProblem saga", res.message));
     }
-    if (!action.isFromAllFlags) {
+    if (!action.isFromAllFlagsSaga) {
       yield put({
         type: FLAG_STUDENT_LESSON_SUCCESS,
         status: action.postBody.flag_status,
@@ -1433,6 +1434,9 @@ function* handleMarkAllLessonFlagsReviewed(action) {
               lesson.id,
               lesson.sections[1].id,
             );
+            if (section1 && section2 && section1.message && section2.message) {
+              return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga");
+            }
             const sectionsArr = [section1, section2];
             for (const section of sectionsArr) {
               for (const problem of section.data.lesson_problems) {
@@ -1447,12 +1451,16 @@ function* handleMarkAllLessonFlagsReviewed(action) {
               }
             }
           }
+          yield put({
+            type: RESET_LESSON_FLAG_COUNT,
+            studentLessonId: lesson.id,
+          });
         }
       }
+      yield put({
+        type: MERGE_STUDENT_LESSON_LISTS,
+      });
     }
-    yield put({
-      type: "UPDATE_STUDENT_LESSONS_HERE",
-    });
   } catch (error) {
     return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga", error);
   }

@@ -57,6 +57,7 @@ import {
   UPDATE_LESSON_STATUS_SUCCESS,
   COMPLETE_SECTION_SUCCESS,
   FLAG_STUDENT_LESSON_SUCCESS,
+  RESET_LESSON_FLAG_COUNT,
 } from "./constants";
 
 const initialState = fromJS({
@@ -455,8 +456,15 @@ function studentReducer(state = initialState, action) {
         activeLesson.practiceProblems = updatedPracticeProbs;
         activeLesson.problem_flag_count = flagCount;
       }
-      console.log("log: activeLesson reducer", activeLesson);
       return state.set("activeLesson", { ...activeLesson });
+    case RESET_LESSON_FLAG_COUNT:
+      const newStudentLessonList = state.get('studentLessonList').map(lesson => {
+        if (lesson.id === action.studentLessonId) {
+          lesson.problem_flag_count = 0;
+        }
+        return lesson;
+      });
+      return state.set('studentLessonList', [...newStudentLessonList]);
     default:
       return state;
   }
