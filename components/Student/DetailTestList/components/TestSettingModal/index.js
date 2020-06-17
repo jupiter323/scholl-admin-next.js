@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from "prop-types";
+import moment from 'moment';
+import { toast } from 'react-toastify';
 import Portal from "../../../../Portal";
 import getValueFromState from "../../../../utils/getValueFromState";
 import Dropdown from "../../../../FormComponents/Dropdown";
@@ -49,12 +51,27 @@ class TestSettingModal extends React.Component {
       });
     }
     if (this.props.test) {
-      const { test: { test_id } } = this.props
+      const { test: { test_id, assignment_date, due_date, due_status, is_timed, sections } } = this.props
+      const subjects = sections.map(section =>{
+        return section.section.name
+      })
+     const isSectionAssigned = (subject) => subjects.includes(subject)
       this.setState({
-        version: test_id
+        version: test_id,
+        assignTime: moment(assignment_date).toDate(),
+        dueTime: moment(due_date).toDate(),
+        assignDate: moment(assignment_date).toDate(),
+        dueDate: moment(due_date).toDate(),
+        reading: isSectionAssigned("Reading"),
+        mathNoCalc: isSectionAssigned("Math (No Calculator)"),
+        writing: isSectionAssigned("Writing"),
+        mathWithCalc: isSectionAssigned("Math (Calculator)"),
+        isTimed: is_timed,
       });
     }
   }
+
+
 
   handleDetailsChange = (event, name, checkBox = false) => {
     const value = event.target ? event.target.value : event;
@@ -69,16 +86,49 @@ class TestSettingModal extends React.Component {
     }
   };
 
-  onSave = () => {
-    const { onSave } = this.props;
-    onSave(this.state);
+  onUpdate = () => {
+    const { onSave, tests, test:{ student_test_id, test_id}, test } = this.props;
+    const { mathNoCalc, mathWithCalc, reading, writing, dueDate, assignDate } = this.state
+    let checkedAssignDate = moment(assignDate).isSame(test.assignment_date) ? '' : assignDate
+    let checkedDueDate = moment(dueDate).isSame(test.due_date) ? '' : dueDate
+    const currentTest = tests.find( test => test.id === test_id )
+    let currentTestSectionsIds = [];
+    test.sections.forEach( sections => {
+      currentTestSectionsIds.push(sections.section.id)
+     }) 
+    let updatedSectionsIds = [];
+    currentTest.test_sections.forEach( testSection =>{
+      switch (testSection.name) {
+        case "Reading":
+          reading && updatedSectionsIds.push(testSection.id)
+          break;
+        case "Writing":
+          writing && updatedSectionsIds.push(testSection.id)
+          break;
+        case "Math (No Calculator)":
+          mathNoCalc && updatedSectionsIds.push(testSection.id)
+          break;
+        case "Math (Calculator)":
+          mathWithCalc && updatedSectionsIds.push(testSection.id)
+          break;
+        default:
+          break;
+      }
+    })
+    if((currentTestSectionsIds.length === updatedSectionsIds.length) && (currentTestSectionsIds.every(val => updatedSectionsIds.includes(val)))){
+      onSave(student_test_id,[], checkedDueDate, checkedAssignDate)
+    }else{
+      onSave(student_test_id, updatedSectionsIds, checkedDueDate, checkedAssignDate);
+    }
   };
-
+  
   render() {
     const {
       open,
       onClose,
-      test: { test_name: testName }
+      test: { 
+        test_name: testName
+      }
     } = this.props;
     const {
       versionOptions,
@@ -345,7 +395,7 @@ class TestSettingModal extends React.Component {
                             >
                               Cancel
                             </a>
-                            <a href="#" className="btn" onClick={this.onSave}>
+                            <a href="#" className="btn" onClick={this.onUpdate}>
                               Save
                             </a>
                           </div>

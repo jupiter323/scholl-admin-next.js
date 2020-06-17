@@ -95,7 +95,10 @@ const initialState = fromJS({
     fetchProblemsMessage: "",
     fetchScoresMsg: "",
     updateTestStatusMsg: "",
-    fetchingStudentTestsMessage: '',
+    fetchingStudentTestsMessage: "",
+    updateTestSectionsMessage: "",
+    updateTestDueDateMessage: "",
+    updateTestAssignmentDateMessage: "",
     completeSectionMsg: "",
   },
 });

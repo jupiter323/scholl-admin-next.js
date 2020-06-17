@@ -58,6 +58,9 @@ import {
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_TEST_STATUS,
   UPDATE_FLAG_STATUS,
+  UPDATE_TEST_SECTIONS,
+  UPDATE_TEST_ASSIGNMENT_DATE,
+  UPDATE_TEST_DUE_DATE,
   FETCH_STUDENT_TESTS_SUCCESSFUL,
   ADD_FREE_RESPONSE_ANSWER_TO_TEST,
   SEND_ERROR_MESSAGE,
@@ -418,6 +421,22 @@ export const updateTestStatus = (payload, currentStatus, studentId) => ({
   payload,
   currentStatus,
   studentId,
+});
+
+export const updateTestSections = (payload, user) => ({
+  type: UPDATE_TEST_SECTIONS,
+  payload,
+  user
+});
+
+export const updateTestAssignmentDate = (payload) => ({
+  type: UPDATE_TEST_ASSIGNMENT_DATE,
+  payload,
+});
+
+export const updateTestDueDate = (payload) => ({
+  type: UPDATE_TEST_DUE_DATE,
+  payload,
 });
 
 export const updateFlagStatus = (payload, status, question, oldStatus) => ({
