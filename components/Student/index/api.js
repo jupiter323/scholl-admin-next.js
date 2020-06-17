@@ -573,7 +573,7 @@ export const assignLessonToStudentApi = lesson => {
 };
 
 
-export const fetchStudentLessonListApi = (student, studentToken) =>
+export const fetchStudentLessonListApi = (student, filters) =>
   fetch(`${API_URL}/api/students/${student}/student_lessons`, {
     headers: {
       Accept: "application/json",

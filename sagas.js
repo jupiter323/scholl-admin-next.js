@@ -792,7 +792,7 @@ function* watchForFetchStudentLessonDebounce() {
 
 function* handleFetchStudentLessonList(action) {
   try {
-    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id, action.postBody.studentToken);
+    const studentLessonList = yield call(fetchStudentLessonListApi, action.postBody.id);
     yield put({
       type: FETCH_STUDENT_LESSSON_LIST_SUCCESS,
       payload: studentLessonList.map(lesson => ({ ...lesson, selected: false })),

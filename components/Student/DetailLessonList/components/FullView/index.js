@@ -25,6 +25,7 @@ const FullView = props => {
   const [hasMore, setHasMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pages, setPages] = useState(1);
+  const [scrollThreshold, setScrollThreshold] = useState(0.1);
 
   const {
     lessons = [],
@@ -50,6 +51,7 @@ const FullView = props => {
   useEffect(() => {
     console.log('log: pagination', pagination);
     if (pagination.lessonPages && pagination.lessonCurrentPage) {
+      if (pagination.lessonCurrentPage === 2) setScrollThreshold(0.8);
       setCurrentPage(pagination.lessonCurrentPage);
       setPages(pagination.lessonPages);
       if (pagination.lessonCurrentPage >= pagination.lessonPages) {
@@ -299,6 +301,7 @@ const FullView = props => {
         loader={<h4>Loading...</h4>}
         className="row d-flex-content justify-content-center card-width-auto"
         style={{ width: "100%" }}
+        scrollThreshold={scrollThreshold}
       >
         {mapLessons()}
       </InfiniteScroll>
