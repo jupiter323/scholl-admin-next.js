@@ -520,12 +520,12 @@ export const fetchUnitsApi = () =>
     .catch(err => console.warn('err', err));
 
 export const filterLessonListApi = (filters) => {
-  const { unitFilter, nameFilter,subjectFilters, flagFilters,dueFilters } = filters;
+  const { unitFilter, nameFilter, subjectFilters, flagFilters, dueFilters } = filters;
   const unitString = unitFilter.length ? `unit_id=${unitFilter}&` : '';
   const searchString = nameFilter.length ? `search=${nameFilter.toLowerCase().replace(/\s/g, '+')}&` : '';
   // const subjectsString = subjectFilters.length?`subject_id=${subjectFilters}&` : '';
-  const flagString = flagFilters.length?`has_lesson_flags=${flagFilters}&` : '';
-  const dueString = dueFilters.length?`due=${dueFilters}&` : '';
+  const flagString = flagFilters.length ? `has_lesson_flags=${flagFilters}&` : '';
+  const dueString = dueFilters.length ? `due=${dueFilters}&` : '';
   const filterQuery = `${searchString}${unitString}${dueString}${flagString}`;
   return fetch(`${API_URL}/api/lessons?${filterQuery}`, {
     headers: {
