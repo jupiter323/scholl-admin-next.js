@@ -53,13 +53,13 @@ class EditTestModal extends React.Component {
       subjects: [
         'Practice Test Scores',
         'Reading Analysis',
-        'Reading Analysis (cont’d)',
+        // 'Reading Analysis (cont’d)',
         'Reading Answer Sheet',
         'Writing Analysis',
-        'Writing Analysis (cont’d)',
+        // 'Writing Analysis (cont’d)',
         'Writing Answer Sheet',
         'Math Analysis',
-        "Math Analysis (cont'd)",
+        // "Math Analysis (cont'd)",
         'Math Answer Sheet(no calc)',
         'Math Answer Sheet(calculator)',
       ],
@@ -77,9 +77,9 @@ class EditTestModal extends React.Component {
       writingSectionCompleted: false,
       mathNoCalcSectionCompleted: false,
       mathCalcSectionCompleted: false,
-      fetchScoresMsg: "",
-      updateTestStatusMsg: "",
-      updateTestSectionMessage: "",
+      fetchScoresMsg: '',
+      updateTestStatusMsg: '',
+      updateTestSectionMessage: '',
     };
   }
 
@@ -102,8 +102,8 @@ class EditTestModal extends React.Component {
 
   componentWillUnmount() {
     this.props.onRef(undefined);
-    this.props.onResetErrorMessage("fetchScoresMsg");
-    this.props.onResetErrorMessage("updateTestStatusMsg");
+    this.props.onResetErrorMessage('fetchScoresMsg');
+    this.props.onResetErrorMessage('updateTestStatusMsg');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -140,13 +140,14 @@ class EditTestModal extends React.Component {
         }
       });
     }
-    const errorConditon = (name) => (errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== "");
-    if (errorConditon("fetchScoresMsg")) {
+    const errorConditon = name =>
+      errorMessages[name] && errorMessages[name] !== this.state[name] && errorMessages[name] !== '';
+    if (errorConditon('fetchScoresMsg')) {
       this.setState({ fetchScoresMsg: errorMessages.fetchScoresMsg });
       toast.error(errorMessages.fetchScoresMsg);
       onCloseEditTestModal();
     }
-    if (errorConditon("updateTestStatusMsg")) {
+    if (errorConditon('updateTestStatusMsg')) {
       this.setState({ updateTestStatusMsg: errorMessages.updateTestStatusMsg });
       toast.error(errorMessages.updateTestStatusMsg);
       onCloseEditTestModal();
@@ -273,38 +274,46 @@ class EditTestModal extends React.Component {
       const { scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages } = this.state;
       imgDataLists.push({
         image: scoresImages,
-        width: 550,
+        width: 545.28,
         margin: [0, 20, 0, 0],
         pageBreak: 'after',
       });
+
       for (let i = 0; i < 3; i++) {
         imgDataLists.push({
           image: analysisCicleImages[i],
           width: 300,
           margin: [0, 20, 0, 0],
         });
-        imgDataLists.push({
-          image: analysisBarImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
-        imgDataLists.push({
-          image: analysisBarImages[i],
-          width: 550,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
+        const imagesHeight = this.getBarAndCircleImageTotalHeight(
+          analysisBarImages[i],
+          analysisCicleImages[i],
+        );
+        if (imagesHeight > 746.89) {
+          // OverSized
+          imgDataLists.push({
+            image: analysisBarImages[i],
+            width: 545.28,
+            height: imagesHeight,
+            margin: [0, 20, 0, 50],
+          });
+        } else {
+          imgDataLists.push({
+            image: analysisBarImages[i],
+            width: 545.28,
+            margin: [0, 20, 0, 50],
+          });
+        }
         imgDataLists.push({
           image: answerSheetImages[i],
-          width: 550,
+          width: 545.28,
           margin: [0, 20, 0, 0],
           pageBreak: 'after',
         });
       }
       imgDataLists.push({
         image: answerSheetImages[3],
-        width: 550,
+        width: 545.28,
         margin: [0, 20, 0, 0],
       });
       const {
@@ -330,7 +339,27 @@ class EditTestModal extends React.Component {
     });
   };
 
-  onUpdateTestSectionMsg = (message) => this.setState({ updateTestSectionMessage: message })
+  getImageSizeFromBase64String = base64string => {
+    const img = document.createElement('img');
+    img.setAttribute('src', base64string);
+    setTimeout(() => {
+      const imgSize = {
+        imgWidth: img.width,
+        imgHeight: img.height,
+      };
+      return imgSize;
+    }, 0);
+  };
+
+  getBarAndCircleImageTotalHeight = (barImageString, circleImageString) => {
+    const circleImage = this.getImageSizeFromBase64String(circleImageString);
+    const circleImageHeight = 300 / circleImage.imgWidth * circleImage.imgHeight;
+    const barImage = this.getImageSizeFromBase64String(barImageString);
+    const barImageHeight = 545.28 / barImage.imgWidth * barImage.imgHeight;
+    return Number(circleImageHeight) + Number(barImageHeight);
+  };
+
+  onUpdateTestSectionMsg = message => this.setState({ updateTestSectionMessage: message });
 
   renderCurrentPage = () => {
     const { activePage } = this.state;
@@ -423,7 +452,9 @@ class EditTestModal extends React.Component {
     };
     const res = await updateStudentTestSectionStatusApi(postBody);
     if (res && res.message) {
-      return this.onUpdateTestSectionMsg('Something went wrong completing this test section. Please try again later.');
+      return this.onUpdateTestSectionMsg(
+        'Something went wrong completing this test section. Please try again later.',
+      );
     }
 
     // Update current section as completed
@@ -591,9 +622,10 @@ class EditTestModal extends React.Component {
               loading={!this.state.enablePublish}
             />
           </div>
-          {
-            !this.state.enablePublish && <div style={{ textAlign: 'center', padding: 10 }}>please wait the test score report downloading...</div>
-          }
+          {!this.state.enablePublish &&
+            <div style={{ textAlign: 'center', padding: 10 }}>
+              please wait the test score report downloading...
+            </div>}
           <div className="content-section">
             <div className="content-section-holder">
               {this.renderCurrentPage()}
@@ -630,7 +662,7 @@ function mapDispatchToProps(dispatch) {
     onUpdateTestStatus: (payload, currentStatus, studentId) =>
       dispatch(updateTestStatus(payload, currentStatus, studentId)),
     onSetScores: scores => dispatch(setActiveTestScores(scores)),
-    onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
+    onGetTestScores: postBody => dispatch(getTestScores(postBody)),
     onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };
 }

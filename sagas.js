@@ -45,7 +45,7 @@ import {
   ADD_LESSON_ANSWER,
   ADD_LESSON_ANSWER_SUCCESS,
   DELETE_STUDENT_TEST,
-  UPDATE_TEST_FLAG,
+  MARK_ALL_FLAGS_REVIEWED,
   REMOVE_TEST,
   ADD_STUDENT_ANSWER_TO_TEST,
   UPDATE_STUDENT_TEST_ANSWER,
@@ -75,6 +75,7 @@ import {
   MARK_ALL_LESSON_FLAGS_REVIEWED,
   RESET_LESSON_FLAG_COUNT,
   UPDATE_LESSON_SCORE,
+  UPDATE_TEST_FLAG_COUNT,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -847,7 +848,7 @@ function* handleUnAssignLesson(action) {
   try {
     yield call(unAssignLessonFromStudentApi, { student_lesson_ids: action.lesson });
     yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
-    yield put({type: MERGE_STUDENT_LESSON_LISTS})
+    yield put({ type: MERGE_STUDENT_LESSON_LISTS });
   } catch (error) {
     console.warn("Error occurred in the handleUnAssignLesson saga", error);
     yield put({
@@ -1069,7 +1070,7 @@ function* handleDeleteStudentTest(action) {
 }
 
 function* watchForMarkAllTestFlagsReviewed() {
-  yield takeEvery(UPDATE_TEST_FLAG, handleMarkAllFlagsReviewed);
+  yield takeEvery(MARK_ALL_FLAGS_REVIEWED, handleMarkAllFlagsReviewed);
 }
 
 function* handleMarkAllFlagsReviewed(action) {
@@ -1089,13 +1090,20 @@ function* handleMarkAllFlagsReviewed(action) {
           const payload = { status: 'REVIEWED', flag_id: flagData.id, student_test_id: action.studentTestId };
 
           yield call(updateStudentTestQuestionFlagStatusApi, payload);
-          reviewedTestIds.push(action.studentTestId);
+          reviewedTestIds.push(problems.problems[problemCount].id);
         }
         problemCount++;
       }
       count++;
     }
     // Dispatch to update redux store
+    if (reviewedTestIds.length === action.flagCount) {
+      yield put({
+        type: UPDATE_TEST_FLAG_COUNT,
+        student_test_id: action.studentTestId,
+        flagCount: 0,
+      });
+    }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateFlagStatus saga", error);
   }
@@ -1185,6 +1193,7 @@ function* watchForUpdateTestFlagStatus() {
 
 function* handleUpdateTestFlagStatus(action) {
   try {
+    let flagDiff = 0;
     if (action.status === "FLAGGED" && !action.payload.flag_id) {
       const response = yield call(addStudentTestQuestionFlagApi, action.payload);
       if (response && response.message) {
@@ -1197,13 +1206,22 @@ function* handleUpdateTestFlagStatus(action) {
         return yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${response.message}`));
       }
     }
-    yield put(resetErrorMessage(testFlagMessage));
+    if (action.oldStatus === "FLAGGED" && action.status !== "FLAGGED") {
+      flagDiff = -1;
+    } else if (action.status === "FLAGGED" && action.oldStatus !== "FLAGGED") {
+      flagDiff = 1;
+    }
+    yield put({
+      type: UPDATE_TEST_FLAG_COUNT,
+      flagDiff,
+      student_test_id: action.payload.student_test_id,
+    });
     yield put({
       type: UPDATE_FLAG_STATUS_SUCCESS,
       sectionId: action.question.test_section_id,
       question: action.question,
-      status: action.status,
     });
+    yield put(resetErrorMessage(testFlagMessage));
   } catch (error) {
     yield put(sendErrorMessage(testFlagMessage, `Something went wrong updating the flag status of this problem: ${error}`));
     console.warn("Error occurred in the handleUpdateTestFlagStatus saga", error);
@@ -1314,7 +1332,7 @@ function* handleUpdateLessonStatus(action) {
     const response = yield call(updateStudentLessonStatusApi, action.postBody);
     if (response && !response.ok) {
       response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
-      return yield put(sendErrorMessage("updateLessonStatusMsg", "Something went wrong updating this lesson's status. Try again later."))
+      return yield put(sendErrorMessage("updateLessonStatusMsg", "Something went wrong updating this lesson's status. Try again later."));
     }
     if (action.postBody.status === "COMPLETED") {
       return yield put({
