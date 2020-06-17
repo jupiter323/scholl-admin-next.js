@@ -39,7 +39,6 @@ const FullView = props => {
     checkedCardIds,
     resetLessonSelections,
     handleMarkAllFlagsReviewed,
-    lessonIdsToUnFlag,
   } = props;
   const mapLessons = () => lessons.map((lesson, index) => (
     <LessonCard
@@ -62,7 +61,6 @@ const FullView = props => {
       handleResetLesson={handleResetLesson}
       handleUnassignLesson={handleUnassignLesson}
       handleMarkAllFlagsReviewed={handleMarkAllFlagsReviewed}
-      flagRemoved={lessonIdsToUnFlag.includes(lesson.id)}
       handleExcuseLessonLateness={props.handleExcuseLessonLateness}
     />
   ));

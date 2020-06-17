@@ -663,7 +663,7 @@ export const addStudentLessonProblemFlagApi = (body) =>
     },
     body: JSON.stringify(body),
   })
-    .then((res) => res.json())
+    .then((res) => res)
     .catch((err) => err);
 
 export const addVideoWatchedTime = (body) =>
@@ -717,7 +717,7 @@ export const updateStudentTestStatusApi = (body) =>
     .then(res => res.json())
     .catch(err => err);
 
-    export const excuseStudentLessonLatenessApi = (body) =>
+export const excuseStudentLessonLatenessApi = (body) =>
   fetch(`${API_URL}/api/commands/excuse-student-lesson-lateness`, {
     method: "PATCH",
     headers: {

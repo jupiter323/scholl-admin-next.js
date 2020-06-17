@@ -8,7 +8,7 @@ import PracticeQuestions from './components/PracticeQuestions';
 import ChallengeQuestions from './components/ChallengeQuestions';
 import DrillQuestions from './components/DrillQuestions';
 import moment from "moment";
-import { makeSelectUnitFilterOptions, makeSelectActiveLesson, makeSelectErrorMessages } from "../index/selectors";
+import { makeSelectUnitFilterOptions, makeSelectErrorMessages } from "../index/selectors";
 import { fetchLessonProblems, submitLessonProblems, fetchLessonDetails, resetErrorMessage } from '../index/actions';
 import DropDownMenu from '../DropDownMenu';
 import RadialBar from '../../common/RadialBar';
@@ -65,16 +65,21 @@ class LessonDetailAnswerSheet extends React.Component {
       dropdownIsOpen: false,
       loadingScores: false,
       completeSectionMsg: "",
+      updateLessonStatusMsg: ""
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { activeLesson, errorMessages: { completeSectionMsg } } = props;
-    if (activeLesson.status === "COMPLETED") {
+    const { lesson, errorMessages: { completeSectionMsg, updateLessonStatusMsg } } = props;
+    if (lesson.status === "COMPLETED") {
       return { loadingScores: false };
     }
+    console.log('log: completeSectionMsg', completeSectionMsg);
     if (completeSectionMsg && completeSectionMsg !== state.completeSectionMsg) {
       return { completeSectionMsg };
+    }
+    if (updateLessonStatusMsg && updateLessonStatusMsg !== state.updateLessonStatusMsg) {
+      return { updateLessonStatusMsg };
     }
   }
 
@@ -114,46 +119,37 @@ class LessonDetailAnswerSheet extends React.Component {
         currentType: "Drill",
         hasDrill: true,
       });
-      // @TODO commented out some flag logic until I can finish reworking answering lessons-Mark
-      // if (this.props.lessonIdsToUnFlag.includes(lesson.id)) {
-      //   lesson.problems.map(problem => {
-      //     if (problem.flag_status === 'FLAGGED') {
-      //       problem.flag_status = 'REVIEWED';
-      //       return problem;
-      //     }
-      //     return problem;
-      //   });
-      // }
     }
   };
 
   componentWillUnmount = () => {
     this.props.onCloseDetailModal();
     this.props.onResetErrorMessage("completeSectionMsg");
+    this.props.onResetErrorMessage("updateLessonStatusMsg");
   };
 
   getProblemsAmount = () => {
-    const { activeLesson } = this.props;
+    const { lesson } = this.props;
     if (this.state.currentType === "Module") {
-      return activeLesson.challengeProblems.length + activeLesson.practiceProblems.length;
+      return lesson.challengeProblems.length + lesson.practiceProblems.length;
     }
     if (this.state.currentType === "Drill") {
-      return activeLesson.drillProblems.length;
+      return lesson.drillProblems.length;
     }
   };
 
   getReviewedAndFlaggedProblemAmount = (type) => {
-    const { activeLesson } = this.props;
+    const { lesson } = this.props;
     let amount = 0;
-    if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
-      activeLesson.drillProblems.map((section) => {
+    if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
+      lesson.drillProblems.map((section) => {
         if (section.flag_status === type) {
           amount += 1;
         }
       });
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
-      const { challengeProblems, practiceProblems } = activeLesson;
+      const { challengeProblems, practiceProblems } = lesson;
       challengeProblems.length !== 0 &&
         challengeProblems.map((section) => {
           if (section.flag_status === type) {
@@ -211,19 +207,12 @@ class LessonDetailAnswerSheet extends React.Component {
     onAddCheckedLesson(lesson.id);
   };
 
-  getCurrentProblemList = () => {
-    // @TODO Replace this function because problems are from props not state-Mark
-    // const { currentType, drillProblems, practiceProblems, challengeProblems } = this.state;
-    // if (currentType === 'Drill') return [{ problems: drillProblems, type: "drillProblems" }];
-    // if (currentType === 'Module') return [{ problems: challengeProblems, type: "challengeProblems" }, { problems: practiceProblems, type: "practiceProblems" }];
-  };
-
   getTotalVideoDuration = () => {
-    const { activeLesson } = this.props;
+    const { lesson } = this.props;
     let totalDuration = 0;
-    if (activeLesson.drillProblems && activeLesson.drillProblems.length !== 0) {
+    if (lesson.drillProblems && lesson.drillProblems.length !== 0) {
       // Drill
-      activeLesson.drillProblems.map((section) => {
+      lesson.drillProblems.map((section) => {
         if (section.problem && section.problem.video && section.problem.video.duration) {
           totalDuration += section.problem.video.duration;
         }
@@ -231,7 +220,7 @@ class LessonDetailAnswerSheet extends React.Component {
     }
     if (this.props.lesson.sections && this.props.lesson.sections.length !== 0) {
       // Module
-      const { challengeProblems, practiceProblems } = activeLesson;
+      const { challengeProblems, practiceProblems } = lesson;
       challengeProblems.length !== 0 &&
         challengeProblems.map((section) => {
           if (section.problem && section.problem.video && section.problem.video.duration) {
@@ -250,8 +239,8 @@ class LessonDetailAnswerSheet extends React.Component {
 
   submitLessonButton = (lessonType) => {
     const {
-      activeLesson,
-      activeLesson: { status, id },
+      lesson,
+      lesson: { status, id },
       onSubmitLessonProblems,
       user: { id: student_id },
     } = this.props;
@@ -264,7 +253,7 @@ class LessonDetailAnswerSheet extends React.Component {
         status: 'COMPLETED',
       };
     } else if (lessonType === "practice" || lessonType === "challenge") {
-      const { sections } = activeLesson;
+      const { sections } = lesson;
       if (lessonType === 'challenge' && sections[0].status !== "COMPLETED") displayBtn = true;
       if (lessonType === 'practice' && sections[0].status === "COMPLETED" && sections[1].status !== "COMPLETED") displayBtn = true;
       postBody = {
@@ -276,6 +265,7 @@ class LessonDetailAnswerSheet extends React.Component {
       <div className="row">
         <div className="btn-holder left-align">
           <p className="red-text">{this.state.completeSectionMsg}</p>
+          <p className="red-text">{this.state.updateLessonStatusMsg}</p>
           <a
             href="#"
             className="btn btn-xlarge waves-effect waves-light bg-blue"
@@ -312,8 +302,10 @@ class LessonDetailAnswerSheet extends React.Component {
         assignment_date,
         due_date,
         dueTime,
+        drillProblems,
+        challengeProblems,
+        practiceProblems,
       },
-      activeLesson: { drillProblems, challengeProblems, practiceProblems },
     } = this.props;
     const {
       studentInformation: { firstName, lastName },
@@ -415,7 +407,6 @@ class LessonDetailAnswerSheet extends React.Component {
                       onCloseDropdown={this.props.onCloseDropdown}
                       resetLessonSelections={this.props.resetLessonSelections}
                       handleMarkAllFlagsReviewed={this.props.handleMarkAllFlagsReviewed}
-                      problems={this.getCurrentProblemList()}
                       handleExcuseLessonLateness={this.props.handleExcuseLessonLateness}
                     />
                   </div>
@@ -724,7 +715,6 @@ LessonDetailAnswerSheet.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   units: makeSelectUnitFilterOptions(),
-  activeLesson: makeSelectActiveLesson(),
   errorMessages: makeSelectErrorMessages(),
 });
 

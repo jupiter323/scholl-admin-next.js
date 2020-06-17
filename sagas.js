@@ -1,4 +1,4 @@
-import { take, call, put, all, takeEvery, debounce, delay } from "redux-saga/effects";
+import { take, call, put, all, takeEvery, takeLatest, debounce, delay } from "redux-saga/effects";
 import {
   FETCH_STUDENTS,
   DELETE_STUDENT,
@@ -73,6 +73,10 @@ import {
   FETCH_LESSON_DETAILS,
   SET_ACTIVE_LESSON,
   COMPLETE_SECTION_SUCCESS,
+  FLAG_STUDENT_LESSON_SUCCESS,
+  MARK_ALL_LESSON_FLAGS_REVIEWED,
+  RESET_LESSON_FLAG_COUNT,
+  UPDATE_LESSON_SCORE,
   UPDATE_TEST_DUE_DATE,
   UPDATE_TEST_FLAG_COUNT,
 } from "./components/Student/index/constants";
@@ -120,6 +124,7 @@ import {
   setFetchStudentTestsStatus,
   sendErrorMessage,
   resetErrorMessage,
+  flagStudentLessonProblem,
   updateTestSections,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
@@ -202,9 +207,9 @@ const fetchProblemsMessage = 'fetchProblemsMessage';
 const testFlagMessage = 'testFlagMessage';
 const answerTestProblemMessage = 'answerTestProblemMessage';
 const fetchingStudentTestsMessage = 'fetchingStudentTestsMessage';
-const updateTestSectionsMessage = 'updateTestSectionsMessage'
-const updateTestDueDateMessage = 'updateTestDueDateMessage'
-const updateTestAssignmentDateMessage = 'updateTestAssignmentDateMessage'
+const updateTestSectionsMessage = 'updateTestSectionsMessage';
+const updateTestDueDateMessage = 'updateTestDueDateMessage';
+const updateTestAssignmentDateMessage = 'updateTestAssignmentDateMessage';
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -853,6 +858,7 @@ function* handleUnAssignLesson(action) {
   try {
     yield call(unAssignLessonFromStudentApi, { student_lesson_ids: action.lesson });
     yield put({ type: UNASSIGN_STUDENT_LESSON_SUCCESS, payload: action.lesson });
+    yield put({ type: MERGE_STUDENT_LESSON_LISTS });
   } catch (error) {
     console.warn("Error occurred in the handleUnAssignLesson saga", error);
     yield put({
@@ -969,7 +975,18 @@ function* watchForFlagStudentLessonProblem() {
 
 function* handleFlagStudentLessonProblem(action) {
   try {
-    yield call(addStudentLessonProblemFlagApi, action.lesson);
+    const response = yield call(addStudentLessonProblemFlagApi, action.postBody);
+    if (response && !response.ok) {
+      return response.json().then(res => console.warn("Error occurred in the handleFlagStudentLessonProblem saga", res.message));
+    }
+    if (!action.isFromAllFlagsSaga) {
+      yield put({
+        type: FLAG_STUDENT_LESSON_SUCCESS,
+        status: action.postBody.flag_status,
+        problemId: action.postBody.problem_id,
+        studentLessonId: action.postBody.student_lesson_id,
+      });
+    }
   } catch (error) {
     console.warn("Error occurred in the handleFlagStudentLessonProblem saga", error);
   }
@@ -995,7 +1012,7 @@ function* handleFetchAllLocations(id) {
 }
 
 function* watchForAnswerStudentLessonProblem() {
-  yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
+  yield takeLatest(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
 }
 
 function* watchForAnswerStudentLessonProblemDebounce() {
@@ -1026,6 +1043,12 @@ function* handleAnswerStudentLessonProblem(action) {
       problemType: action.problemType,
       propertyName,
     });
+    if (action.scoringInfo && action.scoringInfo.hasScoring) {
+      yield put({
+        type: UPDATE_LESSON_SCORE,
+        scoringInfo: action.scoringInfo,
+      });
+    }
   } catch (error) {
     console.warn("Error occurred in the handleAnswerStudentLessonProblem saga", error);
   }
@@ -1174,44 +1197,44 @@ function* handleUpdateTestStatus(action) {
   }
 }
 
-function* watchForhandleUpdateTestSettings(){
-    while (true) {
-      const assignDate = yield take(UPDATE_TEST_ASSIGNMENT_DATE);
-      const dueDate = yield take(UPDATE_TEST_DUE_DATE);
-      const sections = yield take(UPDATE_TEST_SECTIONS);
-      const { assignment_date } = assignDate.payload
-      if(assignment_date){
-        yield call(handleUpdateTestAssignmentDate, assignDate)
-      }
-
-      const { due_date } = dueDate.payload;
-      if(due_date){
-        yield call(handleUpdateTestDueDate, dueDate);
-      }
-
-      const { test_section_ids } = sections.payload;
-      if(test_section_ids.length){
-        yield call(handleUpdateTestSections, sections);
-      }
-
-      yield delay(1000);
-
-      if(test_section_ids.length || due_date || assignment_date){
-        yield call(fetchStudentTests, sections.user);
-      }
+function* watchForhandleUpdateTestSettings() {
+  while (true) {
+    const assignDate = yield take(UPDATE_TEST_ASSIGNMENT_DATE);
+    const dueDate = yield take(UPDATE_TEST_DUE_DATE);
+    const sections = yield take(UPDATE_TEST_SECTIONS);
+    const { assignment_date } = assignDate.payload;
+    if (assignment_date) {
+      yield call(handleUpdateTestAssignmentDate, assignDate);
     }
+
+    const { due_date } = dueDate.payload;
+    if (due_date) {
+      yield call(handleUpdateTestDueDate, dueDate);
+    }
+
+    const { test_section_ids } = sections.payload;
+    if (test_section_ids.length) {
+      yield call(handleUpdateTestSections, sections);
+    }
+
+    yield delay(1000);
+
+    if (test_section_ids.length || due_date || assignment_date) {
+      yield call(fetchStudentTests, sections.user);
+    }
+  }
 }
 
 function* handleUpdateTestAssignmentDate(action) {
   try {
     const response = yield call(updateStudentTestAssignmentDateApi, action.payload);
-    if (response && response.message ) {
+    if (response && response.message) {
       console.warn("Error occurred in the handleUpdateTestAssignmentDate saga", response.message);
       yield put(sendErrorMessage(updateTestAssignmentDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`));
       return console.warn("Error occurred in the handleUpdateTestAssignmentDate", response.message);
     }
   } catch (error) {
-    sendErrorMessage(updateTestAssignmentDateMessage, `Something went wrong updating this test assignment date. Please try changing test settings later.`)
+    sendErrorMessage(updateTestAssignmentDateMessage, `Something went wrong updating this test assignment date. Please try changing test settings later.`);
     console.warn("Error occurred in the handleUpdateTestAssignmentDate saga", error);
   }
 }
@@ -1219,13 +1242,13 @@ function* handleUpdateTestAssignmentDate(action) {
 function* handleUpdateTestDueDate(action) {
   try {
     const response = yield call(updateStudentTestDueDateApi, action.payload);
-    if (response && response.message ) {
+    if (response && response.message) {
       console.warn("Error occurred in the handleUpdateTestDueDate saga", response.message);
       yield put(sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`));
       return console.warn("Error occurred in the handleUpdateTestDueDate", response.message);
     }
   } catch (error) {
-    sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`)
+    sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`);
     console.warn("Error occurred in the handleUpdateTestDueDate saga", error);
   }
 }
@@ -1233,13 +1256,13 @@ function* handleUpdateTestDueDate(action) {
 function* handleUpdateTestSections(action) {
   try {
     const response = yield call(updateStudentTestSectionsApi, action.payload);
-    if (response && response.message ) {
+    if (response && response.message) {
       console.warn("Error occurred in the handleUpdateTestSections saga", response.message);
       yield put(sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`));
       return console.warn("Error occurred in the update test sections saga", response.message);
     }
   } catch (error) {
-    sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`)
+    sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`);
     console.warn("Error occurred in the handleUpdateTestSections saga", error);
   }
 }
@@ -1389,6 +1412,7 @@ function* handleUpdateLessonStatus(action) {
     const response = yield call(updateStudentLessonStatusApi, action.postBody);
     if (response && !response.ok) {
       response.json().then(res => console.warn("Error occurred in the handleUpdateLessonStatus saga", res.message));
+      return yield put(sendErrorMessage("updateLessonStatusMsg", "Something went wrong updating this lesson's status. Try again later."));
     }
     if (action.postBody.status === "COMPLETED") {
       return yield put({
@@ -1418,7 +1442,7 @@ function* handleCompleteLessonSection(action) {
   try {
     const response = yield call(completeStudentLessonSectionApi, action.postBody);
     if (response && !response.ok) {
-      yield put(sendErrorMessage("completeSectionMsg", "Something went wrong completing this section. Please try again."));
+      yield put(sendErrorMessage("completeSectionMsg", "Something went wrong completing this section. Please try again later."));
       return response.json().then(res => console.warn("Error occurred in the handleCompleteLessonSection saga", res.message));
     }
 
@@ -1480,6 +1504,78 @@ function* handleSubmitLessonProblems(action) {
     }
   } catch (error) {
     return console.warn("Error occurred in the handleSubmitLessonProblems saga", error);
+  }
+}
+
+function* watchForMarkAllLessonFlagsReviewed() {
+  yield takeEvery(MARK_ALL_LESSON_FLAGS_REVIEWED, handleMarkAllLessonFlagsReviewed);
+}
+
+function* handleMarkAllLessonFlagsReviewed(action) {
+  try {
+    const { studentLessonIds, studentLessons, user, setLessonList } = action;
+    if (studentLessonIds && studentLessonIds.length > 0) {
+      for (const lesson of studentLessons) {
+        if (studentLessonIds.includes(lesson.id)) {
+          if (lesson.problems && lesson.problems.length > 0) {
+            for (const problem of lesson.problems) {
+              if (problem.flag_status === "FLAGGED") {
+                const payload = {
+                  student_lesson_id: lesson.id,
+                  problem_id: problem.problem.id,
+                  flag_status: "REVIEWED",
+                };
+                yield put(flagStudentLessonProblem(payload, setLessonList));
+              }
+            }
+          } else if (lesson.sections && lesson.sections.length > 0) {
+            const section1 = yield call(
+              fetchStudentLessonSectionApi,
+              user.id,
+              lesson.id,
+              lesson.sections[0].id,
+            );
+            const section2 = yield call(
+              fetchStudentLessonSectionApi,
+              user.id,
+              lesson.id,
+              lesson.sections[1].id,
+            );
+            if (section1 && section2 && (section1.message || section2.message)) {
+              yield put(sendErrorMessage("markLessonsReviewedMsg", "Something went wrong reviewing flags for this lesson. Please try again later."));
+              return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga");
+            }
+            const sectionsArr = [section1, section2];
+            for (const section of sectionsArr) {
+              for (const problem of section.data.lesson_problems) {
+                if (problem.flag_status === "FLAGGED") {
+                  const payload = {
+                    student_lesson_id: lesson.id,
+                    problem_id: problem.problem.id,
+                    flag_status: "REVIEWED",
+                  };
+                  yield put(flagStudentLessonProblem(payload, setLessonList));
+                }
+              }
+            }
+          }
+          if (setLessonList) {
+            yield put({
+              type: RESET_LESSON_FLAG_COUNT,
+              studentLessonId: lesson.id,
+            });
+          }
+        }
+      }
+      if (setLessonList) {
+        yield put({
+          type: MERGE_STUDENT_LESSON_LISTS,
+        });
+      }
+    }
+    yield put(resetErrorMessage("markLessonsReviewedMsg"));
+  } catch (error) {
+    return console.warn("Error occurred in the handleMarkAllLessonFlagsReviewed saga", error);
   }
 }
 
@@ -1546,5 +1642,6 @@ export default function* defaultSaga() {
     watchForCompleteStudentLessonSection(),
     watchForSubmitLessonProblems(),
     watchForFetchLessonDetails(),
+    watchForMarkAllLessonFlagsReviewed(),
   ]);
 }

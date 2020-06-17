@@ -5,7 +5,11 @@ import { createStructuredSelector } from "reselect";
 import QuestionModal from "../QuestionModal";
 import BubbleGroup from "../Bubble";
 import FreeResponse from '../FreeResponse';
-import { answerStudentLessonProblem, answerStudentLessonDebounce } from '../../../index/actions';
+import {
+  answerStudentLessonProblem,
+  answerStudentLessonDebounce,
+  flagStudentLessonProblem,
+} from '../../../index/actions';
 import { makeSelectActiveLesson } from '../../../index/selectors';
 
 class AnswerRow extends React.Component {
@@ -13,7 +17,6 @@ class AnswerRow extends React.Component {
     super(props);
     this.state = {
       open: false,
-      status: '',
       originalTestProblemId: "",
     };
   }
@@ -21,18 +24,11 @@ class AnswerRow extends React.Component {
   componentDidMount = () => {
     const { problem: { id } } = this.props;
     const { originalTestProblemId } = this.state;
-    if (id !== originalTestProblemId && this.props.problem.flag_status) {
-      const { problem: { flag_status } } = this.props;
+    if (id !== originalTestProblemId) {
       this.setState({
-        status: flag_status,
         originalTestProblemId: id,
       });
     }
-  }
-  onChangeFlagState = (status) => {
-    this.setState({
-      status,
-    });
   }
 
   onOpenQuestionModal = () => this.setState({ open: true });
@@ -67,7 +63,7 @@ class AnswerRow extends React.Component {
 
   render() {
     const { problem, onAnswerStudentLessonProblem, onAnswerStudentLessonDebounce, activeLesson } = this.props;
-    const { open, status } = this.state;
+    const { open } = this.state;
     return (
       <React.Fragment>
         <QuestionModal
@@ -75,7 +71,8 @@ class AnswerRow extends React.Component {
           onOpenQuestionModal={this.onOpenQuestionModal}
           onCloseQuestionModal={this.onCloseQuestionModal}
           question={problem}
-          onChangeFlagState={this.onChangeFlagState}
+          activeLesson={activeLesson}
+          onFlagStudentLessonProblem={this.props.onFlagStudentLessonProblem}
         />
         <li
           className="answers-list-holder"
@@ -92,12 +89,14 @@ class AnswerRow extends React.Component {
                     studentLessonId={activeLesson.id}
                     problemType={this.props.problemType}
                     hasDisplayAnswers={this.isLessonSectionCompleted()}
+                    hasScoring={!!activeLesson.scoring}
                   /> :
                   <BubbleGroup
                     lesson={problem}
                     onAnswerStudentLessonProblem={onAnswerStudentLessonProblem}
                     studentLessonId={activeLesson.id}
                     problemType={this.props.problemType}
+                    hasScoring={!!activeLesson.scoring}
                   />}
               </ul>
             </div>
@@ -106,13 +105,13 @@ class AnswerRow extends React.Component {
             </div>
             <div className="col col-auto">
               <Choose>
-                <When condition={status === 'FLAGGED'}>
+                <When condition={problem.flag_status === 'FLAGGED'}>
                   <span className="status-answer" style={{ color: "#c0272d" }}>
                     <i className="icon-flag"></i>
                     <b className="status-text">Review</b>
                   </span>
                 </When>
-                <When condition={status === 'REVIEWED'}>
+                <When condition={problem.flag_status === 'REVIEWED'}>
                   <span className="status-answer status-disabled" style={{ color: "#c0272d" }}>
                     <i className="icon-flag"></i>
                     <b className="status-text">Review</b>
@@ -141,8 +140,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onAnswerStudentLessonProblem: (postBody, problemType, format) => dispatch(answerStudentLessonProblem(postBody, problemType, format)),
-  onAnswerStudentLessonDebounce: (postBody, problemType, format) => dispatch(answerStudentLessonDebounce(postBody, problemType, format)),
+  onAnswerStudentLessonProblem: (postBody, problemType, format, scoringInfo) => dispatch(answerStudentLessonProblem(postBody, problemType, format, scoringInfo)),
+  onAnswerStudentLessonDebounce: (postBody, problemType, format, scoringInfo) => dispatch(answerStudentLessonDebounce(postBody, problemType, format, scoringInfo)),
+  onFlagStudentLessonProblem: (postBody) => dispatch(flagStudentLessonProblem(postBody)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnswerRow);

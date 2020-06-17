@@ -70,6 +70,7 @@ import {
   ADD_LESSON_ANSWER_DEBOUNCE,
   SUBMIT_LESSON_PROBLEMS,
   FETCH_LESSON_DETAILS,
+  MARK_ALL_LESSON_FLAGS_REVIEWED,
 } from "./constants";
 
 export function fetchStudents() {
@@ -363,9 +364,10 @@ export const filterLessons = (filters) => ({
   filters,
 });
 
-export const flagStudentLessonProblem = (lesson) => ({
+export const flagStudentLessonProblem = (postBody, isFromAllFlagsSaga) => ({
   type: FLAG_STUDENT_LESSON_PROBLEM,
-  lesson,
+  postBody,
+  isFromAllFlagsSaga,
 });
 
 export const setTests = (tests) => ({
@@ -379,11 +381,12 @@ export const setActiveStudent = (student) => ({
   student,
 });
 
-export const answerStudentLessonProblem = (postBody, problemType, format) => ({
+export const answerStudentLessonProblem = (postBody, problemType, format, scoringInfo) => ({
   type: ADD_LESSON_ANSWER,
   postBody,
   problemType,
   format,
+  scoringInfo,
 });
 
 export const deleteStudentTest = (studentTestId, studentId, testType) => ({
@@ -426,7 +429,7 @@ export const updateTestStatus = (payload, currentStatus, studentId) => ({
 export const updateTestSections = (payload, user) => ({
   type: UPDATE_TEST_SECTIONS,
   payload,
-  user
+  user,
 });
 
 export const updateTestAssignmentDate = (payload) => ({
@@ -481,11 +484,12 @@ export const fetchLessonProblems = (postBody) => ({
   postBody,
 });
 
-export const answerStudentLessonDebounce = (postBody, problemType, format) => ({
+export const answerStudentLessonDebounce = (postBody, problemType, format, scoringInfo) => ({
   type: ADD_LESSON_ANSWER_DEBOUNCE,
   postBody,
   problemType,
   format,
+  scoringInfo,
 });
 
 export const submitLessonProblems = (lessonType, postBody, student_id) => ({
@@ -498,4 +502,12 @@ export const submitLessonProblems = (lessonType, postBody, student_id) => ({
 export const fetchLessonDetails = (postBody) => ({
   type: FETCH_LESSON_DETAILS,
   postBody,
+});
+
+export const markAllLessonFlagsReviewed = (studentLessonIds, studentLessons, user, setLessonList) => ({
+  type: MARK_ALL_LESSON_FLAGS_REVIEWED,
+  studentLessonIds,
+  studentLessons,
+  user,
+  setLessonList,
 });

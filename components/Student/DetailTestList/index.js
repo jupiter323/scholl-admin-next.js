@@ -35,7 +35,7 @@ import {
   updateTestSections,
   updateTestDueDate,
   updateTestAssignmentDate,
-  resetErrorMessage
+  resetErrorMessage,
 } from "../index/actions";
 import {
   makeSelectOverDueStudentTests,
@@ -66,7 +66,7 @@ class DetailTestList extends React.Component {
       openEnterAnswerWrapper: false,
       updateTestSectionsMessage: "",
       updateTestDueDateMessage: "",
-      updateTestAssignmentDateMessage:"",
+      updateTestAssignmentDateMessage: "",
     };
   }
 
@@ -93,7 +93,7 @@ class DetailTestList extends React.Component {
         updateTestDueDateMessage,
         updateTestAssignmentDateMessage,
       },
-      onResetErrorMessage
+      onResetErrorMessage,
     } = nextProps;
     if (updateTestSectionsMessage && updateTestSectionsMessage !== this.state.updateTestSectionsMessage) {
       this.onErrorMessage(updateTestSectionsMessage, "updateTestSectionsMessage");
@@ -299,7 +299,7 @@ class DetailTestList extends React.Component {
     this.onCloseDropdown();
   };
 
-  onCloseTestSettingsModal = () => this.setState({ opentTestSettingModal: false, updateTestSectionsMessage:""})
+  onCloseTestSettingsModal = () => this.setState({ opentTestSettingModal: false, updateTestSectionsMessage: "" })
 
   onSaveNewTest = async test => {
     const { studentTests, tests, onFetchStudentTests } = this.props;
@@ -361,7 +361,7 @@ class DetailTestList extends React.Component {
       const { onAssignNewTest, onAddNewTestToStudentTests } = this.props;
       onAssignNewTest(formattedNewTest);
       onAddNewTestToStudentTests(formattedNewTest);
-      onFetchStudentTests(user)
+      onFetchStudentTests(user);
     } else {
       toast.error(`This student is not activated. A free student account can only be assigned one free test.`, {
         className: 'update-error',
@@ -369,26 +369,26 @@ class DetailTestList extends React.Component {
       });
     }
   };
- 
+
   updateTestSettings = async (student_test_id, sectionsArray, dueDate, assignDate) => {
-    const { onUpdateTestSections, onUpdateTestDueDate, onUpdateTestAssignDate, user } = this.props
+    const { onUpdateTestSections, onUpdateTestDueDate, onUpdateTestAssignDate, user } = this.props;
     const sectionBody = {
       student_test_id,
       test_section_ids: sectionsArray,
-    }
+    };
     const dueDateBody = {
       student_test_id,
-      due_date: dueDate
-    }
+      due_date: dueDate,
+    };
 
     const assignDateBody = {
       student_test_id,
       assignment_date: assignDate,
-    }
-      await onUpdateTestAssignDate(assignDateBody)
-      await onUpdateTestDueDate(dueDateBody)
-      await onUpdateTestSections(sectionBody, user);
-    this.onCloseTestSettingsModal()
+    };
+    await onUpdateTestAssignDate(assignDateBody);
+    await onUpdateTestDueDate(dueDateBody);
+    await onUpdateTestSections(sectionBody, user);
+    this.onCloseTestSettingsModal();
   }
 
   onAddStudentAnswerToTest = async (test_problem_id, answer) => {
@@ -441,7 +441,7 @@ class DetailTestList extends React.Component {
               test={activeTest}
               onClose={this.handleTestSettingModalOpen}
               onSave={this.updateTestSettings}
-              onResetErrorMessage = {onResetErrorMessage}
+              onResetErrorMessage={onResetErrorMessage}
             />
           </When>
           <Otherwise>
@@ -526,7 +526,7 @@ function mapDispatchToProps(dispatch) {
     onSetStudentAssignedTests: (tests) => dispatch(setStudentAssignedTests(tests)),
     onGetTestScores: (postBody) => dispatch(getTestScores(postBody)),
     onUpdateTestSections: (postBody, user) => dispatch(updateTestSections(postBody, user)),
-    onUpdateTestDueDate:  (postBody) => dispatch(updateTestDueDate(postBody)),
+    onUpdateTestDueDate: (postBody) => dispatch(updateTestDueDate(postBody)),
     onUpdateTestAssignDate: (postBody) => dispatch(updateTestAssignmentDate(postBody)),
     onResetErrorMessage: errorName => dispatch(resetErrorMessage(errorName)),
   };

@@ -262,7 +262,7 @@ class CompletedTestCard extends React.Component {
               {MathScore && ReadingAndWritingScore && ReadingScore
                 ? <li>
                   <WithHoverEffect
-                    math={ MathScore}
+                    math={MathScore}
                     reading={ReadingScore}
                     readingWriting={ReadingAndWritingScore}
                     className="badge-circle"
@@ -273,7 +273,7 @@ class CompletedTestCard extends React.Component {
                       height: '120px',
                       fontSize: '55px',
                     }}
-                    >
+                  >
                     <span className="badge-text">
                       <strong>
                         <h2 style={{ marginBottom: '5px' }}>SAT Score</h2>

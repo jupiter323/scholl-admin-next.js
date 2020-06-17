@@ -55,9 +55,26 @@ class FreeResponse extends React.Component {
       problem_id: lesson.problem.id,
       answer_text: answer,
     };
-    onAnswerStudentLessonDebounce(postBody, problemType, "fill-in-blank");
+
+    onAnswerStudentLessonDebounce(
+      postBody,
+      problemType,
+      "fill-in-blank",
+      {
+        hasScoring: this.props.hasScoring,
+        isAnsCorrect: this.isAnswerCorrect(answer),
+        isPrevAnsCorrect: this.isAnswerCorrect(lesson.answer_text),
+      });
     this.setState({ answer });
   };
+
+  isAnswerCorrect = (answer) => {
+    const { lesson } = this.props;
+    for (const lessAnswer of lesson.problem.answers) {
+      if (lessAnswer.text === answer) return true;
+    }
+    return false;
+  }
 
   renderCorrectAnswer = () => {
     const { lesson: { problem }, hasDisplayAnswers } = this.props;
