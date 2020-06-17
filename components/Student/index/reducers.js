@@ -56,6 +56,7 @@ import {
   SET_LESSON_ANSWER,
   UPDATE_LESSON_STATUS_SUCCESS,
   COMPLETE_SECTION_SUCCESS,
+  UPDATE_TEST_FLAG_COUNT,
 } from "./constants";
 
 const initialState = fromJS({
@@ -351,16 +352,7 @@ function studentReducer(state = initialState, action) {
 
     case ADD_TEST_TO_COMPLETED:
       // Grabs the test info from original test list and adds a completion date & status
-      return state.set('completedStudentTests', [
-        ...state.get('completedStudentTests'),
-        {
-          ...state
-            .get(action.testList)
-            .filter(test => test.student_test_id === action.payload.student_test_id)[0],
-          completion_date: Date.now(),
-          status: action.payload.status,
-        },
-      ]);
+      return state.set('completedStudentTests', [...state.get('completedStudentTests'), { ...state.get(action.testList).filter(test => test.student_test_id === action.payload.student_test_id)[0], completion_date: Date.now(), status: action.payload.status }]);
 
     case FETCH_STUDENT_TESTS_SUCCESSFUL:
       return state.set('studentTestsFetchedStatus', action.status);
@@ -416,6 +408,37 @@ function studentReducer(state = initialState, action) {
       activeLesson.sections[0].status = 'COMPLETED';
       return state.set('activeLesson', { ...activeLesson });
     }
+    case UPDATE_TEST_FLAG_COUNT:
+      const studentTestList = state.get('studentTests');
+      const matchingTest = studentTestList.filter(test => test.student_test_id === action.student_test_id)[0];
+      let newList = [];
+      let listName = "";
+      const updateTestCardList = (listName) => {
+        const cardList = state.get(listName);
+        return cardList.map(test => {
+          if (test.student_test_id === action.student_test_id) {
+            (action.flagCount === 0 ?
+              test.problem_flag_count = action.flagCount
+              : test.problem_flag_count += action.flagDiff);
+          }
+          return test;
+        });
+      };
+      if (matchingTest) {
+        if (matchingTest.status === "COMPLETED") {
+          newList = updateTestCardList("completedStudentTests");
+          listName = "completedStudentTests";
+        } else if (matchingTest.status !== "COMPLETED" && matchingTest.due_status === "OVERDUE") {
+          newList = updateTestCardList("overdueStudentTests");
+          listName = "overdueStudentTests";
+        } else {
+          newList = updateTestCardList("assignedStudentTests");
+          listName = "assignedStudentTests";
+        }
+      }
+      return state.set(listName, [...newList]);
+
+
     default:
       return state;
   }

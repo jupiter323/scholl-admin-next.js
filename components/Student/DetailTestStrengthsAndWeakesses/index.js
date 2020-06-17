@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {createStructuredSelector} from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import StrengthsWeaknessesNavBar from './components/StrengthsWeaknessesNavBar';
 import ReadingPage from './components/ReadingPage';
 import WritingPage from './components/WritingPage';
 import MathPage from './components/MathPage';
 import SubjectsCard from './components/SubjectsCard';
 
-import {makeSelectActiveTestScores} from '../index/selectors';
-import {fetchStudentTestScoreApi} from '../index/api';
+import { makeSelectActiveTestScores } from '../index/selectors';
+import { fetchStudentTestScoreApi } from '../index/api';
 
 class DetailTestAnswerSheetComplete extends React.Component {
   constructor(props) {
@@ -25,10 +25,10 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   async componentDidMount() {
     this.props.onRef(this);
-    const {activeTestScores} = this.props;
+    const { activeTestScores } = this.props;
     let fetchedScores = {};
     if (!this.props.activeTestScores) {
-      const {test, activeStudent} = this.props;
+      const { test, activeStudent } = this.props;
       const response = await fetchStudentTestScoreApi(activeStudent.id, test.student_test_id);
       if (response && !response.message) {
         fetchedScores = response.categories;
@@ -65,16 +65,16 @@ class DetailTestAnswerSheetComplete extends React.Component {
   getComponentImages = () =>
     new Promise(async resolve => {
       const circleImageList = [];
-      let barImageList = [];
+      const barImageList = [];
       const circleRefs = [
-        {id: 'analysisReadingCicleImg'},
-        {id: 'analysisWritingCircleImg'},
-        {id: 'analysisMathCircleImg'},
+        { id: 'analysisReadingCicleImg' },
+        { id: 'analysisWritingCircleImg' },
+        { id: 'analysisMathCircleImg' },
       ];
       const barRefs = [
-        {id: 'readingAnalysisBarImg', state: 'reading'},
-        {id: 'writingAnalysisBarImg', state: 'writing'},
-        {id: 'mathAnalysisBarImg', state: 'math'},
+        { id: 'readingAnalysisBarImg', state: 'reading' },
+        { id: 'writingAnalysisBarImg', state: 'writing' },
+        { id: 'mathAnalysisBarImg', state: 'math' },
       ];
 
       const getCircleImagesPromise = circleRefs.reduce(
@@ -87,7 +87,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               }, 1000);
             })
             .catch(console.error),
-        Promise.resolve()
+        Promise.resolve(),
       );
       const getBarImageListPromise = barRefs.reduce(
         (accumulatorPromise, barRef) =>
@@ -97,18 +97,18 @@ class DetailTestAnswerSheetComplete extends React.Component {
               return barImageList.push(result);
             })
             .catch(console.error),
-        Promise.resolve()
+        Promise.resolve(),
       );
       getCircleImagesPromise.then(() => {
         getBarImageListPromise.then(() => {
-          const imgList = {circleImageList, barImageList};
+          const imgList = { circleImageList, barImageList };
           resolve(imgList);
         });
       });
     });
   getData = item =>
     new Promise(resolve => {
-      this.setState({activeSlide: item.state}, () => {
+      this.setState({ activeSlide: item.state }, () => {
         setTimeout(async () => {
           const currentImg = await this.onHandleTargetImage(item.id);
           setTimeout(() => {
@@ -120,15 +120,15 @@ class DetailTestAnswerSheetComplete extends React.Component {
 
   onHandleTargetImage = async currentRef =>
     new Promise(async resolve => {
-      const {getTargetImage} = this.props;
+      const { getTargetImage } = this.props;
       const [currentImg] = await Promise.all([getTargetImage(document.getElementById(currentRef))]);
       resolve(currentImg);
     });
 
-  onSetActiveSlide = activeSlide => this.setState({activeSlide});
+  onSetActiveSlide = activeSlide => this.setState({ activeSlide });
 
   renderCurrentSlide = () => {
-    const {activeSlide, readingScores, mathScores, writingScores} = this.state;
+    const { activeSlide, readingScores, mathScores, writingScores } = this.state;
     if (activeSlide === 'reading') {
       return <ReadingPage scores={readingScores} />;
     }
@@ -142,7 +142,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
   };
 
   render() {
-    const {activeSlide, readingScores, mathScores, writingScores} = this.state;
+    const { activeSlide, readingScores, mathScores, writingScores } = this.state;
     return (
       <React.Fragment>
         <SubjectsCard
@@ -157,7 +157,7 @@ class DetailTestAnswerSheetComplete extends React.Component {
               <StrengthsWeaknessesNavBar
                 activeSlide={activeSlide}
                 onSetActiveSlide={this.onSetActiveSlide}
-                scores={{readingScores, mathScores, writingScores}}
+                scores={{ readingScores, mathScores, writingScores }}
               />
             </div>
             <div className="card-content">

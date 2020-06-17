@@ -188,7 +188,7 @@ class CompletedTestCard extends React.Component {
                                     href="#"
                                     onClick={e => {
                                       e.preventDefault();
-                                      onTestFlagReviewed(student_test_id, student_id);
+                                      onTestFlagReviewed(student_test_id, student_id, problem_flag_count);
                                     }}
                                   >
                                     Mark flags reviewed
