@@ -478,8 +478,12 @@ export const updateStudentTestQuestionFlagStatusApi = (body) =>
     .catch(err => err);
 
 
-export const fetchLessonListApi = () =>
-  fetch(`${API_URL}/api/lessons`, {
+export const fetchLessonListApi = (filters = {}) => {
+  const { page, subjectId } = filters;
+  const pageString = page ? `page=${page}&` : "";
+  const subjectString = subjectId ? `subject_id=${subjectId}&` : "";
+  const query = `${pageString}${subjectString}`;
+  return fetch(`${API_URL}/api/lessons?${query}`, {
     headers: {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -489,6 +493,7 @@ export const fetchLessonListApi = () =>
   })
     .then(res => res.json())
     .catch(err => err);
+};
 
 export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,

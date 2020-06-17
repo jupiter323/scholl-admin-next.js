@@ -748,9 +748,9 @@ function* watchForFetchLesson() {
   yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
 }
 
-function* handleFetchLesson() {
+function* handleFetchLesson(action) {
   try {
-    const response = yield call(fetchLessonListApi);
+    const response = yield call(fetchLessonListApi, action.filters);
     console.log('log: saga lesons', response);
     if (Array.isArray(response.data.lessons) || response.data.lessons instanceof Array) {
       const lessons = response.data.lessons;
