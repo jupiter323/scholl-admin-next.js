@@ -79,6 +79,7 @@ import {
   UPDATE_LESSON_SCORE,
   UPDATE_TEST_DUE_DATE,
   UPDATE_TEST_FLAG_COUNT,
+  SET_LESSON_PAGINATION,
 } from "./components/Student/index/constants";
 import {
   CREATE_CLASS,
@@ -749,8 +750,10 @@ function* watchForFetchLesson() {
 
 function* handleFetchLesson() {
   try {
-    const lessons = yield call(fetchLessonListApi);
-    if (Array.isArray(lessons) || lessons instanceof Array) {
+    const response = yield call(fetchLessonListApi);
+    console.log('log: saga lesons', response);
+    if (Array.isArray(response.data.lessons) || response.data.lessons instanceof Array) {
+      const lessons = response.data.lessons;
       yield put({
         type: FETCH_LESSON_LIST_SUCCESS,
         payload: lessons.map(lesson => ({
@@ -761,6 +764,12 @@ function* handleFetchLesson() {
       });
       yield put({
         type: MERGE_STUDENT_LESSON_LISTS,
+      });
+      yield put({
+        type: SET_LESSON_PAGINATION,
+        dataType: "lesson",
+        currentPage: response.data.current_page,
+        pages: response.data.pages,
       });
     }
   } catch (error) {

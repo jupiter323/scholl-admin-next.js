@@ -60,6 +60,7 @@ import {
   RESET_LESSON_FLAG_COUNT,
   UPDATE_LESSON_SCORE,
   UPDATE_TEST_FLAG_COUNT,
+  SET_LESSON_PAGINATION,
 } from "./constants";
 
 const initialState = fromJS({
@@ -91,6 +92,7 @@ const initialState = fromJS({
   testSectionProblems: [],
   studentTests: [],
   studentTestsFetchedStatus: false,
+  pagination: {},
   errorMessages: {
     testFlagMessage: "",
     answerTestProblemMessage: "",
@@ -532,7 +534,11 @@ function studentReducer(state = initialState, action) {
         }
       }
       return state.set(listName, [...newList]);
-
+    case SET_LESSON_PAGINATION:
+      const pagination = state.get('pagination');
+      pagination[`${action.dataType}CurrentPage`] = action.currentPage;
+      pagination[`${action.dataType}Pages`] = action.pages;
+      return state.set('pagination', { ...pagination });
 
     default:
       return state;

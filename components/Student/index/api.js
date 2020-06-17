@@ -488,10 +488,7 @@ export const fetchLessonListApi = () =>
     },
   })
     .then(res => res.json())
-    .then(({ data }) => {
-      const lessons = data.lessons;
-      return lessons;
-    });
+    .catch(err => err);
 
 export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,

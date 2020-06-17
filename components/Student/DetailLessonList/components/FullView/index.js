@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { bindActionCreators } from "redux";
@@ -10,7 +10,7 @@ import Checkbox from "./components/LessonCard/components/Checkbox";
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
 import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons } from '../../../index/actions';
 import moment from 'moment';
-import { makeSelectCheckedLessons } from '../../../index/selectors';
+import { makeSelectCheckedLessons, makeSelectPagination } from '../../../index/selectors';
 import RescheduleModal from "../RescheduleModal";
 import Modal from '../../../../Modal/index';
 
@@ -41,7 +41,13 @@ const FullView = props => {
     checkedCardIds,
     resetLessonSelections,
     handleMarkAllFlagsReviewed,
+    pagination,
   } = props;
+
+  useEffect(() => {
+    console.log('log: useeffect', pagination);
+  }, [pagination]);
+
   const mapLessons = () => lessons.map((lesson, index) => (
     <LessonCard
       // eslint-disable-next-line react/no-array-index-key
@@ -302,6 +308,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = createStructuredSelector({
   checkedLessons: makeSelectCheckedLessons(),
+  pagination: makeSelectPagination(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FullView);

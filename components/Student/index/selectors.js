@@ -65,6 +65,8 @@ const makeSelectFetchStudentTestsStatus = () => createSelector(makeSelectStudent
 
 const makeSelectErrorMessages = () => createSelector(makeSelectStudentPageState(), substate => substate.errorMessages);
 
+const makeSelectPagination = () => createSelector(makeSelectStudentPageState(), substate => substate.pagination);
+
 export default selectStudentsDomain;
 export {
   makeSelectStudentPageState,
@@ -93,4 +95,5 @@ export {
   makeSelectActiveStudent,
   makeSelectFetchStudentTestsStatus,
   makeSelectErrorMessages,
+  makeSelectPagination,
 };
