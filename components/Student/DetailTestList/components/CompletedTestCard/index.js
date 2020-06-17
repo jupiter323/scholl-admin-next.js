@@ -4,9 +4,9 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
 import { setActiveTestScores } from '../../../index/actions';
 import { makeSelectActiveTestScores, makeSelectActiveStudent } from '../../../index/selectors';
+import { WithHoverEffect } from '../Styled/CompletedCardStyles';
 
 import { fetchStudentTestScoreApi } from '../../../index/api';
 class CompletedTestCard extends React.Component {
@@ -124,7 +124,7 @@ class CompletedTestCard extends React.Component {
                       style={{ marginBottom: '0px !important', marginTop: '20px' }}
                     >
                       <div className="col s12 m6">
-                        <strong className="list-title">
+                        <strong className="list-title" >
                           {test_name}
                         </strong>
                       </div>
@@ -261,7 +261,10 @@ class CompletedTestCard extends React.Component {
             <ul className="points-list-custom" onClick={e => this.onEditTest(e)}>
               {MathScore && ReadingAndWritingScore && ReadingScore
                 ? <li>
-                  <span
+                  <WithHoverEffect
+                    math={MathScore}
+                    reading={ReadingScore}
+                    readingWriting={ReadingAndWritingScore}
                     className="badge-circle"
                     style={{
                       backgroundColor: '#00BBFF',
@@ -281,7 +284,7 @@ class CompletedTestCard extends React.Component {
                             ReadingAndWritingScore.current_score}
                       </h2>
                     </span>
-                  </span>
+                  </WithHoverEffect>
                 </li>
                 : <li>
                   <span
@@ -302,7 +305,7 @@ class CompletedTestCard extends React.Component {
                 </li>}
               {MathScore
                 ? <li>
-                  <span
+                  <WithHoverEffect
                     className="badge-circle"
                     style={{
                       backgroundColor: '#4785f4',
@@ -319,7 +322,7 @@ class CompletedTestCard extends React.Component {
                         {MathScore.previous_score === null ? '' : `${MathScore.delta}`}
                       </h2>
                     </span>
-                  </span>
+                  </WithHoverEffect>
                 </li>
                 : <li>
                   <span className="badge-circle">
@@ -333,7 +336,7 @@ class CompletedTestCard extends React.Component {
                 </li>}
               {ReadingAndWritingScore
                 ? <li>
-                  <span
+                  <WithHoverEffect
                     className="badge-circle"
                     style={{
                       backgroundColor: '#55b24b',
@@ -358,7 +361,7 @@ class CompletedTestCard extends React.Component {
                           : `${ReadingAndWritingScore.delta}`}
                       </h2>
                     </span>
-                  </span>
+                  </WithHoverEffect>
                 </li>
                 : <li>
                   <span className="badge-circle">
@@ -375,7 +378,7 @@ class CompletedTestCard extends React.Component {
 
               {ReadingScore
                 ? <li>
-                  <span
+                  <WithHoverEffect
                     className="badge-circle"
                     style={{
                       backgroundColor: '#35a6af',
@@ -393,7 +396,7 @@ class CompletedTestCard extends React.Component {
                         {ReadingScore.previous_score === null ? '' : `${ReadingScore.delta}`}
                       </h3>
                     </span>
-                  </span>
+                  </WithHoverEffect>
                 </li>
                 : <li>
                   <span

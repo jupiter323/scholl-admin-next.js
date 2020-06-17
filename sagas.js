@@ -51,6 +51,8 @@ import {
   UPDATE_STUDENT_TEST_ANSWER,
   UPDATE_TEST_STATUS,
   UPDATE_TEST_STATUS_SUCCESS,
+  UPDATE_TEST_SECTIONS,
+  UPDATE_TEST_ASSIGNMENT_DATE,
   ADD_TEST_TO_COMPLETED,
   REMOVE_TEST_FROM_PREV_LIST,
   REMOVE_TEST_FROM_LIST,
@@ -75,6 +77,7 @@ import {
   MARK_ALL_LESSON_FLAGS_REVIEWED,
   RESET_LESSON_FLAG_COUNT,
   UPDATE_LESSON_SCORE,
+  UPDATE_TEST_DUE_DATE,
   UPDATE_TEST_FLAG_COUNT,
 } from "./components/Student/index/constants";
 import {
@@ -122,6 +125,7 @@ import {
   sendErrorMessage,
   resetErrorMessage,
   flagStudentLessonProblem,
+  updateTestSections,
 } from "./components/Student/index/actions";
 import { setInstructors } from "./components/Instructor/index/actions";
 import { setClasses } from "./components/Classes/index/actions";
@@ -164,6 +168,9 @@ const {
   updateStudentTestStatusApi,
   fetchStudentTestScoreApi,
   addStudentTestQuestionFlagApi,
+  updateStudentTestSectionsApi,
+  updateStudentTestAssignmentDateApi,
+  updateStudentTestDueDateApi,
   fetchStudentLessonSectionApi,
   fetchStudentLessonApi,
   updateStudentLessonStatusApi,
@@ -200,6 +207,9 @@ const fetchProblemsMessage = 'fetchProblemsMessage';
 const testFlagMessage = 'testFlagMessage';
 const answerTestProblemMessage = 'answerTestProblemMessage';
 const fetchingStudentTestsMessage = 'fetchingStudentTestsMessage';
+const updateTestSectionsMessage = 'updateTestSectionsMessage';
+const updateTestDueDateMessage = 'updateTestDueDateMessage';
+const updateTestAssignmentDateMessage = 'updateTestAssignmentDateMessage';
 /** ******************************************    STUDENTS    ******************************************* */
 export function* watchForFetchStudents() {
   while (true) {
@@ -1143,7 +1153,7 @@ function* watchForUpdateTestStatus() {
 
 function* handleUpdateTestStatus(action) {
   try {
-    const response = yield call(updateStudentTestStatusApi, action.payload);
+    const response = yield call(updateTestSectionApi, action.payload);
     if (response && response.message && action.payload.status === "COMPLETED") {
       console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
       return yield put(sendErrorMessage("updateTestStatusMsg", `Something went wrong updating this test to ${action.payload.status}. Please try opening and resubmitting this test later.`));
@@ -1184,6 +1194,76 @@ function* handleUpdateTestStatus(action) {
     }
   } catch (error) {
     console.warn("Error occurred in the handleUpdateTestStatus saga", error);
+  }
+}
+
+function* watchForhandleUpdateTestSettings() {
+  while (true) {
+    const assignDate = yield take(UPDATE_TEST_ASSIGNMENT_DATE);
+    const dueDate = yield take(UPDATE_TEST_DUE_DATE);
+    const sections = yield take(UPDATE_TEST_SECTIONS);
+    const { assignment_date } = assignDate.payload;
+    if (assignment_date) {
+      yield call(handleUpdateTestAssignmentDate, assignDate);
+    }
+
+    const { due_date } = dueDate.payload;
+    if (due_date) {
+      yield call(handleUpdateTestDueDate, dueDate);
+    }
+
+    const { test_section_ids } = sections.payload;
+    if (test_section_ids.length) {
+      yield call(handleUpdateTestSections, sections);
+    }
+
+    yield delay(1000);
+
+    if (test_section_ids.length || due_date || assignment_date) {
+      yield call(fetchStudentTests, sections.user);
+    }
+  }
+}
+
+function* handleUpdateTestAssignmentDate(action) {
+  try {
+    const response = yield call(updateStudentTestAssignmentDateApi, action.payload);
+    if (response && response.message) {
+      console.warn("Error occurred in the handleUpdateTestAssignmentDate saga", response.message);
+      yield put(sendErrorMessage(updateTestAssignmentDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`));
+      return console.warn("Error occurred in the handleUpdateTestAssignmentDate", response.message);
+    }
+  } catch (error) {
+    sendErrorMessage(updateTestAssignmentDateMessage, `Something went wrong updating this test assignment date. Please try changing test settings later.`);
+    console.warn("Error occurred in the handleUpdateTestAssignmentDate saga", error);
+  }
+}
+
+function* handleUpdateTestDueDate(action) {
+  try {
+    const response = yield call(updateStudentTestDueDateApi, action.payload);
+    if (response && response.message) {
+      console.warn("Error occurred in the handleUpdateTestDueDate saga", response.message);
+      yield put(sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`));
+      return console.warn("Error occurred in the handleUpdateTestDueDate", response.message);
+    }
+  } catch (error) {
+    sendErrorMessage(updateTestDueDateMessage, `Something went wrong updating this test due date. Please try changing test settings later.`);
+    console.warn("Error occurred in the handleUpdateTestDueDate saga", error);
+  }
+}
+
+function* handleUpdateTestSections(action) {
+  try {
+    const response = yield call(updateStudentTestSectionsApi, action.payload);
+    if (response && response.message) {
+      console.warn("Error occurred in the handleUpdateTestSections saga", response.message);
+      yield put(sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`));
+      return console.warn("Error occurred in the update test sections saga", response.message);
+    }
+  } catch (error) {
+    sendErrorMessage(updateTestSectionsMessage, `Something went wrong updating this test sections. Please try changing test settings later.`);
+    console.warn("Error occurred in the handleUpdateTestSections saga", error);
   }
 }
 
@@ -1555,6 +1635,7 @@ export default function* defaultSaga() {
     watchForAddStudentAnswerToTestDebounce(),
     watchForUpdateTestFlagStatus(),
     watchForFetchActiveTestScores(),
+    watchForhandleUpdateTestSettings(),
     watchForFetchLessonProblems(),
     watchForAnswerStudentLessonProblemDebounce(),
     watchForUpdateStudentLessonStatus(),
