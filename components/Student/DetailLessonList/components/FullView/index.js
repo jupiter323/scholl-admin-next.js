@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import InfiniteScroll from "react-infinite-scroll-component";
 import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 // eslint-disable-next-line
@@ -21,6 +22,7 @@ const FullView = props => {
   const [confirmationFunc, setConfirmationFunc] = useState("");
   const [lessonIdsToEdit, setLessonIdsToEdit] = useState([]);
   const [rescheduleModalState, setRescheduleModalState] = useState({});
+  const [hasMore, setHasMore] = useState(true);
 
   const {
     lessons = [],
@@ -267,9 +269,19 @@ const FullView = props => {
           </If>
         </div>
       </div>
-      <div className="row d-flex-content  justify-content-center card-width-auto">
+      {/* <div className="row d-flex-content justify-content-center card-width-auto"> */}
+      <InfiniteScroll
+        dataLength={lessons.length}
+        next={() => console.log('log: sup')}
+        hasMore
+        loader={<h4>Loading...</h4>}
+        className="row d-flex-content justify-content-center card-width-auto"
+        style={{ width: "100%" }}
+      >
         {mapLessons()}
-      </div>
+      </InfiniteScroll>
+      {/* {mapLessons()} */}
+      {/* </div> */}
     </div>
   );
 };
