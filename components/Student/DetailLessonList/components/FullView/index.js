@@ -8,7 +8,7 @@ import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 // eslint-disable-next-line
 import ClickOffComponentWrapper from "../../../../ClickOffComponentWrapper";
-import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons } from '../../../index/actions';
+import { rescheduleStudentLessons, unAssignLessonToStudent, resetStudentLessons, getLessonList } from '../../../index/actions';
 import moment from 'moment';
 import { makeSelectCheckedLessons, makeSelectPagination } from '../../../index/selectors';
 import RescheduleModal from "../RescheduleModal";
@@ -22,7 +22,9 @@ const FullView = props => {
   const [confirmationFunc, setConfirmationFunc] = useState("");
   const [lessonIdsToEdit, setLessonIdsToEdit] = useState([]);
   const [rescheduleModalState, setRescheduleModalState] = useState({});
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pages, setPages] = useState(1);
 
   const {
     lessons = [],
@@ -42,11 +44,21 @@ const FullView = props => {
     resetLessonSelections,
     handleMarkAllFlagsReviewed,
     pagination,
+    onGetLessonList,
   } = props;
 
   useEffect(() => {
-    console.log('log: useeffect', pagination);
-  }, [pagination]);
+    console.log('log: pagination', pagination);
+    if (pagination.lessonPages && pagination.lessonCurrentPage) {
+      setCurrentPage(pagination.lessonCurrentPage);
+      setPages(pagination.lessonPages);
+      if (pagination.lessonCurrentPage >= pagination.lessonPages) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+    }
+  }, [pagination.lessonPages, pagination.lessonCurrentPage]);
 
   const mapLessons = () => lessons.map((lesson, index) => (
     <LessonCard
@@ -205,6 +217,11 @@ const FullView = props => {
     toggleRescheduleModal(false);
   };
 
+  const handleLoadMoreLessons = (nextPage) => {
+    const filters = { page: nextPage };
+    onGetLessonList(filters);
+  };
+
   return (
     <div className="content-section">
       <Modal
@@ -275,19 +292,16 @@ const FullView = props => {
           </If>
         </div>
       </div>
-      {/* <div className="row d-flex-content justify-content-center card-width-auto"> */}
       <InfiniteScroll
         dataLength={lessons.length}
-        next={() => console.log('log: sup')}
-        hasMore
+        next={() => handleLoadMoreLessons(currentPage + 1)}
+        hasMore={hasMore}
         loader={<h4>Loading...</h4>}
         className="row d-flex-content justify-content-center card-width-auto"
         style={{ width: "100%" }}
       >
         {mapLessons()}
       </InfiniteScroll>
-      {/* {mapLessons()} */}
-      {/* </div> */}
     </div>
   );
 };
@@ -304,6 +318,7 @@ const mapDispatchToProps = dispatch => ({
   dispathRescheduleStudentLessons: bindActionCreators(rescheduleStudentLessons, dispatch),
   dispathUnAssignLessonToStudent: bindActionCreators(unAssignLessonToStudent, dispatch),
   dispathResetStudentLessons: bindActionCreators(resetStudentLessons, dispatch),
+  onGetLessonList: bindActionCreators(getLessonList, dispatch),
 });
 
 const mapStateToProps = createStructuredSelector({

@@ -278,8 +278,9 @@ export function setEssayScore(score) {
   };
 }
 
-export const getLessonList = () => ({
+export const getLessonList = (filters) => ({
   type: FETCH_LESSON_LIST,
+  filters,
 });
 
 export const getStudentLessonList = (postBody) => ({
