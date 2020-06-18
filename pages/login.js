@@ -55,7 +55,7 @@ class Login extends Component {
   componentWillReceiveProps = (nextProps) => {
     const { onSetUserIsLogged } = this.props;
     const { currentUser } = nextProps;
-    if (currentUser && currentUser.type === "INSTRUCTOR") {
+    if (currentUser && currentUser.type !== "STUDENT") {
       onSetUserIsLogged(true);
       Router.push("/dashboard");
     } else {
