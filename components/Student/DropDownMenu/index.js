@@ -25,12 +25,10 @@ class DropDownMenu extends React.Component {
   leaveDetailView = () => {
     const {
       onSetIsVisibleTopbar,
-      onSetActiveLesson,
       onSetOpenActivePage,
       onCloseDetailModal,
     } = this.props;
     onSetIsVisibleTopbar(true);
-    onSetActiveLesson({});
     onSetOpenActivePage("");
     onCloseDetailModal();
   }
