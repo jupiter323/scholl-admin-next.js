@@ -44,31 +44,27 @@ class LocationListPage extends React.Component {
     } = this.props;
 
     const {
-      owner,
-      locationContactInfo: { streetAddress, city, state, zip, locationPhone, website },
+      ownerContactInfo: { firstName, lastName },
+      locationContactInfo: { locationName, locationNickname, locationStreetAddress, locationCity, locationState, locationZip, locationPhoneNumber, website },
     } = newLocation;
 
-    let firstName = ''; let lastName = '';
-    if (owner) {
-      firstName = owner.firstName;
-      lastName = owner.lastName;
+    let locationToGetOrgID = this.props.locations[0]
+    if (locationToGetOrgID) {
+      const locationData = {
+        organization_id: locationToGetOrgID.organization.id,
+        name: locationName || 'Clear Choice Test Prep',
+        nickname: locationNickname || 'Clear Choice',
+        subdomain: (firstName || lastName) ? `${firstName}-${lastName}-${Math.floor(Math.random() * 100)}` : `${faker.name.firstName()}-${faker.name.lastName()}-${Math.floor(Math.random() * 10)}`,
+        address: locationStreetAddress || '409 N Pacific Coast Hwy Ste. 128',
+        city: locationCity || 'Redondo Beach',
+        state: locationState || 'CA',
+        zip: locationZip || '90277',
+        phone: locationPhoneNumber || '310.775.0482',
+        website: website || 'http://www.clearchoiceprep.com',
+      };
+      const payload = { location: locationData, user_id: id };
+      onCreateLocation(payload);
     }
-
-
-    const locationData = {
-      organization_id: this.props.locations[0].organization.id,
-      name: (firstName || lastName) ? `${firstName} ${lastName}` : 'Clear Choice Test Prep',
-      nickname: firstName || 'Clear Choice',
-      subdomain: `${faker.name.firstName()}-${faker.name.lastName()}-${Math.floor(Math.random() * 10)}`,
-      address: streetAddress || '409 N Pacific Coast Hwy Ste. 128',
-      city: city || 'Redondo Beach',
-      state: state || 'CA',
-      zip: zip || '90277',
-      phone: locationPhone || '310.775.0482',
-      website: website || 'http://www.clearchoiceprep.com',
-    };
-    const payload = { location: locationData, user_id: id };
-    onCreateLocation(payload);
     this.setState(({ locations }) => ({ locations: [...locations, newLocation] }));
   }
 
