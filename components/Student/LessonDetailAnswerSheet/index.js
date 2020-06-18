@@ -65,7 +65,7 @@ class LessonDetailAnswerSheet extends React.Component {
       dropdownIsOpen: false,
       loadingScores: false,
       completeSectionMsg: "",
-      updateLessonStatusMsg: ""
+      updateLessonStatusMsg: "",
     };
   }
 
@@ -74,7 +74,6 @@ class LessonDetailAnswerSheet extends React.Component {
     if (lesson.status === "COMPLETED") {
       return { loadingScores: false };
     }
-    console.log('log: completeSectionMsg', completeSectionMsg);
     if (completeSectionMsg && completeSectionMsg !== state.completeSectionMsg) {
       return { completeSectionMsg };
     }

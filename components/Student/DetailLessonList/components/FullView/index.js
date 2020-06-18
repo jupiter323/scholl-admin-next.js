@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import BeatLoader from "react-spinners/BeatLoader";
 import LessonCard from "./components/LessonCard";
 import Checkbox from "./components/LessonCard/components/Checkbox";
 // eslint-disable-next-line
@@ -24,8 +25,6 @@ const FullView = props => {
   const [rescheduleModalState, setRescheduleModalState] = useState({});
   const [hasMore, setHasMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pages, setPages] = useState(1);
-  const [scrollThreshold, setScrollThreshold] = useState(0.1);
 
   const {
     lessons = [],
@@ -49,11 +48,8 @@ const FullView = props => {
   } = props;
 
   useEffect(() => {
-    console.log('log: pagination', pagination);
     if (pagination.lessonPages && pagination.lessonCurrentPage) {
-      if (pagination.lessonCurrentPage === 2) setScrollThreshold(0.8);
       setCurrentPage(pagination.lessonCurrentPage);
-      setPages(pagination.lessonPages);
       if (pagination.lessonCurrentPage >= pagination.lessonPages) {
         setHasMore(false);
       } else {
@@ -298,10 +294,12 @@ const FullView = props => {
         dataLength={lessons.length}
         next={() => handleLoadMoreLessons(currentPage + 1)}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={<div style={{ alignSelf: 'center' }}>
+          <BeatLoader color={"#D0021B"} size={10} />
+        </div>}
         className="row d-flex-content justify-content-center card-width-auto"
         style={{ width: "100%" }}
-        scrollThreshold={scrollThreshold}
+        scrollThreshold={0.7}
       >
         {mapLessons()}
       </InfiniteScroll>
