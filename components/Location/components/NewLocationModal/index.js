@@ -95,7 +95,7 @@ class NewLocationModal extends React.Component {
   // If all the fields are valid, we construct a post body and call onSaveNewLocation passed down from the container level
   onSubmit = async (event) => {
     event.preventDefault();
-    const { owner, locationContactInfo, locationEmailSettings, locationBranding } = this.state;
+    const { ownerContactInfo, locationContactInfo, locationEmailSettings, locationBranding } = this.state;
     const { onSaveNewLocation, onSaveLocationError, onAddNewLocation, fromInstructorPage = false } = this.props;
     // NOTE: Swap out what instance of valid is active if you want to test saving a new location without worrying about validation
     // const valid = true;
@@ -104,7 +104,7 @@ class NewLocationModal extends React.Component {
       // return onSaveLocationError();
       console.warn('not valid');
     }
-    const postBody = { locationContactInfo, locationEmailSettings, locationBranding, owner };
+    const postBody = { locationContactInfo, locationEmailSettings, locationBranding, ownerContactInfo };
     if (fromInstructorPage) {
       onSaveNewLocation(postBody);
     } else {
