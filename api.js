@@ -67,6 +67,7 @@ import {
 
 import {
   fetchAllLocationsApi,
+  createNewLocationApi
 } from './components/Location/index/api';
 
 export const classApi = {
@@ -141,4 +142,5 @@ export const userApi = {
 
 export const locationsApi = {
   fetchAllLocationsApi,
+  createNewLocationApi
 };

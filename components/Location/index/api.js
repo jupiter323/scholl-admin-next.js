@@ -13,3 +13,16 @@ export const fetchAllLocationsApi = (user_id) =>
   })
     .then(res => res.json())
     .then(({ data }) => data);
+
+export const createNewLocationApi = (location) =>
+  fetch(`${API_URL}/api/commands/create-location`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(location),
+  })
+    .then(res => res.json())
+    .catch(err => err);
