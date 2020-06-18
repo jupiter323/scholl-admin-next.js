@@ -478,20 +478,22 @@ export const updateStudentTestQuestionFlagStatusApi = (body) =>
     .catch(err => err);
 
 
-export const fetchLessonListApi = () =>
-  fetch(`${API_URL}/api/lessons`, {
-    headers: {
-      Accept: "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
-    },
-  })
-    .then(res => res.json())
-    .then(({ data }) => {
-      const lessons = data.lessons;
-      return lessons;
-    });
+export const fetchLessonListApi = (filters = {}) => {
+    const { page, subjectId } = filters;
+    const pageString = page ? `page=${page}&` : "";
+    const subjectString = subjectId ? `subject_id=${subjectId}&` : "";
+    const query = `${pageString}${subjectString}`;
+    return fetch(`${API_URL}/api/lessons?${query}`, {
+      headers: {
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    })
+      .then(res => res.json())
+      .catch(err => err);
+  }
 
 export const fetchUnitsApi = () =>
   fetch(`${API_URL}/api/units`,

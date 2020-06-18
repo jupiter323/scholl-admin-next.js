@@ -746,11 +746,12 @@ export function* watchForUpdateClassExcludeFromStatistics() {
 function* watchForFetchLesson() {
   yield takeEvery(FETCH_LESSON_LIST, handleFetchLesson);
 }
-
-function* handleFetchLesson() {
+function* handleFetchLesson(action) {
   try {
-    const lessons = yield call(fetchLessonListApi);
-    if (Array.isArray(lessons) || lessons instanceof Array) {
+    const response = yield call(fetchLessonListApi, action.filters);
+    console.log('log: saga lesons', response);
+    if (Array.isArray(response.data.lessons) || response.data.lessons instanceof Array) {
+      const lessons = response.data.lessons;
       yield put({
         type: FETCH_LESSON_LIST_SUCCESS,
         payload: lessons.map(lesson => ({

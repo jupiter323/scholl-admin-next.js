@@ -383,6 +383,14 @@ class DetailLessonList extends React.Component {
     return lessons;
   };
 
+  onRemoveFilters = ()=>{
+    this.setState({
+      flagFilters: [],
+      dueDateFilters: [],
+      scoreStatusFilters: [],
+    }); 
+  }
+
   handleFilterClick = (filterType, filter) => {
     const {
       subjectFilters: currentSubjectFilters,
@@ -390,6 +398,7 @@ class DetailLessonList extends React.Component {
       flagFilters: currentFlagFilters,
       dueDateFilters: currentDueDateFilters,
     } = this.state;
+    const { subjects } = this.props;
     let modifiedFilterCurrentState;
     let modifiedFilterName;
     let modifiedFilterUpdatedState;
@@ -415,10 +424,31 @@ class DetailLessonList extends React.Component {
     }
     // Decide whether we're adding or removing the selected filter
     if (modifiedFilterCurrentState.indexOf(filter) === -1) {
-      modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
-        $push: [filter],
-      });
-    } else {
+      if(
+        filter === "Reading" ||
+        filter === "Math" ||   
+        filter === "Writing and Language"
+        ){   
+        const subjectId = Object.keys(subjects).find(id => subjects[id] === filter)
+        const filters = { subjectId }
+        const subjectIndex = modifiedFilterCurrentState.indexOf(filter);
+        modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+          $splice: [[subjectIndex, 1, filter]],
+        });
+        this.onRemoveFilters()
+        this.props.dispathGetLessonList(filters)
+      } 
+      else {
+        if(this.state.subjectFilters.length > 0) {
+          this.setState({subjectFilters:[]})
+          this.props.dispathGetLessonList()
+        }
+        modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
+          $push: [filter],
+        });
+      }
+    } 
+    else {
       const filterIndex = modifiedFilterCurrentState.indexOf(filter);
       modifiedFilterUpdatedState = update(modifiedFilterCurrentState, {
         $splice: [[filterIndex, 1]],
@@ -568,7 +598,6 @@ class DetailLessonList extends React.Component {
       flagFilters,
       dueDateFilters,
     } = this.state;
-
     const {
       activeShowPage,
     } = this.props;

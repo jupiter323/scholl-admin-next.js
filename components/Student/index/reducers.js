@@ -143,7 +143,7 @@ function studentReducer(state = initialState, action) {
       return state.set("isLoading", true);
 
     case FETCH_LESSON_LIST_SUCCESS:
-      return state.set("unassignedLessonList", action.payload);
+      return state.set("unassignedLessonList", [...action.payload]);
 
     case FETCH_STUDENT_LESSSON_LIST_SUCCESS:
       return state.set("studentLessonList", action.payload);

@@ -90,6 +90,11 @@ class FilterSection extends React.Component {
       return onSetUnitFilter(event);
     }
   }
+
+  handleSubjectFilter = () => {
+
+  }
+
   render() {
     const { open, sort, nameFilter, unitFilter } = this.state;
     const { currentView, dueDateFilters, flagFilters, subjectFilters, scoreStatusFilters, onChangeView, handleFilterClick } = this.props;
@@ -187,7 +192,7 @@ class FilterSection extends React.Component {
                     />
                     <label htmlFor="dueToday">Due Today</label>
                   </li>
-                  <li>
+                  {/* <li>
                     <input
                       type="checkbox"
                       id="dueNextSession"
@@ -195,7 +200,7 @@ class FilterSection extends React.Component {
                       onChange={() => handleFilterClick('dueDate', 'dueNextSession')}
                     />
                     <label htmlFor="dueNextSession">Due By Next Session</label>
-                  </li>
+                  </li> */}
                   <li>
                     <input
                       type="checkbox"
