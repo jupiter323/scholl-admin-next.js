@@ -1153,7 +1153,7 @@ function* watchForUpdateTestStatus() {
 
 function* handleUpdateTestStatus(action) {
   try {
-    const response = yield call(updateTestSectionApi, action.payload);
+    const response = yield call(updateStudentTestStatusApi, action.payload);
     if (response && response.message && action.payload.status === "COMPLETED") {
       console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
       return yield put(sendErrorMessage("updateTestStatusMsg", `Something went wrong updating this test to ${action.payload.status}. Please try opening and resubmitting this test later.`));

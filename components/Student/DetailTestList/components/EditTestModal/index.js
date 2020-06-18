@@ -627,6 +627,7 @@ class EditTestModal extends React.Component {
               please wait the test score report downloading...
             </div>}
           <div className="content-section">
+            hello there
             <div className="content-section-holder">
               {this.renderCurrentPage()}
             </div>
