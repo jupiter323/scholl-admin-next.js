@@ -103,6 +103,7 @@ import {
 import {
   FETCH_ALL_LOCATIONS,
   SET_ALL_LOCATIONS,
+  CREATE_LOCATION
 } from './components/Location/index/constants';
 
 import {
@@ -187,7 +188,7 @@ const {
 } = instructorApi;
 const { fetchCurrentUserApi } = userApi;
 
-const { fetchAllLocationsApi } = locationsApi;
+const { fetchAllLocationsApi, createNewLocationApi } = locationsApi;
 // Error Message Constants
 const fetchSectionsMessage = 'fetchSectionsMessage';
 const fetchProblemsMessage = 'fetchProblemsMessage';
@@ -983,6 +984,21 @@ function* handleFetchAllLocations(id) {
   }
 }
 
+export function* watchForCreateNewLocation() {
+  while (true) {
+    try {
+      const { location, user_id } = yield take(CREATE_LOCATION);
+      const response = yield call(createNewLocationApi, location);
+      if (response && response.message) {
+        return console.warn("Something went wrong in createNewLocationApi.");
+      }
+      yield call(handleFetchAllLocations, user_id);
+    } catch (err) {
+      console.warn("Error occured in watchForCreateInstructor saga", err);
+    }
+  }
+}
+
 function* watchForAnswerStudentLessonProblem() {
   yield takeEvery(ADD_LESSON_ANSWER, handleAnswerStudentLessonProblem);
 }
@@ -1433,6 +1449,7 @@ export default function* defaultSaga() {
     watchForFilterLessons(),
     watchForFlagStudentLessonProblem(),
     watchForFetchAllLocations(),
+    watchForCreateNewLocation(),
     watchForAnswerStudentLessonProblem(),
     watchForDeleteStudentTest(),
     watchForMarkAllTestFlagsReviewed(),
