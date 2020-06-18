@@ -1153,6 +1153,10 @@ function* watchForUpdateTestStatus() {
 
 function* handleUpdateTestStatus(action) {
   try {
+    yield put({
+      type: SET_ACTIVE_TEST_SCORES,
+      scores: {},
+    });
     const response = yield call(updateStudentTestStatusApi, action.payload);
     if (response && response.message && action.payload.status === "COMPLETED") {
       console.warn("Error occurred in the handleUpdateTestStatus saga", response.message);
