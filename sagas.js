@@ -103,7 +103,7 @@ import {
 import {
   FETCH_ALL_LOCATIONS,
   SET_ALL_LOCATIONS,
-  CREATE_LOCATION
+  CREATE_LOCATION,
 } from './components/Location/index/constants';
 
 import {
@@ -988,13 +988,10 @@ export function* watchForCreateNewLocation() {
   while (true) {
     try {
       const { location, user_id } = yield take(CREATE_LOCATION);
-      const response = yield call(createNewLocationApi, location);
-      if (response && response.message) {
-        return console.warn("Something went wrong in createNewLocationApi.");
-      }
+      yield call(createNewLocationApi, location);
       yield call(handleFetchAllLocations, user_id);
     } catch (err) {
-      console.warn("Error occured in watchForCreateInstructor saga", err);
+      console.warn("Error occured in watchForCreateLocation saga", err);
     }
   }
 }
