@@ -136,7 +136,7 @@ const LessonCard = props => {
   const startMarkFlagsReviewed = (lessonIds) => {
     handleMarkAllFlagsReviewed(lessonIds)
   }
-  
+  console.log('log: lesson ', lesson);
   return (
     <React.Fragment>
       <div className="card-main-col col s12 m8 l7 xl5">
@@ -158,7 +158,10 @@ const LessonCard = props => {
                     {getUnitName()}
                   </div>
                   <div className="text-large">
-                    <a href="#" onClick={(e) => onOpenDetailModal(e)}>
+                    <a href="#" 
+                    onClick={(e) => onOpenDetailModal(e)}
+                    className={status === "NOTASSIGNED" ? 'disabled' : ''}
+                    >
                       {lesson.name}
                     </a>
                   </div>
