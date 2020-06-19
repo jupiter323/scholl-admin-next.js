@@ -50,19 +50,6 @@ class EditTestModal extends React.Component {
       analysisCicleImages: [],
       answerSheetImages: [],
       enablePublish: true,
-      subjects: [
-        'Practice Test Scores',
-        'Reading Analysis',
-        // 'Reading Analysis (cont’d)',
-        'Reading Answer Sheet',
-        'Writing Analysis',
-        // 'Writing Analysis (cont’d)',
-        'Writing Answer Sheet',
-        'Math Analysis',
-        // "Math Analysis (cont'd)",
-        'Math Answer Sheet(no calc)',
-        'Math Answer Sheet(calculator)',
-      ],
       adminInfo: 'Study Hut Tutoring | www.studyhut.com | (310) 555-1212 | info@studyhut.com',
       userInfo: {
         version: '',
@@ -80,6 +67,7 @@ class EditTestModal extends React.Component {
       fetchScoresMsg: '',
       updateTestStatusMsg: '',
       updateTestSectionMessage: '',
+      circleImageHeight: 0,
     };
   }
 
@@ -234,7 +222,7 @@ class EditTestModal extends React.Component {
       enablePublish: false,
     });
     const imgDataLists = [];
-    const {subjects, adminInfo, headerGradient} = this.state;
+    const {adminInfo, headerGradient} = this.state;
     const coverBackgroundImg = './static/images/sunset.jpg';
     const logoImg = './static/images/study-hut-logo.png';
     const backgroundImage = await this.getBase64ImageFromURL(
@@ -272,92 +260,207 @@ class EditTestModal extends React.Component {
         enablePublish: true,
       });
       const {scoresImages, analysisCicleImages, analysisBarImages, answerSheetImages} = this.state;
+      let subjects = [];
+      const CONTENT_WIDTH = 545.28;
+      subjects.push('Practice Test Scores');
       imgDataLists.push({
         image: scoresImages,
-        width: 545.28,
+        width: CONTENT_WIDTH,
         margin: [0, 20, 0, 0],
         pageBreak: 'after',
       });
-
-      for (let i = 0; i < 3; i++) {
-        imgDataLists.push({
-          image: analysisCicleImages[i],
-          width: 300,
-          margin: [0, 20, 0, 0],
-        });
-        const imagesHeight = this.getBarAndCircleImageTotalHeight(
-          analysisBarImages[i],
-          analysisCicleImages[i]
-        );
-        if (imagesHeight > 746.89) {
-          //OverSized
-          imgDataLists.push({
-            image: analysisBarImages[i],
-            width: 545.28,
-            height: imagesHeight,
-            margin: [0, 20, 0, 50],
-          });
-        } else {
-          imgDataLists.push({
-            image: analysisBarImages[i],
-            width: 545.28,
-            margin: [0, 20, 0, 50],
-          });
-        }
-        imgDataLists.push({
-          image: answerSheetImages[i],
-          width: 545.28,
-          margin: [0, 20, 0, 0],
-          pageBreak: 'after',
-        });
-      }
-      imgDataLists.push({
-        image: answerSheetImages[3],
-        width: 545.28,
-        margin: [0, 20, 0, 0],
-      });
-      const {
-        test: {test_description, completion_date},
-        activeStudent: {studentInformation: {firstName, lastName}},
-      } = this.props;
-      const userInfo = update(this.state.userInfo, {
-        $merge: {
-          name: `${firstName} ${lastName}`,
-          version: test_description,
-          test_date: moment(completion_date).format('MMMM Do YYYY'),
+      const testArray = [
+        {
+          id: 0,
+          subject: 'Reading Answersheet',
         },
+        {
+          id: 1,
+          subject: 'Writing Answersheet',
+        },
+        {
+          id: 2,
+          subject: 'Math Answer Sheet(no calc)',
+        },
+      ];
+      const getCircleImageHeightPromise = this.getTargetImageHeight(analysisCicleImages[0], 300);
+      getCircleImageHeightPromise.then(circleImageHeight => {
+        const testPromise = testArray.reduce(
+          (accumulatorPromise, item) =>
+            accumulatorPromise
+              .then(async () => {
+                const getBarImageHeightPromise = this.getTargetImageHeight(
+                  analysisBarImages[item.id],
+                  CONTENT_WIDTH
+                );
+                getBarImageHeightPromise.then(barImageHeight => {
+                  subjects.push(item.subject);
+                  imgDataLists.push({
+                    image: answerSheetImages[item.id],
+                    width: CONTENT_WIDTH,
+                    margin: [0, 20, 0, 0],
+                    pageBreak: 'after',
+                  });
+
+                  if (barImageHeight > 746.89) {
+                    //OverSized
+                    setTimeout(async () => {
+                      const overSizedImagesAmount = this.getSplitedImageAmount(
+                        circleImageHeight,
+                        barImageHeight
+                      );
+                      const splitedImages = await this.splitImages(
+                        circleImageHeight.toFixed(1),
+                        barImageHeight.toFixed(1),
+                        overSizedImagesAmount,
+                        analysisBarImages[item.id]
+                      );
+                      imgDataLists.push({
+                        image: analysisCicleImages[item.id],
+                        width: 300,
+                        margin: [0, 20, 0, 0],
+                      });
+                      for (let i = 0; i < overSizedImagesAmount; i++) {
+                        i === 0
+                          ? subjects.push(this.getSubjectLabelById(item.id))
+                          : subjects.push(this.getSubjectLabelById(item.id) + ' (cont’d)');
+                        imgDataLists.push({
+                          image: splitedImages[i],
+                          width: CONTENT_WIDTH,
+                          margin: [0, 20, 0, 0],
+                          pageBreak: 'after',
+                        });
+                      }
+                    }, 1000);
+                  } else {
+                    subjects.push(this.getSubjectLabelById(item.id));
+                    imgDataLists.push({
+                      image: analysisCicleImages[item.id],
+                      width: 300,
+                      margin: [0, 20, 0, 0],
+                    });
+                    imgDataLists.push({
+                      image: analysisBarImages[item.id],
+                      width: CONTENT_WIDTH,
+                      margin: [0, 20, 0, 0],
+                    });
+                  }
+                });
+              })
+              .catch(console.error),
+          Promise.resolve()
+        );
+        testPromise.then(() => {
+          setTimeout(() => {
+            subjects.push('Math Answer Sheet(calculator)');
+            imgDataLists.push({
+              image: answerSheetImages[3],
+              width: CONTENT_WIDTH,
+              margin: [0, 20, 0, 0],
+            });
+            const {
+              test: {test_description, completion_date},
+              activeStudent: {studentInformation: {firstName, lastName}},
+            } = this.props;
+            const userInfo = update(this.state.userInfo, {
+              $merge: {
+                name: `${firstName} ${lastName}`,
+                version: test_description,
+                test_date: moment(completion_date).format('MMMM Do YYYY'),
+              },
+            });
+            pdfMakeReport(
+              imgDataLists,
+              userInfo,
+              subjects,
+              adminInfo,
+              backgroundImage,
+              headerGradient,
+              logo
+            );
+          }, 3000);
+        });
       });
-      pdfMakeReport(
-        imgDataLists,
-        userInfo,
-        subjects,
-        adminInfo,
-        backgroundImage,
-        headerGradient,
-        logo
-      );
     });
   };
 
-  getImageSizeFromBase64String = base64string => {
-    let img = document.createElement('img');
-    img.setAttribute('src', base64string);
-    setTimeout(function() {
-      const imgSize = {
-        imgWidth: img.width,
-        imgHeight: img.height,
-      };
-      console.log('imgSize:', imgSize);
-      return imgSize;
-    }, 0);
+  getSubjectLabelById = id => {
+    switch (id) {
+      case 0:
+        return 'Reading Analysis';
+      case 1:
+        return 'Writing Analysis';
+      case 2:
+        return 'Math Analysis';
+      default:
+        return 'Reading Analysis';
+    }
   };
 
-  getBarAndCircleImageTotalHeight = (barImageString, circleImageString) => {
-    const circleImage = this.getImageSizeFromBase64String(circleImageString);
-    const circleImageHeight = 300 / circleImage.imgWidth * circleImage.imgHeight;
-    const barImage = this.getImageSizeFromBase64String(barImageString);
-    const barImageHeight = 545.28 / barImage.imgWidth * barImage.imgHeight;
-    return Number(circleImageHeight) + Number(barImageHeight);
+  getSplitedImageAmount = (circleImageHeight, barImageHeight, pageHeight = 765) => {
+    let delta = 0;
+    const CUT_PAGE_SIZE = 767;
+    const subImageHeight = barImageHeight - circleImageHeight;
+    const mod = subImageHeight % CUT_PAGE_SIZE;
+    if (mod !== 0) {
+      delta = delta + 1;
+    }
+    const amount = Math.floor(subImageHeight / CUT_PAGE_SIZE) + delta;
+    return amount;
+  };
+
+  splitImages = (circleImageHeight, barImageHeight, amount, imagString) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute('crossOrigin', 'anonymous');
+      img.onload = () => {
+        setTimeout(() => {
+          let splitedImages = []; // to push into oud base64 strings
+          let subImageHeight = 766.89;
+          const OVERSIZED_OFFSET = 200;
+          const CONTENT_WIDTH = 545.28;
+          for (let i = 0; i < amount; i++) {
+            const canvas = document.createElement('canvas');
+            canvas.width = CONTENT_WIDTH * 4; //important for resolution
+            canvas.height =
+              i === 0
+                ? (subImageHeight - circleImageHeight) * 4 - OVERSIZED_OFFSET
+                : subImageHeight * 4; //important for resolution
+            const ctx = canvas.getContext('2d');
+            ctx.scale(4, 4); //important for resolution
+            ctx.imageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            const y = i === 0 ? 0 : circleImageHeight - subImageHeight * i + OVERSIZED_OFFSET;
+            ctx.drawImage(img, 0, y, CONTENT_WIDTH, barImageHeight); // img, x, y, w, h
+            splitedImages.push(canvas.toDataURL()); // ("image/jpeg") for jpeg
+          }
+          resolve(splitedImages);
+        }, 100);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = imagString;
+    });
+
+  getImageSizeFromBase64String = base64string =>
+    new Promise(resolve => {
+      let img = document.createElement('img');
+      img.setAttribute('src', base64string);
+      setTimeout(function() {
+        const imgSize = {
+          imgWidth: img.width,
+          imgHeight: img.height,
+        };
+        resolve(imgSize);
+      }, 0);
+    });
+
+  getTargetImageHeight = async (targetImageString, targetImageWidth) => {
+    const targetImage = await this.getImageSizeFromBase64String(targetImageString);
+    const targetImageHeight = targetImageWidth / targetImage.imgWidth * targetImage.imgHeight;
+    return Number(targetImageHeight);
   };
 
   onUpdateTestSectionMsg = message => this.setState({updateTestSectionMessage: message});
