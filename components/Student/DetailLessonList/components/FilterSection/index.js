@@ -90,11 +90,6 @@ class FilterSection extends React.Component {
       return onSetUnitFilter(event);
     }
   }
-
-  handleSubjectFilter = () => {
-
-  }
-
   render() {
     const { open, sort, nameFilter, unitFilter } = this.state;
     const { currentView, dueDateFilters, flagFilters, subjectFilters, scoreStatusFilters, onChangeView, handleFilterClick } = this.props;
